@@ -9,23 +9,23 @@
 #include "../Common/socket.h"
 #include "../Common/thread.h"
 
-#include "gamesMonitor.h"
-#include "playerHandler.h"
+#include "gameMonitor.h"
+#include "lobbyPlayerThread.h"
+#include "player.h"
 
-class ClientAcceptor: public Thread {
+class AcceptorThread: public Thread {
 private:
     Socket serverSocket;
-    GamesMonitor& gamesMonitor;
     std::atomic<bool> isAlive{true};
-    std::vector<std::unique_ptr<PlayerHandler>> playerHandlers;
+    GameMonitor gameMonitor;
+    std::vector<LobbyPlayerThread> lobbyPlayers;
 
 public:
-    explicit ClientAcceptor(const std::string& servname, GamesMonitor& gamesMonitor);
+    AcceptorThread(const std::string& servname, GameMonitor& gameMonitor);
 
     virtual void run() override;
     virtual void stop() override;
-    void cleanUpInactiveHandlers();
-    void cleanUpAllHandlers();
+    void movePlayerToLobby(Player&& player, GameMonitor& gameMonitor);
 };
 
 #endif  // SERVER_CLIENT_ACCEPTOR_H_

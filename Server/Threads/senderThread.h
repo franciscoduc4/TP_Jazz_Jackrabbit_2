@@ -9,13 +9,13 @@
 
 #include "protocol.h"
 
-class ClientSender: public Thread {
+class SenderThread: public Thread {
 private:
     Protocol& protocol;
     std::shared_ptr<Queue<GameTypes::Event>> eventQueue;
 
 public:
-    ClientSender(Protocol& protocol, std::shared_ptr<Queue<GameTypes::Event>> eventQueue);
+    SenderThread(Protocol& protocol, std::shared_ptr<Queue<GameTypes::Event>> eventQueue);
 
     void run() override;
 };

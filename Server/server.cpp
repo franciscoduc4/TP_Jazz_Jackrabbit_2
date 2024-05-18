@@ -5,19 +5,20 @@
 #include <stdexcept>
 #include <utility>
 
+#include "Game/gameMonitor.h"
+
 #include "acceptorThread.h"
-#include "gamesMonitor.h"
 
 Server::Server(std::string& servname): servname(servname), gamesMonitor() {}
 
 void Server::run() {
-    ClientAcceptor clientAcceptorThread(servname, gamesMonitor);
+    AcceptorThread acceptor(servname, gamesMonitor);
 
-    clientAcceptorThread.start();
+    acceptor.start();
 
     while (std::cin.get() != 'q') {}
 
-    clientAcceptorThread.stop();
-    clientAcceptorThread.join();
+    acceptor.stop();
+    acceptor.join();
     shutdown();
 }

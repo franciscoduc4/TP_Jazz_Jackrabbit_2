@@ -8,13 +8,13 @@
 #include "protocol.h"
 
 
-class ClientReceiver: public Thread {
+class ReceiverThread: public Thread {
 private:
     Protocol& protocol;
     Queue<GameTypes::Action>& gameQueue;
 
 public:
-    ClientReceiver(Protocol& protocol, Queue<GameTypes::Action>& gameQueue);
+    ReceiverThread(Protocol& protocol, Queue<GameTypes::Action>& gameQueue);
 
     void run() override;
 };

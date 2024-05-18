@@ -1,0 +1,5 @@
+#define JOIN_GAME "join"
+#define CREATE_GAME "create"
+#define LIST_GAMES "list"
+#define SET_NAME "setname"
+#define BACK "back"
