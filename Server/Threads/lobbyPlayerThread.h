@@ -5,18 +5,21 @@
 
 #include "gameMonitor.h"
 #include "player.h"
-#include "protocol.h"
+#include "../Common/protocol.h"
 
 class LobbyPlayerThread: public Thread {
 private:
     Player player;
     GameMonitor& gameMonitor;
     bool inLobby;
+    Protocol protocol;
 
 public:
     LobbyPlayerThread(Player&& player, GameMonitor& gameMonitor);
     virtual void run() override;
     virtual void stop() override;
+
+    
 };
 
 #endif  // LOBBY_PLAYER_THREAD_H_

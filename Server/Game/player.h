@@ -15,13 +15,15 @@
 
 class Player {
 private:
-    Protocol protocol;
+    Socket socket;
     int id;
+    Protocol protocol;
     std::string name;
     std::string gameName;
     bool inGame;
     std::shared_ptr<ReceiverThread> receiver;
     std::shared_ptr<SenderThread> sender;
+
 
 public:
     explicit Player(Socket&& playerSocket);
@@ -30,6 +32,7 @@ public:
     std::string getName() const;
     int getId() const;
     void setInGame();
+    Socket& getSocketRef();
 
     std::shared_ptr<SenderThread> initSender(std::shared_ptr<Queue<GameTypes::Event>> eventQueue);
     std::shared_ptr<ReceiverThread> initReceiver(Queue<GameTypes::Action>& gameQueue);

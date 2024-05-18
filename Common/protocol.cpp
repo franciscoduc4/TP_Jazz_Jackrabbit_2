@@ -8,10 +8,17 @@
 #include "../Constants/playerCommands.h"
 #include "../Server/Game/gameStatus.h"
 
+Protocol::Protocol(Socket& socket): socket(socket) {}
 Protocol::Protocol(Socket&& socket): socket(std::move(socket)) {}
 
-void Protocol::sendMessage(const std::string& message) {
-    uint16_t payloadSize = htonl(message.size());
+
+void Protocol::sendMessage(const ProtocolMessage& message) {
+    
+    std::uint8_t cmd = message.cmd;
+    std::string args = message.args;
+
+    std::string payload = std::to_string(cmd) + " " + args;
+    uint16_t payloadSize = htonl(payload.size());
     bool wasClosed = false;
 
     try {
@@ -21,7 +28,7 @@ void Protocol::sendMessage(const std::string& message) {
             throw std::runtime_error("Socket closed");
         }
         //Envio el comando
-        socket.sendall(message.data(), message.size(), &wasClosed);
+        socket.sendall(&payload, payloadSize, &wasClosed);
         if (wasClosed) {
             throw std::runtime_error("Socket closed");
         }
@@ -31,7 +38,7 @@ void Protocol::sendMessage(const std::string& message) {
     }
 }
 
-std::string Protocol::recvMessage() {
+ProtocolMessage Protocol::recvMessage() {
     uint16_t payloadSize;
     bool wasClosed = false;
 
@@ -58,25 +65,32 @@ std::string Protocol::recvMessage() {
         wasClosed = true;
     }
 
-    return message;
+    ProtocolMessage protocolMessage;
+    std::istringstream iss(message);
+    iss >> protocolMessage.cmd;
+    std::getline(iss, protocolMessage.args);
+    
+    return protocolMessage;
 }
 
 void Protocol::sendGameState(GameStatus& gameStatus){
-    std::string currentGameStatus = gameStatus.snapshot();
+    ProtocolMessage currentGameStatus;
+    currentGameStatus.cmd = 0x00;
+    currentGameStatus.args = gameStatus.snapshot();
     sendMessage(currentGameStatus);
 }
 
-void Protocol::sendJoinGame(const std::string& gameName) {
-    std::ostringstream oss;
-    oss << JOIN_GAME << " " << gameName;
-    sendMessage(oss.str());
-}
+// void Protocol::sendJoinGame(const std::string& gameName) {
+//     std::ostringstream oss;
+//     oss << JOIN_GAME << " " << gameName;
+//     sendMessage(oss.str());
+// }
 
-void Protocol::sendCreateGame(const std::string& gameName) {
-    std::ostringstream oss;
-    oss << CREATE_GAME << " " << gameName; 
-    sendMessage(oss.str());
-}
+// void Protocol::sendCreateGame(const std::string& gameName) {
+//     std::ostringstream oss;
+//     oss << CREATE_GAME << " " << gameName; 
+//     sendMessage(oss.str());
+// }
 
 
 

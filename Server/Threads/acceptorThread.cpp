@@ -18,9 +18,9 @@ void AcceptorThread::run() {
             }
             Player player(std::move(playerSocket));
             movePlayerToLobby(std::move(player), gameMonitor);
-            // cleanUpInactiveHandlers();
+
+            //cleanLobby();
         } catch (const std::exception& e) {
-            // cleanUpAllHandlers();
             if (isAlive) {
                 std::cerr << e.what() << std::endl;
             }
@@ -29,7 +29,6 @@ void AcceptorThread::run() {
 }
 
 void AcceptorThread::stop() {
-    // cleanUpAllHandlers();
     isAlive = false;
     serverSocket.shutdown(SHUT_RDWR);
     serverSocket.close();
@@ -40,3 +39,12 @@ void AcceptorThread::movePlayerToLobby(Player&& player, GameMonitor& gameMonitor
     lobbyPlayers.emplace_back(lobbyPlayer);
     lobbyPlayers.back().start();
 }
+
+void AcceptorThread::cleanLobby() {
+    for (auto& lobbyPlayer : lobbyPlayers) {
+        lobbyPlayer.stop();
+        lobbyPlayer.join();
+    }
+    lobbyPlayers.clear();
+}
+

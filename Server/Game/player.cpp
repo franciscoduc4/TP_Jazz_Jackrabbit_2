@@ -2,7 +2,12 @@
 #include  <utility>
 
 Player::Player(Socket&& socket):
-        protocol(std::move(socket)), id(0), gameName(""), name(""), inGame(false) {}
+        socket(std::move(socket)), 
+        id(socket.getSocketId()), 
+        protocol(std::move(socket)), 
+        gameName(""), 
+        name(""), 
+        inGame(false) {}
 
 std::string Player::getGameName() const { return gameName; }
 
@@ -22,3 +27,7 @@ std::shared_ptr<SenderThread> Player::initSender(
     sender = std::make_shared<SenderThread>(protocol, sendQueue);
     return sender;
 }
+
+Socket& Player::getSocketRef() { return socket; }
+
+

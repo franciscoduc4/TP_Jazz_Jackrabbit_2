@@ -1,17 +1,20 @@
 #include "lobbyPlayerThread.h"
 #include <utility>
+#include "../Common/protocol.h"
 
 LobbyPlayerThread::LobbyPlayerThread(Player&& player, GameMonitor& gameMonitor):
-        player(std::move(player)), gameMonitor(gameMonitor), inLobby(true) {}
+        player(std::move(player)), 
+        gameMonitor(gameMonitor), 
+        inLobby(true), 
+        protocol(player.getSocketRef()) {}
 
 
 void LobbyPlayerThread::run() {
-    bool inGame = false;
-
+    
     try {
-        while (!inGame) {
+        while (inLobby) {
             // TODO: esperar a que el cliente envíe un mensaje de inicio de juego
-            // Command command = protocol.recvCommand();
+            ProtocolMessage command = protocol.recvMessage();
             // LobbyCommand lobbyCommand = LobbyCommand::getCommand(command);
 
             // lobbyCommand.exec(gameMonitor, std::move(player));
@@ -22,3 +25,4 @@ void LobbyPlayerThread::run() {
         std::cerr << "Error: " << e.what() << std::endl;
     }
 }
+

@@ -7,15 +7,20 @@
 #include <vector>
 #include "../Common/socket.h"
 
+struct ProtocolMessage {
+    std::uint8_t cmd;
+    std::string args;
+};
+
 class Protocol {
     Socket socket;
 
 public:
-    explicit Protocol(Socket&& socket): socket(std::move(socket)) {}
-    void sendMessage(const std::string& message);
-    std::string recvMessage();
-    void Protocol::sendGameState(GameStatus& gameStatus);
-
+    explicit Protocol(Socket&& socket);
+    explicit Protocol(Socket& socket);
+    void sendMessage(const ProtocolMessage& message);
+    ProtocolMessage recvMessage();
+    void sendGameState(GameStatus& gameStatus);
     void sendJoinGame(const std::string& gameName);
     void sendCreateGame(const std::string& gameName);
     void sendSetName(const std::string& name);
