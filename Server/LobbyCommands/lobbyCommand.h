@@ -6,9 +6,8 @@
 
 class LobbyCommand {
 public:
-    virtual void exec(GameMonitor& gameMonitor, Player&& player) = 0;
-    LobbyCommand getCommand(Command command);
+    virtual ProtocolMessage exec(GameMonitor& gameMonitor, Player&& player, bool inLobby) = 0;
+    static std::unique_ptr<LobbyCommand> getCommand(ProtocolMessage message);
 };
 
 #endif  // LOBBY_COMMANDS_JOIN_H_
-

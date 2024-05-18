@@ -19,7 +19,7 @@ public:
     void createGame(const std::string& gameName, int maxPlayers, Player&& player);
     void addPlayer(const std::string& gameName, Player&& player);
     void launchGame(const std::string& gameName);
-    std::string listGames();
+    void listGames(std::string& list);
     void endGame(const std::string& gameName);
     void endAllGames();
 };

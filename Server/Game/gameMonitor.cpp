@@ -1,6 +1,7 @@
 #include "gameMonitor.h"
-#include <utility>
+
 #include <numeric>
+#include <utility>
 
 GameMonitor::GameMonitor() {}
 
@@ -29,6 +30,10 @@ void GameMonitor::addPlayer(const std::string& gameName, Player&& player) {
 
     games[gameName].addPlayer(std::move(player));
     player.setInGame();
+
+    if (games[gameName].isFull()) {
+        launchGame(gameName);
+    }
 }
 
 void GameMonitor::launchGame(const std::string& gameName) {
@@ -38,22 +43,18 @@ void GameMonitor::launchGame(const std::string& gameName) {
         throw std::runtime_error("Game not found");
     }
 
-    if (!games[gameName].isFull()) {
-        throw std::runtime_error("Game is not full");
-    }
-
     games[gameName].launch();
 }
 
-std::string GameMonitor::listGames() {
+void GameMonitor::listGames(std::string& list) {
     std::lock_guard<std::mutex> lock(mtx);
 
-    return std::accumulate(games.begin(), games.end(), std::string{},
+    list = std::accumulate(games.begin(), games.end(), std::string{},
                            [](const std::string& acc, const auto& gamePair) {
                                const Game& game = gamePair.second;
-                               return acc + game.getName() + "\0 " + 
-                               std::to_string(game.getCurrentPlayers()) +
-                                "/" + std::to_string(game.getMaxPlayers()) + "\n";
+                               return acc + game.getName() + "\0 " +
+                                      std::to_string(game.getCurrentPlayers()) + "/" +
+                                      std::to_string(game.getMaxPlayers()) + "\n";
                            });
 }
 

@@ -3,7 +3,9 @@
 #include <iostream>
 #include <sstream>
 #include <utility>
+
 #include <sys/socket.h>
+
 #include "../Common/socket.h"
 
 AcceptorThread::AcceptorThread(const std::string& servname, GameMonitor& gameMonitor):
@@ -18,17 +20,18 @@ void AcceptorThread::run() {
             }
             Player player(std::move(playerSocket));
             movePlayerToLobby(std::move(player), gameMonitor);
-
-            //cleanLobby();
+            cleanInactiveLobbyPlayers();
         } catch (const std::exception& e) {
             if (isAlive) {
                 std::cerr << e.what() << std::endl;
             }
+            cleanLobby();
         }
     }
 }
 
 void AcceptorThread::stop() {
+    cleanLobby();
     isAlive = false;
     serverSocket.shutdown(SHUT_RDWR);
     serverSocket.close();
@@ -40,11 +43,24 @@ void AcceptorThread::movePlayerToLobby(Player&& player, GameMonitor& gameMonitor
     lobbyPlayers.back().start();
 }
 
-void AcceptorThread::cleanLobby() {
-    for (auto& lobbyPlayer : lobbyPlayers) {
-        lobbyPlayer.stop();
-        lobbyPlayer.join();
+void AcceptorThread::cleanInactiveLobbyPlayers() {
+    auto it = lobbyPlayers.begin();
+    while (it != lobbyPlayers.end()) {
+        if (!it->isInLobby()) {
+            it->stop();
+            it->join();
+            it = lobbyPlayers.erase(it);
+        } else {
+            ++it;
+        }
     }
-    lobbyPlayers.clear();
 }
 
+void AcceptorThread::cleanLobby() {
+    auto it = lobbyPlayers.begin();
+    while (it != lobbyPlayers.end()) {
+        it->stop();
+        it->join();
+        it = lobbyPlayers.erase(it);
+    }
+}

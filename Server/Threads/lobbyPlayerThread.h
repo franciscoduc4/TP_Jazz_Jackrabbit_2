@@ -1,11 +1,11 @@
 #ifndef LOBBY_PLAYER_THREAD_H_
 #define LOBBY_PLAYER_THREAD_H_
 
+#include "../Common/protocol.h"
 #include "../Common/thread.h"
 
 #include "gameMonitor.h"
 #include "player.h"
-#include "../Common/protocol.h"
 
 class LobbyPlayerThread: public Thread {
 private:
@@ -19,7 +19,7 @@ public:
     virtual void run() override;
     virtual void stop() override;
 
-    
+    bool isInLobby() const;
 };
 
 #endif  // LOBBY_PLAYER_THREAD_H_

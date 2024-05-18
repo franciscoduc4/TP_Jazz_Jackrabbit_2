@@ -26,7 +26,8 @@ public:
     virtual void run() override;
     virtual void stop() override;
     void movePlayerToLobby(Player&& player, GameMonitor& gameMonitor);
+    void cleanInactiveLobbyPlayers();
     void cleanLobby();
-    };
+};
 
 #endif  // SERVER_CLIENT_ACCEPTOR_H_

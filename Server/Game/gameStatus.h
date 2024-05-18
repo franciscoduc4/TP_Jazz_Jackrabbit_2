@@ -1,16 +1,18 @@
 #ifndef GAME_STATUS_H_H
 #define GAME_STATUS_H_H
 
-#include <string>
-#include <vector>
+#include <cstring>
 #include <map>
 #include <mutex>
+#include <string>
+#include <vector>
+
+#include <arpa/inet.h>
+
+#include "character.h"
+#include "enemy.h"
 #include "game.h"
 #include "player.h"
-#include "enemy.h"
-#include "character.h"
-#include <arpa/inet.h>
-#include <cstring>
 
 struct Gem {
     int x;
@@ -35,7 +37,7 @@ struct GameStatus {
 
         uint32_t characterCount = htonl(characters.size());
         buffer.append(reinterpret_cast<const char*>(&characterCount), sizeof(characterCount));
-        for (const auto& character : characters) {
+        for (const auto& character: characters) {
             serializeString(character->getName(), buffer);
             serializeString(character->getState(), buffer);
             serializeInt(character->getX(), buffer);
@@ -45,7 +47,7 @@ struct GameStatus {
 
         uint32_t enemyCount = htonl(enemies.size());
         buffer.append(reinterpret_cast<const char*>(&enemyCount), sizeof(enemyCount));
-        for (const auto& enemy : enemies) {
+        for (const auto& enemy: enemies) {
             serializeString(enemy->getType(), buffer);
             serializeInt(enemy->getX(), buffer);
             serializeInt(enemy->getY(), buffer);
@@ -58,7 +60,7 @@ struct GameStatus {
 
         uint32_t gemCount = htonl(gems.size());
         buffer.append(reinterpret_cast<const char*>(&gemCount), sizeof(gemCount));
-        for (const auto& gem : gems) {
+        for (const auto& gem: gems) {
             serializeInt(gem.x, buffer);
             serializeInt(gem.y, buffer);
             serializeInt(gem.points, buffer);
@@ -66,7 +68,7 @@ struct GameStatus {
 
         uint32_t coinCount = htonl(coins.size());
         buffer.append(reinterpret_cast<const char*>(&coinCount), sizeof(coinCount));
-        for (const auto& coin : coins) {
+        for (const auto& coin: coins) {
             serializeInt(coin.x, buffer);
             serializeInt(coin.y, buffer);
             serializeInt(coin.points, buffer);
@@ -95,5 +97,4 @@ private:
     }
 };
 
-#endif // GAME_STATUS_H_H
-
+#endif  // GAME_STATUS_H_H

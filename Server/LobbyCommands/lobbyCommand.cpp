@@ -1,18 +1,22 @@
 #include "lobbyCommand.h"
 
-LobbyCommand::getCommand(Command command) {
-    switch (command) {
-        case Command::JOIN:
-            return new LobbyCommandJoin();
-        case Command::CREATE:
-            return new LobbyCommandCreate();
-        case Command::LIST:
-            return new LobbyCommandList();
-        case Command::START:
-            return new LobbyCommandStart();
-        case Command::EXIT:
-            return new LobbyCommandExit();
+#include "../../Common/Constants/lobbyCommands.h"
+
+#include "createGameCommand.h"
+#include "invalidCommand.h"
+#include "joinGameCommand.h"
+#include "listGamesCommand.h"
+
+std::unique_ptr<LobbyCommand> LobbyCommand::getCommand(ProtocolMessage message) {
+
+    switch (message.cmd) {
+        case 0x02:
+            return std::make_unique<CreateGameCommand>(message.args);
+        case 0x03:
+            return std::make_unique<JoinGameCommand>(message.args);
+        case 0x04:
+            return std::make_unique<ListGamesCommand>(message.args);
         default:
-            return nullptr;
+            return std::make_unique<InvalidCommand>(message.args);
     }
 }

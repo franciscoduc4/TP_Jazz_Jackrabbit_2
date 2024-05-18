@@ -1,19 +1,22 @@
 #include "protocol.h"
-#include "../Common/socket.h"
-#include <utility>
-#include <arpa/inet.h>
-#include <stdexcept>
+
 #include <sstream>
-#include "../Constants/lobbyCommands.h"
-#include "../Constants/playerCommands.h"
+#include <stdexcept>
+#include <utility>
+
+#include <arpa/inet.h>
+
+#include "../Common/socket.h"
 #include "../Server/Game/gameStatus.h"
+#include "Constants/lobbyCommands.h"
+#include "Constants/playerCommands.h"
 
 Protocol::Protocol(Socket& socket): socket(socket) {}
 Protocol::Protocol(Socket&& socket): socket(std::move(socket)) {}
 
 
 void Protocol::sendMessage(const ProtocolMessage& message) {
-    
+
     std::uint8_t cmd = message.cmd;
     std::string args = message.args;
 
@@ -22,12 +25,12 @@ void Protocol::sendMessage(const ProtocolMessage& message) {
     bool wasClosed = false;
 
     try {
-        //Envio longitud del payload
+        // Envio longitud del payload
         socket.sendall(&payloadSize, sizeof(uint16_t), &wasClosed);
         if (wasClosed) {
             throw std::runtime_error("Socket closed");
         }
-        //Envio el comando
+        // Envio el comando
         socket.sendall(&payload, payloadSize, &wasClosed);
         if (wasClosed) {
             throw std::runtime_error("Socket closed");
@@ -43,7 +46,7 @@ ProtocolMessage Protocol::recvMessage() {
     bool wasClosed = false;
 
     try {
-        //Recibo longitud
+        // Recibo longitud
         socket.recvall(&payloadSize, sizeof(uint16_t), &wasClosed);
         if (wasClosed) {
             throw std::runtime_error("Socket closed");
@@ -56,7 +59,7 @@ ProtocolMessage Protocol::recvMessage() {
     std::string message(payloadSize, '\0');
 
     try {
-        //Recibo el comando
+        // Recibo el comando
         socket.recvall(&message[0], payloadSize, &wasClosed);
         if (wasClosed) {
             throw std::runtime_error("Socket closed");
@@ -69,11 +72,18 @@ ProtocolMessage Protocol::recvMessage() {
     std::istringstream iss(message);
     iss >> protocolMessage.cmd;
     std::getline(iss, protocolMessage.args);
-    
+
     return protocolMessage;
 }
 
-void Protocol::sendGameState(GameStatus& gameStatus){
+void Protocol::sendGamesList(GameMonitor& gameMonitor) {
+    ProtocolMessage gamesList;
+    gamesList.cmd = 0x04;
+    gamesList.args = gameMonitor.listGames();
+    sendMessage(gamesList);
+}
+
+void Protocol::sendGameState(GameStatus& gameStatus) {
     ProtocolMessage currentGameStatus;
     currentGameStatus.cmd = 0x00;
     currentGameStatus.args = gameStatus.snapshot();
@@ -88,11 +98,6 @@ void Protocol::sendGameState(GameStatus& gameStatus){
 
 // void Protocol::sendCreateGame(const std::string& gameName) {
 //     std::ostringstream oss;
-//     oss << CREATE_GAME << " " << gameName; 
+//     oss << CREATE_GAME << " " << gameName;
 //     sendMessage(oss.str());
 // }
-
-
-
-
-
