@@ -11,3 +11,4 @@ public:
 };
 
 #endif  // LOBBY_COMMANDS_JOIN_H_
+

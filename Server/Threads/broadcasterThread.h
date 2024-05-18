@@ -12,18 +12,18 @@
 #include "../Threads/senderThread.h"
 
 class BroadcasterThread: public Thread {
-private:
-    QueueMonitor queueMonitor;
-    std::shared_ptr<Queue<GameTypes::Event>> eventQueue;
-    std::map<int, std::shared_ptr<SenderThread>> senderThreads;
+    private:
+        QueueMonitor queueMonitor;
+        std::shared_ptr<Queue<GameTypes::Event>> eventQueue;
+        std::map<int, std::shared_ptr<SenderThread>> senderThreads;
 
-public:
-    BroadcasterThread();
-    void addSender(Player& player);
-    void removeSender(int playerId);
-    void run();
-    void stop();
-    ~BroadcasterThread();
+    public:
+        BroadcasterThread();
+        void addSender(Player& player);
+        void removeSender(int playerId);
+        void run();
+        void stop();
+        ~BroadcasterThread();
 };
 
 #endif  // BRODCASTER_THREAD_H_

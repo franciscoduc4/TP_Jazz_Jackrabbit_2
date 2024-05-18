@@ -1,4 +1,6 @@
 #include "gameMonitor.h"
+#include <utility>
+#include <numeric>
 
 GameMonitor::GameMonitor() {}
 
@@ -46,13 +48,13 @@ void GameMonitor::launchGame(const std::string& gameName) {
 std::string GameMonitor::listGames() {
     std::lock_guard<std::mutex> lock(mtx);
 
-    std::string list;
-    for (const auto& game: games) {
-        list += game.second.getName() + " " + std::to_string(game.second.getCurrentPlayers()) +
-                "/" + std::to_string(game.second.getMaxPlayers()) + "\n";
-    }
-
-    return list;
+    return std::accumulate(games.begin(), games.end(), std::string{},
+                           [](const std::string& acc, const auto& gamePair) {
+                               const Game& game = gamePair.second;
+                               return acc + game.getName() + "\0 " + 
+                               std::to_string(game.getCurrentPlayers()) +
+                                "/" + std::to_string(game.getMaxPlayers()) + "\n";
+                           });
 }
 
 void GameMonitor::endGame(const std::string& gameName) {
@@ -61,7 +63,6 @@ void GameMonitor::endGame(const std::string& gameName) {
     if (games.find(gameName) == games.end()) {
         throw std::runtime_error("Game not found");
     }
-
     games[gameName].stop();
     games.erase(gameName);
 }

@@ -5,11 +5,9 @@
 #include <memory>
 #include <mutex>
 #include <vector>
-
 #include "../Common/gameTypes.h"
 #include "../Common/protocol.h"
 #include "../Common/queue.h"
-
 
 class QueueMonitor {
 private:

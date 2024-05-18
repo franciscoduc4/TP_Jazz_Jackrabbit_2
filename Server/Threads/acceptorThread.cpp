@@ -3,9 +3,7 @@
 #include <iostream>
 #include <sstream>
 #include <utility>
-
 #include <sys/socket.h>
-
 #include "../Common/socket.h"
 
 AcceptorThread::AcceptorThread(const std::string& servname, GameMonitor& gameMonitor):
@@ -18,11 +16,9 @@ void AcceptorThread::run() {
             if (!isAlive) {
                 break;
             }
-
             Player player(std::move(playerSocket));
             movePlayerToLobby(std::move(player), gameMonitor);
             // cleanUpInactiveHandlers();
-
         } catch (const std::exception& e) {
             // cleanUpAllHandlers();
             if (isAlive) {

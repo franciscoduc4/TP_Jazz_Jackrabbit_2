@@ -1,4 +1,5 @@
 #include "lobbyPlayerThread.h"
+#include <utility>
 
 LobbyPlayerThread::LobbyPlayerThread(Player&& player, GameMonitor& gameMonitor):
         player(std::move(player)), gameMonitor(gameMonitor), inLobby(true) {}

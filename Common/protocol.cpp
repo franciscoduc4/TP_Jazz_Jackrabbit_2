@@ -1,5 +1,84 @@
 #include "protocol.h"
+#include "../Common/socket.h"
+#include <utility>
+#include <arpa/inet.h>
+#include <stdexcept>
+#include <sstream>
+#include "../Constants/lobbyCommands.h"
+#include "../Constants/playerCommands.h"
+#include "../Server/Game/gameStatus.h"
 
 Protocol::Protocol(Socket&& socket): socket(std::move(socket)) {}
 
-void Protocol::sendMessage(const std::string& message) { socket.send(message); }
+void Protocol::sendMessage(const std::string& message) {
+    uint16_t payloadSize = htonl(message.size());
+    bool wasClosed = false;
+
+    try {
+        //Envio longitud del payload
+        socket.sendall(&payloadSize, sizeof(uint16_t), &wasClosed);
+        if (wasClosed) {
+            throw std::runtime_error("Socket closed");
+        }
+        //Envio el comando
+        socket.sendall(message.data(), message.size(), &wasClosed);
+        if (wasClosed) {
+            throw std::runtime_error("Socket closed");
+        }
+
+    } catch (const std::exception& e) {
+        wasClosed = true;
+    }
+}
+
+std::string Protocol::recvMessage() {
+    uint16_t payloadSize;
+    bool wasClosed = false;
+
+    try {
+        //Recibo longitud
+        socket.recvall(&payloadSize, sizeof(uint16_t), &wasClosed);
+        if (wasClosed) {
+            throw std::runtime_error("Socket closed");
+        }
+    } catch (const std::exception& e) {
+        wasClosed = true;
+    }
+
+    payloadSize = ntohl(payloadSize);
+    std::string message(payloadSize, '\0');
+
+    try {
+        //Recibo el comando
+        socket.recvall(&message[0], payloadSize, &wasClosed);
+        if (wasClosed) {
+            throw std::runtime_error("Socket closed");
+        }
+    } catch (const std::exception& e) {
+        wasClosed = true;
+    }
+
+    return message;
+}
+
+void Protocol::sendGameState(GameStatus& gameStatus){
+    std::string currentGameStatus = gameStatus.snapshot();
+    sendMessage(currentGameStatus);
+}
+
+void Protocol::sendJoinGame(const std::string& gameName) {
+    std::ostringstream oss;
+    oss << JOIN_GAME << " " << gameName;
+    sendMessage(oss.str());
+}
+
+void Protocol::sendCreateGame(const std::string& gameName) {
+    std::ostringstream oss;
+    oss << CREATE_GAME << " " << gameName; 
+    sendMessage(oss.str());
+}
+
+
+
+
+

@@ -1,4 +1,5 @@
 #include "player.h"
+#include  <utility>
 
 Player::Player(Socket&& socket):
         protocol(std::move(socket)), id(0), gameName(""), name(""), inGame(false) {}

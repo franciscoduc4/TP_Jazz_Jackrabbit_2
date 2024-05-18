@@ -1,6 +1,7 @@
 #include "game.h"
-
+#include <utility>
 #include <algorithm>
+#include <string>
 
 Game::Game(std::string name, int maxPlayers, Player&& firstPlayer):
         name(name),
