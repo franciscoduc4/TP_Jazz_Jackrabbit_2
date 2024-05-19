@@ -1,12 +1,10 @@
-#ifndef SERVER_CLIENT_RECEIVER_H
-#define SERVER_CLIENT_RECEIVER_H
+#ifndef RECEIVER_THREAD_H_
+#define RECEIVER_THREAD_H_
 
-#include "../Common/gameTypes.h"
-#include "../Common/queue.h"
-#include "../Common/thread.h"
-
-#include "protocol.h"
-
+#include "../../Common/gameTypes.h"
+#include "../../Common/protocol.h"
+#include "../../Common/queue.h"
+#include "../../Common/thread.h"
 
 class ReceiverThread: public Thread {
 private:
@@ -19,4 +17,4 @@ public:
     void run() override;
 };
 
-#endif  // SERVER_CLIENT_RECEIVER_H
+#endif  // RECEIVER_THREAD_H_

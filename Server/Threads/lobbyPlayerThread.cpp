@@ -1,26 +1,14 @@
 #include "lobbyPlayerThread.h"
 
-#include <utility>
-
-#include "../Common/protocol.h"
-#include "../LobbyCommands/lobbyCommand.h"
-
-LobbyPlayerThread::LobbyPlayerThread(Player&& player, GameMonitor& gameMonitor):
-        player(std::move(player)),
-        gameMonitor(gameMonitor),
-        inLobby(true),
-        protocol(player.getSocketRef()) {}
-
+LobbyPlayerThread::LobbyPlayerThread(Socket&& playerSocket, GameMonitor& gameMonitor):
+        protocol(std::move(playerSocket)), gameMonitor(gameMonitor), inLobby(true) {}
 
 void LobbyPlayerThread::run() {
     try {
         while (inLobby) {
             ProtocolMessage message = protocol.recvMessage();
             auto lobbyCommand = LobbyCommand::getCommand(message);
-            ProtocolMessage res = lobbyCommand->exec(gameMonitor, std::move(player), inLobby);
-            if (res.cmd != 0x00) {
-                protocol.sendMessage(res);
-            }
+            handleCommand(protocol, lobbyCommand);
         }
     } catch (const std::exception& e) {
         std::cerr << "Error: " << e.what() << std::endl;
@@ -28,3 +16,11 @@ void LobbyPlayerThread::run() {
 }
 
 bool LobbyPlayerThread::isInLobby() const { return inLobby; }
+
+void LobbyPlayerThread::handleCommand(Protocol& protocol,
+                                      const std::shared_ptr<LobbyCommand>& lobbyCommand) {
+    ProtocolMessage res = lobbyCommand->exec(gameMonitor, std::move(protocol), inLobby);
+    if (res.cmd != 0x00) {
+        protocol.sendMessage(res);
+    }
+}

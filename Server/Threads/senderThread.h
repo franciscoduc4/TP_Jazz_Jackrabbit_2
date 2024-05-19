@@ -1,13 +1,12 @@
-#ifndef SERVER_CLIENT_SENDER_H
-#define SERVER_CLIENT_SENDER_H
+#ifndef SENDER_THREAD_H_
+#define SENDER_THREAD_H_
 
 #include <memory>
 
-#include "../Common/gameTypes.h"
-#include "../Common/queue.h"
-#include "../Common/thread.h"
-
-#include "protocol.h"
+#include "../../Common/gameTypes.h"
+#include "../../Common/protocol.h"
+#include "../../Common/queue.h"
+#include "../../Common/thread.h"
 
 class SenderThread: public Thread {
 private:
@@ -20,4 +19,4 @@ public:
     void run() override;
 };
 
-#endif  // SERVER_CLIENT_SENDER_H
+#endif  // SENDER_THREAD_H_

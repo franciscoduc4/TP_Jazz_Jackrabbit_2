@@ -1,11 +1,10 @@
 #include "createGameCommand.h"
 
-#include <sstream>
-#include <utility>
 
 CreateGameCommand::CreateGameCommand(std::string args): args(std::move(args)) {}
 
-ProtocolMessage CreateGameCommand::exec(GameMonitor& gameMonitor, Player&& player, bool inLobby) {
+ProtocolMessage CreateGameCommand::exec(GameMonitor& gameMonitor, Protocol&& protocol,
+                                        bool inLobby) {
     std::stringstream argsIt(args);
 
     int maxPlayers;
@@ -13,6 +12,7 @@ ProtocolMessage CreateGameCommand::exec(GameMonitor& gameMonitor, Player&& playe
     argsIt >> maxPlayers;
     argsIt >> gameName;
 
+    Player player(std::move(protocol));
     gameMonitor.createGame(gameName, maxPlayers, std::move(player));
     inLobby = false;
 

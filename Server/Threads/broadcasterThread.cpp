@@ -1,5 +1,6 @@
 #include "broadcasterThread.h"
 
+
 BroadcasterThread::BroadcasterThread(): queueMonitor(), eventQueue(queueMonitor.createQueue()) {}
 
 void BroadcasterThread::addSender(Player& player) {

@@ -1,12 +1,5 @@
 #include "acceptorThread.h"
 
-#include <iostream>
-#include <sstream>
-#include <utility>
-
-#include <sys/socket.h>
-
-#include "../Common/socket.h"
 
 AcceptorThread::AcceptorThread(const std::string& servname, GameMonitor& gameMonitor):
         serverSocket(servname.c_str()), gameMonitor(), lobbyPlayers() {}
@@ -18,8 +11,7 @@ void AcceptorThread::run() {
             if (!isAlive) {
                 break;
             }
-            Player player(std::move(playerSocket));
-            movePlayerToLobby(std::move(player), gameMonitor);
+            movePlayerToLobby(std::move(playerSocket), gameMonitor);
             cleanInactiveLobbyPlayers();
         } catch (const std::exception& e) {
             if (isAlive) {
@@ -37,8 +29,8 @@ void AcceptorThread::stop() {
     serverSocket.close();
 }
 
-void AcceptorThread::movePlayerToLobby(Player&& player, GameMonitor& gameMonitor) {
-    LobbyPlayerThread lobbyPlayer(std::move(player), gameMonitor);
+void AcceptorThread::movePlayerToLobby(Socket&& playerSocket, GameMonitor& gameMonitor) {
+    LobbyPlayerThread lobbyPlayer(std::move(playerSocket), gameMonitor);
     lobbyPlayers.emplace_back(lobbyPlayer);
     lobbyPlayers.back().start();
 }

@@ -1,8 +1,13 @@
-#ifndef LOBBY_COMMANDS_H_
-#define LOBBY_COMMANDS_H_
+#ifndef LOBBY_COMMANDS_H
+#define LOBBY_COMMANDS_H
 
-#define CREATE_GAME 0x02  //"create"
-#define JOIN_GAME 0x03    //"join"
-#define LIST_GAMES 0x04   //"list"
+#include <cstdint>
 
-#endif  // LOBBY_COMMANDS_H_
+enum class LobbyCommands : uint8_t {
+    JOIN_GAME = 0x02,    // "join"
+    CREATE_GAME = 0x03,  // "create"
+    LIST_GAMES = 0x04,   // "list"
+    START_GAME = 0x05    // "start"
+};
+
+#endif  // LOBBY_COMMANDS_H

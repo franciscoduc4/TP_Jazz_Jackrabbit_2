@@ -1,18 +1,10 @@
 #include "server.h"
 
-#include <iostream>
-#include <sstream>
-#include <stdexcept>
-#include <utility>
 
-#include "Game/gameMonitor.h"
-
-#include "acceptorThread.h"
-
-Server::Server(std::string& servname): servname(servname), gamesMonitor() {}
+Server::Server(std::string& servname): servname(servname), gameMonitor() {}
 
 void Server::run() {
-    AcceptorThread acceptor(servname, gamesMonitor);
+    AcceptorThread acceptor(servname, gameMonitor);
 
     acceptor.start();
 

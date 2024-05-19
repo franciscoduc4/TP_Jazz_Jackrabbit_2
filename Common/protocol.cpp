@@ -11,9 +11,7 @@
 #include "Constants/lobbyCommands.h"
 #include "Constants/playerCommands.h"
 
-Protocol::Protocol(Socket& socket): socket(socket) {}
 Protocol::Protocol(Socket&& socket): socket(std::move(socket)) {}
-
 
 void Protocol::sendMessage(const ProtocolMessage& message) {
 
@@ -76,13 +74,6 @@ ProtocolMessage Protocol::recvMessage() {
     return protocolMessage;
 }
 
-void Protocol::sendGamesList(GameMonitor& gameMonitor) {
-    ProtocolMessage gamesList;
-    gamesList.cmd = 0x04;
-    gamesList.args = gameMonitor.listGames();
-    sendMessage(gamesList);
-}
-
 void Protocol::sendGameState(GameStatus& gameStatus) {
     ProtocolMessage currentGameStatus;
     currentGameStatus.cmd = 0x00;
@@ -101,3 +92,6 @@ void Protocol::sendGameState(GameStatus& gameStatus) {
 //     oss << CREATE_GAME << " " << gameName;
 //     sendMessage(oss.str());
 // }
+
+
+int Protocol::getId() const { return socket.getSocketId(); }

@@ -3,15 +3,22 @@
 #define SERVER_SERVER_H_
 
 #include <chrono>
+#include <iostream>
 #include <memory>
 #include <mutex>
+#include <sstream>
+#include <stdexcept>
 #include <string>
+#include <utility>
 #include <vector>
+
+#include "Game/gameMonitor.h"
+#include "Threads/acceptorThread.h"
 
 class Server {
 private:
     std::string& servname;
-    GamesMonitor gamesMonitor;
+    GameMonitor gameMonitor;
 
 public:
     explicit Server(std::string& servname);

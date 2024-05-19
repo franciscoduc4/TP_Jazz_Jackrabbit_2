@@ -1,13 +1,13 @@
 #include "player.h"
-#include  <utility>
 
-Player::Player(Socket&& socket):
-        socket(std::move(socket)), 
-        id(socket.getSocketId()), 
-        protocol(std::move(socket)), 
-        gameName(""), 
-        name(""), 
+
+Player::Player(Protocol&& protocol):
+        protocol(std::move(protocol)),
+        id(protocol.getId()),
+        gameName(""),
+        name(""),
         inGame(false) {}
+
 
 std::string Player::getGameName() const { return gameName; }
 
@@ -27,7 +27,3 @@ std::shared_ptr<SenderThread> Player::initSender(
     sender = std::make_shared<SenderThread>(protocol, sendQueue);
     return sender;
 }
-
-Socket& Player::getSocketRef() { return socket; }
-
-

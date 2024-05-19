@@ -1,14 +1,14 @@
-#ifndef SERVER_PROTOCOL_H_
-#define SERVER_PROTOCOL_H_
+#ifndef PROTOCOL_H_
+#define PROTOCOL_H_
 
 #include <map>
 #include <string>
 #include <utility>
 #include <vector>
 
-#include "../Common/socket.h"
+#include "../Server/Game/gameStatus.h"
 
-#include "gameStatus.h"
+#include "socket.h"
 
 struct ProtocolMessage {
     std::uint8_t cmd;
@@ -23,14 +23,14 @@ class Protocol {
 
 public:
     explicit Protocol(Socket&& socket);
-    explicit Protocol(Socket& socket);
     void sendMessage(const ProtocolMessage& message);
     ProtocolMessage recvMessage();
-    void sendGamesList(GameMonitor& gameMonitor);
     void sendGameState(GameStatus& gameStatus);
     void sendJoinGame(const std::string& gameName);
     void sendCreateGame(const std::string& gameName);
     void sendSetName(const std::string& name);
+
+    int getId() const;
 };
 
-#endif  // SERVER_PROTOCOL_H_
+#endif  // PROTOCOL_H_

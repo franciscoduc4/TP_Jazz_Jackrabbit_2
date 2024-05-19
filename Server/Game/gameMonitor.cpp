@@ -1,7 +1,5 @@
 #include "gameMonitor.h"
 
-#include <numeric>
-#include <utility>
 
 GameMonitor::GameMonitor() {}
 

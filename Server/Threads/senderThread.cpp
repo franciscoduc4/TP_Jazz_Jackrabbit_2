@@ -1,5 +1,6 @@
 #include "senderThread.h"
 
+
 SenderThread::SenderThread(Protocol& protocol, std::shared_ptr<Queue<GameTypes::Event>> eventQueue):
         protocol(protocol), eventQueue(eventQueue) {}
 
@@ -17,4 +18,3 @@ void SenderThread::run() {
         }
     }
 }
-

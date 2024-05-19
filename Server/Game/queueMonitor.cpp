@@ -1,5 +1,6 @@
 #include "queueMonitor.h"
 
+
 std::shared_ptr<Queue<GameTypes::Event>> QueueMonitor::createQueue() {
     std::lock_guard<std::mutex> lock(mtx);
     auto queue = std::make_shared<Queue<GameTypes::Event>>();

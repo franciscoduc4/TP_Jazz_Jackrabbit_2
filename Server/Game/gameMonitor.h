@@ -4,7 +4,9 @@
 #include <map>
 #include <memory>
 #include <mutex>
+#include <numeric>
 #include <string>
+#include <utility>
 
 #include "game.h"
 #include "player.h"

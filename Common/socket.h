@@ -169,7 +169,6 @@ public:
     /*
     Devuelve el id del socket.
     */
-    int getSocketId() {
-        return skt;}
+    int getSocketId() const { return skt; }
 };
 #endif

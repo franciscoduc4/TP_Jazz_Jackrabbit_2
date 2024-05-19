@@ -2,16 +2,21 @@
 #define SERVER_CLIENT_ACCEPTOR_H_
 
 #include <atomic>
+#include <iostream>
+#include <sstream>
 #include <string>
+#include <utility>
 #include <vector>
 
-#include "../Common/queue.h"
-#include "../Common/socket.h"
-#include "../Common/thread.h"
+#include <sys/socket.h>
 
-#include "gameMonitor.h"
+#include "../../Common/queue.h"
+#include "../../Common/socket.h"
+#include "../../Common/thread.h"
+#include "../Game/gameMonitor.h"
+#include "../Game/player.h"
+
 #include "lobbyPlayerThread.h"
-#include "player.h"
 
 class AcceptorThread: public Thread {
 private:
@@ -25,7 +30,7 @@ public:
 
     virtual void run() override;
     virtual void stop() override;
-    void movePlayerToLobby(Player&& player, GameMonitor& gameMonitor);
+    void movePlayerToLobby(Socket&& socket, GameMonitor& gameMonitor);
     void cleanInactiveLobbyPlayers();
     void cleanLobby();
 };

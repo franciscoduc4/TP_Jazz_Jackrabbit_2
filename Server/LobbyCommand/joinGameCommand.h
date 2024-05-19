@@ -1,6 +1,9 @@
 #ifndef JOIN_GAME_COMMAND_H_
 #define JOIN_GAME_COMMAND_H_
 
+#include <sstream>
+#include <utility>
+
 #include "../Game/gameMonitor.h"
 
 #include "lobbyCommand.h"
@@ -12,7 +15,7 @@ private:
 public:
     explicit JoinGameCommand(std::string args);
 
-    ProtocolMessage exec(GameMonitor& gameMonitor, Player&& player, bool inLobby) override;
+    ProtocolMessage exec(GameMonitor& gameMonitor, Protocol&& protocol, bool inLobby) override;
 };
 
 #endif  // JOIN_GAME_COMMAND_H_
