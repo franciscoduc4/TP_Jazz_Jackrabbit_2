@@ -1,4 +1,4 @@
-#include "Common/Config/ClientConfig.h"
+#include "ClientConfig.h"
 
 const static std::string YAML_FILE_PATH = "config/client.yaml";
 

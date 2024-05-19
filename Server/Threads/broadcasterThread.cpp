@@ -1,7 +1,7 @@
 #include "broadcasterThread.h"
 
 
-BroadcasterThread::BroadcasterThread(): queueMonitor(), eventQueue(queueMonitor.createQueue()) {}
+BroadcasterThread::BroadcasterThread(): queueMonitor(), snapshotQueue(queueMonitor.createQueue()) {}
 
 void BroadcasterThread::addSender(Player& player) {
     senderThreads.emplace(player.getId(), player.initSender(queueMonitor.createQueue()));
@@ -16,7 +16,7 @@ void BroadcasterThread::removeSender(int playerId) {
 
 void BroadcasterThread::run() {
     while (true) {
-        GameTypes::Event event = eventQueue->pop();
-        queueMonitor.broadcast(event);
+        std::string snapshot = snapshotQueue->pop();
+        queueMonitor.broadcast(snapshot);
     }
 }

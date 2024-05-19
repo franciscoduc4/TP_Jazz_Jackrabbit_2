@@ -1,7 +1,8 @@
 #include "receiverThread.h"
 
 
-ReceiverThread::ReceiverThread(Protocol& protocol, Queue<GameTypes::Action>& gameQueue):
+ReceiverThread::ReceiverThread(Protocol& protocol, 
+        Queue<GameTypes::Action>& gameQueue):
         protocol(protocol), gameQueue(gameQueue) {}
 
 void ReceiverThread::run() {

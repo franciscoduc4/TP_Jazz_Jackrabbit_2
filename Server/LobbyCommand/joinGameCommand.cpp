@@ -1,4 +1,5 @@
 #include "joinGameCommand.h"
+#include <string>
 
 
 JoinGameCommand::JoinGameCommand(std::string args): args(std::move(args)) {}

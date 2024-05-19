@@ -6,6 +6,7 @@
 #include "../Game/gameMonitor.h"
 #include "../Game/player.h"
 #include "../LobbyCommand/lobbyCommand.h"
+#include <memory>
 
 class LobbyPlayerThread: public Thread {
 private:

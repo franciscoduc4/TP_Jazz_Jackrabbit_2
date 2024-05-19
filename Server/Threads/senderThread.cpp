@@ -1,13 +1,13 @@
 #include "senderThread.h"
 
 
-SenderThread::SenderThread(Protocol& protocol, std::shared_ptr<Queue<GameTypes::Event>> eventQueue):
-        protocol(protocol), eventQueue(eventQueue) {}
+SenderThread::SenderThread(Protocol& protocol, std::shared_ptr<Queue<std::string>> senderQueue):
+        protocol(protocol), senderQueue(senderQueue) {}
 
 void SenderThread::run() {
     while (_keep_running) {
         try {
-            // GameTypes::Event eventQueue->pop();
+            // std::string senderQueue->pop();
             // if (!protocol.sendMessage(status)) {
             //     break;
             // }

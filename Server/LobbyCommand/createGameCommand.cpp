@@ -1,5 +1,7 @@
 #include "createGameCommand.h"
-
+#include <string>
+#include "../Game/character.h"
+#include <memory>
 
 CreateGameCommand::CreateGameCommand(std::string args): args(std::move(args)) {}
 
@@ -9,10 +11,14 @@ ProtocolMessage CreateGameCommand::exec(GameMonitor& gameMonitor, Protocol&& pro
 
     int maxPlayers;
     std::string gameName;
+    std::string character;
+    
     argsIt >> maxPlayers;
     argsIt >> gameName;
+    argsIt >> character;
 
     Player player(std::move(protocol));
+    std::shared_ptr<Character> playerCharacter = Character::createCharacter(character);
     gameMonitor.createGame(gameName, maxPlayers, std::move(player));
     inLobby = false;
 

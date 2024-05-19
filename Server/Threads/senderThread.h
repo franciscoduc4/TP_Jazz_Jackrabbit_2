@@ -2,7 +2,7 @@
 #define SENDER_THREAD_H_
 
 #include <memory>
-
+#include <string>
 #include "../../Common/gameTypes.h"
 #include "../../Common/protocol.h"
 #include "../../Common/queue.h"
@@ -10,11 +10,11 @@
 
 class SenderThread: public Thread {
 private:
-    Protocol& protocol;
-    std::shared_ptr<Queue<GameTypes::Event>> eventQueue;
+    Protocol protocol;
+    std::shared_ptr<Queue<std::string>> senderQueue;
 
 public:
-    SenderThread(Protocol& protocol, std::shared_ptr<Queue<GameTypes::Event>> eventQueue);
+    SenderThread(Protocol& protocol, std::shared_ptr<Queue<std::string>> senderQueue);
 
     void run() override;
 };

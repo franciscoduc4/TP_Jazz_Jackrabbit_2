@@ -2,9 +2,8 @@
 #define INVALID_COMMAND_H_
 
 #include <utility>
-
+#include <string>
 #include "../Game/gameMonitor.h"
-
 #include "lobbyCommand.h"
 
 class InvalidCommand: public LobbyCommand {

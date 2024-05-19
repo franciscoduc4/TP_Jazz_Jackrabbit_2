@@ -1,5 +1,5 @@
 #include "invalidCommand.h"
-
+#include <string>
 
 InvalidCommand::InvalidCommand(std::string args): args(std::move(args)) {}
 

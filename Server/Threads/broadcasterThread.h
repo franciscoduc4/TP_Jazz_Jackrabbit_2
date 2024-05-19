@@ -4,7 +4,7 @@
 #include <map>
 #include <memory>
 #include <utility>
-
+#include <string>
 #include "../../Common/gameTypes.h"
 #include "../../Common/queue.h"
 #include "../../Common/thread.h"
@@ -14,8 +14,8 @@
 
 class BroadcasterThread: public Thread {
 private:
-    QueueMonitor queueMonitor;
-    std::shared_ptr<Queue<GameTypes::Event>> eventQueue;
+    QueueMonitor<std::string> queueMonitor;
+    std::shared_ptr<Queue<std::string>> snapshotQueue;
     std::map<int, std::shared_ptr<SenderThread>> senderThreads;
 
 public:

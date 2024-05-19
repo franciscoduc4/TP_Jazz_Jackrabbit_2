@@ -1,4 +1,6 @@
 #include "lobbyPlayerThread.h"
+#include <memory>
+#include <utility>
 
 LobbyPlayerThread::LobbyPlayerThread(Socket&& playerSocket, GameMonitor& gameMonitor):
         protocol(std::move(playerSocket)), gameMonitor(gameMonitor), inLobby(true) {}

@@ -1,21 +1,23 @@
 #include "game.h"
 
-
 Game::Game(std::string name, int maxPlayers, Player&& firstPlayer):
         name(name),
         maxPlayers(maxPlayers),
         currentPlayers(1),
-        gameLoop(),
         recvQueue(),
         players(),
         receiverThreads(),
         broadcaster(),
-        running(false) {}
+        running(false),
+        gameStatus(),
+        gameLoop(broadcaster, recvQueue, gameStatus) {}
 
 void Game::addPlayer(Player&& player) {
     initPlayerThreads(player);
     players.emplace_back(std::move(player));
     currentPlayers++;
+    std::shared_ptr<Character> playerCharacter = player.getCharacter();
+    gameStatus.addCharacter(playerCharacter);
 }
 
 void Game::initPlayerThreads(Player& player) {
@@ -47,7 +49,7 @@ void Game::launch() {
         throw std::runtime_error("Game is already running");
     }
     broadcaster.start();
-    // gameLoop.start();
+    gameLoop.start();
     running = true;
 }
 

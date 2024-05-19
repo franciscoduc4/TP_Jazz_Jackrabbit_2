@@ -1,0 +1,212 @@
+{
+	"BUILD_DIR" : "/home/franvm/Desktop/Taller/TP_Jazz_Jackrabbit_2/build/jazz_jackrabbit_2-common_autogen",
+	"CMAKE_BINARY_DIR" : "/home/franvm/Desktop/Taller/TP_Jazz_Jackrabbit_2/build",
+	"CMAKE_CURRENT_BINARY_DIR" : "/home/franvm/Desktop/Taller/TP_Jazz_Jackrabbit_2/build",
+	"CMAKE_CURRENT_SOURCE_DIR" : "/home/franvm/Desktop/Taller/TP_Jazz_Jackrabbit_2",
+	"CMAKE_EXECUTABLE" : "/usr/bin/cmake",
+	"CMAKE_LIST_FILES" : 
+	[
+		"/home/franvm/Desktop/Taller/TP_Jazz_Jackrabbit_2/CMakeLists.txt",
+		"/home/franvm/Desktop/Taller/TP_Jazz_Jackrabbit_2/build/CMakeFiles/3.22.1/CMakeSystem.cmake",
+		"/usr/share/cmake-3.22/Modules/CMakeSystemSpecificInitialize.cmake",
+		"/home/franvm/Desktop/Taller/TP_Jazz_Jackrabbit_2/build/CMakeFiles/3.22.1/CMakeCCompiler.cmake",
+		"/home/franvm/Desktop/Taller/TP_Jazz_Jackrabbit_2/build/CMakeFiles/3.22.1/CMakeCXXCompiler.cmake",
+		"/usr/share/cmake-3.22/Modules/CMakeSystemSpecificInformation.cmake",
+		"/usr/share/cmake-3.22/Modules/CMakeGenericSystem.cmake",
+		"/usr/share/cmake-3.22/Modules/CMakeInitializeConfigs.cmake",
+		"/usr/share/cmake-3.22/Modules/Platform/Linux.cmake",
+		"/usr/share/cmake-3.22/Modules/Platform/UnixPaths.cmake",
+		"/usr/share/cmake-3.22/Modules/CMakeCInformation.cmake",
+		"/usr/share/cmake-3.22/Modules/CMakeLanguageInformation.cmake",
+		"/usr/share/cmake-3.22/Modules/Compiler/GNU-C.cmake",
+		"/usr/share/cmake-3.22/Modules/Compiler/GNU.cmake",
+		"/usr/share/cmake-3.22/Modules/Compiler/CMakeCommonCompilerMacros.cmake",
+		"/usr/share/cmake-3.22/Modules/Platform/Linux-GNU-C.cmake",
+		"/usr/share/cmake-3.22/Modules/Platform/Linux-GNU.cmake",
+		"/usr/share/cmake-3.22/Modules/CMakeCommonLanguageInclude.cmake",
+		"/usr/share/cmake-3.22/Modules/CMakeCXXInformation.cmake",
+		"/usr/share/cmake-3.22/Modules/CMakeLanguageInformation.cmake",
+		"/usr/share/cmake-3.22/Modules/Compiler/GNU-CXX.cmake",
+		"/usr/share/cmake-3.22/Modules/Compiler/GNU.cmake",
+		"/usr/share/cmake-3.22/Modules/Platform/Linux-GNU-CXX.cmake",
+		"/usr/share/cmake-3.22/Modules/Platform/Linux-GNU.cmake",
+		"/usr/share/cmake-3.22/Modules/CMakeCommonLanguageInclude.cmake",
+		"/usr/lib/x86_64-linux-gnu/cmake/Qt5Widgets/Qt5WidgetsConfigVersion.cmake",
+		"/usr/lib/x86_64-linux-gnu/cmake/Qt5Widgets/Qt5WidgetsConfig.cmake",
+		"/usr/lib/x86_64-linux-gnu/cmake/Qt5Gui/Qt5GuiConfigVersion.cmake",
+		"/usr/lib/x86_64-linux-gnu/cmake/Qt5Gui/Qt5GuiConfig.cmake",
+		"/usr/lib/x86_64-linux-gnu/cmake/Qt5Core/Qt5CoreConfigVersion.cmake",
+		"/usr/lib/x86_64-linux-gnu/cmake/Qt5Core/Qt5CoreConfig.cmake",
+		"/usr/lib/x86_64-linux-gnu/cmake/Qt5Core/Qt5CoreConfigExtras.cmake",
+		"/usr/lib/x86_64-linux-gnu/cmake/Qt5Core/Qt5CoreConfigExtrasMkspecDir.cmake",
+		"/usr/lib/x86_64-linux-gnu/cmake/Qt5Core/Qt5CoreMacros.cmake",
+		"/usr/share/cmake-3.22/Modules/CMakeParseArguments.cmake",
+		"/usr/lib/x86_64-linux-gnu/cmake/Qt5Gui/Qt5Gui_QComposePlatformInputContextPlugin.cmake",
+		"/usr/lib/x86_64-linux-gnu/cmake/Qt5Gui/Qt5Gui_QEglFSEmulatorIntegrationPlugin.cmake",
+		"/usr/lib/x86_64-linux-gnu/cmake/Qt5Gui/Qt5Gui_QEglFSIntegrationPlugin.cmake",
+		"/usr/lib/x86_64-linux-gnu/cmake/Qt5Gui/Qt5Gui_QEglFSKmsEglDeviceIntegrationPlugin.cmake",
+		"/usr/lib/x86_64-linux-gnu/cmake/Qt5Gui/Qt5Gui_QEglFSKmsGbmIntegrationPlugin.cmake",
+		"/usr/lib/x86_64-linux-gnu/cmake/Qt5Gui/Qt5Gui_QEglFSX11IntegrationPlugin.cmake",
+		"/usr/lib/x86_64-linux-gnu/cmake/Qt5Gui/Qt5Gui_QEvdevKeyboardPlugin.cmake",
+		"/usr/lib/x86_64-linux-gnu/cmake/Qt5Gui/Qt5Gui_QEvdevMousePlugin.cmake",
+		"/usr/lib/x86_64-linux-gnu/cmake/Qt5Gui/Qt5Gui_QEvdevTabletPlugin.cmake",
+		"/usr/lib/x86_64-linux-gnu/cmake/Qt5Gui/Qt5Gui_QEvdevTouchScreenPlugin.cmake",
+		"/usr/lib/x86_64-linux-gnu/cmake/Qt5Gui/Qt5Gui_QGifPlugin.cmake",
+		"/usr/lib/x86_64-linux-gnu/cmake/Qt5Gui/Qt5Gui_QICOPlugin.cmake",
+		"/usr/lib/x86_64-linux-gnu/cmake/Qt5Gui/Qt5Gui_QIbusPlatformInputContextPlugin.cmake",
+		"/usr/lib/x86_64-linux-gnu/cmake/Qt5Gui/Qt5Gui_QJpegPlugin.cmake",
+		"/usr/lib/x86_64-linux-gnu/cmake/Qt5Gui/Qt5Gui_QLibInputPlugin.cmake",
+		"/usr/lib/x86_64-linux-gnu/cmake/Qt5Gui/Qt5Gui_QLinuxFbIntegrationPlugin.cmake",
+		"/usr/lib/x86_64-linux-gnu/cmake/Qt5Gui/Qt5Gui_QMinimalEglIntegrationPlugin.cmake",
+		"/usr/lib/x86_64-linux-gnu/cmake/Qt5Gui/Qt5Gui_QMinimalIntegrationPlugin.cmake",
+		"/usr/lib/x86_64-linux-gnu/cmake/Qt5Gui/Qt5Gui_QOffscreenIntegrationPlugin.cmake",
+		"/usr/lib/x86_64-linux-gnu/cmake/Qt5Gui/Qt5Gui_QTuioTouchPlugin.cmake",
+		"/usr/lib/x86_64-linux-gnu/cmake/Qt5Gui/Qt5Gui_QVncIntegrationPlugin.cmake",
+		"/usr/lib/x86_64-linux-gnu/cmake/Qt5Gui/Qt5Gui_QXcbEglIntegrationPlugin.cmake",
+		"/usr/lib/x86_64-linux-gnu/cmake/Qt5Gui/Qt5Gui_QXcbGlxIntegrationPlugin.cmake",
+		"/usr/lib/x86_64-linux-gnu/cmake/Qt5Gui/Qt5Gui_QXcbIntegrationPlugin.cmake",
+		"/usr/lib/x86_64-linux-gnu/cmake/Qt5Gui/Qt5GuiConfigExtras.cmake",
+		"/usr/lib/x86_64-linux-gnu/cmake/Qt5Widgets/Qt5WidgetsConfigExtras.cmake",
+		"/usr/lib/x86_64-linux-gnu/cmake/Qt5Widgets/Qt5WidgetsMacros.cmake",
+		"/usr/share/cmake-3.22/Modules/CMakeParseArguments.cmake",
+		"/usr/lib/x86_64-linux-gnu/cmake/Qt5Core/Qt5CoreConfigVersion.cmake",
+		"/usr/lib/x86_64-linux-gnu/cmake/Qt5Core/Qt5CoreConfig.cmake",
+		"/usr/lib/x86_64-linux-gnu/cmake/yaml-cpp/yaml-cpp-config-version.cmake",
+		"/usr/lib/x86_64-linux-gnu/cmake/yaml-cpp/yaml-cpp-config.cmake",
+		"/usr/lib/x86_64-linux-gnu/cmake/yaml-cpp/yaml-cpp-targets.cmake",
+		"/usr/lib/x86_64-linux-gnu/cmake/yaml-cpp/yaml-cpp-targets-none.cmake",
+		"/usr/share/cmake-3.22/Modules/FetchContent.cmake",
+		"/usr/share/cmake-3.22/Modules/FetchContent/CMakeLists.cmake.in",
+		"/usr/share/cmake-3.22/Modules/GoogleTest.cmake"
+	],
+	"CMAKE_SOURCE_DIR" : "/home/franvm/Desktop/Taller/TP_Jazz_Jackrabbit_2",
+	"DEP_FILE" : "",
+	"DEP_FILE_RULE_NAME" : "",
+	"HEADERS" : 
+	[
+		[
+			"/home/franvm/Desktop/Taller/TP_Jazz_Jackrabbit_2/Common/Config/ClientConfig.h",
+			"Mu",
+			"N7ZNLMRH3C/moc_ClientConfig.cpp",
+			null
+		],
+		[
+			"/home/franvm/Desktop/Taller/TP_Jazz_Jackrabbit_2/Common/Config/ServerConfig.h",
+			"Mu",
+			"N7ZNLMRH3C/moc_ServerConfig.cpp",
+			null
+		],
+		[
+			"/home/franvm/Desktop/Taller/TP_Jazz_Jackrabbit_2/Common/liberror.h",
+			"Mu",
+			"U2NUAE3D6E/moc_liberror.cpp",
+			null
+		],
+		[
+			"/home/franvm/Desktop/Taller/TP_Jazz_Jackrabbit_2/Common/protocol.h",
+			"Mu",
+			"U2NUAE3D6E/moc_protocol.cpp",
+			null
+		],
+		[
+			"/home/franvm/Desktop/Taller/TP_Jazz_Jackrabbit_2/Common/resolver.h",
+			"Mu",
+			"U2NUAE3D6E/moc_resolver.cpp",
+			null
+		],
+		[
+			"/home/franvm/Desktop/Taller/TP_Jazz_Jackrabbit_2/Common/resolvererror.h",
+			"Mu",
+			"U2NUAE3D6E/moc_resolvererror.cpp",
+			null
+		],
+		[
+			"/home/franvm/Desktop/Taller/TP_Jazz_Jackrabbit_2/Common/socket.h",
+			"Mu",
+			"U2NUAE3D6E/moc_socket.cpp",
+			null
+		]
+	],
+	"HEADER_EXTENSIONS" : [ "h", "hh", "h++", "hm", "hpp", "hxx", "in", "txx" ],
+	"INCLUDE_DIR" : "/home/franvm/Desktop/Taller/TP_Jazz_Jackrabbit_2/build/jazz_jackrabbit_2-common_autogen/include",
+	"MOC_COMPILATION_FILE" : "/home/franvm/Desktop/Taller/TP_Jazz_Jackrabbit_2/build/jazz_jackrabbit_2-common_autogen/mocs_compilation.cpp",
+	"MOC_DEFINITIONS" : [ "jazz_jackrabbit_2_common_EXPORTS" ],
+	"MOC_DEPEND_FILTERS" : 
+	[
+		[
+			"Q_PLUGIN_METADATA",
+			"[\n][ \t]*Q_PLUGIN_METADATA[ \t]*\\([^\\)]*FILE[ \t]*\"([^\"]+)\""
+		]
+	],
+	"MOC_INCLUDES" : 
+	[
+		"/home/franvm/Desktop/Taller/TP_Jazz_Jackrabbit_2/libs",
+		"/usr/include",
+		"/usr/include/c++/11",
+		"/usr/include/x86_64-linux-gnu/c++/11",
+		"/usr/include/c++/11/backward",
+		"/usr/lib/gcc/x86_64-linux-gnu/11/include",
+		"/usr/include/x86_64-linux-gnu"
+	],
+	"MOC_MACRO_NAMES" : [ "Q_OBJECT", "Q_GADGET", "Q_NAMESPACE", "Q_NAMESPACE_EXPORT" ],
+	"MOC_OPTIONS" : [],
+	"MOC_PATH_PREFIX" : false,
+	"MOC_PREDEFS_CMD" : 
+	[
+		"/usr/bin/c++",
+		"-dM",
+		"-E",
+		"-c",
+		"/usr/share/cmake-3.22/Modules/CMakeCXXCompilerABI.cpp"
+	],
+	"MOC_PREDEFS_FILE" : "/home/franvm/Desktop/Taller/TP_Jazz_Jackrabbit_2/build/jazz_jackrabbit_2-common_autogen/moc_predefs.h",
+	"MOC_RELAXED_MODE" : false,
+	"MOC_SKIP" : [],
+	"MULTI_CONFIG" : false,
+	"PARALLEL" : 2,
+	"PARSE_CACHE_FILE" : "/home/franvm/Desktop/Taller/TP_Jazz_Jackrabbit_2/build/CMakeFiles/jazz_jackrabbit_2-common_autogen.dir/ParseCache.txt",
+	"QT_MOC_EXECUTABLE" : "/usr/lib/qt5/bin/moc",
+	"QT_UIC_EXECUTABLE" : "",
+	"QT_VERSION_MAJOR" : 5,
+	"QT_VERSION_MINOR" : 15,
+	"SETTINGS_FILE" : "/home/franvm/Desktop/Taller/TP_Jazz_Jackrabbit_2/build/CMakeFiles/jazz_jackrabbit_2-common_autogen.dir/AutogenUsed.txt",
+	"SOURCES" : 
+	[
+		[
+			"/home/franvm/Desktop/Taller/TP_Jazz_Jackrabbit_2/Common/Config/ClientConfig.cpp",
+			"Mu",
+			null
+		],
+		[
+			"/home/franvm/Desktop/Taller/TP_Jazz_Jackrabbit_2/Common/Config/ServerConfig.cpp",
+			"Mu",
+			null
+		],
+		[
+			"/home/franvm/Desktop/Taller/TP_Jazz_Jackrabbit_2/Common/liberror.cpp",
+			"Mu",
+			null
+		],
+		[
+			"/home/franvm/Desktop/Taller/TP_Jazz_Jackrabbit_2/Common/protocol.cpp",
+			"Mu",
+			null
+		],
+		[
+			"/home/franvm/Desktop/Taller/TP_Jazz_Jackrabbit_2/Common/resolver.cpp",
+			"Mu",
+			null
+		],
+		[
+			"/home/franvm/Desktop/Taller/TP_Jazz_Jackrabbit_2/Common/resolvererror.cpp",
+			"Mu",
+			null
+		],
+		[
+			"/home/franvm/Desktop/Taller/TP_Jazz_Jackrabbit_2/Common/socket.cpp",
+			"Mu",
+			null
+		]
+	],
+	"VERBOSITY" : 0
+}

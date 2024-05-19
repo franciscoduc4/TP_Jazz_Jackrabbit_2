@@ -8,7 +8,7 @@
 
 class ReceiverThread: public Thread {
 private:
-    Protocol& protocol;
+    Protocol protocol;
     Queue<GameTypes::Action>& gameQueue;
 
 public:

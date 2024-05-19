@@ -6,13 +6,13 @@
 #include <mutex>
 #include <string>
 #include <vector>
-
 #include <arpa/inet.h>
-
+#include <memory>
 #include "character.h"
 #include "enemy.h"
 #include "game.h"
 #include "player.h"
+#include <utility>
 
 struct Gem {
     int x;
@@ -27,11 +27,24 @@ struct Coin {
 };
 
 struct GameStatus {
-    std::vector<Character*> characters;  // Usamos punteros para polimorfismo
-    std::vector<Enemy*> enemies;         // Usamos punteros para polimorfismo
-    std::vector<Gem> gems;
-    std::vector<Coin> coins;
+    std::vector<std::shared_ptr<Character>> characters;
+    std::vector<std::shared_ptr<Enemy>> enemies;
+    std::vector<std::shared_ptr<Gem>> gems;
+    std::vector<std::shared_ptr<Coin>> coins;
 
+    void addCharacter(std::shared_ptr<Character> character) {
+        characters.push_back(std::move(character));
+    }
+
+    void handleAction(const GameTypes::Action& action) {
+        for (auto& character: characters) {
+            if (character->getId() == action.id) {
+                character->handleAction(action);
+                return;
+            }
+        }
+    }
+    
     std::string snapshot() const {
         std::string buffer;
 
@@ -61,17 +74,17 @@ struct GameStatus {
         uint32_t gemCount = htonl(gems.size());
         buffer.append(reinterpret_cast<const char*>(&gemCount), sizeof(gemCount));
         for (const auto& gem: gems) {
-            serializeInt(gem.x, buffer);
-            serializeInt(gem.y, buffer);
-            serializeInt(gem.points, buffer);
+            serializeInt(gem->x, buffer);
+            serializeInt(gem->y, buffer);
+            serializeInt(gem->points, buffer);
         }
 
         uint32_t coinCount = htonl(coins.size());
         buffer.append(reinterpret_cast<const char*>(&coinCount), sizeof(coinCount));
         for (const auto& coin: coins) {
-            serializeInt(coin.x, buffer);
-            serializeInt(coin.y, buffer);
-            serializeInt(coin.points, buffer);
+            serializeInt(coin->x, buffer);
+            serializeInt(coin->y, buffer);
+            serializeInt(coin->points, buffer);
         }
 
         return buffer;

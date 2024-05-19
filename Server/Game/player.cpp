@@ -23,7 +23,15 @@ std::shared_ptr<ReceiverThread> Player::initReceiver(Queue<GameTypes::Action>& r
 }
 
 std::shared_ptr<SenderThread> Player::initSender(
-        std::shared_ptr<Queue<GameTypes::Event>> sendQueue) {
+        std::shared_ptr<Queue<std::string>> sendQueue) {
     sender = std::make_shared<SenderThread>(protocol, sendQueue);
     return sender;
+}
+
+void Player::setCharacter(std::shared_ptr<Character> character) {
+    this->character = character;
+}
+
+std::shared_ptr<Character> Player::getCharacter() const {
+    return character;
 }

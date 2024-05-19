@@ -3,9 +3,8 @@
 
 #include <sstream>
 #include <utility>
-
+#include <string>
 #include "../Game/gameMonitor.h"
-
 #include "lobbyCommand.h"
 
 class JoinGameCommand: public LobbyCommand {

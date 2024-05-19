@@ -1,5 +1,6 @@
 #include "listGamesCommand.h"
-
+#include <string>
+#include <utility>
 
 ListGamesCommand::ListGamesCommand(std::string args): args(std::move(args)) {}
 

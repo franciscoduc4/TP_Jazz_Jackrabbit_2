@@ -3,7 +3,7 @@
 
 #include "../../Common/protocol.h"
 #include "../Game/gameMonitor.h"
-
+#include <string>
 #include "lobbyCommand.h"
 
 class ListGamesCommand: public LobbyCommand {

@@ -10,29 +10,21 @@
 #include "../../Common/protocol.h"
 #include "../../Common/queue.h"
 
+
+template <typename T>
 class QueueMonitor {
-private:
-    std::vector<std::shared_ptr<Queue<GameTypes::Event>>> queues;
-    std::mutex mtx;
-
 public:
-    QueueMonitor() = default;
-    ~QueueMonitor() { removeQueues(); }
-
-    std::shared_ptr<Queue<GameTypes::Event>> createQueue();
-
-    void closeQueue(std::shared_ptr<Queue<GameTypes::Event>> queue);
-
-    void removeQueue(std::shared_ptr<Queue<GameTypes::Event>> queue);
-
+    std::shared_ptr<Queue<T>> createQueue();
+    void closeQueue(std::shared_ptr<Queue<T>> queue);
+    void removeQueue(std::shared_ptr<Queue<T>> queue);
     void closeQueues();
-
     void removeQueues();
+    void broadcast(const T& event);
 
-    void broadcast(const GameTypes::Event& events);
-
-    QueueMonitor(const QueueMonitor&) = delete;
-    QueueMonitor& operator=(const QueueMonitor&) = delete;
+private:
+    std::vector<std::shared_ptr<Queue<T>>> queues;
+    std::mutex mtx;
 };
+
 
 #endif  // SERVER_QUEUE_MANAGER_H

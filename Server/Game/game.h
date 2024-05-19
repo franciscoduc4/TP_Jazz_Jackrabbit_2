@@ -12,7 +12,7 @@
 #include "../../Common/thread.h"
 #include "../Threads/broadcasterThread.h"
 
-#include "gameLoop.h"
+#include "../Threads/gameLoopThread.h"
 #include "gameMonitor.h"
 #include "player.h"
 #include "queueMonitor.h"
@@ -23,12 +23,13 @@ private:
     std::string name;
     int maxPlayers;
     int currentPlayers;
-    GameLoop gameLoop;
     Queue<GameTypes::Action> recvQueue;
     std::vector<Player> players;
     std::map<int, std::shared_ptr<ReceiverThread>> receiverThreads;
     BroadcasterThread broadcaster;
     bool running;
+    GameLoop gameLoop;
+    GameStatus gameStatus;
 
 public:
     Game(std::string name, int maxPlayers, Player&& firstPlayer);

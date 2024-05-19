@@ -2,8 +2,8 @@
 #include <iostream>
 #include <sstream>
 
-#include "Common/logger.h"
-#include "Common/Config/ServerConfig.h"
+#include "../Common/logger.h"
+#include "../Common/Config/ServerConfig.h"
 
 #define SUCCESS 0
 #define FAIL -1
