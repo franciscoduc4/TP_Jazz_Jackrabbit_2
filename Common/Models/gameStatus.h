@@ -10,8 +10,7 @@
 #include <memory>
 #include "character.h"
 #include "enemy.h"
-#include "game.h"
-#include "player.h"
+#include "gameTypes.h"
 #include <utility>
 
 struct Gem {
@@ -26,11 +25,14 @@ struct Coin {
     int points;
 };
 
-struct GameStatus {
+class GameStatus {
+    private:
     std::vector<std::shared_ptr<Character>> characters;
     std::vector<std::shared_ptr<Enemy>> enemies;
     std::vector<std::shared_ptr<Gem>> gems;
     std::vector<std::shared_ptr<Coin>> coins;
+
+    public:
 
     void addCharacter(std::shared_ptr<Character> character) {
         characters.push_back(std::move(character));
@@ -39,7 +41,7 @@ struct GameStatus {
     void handleAction(const GameTypes::Action& action) {
         for (auto& character: characters) {
             if (character->getId() == action.id) {
-                character->handleAction(action);
+                //character->handleAction(action);
                 return;
             }
         }
@@ -89,8 +91,6 @@ struct GameStatus {
 
         return buffer;
     }
-
-private:
     void serializeInt(int32_t value, std::string& buffer) const {
         value = htonl(value);
         buffer.append(reinterpret_cast<const char*>(&value), sizeof(value));

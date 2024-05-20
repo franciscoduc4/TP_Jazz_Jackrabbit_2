@@ -6,8 +6,7 @@
 #include "../../Common/gameTypes.h"
 #include "broadcasterThread.h"
 #include "../Physics/physics.h"
-#include "../Game/gameStatus.h"
-
+#include "../../Common/gameStatus.h"  
 class GameLoop : public Thread {
 
 private:
@@ -15,7 +14,7 @@ private:
     Queue<GameTypes::Action>& recvQueue;
     std::atomic<bool> running{true};
     Physics physics;
-    GameStatus gameStatus;
+    GameStatus& gameStatus;  
 
 public:
     GameLoop(BroadcasterThread& broadcasterThread, 

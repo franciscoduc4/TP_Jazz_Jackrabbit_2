@@ -1,29 +1,28 @@
 #include "game.h"
 
-Game::Game(std::string name, int maxPlayers, Player&& firstPlayer):
-        name(name),
-        maxPlayers(maxPlayers),
-        currentPlayers(1),
-        recvQueue(),
-        players(),
-        receiverThreads(),
-        broadcaster(),
-        running(false),
-        gameStatus(),
-        gameLoop(broadcaster, recvQueue, gameStatus) {}
+Game::Game(std::string name, int maxPlayers, Player&& firstPlayer)
+    : name(name),
+      maxPlayers(maxPlayers),
+      currentPlayers(1),
+      recvQueue(),
+      players(),
+      receiverThreads(),
+      broadcaster(),
+      running(false),
+      gameStatus(std::make_unique<GameStatus>()),
+      gameLoop(broadcaster, recvQueue, *gameStatus) {}
 
 void Game::addPlayer(Player&& player) {
     initPlayerThreads(player);
     players.emplace_back(std::move(player));
     currentPlayers++;
     std::shared_ptr<Character> playerCharacter = player.getCharacter();
-    gameStatus.addCharacter(playerCharacter);
+    gameStatus->addCharacter(playerCharacter);
 }
 
 void Game::initPlayerThreads(Player& player) {
     receiverThreads.emplace(player.getId(), player.initReceiver(recvQueue));
     receiverThreads[player.getId()]->start();
-
     broadcaster.addSender(player);
 }
 

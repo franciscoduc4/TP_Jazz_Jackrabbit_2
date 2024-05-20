@@ -3,18 +3,15 @@
 #include <sstream>
 #include <stdexcept>
 #include <utility>
-
 #include <arpa/inet.h>
 
-#include "../Common/socket.h"
-#include "../Server/Game/gameStatus.h"
+#include "Models/gameStatus.h"
 #include "Constants/lobbyCommands.h"
 #include "Constants/playerCommands.h"
 
 Protocol::Protocol(Socket&& socket): socket(std::move(socket)) {}
 
 void Protocol::sendMessage(const ProtocolMessage& message) {
-
     std::uint8_t cmd = message.cmd;
     std::string args = message.args;
 
@@ -29,11 +26,10 @@ void Protocol::sendMessage(const ProtocolMessage& message) {
             throw std::runtime_error("Socket closed");
         }
         // Envio el comando
-        socket.sendall(&payload, payloadSize, &wasClosed);
+        socket.sendall(payload.data(), payload.size(), &wasClosed);
         if (wasClosed) {
             throw std::runtime_error("Socket closed");
         }
-
     } catch (const std::exception& e) {
         wasClosed = true;
     }
@@ -92,6 +88,5 @@ void Protocol::sendGameState(GameStatus& gameStatus) {
 //     oss << CREATE_GAME << " " << gameName;
 //     sendMessage(oss.str());
 // }
-
 
 int Protocol::getId() const { return socket.getSocketId(); }

@@ -6,9 +6,9 @@
 #include <utility>
 #include <vector>
 
-#include "../Server/Game/gameStatus.h"
-
 #include "socket.h"
+
+class GameStatus;  // Forward declaration
 
 struct ProtocolMessage {
     std::uint8_t cmd;
