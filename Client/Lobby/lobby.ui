@@ -16,11 +16,19 @@
     <height>500</height>
    </rect>
   </property>
+  <property name="font">
+   <font>
+    <family>Jazz Jackrabbit 2</family>
+   </font>
+  </property>
   <property name="windowTitle">
    <string>Lobby</string>
   </property>
+  <property name="autoFillBackground">
+   <bool>false</bool>
+  </property>
   <property name="styleSheet">
-   <string notr="true"/>
+   <string notr="true">background: &quot;../../assets/Miscellaneous/fondo_blanco.png&quot;;</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <property name="enabled">
@@ -29,85 +37,80 @@
    <property name="styleSheet">
     <string notr="true">border-image: url(&quot;TP_Jazz_Jackrabbit_2/assets/Miscellaneous/Miscellaneous.png&quot;) 0 0 0 0 stretch stretch;</string>
    </property>
-   <widget class="QPushButton" name="play">
-    <property name="enabled">
-     <bool>true</bool>
-    </property>
+   <widget class="QPushButton" name="btnIngresar">
     <property name="geometry">
      <rect>
-      <x>350</x>
-      <y>250</y>
-      <width>100</width>
-      <height>20</height>
+      <x>300</x>
+      <y>310</y>
+      <width>141</width>
+      <height>51</height>
      </rect>
     </property>
     <property name="font">
      <font>
-      <kerning>true</kerning>
+      <family>Jazz Jackrabbit 2</family>
+      <pointsize>20</pointsize>
      </font>
     </property>
-    <property name="mouseTracking">
-     <bool>false</bool>
-    </property>
-    <property name="autoFillBackground">
-     <bool>false</bool>
-    </property>
     <property name="styleSheet">
-     <string notr="true">border-image: url(&quot;TP_Jazz_Jackrabbit_2/assets/Miscellaneous/fondo_blanco.png&quot;) 0 0 0 0 stretch stretch;</string>
+     <string notr="true"/>
     </property>
     <property name="text">
-     <string>PLAY</string>
+     <string>Ingresar</string>
     </property>
-    <property name="checkable">
-     <bool>false</bool>
+    <property name="shortcut">
+     <string/>
     </property>
-    <property name="default">
-     <bool>false</bool>
+   </widget>
+   <widget class="QLabel" name="labelTitle">
+    <property name="geometry">
+     <rect>
+      <x>40</x>
+      <y>40</y>
+      <width>701</width>
+      <height>51</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Jazz Jackrabbit 2</family>
+      <pointsize>36</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>JAZZ JACKRABBIT 2</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
     </property>
    </widget>
    <widget class="QLabel" name="labelName">
     <property name="geometry">
      <rect>
-      <x>130</x>
-      <y>340</y>
-      <width>80</width>
-      <height>20</height>
+      <x>90</x>
+      <y>180</y>
+      <width>141</width>
+      <height>51</height>
      </rect>
     </property>
-    <property name="styleSheet">
-     <string notr="true">border-image: url(&quot;TP_Jazz_Jackrabbit_2/assets/Miscellaneous/fondo_blanco.png&quot;) 0 0 0 0 stretch stretch;</string>
+    <property name="font">
+     <font>
+      <family>Jazz Jackrabbit 2</family>
+      <pointsize>28</pointsize>
+     </font>
     </property>
     <property name="text">
-     <string>Nombre:</string>
+     <string>Nombre</string>
     </property>
    </widget>
-   <widget class="QLineEdit" name="userName">
+   <widget class="QLineEdit" name="inputName">
     <property name="geometry">
      <rect>
       <x>270</x>
-      <y>340</y>
-      <width>200</width>
-      <height>20</height>
+      <y>179</y>
+      <width>381</width>
+      <height>51</height>
      </rect>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">border-image: url(&quot;TP_Jazz_Jackrabbit_2/assets/Miscellaneous/fondo_blanco.png&quot;) 0 0 0 0 stretch stretch;</string>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="continuar">
-    <property name="geometry">
-     <rect>
-      <x>330</x>
-      <y>390</y>
-      <width>80</width>
-      <height>20</height>
-     </rect>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">border-image: url(&quot;TP_Jazz_Jackrabbit_2/assets/Miscellaneous/fondo_blanco.png&quot;) 0 0 0 0 stretch stretch;</string>
-    </property>
-    <property name="text">
-     <string>Continuar</string>
     </property>
    </widget>
   </widget>
