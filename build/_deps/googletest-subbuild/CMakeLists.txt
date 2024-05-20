@@ -14,8 +14,8 @@ project(googletest-populate NONE)
 include(ExternalProject)
 ExternalProject_Add(googletest-populate
                      "UPDATE_DISCONNECTED" "False" "URL" "https://github.com/google/googletest/archive/refs/tags/release-1.11.0.zip"
-                    SOURCE_DIR          "/home/franvm/Desktop/Taller/TP_Jazz_Jackrabbit_2/build/_deps/googletest-src"
-                    BINARY_DIR          "/home/franvm/Desktop/Taller/TP_Jazz_Jackrabbit_2/build/_deps/googletest-build"
+                    SOURCE_DIR          "/home/ferbuono/fiuba/taller/TP_Jazz_Jackrabbit_2/build/_deps/googletest-src"
+                    BINARY_DIR          "/home/ferbuono/fiuba/taller/TP_Jazz_Jackrabbit_2/build/_deps/googletest-build"
                     CONFIGURE_COMMAND   ""
                     BUILD_COMMAND       ""
                     INSTALL_COMMAND     ""

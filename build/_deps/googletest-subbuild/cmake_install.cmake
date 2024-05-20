@@ -1,4 +1,4 @@
-# Install script for directory: /home/franvm/Desktop/Taller/TP_Jazz_Jackrabbit_2/build/_deps/googletest-subbuild
+# Install script for directory: /home/ferbuono/fiuba/taller/TP_Jazz_Jackrabbit_2/build/_deps/googletest-subbuild
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -45,5 +45,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "/home/franvm/Desktop/Taller/TP_Jazz_Jackrabbit_2/build/_deps/googletest-subbuild/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "/home/ferbuono/fiuba/taller/TP_Jazz_Jackrabbit_2/build/_deps/googletest-subbuild/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")

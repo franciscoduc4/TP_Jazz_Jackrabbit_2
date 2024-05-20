@@ -53,10 +53,10 @@ RM = /usr/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/franvm/Desktop/Taller/TP_Jazz_Jackrabbit_2
+CMAKE_SOURCE_DIR = /home/ferbuono/fiuba/taller/TP_Jazz_Jackrabbit_2
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/franvm/Desktop/Taller/TP_Jazz_Jackrabbit_2/build
+CMAKE_BINARY_DIR = /home/ferbuono/fiuba/taller/TP_Jazz_Jackrabbit_2/build
 
 # Utility rule file for jazz_jackrabbit_2-serverlib_autogen.
 
@@ -67,8 +67,8 @@ include CMakeFiles/jazz_jackrabbit_2-serverlib_autogen.dir/compiler_depend.make
 include CMakeFiles/jazz_jackrabbit_2-serverlib_autogen.dir/progress.make
 
 CMakeFiles/jazz_jackrabbit_2-serverlib_autogen:
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/home/franvm/Desktop/Taller/TP_Jazz_Jackrabbit_2/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Automatic MOC for target jazz_jackrabbit_2-serverlib"
-	/usr/bin/cmake -E cmake_autogen /home/franvm/Desktop/Taller/TP_Jazz_Jackrabbit_2/build/CMakeFiles/jazz_jackrabbit_2-serverlib_autogen.dir/AutogenInfo.json ""
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/home/ferbuono/fiuba/taller/TP_Jazz_Jackrabbit_2/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Automatic MOC for target jazz_jackrabbit_2-serverlib"
+	/usr/bin/cmake -E cmake_autogen /home/ferbuono/fiuba/taller/TP_Jazz_Jackrabbit_2/build/CMakeFiles/jazz_jackrabbit_2-serverlib_autogen.dir/AutogenInfo.json ""
 
 jazz_jackrabbit_2-serverlib_autogen: CMakeFiles/jazz_jackrabbit_2-serverlib_autogen
 jazz_jackrabbit_2-serverlib_autogen: CMakeFiles/jazz_jackrabbit_2-serverlib_autogen.dir/build.make
@@ -83,6 +83,6 @@ CMakeFiles/jazz_jackrabbit_2-serverlib_autogen.dir/clean:
 .PHONY : CMakeFiles/jazz_jackrabbit_2-serverlib_autogen.dir/clean
 
 CMakeFiles/jazz_jackrabbit_2-serverlib_autogen.dir/depend:
-	cd /home/franvm/Desktop/Taller/TP_Jazz_Jackrabbit_2/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/franvm/Desktop/Taller/TP_Jazz_Jackrabbit_2 /home/franvm/Desktop/Taller/TP_Jazz_Jackrabbit_2 /home/franvm/Desktop/Taller/TP_Jazz_Jackrabbit_2/build /home/franvm/Desktop/Taller/TP_Jazz_Jackrabbit_2/build /home/franvm/Desktop/Taller/TP_Jazz_Jackrabbit_2/build/CMakeFiles/jazz_jackrabbit_2-serverlib_autogen.dir/DependInfo.cmake --color=$(COLOR)
+	cd /home/ferbuono/fiuba/taller/TP_Jazz_Jackrabbit_2/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/ferbuono/fiuba/taller/TP_Jazz_Jackrabbit_2 /home/ferbuono/fiuba/taller/TP_Jazz_Jackrabbit_2 /home/ferbuono/fiuba/taller/TP_Jazz_Jackrabbit_2/build /home/ferbuono/fiuba/taller/TP_Jazz_Jackrabbit_2/build /home/ferbuono/fiuba/taller/TP_Jazz_Jackrabbit_2/build/CMakeFiles/jazz_jackrabbit_2-serverlib_autogen.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : CMakeFiles/jazz_jackrabbit_2-serverlib_autogen.dir/depend
 

@@ -1,4 +1,4 @@
-# Install script for directory: /home/franvm/Desktop/Taller/TP_Jazz_Jackrabbit_2
+# Install script for directory: /home/ferbuono/fiuba/taller/TP_Jazz_Jackrabbit_2
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -57,7 +57,7 @@ if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_
   if(CMAKE_ERROR_ON_ABSOLUTE_INSTALL_DESTINATION)
     message(FATAL_ERROR "ABSOLUTE path INSTALL DESTINATION forbidden (by caller): ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
   endif()
-  file(INSTALL DESTINATION "/usr/lib" TYPE SHARED_LIBRARY PERMISSIONS WORLD_READ WORLD_WRITE WORLD_EXECUTE FILES "/home/franvm/Desktop/Taller/TP_Jazz_Jackrabbit_2/build/libjazz_jackrabbit_2-common.so")
+  file(INSTALL DESTINATION "/usr/lib" TYPE SHARED_LIBRARY PERMISSIONS WORLD_READ WORLD_WRITE WORLD_EXECUTE FILES "/home/ferbuono/fiuba/taller/TP_Jazz_Jackrabbit_2/build/libjazz_jackrabbit_2-common.so")
   if(EXISTS "$ENV{DESTDIR}/usr/lib/libjazz_jackrabbit_2-common.so" AND
      NOT IS_SYMLINK "$ENV{DESTDIR}/usr/lib/libjazz_jackrabbit_2-common.so")
     if(CMAKE_INSTALL_DO_STRIP)
@@ -84,12 +84,12 @@ if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_
   if(CMAKE_ERROR_ON_ABSOLUTE_INSTALL_DESTINATION)
     message(FATAL_ERROR "ABSOLUTE path INSTALL DESTINATION forbidden (by caller): ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
   endif()
-  file(INSTALL DESTINATION "/usr/bin" TYPE EXECUTABLE PERMISSIONS WORLD_READ WORLD_WRITE WORLD_EXECUTE WORLD_EXECUTE FILES "/home/franvm/Desktop/Taller/TP_Jazz_Jackrabbit_2/build/jazz_jackrabbit_2")
+  file(INSTALL DESTINATION "/usr/bin" TYPE EXECUTABLE PERMISSIONS WORLD_READ WORLD_WRITE WORLD_EXECUTE WORLD_EXECUTE FILES "/home/ferbuono/fiuba/taller/TP_Jazz_Jackrabbit_2/build/jazz_jackrabbit_2")
   if(EXISTS "$ENV{DESTDIR}/usr/bin/jazz_jackrabbit_2" AND
      NOT IS_SYMLINK "$ENV{DESTDIR}/usr/bin/jazz_jackrabbit_2")
     file(RPATH_CHANGE
          FILE "$ENV{DESTDIR}/usr/bin/jazz_jackrabbit_2"
-         OLD_RPATH "/home/franvm/Desktop/Taller/TP_Jazz_Jackrabbit_2/build:"
+         OLD_RPATH "/home/ferbuono/fiuba/taller/TP_Jazz_Jackrabbit_2/build:"
          NEW_RPATH "")
     if(CMAKE_INSTALL_DO_STRIP)
       execute_process(COMMAND "/usr/bin/strip" "$ENV{DESTDIR}/usr/bin/jazz_jackrabbit_2")
@@ -106,7 +106,7 @@ if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_
   if(CMAKE_ERROR_ON_ABSOLUTE_INSTALL_DESTINATION)
     message(FATAL_ERROR "ABSOLUTE path INSTALL DESTINATION forbidden (by caller): ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
   endif()
-  file(INSTALL DESTINATION "/usr/bin/assets" TYPE DIRECTORY PERMISSIONS WORLD_READ WORLD_WRITE FILES "/home/franvm/Desktop/Taller/TP_Jazz_Jackrabbit_2/assets/")
+  file(INSTALL DESTINATION "/usr/bin/assets" TYPE DIRECTORY PERMISSIONS WORLD_READ WORLD_WRITE FILES "/home/ferbuono/fiuba/taller/TP_Jazz_Jackrabbit_2/assets/")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
@@ -118,7 +118,7 @@ if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_
   if(CMAKE_ERROR_ON_ABSOLUTE_INSTALL_DESTINATION)
     message(FATAL_ERROR "ABSOLUTE path INSTALL DESTINATION forbidden (by caller): ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
   endif()
-  file(INSTALL DESTINATION "/usr/bin/config" TYPE DIRECTORY PERMISSIONS WORLD_READ WORLD_WRITE FILES "/home/franvm/Desktop/Taller/TP_Jazz_Jackrabbit_2/config/")
+  file(INSTALL DESTINATION "/usr/bin/config" TYPE DIRECTORY PERMISSIONS WORLD_READ WORLD_WRITE FILES "/home/ferbuono/fiuba/taller/TP_Jazz_Jackrabbit_2/config/")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
@@ -130,7 +130,7 @@ if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_
   if(CMAKE_ERROR_ON_ABSOLUTE_INSTALL_DESTINATION)
     message(FATAL_ERROR "ABSOLUTE path INSTALL DESTINATION forbidden (by caller): ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
   endif()
-  file(INSTALL DESTINATION "/usr/bin/audios" TYPE DIRECTORY PERMISSIONS WORLD_READ WORLD_WRITE FILES "/home/franvm/Desktop/Taller/TP_Jazz_Jackrabbit_2/audios/")
+  file(INSTALL DESTINATION "/usr/bin/audios" TYPE DIRECTORY PERMISSIONS WORLD_READ WORLD_WRITE FILES "/home/ferbuono/fiuba/taller/TP_Jazz_Jackrabbit_2/audios/")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
@@ -148,12 +148,12 @@ if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_
   if(CMAKE_ERROR_ON_ABSOLUTE_INSTALL_DESTINATION)
     message(FATAL_ERROR "ABSOLUTE path INSTALL DESTINATION forbidden (by caller): ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
   endif()
-  file(INSTALL DESTINATION "/usr/bin" TYPE EXECUTABLE PERMISSIONS WORLD_READ WORLD_WRITE WORLD_EXECUTE FILES "/home/franvm/Desktop/Taller/TP_Jazz_Jackrabbit_2/build/jazz_jackrabbit_2-server")
+  file(INSTALL DESTINATION "/usr/bin" TYPE EXECUTABLE PERMISSIONS WORLD_READ WORLD_WRITE WORLD_EXECUTE FILES "/home/ferbuono/fiuba/taller/TP_Jazz_Jackrabbit_2/build/jazz_jackrabbit_2-server")
   if(EXISTS "$ENV{DESTDIR}/usr/bin/jazz_jackrabbit_2-server" AND
      NOT IS_SYMLINK "$ENV{DESTDIR}/usr/bin/jazz_jackrabbit_2-server")
     file(RPATH_CHANGE
          FILE "$ENV{DESTDIR}/usr/bin/jazz_jackrabbit_2-server"
-         OLD_RPATH "/home/franvm/Desktop/Taller/TP_Jazz_Jackrabbit_2/build:"
+         OLD_RPATH "/home/ferbuono/fiuba/taller/TP_Jazz_Jackrabbit_2/build:"
          NEW_RPATH "")
     if(CMAKE_INSTALL_DO_STRIP)
       execute_process(COMMAND "/usr/bin/strip" "$ENV{DESTDIR}/usr/bin/jazz_jackrabbit_2-server")
@@ -163,7 +163,7 @@ endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for each subdirectory.
-  include("/home/franvm/Desktop/Taller/TP_Jazz_Jackrabbit_2/build/_deps/googletest-build/cmake_install.cmake")
+  include("/home/ferbuono/fiuba/taller/TP_Jazz_Jackrabbit_2/build/_deps/googletest-build/cmake_install.cmake")
 
 endif()
 
@@ -175,5 +175,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "/home/franvm/Desktop/Taller/TP_Jazz_Jackrabbit_2/build/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "/home/ferbuono/fiuba/taller/TP_Jazz_Jackrabbit_2/build/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")

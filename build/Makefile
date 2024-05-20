@@ -57,10 +57,10 @@ RM = /usr/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/franvm/Desktop/Taller/TP_Jazz_Jackrabbit_2
+CMAKE_SOURCE_DIR = /home/ferbuono/fiuba/taller/TP_Jazz_Jackrabbit_2
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/franvm/Desktop/Taller/TP_Jazz_Jackrabbit_2/build
+CMAKE_BINARY_DIR = /home/ferbuono/fiuba/taller/TP_Jazz_Jackrabbit_2/build
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -142,9 +142,9 @@ install/strip/fast: preinstall/fast
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/franvm/Desktop/Taller/TP_Jazz_Jackrabbit_2/build/CMakeFiles /home/franvm/Desktop/Taller/TP_Jazz_Jackrabbit_2/build//CMakeFiles/progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/ferbuono/fiuba/taller/TP_Jazz_Jackrabbit_2/build/CMakeFiles /home/ferbuono/fiuba/taller/TP_Jazz_Jackrabbit_2/build//CMakeFiles/progress.marks
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/franvm/Desktop/Taller/TP_Jazz_Jackrabbit_2/build/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/ferbuono/fiuba/taller/TP_Jazz_Jackrabbit_2/build/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
@@ -573,6 +573,30 @@ Common/Config/ServerConfig.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/jazz_jackrabbit_2-common.dir/build.make CMakeFiles/jazz_jackrabbit_2-common.dir/Common/Config/ServerConfig.cpp.s
 .PHONY : Common/Config/ServerConfig.cpp.s
 
+Common/Models/character.o: Common/Models/character.cpp.o
+.PHONY : Common/Models/character.o
+
+# target to build an object file
+Common/Models/character.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/jazz_jackrabbit_2-common.dir/build.make CMakeFiles/jazz_jackrabbit_2-common.dir/Common/Models/character.cpp.o
+.PHONY : Common/Models/character.cpp.o
+
+Common/Models/character.i: Common/Models/character.cpp.i
+.PHONY : Common/Models/character.i
+
+# target to preprocess a source file
+Common/Models/character.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/jazz_jackrabbit_2-common.dir/build.make CMakeFiles/jazz_jackrabbit_2-common.dir/Common/Models/character.cpp.i
+.PHONY : Common/Models/character.cpp.i
+
+Common/Models/character.s: Common/Models/character.cpp.s
+.PHONY : Common/Models/character.s
+
+# target to generate assembly for a file
+Common/Models/character.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/jazz_jackrabbit_2-common.dir/build.make CMakeFiles/jazz_jackrabbit_2-common.dir/Common/Models/character.cpp.s
+.PHONY : Common/Models/character.cpp.s
+
 Common/liberror.o: Common/liberror.cpp.o
 .PHONY : Common/liberror.o
 
@@ -692,33 +716,6 @@ Common/socket.s: Common/socket.cpp.s
 Common/socket.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/jazz_jackrabbit_2-common.dir/build.make CMakeFiles/jazz_jackrabbit_2-common.dir/Common/socket.cpp.s
 .PHONY : Common/socket.cpp.s
-
-Server/Game/character.o: Server/Game/character.cpp.o
-.PHONY : Server/Game/character.o
-
-# target to build an object file
-Server/Game/character.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/jazz_jackrabbit_2-server.dir/build.make CMakeFiles/jazz_jackrabbit_2-server.dir/Server/Game/character.cpp.o
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/jazz_jackrabbit_2-serverlib.dir/build.make CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Game/character.cpp.o
-.PHONY : Server/Game/character.cpp.o
-
-Server/Game/character.i: Server/Game/character.cpp.i
-.PHONY : Server/Game/character.i
-
-# target to preprocess a source file
-Server/Game/character.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/jazz_jackrabbit_2-server.dir/build.make CMakeFiles/jazz_jackrabbit_2-server.dir/Server/Game/character.cpp.i
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/jazz_jackrabbit_2-serverlib.dir/build.make CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Game/character.cpp.i
-.PHONY : Server/Game/character.cpp.i
-
-Server/Game/character.s: Server/Game/character.cpp.s
-.PHONY : Server/Game/character.s
-
-# target to generate assembly for a file
-Server/Game/character.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/jazz_jackrabbit_2-server.dir/build.make CMakeFiles/jazz_jackrabbit_2-server.dir/Server/Game/character.cpp.s
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/jazz_jackrabbit_2-serverlib.dir/build.make CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Game/character.cpp.s
-.PHONY : Server/Game/character.cpp.s
 
 Server/Game/game.o: Server/Game/game.cpp.o
 .PHONY : Server/Game/game.o
@@ -1375,6 +1372,9 @@ help:
 	@echo "... Common/Config/ServerConfig.o"
 	@echo "... Common/Config/ServerConfig.i"
 	@echo "... Common/Config/ServerConfig.s"
+	@echo "... Common/Models/character.o"
+	@echo "... Common/Models/character.i"
+	@echo "... Common/Models/character.s"
 	@echo "... Common/liberror.o"
 	@echo "... Common/liberror.i"
 	@echo "... Common/liberror.s"
@@ -1390,9 +1390,6 @@ help:
 	@echo "... Common/socket.o"
 	@echo "... Common/socket.i"
 	@echo "... Common/socket.s"
-	@echo "... Server/Game/character.o"
-	@echo "... Server/Game/character.i"
-	@echo "... Server/Game/character.s"
 	@echo "... Server/Game/game.o"
 	@echo "... Server/Game/game.i"
 	@echo "... Server/Game/game.s"

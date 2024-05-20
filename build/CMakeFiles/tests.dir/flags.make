@@ -4,7 +4,7 @@
 # compile CXX with /usr/bin/c++
 CXX_DEFINES = 
 
-CXX_INCLUDES = -I/home/franvm/Desktop/Taller/TP_Jazz_Jackrabbit_2/build/tests_autogen/include -I/home/franvm/Desktop/Taller/TP_Jazz_Jackrabbit_2/libs -isystem /home/franvm/Desktop/Taller/TP_Jazz_Jackrabbit_2/build/_deps/googletest-src/googletest/include -isystem /home/franvm/Desktop/Taller/TP_Jazz_Jackrabbit_2/build/_deps/googletest-src/googletest
+CXX_INCLUDES = -I/home/ferbuono/fiuba/taller/TP_Jazz_Jackrabbit_2/build/tests_autogen/include -I/home/ferbuono/fiuba/taller/TP_Jazz_Jackrabbit_2/libs -isystem /home/ferbuono/fiuba/taller/TP_Jazz_Jackrabbit_2/build/_deps/googletest-src/googletest/include -isystem /home/ferbuono/fiuba/taller/TP_Jazz_Jackrabbit_2/build/_deps/googletest-src/googletest
 
-CXX_FLAGS =  -std=c++17 -pthread --coverage -Wall -Werror -pedantic -pedantic-errors -O0 -ggdb -DDEBUG -fno-inline
+CXX_FLAGS =  -std=c++17 -pthread --coverage -Wall -Werror -pedantic -pedantic-errors -O0 -ggdb -DDEBUG -fno-inline -std=gnu++20
 

@@ -1,7 +1,7 @@
 # Make file names absolute:
 #
-get_filename_component(filename "/home/franvm/Desktop/Taller/TP_Jazz_Jackrabbit_2/build/_deps/googletest-subbuild/googletest-populate-prefix/src/release-1.11.0.zip" ABSOLUTE)
-get_filename_component(directory "/home/franvm/Desktop/Taller/TP_Jazz_Jackrabbit_2/build/_deps/googletest-src" ABSOLUTE)
+get_filename_component(filename "/home/ferbuono/fiuba/taller/TP_Jazz_Jackrabbit_2/build/_deps/googletest-subbuild/googletest-populate-prefix/src/release-1.11.0.zip" ABSOLUTE)
+get_filename_component(directory "/home/ferbuono/fiuba/taller/TP_Jazz_Jackrabbit_2/build/_deps/googletest-src" ABSOLUTE)
 
 message(STATUS "extracting...
      src='${filename}'

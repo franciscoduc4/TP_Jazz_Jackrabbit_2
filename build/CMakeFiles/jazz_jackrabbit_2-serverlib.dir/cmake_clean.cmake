@@ -2,8 +2,6 @@ file(REMOVE_RECURSE
   "CMakeFiles/jazz_jackrabbit_2-serverlib_autogen.dir/AutogenUsed.txt"
   "CMakeFiles/jazz_jackrabbit_2-serverlib_autogen.dir/ParseCache.txt"
   "jazz_jackrabbit_2-serverlib_autogen"
-  "CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Game/character.cpp.o"
-  "CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Game/character.cpp.o.d"
   "CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Game/game.cpp.o"
   "CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Game/game.cpp.o.d"
   "CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Game/gameMonitor.cpp.o"

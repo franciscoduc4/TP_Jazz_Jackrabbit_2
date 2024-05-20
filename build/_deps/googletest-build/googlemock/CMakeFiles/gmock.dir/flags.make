@@ -4,7 +4,7 @@
 # compile CXX with /usr/bin/c++
 CXX_DEFINES = 
 
-CXX_INCLUDES = -I/home/franvm/Desktop/Taller/TP_Jazz_Jackrabbit_2/build/_deps/googletest-build/googlemock/gmock_autogen/include -I/home/franvm/Desktop/Taller/TP_Jazz_Jackrabbit_2/libs -I/home/franvm/Desktop/Taller/TP_Jazz_Jackrabbit_2/build/_deps/googletest-src/googlemock/include -I/home/franvm/Desktop/Taller/TP_Jazz_Jackrabbit_2/build/_deps/googletest-src/googlemock -isystem /home/franvm/Desktop/Taller/TP_Jazz_Jackrabbit_2/build/_deps/googletest-src/googletest/include -isystem /home/franvm/Desktop/Taller/TP_Jazz_Jackrabbit_2/build/_deps/googletest-src/googletest
+CXX_INCLUDES = -I/home/ferbuono/fiuba/taller/TP_Jazz_Jackrabbit_2/build/_deps/googletest-build/googlemock/gmock_autogen/include -I/home/ferbuono/fiuba/taller/TP_Jazz_Jackrabbit_2/libs -I/home/ferbuono/fiuba/taller/TP_Jazz_Jackrabbit_2/build/_deps/googletest-src/googlemock/include -I/home/ferbuono/fiuba/taller/TP_Jazz_Jackrabbit_2/build/_deps/googletest-src/googlemock -isystem /home/ferbuono/fiuba/taller/TP_Jazz_Jackrabbit_2/build/_deps/googletest-src/googletest/include -isystem /home/ferbuono/fiuba/taller/TP_Jazz_Jackrabbit_2/build/_deps/googletest-src/googletest
 
-CXX_FLAGS =  -std=c++17 -pthread --coverage -Wall -Werror -pedantic -pedantic-errors -O0 -ggdb -DDEBUG -fno-inline -Wall -Wshadow -Werror -Wno-error=dangling-else -DGTEST_HAS_PTHREAD=1 -fexceptions -Wextra -Wno-unused-parameter -Wno-missing-field-initializers
+CXX_FLAGS =  -std=c++17 -pthread --coverage -Wall -Werror -pedantic -pedantic-errors -O0 -ggdb -DDEBUG -fno-inline -Wall -Wshadow -Werror -Wno-error=dangling-else -DGTEST_HAS_PTHREAD=1 -fexceptions -Wextra -Wno-unused-parameter -Wno-missing-field-initializers -std=c++20
 

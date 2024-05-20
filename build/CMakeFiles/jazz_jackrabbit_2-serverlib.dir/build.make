@@ -53,10 +53,10 @@ RM = /usr/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/franvm/Desktop/Taller/TP_Jazz_Jackrabbit_2
+CMAKE_SOURCE_DIR = /home/ferbuono/fiuba/taller/TP_Jazz_Jackrabbit_2
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/franvm/Desktop/Taller/TP_Jazz_Jackrabbit_2/build
+CMAKE_BINARY_DIR = /home/ferbuono/fiuba/taller/TP_Jazz_Jackrabbit_2/build
 
 # Include any dependencies generated for this target.
 include CMakeFiles/jazz_jackrabbit_2-serverlib.dir/depend.make
@@ -72,273 +72,258 @@ include CMakeFiles/jazz_jackrabbit_2-serverlib.dir/flags.make
 CMakeFiles/jazz_jackrabbit_2-serverlib.dir/jazz_jackrabbit_2-serverlib_autogen/mocs_compilation.cpp.o: CMakeFiles/jazz_jackrabbit_2-serverlib.dir/flags.make
 CMakeFiles/jazz_jackrabbit_2-serverlib.dir/jazz_jackrabbit_2-serverlib_autogen/mocs_compilation.cpp.o: jazz_jackrabbit_2-serverlib_autogen/mocs_compilation.cpp
 CMakeFiles/jazz_jackrabbit_2-serverlib.dir/jazz_jackrabbit_2-serverlib_autogen/mocs_compilation.cpp.o: CMakeFiles/jazz_jackrabbit_2-serverlib.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/franvm/Desktop/Taller/TP_Jazz_Jackrabbit_2/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/jazz_jackrabbit_2-serverlib.dir/jazz_jackrabbit_2-serverlib_autogen/mocs_compilation.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/jazz_jackrabbit_2-serverlib.dir/jazz_jackrabbit_2-serverlib_autogen/mocs_compilation.cpp.o -MF CMakeFiles/jazz_jackrabbit_2-serverlib.dir/jazz_jackrabbit_2-serverlib_autogen/mocs_compilation.cpp.o.d -o CMakeFiles/jazz_jackrabbit_2-serverlib.dir/jazz_jackrabbit_2-serverlib_autogen/mocs_compilation.cpp.o -c /home/franvm/Desktop/Taller/TP_Jazz_Jackrabbit_2/build/jazz_jackrabbit_2-serverlib_autogen/mocs_compilation.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/ferbuono/fiuba/taller/TP_Jazz_Jackrabbit_2/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/jazz_jackrabbit_2-serverlib.dir/jazz_jackrabbit_2-serverlib_autogen/mocs_compilation.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/jazz_jackrabbit_2-serverlib.dir/jazz_jackrabbit_2-serverlib_autogen/mocs_compilation.cpp.o -MF CMakeFiles/jazz_jackrabbit_2-serverlib.dir/jazz_jackrabbit_2-serverlib_autogen/mocs_compilation.cpp.o.d -o CMakeFiles/jazz_jackrabbit_2-serverlib.dir/jazz_jackrabbit_2-serverlib_autogen/mocs_compilation.cpp.o -c /home/ferbuono/fiuba/taller/TP_Jazz_Jackrabbit_2/build/jazz_jackrabbit_2-serverlib_autogen/mocs_compilation.cpp
 
 CMakeFiles/jazz_jackrabbit_2-serverlib.dir/jazz_jackrabbit_2-serverlib_autogen/mocs_compilation.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/jazz_jackrabbit_2-serverlib.dir/jazz_jackrabbit_2-serverlib_autogen/mocs_compilation.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/franvm/Desktop/Taller/TP_Jazz_Jackrabbit_2/build/jazz_jackrabbit_2-serverlib_autogen/mocs_compilation.cpp > CMakeFiles/jazz_jackrabbit_2-serverlib.dir/jazz_jackrabbit_2-serverlib_autogen/mocs_compilation.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/ferbuono/fiuba/taller/TP_Jazz_Jackrabbit_2/build/jazz_jackrabbit_2-serverlib_autogen/mocs_compilation.cpp > CMakeFiles/jazz_jackrabbit_2-serverlib.dir/jazz_jackrabbit_2-serverlib_autogen/mocs_compilation.cpp.i
 
 CMakeFiles/jazz_jackrabbit_2-serverlib.dir/jazz_jackrabbit_2-serverlib_autogen/mocs_compilation.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/jazz_jackrabbit_2-serverlib.dir/jazz_jackrabbit_2-serverlib_autogen/mocs_compilation.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/franvm/Desktop/Taller/TP_Jazz_Jackrabbit_2/build/jazz_jackrabbit_2-serverlib_autogen/mocs_compilation.cpp -o CMakeFiles/jazz_jackrabbit_2-serverlib.dir/jazz_jackrabbit_2-serverlib_autogen/mocs_compilation.cpp.s
-
-CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Game/character.cpp.o: CMakeFiles/jazz_jackrabbit_2-serverlib.dir/flags.make
-CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Game/character.cpp.o: ../Server/Game/character.cpp
-CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Game/character.cpp.o: CMakeFiles/jazz_jackrabbit_2-serverlib.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/franvm/Desktop/Taller/TP_Jazz_Jackrabbit_2/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Game/character.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Game/character.cpp.o -MF CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Game/character.cpp.o.d -o CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Game/character.cpp.o -c /home/franvm/Desktop/Taller/TP_Jazz_Jackrabbit_2/Server/Game/character.cpp
-
-CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Game/character.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Game/character.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/franvm/Desktop/Taller/TP_Jazz_Jackrabbit_2/Server/Game/character.cpp > CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Game/character.cpp.i
-
-CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Game/character.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Game/character.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/franvm/Desktop/Taller/TP_Jazz_Jackrabbit_2/Server/Game/character.cpp -o CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Game/character.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/ferbuono/fiuba/taller/TP_Jazz_Jackrabbit_2/build/jazz_jackrabbit_2-serverlib_autogen/mocs_compilation.cpp -o CMakeFiles/jazz_jackrabbit_2-serverlib.dir/jazz_jackrabbit_2-serverlib_autogen/mocs_compilation.cpp.s
 
 CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Game/game.cpp.o: CMakeFiles/jazz_jackrabbit_2-serverlib.dir/flags.make
 CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Game/game.cpp.o: ../Server/Game/game.cpp
 CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Game/game.cpp.o: CMakeFiles/jazz_jackrabbit_2-serverlib.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/franvm/Desktop/Taller/TP_Jazz_Jackrabbit_2/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Game/game.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Game/game.cpp.o -MF CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Game/game.cpp.o.d -o CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Game/game.cpp.o -c /home/franvm/Desktop/Taller/TP_Jazz_Jackrabbit_2/Server/Game/game.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/ferbuono/fiuba/taller/TP_Jazz_Jackrabbit_2/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Game/game.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Game/game.cpp.o -MF CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Game/game.cpp.o.d -o CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Game/game.cpp.o -c /home/ferbuono/fiuba/taller/TP_Jazz_Jackrabbit_2/Server/Game/game.cpp
 
 CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Game/game.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Game/game.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/franvm/Desktop/Taller/TP_Jazz_Jackrabbit_2/Server/Game/game.cpp > CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Game/game.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/ferbuono/fiuba/taller/TP_Jazz_Jackrabbit_2/Server/Game/game.cpp > CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Game/game.cpp.i
 
 CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Game/game.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Game/game.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/franvm/Desktop/Taller/TP_Jazz_Jackrabbit_2/Server/Game/game.cpp -o CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Game/game.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/ferbuono/fiuba/taller/TP_Jazz_Jackrabbit_2/Server/Game/game.cpp -o CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Game/game.cpp.s
 
 CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Game/gameMonitor.cpp.o: CMakeFiles/jazz_jackrabbit_2-serverlib.dir/flags.make
 CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Game/gameMonitor.cpp.o: ../Server/Game/gameMonitor.cpp
 CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Game/gameMonitor.cpp.o: CMakeFiles/jazz_jackrabbit_2-serverlib.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/franvm/Desktop/Taller/TP_Jazz_Jackrabbit_2/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Game/gameMonitor.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Game/gameMonitor.cpp.o -MF CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Game/gameMonitor.cpp.o.d -o CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Game/gameMonitor.cpp.o -c /home/franvm/Desktop/Taller/TP_Jazz_Jackrabbit_2/Server/Game/gameMonitor.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/ferbuono/fiuba/taller/TP_Jazz_Jackrabbit_2/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Game/gameMonitor.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Game/gameMonitor.cpp.o -MF CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Game/gameMonitor.cpp.o.d -o CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Game/gameMonitor.cpp.o -c /home/ferbuono/fiuba/taller/TP_Jazz_Jackrabbit_2/Server/Game/gameMonitor.cpp
 
 CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Game/gameMonitor.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Game/gameMonitor.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/franvm/Desktop/Taller/TP_Jazz_Jackrabbit_2/Server/Game/gameMonitor.cpp > CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Game/gameMonitor.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/ferbuono/fiuba/taller/TP_Jazz_Jackrabbit_2/Server/Game/gameMonitor.cpp > CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Game/gameMonitor.cpp.i
 
 CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Game/gameMonitor.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Game/gameMonitor.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/franvm/Desktop/Taller/TP_Jazz_Jackrabbit_2/Server/Game/gameMonitor.cpp -o CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Game/gameMonitor.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/ferbuono/fiuba/taller/TP_Jazz_Jackrabbit_2/Server/Game/gameMonitor.cpp -o CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Game/gameMonitor.cpp.s
 
 CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Game/player.cpp.o: CMakeFiles/jazz_jackrabbit_2-serverlib.dir/flags.make
 CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Game/player.cpp.o: ../Server/Game/player.cpp
 CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Game/player.cpp.o: CMakeFiles/jazz_jackrabbit_2-serverlib.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/franvm/Desktop/Taller/TP_Jazz_Jackrabbit_2/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Game/player.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Game/player.cpp.o -MF CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Game/player.cpp.o.d -o CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Game/player.cpp.o -c /home/franvm/Desktop/Taller/TP_Jazz_Jackrabbit_2/Server/Game/player.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/ferbuono/fiuba/taller/TP_Jazz_Jackrabbit_2/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Game/player.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Game/player.cpp.o -MF CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Game/player.cpp.o.d -o CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Game/player.cpp.o -c /home/ferbuono/fiuba/taller/TP_Jazz_Jackrabbit_2/Server/Game/player.cpp
 
 CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Game/player.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Game/player.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/franvm/Desktop/Taller/TP_Jazz_Jackrabbit_2/Server/Game/player.cpp > CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Game/player.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/ferbuono/fiuba/taller/TP_Jazz_Jackrabbit_2/Server/Game/player.cpp > CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Game/player.cpp.i
 
 CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Game/player.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Game/player.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/franvm/Desktop/Taller/TP_Jazz_Jackrabbit_2/Server/Game/player.cpp -o CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Game/player.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/ferbuono/fiuba/taller/TP_Jazz_Jackrabbit_2/Server/Game/player.cpp -o CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Game/player.cpp.s
 
 CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Game/queueMonitor.cpp.o: CMakeFiles/jazz_jackrabbit_2-serverlib.dir/flags.make
 CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Game/queueMonitor.cpp.o: ../Server/Game/queueMonitor.cpp
 CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Game/queueMonitor.cpp.o: CMakeFiles/jazz_jackrabbit_2-serverlib.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/franvm/Desktop/Taller/TP_Jazz_Jackrabbit_2/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Game/queueMonitor.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Game/queueMonitor.cpp.o -MF CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Game/queueMonitor.cpp.o.d -o CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Game/queueMonitor.cpp.o -c /home/franvm/Desktop/Taller/TP_Jazz_Jackrabbit_2/Server/Game/queueMonitor.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/ferbuono/fiuba/taller/TP_Jazz_Jackrabbit_2/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Game/queueMonitor.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Game/queueMonitor.cpp.o -MF CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Game/queueMonitor.cpp.o.d -o CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Game/queueMonitor.cpp.o -c /home/ferbuono/fiuba/taller/TP_Jazz_Jackrabbit_2/Server/Game/queueMonitor.cpp
 
 CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Game/queueMonitor.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Game/queueMonitor.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/franvm/Desktop/Taller/TP_Jazz_Jackrabbit_2/Server/Game/queueMonitor.cpp > CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Game/queueMonitor.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/ferbuono/fiuba/taller/TP_Jazz_Jackrabbit_2/Server/Game/queueMonitor.cpp > CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Game/queueMonitor.cpp.i
 
 CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Game/queueMonitor.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Game/queueMonitor.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/franvm/Desktop/Taller/TP_Jazz_Jackrabbit_2/Server/Game/queueMonitor.cpp -o CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Game/queueMonitor.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/ferbuono/fiuba/taller/TP_Jazz_Jackrabbit_2/Server/Game/queueMonitor.cpp -o CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Game/queueMonitor.cpp.s
 
 CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/LobbyCommand/createGameCommand.cpp.o: CMakeFiles/jazz_jackrabbit_2-serverlib.dir/flags.make
 CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/LobbyCommand/createGameCommand.cpp.o: ../Server/LobbyCommand/createGameCommand.cpp
 CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/LobbyCommand/createGameCommand.cpp.o: CMakeFiles/jazz_jackrabbit_2-serverlib.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/franvm/Desktop/Taller/TP_Jazz_Jackrabbit_2/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/LobbyCommand/createGameCommand.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/LobbyCommand/createGameCommand.cpp.o -MF CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/LobbyCommand/createGameCommand.cpp.o.d -o CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/LobbyCommand/createGameCommand.cpp.o -c /home/franvm/Desktop/Taller/TP_Jazz_Jackrabbit_2/Server/LobbyCommand/createGameCommand.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/ferbuono/fiuba/taller/TP_Jazz_Jackrabbit_2/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/LobbyCommand/createGameCommand.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/LobbyCommand/createGameCommand.cpp.o -MF CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/LobbyCommand/createGameCommand.cpp.o.d -o CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/LobbyCommand/createGameCommand.cpp.o -c /home/ferbuono/fiuba/taller/TP_Jazz_Jackrabbit_2/Server/LobbyCommand/createGameCommand.cpp
 
 CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/LobbyCommand/createGameCommand.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/LobbyCommand/createGameCommand.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/franvm/Desktop/Taller/TP_Jazz_Jackrabbit_2/Server/LobbyCommand/createGameCommand.cpp > CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/LobbyCommand/createGameCommand.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/ferbuono/fiuba/taller/TP_Jazz_Jackrabbit_2/Server/LobbyCommand/createGameCommand.cpp > CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/LobbyCommand/createGameCommand.cpp.i
 
 CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/LobbyCommand/createGameCommand.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/LobbyCommand/createGameCommand.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/franvm/Desktop/Taller/TP_Jazz_Jackrabbit_2/Server/LobbyCommand/createGameCommand.cpp -o CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/LobbyCommand/createGameCommand.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/ferbuono/fiuba/taller/TP_Jazz_Jackrabbit_2/Server/LobbyCommand/createGameCommand.cpp -o CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/LobbyCommand/createGameCommand.cpp.s
 
 CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/LobbyCommand/invalidCommand.cpp.o: CMakeFiles/jazz_jackrabbit_2-serverlib.dir/flags.make
 CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/LobbyCommand/invalidCommand.cpp.o: ../Server/LobbyCommand/invalidCommand.cpp
 CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/LobbyCommand/invalidCommand.cpp.o: CMakeFiles/jazz_jackrabbit_2-serverlib.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/franvm/Desktop/Taller/TP_Jazz_Jackrabbit_2/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building CXX object CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/LobbyCommand/invalidCommand.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/LobbyCommand/invalidCommand.cpp.o -MF CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/LobbyCommand/invalidCommand.cpp.o.d -o CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/LobbyCommand/invalidCommand.cpp.o -c /home/franvm/Desktop/Taller/TP_Jazz_Jackrabbit_2/Server/LobbyCommand/invalidCommand.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/ferbuono/fiuba/taller/TP_Jazz_Jackrabbit_2/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/LobbyCommand/invalidCommand.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/LobbyCommand/invalidCommand.cpp.o -MF CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/LobbyCommand/invalidCommand.cpp.o.d -o CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/LobbyCommand/invalidCommand.cpp.o -c /home/ferbuono/fiuba/taller/TP_Jazz_Jackrabbit_2/Server/LobbyCommand/invalidCommand.cpp
 
 CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/LobbyCommand/invalidCommand.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/LobbyCommand/invalidCommand.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/franvm/Desktop/Taller/TP_Jazz_Jackrabbit_2/Server/LobbyCommand/invalidCommand.cpp > CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/LobbyCommand/invalidCommand.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/ferbuono/fiuba/taller/TP_Jazz_Jackrabbit_2/Server/LobbyCommand/invalidCommand.cpp > CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/LobbyCommand/invalidCommand.cpp.i
 
 CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/LobbyCommand/invalidCommand.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/LobbyCommand/invalidCommand.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/franvm/Desktop/Taller/TP_Jazz_Jackrabbit_2/Server/LobbyCommand/invalidCommand.cpp -o CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/LobbyCommand/invalidCommand.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/ferbuono/fiuba/taller/TP_Jazz_Jackrabbit_2/Server/LobbyCommand/invalidCommand.cpp -o CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/LobbyCommand/invalidCommand.cpp.s
 
 CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/LobbyCommand/joinGameCommand.cpp.o: CMakeFiles/jazz_jackrabbit_2-serverlib.dir/flags.make
 CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/LobbyCommand/joinGameCommand.cpp.o: ../Server/LobbyCommand/joinGameCommand.cpp
 CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/LobbyCommand/joinGameCommand.cpp.o: CMakeFiles/jazz_jackrabbit_2-serverlib.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/franvm/Desktop/Taller/TP_Jazz_Jackrabbit_2/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building CXX object CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/LobbyCommand/joinGameCommand.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/LobbyCommand/joinGameCommand.cpp.o -MF CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/LobbyCommand/joinGameCommand.cpp.o.d -o CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/LobbyCommand/joinGameCommand.cpp.o -c /home/franvm/Desktop/Taller/TP_Jazz_Jackrabbit_2/Server/LobbyCommand/joinGameCommand.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/ferbuono/fiuba/taller/TP_Jazz_Jackrabbit_2/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building CXX object CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/LobbyCommand/joinGameCommand.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/LobbyCommand/joinGameCommand.cpp.o -MF CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/LobbyCommand/joinGameCommand.cpp.o.d -o CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/LobbyCommand/joinGameCommand.cpp.o -c /home/ferbuono/fiuba/taller/TP_Jazz_Jackrabbit_2/Server/LobbyCommand/joinGameCommand.cpp
 
 CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/LobbyCommand/joinGameCommand.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/LobbyCommand/joinGameCommand.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/franvm/Desktop/Taller/TP_Jazz_Jackrabbit_2/Server/LobbyCommand/joinGameCommand.cpp > CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/LobbyCommand/joinGameCommand.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/ferbuono/fiuba/taller/TP_Jazz_Jackrabbit_2/Server/LobbyCommand/joinGameCommand.cpp > CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/LobbyCommand/joinGameCommand.cpp.i
 
 CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/LobbyCommand/joinGameCommand.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/LobbyCommand/joinGameCommand.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/franvm/Desktop/Taller/TP_Jazz_Jackrabbit_2/Server/LobbyCommand/joinGameCommand.cpp -o CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/LobbyCommand/joinGameCommand.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/ferbuono/fiuba/taller/TP_Jazz_Jackrabbit_2/Server/LobbyCommand/joinGameCommand.cpp -o CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/LobbyCommand/joinGameCommand.cpp.s
 
 CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/LobbyCommand/listGamesCommand.cpp.o: CMakeFiles/jazz_jackrabbit_2-serverlib.dir/flags.make
 CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/LobbyCommand/listGamesCommand.cpp.o: ../Server/LobbyCommand/listGamesCommand.cpp
 CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/LobbyCommand/listGamesCommand.cpp.o: CMakeFiles/jazz_jackrabbit_2-serverlib.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/franvm/Desktop/Taller/TP_Jazz_Jackrabbit_2/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Building CXX object CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/LobbyCommand/listGamesCommand.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/LobbyCommand/listGamesCommand.cpp.o -MF CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/LobbyCommand/listGamesCommand.cpp.o.d -o CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/LobbyCommand/listGamesCommand.cpp.o -c /home/franvm/Desktop/Taller/TP_Jazz_Jackrabbit_2/Server/LobbyCommand/listGamesCommand.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/ferbuono/fiuba/taller/TP_Jazz_Jackrabbit_2/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building CXX object CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/LobbyCommand/listGamesCommand.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/LobbyCommand/listGamesCommand.cpp.o -MF CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/LobbyCommand/listGamesCommand.cpp.o.d -o CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/LobbyCommand/listGamesCommand.cpp.o -c /home/ferbuono/fiuba/taller/TP_Jazz_Jackrabbit_2/Server/LobbyCommand/listGamesCommand.cpp
 
 CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/LobbyCommand/listGamesCommand.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/LobbyCommand/listGamesCommand.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/franvm/Desktop/Taller/TP_Jazz_Jackrabbit_2/Server/LobbyCommand/listGamesCommand.cpp > CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/LobbyCommand/listGamesCommand.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/ferbuono/fiuba/taller/TP_Jazz_Jackrabbit_2/Server/LobbyCommand/listGamesCommand.cpp > CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/LobbyCommand/listGamesCommand.cpp.i
 
 CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/LobbyCommand/listGamesCommand.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/LobbyCommand/listGamesCommand.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/franvm/Desktop/Taller/TP_Jazz_Jackrabbit_2/Server/LobbyCommand/listGamesCommand.cpp -o CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/LobbyCommand/listGamesCommand.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/ferbuono/fiuba/taller/TP_Jazz_Jackrabbit_2/Server/LobbyCommand/listGamesCommand.cpp -o CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/LobbyCommand/listGamesCommand.cpp.s
 
 CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/LobbyCommand/lobbyCommand.cpp.o: CMakeFiles/jazz_jackrabbit_2-serverlib.dir/flags.make
 CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/LobbyCommand/lobbyCommand.cpp.o: ../Server/LobbyCommand/lobbyCommand.cpp
 CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/LobbyCommand/lobbyCommand.cpp.o: CMakeFiles/jazz_jackrabbit_2-serverlib.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/franvm/Desktop/Taller/TP_Jazz_Jackrabbit_2/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_11) "Building CXX object CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/LobbyCommand/lobbyCommand.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/LobbyCommand/lobbyCommand.cpp.o -MF CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/LobbyCommand/lobbyCommand.cpp.o.d -o CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/LobbyCommand/lobbyCommand.cpp.o -c /home/franvm/Desktop/Taller/TP_Jazz_Jackrabbit_2/Server/LobbyCommand/lobbyCommand.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/ferbuono/fiuba/taller/TP_Jazz_Jackrabbit_2/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Building CXX object CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/LobbyCommand/lobbyCommand.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/LobbyCommand/lobbyCommand.cpp.o -MF CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/LobbyCommand/lobbyCommand.cpp.o.d -o CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/LobbyCommand/lobbyCommand.cpp.o -c /home/ferbuono/fiuba/taller/TP_Jazz_Jackrabbit_2/Server/LobbyCommand/lobbyCommand.cpp
 
 CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/LobbyCommand/lobbyCommand.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/LobbyCommand/lobbyCommand.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/franvm/Desktop/Taller/TP_Jazz_Jackrabbit_2/Server/LobbyCommand/lobbyCommand.cpp > CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/LobbyCommand/lobbyCommand.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/ferbuono/fiuba/taller/TP_Jazz_Jackrabbit_2/Server/LobbyCommand/lobbyCommand.cpp > CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/LobbyCommand/lobbyCommand.cpp.i
 
 CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/LobbyCommand/lobbyCommand.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/LobbyCommand/lobbyCommand.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/franvm/Desktop/Taller/TP_Jazz_Jackrabbit_2/Server/LobbyCommand/lobbyCommand.cpp -o CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/LobbyCommand/lobbyCommand.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/ferbuono/fiuba/taller/TP_Jazz_Jackrabbit_2/Server/LobbyCommand/lobbyCommand.cpp -o CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/LobbyCommand/lobbyCommand.cpp.s
 
 CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Threads/acceptorThread.cpp.o: CMakeFiles/jazz_jackrabbit_2-serverlib.dir/flags.make
 CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Threads/acceptorThread.cpp.o: ../Server/Threads/acceptorThread.cpp
 CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Threads/acceptorThread.cpp.o: CMakeFiles/jazz_jackrabbit_2-serverlib.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/franvm/Desktop/Taller/TP_Jazz_Jackrabbit_2/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_12) "Building CXX object CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Threads/acceptorThread.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Threads/acceptorThread.cpp.o -MF CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Threads/acceptorThread.cpp.o.d -o CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Threads/acceptorThread.cpp.o -c /home/franvm/Desktop/Taller/TP_Jazz_Jackrabbit_2/Server/Threads/acceptorThread.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/ferbuono/fiuba/taller/TP_Jazz_Jackrabbit_2/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_11) "Building CXX object CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Threads/acceptorThread.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Threads/acceptorThread.cpp.o -MF CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Threads/acceptorThread.cpp.o.d -o CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Threads/acceptorThread.cpp.o -c /home/ferbuono/fiuba/taller/TP_Jazz_Jackrabbit_2/Server/Threads/acceptorThread.cpp
 
 CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Threads/acceptorThread.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Threads/acceptorThread.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/franvm/Desktop/Taller/TP_Jazz_Jackrabbit_2/Server/Threads/acceptorThread.cpp > CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Threads/acceptorThread.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/ferbuono/fiuba/taller/TP_Jazz_Jackrabbit_2/Server/Threads/acceptorThread.cpp > CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Threads/acceptorThread.cpp.i
 
 CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Threads/acceptorThread.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Threads/acceptorThread.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/franvm/Desktop/Taller/TP_Jazz_Jackrabbit_2/Server/Threads/acceptorThread.cpp -o CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Threads/acceptorThread.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/ferbuono/fiuba/taller/TP_Jazz_Jackrabbit_2/Server/Threads/acceptorThread.cpp -o CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Threads/acceptorThread.cpp.s
 
 CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Threads/broadcasterThread.cpp.o: CMakeFiles/jazz_jackrabbit_2-serverlib.dir/flags.make
 CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Threads/broadcasterThread.cpp.o: ../Server/Threads/broadcasterThread.cpp
 CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Threads/broadcasterThread.cpp.o: CMakeFiles/jazz_jackrabbit_2-serverlib.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/franvm/Desktop/Taller/TP_Jazz_Jackrabbit_2/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_13) "Building CXX object CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Threads/broadcasterThread.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Threads/broadcasterThread.cpp.o -MF CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Threads/broadcasterThread.cpp.o.d -o CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Threads/broadcasterThread.cpp.o -c /home/franvm/Desktop/Taller/TP_Jazz_Jackrabbit_2/Server/Threads/broadcasterThread.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/ferbuono/fiuba/taller/TP_Jazz_Jackrabbit_2/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_12) "Building CXX object CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Threads/broadcasterThread.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Threads/broadcasterThread.cpp.o -MF CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Threads/broadcasterThread.cpp.o.d -o CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Threads/broadcasterThread.cpp.o -c /home/ferbuono/fiuba/taller/TP_Jazz_Jackrabbit_2/Server/Threads/broadcasterThread.cpp
 
 CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Threads/broadcasterThread.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Threads/broadcasterThread.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/franvm/Desktop/Taller/TP_Jazz_Jackrabbit_2/Server/Threads/broadcasterThread.cpp > CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Threads/broadcasterThread.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/ferbuono/fiuba/taller/TP_Jazz_Jackrabbit_2/Server/Threads/broadcasterThread.cpp > CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Threads/broadcasterThread.cpp.i
 
 CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Threads/broadcasterThread.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Threads/broadcasterThread.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/franvm/Desktop/Taller/TP_Jazz_Jackrabbit_2/Server/Threads/broadcasterThread.cpp -o CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Threads/broadcasterThread.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/ferbuono/fiuba/taller/TP_Jazz_Jackrabbit_2/Server/Threads/broadcasterThread.cpp -o CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Threads/broadcasterThread.cpp.s
 
 CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Threads/gameloopThread.cpp.o: CMakeFiles/jazz_jackrabbit_2-serverlib.dir/flags.make
 CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Threads/gameloopThread.cpp.o: ../Server/Threads/gameloopThread.cpp
 CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Threads/gameloopThread.cpp.o: CMakeFiles/jazz_jackrabbit_2-serverlib.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/franvm/Desktop/Taller/TP_Jazz_Jackrabbit_2/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_14) "Building CXX object CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Threads/gameloopThread.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Threads/gameloopThread.cpp.o -MF CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Threads/gameloopThread.cpp.o.d -o CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Threads/gameloopThread.cpp.o -c /home/franvm/Desktop/Taller/TP_Jazz_Jackrabbit_2/Server/Threads/gameloopThread.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/ferbuono/fiuba/taller/TP_Jazz_Jackrabbit_2/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_13) "Building CXX object CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Threads/gameloopThread.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Threads/gameloopThread.cpp.o -MF CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Threads/gameloopThread.cpp.o.d -o CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Threads/gameloopThread.cpp.o -c /home/ferbuono/fiuba/taller/TP_Jazz_Jackrabbit_2/Server/Threads/gameloopThread.cpp
 
 CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Threads/gameloopThread.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Threads/gameloopThread.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/franvm/Desktop/Taller/TP_Jazz_Jackrabbit_2/Server/Threads/gameloopThread.cpp > CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Threads/gameloopThread.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/ferbuono/fiuba/taller/TP_Jazz_Jackrabbit_2/Server/Threads/gameloopThread.cpp > CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Threads/gameloopThread.cpp.i
 
 CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Threads/gameloopThread.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Threads/gameloopThread.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/franvm/Desktop/Taller/TP_Jazz_Jackrabbit_2/Server/Threads/gameloopThread.cpp -o CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Threads/gameloopThread.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/ferbuono/fiuba/taller/TP_Jazz_Jackrabbit_2/Server/Threads/gameloopThread.cpp -o CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Threads/gameloopThread.cpp.s
 
 CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Threads/lobbyPlayerThread.cpp.o: CMakeFiles/jazz_jackrabbit_2-serverlib.dir/flags.make
 CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Threads/lobbyPlayerThread.cpp.o: ../Server/Threads/lobbyPlayerThread.cpp
 CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Threads/lobbyPlayerThread.cpp.o: CMakeFiles/jazz_jackrabbit_2-serverlib.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/franvm/Desktop/Taller/TP_Jazz_Jackrabbit_2/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_15) "Building CXX object CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Threads/lobbyPlayerThread.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Threads/lobbyPlayerThread.cpp.o -MF CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Threads/lobbyPlayerThread.cpp.o.d -o CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Threads/lobbyPlayerThread.cpp.o -c /home/franvm/Desktop/Taller/TP_Jazz_Jackrabbit_2/Server/Threads/lobbyPlayerThread.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/ferbuono/fiuba/taller/TP_Jazz_Jackrabbit_2/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_14) "Building CXX object CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Threads/lobbyPlayerThread.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Threads/lobbyPlayerThread.cpp.o -MF CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Threads/lobbyPlayerThread.cpp.o.d -o CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Threads/lobbyPlayerThread.cpp.o -c /home/ferbuono/fiuba/taller/TP_Jazz_Jackrabbit_2/Server/Threads/lobbyPlayerThread.cpp
 
 CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Threads/lobbyPlayerThread.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Threads/lobbyPlayerThread.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/franvm/Desktop/Taller/TP_Jazz_Jackrabbit_2/Server/Threads/lobbyPlayerThread.cpp > CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Threads/lobbyPlayerThread.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/ferbuono/fiuba/taller/TP_Jazz_Jackrabbit_2/Server/Threads/lobbyPlayerThread.cpp > CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Threads/lobbyPlayerThread.cpp.i
 
 CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Threads/lobbyPlayerThread.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Threads/lobbyPlayerThread.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/franvm/Desktop/Taller/TP_Jazz_Jackrabbit_2/Server/Threads/lobbyPlayerThread.cpp -o CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Threads/lobbyPlayerThread.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/ferbuono/fiuba/taller/TP_Jazz_Jackrabbit_2/Server/Threads/lobbyPlayerThread.cpp -o CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Threads/lobbyPlayerThread.cpp.s
 
 CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Threads/receiverThread.cpp.o: CMakeFiles/jazz_jackrabbit_2-serverlib.dir/flags.make
 CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Threads/receiverThread.cpp.o: ../Server/Threads/receiverThread.cpp
 CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Threads/receiverThread.cpp.o: CMakeFiles/jazz_jackrabbit_2-serverlib.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/franvm/Desktop/Taller/TP_Jazz_Jackrabbit_2/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_16) "Building CXX object CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Threads/receiverThread.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Threads/receiverThread.cpp.o -MF CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Threads/receiverThread.cpp.o.d -o CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Threads/receiverThread.cpp.o -c /home/franvm/Desktop/Taller/TP_Jazz_Jackrabbit_2/Server/Threads/receiverThread.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/ferbuono/fiuba/taller/TP_Jazz_Jackrabbit_2/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_15) "Building CXX object CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Threads/receiverThread.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Threads/receiverThread.cpp.o -MF CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Threads/receiverThread.cpp.o.d -o CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Threads/receiverThread.cpp.o -c /home/ferbuono/fiuba/taller/TP_Jazz_Jackrabbit_2/Server/Threads/receiverThread.cpp
 
 CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Threads/receiverThread.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Threads/receiverThread.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/franvm/Desktop/Taller/TP_Jazz_Jackrabbit_2/Server/Threads/receiverThread.cpp > CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Threads/receiverThread.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/ferbuono/fiuba/taller/TP_Jazz_Jackrabbit_2/Server/Threads/receiverThread.cpp > CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Threads/receiverThread.cpp.i
 
 CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Threads/receiverThread.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Threads/receiverThread.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/franvm/Desktop/Taller/TP_Jazz_Jackrabbit_2/Server/Threads/receiverThread.cpp -o CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Threads/receiverThread.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/ferbuono/fiuba/taller/TP_Jazz_Jackrabbit_2/Server/Threads/receiverThread.cpp -o CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Threads/receiverThread.cpp.s
 
 CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Threads/senderThread.cpp.o: CMakeFiles/jazz_jackrabbit_2-serverlib.dir/flags.make
 CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Threads/senderThread.cpp.o: ../Server/Threads/senderThread.cpp
 CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Threads/senderThread.cpp.o: CMakeFiles/jazz_jackrabbit_2-serverlib.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/franvm/Desktop/Taller/TP_Jazz_Jackrabbit_2/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_17) "Building CXX object CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Threads/senderThread.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Threads/senderThread.cpp.o -MF CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Threads/senderThread.cpp.o.d -o CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Threads/senderThread.cpp.o -c /home/franvm/Desktop/Taller/TP_Jazz_Jackrabbit_2/Server/Threads/senderThread.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/ferbuono/fiuba/taller/TP_Jazz_Jackrabbit_2/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_16) "Building CXX object CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Threads/senderThread.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Threads/senderThread.cpp.o -MF CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Threads/senderThread.cpp.o.d -o CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Threads/senderThread.cpp.o -c /home/ferbuono/fiuba/taller/TP_Jazz_Jackrabbit_2/Server/Threads/senderThread.cpp
 
 CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Threads/senderThread.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Threads/senderThread.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/franvm/Desktop/Taller/TP_Jazz_Jackrabbit_2/Server/Threads/senderThread.cpp > CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Threads/senderThread.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/ferbuono/fiuba/taller/TP_Jazz_Jackrabbit_2/Server/Threads/senderThread.cpp > CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Threads/senderThread.cpp.i
 
 CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Threads/senderThread.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Threads/senderThread.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/franvm/Desktop/Taller/TP_Jazz_Jackrabbit_2/Server/Threads/senderThread.cpp -o CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Threads/senderThread.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/ferbuono/fiuba/taller/TP_Jazz_Jackrabbit_2/Server/Threads/senderThread.cpp -o CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Threads/senderThread.cpp.s
 
 CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/main.cpp.o: CMakeFiles/jazz_jackrabbit_2-serverlib.dir/flags.make
 CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/main.cpp.o: ../Server/main.cpp
 CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/main.cpp.o: CMakeFiles/jazz_jackrabbit_2-serverlib.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/franvm/Desktop/Taller/TP_Jazz_Jackrabbit_2/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_18) "Building CXX object CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/main.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/main.cpp.o -MF CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/main.cpp.o.d -o CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/main.cpp.o -c /home/franvm/Desktop/Taller/TP_Jazz_Jackrabbit_2/Server/main.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/ferbuono/fiuba/taller/TP_Jazz_Jackrabbit_2/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_17) "Building CXX object CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/main.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/main.cpp.o -MF CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/main.cpp.o.d -o CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/main.cpp.o -c /home/ferbuono/fiuba/taller/TP_Jazz_Jackrabbit_2/Server/main.cpp
 
 CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/main.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/main.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/franvm/Desktop/Taller/TP_Jazz_Jackrabbit_2/Server/main.cpp > CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/main.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/ferbuono/fiuba/taller/TP_Jazz_Jackrabbit_2/Server/main.cpp > CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/main.cpp.i
 
 CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/main.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/main.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/franvm/Desktop/Taller/TP_Jazz_Jackrabbit_2/Server/main.cpp -o CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/main.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/ferbuono/fiuba/taller/TP_Jazz_Jackrabbit_2/Server/main.cpp -o CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/main.cpp.s
 
 CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/server.cpp.o: CMakeFiles/jazz_jackrabbit_2-serverlib.dir/flags.make
 CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/server.cpp.o: ../Server/server.cpp
 CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/server.cpp.o: CMakeFiles/jazz_jackrabbit_2-serverlib.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/franvm/Desktop/Taller/TP_Jazz_Jackrabbit_2/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_19) "Building CXX object CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/server.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/server.cpp.o -MF CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/server.cpp.o.d -o CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/server.cpp.o -c /home/franvm/Desktop/Taller/TP_Jazz_Jackrabbit_2/Server/server.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/ferbuono/fiuba/taller/TP_Jazz_Jackrabbit_2/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_18) "Building CXX object CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/server.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/server.cpp.o -MF CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/server.cpp.o.d -o CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/server.cpp.o -c /home/ferbuono/fiuba/taller/TP_Jazz_Jackrabbit_2/Server/server.cpp
 
 CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/server.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/server.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/franvm/Desktop/Taller/TP_Jazz_Jackrabbit_2/Server/server.cpp > CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/server.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/ferbuono/fiuba/taller/TP_Jazz_Jackrabbit_2/Server/server.cpp > CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/server.cpp.i
 
 CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/server.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/server.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/franvm/Desktop/Taller/TP_Jazz_Jackrabbit_2/Server/server.cpp -o CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/server.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/ferbuono/fiuba/taller/TP_Jazz_Jackrabbit_2/Server/server.cpp -o CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/server.cpp.s
 
 # Object files for target jazz_jackrabbit_2-serverlib
 jazz_jackrabbit_2__serverlib_OBJECTS = \
 "CMakeFiles/jazz_jackrabbit_2-serverlib.dir/jazz_jackrabbit_2-serverlib_autogen/mocs_compilation.cpp.o" \
-"CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Game/character.cpp.o" \
 "CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Game/game.cpp.o" \
 "CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Game/gameMonitor.cpp.o" \
 "CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Game/player.cpp.o" \
@@ -361,7 +346,6 @@ jazz_jackrabbit_2__serverlib_OBJECTS = \
 jazz_jackrabbit_2__serverlib_EXTERNAL_OBJECTS =
 
 libjazz_jackrabbit_2-serverlib.so: CMakeFiles/jazz_jackrabbit_2-serverlib.dir/jazz_jackrabbit_2-serverlib_autogen/mocs_compilation.cpp.o
-libjazz_jackrabbit_2-serverlib.so: CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Game/character.cpp.o
 libjazz_jackrabbit_2-serverlib.so: CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Game/game.cpp.o
 libjazz_jackrabbit_2-serverlib.so: CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Game/gameMonitor.cpp.o
 libjazz_jackrabbit_2-serverlib.so: CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/Game/player.cpp.o
@@ -381,7 +365,7 @@ libjazz_jackrabbit_2-serverlib.so: CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Se
 libjazz_jackrabbit_2-serverlib.so: CMakeFiles/jazz_jackrabbit_2-serverlib.dir/Server/server.cpp.o
 libjazz_jackrabbit_2-serverlib.so: CMakeFiles/jazz_jackrabbit_2-serverlib.dir/build.make
 libjazz_jackrabbit_2-serverlib.so: CMakeFiles/jazz_jackrabbit_2-serverlib.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/franvm/Desktop/Taller/TP_Jazz_Jackrabbit_2/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_20) "Linking CXX shared library libjazz_jackrabbit_2-serverlib.so"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/ferbuono/fiuba/taller/TP_Jazz_Jackrabbit_2/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_19) "Linking CXX shared library libjazz_jackrabbit_2-serverlib.so"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/jazz_jackrabbit_2-serverlib.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
@@ -393,6 +377,6 @@ CMakeFiles/jazz_jackrabbit_2-serverlib.dir/clean:
 .PHONY : CMakeFiles/jazz_jackrabbit_2-serverlib.dir/clean
 
 CMakeFiles/jazz_jackrabbit_2-serverlib.dir/depend:
-	cd /home/franvm/Desktop/Taller/TP_Jazz_Jackrabbit_2/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/franvm/Desktop/Taller/TP_Jazz_Jackrabbit_2 /home/franvm/Desktop/Taller/TP_Jazz_Jackrabbit_2 /home/franvm/Desktop/Taller/TP_Jazz_Jackrabbit_2/build /home/franvm/Desktop/Taller/TP_Jazz_Jackrabbit_2/build /home/franvm/Desktop/Taller/TP_Jazz_Jackrabbit_2/build/CMakeFiles/jazz_jackrabbit_2-serverlib.dir/DependInfo.cmake --color=$(COLOR)
+	cd /home/ferbuono/fiuba/taller/TP_Jazz_Jackrabbit_2/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/ferbuono/fiuba/taller/TP_Jazz_Jackrabbit_2 /home/ferbuono/fiuba/taller/TP_Jazz_Jackrabbit_2 /home/ferbuono/fiuba/taller/TP_Jazz_Jackrabbit_2/build /home/ferbuono/fiuba/taller/TP_Jazz_Jackrabbit_2/build /home/ferbuono/fiuba/taller/TP_Jazz_Jackrabbit_2/build/CMakeFiles/jazz_jackrabbit_2-serverlib.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : CMakeFiles/jazz_jackrabbit_2-serverlib.dir/depend
 

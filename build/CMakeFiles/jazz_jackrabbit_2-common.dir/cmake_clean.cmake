@@ -6,6 +6,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/jazz_jackrabbit_2-common.dir/Common/Config/ClientConfig.cpp.o.d"
   "CMakeFiles/jazz_jackrabbit_2-common.dir/Common/Config/ServerConfig.cpp.o"
   "CMakeFiles/jazz_jackrabbit_2-common.dir/Common/Config/ServerConfig.cpp.o.d"
+  "CMakeFiles/jazz_jackrabbit_2-common.dir/Common/Models/character.cpp.o"
+  "CMakeFiles/jazz_jackrabbit_2-common.dir/Common/Models/character.cpp.o.d"
   "CMakeFiles/jazz_jackrabbit_2-common.dir/Common/liberror.cpp.o"
   "CMakeFiles/jazz_jackrabbit_2-common.dir/Common/liberror.cpp.o.d"
   "CMakeFiles/jazz_jackrabbit_2-common.dir/Common/protocol.cpp.o"
