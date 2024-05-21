@@ -1,4 +1,5 @@
 #include "lobbyPlayerThread.h"
+
 #include <memory>
 #include <utility>
 
@@ -20,7 +21,7 @@ void LobbyPlayerThread::run() {
 bool LobbyPlayerThread::isInLobby() const { return inLobby; }
 
 void LobbyPlayerThread::handleCommand(Protocol& protocol,
-                                      const std::shared_ptr<LobbyCommand>& lobbyCommand) {
+                                      const std::unique_ptr<LobbyCommand>& lobbyCommand) {
     ProtocolMessage res = lobbyCommand->exec(gameMonitor, std::move(protocol), inLobby);
     if (res.cmd != 0x00) {
         protocol.sendMessage(res);

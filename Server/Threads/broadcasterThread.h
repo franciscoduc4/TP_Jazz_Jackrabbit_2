@@ -3,9 +3,10 @@
 
 #include <map>
 #include <memory>
-#include <utility>
 #include <string>
-#include "../../Common/gameTypes.h"
+#include <utility>
+
+#include "../../Common/Models/gameTypes.h"
 #include "../../Common/queue.h"
 #include "../../Common/thread.h"
 #include "../Game/player.h"
@@ -14,14 +15,12 @@
 
 class BroadcasterThread: public Thread {
 private:
-    QueueMonitor<std::string> queueMonitor;
-    std::shared_ptr<Queue<std::string>> snapshotQueue;
-    std::map<int, std::shared_ptr<SenderThread>> senderThreads;
+    std::shared_ptr<QueueMonitor<std::string>> queueMonitor;
+    std::shared_ptr<Queue<std::string>>& sendQueue;
 
 public:
-    BroadcasterThread();
-    void addSender(Player& player);
-    void removeSender(int playerId);
+    BroadcasterThread(std::shared_ptr<QueueMonitor<std::string>> queueMonitor,
+                      std::shared_ptr<Queue<std::string>> sendQueue);
     void run();
     void stop();
     ~BroadcasterThread();

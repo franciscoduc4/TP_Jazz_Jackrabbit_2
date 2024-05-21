@@ -17,21 +17,19 @@ int Player::getId() const { return id; }
 
 void Player::setInGame() { inGame = true; }
 
-std::shared_ptr<ReceiverThread> Player::initReceiver(Queue<GameTypes::Action>& recvQueue) {
-    receiver = std::make_shared<ReceiverThread>(protocol, recvQueue);
-    return receiver;
+std::unique_ptr<ReceiverThread> Player::initReceiver(
+        std::shared_ptr<Queue<GameTypes::Action>> recvQueue) {
+    receiver = std::make_unique<ReceiverThread>(protocol, recvQueue);
+    return std::move(receiver);
 }
 
-std::shared_ptr<SenderThread> Player::initSender(
-        std::shared_ptr<Queue<std::string>> sendQueue) {
-    sender = std::make_shared<SenderThread>(protocol, sendQueue);
-    return sender;
+std::unique_ptr<SenderThread> Player::initSender(std::shared_ptr<Queue<std::string>> sendQueue) {
+    sender = std::make_unique<SenderThread>(protocol, sendQueue);
+    return std::move(sender);
 }
 
-void Player::setCharacter(std::shared_ptr<Character> character) {
-    this->character = character;
+void Player::setCharacter(std::unique_ptr<Character>&& character) {
+    this->character = std::move(character);
 }
 
-std::shared_ptr<Character> Player::getCharacter() const {
-    return character;
-}
+std::unique_ptr<Character> Player::getCharacter() { return std::move(character); }

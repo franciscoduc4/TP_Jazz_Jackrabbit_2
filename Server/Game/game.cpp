@@ -1,29 +1,34 @@
 #include "game.h"
 
-Game::Game(std::string name, int maxPlayers, Player&& firstPlayer)
-    : name(name),
-      maxPlayers(maxPlayers),
-      currentPlayers(1),
-      recvQueue(),
-      players(),
-      receiverThreads(),
-      broadcaster(),
-      running(false),
-      gameStatus(std::make_unique<GameStatus>()),
-      gameLoop(broadcaster, recvQueue, *gameStatus) {}
+Game::Game(const std::string& name, int maxPlayers, Player&& firstPlayer):
+        name(name),
+        maxPlayers(maxPlayers),
+        currentPlayers(1),
+        recvQueue(),
+        sendQueue(),
+        queueMonitor(),
+        players(),
+        receiverThreads(),
+        senderThreads(),
+        broadcaster(queueMonitor, sendQueue),
+        running(false),
+        gameStatus(),
+        gameLoop(sendQueue, recvQueue, gameStatus) {}
 
 void Game::addPlayer(Player&& player) {
     initPlayerThreads(player);
     players.emplace_back(std::move(player));
     currentPlayers++;
-    std::shared_ptr<Character> playerCharacter = player.getCharacter();
-    gameStatus->addCharacter(playerCharacter);
+    std::unique_ptr<Character> playerCharacter = player.getCharacter();
+    gameStatus.addCharacter(std::move(playerCharacter));
 }
 
 void Game::initPlayerThreads(Player& player) {
     receiverThreads.emplace(player.getId(), player.initReceiver(recvQueue));
     receiverThreads[player.getId()]->start();
-    broadcaster.addSender(player);
+
+    senderThreads.emplace(player.getId(), player.initSender(queueMonitor->createQueue()));
+    senderThreads[player.getId()]->start();
 }
 
 void Game::removePlayer(int playerId) {
@@ -34,10 +39,13 @@ void Game::removePlayer(int playerId) {
         throw std::runtime_error("Player not found");
     }
 
-    broadcaster.removeSender(playerId);
     receiverThreads[playerId]->stop();
     receiverThreads[playerId]->join();
     receiverThreads.erase(playerId);
+
+    senderThreads[playerId]->stop();
+    senderThreads[playerId]->join();
+    senderThreads.erase(playerId);
 
     players.erase(it);
     currentPlayers--;

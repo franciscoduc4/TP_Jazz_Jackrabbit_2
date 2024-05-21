@@ -1,7 +1,7 @@
 #ifndef RECEIVER_THREAD_H_
 #define RECEIVER_THREAD_H_
 
-#include "../../Common/gameTypes.h"
+#include "../../Common/Models/gameTypes.h"
 #include "../../Common/protocol.h"
 #include "../../Common/queue.h"
 #include "../../Common/thread.h"

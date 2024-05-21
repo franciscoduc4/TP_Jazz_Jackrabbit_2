@@ -3,7 +3,8 @@
 
 #include <memory>
 #include <string>
-#include "../../Common/gameTypes.h"
+
+#include "../../Common/Models/gameTypes.h"
 #include "../../Common/protocol.h"
 #include "../../Common/queue.h"
 #include "../../Common/thread.h"

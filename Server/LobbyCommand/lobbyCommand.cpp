@@ -1,16 +1,16 @@
 #include "lobbyCommand.h"
 
 
-std::shared_ptr<LobbyCommand> LobbyCommand::getCommand(ProtocolMessage message) {
+std::unique_ptr<LobbyCommand> LobbyCommand::getCommand(ProtocolMessage message) {
 
     switch (static_cast<LobbyCommands>(message.cmd)) {
         case LobbyCommands::CREATE_GAME:
-            return std::make_shared<CreateGameCommand>(message.args);
+            return std::make_unique<CreateGameCommand>(message.args);
         case LobbyCommands::JOIN_GAME:
-            return std::make_shared<JoinGameCommand>(message.args);
+            return std::make_unique<JoinGameCommand>(message.args);
         case LobbyCommands::LIST_GAMES:
-            return std::make_shared<ListGamesCommand>(message.args);
+            return std::make_unique<ListGamesCommand>(message.args);
         default:
-            return std::make_shared<InvalidCommand>(message.args);
+            return std::make_unique<InvalidCommand>(message.args);
     }
 }

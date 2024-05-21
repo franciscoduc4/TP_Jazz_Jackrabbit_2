@@ -7,30 +7,35 @@
 #include <string>
 #include <utility>
 #include <vector>
+
+#include "../../Common/Models/gameStatus.h"
 #include "../../Common/queue.h"
 #include "../../Common/thread.h"
 #include "../Threads/broadcasterThread.h"
 #include "../Threads/gameLoopThread.h"
+
 #include "gameMonitor.h"
 #include "player.h"
 #include "queueMonitor.h"
-#include "../../Common/gameStatus.h"  
 
 class Game {
 private:
     std::string name;
     int maxPlayers;
     int currentPlayers;
-    Queue<GameTypes::Action> recvQueue;
+    std::shared_ptr<Queue<GameTypes::Action>> recvQueue;
+    std::shared_ptr<Queue<std::string>> sendQueue;
+    std::shared_ptr<QueueMonitor<std::string>> queueMonitor;
     std::vector<Player> players;
-    std::map<int, std::shared_ptr<ReceiverThread>> receiverThreads;
+    std::map<int, std::unique_ptr<ReceiverThread>> receiverThreads;
+    std::map<int, std::unique_ptr<SenderThread>> senderThreads;
     BroadcasterThread broadcaster;
     bool running;
     GameLoop gameLoop;
-    std::unique_ptr<GameStatus> gameStatus;  
+    GameStatus gameStatus;
 
 public:
-    Game(std::string name, int maxPlayers, Player&& firstPlayer);
+    Game(const std::string& name, int maxPlayers, Player&& firstPlayer);
     void addPlayer(Player&& player);
     void removePlayer(int playerId);
     void initPlayerThreads(Player& player);

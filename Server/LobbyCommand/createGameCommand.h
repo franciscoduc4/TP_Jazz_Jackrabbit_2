@@ -2,8 +2,10 @@
 #define CREATE_GAME_COMMAND_H_
 
 #include <sstream>
-#include <utility>
 #include <string>
+#include <utility>
+
+#include "../../Common/protocol.h"
 #include "../Game/gameMonitor.h"
 
 #include "lobbyCommand.h"
@@ -15,7 +17,7 @@ private:
 public:
     explicit CreateGameCommand(std::string args);
 
-    ProtocolMessage exec(GameMonitor& gameMonitor, Protocol&& protocol, bool inLobby) override;
+    ProtocolMessage exec(GameMonitor& gameMonitor, Protocol&& protocol, bool& inLobby) override;
 };
 
 #endif  // CREATE_GAME_COMMAND_H_

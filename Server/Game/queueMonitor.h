@@ -6,13 +6,16 @@
 #include <mutex>
 #include <vector>
 
-#include "../../Common/gameTypes.h"
 #include "../../Common/protocol.h"
 #include "../../Common/queue.h"
 
 
 template <typename T>
 class QueueMonitor {
+private:
+    std::vector<std::shared_ptr<Queue<T>>> queues;
+    std::mutex mtx;
+
 public:
     std::shared_ptr<Queue<T>> createQueue();
     void closeQueue(std::shared_ptr<Queue<T>> queue);
@@ -21,9 +24,7 @@ public:
     void removeQueues();
     void broadcast(const T& event);
 
-private:
-    std::vector<std::shared_ptr<Queue<T>>> queues;
-    std::mutex mtx;
+    QueueMonitor(const queueMonitor& queueMonitor);
 };
 
 

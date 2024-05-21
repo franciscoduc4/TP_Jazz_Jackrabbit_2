@@ -1,12 +1,13 @@
 #ifndef LOBBY_PLAYER_THREAD_H_
 #define LOBBY_PLAYER_THREAD_H_
 
+#include <memory>
+
 #include "../../Common/protocol.h"
 #include "../../Common/thread.h"
 #include "../Game/gameMonitor.h"
 #include "../Game/player.h"
 #include "../LobbyCommand/lobbyCommand.h"
-#include <memory>
 
 class LobbyPlayerThread: public Thread {
 private:
@@ -18,7 +19,7 @@ public:
     LobbyPlayerThread(Socket&& playerSocket, GameMonitor& gameMonitor);
     virtual void run() override;
     virtual void stop() override;
-    void handleCommand(Protocol& protocol, const std::shared_ptr<LobbyCommand>& lobbyCommand);
+    void handleCommand(Protocol& protocol, const std::unique_ptr<LobbyCommand>& lobbyCommand);
     bool isInLobby() const;
 };
 

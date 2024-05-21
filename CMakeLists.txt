@@ -10,8 +10,9 @@ project(jazz_jackrabbit_2)
 
 #------------------------------------------------------------------------------
 # FLAGS DE COMPILACION
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17 -pthread --coverage")
+set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17 -pthread --coverage")
 
 if(APPLE)
   message("Estoy en OSX")

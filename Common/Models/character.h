@@ -19,8 +19,8 @@ protected:
     int id;
 
 public:
-    Character(int x, int y, int health, const std::string& name, const std::string& state, int id)
-        : x(x), y(y), health(health), name(name), state(state), id(id) {}
+    Character(int x, int y, int health, const std::string& name, const std::string& state, int id):
+            x(x), y(y), health(health), name(name), state(state), id(id) {}
 
     virtual ~Character() = default;
 
@@ -29,9 +29,9 @@ public:
     virtual void sprint() = 0;
     virtual void jump() = 0;
     virtual void specialAttack() = 0;
-    void handleAction(const std::string& action){}
+    void handleAction(const std::string& action) {}
 
-    static std::shared_ptr<Character> createCharacter(const std::string& name);
+    static std::unique_ptr<Character> createCharacter(const std::string& name);
 
     int getX() const { return x; }
     int getY() const { return y; }
@@ -41,10 +41,10 @@ public:
     std::string getState() const { return state; }
 };
 
-class Jazz : public Character {
+class Jazz: public Character {
 public:
-    Jazz(int x, int y, int health, const std::string& name, const std::string& state, int id)
-        : Character(x, y, health, name, state, id) {}
+    Jazz(int x, int y, int health, const std::string& name, const std::string& state, int id):
+            Character(x, y, health, name, state, id) {}
 
     void shoot() override {}
     void run() override {}
@@ -53,10 +53,10 @@ public:
     void specialAttack() override {}
 };
 
-class Spaz : public Character {
+class Spaz: public Character {
 public:
-    Spaz(int x, int y, int health, const std::string& name, const std::string& state, int id)
-        : Character(x, y, health, name, state, id) {}
+    Spaz(int x, int y, int health, const std::string& name, const std::string& state, int id):
+            Character(x, y, health, name, state, id) {}
 
     void shoot() override {}
     void run() override {}
@@ -65,10 +65,10 @@ public:
     void specialAttack() override {}
 };
 
-class Lori : public Character {
+class Lori: public Character {
 public:
-    Lori(int x, int y, int health, const std::string& name, const std::string& state, int id)
-        : Character(x, y, health, name, state, id) {}
+    Lori(int x, int y, int health, const std::string& name, const std::string& state, int id):
+            Character(x, y, health, name, state, id) {}
 
     void shoot() override {}
     void run() override {}

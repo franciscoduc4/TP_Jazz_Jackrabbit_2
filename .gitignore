@@ -46,3 +46,7 @@ server
 # VS Code
 .vscode
 .vscode/*
+
+#build
+build
+build/*

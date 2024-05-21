@@ -1,22 +1,14 @@
 #include "broadcasterThread.h"
 
 
-BroadcasterThread::BroadcasterThread(): queueMonitor(), snapshotQueue(queueMonitor.createQueue()) {}
+BroadcasterThread::BroadcasterThread(std::shared_ptr<QueueMonitor<std::string>> queueMonitor,
+                                     std::shared_ptr<Queue<std::string>> sendQueue):
+        queueMonitor(queueMonitor), sendQueue(sendQueue) {}
 
-void BroadcasterThread::addSender(Player& player) {
-    senderThreads.emplace(player.getId(), player.initSender(queueMonitor.createQueue()));
-    senderThreads[player.getId()]->start();
-}
-
-void BroadcasterThread::removeSender(int playerId) {
-    senderThreads[playerId]->stop();
-    senderThreads[playerId]->join();
-    senderThreads.erase(playerId);
-}
 
 void BroadcasterThread::run() {
     while (true) {
-        std::string snapshot = snapshotQueue->pop();
-        queueMonitor.broadcast(snapshot);
+        std::string snapshot = sendQueue->pop();
+        queueMonitor->broadcast(snapshot);
     }
 }

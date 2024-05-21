@@ -3,15 +3,17 @@
 
 #include <cstring>
 #include <map>
+#include <memory>
 #include <mutex>
 #include <string>
+#include <utility>
 #include <vector>
+
 #include <arpa/inet.h>
-#include <memory>
+
 #include "character.h"
 #include "enemy.h"
 #include "gameTypes.h"
-#include <utility>
 
 struct Gem {
     int x;
@@ -26,27 +28,26 @@ struct Coin {
 };
 
 class GameStatus {
-    private:
-    std::vector<std::shared_ptr<Character>> characters;
-    std::vector<std::shared_ptr<Enemy>> enemies;
-    std::vector<std::shared_ptr<Gem>> gems;
-    std::vector<std::shared_ptr<Coin>> coins;
+private:
+    std::vector<std::unique_ptr<Character>> characters;
+    std::vector<std::unique_ptr<Enemy>> enemies;
+    std::vector<std::unique_ptr<Gem>> gems;
+    std::vector<std::unique_ptr<Coin>> coins;
 
-    public:
-
-    void addCharacter(std::shared_ptr<Character> character) {
+public:
+    void addCharacter(std::unique_ptr<Character>&& character) {
         characters.push_back(std::move(character));
     }
 
     void handleAction(const GameTypes::Action& action) {
         for (auto& character: characters) {
             if (character->getId() == action.id) {
-                //character->handleAction(action);
+                // character->handleAction(action);
                 return;
             }
         }
     }
-    
+
     std::string snapshot() const {
         std::string buffer;
 

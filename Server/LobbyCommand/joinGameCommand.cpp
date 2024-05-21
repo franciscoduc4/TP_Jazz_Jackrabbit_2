@@ -1,10 +1,12 @@
 #include "joinGameCommand.h"
+
 #include <string>
 
 
 JoinGameCommand::JoinGameCommand(std::string args): args(std::move(args)) {}
 
-ProtocolMessage JoinGameCommand::exec(GameMonitor& gameMonitor, Protocol&& protocol, bool inLobby) {
+ProtocolMessage JoinGameCommand::exec(GameMonitor& gameMonitor, Protocol&& protocol,
+                                      bool& inLobby) {
     std::stringstream argsIt(args);
 
     std::string gameName;
