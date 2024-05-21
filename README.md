@@ -23,6 +23,8 @@ sudo apt-get update
 sudo apt-get install qtbase5-dev qtdeclarative5-dev qt5-qmake qttools5-dev-tools
 sudo apt-get install libyaml-cpp-dev
 sudo apt-get install libsdl2-image-dev
+sudo apt-get install libfmt-dev
+
 
 # Crear y entrar al directorio de compilación 
 mkdir build
