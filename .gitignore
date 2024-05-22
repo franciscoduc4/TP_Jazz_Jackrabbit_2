@@ -46,3 +46,7 @@ server
 # VS Code
 .vscode
 .vscode/*
+
+# QT Debug
+build-UI-Lobby-Qt6-Debug/
+build-UI-Lobby-Qt6-Debug/*
