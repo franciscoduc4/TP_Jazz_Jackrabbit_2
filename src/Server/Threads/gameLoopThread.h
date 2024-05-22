@@ -2,13 +2,14 @@
 #define GAMELOOP_THREAD_H_
 #include <atomic>
 
-#include "../../Common/Models/gameStatus.h"
+#include "../Physics/gameStatus.h"
 #include "../../Common/Models/gameTypes.h"
 #include "../../Common/queue.h"
 #include "../../Common/thread.h"
 // #include "../Physics/physics.h"
 #include "../../Common/queueMonitor.h"
-
+#include <memory>
+#include <string>
 #include "broadcasterThread.h"
 
 class GameLoopThread: public Thread {

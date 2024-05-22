@@ -6,7 +6,7 @@
 #include <string>
 #include <utility>
 
-#include "../../Common/Models/character.h"
+#include "../Physics/character.h"
 #include "../../Common/Models/gameTypes.h"
 #include "../../Common/protocol.h"
 #include "../../Common/queue.h"

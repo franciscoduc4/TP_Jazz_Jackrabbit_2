@@ -8,7 +8,7 @@
 #include <utility>
 #include <vector>
 
-#include "../../Common/Models/gameStatus.h"
+#include "../Physics/gameStatus.h"
 #include "../../Common/queue.h"
 #include "../../Common/thread.h"
 #include "../Threads/broadcasterThread.h"

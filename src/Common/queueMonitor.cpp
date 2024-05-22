@@ -46,3 +46,4 @@ void QueueMonitor<T>::broadcast(const T& event) {
 }
 
 template class QueueMonitor<std::string>;
+

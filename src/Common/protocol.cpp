@@ -5,7 +5,7 @@
 #include <utility>
 #include <arpa/inet.h>
 
-#include "Models/gameStatus.h"
+//#include "..Server/gameStatus.h"
 #include "Constants/lobbyCommands.h"
 #include "Constants/playerCommands.h"
 
@@ -73,7 +73,7 @@ ProtocolMessage Protocol::recvMessage() {
 void Protocol::sendGameState(GameStatus& gameStatus) {
     ProtocolMessage currentGameStatus;
     currentGameStatus.cmd = 0x00;
-    currentGameStatus.args = gameStatus.snapshot();
+    //currentGameStatus.args = gameStatus.snapshot();
     sendMessage(currentGameStatus);
 }
 

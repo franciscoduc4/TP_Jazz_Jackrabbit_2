@@ -1,13 +1,11 @@
 #include "player.h"
 
-
 Player::Player(Protocol&& protocol):
         protocol(std::move(protocol)),
         id(protocol.getId()),
         gameName(""),
         name(""),
         inGame(false) {}
-
 
 std::string Player::getGameName() const { return gameName; }
 

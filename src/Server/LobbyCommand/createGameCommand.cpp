@@ -3,7 +3,7 @@
 #include <memory>
 #include <string>
 
-#include "../../Common/Models/character.h"
+#include "../Physics/character.h"
 
 CreateGameCommand::CreateGameCommand(std::string args): args(std::move(args)) {}
 

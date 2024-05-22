@@ -44,3 +44,4 @@ make -j$(nproc)
 
 # Ejecutar las pruebas
 ctest
+

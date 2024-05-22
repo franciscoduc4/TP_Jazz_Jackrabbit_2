@@ -1,5 +1,4 @@
 #include "lobbyPlayerThread.h"
-
 #include <memory>
 #include <utility>
 
@@ -29,3 +28,4 @@ void LobbyPlayerThread::handleCommand(Protocol& protocol,
 }
 
 void LobbyPlayerThread::stop() { inLobby = false; }
+

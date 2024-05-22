@@ -7,7 +7,7 @@
 #include <string>
 #include <utility>
 #include <vector>
-
+#include <memory>
 #include <sys/socket.h>
 
 #include "../../Common/queue.h"
@@ -26,7 +26,7 @@ private:
     std::vector<std::unique_ptr<LobbyPlayerThread>> lobbyPlayers;
 
 public:
-    AcceptorThread(const std::string& servname);
+    explicit AcceptorThread(const std::string& servname);
 
     virtual void run() override;
     virtual void stop() override;

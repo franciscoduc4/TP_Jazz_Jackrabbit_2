@@ -1,5 +1,5 @@
 #include "receiverThread.h"
-
+#include <memory>
 
 ReceiverThread::ReceiverThread(std::shared_ptr<Protocol> protocol,
                                std::shared_ptr<Queue<GameTypes::Action>> gameQueue):
