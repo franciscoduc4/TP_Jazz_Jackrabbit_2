@@ -1,10 +1,14 @@
 #include "player.h"
 
-Player::Player(Protocol&& protocol):
+#include "../Physics/character.h"
+
+
+Player::Player(Protocol&& protocol, const std::string& characterName):
         protocol(std::move(protocol)),
         id(protocol.getId()),
         gameName(""),
         name(""),
+        character(Character::createCharacter(characterName)),
         inGame(false) {}
 
 std::string Player::getGameName() const { return gameName; }
@@ -26,10 +30,6 @@ std::unique_ptr<SenderThread> Player::initSender(std::shared_ptr<Queue<std::stri
     sender = std::make_unique<SenderThread>(std::make_shared<Protocol>(std::move(protocol)),
                                             sendQueue);
     return std::move(sender);
-}
-
-void Player::setCharacter(std::unique_ptr<Character>&& character) {
-    this->character = std::move(character);
 }
 
 std::unique_ptr<Character> Player::getCharacter() { return std::move(character); }

@@ -3,22 +3,19 @@
 
 #include <memory>
 #include <string>
-#include "vector.h"
 #include <utility>
-#include "weapon.h"
 #include <vector>
 
-// Declaración adelantada de las clases específicas
-class Jazz;
-class Spaz;
-class Lori;
+#include "vector.h"
+#include "weapon.h"
+
 
 class Character {
 protected:
     Vector position;
     Vector velocity;
     Vector acceleration;
-    Vector size; //ancho x alto
+    Vector size;  // ancho x alto
     bool isJumping;
     float gravity;
     bool isFalling;
@@ -30,22 +27,23 @@ protected:
     int currentWeaponIndex;
 
 public:
-    Character(): position(0, 0), velocity(0, 0), acceleration(0, 0), size(size), isJumping(false), 
-    gravity(-9.8f), isFalling(false), jumpForce(15.0f), isRunning(false), 
-    health(health), maxHealth(100) {}
+    Character():
+            position(0, 0),
+            velocity(0, 0),
+            acceleration(0, 0),
+            size(size),
+            isJumping(false),
+            gravity(-9.8f),
+            isFalling(false),
+            jumpForce(15.0f),
+            isRunning(false),
+            health(health),
+            maxHealth(100),
+            currentWeaponIndex(0) {}
 
     virtual ~Character() = default;
 
-    static std::unique_ptr<Character> createCharacter(std::string characterType) {
-        if (characterType == "Jazz") {
-            return std::make_unique<Jazz>();
-        } else if (characterType == "Spaz") {
-            return std::make_unique<Spaz>();
-        } else if (characterType == "Lori") {
-            return std::make_unique<Lori>();
-        }
-        return nullptr;
-    }
+    static std::unique_ptr<Character> createCharacter(const std::string& characterType);
 
     void applyGravity() {
         if (isJumping) {
@@ -80,17 +78,11 @@ public:
         }
     }
 
-    void move(float direction) {
-        velocity.x = direction * (isRunning ? 2.0f : 1.0f);
-    }
+    void move(float direction) { velocity.x = direction * (isRunning ? 2.0f : 1.0f); }
 
-    void startRunning() {
-        isRunning = true;
-    }
+    void startRunning() { isRunning = true; }
 
-    void stopRunning() {
-        isRunning = false;
-    }
+    void stopRunning() { isRunning = false; }
 
     void takeDamage(int damage) {
         health -= damage;
@@ -99,8 +91,8 @@ public:
         }
     }
 
-   void die(){
-        //respawn
+    void die() {
+        // respawn
         health = maxHealth;
         position = Vector(0, 0);
         isJumping = false;
@@ -108,29 +100,17 @@ public:
         isRunning = false;
     }
 
-    Vector getPosition() const {
-        return position;
-    }
+    Vector getPosition() const { return position; }
 
-    void setPosition(const Vector& pos) {
-        position = pos;
-    }
+    void setPosition(const Vector& pos) { position = pos; }
 
-    Vector getVelocity() const {
-        return velocity;
-    }
+    Vector getVelocity() const { return velocity; }
 
-    void setVelocity(const Vector& vel) {
-        velocity = vel;
-    }
+    void setVelocity(const Vector& vel) { velocity = vel; }
 
-    void land() {
-        isJumping = false;
-    }
+    void land() { isJumping = false; }
 
-    void addWeapon(std::shared_ptr<Weapon> weapon) {
-        weapons.push_back(weapon);
-    }
+    void addWeapon(std::shared_ptr<Weapon> weapon) { weapons.push_back(weapon); }
 
     void switchWeapon(int index) {
         if (index >= 0 && index < weapons.size()) {
@@ -145,38 +125,32 @@ public:
         return nullptr;
     }
 
-    Vector getSize() const {
-       return size;
-    }
+    Vector getSize() const { return size; }
 
     virtual void specialAttack() = 0;
 };
 
-class Jazz : public Character {
+// Definición de las clases específicas
+class Jazz: public Character {
 public:
-    Jazz() : Character() {}
-
     void specialAttack() override {
         // Implementar habilidad especial de Jazz
     }
 };
 
-class Spaz : public Character {
+class Spaz: public Character {
 public:
-    Spaz() : Character() {}
-
     void specialAttack() override {
         // Implementar habilidad especial de Spaz
     }
 };
 
-class Lori : public Character {
+class Lori: public Character {
 public:
-    Lori() : Character() {}
-
+    Lori(){};
     void specialAttack() override {
         // Implementar habilidad especial de Lori
     }
 };
 
-#endif // CHARACTER_H_
+#endif  // CHARACTER_H_

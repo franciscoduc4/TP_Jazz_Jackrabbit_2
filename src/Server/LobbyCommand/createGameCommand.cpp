@@ -19,8 +19,8 @@ ProtocolMessage CreateGameCommand::exec(GameMonitor& gameMonitor, Protocol&& pro
     argsIt >> gameName;
     argsIt >> character;
 
-    Player player(std::move(protocol));
-    std::unique_ptr<Character> playerCharacter = Character::createCharacter(character);
+    Player player(std::move(protocol), character);
+
     gameMonitor.createGame(gameName, maxPlayers, std::move(player));
     inLobby = false;
 

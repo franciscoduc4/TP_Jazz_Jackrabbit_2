@@ -10,9 +10,13 @@ ProtocolMessage JoinGameCommand::exec(GameMonitor& gameMonitor, Protocol&& proto
     std::stringstream argsIt(args);
 
     std::string gameName;
-    argsIt >> gameName;
+    std::string character;
 
-    Player player(std::move(protocol));
+    argsIt >> gameName;
+    argsIt >> character;
+
+    Player player(std::move(protocol), character);
+
     gameMonitor.addPlayer(gameName, std::move(player));
     inLobby = false;
 

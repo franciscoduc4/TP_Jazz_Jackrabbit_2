@@ -1,4 +1,5 @@
 #include "lobbyPlayerThread.h"
+
 #include <memory>
 #include <utility>
 
@@ -9,7 +10,7 @@ void LobbyPlayerThread::run() {
     try {
         while (inLobby) {
             ProtocolMessage message = protocol.recvMessage();
-            auto lobbyCommand = LobbyCommand::getCommand(message);
+            std::unique_ptr<LobbyCommand> lobbyCommand = LobbyCommand::getCommand(message);
             handleCommand(protocol, lobbyCommand);
         }
     } catch (const std::exception& e) {
@@ -28,4 +29,3 @@ void LobbyPlayerThread::handleCommand(Protocol& protocol,
 }
 
 void LobbyPlayerThread::stop() { inLobby = false; }
-

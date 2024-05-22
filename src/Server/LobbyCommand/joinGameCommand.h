@@ -7,6 +7,7 @@
 
 #include "../../Common/protocol.h"
 #include "../Game/gameMonitor.h"
+#include "../Physics/character.h"
 
 #include "lobbyCommand.h"
 
