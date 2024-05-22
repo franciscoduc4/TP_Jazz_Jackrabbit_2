@@ -4,14 +4,18 @@
 #include <string>
 #include <yaml-cpp/yaml.h>
 
+#include "Common/logger.h"
+
 class ClientConfig {
  private:
     static ClientConfig* instance;
+    Logger logger;
     YAML::Node root;
     ClientConfig();
+    static std::string getLogFile();
  public:
     static ClientConfig* getInstance();
-    static std::string getLogFile();
+    Logger& getLogger();
     static void deleteInstance();
 };
 

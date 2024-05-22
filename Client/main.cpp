@@ -10,7 +10,7 @@
 #define CLIENT_ARGS 3
 
 int main(int argc, char* argv) {
-    Logger logger(ClientConfig::getLogFile());
+    Logger& logger = ClientConfig::getLogger();
     if (argc != CLIENT_ARGS) {
         logger.error(__func__, __LINE__, "Invalid number of arguments. Expected: %d, got: %d",
                      CLIENT_ARGS, argc);
