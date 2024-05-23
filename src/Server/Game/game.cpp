@@ -5,15 +5,13 @@ Game::Game(const std::string& name, int maxPlayers, Player&& firstPlayer):
         maxPlayers(maxPlayers),
         currentPlayers(1),
         recvQueue(),
-        sendQueue(),
         queueMonitor(),
         players(),
         receiverThreads(),
         senderThreads(),
-        broadcaster(queueMonitor, sendQueue),
         running(false),
         gameStatus(),
-        gameLoop(sendQueue, recvQueue, gameStatus) {}
+        gameLoop(recvQueue, queueMonitor, gameStatus) {}
 
 void Game::addPlayer(Player&& player) {
     initPlayerThreads(player);
@@ -55,7 +53,6 @@ void Game::launch() {
     if (isRunning()) {
         throw std::runtime_error("Game is already running");
     }
-    broadcaster.start();
     gameLoop.start();
     running = true;
 }

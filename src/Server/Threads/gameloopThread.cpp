@@ -2,8 +2,8 @@
 
 #include <iostream>
 
-GameLoopThread::GameLoopThread(std::shared_ptr<Queue<std::string>> sendQueue,
-                               std::shared_ptr<Queue<GameTypes::Action>> recvQueue,
+GameLoopThread::GameLoopThread(std::shared_ptr<Queue<GameTypes::Action>> recvQueue,
+                               std::shared_ptr<QueueMonitor<std::string>> queueMonitor,
                                GameStatus& gameStatus):
         sendQueue(sendQueue), recvQueue(recvQueue), gameStatus(gameStatus) {}
 
