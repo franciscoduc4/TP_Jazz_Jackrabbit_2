@@ -2,7 +2,8 @@
 #define PLATFORM_H_
 
 #include "../../Common/Models/vector.h"
-
+#include <memory>
+#include <string>
 #include "character.h"
 
 class Platform {

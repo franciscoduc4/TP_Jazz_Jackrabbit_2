@@ -3,7 +3,7 @@
 
 
 #include "../../Common/Models/vector.h"
-
+#include <string>
 // #include "character.h"
 
 class Projectile {

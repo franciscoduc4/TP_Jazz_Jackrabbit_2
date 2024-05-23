@@ -3,9 +3,7 @@
 
 #include <iostream>
 #include <string>
-
 #include "../../Common/Models/vector.h"
-
 #include "character.h"
 
 class Enemy {

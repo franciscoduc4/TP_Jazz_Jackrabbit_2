@@ -2,7 +2,7 @@
 #define COLLECTIBLE_H_H
 
 #include "../../Common/Models/vector.h"
-
+#include <string>
 
 class Collectible {
 private:

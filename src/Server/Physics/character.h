@@ -5,11 +5,11 @@
 #include <string>
 #include <utility>
 #include <vector>
-
 #include "../../Common/Models/vector.h"
-
 #include "weapon.h"
 
+class Enemy;
+class Obstacle;
 
 class Character {
 protected:
@@ -66,6 +66,33 @@ public:
             position.x = 0;
             velocity.x = 0;
         }
+    }
+
+    bool isColliding(const Vector& otherPos, const Vector& otherSize) {
+        return (position.x < otherPos.x + otherSize.x &&
+                position.x + size.x > otherPos.x &&
+                position.y < otherPos.y + otherSize.y &&
+                position.y + size.y > otherPos.y);
+    }
+
+    bool isAbove(const Vector& otherPos, const Vector& otherSize) {
+        return (position.y > otherPos.y + otherSize.y &&
+                position.x < otherPos.x + otherSize.x &&
+                position.x + size.x > otherPos.x);
+    }
+
+    bool isOnSide(const Vector& otherPos, const Vector& otherSize) {
+        return (position.y < otherPos.y + otherSize.y &&
+                position.y + size.y > otherPos.y &&
+                position.x < otherPos.x + otherSize.x &&
+                position.x + size.x > otherPos.x);
+    }
+
+    bool isInFront(const Vector& otherPos, const Vector& otherSize) {
+        return (position.x + size.x > otherPos.x &&
+                position.x < otherPos.x + otherSize.x &&
+                position.y < otherPos.y + otherSize.y &&
+                position.y + size.y > otherPos.y);
     }
 
     virtual void update(float deltaTime) {
@@ -148,22 +175,21 @@ public:
 class Jazz: public Character {
 public:
     void specialAttack() override {
-        // Implementar habilidad especial de Jazz
+        jump();
     }
 };
 
 class Spaz: public Character {
 public:
     void specialAttack() override {
-        // Implementar habilidad especial de Spaz
+        move(5);
     }
 };
 
 class Lori: public Character {
 public:
-    Lori(){};
     void specialAttack() override {
-        // Implementar habilidad especial de Lori
+        jump();
     }
 };
 

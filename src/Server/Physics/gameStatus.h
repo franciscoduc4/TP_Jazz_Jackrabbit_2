@@ -2,15 +2,17 @@
 #define GAME_STATUS_H_H
 
 #include <vector>
-
+#include <utility>
 #include "../../Common/Models/vector.h"
-
+#include <string>
 #include "character.h"
 #include "collectible.h"
 #include "enemy.h"
 #include "obstacle.h"
 #include "platform.h"
 #include "projectile.h"
+#include <memory> 
+
 
 class GameStatus {
 private:

@@ -2,7 +2,8 @@
 #define OBSTACLE_H_
 
 #include "../../Common/Models/vector.h"
-
+#include <string>
+#include <memory>
 #include "character.h"
 
 class Obstacle {
