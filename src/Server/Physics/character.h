@@ -6,21 +6,23 @@
 #include <utility>
 #include <vector>
 
-#include "vector.h"
+#include "../../Common/Models/vector.h"
+
 #include "weapon.h"
 
 
 class Character {
 protected:
+    int id;
     Vector position;
     Vector velocity;
     Vector acceleration;
     Vector size;  // ancho x alto
-    bool isJumping;
+    bool jumping;
     float gravity;
-    bool isFalling;
+    bool falling;
     float jumpForce;
-    bool isRunning;
+    bool running;
     int health;
     int maxHealth;
     std::vector<std::shared_ptr<Weapon>> weapons;
@@ -28,15 +30,16 @@ protected:
 
 public:
     Character():
+            id(0),
             position(0, 0),
             velocity(0, 0),
             acceleration(0, 0),
             size(size),
-            isJumping(false),
+            jumping(false),
             gravity(-9.8f),
-            isFalling(false),
+            falling(false),
             jumpForce(15.0f),
-            isRunning(false),
+            running(false),
             health(health),
             maxHealth(100),
             currentWeaponIndex(0) {}
@@ -45,8 +48,10 @@ public:
 
     static std::unique_ptr<Character> createCharacter(const std::string& characterType);
 
+    int getId() const { return id; }
+
     void applyGravity() {
-        if (isJumping) {
+        if (jumping) {
             acceleration.y = gravity;
         }
     }
@@ -55,7 +60,7 @@ public:
         if (position.y < 0) {
             position.y = 0;
             velocity.y = 0;
-            isJumping = false;
+            jumping = false;
         }
         if (position.x < 0) {
             position.x = 0;
@@ -72,17 +77,19 @@ public:
     }
 
     void jump() {
-        if (!isJumping && !isFalling) {
+        if (!jumping && !falling) {
             velocity.y = -jumpForce;
-            isJumping = true;
+            jumping = true;
         }
     }
 
-    void move(float direction) { velocity.x = direction * (isRunning ? 2.0f : 1.0f); }
+    void move(float direction) { velocity.x = direction * (running ? 2.0f : 1.0f); }
 
-    void startRunning() { isRunning = true; }
+    void startRunning() { running = true; }
 
-    void stopRunning() { isRunning = false; }
+    void stopRunning() { running = false; }
+
+    bool isJumping() const { return jumping; }
 
     void takeDamage(int damage) {
         health -= damage;
@@ -91,13 +98,20 @@ public:
         }
     }
 
+    std::string serialize() const {
+        return "Character " + std::to_string(position.x) + " " + std::to_string(position.y) + " " +
+               std::to_string(velocity.x) + " " + std::to_string(velocity.y) + " " +
+               std::to_string(health) + " " + std::to_string(jumping) + " " +
+               std::to_string(running);
+    }
+
     void die() {
         // respawn
         health = maxHealth;
         position = Vector(0, 0);
-        isJumping = false;
-        isFalling = false;
-        isRunning = false;
+        jumping = false;
+        falling = false;
+        running = false;
     }
 
     Vector getPosition() const { return position; }
@@ -108,7 +122,7 @@ public:
 
     void setVelocity(const Vector& vel) { velocity = vel; }
 
-    void land() { isJumping = false; }
+    void land() { jumping = false; }
 
     void addWeapon(std::shared_ptr<Weapon> weapon) { weapons.push_back(weapon); }
 

@@ -1,16 +1,20 @@
-#ifndef GAME_TYPES_H
-#define GAME_TYPES_H
+#ifndef GAME_TYPES_H_
+#define GAME_TYPES_H_
+
+#include "vector.h"
 
 namespace GameTypes {
+
+enum class ActionType { MOVE, SHOOT, JUMP };
+
 struct Action {
-    int id;
-    int x;
-    int y;
-    int direction;
-    int action;
+    ActionType type;
+    int playerId;
+    float direction;        // Used for MOVE
+    float currentTime;      // Used for SHOOT
+    Vector shootDirection;  // Used for SHOOT
 };
 
 }  // namespace GameTypes
 
-
-#endif  // GAME_TYPES_H
+#endif  // GAME_TYPES_H_

@@ -18,7 +18,7 @@ void Game::addPlayer(Player&& player) {
     players.emplace_back(std::move(player));
     currentPlayers++;
     std::unique_ptr<Character> playerCharacter = player.getCharacter();
-    gameStatus.addCharacter(std::move(playerCharacter));
+    gameStatus->addCharacter(std::move(playerCharacter));
 }
 
 void Game::initPlayerThreads(Player& player) {

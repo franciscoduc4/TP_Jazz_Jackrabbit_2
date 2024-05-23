@@ -28,7 +28,7 @@ private:
     std::map<int, std::unique_ptr<SenderThread>> senderThreads;
     bool running;
     GameLoopThread gameLoop;
-    GameStatus gameStatus;
+    std::shared_ptr<GameStatus> gameStatus;
 
 public:
     Game() = default;

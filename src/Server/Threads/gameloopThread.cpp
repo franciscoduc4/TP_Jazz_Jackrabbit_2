@@ -4,24 +4,67 @@
 
 GameLoopThread::GameLoopThread(std::shared_ptr<Queue<GameTypes::Action>> recvQueue,
                                std::shared_ptr<QueueMonitor<std::string>> queueMonitor,
-                               GameStatus& gameStatus):
-        sendQueue(sendQueue), recvQueue(recvQueue), gameStatus(gameStatus) {}
+                               std::shared_ptr<GameStatus> gameStatus):
+        recvQueue(recvQueue), physics(), gameStatus(gameStatus), queueMonitor(queueMonitor) {}
 
 void GameLoopThread::run() {
-
     try {
-
         while (running) {
-            auto startTime = std::chrono::high_resolution_clock::now();
-
-            GameTypes::Action action;
-            if (recvQueue->try_pop(action)) {
-                // llamar a las fisicas dependiendo la accion
-            }
+            processActions();
+            physics.update(gameStatus, frameTime);
+            broadcastGameState();
         }
     } catch (const std::exception& e) {
         std::cerr << "Error in GameLoopThread: " << e.what() << std::endl;
     }
 }
 
-void GameLoopThread::stop() { running = false; }
+void GameLoopThread::stop() { _keep_running = false; }
+
+void GameLoopThread::processActions() {
+    GameTypes::Action action;
+    while (recvQueue->try_pop(action)) {
+        switch (action.type) {
+            case GameTypes::ActionType::MOVE:
+                handleMoveAction(action);
+                break;
+            case GameTypes::ActionType::SHOOT:
+                handleShootAction(action);
+                break;
+            case GameTypes::ActionType::JUMP:
+                handleJumpAction(action);
+                break;
+            default:
+                break;
+        }
+    }
+}
+
+void GameLoopThread::handleMoveAction(const GameTypes::Action& action) {
+    auto player = gameStatus->getCharacter(action.playerId);
+    if (player) {
+        player->move(action.direction);
+    }
+}
+
+void GameLoopThread::handleShootAction(const GameTypes::Action& action) {
+    auto player = gameStatus->getCharacter(action.playerId);
+    if (player) {
+        auto projectile = player->shoot(action.currentTime, action.shootDirection);
+        if (projectile) {
+            gameStatus->addProjectile(std::move(projectile));
+        }
+    }
+}
+
+void GameLoopThread::handleJumpAction(const GameTypes::Action& action) {
+    auto player = gameStatus->getCharacter(action.playerId);
+    if (player) {
+        player->jump();
+    }
+}
+
+void GameLoopThread::broadcastGameState() {
+    std::string gameState = gameStatus->serialize();
+    queueMonitor->broadcast(gameState);
+}

@@ -1,49 +1,43 @@
 #ifndef COLLECTIBLE_H_H
 #define COLLECTIBLE_H_H
 
-#include "vector.h"
+#include "../../Common/Models/vector.h"
+
 
 class Collectible {
-    private:
-        Vector position;
-        bool isCollected;
-        int valuePoints;
+private:
+    Vector position;
+    bool isCollected;
+    int valuePoints;
 
-    public:
-        Collectible(Vector startPosition, int valuePoints): position(startPosition), 
-        isCollected(false), valuePoints(valuePoints) {}
+public:
+    Collectible(Vector startPosition, int valuePoints):
+            position(startPosition), isCollected(false), valuePoints(valuePoints) {}
 
-        Vector getPosition() const {
-            return position;
-        }
+    Vector getPosition() const { return position; }
 
-        int getValuePoints() const {
-            return valuePoints;
-        }
+    int getValuePoints() const { return valuePoints; }
 
-        bool getIsCollected() const {
-            return isCollected;
-        }
+    bool getIsCollected() const { return isCollected; }
 
-        void collect() {
-            isCollected = true;
-        }
+    void collect() { isCollected = true; }
 
-        void update(float deltaTime) {
-            
-        }
+    void update(float deltaTime) {}
 
+    std::string serialize() const {
+        return std::to_string(position.x) + " " + std::to_string(position.y) + " " +
+               std::to_string(valuePoints);
+    }
 };
 
-class Coin : public Collectible {
-    public:
-        explicit Coin(Vector startPosition): Collectible(startPosition, 10) {}
+class Coin: public Collectible {
+public:
+    explicit Coin(Vector startPosition): Collectible(startPosition, 10) {}
 };
 
-class Gem : public Collectible {
-    public:
-        explicit Gem(Vector startPosition): Collectible(startPosition, 50) {}
+class Gem: public Collectible {
+public:
+    explicit Gem(Vector startPosition): Collectible(startPosition, 50) {}
 };
 
-#endif // COLLECTIBLE_H_H
-
+#endif  // COLLECTIBLE_H_H

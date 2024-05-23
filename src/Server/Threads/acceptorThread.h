@@ -3,11 +3,12 @@
 
 #include <atomic>
 #include <iostream>
+#include <memory>
 #include <sstream>
 #include <string>
 #include <utility>
 #include <vector>
-#include <memory>
+
 #include <sys/socket.h>
 
 #include "../../Common/queue.h"
