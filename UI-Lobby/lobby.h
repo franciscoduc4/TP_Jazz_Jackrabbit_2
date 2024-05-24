@@ -1,9 +1,13 @@
 #ifndef LOBBY_H
 #define LOBBY_H
 
-#include <QMainWindow>+
+#include <QMainWindow>
 
 #include "../Common/socket.h"
+#include "../Client/senderThread.h"
+#include "../Client/receiverThread.h"
+#include "../Client/qtMonitor.h"
+#include "../Client/lobbyMessage.h"
 
 namespace Ui {
 class Lobby;
@@ -12,11 +16,13 @@ class Lobby;
 class Lobby : public QMainWindow
 {
     Q_OBJECT
-    const QString& playerName;
-    Socket& skt;
+    SenderThread& sender;
+    ReceiverThread& receiver;
+    QTMonitor& monitor;
+    LobbyMessage& msg;
 
 public:
-    explicit Lobby(QWidget *parent = nullptr, const QString& playerName, Socket& skt);
+    explicit Lobby(QWidget *parent = nullptr, SenderThread& sender, ReceiverThread& receiver, QTMonitor& monitor, LobbyMessage& msg);
     ~Lobby();
 
 private slots:

@@ -1,11 +1,11 @@
-#include "lobby.h"
+#include "welcome.h"
 
 #include <QApplication>
 
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
-    Lobby w;
+    Welcome w;
     w.show();
     return a.exec();
 }

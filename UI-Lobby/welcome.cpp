@@ -1,21 +1,24 @@
-#include "lobby.h"
-#include "./ui_lobby.h"
+#include "welcome.h"
+#include "./ui_welcome.h"
 
-Lobby::Lobby(QWidget *parent, Socket& skt)
-    : QMainWindow(parent)
-    , ui(new Ui::Lobby)
-    , skt(skt)
+Welcome::Welcome(QWidget *parent, SenderThread& sender, ReceiverThread& receiver, QTMonitor& monitor, LobbyMessage& msg)
+    : QMainWindow(parent),
+      ui(new Ui::Welcome),
+      sender(sender),
+      receiver(receiver),
+      monitor(monitor),
+      msg(msg)
 {
     ui->setupUi(this);
 }
 
-Lobby::~Lobby()
+Welcome::~Welcome()
 {
     delete ui;
 }
 
 
-void Lobby::on_btnIngresar_clicked()
+void Welcome::on_btnIngresar_clicked()
 {
     QString playerName = ui->inputName->text();
 
@@ -24,7 +27,9 @@ void Lobby::on_btnIngresar_clicked()
         return;
     }
 
-    Lobby *lobby = new Lobby(playerName, this->skt);
+    this->msg.setPlayerName(playerName.toStdString());
+
+    Lobby* lobby = new Lobby(this->sender, this->receiver, this->monitor, this->msg);
     lobby->show();
     this->close();
 }

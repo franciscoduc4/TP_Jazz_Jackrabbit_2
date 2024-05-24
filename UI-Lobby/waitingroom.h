@@ -3,6 +3,11 @@
 
 #include <QMainWindow>
 
+#include "../Client/senderThread.h"
+#include "../Client/receiverThread.h"
+#include "../Client/qtMonitor.h"
+#include "../Client/lobbyMessage.h"
+
 namespace Ui {
 class WaitingRoom;
 }
@@ -10,9 +15,14 @@ class WaitingRoom;
 class WaitingRoom : public QMainWindow
 {
     Q_OBJECT
+    SenderThread& sender;
+    ReceiverThread& receiver;
+    QTMonitor& monitor;
+    LobbyMessage& msg;
+
 
 public:
-    explicit WaitingRoom(QWidget *parent = nullptr);
+    explicit WaitingRoom(QWidget *parent = nullptr, SenderThread& sender, ReceiverThread& receiver, QTMonitor& monitor, LobbyMessage& msg);
     ~WaitingRoom();
 
 private:

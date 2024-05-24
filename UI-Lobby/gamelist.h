@@ -3,6 +3,11 @@
 
 #include <QMainWindow>
 
+#include "../Client/senderThread.h"
+#include "../Client/receiverThread.h"
+#include "../Client/qtMonitor.h"
+#include "../Client/lobbyMessage.h"
+
 namespace Ui {
 class GameList;
 }
@@ -10,9 +15,13 @@ class GameList;
 class GameList : public QMainWindow
 {
     Q_OBJECT
+    SenderThread& sender;
+    ReceiverThread& receiver;
+    QTMonitor& monitor;
+    LobbyMessage& msg;
 
 public:
-    explicit GameList(QWidget *parent = nullptr);
+    explicit GameList(QWidget *parent = nullptr, SenderThread& sender, ReceiverThread& receiver, QTMonitor& monitor, LobbyMessage& msg);
     ~GameList();
 
 private:
