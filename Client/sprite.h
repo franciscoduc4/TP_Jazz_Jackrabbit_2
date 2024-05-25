@@ -29,6 +29,23 @@ struct Sprite {
         y(std::get<1>(values)),
         width(std::get<2>(values)),
         height(std::get<3>(values)) {}
+    
+    static std::vector<Sprite> createSprites(const std::vector<std::vector<int>>& valuesList) {
+        std::vector<Sprite> sprites;
+        for (const auto& values : valuesList) {
+            sprites.push_back(Sprite(values));
+        }
+        return sprites;
+    }
+
+    static std::vector<Sprite> createSprites(
+        const std::vector<std::tuple<int, int, int, int>>& valuesList) {
+        std::vector<Sprite> sprites;
+        for (const auto& values : valuesList) {
+            sprites.push_back(Sprite(values));
+        }
+        return sprites;
+    }
 };
 
 #endif  // SPRITE_H
