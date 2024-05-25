@@ -25,6 +25,9 @@ public:
     explicit WaitingRoom(QWidget *parent = nullptr, SenderThread& sender, ReceiverThread& receiver, QTMonitor& monitor, LobbyMessage& msg);
     ~WaitingRoom();
 
+private slots:
+    void on_btnBack_clicked();
+
 private:
     Ui::WaitingRoom *ui;
 };

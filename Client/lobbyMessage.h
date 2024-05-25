@@ -59,6 +59,18 @@ struct LobbyMessage {
     bool isJoinGame() {
         return lobbyCmd == LobbyCommands::JOIN_GAME;
     }
+
+    std::string toString() {
+        std::string str;
+        str << playerName 
+            << std::to_string(static_cast<int>(lobbyCmd))
+            << maxPlayers 
+            << gameName 
+            << waitTime 
+            << std::to_string(static_cast<int>(character)) 
+            << std::to_string(static_cast<int>(episode));
+        return str;
+    }
 };
 
 #endif // CLIENT_LOBBYMESSAGE_H

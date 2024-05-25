@@ -44,7 +44,7 @@
     <property name="geometry">
      <rect>
       <x>250</x>
-      <y>250</y>
+      <y>200</y>
       <width>251</width>
       <height>41</height>
      </rect>
@@ -62,8 +62,8 @@
    <widget class="QPushButton" name="btnJoinGame">
     <property name="geometry">
      <rect>
-      <x>190</x>
-      <y>360</y>
+      <x>180</x>
+      <y>310</y>
       <width>391</width>
       <height>51</height>
      </rect>
@@ -76,6 +76,25 @@
     </property>
     <property name="text">
      <string>Unirse a una partida</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="btnBack">
+    <property name="geometry">
+     <rect>
+      <x>310</x>
+      <y>420</y>
+      <width>131</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Jazz Jackrabbit 2</family>
+      <pointsize>24</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>Volver</string>
     </property>
    </widget>
   </widget>

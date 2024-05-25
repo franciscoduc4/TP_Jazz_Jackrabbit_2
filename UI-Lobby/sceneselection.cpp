@@ -9,9 +9,12 @@ SceneSelection::SceneSelection(QWidget *parent, SenderThread& sender, ReceiverTh
     sender(sender),
     receiver(receiver),
     monitor(monitor),
-    msg(msg)
+    msg(msg),
+    sceneSpritesWidget(new SceneSpritesWidget)
 {
     ui->setupUi(this);
+    QVBoxLayout* layout = new QVBoxLayout(ui->widgetScenes);
+    layout->addWidget(sceneSpritesWidget);
 }
 
 SceneSelection::~SceneSelection()
@@ -21,7 +24,9 @@ SceneSelection::~SceneSelection()
 
 void SceneSelection::on_btnChoose_clicked()
 {
-    // this->msg.setEpisode(EpisodeSelect::);
+    size_t selection = sceneSpritesWidget->getCurrentSprite();
+    EpisodeSelect episode = static_cast<EpisodeSelect>(selection + 1);
+    this->msg.setEpisode(episode);
     CreateGame* cg = new CreateGame(this->sender, this->receiver, this->monitor, this->msg);
     cg->show();
     this->close();

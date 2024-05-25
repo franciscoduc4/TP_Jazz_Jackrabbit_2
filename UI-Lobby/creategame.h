@@ -26,6 +26,8 @@ public:
 private slots:
     void on_btnCreate_clicked();
 
+    void on_btnBack_clicked();
+
 private:
     Ui::CreateGame *ui;
 };

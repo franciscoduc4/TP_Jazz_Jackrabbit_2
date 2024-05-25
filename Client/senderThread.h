@@ -12,6 +12,8 @@ private:
 public:
     explicit SenderThread(Protocol& p, Socket& skt, Queue& cmdsQueue);
 
+    void push_message(const ProtocolMessage& msg);
+
     void run() override;
 
     ~SenderThread();

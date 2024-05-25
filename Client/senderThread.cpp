@@ -7,12 +7,10 @@ SenderThread::SenderThread(Protocol& p, Socket& skt, Queue& cmdsQueue):
 }
 
 
-SenderThread::run() {
+void SenderThread::run() {
     try {
         while (this->_keep_running) {
-            uint8_t accion = queue.pop();
-            std::string args; //recibir las caracteristicas de la accion
-            ProtocolMessage msg(accion, args);
+            ProtocolMessage accion = queue.pop();
             this->protocol.sendMessage(msg);
         }
     } catch {
@@ -20,6 +18,10 @@ SenderThread::run() {
             stop();
         }
     }
+}
+
+void SenderThread::push_message(const ProtocolMessage& msg) {
+    this->queue.push(msg);
 }
 
 SenderThread::~SendeThread() {

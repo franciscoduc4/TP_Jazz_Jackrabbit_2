@@ -24,6 +24,11 @@ public:
     explicit GameList(QWidget *parent = nullptr, SenderThread& sender, ReceiverThread& receiver, QTMonitor& monitor, LobbyMessage& msg);
     ~GameList();
 
+private slots:
+    void on_btnBack_clicked();
+
+    void on_btnJoin_clicked();
+
 private:
     Ui::GameList *ui;
 };

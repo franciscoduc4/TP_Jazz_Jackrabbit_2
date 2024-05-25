@@ -28,6 +28,10 @@ public:
 private slots:
     void on_btnCreateGame_clicked();
 
+    void on_btnJoinGame_clicked();
+
+    void on_btnBack_clicked();
+
 private:
     Ui::Lobby *ui;
 };

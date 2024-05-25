@@ -20,6 +20,7 @@ class SceneSelection : public QMainWindow
     ReceiverThread& receiver;
     QTMonitor& monitor;
     LobbyMessage& msg;
+    SceneSpritesWidget* sceneSpritesWidget;
 
 public:
     explicit SceneSelection(QWidget *parent = nullptr, SenderThread& sender, ReceiverThread& receiver, QTMonitor& monitor, LobbyMessage& msg);
@@ -27,6 +28,8 @@ public:
 
 private slots:
     void on_btnChoose_clicked();
+
+    void on_btnBack_clicked();
 
 private:
     Ui::SceneSelection *ui;

@@ -12,6 +12,7 @@
   </property>
   <property name="font">
    <font>
+    <family>Jazz Jackrabbit 2</family>
     <pointsize>10</pointsize>
    </font>
   </property>
@@ -51,8 +52,8 @@
    <widget class="QPushButton" name="btnChoose">
     <property name="geometry">
      <rect>
-      <x>330</x>
-      <y>470</y>
+      <x>340</x>
+      <y>480</y>
       <width>111</width>
       <height>41</height>
      </rect>
@@ -67,6 +68,25 @@
      <string>Elegir</string>
     </property>
    </widget>
+   <widget class="QPushButton" name="btnBack">
+    <property name="geometry">
+     <rect>
+      <x>40</x>
+      <y>480</y>
+      <width>131</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Jazz Jackrabbit 2</family>
+      <pointsize>24</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>Volver</string>
+    </property>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="enabled">
@@ -77,7 +97,7 @@
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>23</height>
+     <height>18</height>
     </rect>
    </property>
   </widget>
