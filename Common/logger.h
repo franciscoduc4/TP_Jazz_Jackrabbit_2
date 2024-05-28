@@ -44,6 +44,7 @@ public:
         fileStream << getCurrentTime() << " | INFO | Function: " << func << " | Line: " << line
                    << " | " << std::format(format, args...) << std::endl;
     }
+
 };
 
 #endif  // __LOGGER_H__

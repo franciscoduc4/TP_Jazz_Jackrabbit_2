@@ -2,18 +2,21 @@
 
 #include <string>
 
-SenderThread::SenderThread(Protocol& p, Socket& skt, Queue& cmdsQueue): 
-    protocol(p), socket(skt), cmdsQueue(cmdsQueue) {
+SenderThread::SenderThread(Protocol& protocol,
+        Queue<ProtocolMessage>& cmdsQueue,
+        GameStatusMonitor& gameMonitor) : 
+        protocol(protocol),
+        cmdsQueue(cmdsQueue),
+        gameMonitor(gameMonitor) {
 }
-
 
 void SenderThread::run() {
     try {
-        while (this->_keep_running) {
-            ProtocolMessage accion = queue.pop();
+        while (!(this->protocol.server_closed()) || this->gameMonitor.gameIsRunning()) {
+            ProtocolMessage msg = cmdsQueue.pop();
             this->protocol.sendMessage(msg);
         }
-    } catch {
+    } catch (std::exception &e) {
         if (this->_keep_running) {
             stop();
         }
@@ -21,12 +24,10 @@ void SenderThread::run() {
 }
 
 void SenderThread::push_message(const ProtocolMessage& msg) {
-    this->queue.push(msg);
+    this->cmdsQueue.push(msg);
 }
 
-SenderThread::~SendeThread() {
-    //cerrar protocolo
-    socket.close();
-    this->join;
+SenderThread::~SenderThread() {
+    this->join();
 }
 

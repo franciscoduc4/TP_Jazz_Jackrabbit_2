@@ -3,10 +3,7 @@
 
 #include <QMainWindow>
 
-#include "../Common/socket.h"
-#include "../Client/senderThread.h"
-#include "../Client/receiverThread.h"
-#include "../Client/qtMonitor.h"
+#include "../Client/QTMonitor.h"
 #include "../Client/lobbyMessage.h"
 
 namespace Ui {
@@ -16,13 +13,9 @@ class Lobby;
 class Lobby : public QMainWindow
 {
     Q_OBJECT
-    SenderThread& sender;
-    ReceiverThread& receiver;
-    QTMonitor& monitor;
-    LobbyMessage& msg;
 
 public:
-    explicit Lobby(QWidget *parent = nullptr, SenderThread& sender, ReceiverThread& receiver, QTMonitor& monitor, LobbyMessage& msg);
+    explicit Lobby(QWidget *parent, QTMonitor& monitor, LobbyMessage& msg);
     ~Lobby();
 
 private slots:
@@ -34,6 +27,8 @@ private slots:
 
 private:
     Ui::Lobby *ui;
+    QTMonitor& monitor;
+    LobbyMessage& msg;
 };
 
 #endif // LOBBY_H

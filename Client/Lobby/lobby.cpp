@@ -1,27 +1,16 @@
 #include "lobby.h"
-#include "./ui_lobby.h"
-#include "name_screen.h"
+#include "ui_lobby.h"
 
-#include <QString>
-#include <QPixmap>
+#include "../Common/Constants/lobbyCommands.h"
+#include "characterselection.h"
 
-Lobby::Lobby(QWidget *parent)
-    : QMainWindow(parent)
-    , ui(new Ui::Lobby)
+Lobby::Lobby(QWidget *parent, QTMonitor& monitor, LobbyMessage& msg) :
+    QMainWindow(parent),
+    ui(new Ui::Lobby),
+    monitor(monitor),
+    msg(msg)
 {
     ui->setupUi(this);
-    /*
-    QString url = R"(TP_Jazz_Jackrabbit_2\assets\Miscellaneous\Miscellaneous.png)";
-    QPixmap img(url);
-    img = img.scaled(this->size(), Qt::IgnoreAspectRatio);
-    ui->label->setPixmap(img);
-    ui->label->setScaledContents(true);
-    */
-    ui->labelName->setVisible(false);
-    ui->userName->setVisible(false);
-    ui->continuar->setVisible(false);
-
-
 }
 
 Lobby::~Lobby()
@@ -29,28 +18,31 @@ Lobby::~Lobby()
     delete ui;
 }
 
-void Lobby::on_play_clicked()
+void Lobby::on_btnCreateGame_clicked()
 {
-    /*
-    esto queda mal
-
-    n_screen = new Name_screen();
-    n_screen->setModal(true);
-    n_screen->show();
-    destroy();
+    this->msg.setLobbyCmd(LobbyCommands::CREATE_GAME);
+    SceneSelection* ss = new SceneSelection(this, this->monitor, this->msg);
+    ss->show();
     this->close();
-    */
-
-    //no se si se puede hacer esto
-    delete ui->play;
-    ui->labelName->setVisible(true);
-    ui->userName->setVisible(true);
-    ui->continuar->setVisible(true);
-    //ui->centralwidget->setStyleSheet("border-image: url(/carga.png)");
-    ui->centralwidget->setStyleSheet("border-image: url(TP_Jazz_Jackrabbit_2\assets\Miscellaneous\carga.png)");
-
-
-    //verificar si esta bien el nombre de usuario
 }
 
+
+void Lobby::on_btnJoinGame_clicked()
+{
+    this->msg.setLobbyCmd(LobbyCommands::JOIN_GAME);
+    CharacterSelection* cs = new CharacterSelection(this, this->monitor, this->msg);
+    cs->show();
+    this->close();
+}
+
+
+void Lobby::on_btnBack_clicked()
+{
+    this->msg.setLobbyCmd(LobbyCommands::INVALID_CMD);
+    QWidget* parent = this->parentWidget();
+    if (parent){
+        parent->show();
+    }
+    this->close();
+}
 

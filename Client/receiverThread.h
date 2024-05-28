@@ -1,19 +1,26 @@
-#include "../Common/socket.h"
+#ifndef RECEIVERTHREAD_H
+#define RECEIVERTHREAD_H
+
 #include "../Common/thread.h"
 #include "../Common/protocol.h"
-#include "../Common/messageSerializer.h"
-#include "../Common/logger.h"
+#include "../Common/serializer.h"
+#include "./gameStatusMonitor.h"
+#include "../Client/lobbyMessage.h"
 
 class ReceiverThread : public Thread {
  private:
-    Socket& socket;
     Protocol& protocol;
-    MessageSerializer serializer;
-    Logger& logger;
+    Serializer serializer;
+    GameStatusMonitor& monitor;
+    bool inLobby;
  public:
-    ReceiverThread(Socket& socket, Protocol& protocol);
+   explicit ReceiverThread(Protocol& protocol, GameStatusMonitor& monitor);
 
-    void run() override;
-    
-    ~ReceiverThread();
-}
+   LobbyMessage receive_message();
+
+   void run() override;
+   
+   ~ReceiverThread();
+};
+
+#endif  // RECEIVERTHREAD_H

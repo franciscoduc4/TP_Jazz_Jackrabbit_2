@@ -2,12 +2,11 @@
 #include "ui_lobby.h"
 
 #include "../Common/Constants/lobbyCommands.h"
+#include "characterselection.h"
 
-Lobby::Lobby(QWidget *parent,SenderThread& sender, ReceiverThread& receiver, QTMonitor& monitor, LobbyMessage& msg) :
+Lobby::Lobby(QWidget *parent, QTMonitor& monitor, LobbyMessage& msg) :
     QMainWindow(parent),
     ui(new Ui::Lobby),
-    sender(sender),
-    receiver(receiver),
     monitor(monitor),
     msg(msg)
 {
@@ -22,7 +21,7 @@ Lobby::~Lobby()
 void Lobby::on_btnCreateGame_clicked()
 {
     this->msg.setLobbyCmd(LobbyCommands::CREATE_GAME);
-    SceneSelection* ss = new SceneSelection(this->sender, this->receiver, this->monitor, this->msg);
+    SceneSelection* ss = new SceneSelection(this, this->monitor, this->msg);
     ss->show();
     this->close();
 }
@@ -31,7 +30,7 @@ void Lobby::on_btnCreateGame_clicked()
 void Lobby::on_btnJoinGame_clicked()
 {
     this->msg.setLobbyCmd(LobbyCommands::JOIN_GAME);
-    CharacterSelection* cs = new CharacterSelection(this->sender, this->receiver, this->monitor, this->msg);
+    CharacterSelection* cs = new CharacterSelection(this, this->monitor, this->msg);
     cs->show();
     this->close();
 }
@@ -40,8 +39,10 @@ void Lobby::on_btnJoinGame_clicked()
 void Lobby::on_btnBack_clicked()
 {
     this->msg.setLobbyCmd(LobbyCommands::INVALID_CMD);
-    Welcome* w = new Welcome(this->sender, this->receiver, this->monitor, this->msg);
-    w->show();
+    QWidget* parent = this->parentWidget();
+    if (parent){
+        parent->show();
+    }
     this->close();
 }
 

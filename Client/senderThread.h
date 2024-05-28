@@ -1,16 +1,22 @@
-#include "../Common/socket.h"
+#ifndef SENDERTHREAD_H
+#define SENDERTHREAD_H
+
+#include "../Common/protocol.h"
 #include "../Common/thread.h"
 #include "../Common/queue.h"
-#include "../Common/protocol.h"
+#include "./gameStatusMonitor.h"
 
-class SenderThread: public Thread {
+class SenderThread : public Thread {
 private:
     Protocol& protocol;
-    Socket& socket;
-    Queue& cmdsQueue;
+    Queue<ProtocolMessage>& cmdsQueue;
+    GameStatusMonitor& gameMonitor;
 
 public:
-    explicit SenderThread(Protocol& p, Socket& skt, Queue& cmdsQueue);
+    SenderThread(
+        Protocol& protocol,
+        Queue<ProtocolMessage>& cmdsQueue,
+        GameStatusMonitor& gameMonitor);
 
     void push_message(const ProtocolMessage& msg);
 
@@ -19,4 +25,6 @@ public:
     ~SenderThread();
 
 
-}
+};
+
+#endif  // SENDERTHREAD_H

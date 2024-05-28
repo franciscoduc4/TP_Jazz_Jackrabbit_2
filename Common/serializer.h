@@ -2,18 +2,18 @@
 #define SERIALIZER_H_
 
 #include <string>
+#include <sstream>
 #include "../Client/lobbyMessage.h"
 
 class Serializer {
   public:
-    static ProtocolMessage parseSendMessage(const LobbyMessage& lobbyMessage) {
-        std::string protocolMessage = lobbyMessage.toString();
+    static ProtocolMessage parseSendMessage(const std::string& protocolMessage) {
         uint8_t messageSize = protocolMessage.size();
         return ProtocolMessage(messageSize, protocolMessage);
     }
 
     static LobbyMessage parseRecvMessage(const ProtocolMessage& message){
-      std::istringstream is(message.args);
+      std::stringstream is(message.args);
       std::string playerName;
       int lobbyCmdInt;
       int maxPlayers;
@@ -36,7 +36,14 @@ class Serializer {
       CharacterSelect character = static_cast<CharacterSelect>(characterInt);
       EpisodeSelect episode = static_cast<EpisodeSelect>(episodeInt);
 
-      return LobbyMessage(playerName, lobbyCmd, maxPlayers, gameName, waitTime, character, episode, playerID);
+      return LobbyMessage(playerName,
+                          lobbyCmd,
+                          maxPlayers,
+                          gameName,
+                          waitTime,
+                          character,
+                          episode,
+                          playerID);
     }
       
 };

@@ -16,11 +16,11 @@ void Client::start() {
         Socket skt(ip, port);
         Protocol protocol(std::move(skt));
         Queue cmdQueue;
-        SenderThread sender(protocol, &skt, &cmdQueue);
+        SenderThread sender(&protocol, &cmdQueue);
         sender.start();
-        ReceiverThread receiver(protocol, &skt);
+        ReceiverThread receiver(&protocol);
         receiver.start();
-        QTMonitor monitor(&protocol, &sender, &receiver);
+        QTMonitor monitor();
 
         LobbyInit init(&sender, &receiver, &monitor);
         init.run();

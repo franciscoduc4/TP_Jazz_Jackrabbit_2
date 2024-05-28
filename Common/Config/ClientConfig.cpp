@@ -8,7 +8,6 @@ ClientConfig* ClientConfig::instance = nullptr;
 
 ClientConfig::ClientConfig() {
     this->root = YAML::LoadFile(YAML_FILE_PATH);
-    this->logger = Logger(this->getLogFile());
 }
 
 ClientConfig* ClientConfig::getInstance() {
@@ -29,8 +28,17 @@ std::string ClientConfig::getLogFile() {
     return logFile;
 }
 
-Logger& ClientConfig::getLogger() {
-    return getInstance()->logger;
+std::string ClientConfig::getEpisodeFile() {
+    return getInstance()->root["EPISODE_FILE"].as<std::string>();
+}
+
+std::vector<std::vector<int>> ClientConfig::getEpisodesSprites() {
+    YAML::Node episodesSpritesNode = getInstance()->root["EPISODES_SPRITES"];
+    std::vector<std::vector<int>> episodesSprites;
+    for (YAML::const_iterator it = episodesSpritesNode.begin(); it != episodesSpritesNode.end(); ++it) {
+        episodesSprites.push_back(it->as<std::vector<int>>());
+    }
+    return episodesSprites;
 }
 
 void ClientConfig::deleteInstance() {

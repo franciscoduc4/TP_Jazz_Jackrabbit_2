@@ -2,27 +2,33 @@
 #define LOBBY_H
 
 #include <QMainWindow>
-#include "name_screen.h"
 
-QT_BEGIN_NAMESPACE
+#include "../Client/QTMonitor.h"
+#include "../Client/lobbyMessage.h"
+
 namespace Ui {
 class Lobby;
 }
-QT_END_NAMESPACE
 
 class Lobby : public QMainWindow
 {
     Q_OBJECT
 
 public:
-    Lobby(QWidget *parent = nullptr);
+    explicit Lobby(QWidget *parent, QTMonitor& monitor, LobbyMessage& msg);
     ~Lobby();
 
 private slots:
-    void on_play_clicked();
+    void on_btnCreateGame_clicked();
+
+    void on_btnJoinGame_clicked();
+
+    void on_btnBack_clicked();
 
 private:
     Ui::Lobby *ui;
-    //Name_screen *n_screen;
+    QTMonitor& monitor;
+    LobbyMessage& msg;
 };
+
 #endif // LOBBY_H

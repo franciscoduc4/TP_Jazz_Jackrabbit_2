@@ -3,19 +3,21 @@
 
 #include <string>
 #include <yaml-cpp/yaml.h>
+#include <vector>
 
 #include "Common/logger.h"
 
 class ClientConfig {
  private:
     static ClientConfig* instance;
-    Logger logger;
     YAML::Node root;
     ClientConfig();
     static std::string getLogFile();
  public:
     static ClientConfig* getInstance();
     Logger& getLogger();
+    std::string getEpisodeFile();
+    std::vector<std::vector<int>> getEpisodesSprites();
     static void deleteInstance();
 };
 

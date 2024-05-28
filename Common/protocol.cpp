@@ -11,7 +11,15 @@
 #include "Constants/lobbyCommands.h"
 #include "Constants/playerCommands.h"
 
-Protocol::Protocol(Socket&& socket): socket(std::move(socket)) {}
+Protocol::Protocol(Socket&& socket): socket(std::move(socket)), was_closed(false) {}
+
+bool Protocol::server_closed() {
+    return this->was_closed.load();
+}
+
+void Protocol::send_msg(void* data, size_t size) {
+    socket.sendall(data, size, &this->was_closed);
+}
 
 void Protocol::sendMessage(const ProtocolMessage& message) {
 
@@ -20,51 +28,32 @@ void Protocol::sendMessage(const ProtocolMessage& message) {
 
     std::string payload = std::to_string(cmd) + " " + args;
     uint16_t payloadSize = htonl(payload.size());
-    bool wasClosed = false;
 
-    try {
-        // Envio longitud del payload
-        socket.sendall(&payloadSize, sizeof(uint16_t), &wasClosed);
-        if (wasClosed) {
-            throw std::runtime_error("Socket closed");
-        }
-        // Envio el comando
-        socket.sendall(&payload, payloadSize, &wasClosed);
-        if (wasClosed) {
-            throw std::runtime_error("Socket closed");
-        }
+     // Envío la longitud del mensaje
+    this->send_msg(&payloadSize, sizeof(uint16_t));
 
-    } catch (const std::exception& e) {
-        wasClosed = true;
+    // Envío el payload del mensaje
+    this->send_msg(&payload, payload.size());
+}
+
+void Protocol::recv_msg(void* data, size_t size) {
+    socket.recvall(data, size, &this->was_closed);
+    if (was_closed) {
+        throw std::runtime_error("Socket closed");
     }
 }
 
 ProtocolMessage Protocol::recvMessage() {
     uint16_t payloadSize;
-    bool wasClosed = false;
 
-    try {
-        // Recibo longitud
-        socket.recvall(&payloadSize, sizeof(uint16_t), &wasClosed);
-        if (wasClosed) {
-            throw std::runtime_error("Socket closed");
-        }
-    } catch (const std::exception& e) {
-        wasClosed = true;
-    }
+    // Recibo la longitud del mensaje
+    this->recv_msg(&payloadSize, sizeof(uint16_t));
 
     payloadSize = ntohl(payloadSize);
     std::string message(payloadSize, '\0');
 
-    try {
-        // Recibo el comando
-        socket.recvall(&message[0], payloadSize, &wasClosed);
-        if (wasClosed) {
-            throw std::runtime_error("Socket closed");
-        }
-    } catch (const std::exception& e) {
-        wasClosed = true;
-    }
+    // Recibo el comando
+    this->recv_msg(&message[0], payloadSize);
 
     ProtocolMessage protocolMessage;
     std::istringstream iss(message);
