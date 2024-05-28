@@ -10,7 +10,7 @@
 
 #include <iostream>
 
-GameScreen::GameScreen(int character, std::string map): pj(character), turtle(0, 0, 200), schartz_guard(1, 0, 400), yellowM(2, 0, 100) {
+GameScreen::GameScreen(int character, std::string map): pj(character), turtle(0, 0, 200), schartz_guard(1, 0, 400), yellowM(2, 0, 100), points(0) {
 	
 }
 
@@ -29,6 +29,7 @@ void GameScreen::run() {
 	SDL2pp::Texture schartzenguard(renderer, SDL2pp::Surface(this->schartz_guard.getPath()));
 	SDL2pp::Texture yellowMonster(renderer, SDL2pp::Surface(this->yellowM.getPath()));
 	SDL2pp::Texture projectile(renderer, "../assets/Miscellaneous/SFX.png");
+	SDL2pp::Texture items(renderer, "../assets/Miscellaneous/Items&Objects.png");
 	
 
 	int walk_mov = 0;
@@ -237,9 +238,11 @@ void GameScreen::run() {
 			pos_y += dir_y;
 		}	
 		
+		SDL2pp::Rect player_rect = SDL2pp::Rect(pos_x, pos_y, 50, 80);
 		
-		renderer.Copy(jazz_sprite, SDL2pp::Rect(pixel_x, pixel_y, pixel_width, pixel_height), 
-			SDL2pp::Rect(pos_x, pos_y, 50, 80), 0.0, SDL2pp::NullOpt, flip);
+		this->points.verify_point_obtained(player_rect);
+		
+		renderer.Copy(jazz_sprite, SDL2pp::Rect(pixel_x, pixel_y, pixel_width, pixel_height), player_rect, 0.0, SDL2pp::NullOpt, flip);
 		
 		
 		this->pj.draw_projectiles(renderer, projectile);
@@ -249,6 +252,8 @@ void GameScreen::run() {
 		this->schartz_guard.draw_enemy(renderer, schartzenguard, 1);
 		
 		this->yellowM.draw_enemy(renderer, yellowMonster, 0);
+		
+		this->points.draw_points(renderer, items);
 		
 		renderer.Present();
 		
