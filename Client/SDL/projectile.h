@@ -2,8 +2,10 @@
 #define PROJECTILE
 
 #include <SDL2pp/SDL2pp.hh>
+#include "../sprite.h"
 
 #include <map>
+#include <list>
 #include <vector>
 
 class Projectile {
@@ -12,26 +14,19 @@ class Projectile {
 	int y;
 	int flip;
 	int count;
-	int y_src;
-	int heights;
-	std::map<int, int> widths;
+	int y_fire;
+	int x_fire;
+	int width_fire;
+	int height_fire;
 	
+	std::list<Sprite> sprites;
+			
 	
 	
 public:
 	Projectile(int p_type, int pos_x, int pos_y, int flip);
 
-	std::vector<int> getPos();
-	
-	void setPos(int x, int y);
-	
-	int getYsrc();
-
-	std::map<int, int>::iterator widthSrc();
-	
-	int heightSrc();
-	
-	int getDir();
+	std::list<Sprite>::iterator img_coords();
 	
 	bool draw_projectile(SDL2pp::Renderer& renderer, SDL2pp::Texture& projectile);
 };

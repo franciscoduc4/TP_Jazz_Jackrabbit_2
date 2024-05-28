@@ -1,4 +1,6 @@
 #include "player.h"
+#include "../sprite.h"
+#include "projectile.h"
 
 #include <string>
 #include <map>
@@ -9,132 +11,123 @@
 #include <iostream>
 
 enum character_type { Jazz, Lori, Spaz };
-enum type_mov { Walk, Shoot, Run, Jump };
-
+enum type_mov { Walk, Shoot, Run, Jump, Dash };
 
 Player::Player(int character) {
 	switch (character) {
 		case Jazz:
 			this->image_path = "../assets/Characters/Jazz.png";
-			this->y_sprites[Walk] = 790;
-			this->y_sprites[Shoot] = 557;
-			this->y_sprites[Run] = 853;
-			this->y_sprites[Jump] = 1197;
-			
-			this->heights[Walk] = 46;
-			this->heights[Shoot] = 57;
-			this->heights[Run] = 39;
-			this->heights[Jump] = 60;
 			
 			for (int i = 0; i < 8; i++) {
-				this->widths[Walk][57 * i] = 57;
-				this->widths[Run][67 * i] = 67;
+				this->sprites[Walk].push_back(Sprite(57 * i, 790, 57, 46));
+				this->sprites[Run].push_back(Sprite(67 * i, 853, 67, 39));
 			}
-			this->widths[Shoot][0] = 47;
-			this->widths[Shoot][51] = 45;
-			this->widths[Shoot][101] = 36;
-			this->widths[Shoot][143] = 37;
-			this->widths[Shoot][185] = 36;
-			this->widths[Shoot][226] = 39;
-			this->widths[Shoot][265] = 54;
-			this->widths[Jump][0] = 50;
-			this->widths[Jump][53] = 36;
-			this->widths[Jump][89] = 43;
-			this->widths[Jump][132] = 46;
-			this->widths[Jump][178] = 48;
-			this->widths[Jump][226] = 52;			
-			this->widths[Jump][278] = 51;
-			this->widths[Jump][329] = 53;
-			this->widths[Jump][383] = 45;
-			this->widths[Jump][429] = 36;
-			this->widths[Jump][465] = 35;
-			this->widths[Jump][500] = 37;
+			
+			this->sprites[Shoot].push_back(Sprite(0, 557, 47, 57));
+			this->sprites[Shoot].push_back(Sprite(51, 557, 45, 57));
+			this->sprites[Shoot].push_back(Sprite(101, 557, 36, 57));
+			this->sprites[Shoot].push_back(Sprite(143, 557, 37, 57));
+			this->sprites[Shoot].push_back(Sprite(185, 557, 36, 57));
+			this->sprites[Shoot].push_back(Sprite(226, 557, 39, 57));
+			this->sprites[Shoot].push_back(Sprite(265, 557, 54, 57));			
+
+			this->sprites[Jump].push_back(Sprite(0, 1197, 50, 60));	
+			this->sprites[Jump].push_back(Sprite(53, 1197, 36, 60));	
+			this->sprites[Jump].push_back(Sprite(89, 1197, 43, 60));	
+			this->sprites[Jump].push_back(Sprite(132, 1197, 46, 60));	
+			this->sprites[Jump].push_back(Sprite(178, 1197, 48, 60));	
+			this->sprites[Jump].push_back(Sprite(226, 1197, 52, 60));	
+			this->sprites[Jump].push_back(Sprite(278, 1197, 51, 60));	
+			this->sprites[Jump].push_back(Sprite(329, 1197, 53, 60));	
+			this->sprites[Jump].push_back(Sprite(383, 1197, 45, 60));	
+			this->sprites[Jump].push_back(Sprite(429, 1197, 36, 60));	
+			this->sprites[Jump].push_back(Sprite(465, 1197, 35, 60));	
+			this->sprites[Jump].push_back(Sprite(500, 1197, 37, 60));	
+			
+			this->sprites[Dash].push_back(Sprite(0, 909, 45, 65));
+			this->sprites[Dash].push_back(Sprite(45, 909, 43, 65));
+			this->sprites[Dash].push_back(Sprite(90, 909, 45, 65));
+			this->sprites[Dash].push_back(Sprite(135, 909, 52, 65));
+			this->sprites[Dash].push_back(Sprite(188, 909, 55, 65));
+			this->sprites[Dash].push_back(Sprite(243, 909, 53, 65));
+			this->sprites[Dash].push_back(Sprite(295, 909, 65, 65));
+			this->sprites[Dash].push_back(Sprite(360, 909, 66, 65));
+			this->sprites[Dash].push_back(Sprite(426, 909, 68, 65));
+			this->sprites[Dash].push_back(Sprite(495, 909, 67, 65));
+			this->sprites[Dash].push_back(Sprite(562, 909, 67, 65));
+			this->sprites[Dash].push_back(Sprite(629, 909, 61, 65));
+			this->sprites[Dash].push_back(Sprite(690, 909, 58, 65));
+			this->sprites[Dash].push_back(Sprite(0, 993, 70, 41));
+			this->sprites[Dash].push_back(Sprite(72, 993, 64, 41));
+			this->sprites[Dash].push_back(Sprite(137, 993, 69, 41));			
+			this->sprites[Dash].push_back(Sprite(207, 993, 69, 41));
 			
 			break;
 		case Lori:
 			this->image_path = "../assets/Characters/Lori.png";
-			
-			this->y_sprites[Walk] = 556;
-			this->y_sprites[Shoot] = 341;
-			this->y_sprites[Run] = 626;
-			this->y_sprites[Jump] = 963;
-			
-			this->heights[Walk] = 51;
-			this->heights[Shoot] = 56;
-			this->heights[Run] = 42;
-			this->heights[Jump] = 70;
-			
+						
 			for (int i = 0; i < 8; i++) {
-				this->widths[Walk][51 * i] = 51;
-				this->widths[Run][55 * i] = 55;
+				this->sprites[Walk].push_back(Sprite(51 * i, 556, 51, 51));
+				this->sprites[Run].push_back(Sprite(55 * i, 626, 55, 42));
 			}
-			this->widths[Shoot][0] = 48;
-			this->widths[Shoot][50] = 43;
-			this->widths[Shoot][100] = 38;
-			this->widths[Shoot][140] = 37;
-			this->widths[Shoot][180] = 40;
-			this->widths[Shoot][220] = 40;
-			this->widths[Jump][0] = 48;
-			this->widths[Jump][50] = 45;	
-			this->widths[Jump][98] = 44;
-			this->widths[Jump][145] = 45;
-			this->widths[Jump][190] = 45;
-			this->widths[Jump][235] = 52;
-			this->widths[Jump][288] = 52;
-			this->widths[Jump][340] = 52;
-			this->widths[Jump][392] = 53;
-			this->widths[Jump][445] = 37;
-			this->widths[Jump][485] = 40;
-			this->widths[Jump][525] = 40;
-			this->widths[Jump][565] = 40;
-				
+			
+			this->sprites[Shoot].push_back(Sprite(0, 341, 48, 56));
+			this->sprites[Shoot].push_back(Sprite(50, 341, 43, 56));
+			this->sprites[Shoot].push_back(Sprite(100, 341, 38, 56));
+			this->sprites[Shoot].push_back(Sprite(140, 341, 37, 56));
+			this->sprites[Shoot].push_back(Sprite(180, 341, 40, 56));
+			this->sprites[Shoot].push_back(Sprite(220, 341, 40, 56));
+
+			this->sprites[Jump].push_back(Sprite(0, 963, 48, 70));	
+			this->sprites[Jump].push_back(Sprite(50, 963, 45, 70));	
+			this->sprites[Jump].push_back(Sprite(98, 963, 44, 70));	
+			this->sprites[Jump].push_back(Sprite(145, 963, 45, 70));	
+			this->sprites[Jump].push_back(Sprite(190, 963, 45, 70));	
+			this->sprites[Jump].push_back(Sprite(235, 963, 52, 70));	
+			this->sprites[Jump].push_back(Sprite(288, 963, 52, 70));	
+			this->sprites[Jump].push_back(Sprite(340, 963, 52, 70));	
+			this->sprites[Jump].push_back(Sprite(392, 963, 53, 70));	
+			this->sprites[Jump].push_back(Sprite(445, 963, 37, 70));	
+			this->sprites[Jump].push_back(Sprite(485, 963, 40, 70));	
+			this->sprites[Jump].push_back(Sprite(525, 963, 40, 70));	
+			this->sprites[Jump].push_back(Sprite(565, 963, 40, 70));	
 		
 			break;
 		case Spaz:
 			this->image_path = "../assets/Characters/Spaz.png";
 		
-			this->y_sprites[Walk] = 747;
-			this->y_sprites[Shoot] = 539;
-			this->y_sprites[Run] = 807;
-			this->y_sprites[Jump] = 1139;
-			
-			this->heights[Walk] = 45;
-			this->heights[Shoot] = 48;
-			this->heights[Run] = 40;
-			this->heights[Jump] = 55;
-			
 			for (int i = 0; i < 8; i++) {
-				this->widths[Walk][50 * i] = 50;
+				this->sprites[Walk].push_back(Sprite(50 * i, 747, 50, 45));
 			}
-			this->widths[Run][0] = 48;
-			this->widths[Run][48] = 58;
-			this->widths[Run][106] = 52;
-			this->widths[Run][160] = 48;
-			this->widths[Run][210] = 48;
-			this->widths[Run][260] = 54;
-			this->widths[Run][315] = 50;
-			this->widths[Run][366] = 50;
 			
-			
-			this->widths[Shoot][0] = 52;
-			this->widths[Shoot][53] = 50;
-			this->widths[Shoot][105] = 48;
-			this->widths[Shoot][153] = 36;
-			this->widths[Shoot][190] = 42;
-			this->widths[Shoot][232] = 47;
-			
-			this->widths[Jump][0] = 44;
-			this->widths[Jump][44] = 36;	
-			this->widths[Jump][81] = 40;
-			this->widths[Jump][122] = 42;
-			this->widths[Jump][165] = 38;
-			this->widths[Jump][205] = 40;
-			this->widths[Jump][245] = 40;
-			this->widths[Jump][287] = 43;
-			this->widths[Jump][330] = 45;
-			this->widths[Jump][378] = 34;
-			this->widths[Jump][415] = 33;
-			this->widths[Jump][450] = 34;
+			this->sprites[Run].push_back(Sprite(0, 807, 48, 40));
+			this->sprites[Run].push_back(Sprite(48, 807, 58, 40));
+			this->sprites[Run].push_back(Sprite(106, 807, 52, 40));
+			this->sprites[Run].push_back(Sprite(160, 807, 48, 40));
+			this->sprites[Run].push_back(Sprite(210, 807, 48, 40));
+			this->sprites[Run].push_back(Sprite(260, 807, 54, 40));
+			this->sprites[Run].push_back(Sprite(315, 807, 50, 40));
+			this->sprites[Run].push_back(Sprite(366, 807, 50, 40));
+
+			this->sprites[Shoot].push_back(Sprite(0, 539, 52, 48));		
+			this->sprites[Shoot].push_back(Sprite(53, 539, 50, 48));		
+			this->sprites[Shoot].push_back(Sprite(105, 539, 48, 48));		
+			this->sprites[Shoot].push_back(Sprite(153, 539, 36, 48));		
+			this->sprites[Shoot].push_back(Sprite(190, 539, 42, 48));		
+			this->sprites[Shoot].push_back(Sprite(232, 539, 47, 48));		
+		
+			this->sprites[Jump].push_back(Sprite(0, 1139, 44, 55));
+			this->sprites[Jump].push_back(Sprite(44, 1139, 36, 55));
+			this->sprites[Jump].push_back(Sprite(81, 1139, 40, 55));
+			this->sprites[Jump].push_back(Sprite(122, 1139, 42, 55));
+			this->sprites[Jump].push_back(Sprite(165, 1139, 38, 55));
+			this->sprites[Jump].push_back(Sprite(205, 1139, 40, 55));
+			this->sprites[Jump].push_back(Sprite(245, 1139, 40, 55));
+			this->sprites[Jump].push_back(Sprite(287, 1139, 43, 55));
+			this->sprites[Jump].push_back(Sprite(330, 1139, 45, 55));
+			this->sprites[Jump].push_back(Sprite(378, 1139, 34, 55));
+			this->sprites[Jump].push_back(Sprite(415, 1139, 33, 55));
+			this->sprites[Jump].push_back(Sprite(450, 1139, 34, 55));
 		
 			break;
 	}
@@ -144,28 +137,21 @@ std::string Player::getPath() {
 	return this->image_path;
 }
 
-int Player::getYsrc(int mov_type) {
-	return this->y_sprites[mov_type];
-}
 
-std::map<int, int>::iterator Player::widthSrc(int mov_type, int num_mov) {
-	std::map<int, int>::iterator it = this->widths[mov_type].begin();
+std::list<Sprite>::iterator Player::img_coords(int mov_type, int num_mov) {
+	std::list<Sprite>::iterator it = this->sprites[mov_type].begin();
 	for (int i = 0; i != num_mov; i++) {
 		++it;
-		if (it == this->widths[mov_type].end()) {
-			it = this->widths[mov_type].begin();
+		if (it == this->sprites[mov_type].end()) {
+			it = this->sprites[mov_type].begin();
 		}
 	}
 	return it;
 }
 
-int Player::heightSrc(int mov_type) {
-	return this->heights[mov_type];
-}
-
 
 void Player::shoot(int x, int y, int flip) {
-	Projectile p(0, x, y, flip);
+	Projectile p(4, x, y, flip);
 	this->projectiles.push_back(p);
 }
 
@@ -173,45 +159,7 @@ void Player::shoot(int x, int y, int flip) {
 void Player::draw_projectiles(SDL2pp::Renderer& renderer, SDL2pp::Texture& projectile) {
 	std::list<Projectile>::iterator it = this->projectiles.begin();
 	
-	/*
-	int proj_pixel_x;
-	int proj_pixel_w;		
-	int proj_pixel_y;
-	int proj_pixel_h;
-	std::vector<int> proj_pos;
-	int proj_pos_x; 
-	int proj_pos_y;
-	int flip;
-	*/
-	
 	while (it != this->projectiles.end()) {
-		/*
-		std::map<int, int>::iterator it2 = it->widthSrc(); 
-		proj_pixel_x = it2->first;
-		proj_pixel_w = it2->second;		
-		proj_pixel_y = it->getYsrc();
-		proj_pixel_h = it->heightSrc();
-		proj_pos = it->getPos();
-		proj_pos_x = proj_pos[0]; 
-		proj_pos_y = proj_pos[1];
-		flip = it->getDir();
-		
-		int proj_speed = 20;
-		if (flip == 1) {
-			proj_speed = -20;
-		}
-		
-		renderer.Copy(projectile, SDL2pp::Rect(proj_pixel_x, proj_pixel_y, proj_pixel_w, proj_pixel_h), SDL2pp::Rect(proj_pos_x, proj_pos_y, 20, 10), 180.0, SDL2pp::NullOpt, flip);
-		
-		proj_pos_x += proj_speed;
-		
-		if (proj_pos_x < 0 || proj_pos_x > 800 || proj_pos_y < 0 || proj_pos_y > 500) {
-			it = this->projectiles.erase(it);
-		} else {			
-			it->setPos(proj_pos_x, proj_pos_y);
-			++it;			
-		}
-		*/
 		if (!it->draw_projectile(renderer, projectile)) {
 			it = this->projectiles.erase(it);
 		} else {
@@ -219,6 +167,4 @@ void Player::draw_projectiles(SDL2pp::Renderer& renderer, SDL2pp::Texture& proje
 		}
 		
 	}
-
 }
-
