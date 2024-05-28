@@ -46,6 +46,7 @@ public:
         std::cout << "INFO: " << file << ":" << line << " | " << fmt::format(format, args...)
                   << std::endl;
     }
+
 };
 
 #endif  // __LOGGER_H__
