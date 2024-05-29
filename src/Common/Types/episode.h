@@ -3,9 +3,9 @@
 
 #include <cstdint>
 
-enum class EpisodeSelect : uint8_t {
-    INVALID = 0x00,
-    FORMERLY_PRINCE = 0x01,
+enum class Episode : char {
+    INVALID,
+    FORMERLY_PRINCE,
     JAZZ_IN_TIME,
     FLASHBACK,
     FUNKY_MONEYS,

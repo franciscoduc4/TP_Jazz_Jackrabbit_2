@@ -3,11 +3,6 @@
 
 #include <cstdint>
 
-enum class CharacterSelect : uint8_t {
-    INVALID = 0x00,
-    JAZZ = 0x01,
-    SPAZ,
-    LORI
-};
+enum class Character : char { INVALID, JAZZ, SPAZ, LORI };
 
 #endif  // CHARACTER_SELECT_H
