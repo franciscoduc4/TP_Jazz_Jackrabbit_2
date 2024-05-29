@@ -5,7 +5,7 @@
 #include <yaml-cpp/yaml.h>
 #include <vector>
 
-#include "Common/logger.h"
+#include "logger.h"
 
 class ClientConfig {
  private:

@@ -21,7 +21,8 @@ class Sprite {
         }
     }
 
-    static std::vector<Sprite> createSprites(const std::vector<std::vector<std::pair<int, int>>>& valuesList) {
+    static std::vector<Sprite> createSprites
+    (const std::vector<std::vector<std::pair<int, int>>>& valuesList) {
         std::vector<Sprite> sprites;
         for (const auto& values : valuesList) {
             sprites.push_back(Sprite(values));

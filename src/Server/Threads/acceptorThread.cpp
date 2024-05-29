@@ -8,6 +8,7 @@ void AcceptorThread::run() {
     while (isAlive) {
         try {
             Socket playerSocket = serverSocket.accept();
+            std::cout << "New player connected" << std::endl;
             if (!isAlive) {
                 break;
             }

@@ -5,7 +5,8 @@
 #include "../../Common/protocol.h"
 #include "../../Common/queue.h"
 #include "../../Common/thread.h"
-
+#include <memory>
+\
 class ReceiverThread: public Thread {
 private:
     std::shared_ptr<Protocol> protocol;

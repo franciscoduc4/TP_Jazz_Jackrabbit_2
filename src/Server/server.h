@@ -11,16 +11,14 @@
 #include <string>
 #include <utility>
 #include <vector>
-
-#include "Game/gameMonitor.h"
 #include "Threads/acceptorThread.h"
 
 class Server {
 private:
-    std::string& servname;
+    std::string servname;
 
 public:
-    explicit Server(std::string& servname);
+    explicit Server(const std::string& servname);
     void run();
     void shutdown();
 
