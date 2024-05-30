@@ -25,10 +25,10 @@ EnemyWeapon::EnemyWeapon(int enemy_weapon) {
 			this->width = 30;
 			this->height = 20;
 			this->speed = 10;
-			this->sprites.push_back(Sprite(408, 269, 51, 28));
-			this->sprites.push_back(Sprite(459, 269, 49, 28));
-			this->sprites.push_back(Sprite(508, 269, 55, 28));
-			this->sprites.push_back(Sprite(563, 269, 49, 28));
+			this->sprites.push_back(RectangularSprite(408, 269, 51, 28));
+			this->sprites.push_back(RectangularSprite(459, 269, 49, 28));
+			this->sprites.push_back(RectangularSprite(508, 269, 55, 28));
+			this->sprites.push_back(RectangularSprite(563, 269, 49, 28));
 			this->activated = false;
 			this->count = 0;
 			this->flip = 0;
@@ -47,8 +47,8 @@ void EnemyWeapon::activate(int pos_x, int pos_y, int flip) {
 	}
 }
 
-std::list<Sprite>::iterator EnemyWeapon::weapon_coords() {
-	std::list<Sprite>::iterator it = this->sprites.begin();
+std::list<RectangularSprite>::iterator EnemyWeapon::weapon_coords() {
+	std::list<RectangularSprite>::iterator it = this->sprites.begin();
 	for (int i = 0; i < this->count; i++) {
 		++it;
 		if (it == this->sprites.end()) {
@@ -58,9 +58,9 @@ std::list<Sprite>::iterator EnemyWeapon::weapon_coords() {
 	return it;
 }
 
-bool EnemyWeapon::draw_weapon(SDL2pp::Renderer& renderer, SDL2pp::Texture& weapon) {
+bool EnemyWeapon::draw_weapon(SDL2pp::Window& window, SDL2pp::Renderer& renderer, SDL2pp::Texture& weapon) {
 	if (this->activated) {
-		std::list<Sprite>::iterator it = weapon_coords(); 
+		std::list<RectangularSprite>::iterator it = weapon_coords(); 
 		int weapon_pixel_x = it->x;
 		int weapon_pixel_w = it->width;
 		int weapon_pixel_y = it->y;
@@ -68,7 +68,7 @@ bool EnemyWeapon::draw_weapon(SDL2pp::Renderer& renderer, SDL2pp::Texture& weapo
 
 		renderer.Copy(weapon, SDL2pp::Rect(weapon_pixel_x, weapon_pixel_y, weapon_pixel_w, weapon_pixel_h), SDL2pp::Rect(this->x, this->y, this->width, this->height), 0.0, SDL2pp::NullOpt, this->flip);
 		
-		if (this->x > 800 || this->x < 0) { //WIDTH DE PANTALLA HARDCODEADO
+		if (this->x > window.GetWidth() || this->x < 0) { //WIDTH DE PANTALLA HARDCODEADO
 			this->activated = false;
 			this->x = -1;
 			this->y = -1;

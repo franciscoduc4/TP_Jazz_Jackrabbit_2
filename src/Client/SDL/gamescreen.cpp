@@ -17,8 +17,11 @@ GameScreen::GameScreen(int character, std::string map): pj(character), turtle(0,
 void GameScreen::run() {
 	SDL2pp::SDL sdl(SDL_INIT_VIDEO);
 	SDL2pp::SDLTTF ttf;
-		
-	SDL2pp::Window window("GAME", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 800, 500, SDL_WINDOW_RESIZABLE);
+	
+	int window_width= 800;
+	int window_height = 500;
+	
+	SDL2pp::Window window("GAME", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, window_width, window_height, SDL_WINDOW_RESIZABLE);
 
 	SDL2pp::Renderer renderer(window, -1, SDL_RENDERER_ACCELERATED);
 		
@@ -62,7 +65,7 @@ void GameScreen::run() {
 	int pos_x = 0;
 	int pos_y = 0;
 
-	std::list<Sprite>::iterator it = this->pj.img_coords(walk_mov, count_walk); 
+	std::list<RectangularSprite>::iterator it = this->pj.img_coords(walk_mov, count_walk); 
 	int pixel_x = it->x;
 	int pixel_y = it->y;
 	int pixel_width = it->width;
@@ -71,6 +74,15 @@ void GameScreen::run() {
 	
 	int flip = 0;
 	
+
+	int pixel_x_screen = 0;
+	int pixel_y_screen = 0;
+	int pixel_width_screen = 200;
+	int pixel_height_screen = 200;
+	
+	int img_width = 318;
+	int img_height = 2687;
+
 	while (true) {
 		SDL_Event event;
 		while (SDL_PollEvent(&event)) {
@@ -89,8 +101,10 @@ void GameScreen::run() {
 						flip = 1;
 						break;
 					case SDLK_LSHIFT:
-						speed_run = 3;
-						is_running = true;
+						if (is_walking) {
+							speed_run = 3;
+							is_running = true;
+						}
 						break;
 					case SDLK_UP:
 						dir_y = -10;
@@ -122,15 +136,10 @@ void GameScreen::run() {
 						break;
 					case SDLK_UP: case SDLK_DOWN:
 						dir_y = 0;
-						is_walking = false;
 						break;
 				}
 			}
-		}
-		
-		renderer.Clear();
-		
-		renderer.Copy(background, SDL2pp::Rect(0, 420, 200, 200), SDL2pp::Rect(0, 0, 800, 500));  
+		} 
 		
 				
 		
@@ -233,25 +242,56 @@ void GameScreen::run() {
 			
 		
 		
-		if (0 <= pos_x + (dir_x * speed_run) < 750 && 0 <= pos_y + dir_y < 450) {		
-			pos_x += (dir_x * speed_run);
-			pos_y += dir_y;
-		}	
+		window_width = window.GetWidth();
+		window_height = window.GetHeight();
 		
+		if (pos_x + (dir_x * speed_run) > window_width / 4 * 2 || (pos_x + (dir_x * speed_run) < window_width / 4 && dir_x < 0)) {
+			if (pixel_x_screen + dir_x > img_width - pixel_width_screen) {
+				pixel_x_screen = 0;
+			} else if (pixel_x_screen < 0) {
+				pixel_x_screen = img_width - pixel_width_screen;
+			} else {
+				pixel_x_screen += dir_x;
+			}
+		} else {
+			pos_x += (dir_x * speed_run);
+		}
+
+		if (pos_y + dir_y > window_height / 4 * 2 || (pos_y + dir_y < window_height / 4 && dir_y < 0)) {
+			if (pixel_y_screen + dir_y > img_height - pixel_height_screen) {
+				pixel_y_screen = 0;
+			} else if (pixel_y_screen < 0) {
+				pixel_y_screen = img_height - pixel_height_screen;
+			} else {
+				pixel_y_screen += dir_y;
+			}
+		} else {
+			pos_y += dir_y;
+		}
+
+
+		
+		renderer.Clear();
+		
+		
+		renderer.Copy(background, SDL2pp::Rect(pixel_x_screen, pixel_y_screen, pixel_width_screen, pixel_height_screen), SDL2pp::Rect(0, 0, window_width, window_height)); 
+
+
 		SDL2pp::Rect player_rect = SDL2pp::Rect(pos_x, pos_y, 50, 80);
 		
 		this->points.verify_point_obtained(player_rect);
 		
+		
 		renderer.Copy(jazz_sprite, SDL2pp::Rect(pixel_x, pixel_y, pixel_width, pixel_height), player_rect, 0.0, SDL2pp::NullOpt, flip);
 		
 		
-		this->pj.draw_projectiles(renderer, projectile);
+		this->pj.draw_projectiles(window, renderer, projectile);
 		
-		this->turtle.draw_enemy(renderer, turtle_enemy, 0);
+		this->turtle.draw_enemy(window, renderer, turtle_enemy, 0);
 		
-		this->schartz_guard.draw_enemy(renderer, schartzenguard, 1);
+		this->schartz_guard.draw_enemy(window, renderer, schartzenguard, 1);
 		
-		this->yellowM.draw_enemy(renderer, yellowMonster, 0);
+		this->yellowM.draw_enemy(window, renderer, yellowMonster, 0);
 		
 		this->points.draw_points(renderer, items);
 		
