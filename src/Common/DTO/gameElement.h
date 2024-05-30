@@ -6,7 +6,6 @@
 #include <utility>
 #include "../Types/elements.h"
 
-
 class GameElementDTO {
 private:
     ElementType type;
@@ -33,4 +32,5 @@ public:
 
     virtual ~GameElementDTO() {}
 };
+
 #endif  // COMMAND_DTO_H_

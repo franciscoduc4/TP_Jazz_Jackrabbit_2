@@ -1,10 +1,8 @@
 #ifndef GAMEDTO_H
 #define GAMEDTO_H
-
 #include <cstdint>
 #include <string>
 #include <vector>
-
 #include "bullet.h"
 #include "characterType.h"
 #include "enemy.h"
@@ -12,7 +10,7 @@
 #include "player.h"
 #include "weapon.h"
 
-struct gameDTO {
+class GameDTO : public CommandDTO {
     std::vector<PlayerDTO> players;
     std::vector<EnemyDTO> enemies;
     std::vector<BulletDTO> bullets;
