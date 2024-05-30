@@ -14,8 +14,8 @@ private:
 public:
     JoinGameDTO(int32_t& playerId, int32_t& gameId);
     explicit JoinGameDTO(bool joined);
-    int32_t getGameId();
-    bool getJoined();
+    int32_t getGameId() const;
+    bool getJoined() const;
 };
 
 #endif  // JOIN_GAME_DTO_H_

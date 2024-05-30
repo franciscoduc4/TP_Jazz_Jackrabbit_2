@@ -7,6 +7,6 @@ CommandDTO::CommandDTO(Command command): commandType(command), playerId(-1) {}
 CommandDTO::CommandDTO(int32_t& playerId, Command command):
         commandType(command), playerId(playerId) {}
 
-Command CommandDTO::getCommand() { return commandType; }
+Command CommandDTO::getCommand() const { return commandType; }
 
-int CommandDTO::getPlayerId() { return playerId; }
+int CommandDTO::getPlayerId() const { return playerId; }

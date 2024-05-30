@@ -24,6 +24,8 @@ std::unique_ptr<CommandDTO> Deserializer::getCommand(bool& wasClosed, int32_t& p
             return deserializeMove(wasClosed, playerId);
         case Command::START_GAME:
             return deserializeStart(wasClosed, playerId);
+        default:
+            return nullptr;
     }
 }
 

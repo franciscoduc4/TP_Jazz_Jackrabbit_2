@@ -20,9 +20,9 @@ public:
 
     CommandDTO(int32_t& playerId, Command command);
 
-    Command getCommand();
+    Command getCommand() const;
 
-    int getPlayerId();
+    int getPlayerId() const;
 
     virtual ~CommandDTO() {}
 };

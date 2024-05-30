@@ -3,7 +3,7 @@
 
 #include <cstdint>
 #include <vector>
-
+#include <utility>
 #include "../Types/elements.h"
 
 
@@ -23,14 +23,14 @@ public:
 
     GameElementDTO(int32_t& playerId, ElementType element);
 
-    ElementType getElementType();
+    ElementType getElementType() const;
 
-    int getPlayerId();
+    int getPlayerId() const;
 
     std::pair<uint16_t, uint16_t> getPosition();
 
     bool getVisibility();
 
-    virtual ~GameElementTypeDTO() {}
+    virtual ~GameElementDTO() {}
 };
 #endif  // COMMAND_DTO_H_

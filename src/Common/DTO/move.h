@@ -12,7 +12,7 @@ private:
 public:
     MoveDTO(int32_t& player_id, Move moveType);
 
-    Move getMoveType();
+    Move getMoveType() const;
 };
 
 #endif  // MOVE_DTO_H

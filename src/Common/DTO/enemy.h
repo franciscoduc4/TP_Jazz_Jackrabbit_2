@@ -3,8 +3,8 @@
 
 #include <cstdint>
 
-#include "src/Common/DTO/gameElement.h"
-#include "src/Common/sprite.h"
+#include "gameElement.h"
+#include "../sprite.h"
 
 class EnemyDTO: public GameElementDTO {
 private:
@@ -14,7 +14,7 @@ private:
     int health;
     int damage;
     int speed;
-    bool isAlive;
+    bool enemyIsAlive;
     int respawnTime;
     Sprite currentSprite;
 

@@ -8,10 +8,11 @@ EnemyDTO::EnemyDTO(uint16_t x, uint16_t y, uint32_t enemy_id, int health, int da
         health(health),
         damage(damage),
         speed(speed),
-        currentSprite(currentSprite){};
+        currentSprite(currentSprite){}
+
 
 uint32_t EnemyDTO::getEnemyId() const { return enemy_id; }
 int EnemyDTO::getHealth() const { return health; }
 int EnemyDTO::getDamage() const { return damage; }
 int EnemyDTO::getSpeed() const { return speed; }
-bool EnemyDTO::isAlive() const { return isAlive; }
+bool EnemyDTO::isAlive() const { return enemyIsAlive; }

@@ -5,8 +5,8 @@
 #include <string>
 
 #include "command.h"
-#include "episode.h"
-#include "gameMode.h"
+#include "../Types/episode.h"
+#include "../Types/gameMode.h"
 
 class CreateGameDTO: public CommandDTO {
 private:
@@ -21,15 +21,15 @@ public:
 
     CreateGameDTO(int32_t playerId, Episode episodeName, GameMode gameMode, uint8_t maxPlayers);
 
-    int32_t getPlayerId();
+    int32_t getPlayerId() const;
 
-    Episode getEpisodeName();
+    Episode getEpisodeName() const;
 
-    GameMode getGameMode();
+    GameMode getGameMode() const;
 
-    int32_t getGameId();
+    int32_t getGameId() const;
 
-    uint8_t getMaxPlayers();
+    uint8_t getMaxPlayers() const;
 
     virtual ~CreateGameDTO() {}
 };

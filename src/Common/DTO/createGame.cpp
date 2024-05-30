@@ -11,12 +11,12 @@ CreateGameDTO::CreateGameDTO(int32_t playerId, Episode episodeName, GameMode gam
         gameId(gameId),
         maxPlayers(maxPlayers) {}
 
-int32_t CreateGameDTO::getPlayerId() { return playerId; }
+int32_t CreateGameDTO::getPlayerId() const { return playerId; }
 
-Episode CreateGameDTO::getEpisodeName() { return episodeName; }
+Episode CreateGameDTO::getEpisodeName() const { return episodeName; }
 
-GameMode CreateGameDTO::getGameMode() { return gameMode; }
+GameMode CreateGameDTO::getGameMode() const { return gameMode; }
 
-int32_t CreateGameDTO::getGameId() { return gameId; }
+int32_t CreateGameDTO::getGameId() const { return gameId; }
 
-uint8_t CreateGameDTO::getMaxPlayers() { return maxPlayers; }
+uint8_t CreateGameDTO::getMaxPlayers() const { return maxPlayers; }
