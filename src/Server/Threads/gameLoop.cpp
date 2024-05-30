@@ -1,6 +1,6 @@
-#include "gameLoopThread.h"
-
 #include <iostream>
+
+#include "gameloop.h"
 
 GameLoopThread::GameLoopThread(std::shared_ptr<Queue<GameTypes::Action>> recvQueue,
                                std::shared_ptr<QueueMonitor<std::string>> queueMonitor,

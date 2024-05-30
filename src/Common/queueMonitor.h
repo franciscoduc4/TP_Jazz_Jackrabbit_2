@@ -6,7 +6,6 @@
 #include <mutex>
 #include <vector>
 
-#include "protocol.h"
 #include "queue.h"
 
 template <typename T>

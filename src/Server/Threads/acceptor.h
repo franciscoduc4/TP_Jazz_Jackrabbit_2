@@ -1,5 +1,5 @@
-#ifndef SERVER_CLIENT_ACCEPTOR_H_
-#define SERVER_CLIENT_ACCEPTOR_H_
+#ifndef ACCEPTOR_THREAD_H_
+#define ACCEPTOR_THREAD_H_
 
 #include <atomic>
 #include <iostream>
@@ -17,23 +17,21 @@
 #include "../Game/gameMonitor.h"
 #include "../Game/player.h"
 
-#include "lobbyPlayerThread.h"
 
 class AcceptorThread: public Thread {
 private:
-    Socket serverSocket;
+    std::shared_ptr<Socket> serverSocket;
     std::atomic<bool> isAlive{true};
     GameMonitor gameMonitor;
-    std::vector<std::unique_ptr<LobbyPlayerThread>> lobbyPlayers;
+    std::vector<std::unique_ptr<Player>> players;
 
 public:
     explicit AcceptorThread(const std::string& servname);
 
     virtual void run() override;
     virtual void stop() override;
-    void movePlayerToLobby(Socket&& socket, GameMonitor& gameMonitor);
-    void cleanInactiveLobbyPlayers();
-    void cleanLobby();
+    void removeDeadPlayers();
+    void removeAllPlayers();
 };
 
-#endif  // SERVER_CLIENT_ACCEPTOR_H_
+#endif  // ACCEPTOR_THREAD_H_

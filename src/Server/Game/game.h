@@ -9,12 +9,12 @@
 #include <vector>
 
 #include "../../Common/queue.h"
+#include "../../Common/queueMonitor.h"
 #include "../../Common/thread.h"
 #include "../Physics/gameStatus.h"
-#include "../Threads/gameLoopThread.h"
+#include "../Threads/gameLoop.h"
 
 #include "player.h"
-#include "../../Common/queueMonitor.h"
 
 class Game {
 private:

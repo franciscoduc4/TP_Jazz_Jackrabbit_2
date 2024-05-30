@@ -3,7 +3,7 @@
 Server::Server(const std::string& servname): servname(servname.c_str()) {}
 
 void Server::run() {
-    AcceptorThread acceptor(servname);
+    Acceptor acceptor(servname);
 
     acceptor.start();
 

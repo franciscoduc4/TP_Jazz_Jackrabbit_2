@@ -1,4 +1,5 @@
-#include "receiverThread.h"
+#include "receiver.h"
+
 #include <memory>
 
 ReceiverThread::ReceiverThread(std::shared_ptr<Protocol> protocol,
