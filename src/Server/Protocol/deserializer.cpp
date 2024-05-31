@@ -18,12 +18,10 @@ std::unique_ptr<CommandDTO> Deserializer::getCommand(bool& wasClosed, int32_t& p
             return deserializeJoinGame(wasClosed, playerId);
         case Command::GAMES_LIST:
             return deserializeGamesList(wasClosed, playerId);
-        case Command::CHARACTER_TYPE:
-            return deserializeCharacterType(wasClosed, playerId);
-        case Command::MOVE:
-            return deserializeMove(wasClosed, playerId);
         case Command::START_GAME:
             return deserializeStart(wasClosed, playerId);
+        case Command::MOVE:
+            return deserializeMove(wasClosed, playerId);
         default:
             return nullptr;
     }
@@ -37,30 +35,28 @@ std::unique_ptr<CreateGameDTO> Deserializer::deserializeCreateGame(bool& wasClos
     socket->recvall(&gameMode, 1, &wasClosed);
     uint8_t maxPlayers;
     socket->recvall(&maxPlayers, 1, &wasClosed);
+    Character character;
+    socket->recvall(&character, 1, &wasClosed);
     uint8_t lengthName = 0;
     socket->recvall(&lengthName, 1, &wasClosed);
     std::vector<char> nameBuffer(lengthName);
     socket->recvall(nameBuffer.data(), lengthName, &wasClosed);
-    return std::make_unique<CreateGameDTO>(playerId, episodeName, gameMode, maxPlayers, 
-    std::string(nameBuffer.begin(), nameBuffer.end()));
+    return std::make_unique<CreateGameDTO>(playerId, episodeName, gameMode, maxPlayers, character,
+                                           std::string(nameBuffer.begin(), nameBuffer.end()));
 }
 
 std::unique_ptr<JoinGameDTO> Deserializer::deserializeJoinGame(bool& wasClosed, int32_t& playerId) {
     int32_t gameId;
     socket->recvall(&gameId, 4, &wasClosed);
-    return std::make_unique<JoinGameDTO>(playerId, gameId);
+    Character character;
+    socket->recvall(&character, 1, &wasClosed);
+    return std::make_unique<JoinGameDTO>(playerId, gameId, character);
 }
 
 std::unique_ptr<CommandDTO> Deserializer::deserializeGamesList(bool& wasClosed, int32_t& playerId) {
     return std::make_unique<CommandDTO>(playerId, Command::GAMES_LIST);
 }
 
-std::unique_ptr<CharacterTypeDTO> Deserializer::deserializeCharacterType(bool& wasClosed,
-                                                                         int32_t& playerId) {
-    Character character;
-    socket->recvall(&character, 1, &wasClosed);
-    return std::make_unique<CharacterTypeDTO>(playerId, character);
-}
 
 std::unique_ptr<MoveDTO> Deserializer::deserializeMove(bool& wasClosed, int32_t& playerId) {
     Move moveType;
@@ -68,8 +64,10 @@ std::unique_ptr<MoveDTO> Deserializer::deserializeMove(bool& wasClosed, int32_t&
     return std::make_unique<MoveDTO>(playerId, moveType);
 }
 
-std::unique_ptr<CommandDTO> Deserializer::deserializeStart(bool& wasClosed, int32_t& playerId) {
-    return std::make_unique<CommandDTO>(playerId, Command::START_GAME);
+std::unique_ptr<StartGameDTO> Deserializer::deserializeStart(bool& wasClosed, int32_t& playerId) {
+    int32_t gameId;
+    socket->recvall(&gameId, 4, &wasClosed);
+    return std::make_unique<StartGameDTO>(playerId, gameId);
 }
 
 std::unique_ptr<CommandDTO> Deserializer::deserializeShooting(bool& wasClosed, int32_t& playerId) {

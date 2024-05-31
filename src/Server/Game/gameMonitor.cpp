@@ -1,13 +1,17 @@
 #include "gameMonitor.h"
-#include <utility>
+
 #include <sstream>
+#include <utility>
 
 GameMonitor::GameMonitor() {}
 
-void GameMonitor::createGame(int32_t playerId, Episode episode, 
-    GameMode gameMode, uint8_t maxPlayers) {
+bool GameMonitor::createGame(int32_t playerId, Episode episode, GameMode gameMode,
+                             uint8_t maxPlayers, std::string gameName) {
     std::lock_guard<std::mutex> lock(mtx);
-    //games[episode] = std::make_unique<Game>(episode, maxPlayers, std::move(player));
+    // games[episode] = std::make_unique<Game>(episode, maxPlayers, std::move(player));
+    if (games.find(gameName) != games.end()) {
+        return false;
+    }
 }
 
 void GameMonitor::addPlayer(const std::string& gameName, Player&& player) {

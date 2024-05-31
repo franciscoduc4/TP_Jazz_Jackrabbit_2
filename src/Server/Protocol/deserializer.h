@@ -10,6 +10,7 @@
 #include "../../Common/DTO/createGame.h"
 #include "../../Common/DTO/joinGame.h"
 #include "../../Common/DTO/move.h"
+#include "../../Common/DTO/startGame.h"
 #include "../../Common/Types/command.h"
 #include "../../Common/socket.h"
 
@@ -27,13 +28,14 @@ private:
 
     std::unique_ptr<MoveDTO> deserializeMove(bool& wasClosed, int32_t& playerId);
 
-    std::unique_ptr<CommandDTO> deserializeStart(bool& wasClosed, int32_t& playerId);
+    std::unique_ptr<StartGameDTO> deserializeStart(bool& wasClosed, int32_t& playerId);
 
     std::unique_ptr<CommandDTO> deserializeShooting(bool& wasClosed, int32_t& playerId);
 
     std::unique_ptr<CommandDTO> deserializeReloading(bool& wasClosed, int32_t& playerId);
 
     std::unique_ptr<CommandDTO> deserializeSwitchWeapon(bool& wasClosed, int32_t& playerId);
+
 
 public:
     explicit Deserializer(std::shared_ptr<Socket> socket);

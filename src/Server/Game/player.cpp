@@ -8,7 +8,8 @@ Player::Player(std::shared_ptr<Socket> socket, GameMonitor& gameMonitor,
                QueueMonitor<GameDTO>& queueMonitor, uint8_t id):
         id(id),
         socket(socket),
-        sender(socket, std::ref(keepPlaying), std::ref(inGame), gameMonitor, queueMonitor, id) {
+        sender(socket, std::ref(keepPlaying), std::ref(inGame), gameMonitor, id,
+               queueMonitor.createQueue()) {
     sender.start();
 }
 

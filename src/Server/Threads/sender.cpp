@@ -1,41 +1,58 @@
 #include "sender.h"
 
+#include "../CommandHandler/command.h"
+
 SenderThread::SenderThread(std::shared_ptr<Socket> socket, std::atomic<bool>& keepPlaying,
                            std::atomic<bool>& inGame, GameMonitor& gameMonitor, int32_t playerId,
-                           QueueMonitor<GameDTO>& queueMonitor):
+                           std::shared_ptr<Queue<GameDTO>> sendQueue):
         playerId(playerId),
         serializer(socket),
         deserializer(socket),
         keepPlaying(keepPlaying),
         inGame(inGame),
         wasClosed(false),
-        sendQueue(queueMonitor.createQueue()),
-        receiver(socket, keepPlaying, inGame, sendQueue, playerId),
-        gameMonitor(gameMonitor),
-        recvQueue() {}
+        sendQueue(sendQueue),
+        recvQueue(),
+        receiver(socket, keepPlaying, inGame, gameMonitor, playerId, recvQueue),
+        gameMonitor(gameMonitor) {
+    recvQueue = std::make_shared<Queue<std::unique_ptr<CommandDTO>>>();
+}
 
 void SenderThread::run() {
     serializer.sendId(playerId);
     while (keepPlaying) {
         runLobby();
-    }
-}
 
-void SenderThread::runLobby() {
-    while (keepPlaying) {
-        try {
-            std::unique_ptr<CommandDTO> command = deserializer.getCommand(wasClosed, playerId);
-
-            if (command->getCommand() == Command::CREATE_GAME) {
-                CreateGameDTO* createGameCommand = dynamic_cast<CreateGameDTO*>(command.get());
-
-                if (createGameCommand) {
-                    Episode episode = createGameCommand->getEpisodeName();
-                    GameMode gameMode = createGameCommand->getGameMode();
-                    uint8_t maxPlayers = createGameCommand->getMaxPlayers();
-                    // gameMonitor.createGame(playerId, episode, gameMode, maxPlayers);
+        while (inGame) {
+            try {
+                std::unique_ptr<GameDTO> gameDTO = sendQueue->pop();
+                serializer.sendGameDTO(std::move(gameDTO));
+            } catch (const std::exception& e) {
+                if (wasClosed) {
+                    return;
                 }
             }
         }
     }
+}
+
+void SenderThread::runLobby() {
+    while (keepPlaying && !inGame) {
+        try {
+            std::unique_ptr<CommandDTO> command = deserializer.getCommand(wasClosed, playerId);
+            if (command == nullptr) {
+                continue;
+            }
+            std::unique_ptr<CommandHandler> handler =
+                    CommandHandler::createHandler(std::move(command));
+            std::unique_ptr<LobbyDTO> lobbyDTO =
+                    handler->execute(gameMonitor, std::ref(inGame), recvQueue);
+            serializer.sendLobbyDTO(std::move(lobbyDTO));
+        } catch (const std::exception& e) {
+            if (wasClosed) {
+                return;
+            }
+        }
+    }
+    receiver.start();
 }

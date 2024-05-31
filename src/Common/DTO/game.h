@@ -9,9 +9,10 @@
 #include "enemy.h"
 #include "item.h"
 #include "player.h"
+#include "tile.h"
 #include "weapon.h"
 
-class GameDTO: public CommandDTO {
+class GameDTO {
     std::vector<PlayerDTO> players;
     std::vector<EnemyDTO> enemies;
     std::vector<BulletDTO> bullets;

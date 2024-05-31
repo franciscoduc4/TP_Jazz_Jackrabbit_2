@@ -2,21 +2,30 @@
 
 #include <memory>
 
-ReceiverThread::ReceiverThread(std::shared_ptr<Protocol> protocol,
-                               std::shared_ptr<Queue<GameTypes::Action>> gameQueue):
-        protocol(protocol), gameQueue(gameQueue) {}
+#include "../../Common/DTO/lobby.h"
+#include "../CommandHandler/command.h"
+
+ReceiverThread::ReceiverThread(std::shared_ptr<Socket> socket, std::atomic<bool>& keepPlaying,
+                               std::atomic<bool>& inGame, GameMonitor& gameMonitor,
+                               int32_t playerId,
+                               std::shared_ptr<Queue<std::unique_ptr<CommandDTO>>> recvQueue):
+        playerId(playerId),
+        serializer(socket),
+        deserializer(socket),
+        keepPlaying(keepPlaying),
+        inGame(inGame),
+        wasClosed(false),
+        recvQueue(recvQueue),
+        gameMonitor(gameMonitor) {}
 
 void ReceiverThread::run() {
-    while (_keep_running) {
+    while (inGame) {
         try {
-            // GameTypes::Action command;
-            // if (!protocol.receiveCommand(command)) {
-            //     break;
-            // }
-            // gameQueue.push(command);
+            std::unique_ptr<CommandDTO> command = deserializer.getCommand(wasClosed, playerId);
+            recvQueue->push(std::move(command));
         } catch (const std::exception& e) {
-            if (_keep_running) {
-                std::cerr << "ReceiverThread error: " << e.what() << std::endl;
+            if (wasClosed) {
+                return;
             }
         }
     }
