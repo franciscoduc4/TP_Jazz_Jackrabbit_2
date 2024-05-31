@@ -17,12 +17,12 @@
 
 class SenderThread: public Thread {
 private:
-    uint8_t id;
+    int32_t playerId;
     Serializer serializer;
     Deserializer deserializer;
     std::atomic<bool>& keepPlaying;
     std::atomic<bool>& inGame;
-    bool wasClosed{false};
+    bool wasClosed;
     std::shared_ptr<Queue<GameDTO>> sendQueue;
     ReceiverThread receiver;
     GameMonitor& gameMonitor;
@@ -31,7 +31,7 @@ private:
 
 public:
     SenderThread(std::shared_ptr<Socket> socket, std::atomic<bool>& keepPlaying,
-                 std::atomic<bool>& inGame, GameMonitor& gameMonitor, uint8_t id);
+                 std::atomic<bool>& inGame, GameMonitor& gameMonitor, int32_t id);
 
     void run() override;
 

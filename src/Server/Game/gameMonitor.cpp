@@ -4,9 +4,10 @@
 
 GameMonitor::GameMonitor() {}
 
-void GameMonitor::createGame(const std::string& gameName, int maxPlayers, Player&& player) {
+void GameMonitor::createGame(int32_t playerId, Episode episode, 
+    GameMode gameMode, uint8_t maxPlayers) {
     std::lock_guard<std::mutex> lock(mtx);
-    games[gameName] = std::make_unique<Game>(gameName, maxPlayers, std::move(player));
+    //games[episode] = std::make_unique<Game>(episode, maxPlayers, std::move(player));
 }
 
 void GameMonitor::addPlayer(const std::string& gameName, Player&& player) {

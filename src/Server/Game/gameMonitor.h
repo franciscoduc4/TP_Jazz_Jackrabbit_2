@@ -5,7 +5,8 @@
 #include <memory>
 #include <mutex>
 #include <string>
-
+#include "../../Common/Types/episode.h"
+#include "../../Common/Types/gameMode.h"
 #include "game.h"
 
 class GameMonitor {
@@ -15,7 +16,7 @@ private:
 
 public:
     GameMonitor();
-    void createGame(const std::string& gameName, int maxPlayers, Player&& player);
+    void createGame(int32_t playerId, Episode episode, GameMode gameMode, uint8_t maxPlayers);
     void addPlayer(const std::string& gameName, Player&& player);
     void launchGame(const std::string& gameName);
     void listGames(std::string& list);

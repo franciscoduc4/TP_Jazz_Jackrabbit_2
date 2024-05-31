@@ -10,30 +10,33 @@
 #include "../../Common/thread.h"
 #include "../Physics/gameStatus.h"
 #include "../Physics/physics.h"
+#include "../../Common/DTO/game.h"
+#include "../../Common/Types/episode.h"
+#include "../../Common/Types/gameMode.h"
 
 
 class GameLoopThread: public Thread {
-private:
-    std::shared_ptr<Queue<GameTypes::Action>> recvQueue;
-    std::atomic<bool> running{true};
-    Physics physics;
-    std::shared_ptr<GameStatus> gameStatus;
-    std::shared_ptr<QueueMonitor<std::string>> queueMonitor;
-    float frameTime = 0.016f;  // Assuming 60 FPS
+    private:
+        Physics physics;
+        QueueMonitor<GameDTO> queueMonitor;
+        int32_t gameId;
+        std::string gameName;
+        std::atomic<bool> keepRunning;
+        std::shared_ptr<Queue<CommandDTO>> recvQueue;
+        uint8_t maxPlayers;
+        bool isFull;
+    public:
+        GameLoopThread(int32_t gameId, std::string gameName, 
+        int32_t& playerId, Episode episode, GameMode gameMode,
+        uint8_t maxPlayers, std::shared_ptr<Queue<GameDTO>> sendQueue);
 
-    void broadcastGameState();
-    void processActions();
+        void run() override;
+        void addPlayer(int32_t playerId, std::shared_ptr<Queue<GameDTO>> sendQueue);
+        bool deletePlayer(int32_t playerId);
+        int32_t getGameId();
+        std::string getGameName();
+        void stop();
 
-    void handleMoveAction(const GameTypes::Action& action);
-    void handleShootAction(const GameTypes::Action& action);
-    void handleJumpAction(const GameTypes::Action& action);
-
-public:
-    GameLoopThread(std::shared_ptr<Queue<GameTypes::Action>> recvQueue,
-                   std::shared_ptr<QueueMonitor<std::string>> QueueMonitor,
-                   std::shared_ptr<GameStatus> gameStatus);
-    void run() override;
-    void stop() override;
 };
 
 #endif  // GAMELOOP_THREAD_H_

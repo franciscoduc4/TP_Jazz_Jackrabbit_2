@@ -28,5 +28,6 @@ class PlayerDTO : public GameElementDTO {
         int getRespawnTime() const;
         
 };
+
 #endif // PLAYER_H_
 

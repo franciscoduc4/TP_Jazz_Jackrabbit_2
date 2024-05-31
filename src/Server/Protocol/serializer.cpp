@@ -27,15 +27,15 @@ void Serializer::sendCommand(const CommandDTO& dto, bool& wasClosed) {
         case Command::START_GAME:
             buffer = serializeStart(dto);
             break;
-        case Command::SHOOT:
-            buffer = serializeShooting(dto);
-            break;
-        case Command::RELOAD:
-            buffer = serializeReloading(dto);
-            break;
-        case Command::SWITCH_WEAPON:
-            buffer = serializeSwitchWeapon(dto);
-            break;
+        // case Command::SHOOT:
+        //     buffer = serializeShooting(dto);
+        //     break;
+        // case Command::RELOAD:
+        //     buffer = serializeReloading(dto);
+        //     break;
+        // case Command::SWITCH_WEAPON:
+        //     buffer = serializeSwitchWeapon(dto);
+        //   break;
         default:
             return;
     }
@@ -91,20 +91,20 @@ std::vector<char> Serializer::serializeStart(const CommandDTO& dto) {
     return buffer;
 }
 
-std::vector<char> Serializer::serializeShooting(const CommandDTO& dto) {
-    std::vector<char> buffer;
-    buffer.push_back(static_cast<char>(Command::SHOOT));
-    return buffer;
-}
+// std::vector<char> Serializer::serializeShooting(const CommandDTO& dto) {
+//     std::vector<char> buffer;
+//     buffer.push_back(static_cast<char>(Command::SHOOT));
+//     return buffer;
+// }
 
-std::vector<char> Serializer::serializeReloading(const CommandDTO& dto) {
-    std::vector<char> buffer;
-    buffer.push_back(static_cast<char>(Command::RELOAD));
-    return buffer;
-}
+// std::vector<char> Serializer::serializeReloading(const CommandDTO& dto) {
+//     std::vector<char> buffer;
+//     buffer.push_back(static_cast<char>(Command::RELOAD));
+//     return buffer;
+// }
 
-std::vector<char> Serializer::serializeSwitchWeapon(const CommandDTO& dto) {
-    std::vector<char> buffer;
-    buffer.push_back(static_cast<char>(Command::SWITCH_WEAPON));
-    return buffer;
-}
+// std::vector<char> Serializer::serializeSwitchWeapon(const CommandDTO& dto) {
+//     std::vector<char> buffer;
+//     buffer.push_back(static_cast<char>(Command::SWITCH_WEAPON));
+//     return buffer;
+// }
