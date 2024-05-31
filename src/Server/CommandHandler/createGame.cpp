@@ -1,8 +1,9 @@
 #include "createGame.h"
 
 #include <memory>
-#include <utility>
 #include <string>
+#include <utility>
+
 #include "../../Common/DTO/createGame.h"
 #include "../../Common/DTO/lobby.h"
 #include "../../Common/Types/episode.h"
@@ -23,7 +24,7 @@ std::unique_ptr<LobbyDTO> CreateGameHandler::execute(
     GameMode gameMode = command->getGameMode();
     uint8_t maxPlayers = command->getMaxPlayers();
     std::string gameName = command->getGameName();
-    if (gameMonitor.createGame(playerId, episode, gameMode, maxPlayers, gameName)) {
+    if (gameMonitor.createGame(playerId, episode, gameMode, maxPlayers, gameName, recvQueue)) {
         return std::make_unique<LobbyDTO>(LobbyState::GAME_CREATED);
     } else {
         return std::make_unique<LobbyDTO>(LobbyState::GAME_NOT_CREATED);
