@@ -2,20 +2,22 @@
 
 
 AcceptorThread::AcceptorThread(const std::string& servname):
-        serverSocket(servname.c_str()), gameMonitor(), lobbyPlayers() {}
+        serverSocket(std::make_shared<Socket>(servname.c_str())),
+        gameMonitor(),
+        players(),
+        queueMonitor() {}
 
 void AcceptorThread::run() {
     while (isAlive) {
         try {
-            Socket playerSocket = serverSocket.accept();
+            Socket playerSocket = serverSocket->accept();
             std::cout << "New player connected" << std::endl;
             if (!isAlive) {
                 break;
             }
-            Player player(std::make_shared(playerSocket), &gameMonitor,
-                          static_cast<uint8_t> players.size());
-
-            players.emplace_back(std::make_unique<Player>(std::move(player)));
+            auto player = std::make_unique<Player>(playerSocket, gameMonitor, queueMonitor,
+                                                   static_cast<uint8_t>(players.size()));
+            players.emplace_back(std::move(player));
             removeDeadPlayers();
         } catch (const std::exception& e) {
             if (isAlive) {
@@ -31,13 +33,13 @@ void AcceptorThread::stop() {
     removeAllPlayers();
     gameMonitor.endAllGames();
     isAlive = false;
-    serverSocket.shutdown(SHUT_RDWR);
-    serverSocket.close();
+    serverSocket->shutdown(SHUT_RDWR);
+    serverSocket->close();
 }
 
 void AcceptorThread::removeDeadPlayers() {
     for (auto it = players.begin(); it != players.end();) {
-        if (!(*it)->isAlive()) {
+        if (!(*it)->isPlaying()) {
             (*it)->disconnect();
             it = players.erase(it);
         } else {

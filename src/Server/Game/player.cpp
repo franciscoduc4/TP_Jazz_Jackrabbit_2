@@ -4,10 +4,11 @@
 
 #include "../Physics/character.h"
 
-Player::Player(std::shared_ptr<Socket> socket, GameMonitor& gameMonitor, uint8_t id):
+Player::Player(std::shared_ptr<Socket> socket, GameMonitor& gameMonitor,
+               QueueMonitor<GameDTO>& queueMonitor, uint8_t id):
         id(id),
         socket(socket),
-        sender(socket, std::ref(keepPlaying), std::ref(inGame), gameMonitor, id) {
+        sender(socket, std::ref(keepPlaying), std::ref(inGame), gameMonitor, queueMonitor, id) {
     sender.start();
 }
 

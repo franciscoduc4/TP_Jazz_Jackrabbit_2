@@ -1,10 +1,11 @@
-#ifndef ENEMY_H
-#define ENEMY_H
+#ifndef ENEMY_DTO_H
+#define ENEMY_DTO_H
 
 #include <cstdint>
 
-#include "gameElement.h"
 #include "../sprite.h"
+
+#include "gameElement.h"
 
 class EnemyDTO: public GameElementDTO {
 private:
@@ -28,4 +29,4 @@ public:
     bool isAlive() const;
 };
 
-#endif  // ENEMY_H
+#endif  // ENEMY_DTO_H

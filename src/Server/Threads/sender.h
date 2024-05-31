@@ -8,6 +8,7 @@
 #include "../../Common/DTO/game.h"
 #include "../../Common/Models/gameTypes.h"
 #include "../../Common/queue.h"
+#include "../../Common/queueMonitor.h"
 #include "../../Common/thread.h"
 #include "../Game/gameMonitor.h"
 #include "../Protocol/deserializer.h"
@@ -31,7 +32,8 @@ private:
 
 public:
     SenderThread(std::shared_ptr<Socket> socket, std::atomic<bool>& keepPlaying,
-                 std::atomic<bool>& inGame, GameMonitor& gameMonitor, int32_t id);
+                 std::atomic<bool>& inGame, GameMonitor& gameMonitor, int32_t id,
+                 QueueMonitor<GameDTO>& queueMonitor);
 
     void run() override;
 
