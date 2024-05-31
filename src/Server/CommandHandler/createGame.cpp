@@ -1,7 +1,8 @@
 #include "createGame.h"
 
 #include <memory>
-
+#include <utility>
+#include <string>
 #include "../../Common/DTO/createGame.h"
 #include "../../Common/DTO/lobby.h"
 #include "../../Common/Types/episode.h"

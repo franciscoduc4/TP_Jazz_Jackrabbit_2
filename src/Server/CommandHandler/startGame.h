@@ -3,7 +3,7 @@
 
 #include "../../Common/DTO/startGame.h"
 #include "../../Common/queue.h"
-
+#include <memory>
 #include "command.h"
 
 class StartGameHandler: public CommandHandler {
@@ -15,7 +15,7 @@ public:
 
     virtual std::unique_ptr<LobbyDTO> execute(
             GameMonitor& gameMonitor, std::atomic<bool>& inGame,
-            std::shared_ptr<Queue<std::unique_ptr<CommandDTO>>> recvQueue) = 0;
+            std::shared_ptr<Queue<std::unique_ptr<CommandDTO>>> recvQueue);
 };
 
 #endif  // START_GAME_HANDLER_H_

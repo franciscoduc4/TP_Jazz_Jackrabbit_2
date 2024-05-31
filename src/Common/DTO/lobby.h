@@ -14,7 +14,7 @@ private:
     GamesListDTO gamesList;
 
 public:
-    LobbyDTO(LobbyState state);
+    explicit LobbyDTO(LobbyState state);
     bool getGameCreated() const;
     bool getGameJoined() const;
     bool getGameStarted() const;

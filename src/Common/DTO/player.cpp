@@ -10,7 +10,10 @@ PlayerDTO::PlayerDTO(uint16_t x, uint16_t y, uint32_t playerId, int health, int 
         speed(speed),
         playerIsAlive(true),
         respawnTime(0),
-        currentSprite(currentSprite) {}
+        currentSprite(currentSprite),
+        weapons(),
+        currentWeapon(0, 0, 0, 0, 0, currentSprite) {}
+     
 
 uint32_t PlayerDTO::getPlayerId() const { return player_id; }
 

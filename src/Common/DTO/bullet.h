@@ -20,6 +20,8 @@ public:
     BulletDTO(uint16_t x, uint16_t y, uint32_t bullet_id, int damage, int speed,
               const Sprite& currentSprite, int shooterId);
     uint32_t getBulletId() const;
+    uint16_t getX() const;
+    uint16_t getY() const;
     int getDamage() const;
     int getSpeed() const;
     bool isAlive() const;

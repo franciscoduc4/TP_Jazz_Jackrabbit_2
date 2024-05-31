@@ -15,6 +15,7 @@ public:
     ItemDTO(uint16_t x, uint16_t y, const Sprite& currentSprite);
     uint16_t getX() const;
     uint16_t getY() const;
+
     Sprite getSprite() const;
     ~ItemDTO();
 };

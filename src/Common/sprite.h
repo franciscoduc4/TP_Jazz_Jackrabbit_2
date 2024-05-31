@@ -45,6 +45,11 @@ class Sprite {
     std::tuple<int, int, int> getColourKey() const {
         return colourKey;
     }
+
+    std::vector<std::pair<int, int>> getVertices() const {
+        return vertices;
+    }
+
 };
 
 class RectangularSprite : public Sprite {
@@ -100,6 +105,23 @@ class RectangularSprite : public Sprite {
         }
         return sprites;
     }
+
+    int getX() const {
+        return x;
+    }
+
+    int getY() const {
+        return y;
+    }
+
+    int getWidth() const {
+        return width;
+    }
+
+    int getHeight() const {
+        return height;
+    }
+
 };
 
 #endif  // SPRITE_H

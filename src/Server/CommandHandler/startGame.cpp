@@ -1,7 +1,7 @@
 #include "startGame.h"
 
 #include <memory>
-
+#include <utility>
 #include "../../Common/DTO/createGame.h"
 #include "../../Common/DTO/game.h"
 #include "../../Common/Types/episode.h"
@@ -18,7 +18,7 @@ std::unique_ptr<LobbyDTO> StartGameHandler::execute(
     int32_t playerId = command->getPlayerId();
     int32_t gameId = command->getGameId();
     if (gameMonitor.startGame(playerId, gameId)) {
-        inGame = true;
+        //inGame = true;
         return std::make_unique<LobbyDTO>(LobbyState::GAME_STARTED);
     } else {
         return std::make_unique<LobbyDTO>(LobbyState::GAME_NOT_STARTED);

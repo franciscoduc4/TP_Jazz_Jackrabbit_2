@@ -25,7 +25,7 @@ private:
     std::atomic<bool> isAlive{true};
     GameMonitor gameMonitor;
     std::vector<std::unique_ptr<Player>> players;
-    QueueMonitor<GameDTO> queueMonitor;
+    QueueMonitor<std::shared_ptr<Queue<GameDTO>>> queueMonitor;
 
 public:
     explicit AcceptorThread(const std::string& servname);

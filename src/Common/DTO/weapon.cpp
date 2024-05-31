@@ -1,11 +1,13 @@
 #include "weapon.h"
 
-WeaponDTO(uint16_t x, uint16_t y, int damage, int range, 
+WeaponDTO::WeaponDTO(uint8_t weaponId, uint16_t x, uint16_t y, int damage, 
         int ammo, const Sprite& currentSprite) :
+        weaponId(weaponId),
         x(x),
         y(y),
+        shootSpeed(0),
+        bullet(x, y, 0, damage, 0, currentSprite, 0),  // bullet is not used
         damage(damage),
-        range(range),
         ammo(ammo),
         currentSprite(currentSprite) {}
 
@@ -17,10 +19,14 @@ Sprite WeaponDTO::getSprite() const { return currentSprite; }
 
 int WeaponDTO::getDamage() const { return damage; }
 
-int WeaponDTO::getRange() const { return range; }
-
 int WeaponDTO::getAmmo() const { return ammo; }
 
 void WeaponDTO::setAmmo(int ammo) { this->ammo = ammo; }
 
+uint8_t WeaponDTO::getWeaponId() const { return weaponId; }
+
+int WeaponDTO::getShootSpeed() const { return shootSpeed; }
+
+std::unique_ptr<BulletDTO> WeaponDTO::getBullet() const 
+{ return std::make_unique<BulletDTO>(0, 0, 0,0, 0, currentSprite, 0); }
 

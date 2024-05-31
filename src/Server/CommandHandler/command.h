@@ -2,7 +2,7 @@
 #define COMMAND_HANDLER_H_
 
 #include <memory>
-
+#include "../../Common/queue.h"
 #include "../../Common/DTO/command.h"
 #include "../../Common/DTO/lobby.h"
 #include "../../Common/Types/command.h"

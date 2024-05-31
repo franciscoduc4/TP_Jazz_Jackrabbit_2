@@ -1,10 +1,11 @@
 #include "sender.h"
-
+#include <memory>
+#include <utility>
 #include "../CommandHandler/command.h"
 
 SenderThread::SenderThread(std::shared_ptr<Socket> socket, std::atomic<bool>& keepPlaying,
                            std::atomic<bool>& inGame, GameMonitor& gameMonitor, int32_t playerId,
-                           std::shared_ptr<Queue<GameDTO>> sendQueue):
+                           std::shared_ptr<Queue<std::unique_ptr<GameDTO>>> sendQueue):
         playerId(playerId),
         serializer(socket),
         deserializer(socket),
@@ -12,11 +13,9 @@ SenderThread::SenderThread(std::shared_ptr<Socket> socket, std::atomic<bool>& ke
         inGame(inGame),
         wasClosed(false),
         sendQueue(sendQueue),
-        recvQueue(),
+        recvQueue(std::make_shared<Queue<std::unique_ptr<CommandDTO>>>()),
         receiver(socket, keepPlaying, inGame, gameMonitor, playerId, recvQueue),
-        gameMonitor(gameMonitor) {
-    recvQueue = std::make_shared<Queue<std::unique_ptr<CommandDTO>>>();
-}
+        gameMonitor(gameMonitor) {}
 
 void SenderThread::run() {
     serializer.sendId(playerId);
