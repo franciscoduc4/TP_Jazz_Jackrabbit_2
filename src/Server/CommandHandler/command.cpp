@@ -5,6 +5,7 @@
 #include "../../Common/DTO/startGame.h"
 
 #include "createGame.h"
+#include "gamesList.h"
 #include "joinGame.h"
 #include "startGame.h"
 
@@ -15,17 +16,21 @@ std::unique_ptr<CommandHandler> CommandHandler::createHandler(std::unique_ptr<Co
             command.release();
             return std::make_unique<CreateGameHandler>(
                     std::unique_ptr<CreateGameDTO>(createGameCommand));
-            }
-        case Command::JOIN_GAME:{
+        }
+        case Command::JOIN_GAME: {
             auto joinGameCommand = dynamic_cast<JoinGameDTO*>(command.get());
             command.release();
             return std::make_unique<JoinGameHandler>(std::unique_ptr<JoinGameDTO>(joinGameCommand));
         }
-        case Command::START_GAME:{
+        case Command::START_GAME: {
             auto startGameCommand = dynamic_cast<StartGameDTO*>(command.get());
             command.release();
             return std::make_unique<StartGameHandler>(
                     std::unique_ptr<StartGameDTO>(startGameCommand));
+        }
+        case Command::GAMES_LIST: {
+            return std::make_unique<GamesListHandler>(
+                    std::unique_ptr<CommandDTO>(command.release()));
         }
         default:
             return nullptr;
