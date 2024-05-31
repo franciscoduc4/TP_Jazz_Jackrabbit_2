@@ -11,7 +11,7 @@ class Player {
 	std::string image_path;
 	std::map<int, std::list<RectangularSprite>> sprites;
 	std::list<Projectile> projectiles;
-
+	
 	
 public:
 	Player(int character);

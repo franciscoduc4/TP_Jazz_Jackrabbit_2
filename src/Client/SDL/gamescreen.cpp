@@ -27,12 +27,32 @@ void GameScreen::run() {
 		
 	SDL2pp::Texture background(renderer, "../assets/Tilesets/BeachWorld-1.png"); //FONDO DE PRUEBA
  	
- 	SDL2pp::Texture jazz_sprite(renderer, SDL2pp::Surface(this->pj.getPath()));	
-	SDL2pp::Texture turtle_enemy(renderer, SDL2pp::Surface(this->turtle.getPath()));
-	SDL2pp::Texture schartzenguard(renderer, SDL2pp::Surface(this->schartz_guard.getPath()));
-	SDL2pp::Texture yellowMonster(renderer, SDL2pp::Surface(this->yellowM.getPath()));
-	SDL2pp::Texture projectile(renderer, "../assets/Miscellaneous/SFX.png");
-	SDL2pp::Texture items(renderer, "../assets/Miscellaneous/Items&Objects.png");
+ 	SDL2pp::Surface pjSurface(this->pj.getPath());
+ 	pjSurface.SetColorKey(true, SDL_MapRGB(pjSurface.Get()->format, 44, 102, 150));
+ 	SDL2pp::Texture jazz_sprite(renderer, pjSurface);	
+	
+	SDL2pp::Surface turtleSurface(this->turtle.getPath());
+	turtleSurface.SetColorKey(true, SDL_MapRGB(turtleSurface.Get()->format, 0, 128, 255));
+	SDL2pp::Texture turtle_enemy(renderer, turtleSurface);
+	
+	SDL2pp::Surface schSurface(this->schartz_guard.getPath());
+	schSurface.SetColorKey(true, SDL_MapRGB(schSurface.Get()->format, 0, 128, 255));
+	SDL2pp::Texture schartzenguard(renderer, schSurface);
+	
+	SDL2pp::Surface yellowSurface(this->yellowM.getPath());
+	yellowSurface.SetColorKey(true, SDL_MapRGB(yellowSurface.Get()->format, 0, 128, 255));
+	SDL2pp::Texture yellowMonster(renderer, yellowSurface);
+	
+	
+	SDL2pp::Surface projectileSurface("../assets/Miscellaneous/SFX.png");
+	projectileSurface.SetColorKey(true, SDL_MapRGB(projectileSurface.Get()->format, 0, 128, 255));
+	SDL2pp::Texture projectile(renderer, projectileSurface);
+	
+	
+	SDL2pp::Surface itemsSurface("../assets/Miscellaneous/Items&Objects.png");
+	itemsSurface.SetColorKey(true, SDL_MapRGB(itemsSurface.Get()->format, 0, 128, 255));
+	SDL2pp::Texture items(renderer, itemsSurface);
+	
 	
 
 	int walk_mov = 0;
