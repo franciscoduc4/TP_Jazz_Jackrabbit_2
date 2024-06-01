@@ -2,10 +2,9 @@
 
 #include <sys/socket.h>
 
-#include "../Physics/character.h"
 
 Player::Player(std::shared_ptr<Socket> socket, GameMonitor& gameMonitor,
-               QueueMonitor<std::shared_ptr<Queue<GameDTO>>>& queueMonitor, int32_t playerId):
+               QueueMonitor<std::unique_ptr<GameDTO>>& queueMonitor, int32_t playerId):
         playerId(playerId),
         socket(socket),
         sender(socket, std::ref(keepPlaying), std::ref(inGame), gameMonitor, playerId,

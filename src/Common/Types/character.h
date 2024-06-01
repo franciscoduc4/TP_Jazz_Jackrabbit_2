@@ -3,6 +3,6 @@
 
 #include <cstdint>
 
-enum class Character : char { INVALID, JAZZ, SPAZ, LORI };
+enum class CharacterType : char { JAZZ, SPAZ, LORI };
 
 #endif  // CHARACTER_SELECT_H

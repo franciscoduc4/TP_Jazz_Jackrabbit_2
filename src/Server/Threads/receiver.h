@@ -3,7 +3,6 @@
 
 #include <memory>
 
-#include "../../Common/Models/gameTypes.h"
 #include "../../Common/queue.h"
 #include "../../Common/socket.h"
 #include "../../Common/thread.h"

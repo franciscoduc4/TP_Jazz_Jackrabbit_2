@@ -17,14 +17,14 @@ private:
     GameMode gameMode;
     int32_t gameId;
     uint8_t maxPlayers;
-    Character character;
+    CharacterType characterType;
     std::string gameName;
 
 public:
     explicit CreateGameDTO(int32_t gameId);
 
     CreateGameDTO(int32_t playerId, Episode episodeName, GameMode gameMode, uint8_t maxPlayers,
-                  Character character, std::string gameName);
+                  CharacterType character, std::string gameName);
 
     int32_t getPlayerId() const;
 
@@ -36,7 +36,7 @@ public:
 
     uint8_t getMaxPlayers() const;
 
-    Character getCharacter() const;
+    CharacterType getCharacterType() const;
 
     std::string getGameName() const;
 

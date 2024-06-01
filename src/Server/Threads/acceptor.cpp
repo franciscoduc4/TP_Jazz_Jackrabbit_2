@@ -3,9 +3,9 @@
 
 AcceptorThread::AcceptorThread(const std::string& servname):
         serverSocket(std::make_shared<Socket>(servname.c_str())),
-        gameMonitor(),
-        players(),
-        queueMonitor() {}
+        queueMonitor(),
+        gameMonitor(queueMonitor),
+        players() {}
 
 void AcceptorThread::run() {
     while (isAlive) {

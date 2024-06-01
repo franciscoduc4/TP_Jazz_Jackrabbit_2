@@ -23,8 +23,10 @@ std::unique_ptr<LobbyDTO> CreateGameHandler::execute(
     Episode episode = command->getEpisodeName();
     GameMode gameMode = command->getGameMode();
     uint8_t maxPlayers = command->getMaxPlayers();
+    CharacterType characterType = command->getCharacterType();
     std::string gameName = command->getGameName();
-    if (gameMonitor.createGame(playerId, episode, gameMode, maxPlayers, gameName, recvQueue)) {
+    if (gameMonitor.createGame(playerId, episode, gameMode, maxPlayers, characterType, gameName,
+                               recvQueue)) {
         return std::make_unique<LobbyDTO>(LobbyState::GAME_CREATED);
     } else {
         return std::make_unique<LobbyDTO>(LobbyState::GAME_NOT_CREATED);

@@ -1,7 +1,9 @@
 #include "sender.h"
+
 #include <memory>
 #include <utility>
-#include "../CommandHandler/command.h"
+
+#include "../CommandHandlers/Lobby/lobbyCommand.h"
 
 SenderThread::SenderThread(std::shared_ptr<Socket> socket, std::atomic<bool>& keepPlaying,
                            std::atomic<bool>& inGame, GameMonitor& gameMonitor, int32_t playerId,
@@ -42,8 +44,8 @@ void SenderThread::runLobby() {
             if (command == nullptr) {
                 continue;
             }
-            std::unique_ptr<CommandHandler> handler =
-                    CommandHandler::createHandler(std::move(command));
+            std::unique_ptr<LobbyCommandHandler> handler =
+                    LobbyCommandHandler::createHandler(std::move(command));
             std::unique_ptr<LobbyDTO> lobbyDTO =
                     handler->execute(gameMonitor, std::ref(inGame), recvQueue);
             serializer.sendLobbyDTO(std::move(lobbyDTO));

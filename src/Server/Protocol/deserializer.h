@@ -32,8 +32,6 @@ private:
 
     std::unique_ptr<CommandDTO> deserializeShooting(bool& wasClosed, int32_t& playerId);
 
-    std::unique_ptr<CommandDTO> deserializeReloading(bool& wasClosed, int32_t& playerId);
-
     std::unique_ptr<CommandDTO> deserializeSwitchWeapon(bool& wasClosed, int32_t& playerId);
 
 

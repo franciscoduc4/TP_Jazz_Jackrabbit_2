@@ -1,7 +1,6 @@
 #ifndef SERIALIZER_H
 #define SERIALIZER_H
 
-#include "../../Common/DTO/characterType.h"
 #include "../../Common/DTO/lobby.h"
 #include "../../Common/DTO/command.h"
 #include "../../Common/DTO/createGame.h"
@@ -23,7 +22,6 @@ class Serializer {
         std::vector<char> serializeCreateGame(const CreateGameDTO& dto);
         std::vector<char> serializeJoinGame(const JoinGameDTO& dto);
         std::vector<char> serializeGamesList(const CommandDTO& dto);
-        std::vector<char> serializeCharacterType(const CharacterTypeDTO& dto);
         std::vector<char> serializeMove(const MoveDTO& dto);
         std::vector<char> serializeStart(const CommandDTO& dto);
         std::vector<char> serializeShooting(const CommandDTO& dto);

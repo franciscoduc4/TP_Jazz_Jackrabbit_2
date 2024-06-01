@@ -1,13 +1,14 @@
 #ifndef JOIN_GAME_HANDLER_H_
 #define JOIN_GAME_HANDLER_H_
 
+#include <memory>
+
 #include "../../Common/DTO/joinGame.h"
 #include "../../Common/queue.h"
 
-#include <memory>
-#include "command.h"
+#include "lobbyCommand.h"
 
-class JoinGameHandler: public CommandHandler {
+class JoinGameHandler: public LobbyCommandHandler {
 private:
     std::unique_ptr<JoinGameDTO> command;
 

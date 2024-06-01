@@ -1,14 +1,15 @@
 #ifndef CREATE_GAME_HANDLER_H_
 #define CREATE_GAME_HANDLER_H_
 
+#include <memory>
+
 #include "../../Common/DTO/createGame.h"
 #include "../../Common/DTO/lobby.h"
-#include <memory>
 #include "../../Common/queue.h"
 
-#include "command.h"
+#include "lobbyCommand.h"
 
-class CreateGameHandler: public CommandHandler {
+class CreateGameHandler: public LobbyCommandHandler {
 private:
     std::unique_ptr<CreateGameDTO> command;
 

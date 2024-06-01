@@ -47,12 +47,9 @@ server
 .vscode
 .vscode/*
 
-<<<<<<< HEAD
 #build
 build
 build/*
-=======
-# QT Debug
-build-UI-Lobby-Qt6-Debug/
-build-UI-Lobby-Qt6-Debug/*
->>>>>>> client
+
+#liveshare
+.vsls.json

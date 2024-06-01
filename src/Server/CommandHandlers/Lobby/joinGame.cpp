@@ -2,6 +2,7 @@
 
 #include <memory>
 #include <utility>
+
 #include "../../Common/DTO/createGame.h"
 #include "../../Common/DTO/game.h"
 #include "../../Common/Types/episode.h"
@@ -18,7 +19,8 @@ std::unique_ptr<LobbyDTO> JoinGameHandler::execute(
         std::shared_ptr<Queue<std::unique_ptr<CommandDTO>>> recvQueue) {
     int32_t playerId = command->getPlayerId();
     int32_t gameId = command->getGameId();
-    if (gameMonitor.joinGame(playerId, gameId)) {
+    CharacterType characterType = command->getCharacterType();
+    if (gameMonitor.joinGame(playerId, gameId, characterType)) {
         return std::make_unique<LobbyDTO>(LobbyState::GAME_JOINED);
     } else {
         return std::make_unique<LobbyDTO>(LobbyState::GAME_NOT_JOINED);

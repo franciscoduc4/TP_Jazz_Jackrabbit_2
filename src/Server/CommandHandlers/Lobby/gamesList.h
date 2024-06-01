@@ -1,14 +1,16 @@
 #ifndef GAMES_LIST_HANDLER_H_
 #define GAMES_LIST_HANDLER_H_
 
+#include <memory>
+
 #include "../../Common/DTO/command.h"
 #include "../../Common/DTO/lobby.h"
 #include "../../Common/queue.h"
 #include "../Game/gameMonitor.h"
-#include <memory>
-#include "command.h"
 
-class GamesListHandler: public CommandHandler {
+#include "lobbyCommand.h"
+
+class GamesListHandler: public LobbyCommandHandler {
 private:
     std::unique_ptr<CommandDTO> command;
 

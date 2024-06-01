@@ -5,20 +5,19 @@
 #include <string>
 
 #include "../../Common/DTO/game.h"
-#include "../../Common/Models/gameTypes.h"
 #include "../../Common/Types/episode.h"
 #include "../../Common/Types/gameMode.h"
 #include "../../Common/queue.h"
 #include "../../Common/queueMonitor.h"
 #include "../../Common/thread.h"
-#include "../Physics/gameStatus.h"
-#include "../Physics/physics.h"
+#include "../Game/game.h"
 
 
 class GameLoopThread: public Thread {
 private:
-    Physics physics;
-    QueueMonitor<GameDTO> queueMonitor;
+    double frameRate;
+    Game game;
+    QueueMonitor<std::unique_ptr<GameDTO>> queueMonitor;
     int32_t gameId;
     std::string gameName;
     std::atomic<bool> keepRunning;
@@ -28,11 +27,12 @@ private:
 
 public:
     GameLoopThread(int32_t gameId, std::string gameName, int32_t& playerId, Episode episode,
-                   GameMode gameMode, uint8_t maxPlayers,
-                   std::shared_ptr<Queue<std::unique_ptr<CommandDTO>>> recvQueue);
+                   GameMode gameMode, uint8_t maxPlayers, CharacterType characterType,
+                   std::shared_ptr<Queue<std::unique_ptr<CommandDTO>>> recvQueue,
+                   QueueMonitor<std::unique_ptr<GameDTO>>& queueMonitor);
 
     void run() override;
-    void addPlayer(int32_t playerId);
+    void addPlayer(int32_t playerId, CharacterType characterType);
     bool deletePlayer(int32_t playerId);
     int32_t getGameId();
     std::string getGameName();

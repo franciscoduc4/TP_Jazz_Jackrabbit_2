@@ -7,12 +7,12 @@
 
 class CharacterTypeDTO: public CommandDTO {
 private:
-    Character& character;
+    CharacterType& characterType;
 
 public:
-    CharacterTypeDTO(int32_t& playerId, Character& character); 
+    CharacterTypeDTO(int32_t& playerId, CharacterType& characterType);
 
-    Character getCharacter() const; 
+    CharacterType getCharacter() const;
 
     virtual ~CharacterTypeDTO();
 };

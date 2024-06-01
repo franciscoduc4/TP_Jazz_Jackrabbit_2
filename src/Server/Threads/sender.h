@@ -6,7 +6,6 @@
 
 #include "../../Common/DTO/command.h"
 #include "../../Common/DTO/game.h"
-#include "../../Common/Models/gameTypes.h"
 #include "../../Common/queue.h"
 #include "../../Common/queueMonitor.h"
 #include "../../Common/thread.h"
@@ -24,7 +23,7 @@ private:
     std::atomic<bool>& keepPlaying;
     std::atomic<bool>& inGame;
     bool wasClosed;
-    std::shared_ptr<Queue<std::unique_ptr<GameDTO>>> sendQueue; 
+    std::shared_ptr<Queue<std::unique_ptr<GameDTO>>> sendQueue;
     std::shared_ptr<Queue<std::unique_ptr<CommandDTO>>> recvQueue;
     ReceiverThread receiver;
     GameMonitor& gameMonitor;

@@ -12,7 +12,6 @@ enum class Command : char {
     CHARACTER_TYPE,
     START_GAME,
     SHOOT,
-    RELOAD,
     SWITCH_WEAPON,
     MOVE,
     SPRINT,

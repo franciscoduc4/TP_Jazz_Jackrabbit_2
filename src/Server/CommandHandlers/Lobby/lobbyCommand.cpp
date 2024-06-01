@@ -1,4 +1,4 @@
-#include "command.h"
+#include "lobbyCommand.h"
 
 #include "../../Common/DTO/createGame.h"
 #include "../../Common/DTO/joinGame.h"
@@ -9,7 +9,8 @@
 #include "joinGame.h"
 #include "startGame.h"
 
-std::unique_ptr<CommandHandler> CommandHandler::createHandler(std::unique_ptr<CommandDTO> command) {
+std::unique_ptr<LobbyCommandHandler> LobbyCommandHandler::createHandler(
+        std::unique_ptr<CommandDTO> command) {
     switch (command->getCommand()) {
         case Command::CREATE_GAME: {
             auto createGameCommand = dynamic_cast<CreateGameDTO*>(command.get());
