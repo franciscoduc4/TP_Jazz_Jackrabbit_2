@@ -12,36 +12,35 @@ State* IntoxicatedState::update(float time) {
 
 State* IntoxicatedState::shoot(Character& character, Weapon* weapon, float time) {
     // No puede disparar mientras está intoxicado
-    return this;
+    return nullptr;
 }
 
-State* IntoxicatedState::move(Character& character, std::int16_t direction, float time) {
+State* IntoxicatedState::move(Character& character, Move direction, float time) {
     // Puede moverse lentamente mientras está intoxicado
-    character.move(direction * 0.5f, time);  // Se mueve a la mitad de la velocidad normal
-    return this;
+    //character.move(direction * 0.5f, time);  // Se mueve a la mitad de la velocidad normal
+    return nullptr;
 }
 
 State* IntoxicatedState::sprint(Character& character, float time) {
     // No puede correr mientras está intoxicado
-    return this;
+    return nullptr;
 }
 
 State* IntoxicatedState::reload(Weapon* weapon, float time) {
     // No puede recargar mientras está intoxicado
-    return this;
+    return nullptr;
 }
 
 State* IntoxicatedState::receiveDamage(Character& character, uint16_t dmg, float time) {
-    character.recvDmg(dmg, time);
-    if (character.getHealth() <= 0) {
-        return new DeadState();
-    }
-    return this;
+    // character->recvDmg(dmg, time);
+    // if (character.getHealth() <= 0) {
+    //     return new DeadState(time);
+    // }
+    return nullptr;
 }
 
 State* IntoxicatedState::die(Character& character, float time) {
-    character.die(time);
-    return new DeadState();
+    return new DeadState(time);
 }
 
 State* IntoxicatedState::revive(Character& character, float time) {
@@ -51,22 +50,22 @@ State* IntoxicatedState::revive(Character& character, float time) {
 
 State* IntoxicatedState::jump(Character& character, float time) {
     // Puede saltar pero con menos altura
-    character.jump(time * 0.5f);  // Salta a la mitad de la altura normal
+    //character.jump(time * 0.5f);  // Salta a la mitad de la altura normal
     return this;
 }
 
 State* IntoxicatedState::specialAttack(Character& character, float time) {
     // No puede realizar ataques especiales mientras está intoxicado
-    return this;
+    return nullptr;
 }
 
 State* IntoxicatedState::becomeIntoxicated(Character& character, float duration) {
     // Extender la duración de la intoxicación
     intoxicatedDuration += duration;
-    return this;
+    return nullptr;
 }
 
 State* IntoxicatedState::stopAction() {
     // Permanecer en el estado de intoxicación
-    return this;
+    return nullptr;
 }

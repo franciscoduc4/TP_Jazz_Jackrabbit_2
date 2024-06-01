@@ -7,30 +7,24 @@
 
 class Configuration {
 private:
-    // General
     std::int16_t maxHealth;
     std::int16_t maxAmmo;
 
-    // Character States
     float intoxicatedDuration;
     float respawnTime;
 
-    // Character Speeds
     float walkSpeed;
     float runSpeed;
     float sprintSpeed;
     float jumpHeight;
 
-    // Weapons
     std::int16_t initialWeaponAmmo;
     float weaponFireRate;
     float projectileSpeed;
     std::int16_t projectileDamage;
 
-    // Items
     std::int16_t carrotHealthBoost;
 
-    // Enemies
     std::int16_t enemyHealth;
     std::int16_t enemyDamage;
     std::int16_t enemyRespawnTime;

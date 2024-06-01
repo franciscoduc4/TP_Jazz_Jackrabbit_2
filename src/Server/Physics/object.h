@@ -8,12 +8,14 @@
 class Object {
 
 public:
-    virtual int16_t getX() const = 0;
-    virtual int16_t getY() const = 0;
-    virtual int16_t getId() const = 0;
-    virtual int16_t getDir() const = 0;
-    virtual int16_t getHealth() const = 0;
-    virtual bool getIsDead() const = 0;
+    virtual int16_t getX() = 0;
+    virtual int16_t getY() = 0;
+    virtual int16_t getId() = 0;
+    virtual int16_t getDir() = 0;
+    virtual int16_t getHealth() = 0;
+    virtual int16_t getMatrixX() = 0;
+    virtual int16_t getMatrixY() = 0;
+    virtual bool getIsDead() = 0;
 
 
     virtual void recvDmg(uint16_t dmg, float time) = 0;
@@ -28,7 +30,6 @@ public:
 
     virtual bool isAlive() = 0;
 
-    // Métodos virtuales puros que deben ser implementados por las subclases
     virtual void update(float time) = 0;
     virtual void interact(Object& other) = 0;
 };

@@ -1,5 +1,5 @@
 #include "jumping.h"
-#include "idle_state.h"
+#include "idle.h"
 
 State* JumpingState::update(float time) {
     // Lógica de actualización específica para el estado de salto
@@ -13,7 +13,7 @@ State* JumpingState::shoot(Character& character, Weapon* weapon, float time) {
     return this;
 }
 
-State* JumpingState::move(Character& character, std::int16_t direction, float time) {
+State* JumpingState::move(Character& character, Move direction, float time) {
     // Puede moverse en el aire
     character.setDir(direction);
     if (direction > 0) {

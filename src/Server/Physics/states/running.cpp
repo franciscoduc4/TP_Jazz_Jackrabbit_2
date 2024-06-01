@@ -11,7 +11,7 @@ State* RunningState::shoot(Character& character, Weapon* weapon, float time) {
     return new ShootingState();
 }
 
-State* RunningState::move(Character& character, std::int16_t direction, float time) {
+State* RunningState::move(Character& character, Move direction, float time) {
     // Continuar corriendo en la misma dirección
     character.setDir(direction);
     if (direction > 0) {
