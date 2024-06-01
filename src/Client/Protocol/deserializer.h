@@ -9,13 +9,13 @@ class Deserializer {
 private:
 	std::shared_ptr<Socket> skt;
 
-	std::map<uint8_t, std::vector<uint8_t>> show_snapshot(bool& was_closed)
+	std::unique_ptr<GameDTO> show_snapshot(bool& was_closed)
 	
 	
 public:
 	explicit Deserializer(std::shared_ptr<Socket> socket);
 
-	std::vector<std::vector<uint8_t>> deserializar_msg();
+	std::unique_ptr<CommandDTO> deserializar_msg();
 	
 	
 }
