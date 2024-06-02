@@ -71,12 +71,14 @@ public:
 
     bool isAlive() const { return !isDead; }
 
-    int16_t getHealth() const { return health; }
-    int16_t getDir() const { return dir; }
+    int16_t getHealth()  { return health; }
+    int16_t getDir()  { return dir; }
+    int16_t getX()  { return x; }
+    int16_t getY()  { return y; }
     int16_t getCharacterId() const { return characterId; }
     float getRespawnTime() const { return respawnTime; }
-    bool characIsIntoxicated() const { return isIntoxicated; }
-    float getIntoxicatedTime() const { return intoxicatedTime; }
+    bool characIsIntoxicated()  { return isIntoxicated; }
+    float getIntoxicatedTime()  { return intoxicatedTime; }
 
     void moveRight();
     void moveLeft();

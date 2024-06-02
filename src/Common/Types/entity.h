@@ -1,7 +1,6 @@
-#ifndef OBJECTSTATE_H
-#define OBJECTSTATE_H
-
-enum CharacterState : char {
+#ifndef ENTITYSTATE_H
+#define ENTITYSTATE_H
+enum CharacterStateEntity : char {
     IDLE,            // El personaje está quieto
     MOVING,          // El personaje se está moviendo
     SPRINTING,       // El personaje se está moviendo rápidamente
@@ -14,13 +13,15 @@ enum CharacterState : char {
     REVIVING         // El personaje se está reanimando
 };
 
-enum EnemyState : char {
+enum EnemyStateEntity : char {
     ENEMY_IDLE,           // El enemigo está quieto
-    ENEMY_MOVING,         // El enemigo se está moviendo
+    ENEMY_WALKING,         // El enemigo se está moviendo
+    ENEMY_JUMPING,        // El enemigo está saltando
+    ENEMY_FLYING,         // El enemigo está volando
     ENEMY_ATTACKING,      // El enemigo está atacando
-    ENEMY_TAKING_DAMAGE,  // El enemigo está recibiendo daño
+    ENEMY_RECEIVING_DAMAGE,  // El enemigo está recibiendo daño
     ENEMY_DEAD,           // El enemigo está muerto
     ENEMY_RESPAWNING      // El enemigo está reapareciendo
 };
 
-#endif  // OBJECTSTATE_H
+#endif  // ENTITYSTATE_H

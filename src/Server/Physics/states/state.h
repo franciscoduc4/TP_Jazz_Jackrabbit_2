@@ -3,7 +3,7 @@
 
 #define CONFIG Configuration::getInstance()
 #include "../config.h"
-#include "../../../Common/Types/objectState.h" 
+#include "../../../Common/Types/entity.h" 
 #include <utility>
 #include <cstdint>
 

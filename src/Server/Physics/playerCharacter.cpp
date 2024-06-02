@@ -130,12 +130,12 @@ void Character::revive(float time) {
 
 bool Character::isAlive() const { return !isDead; }
 
-int16_t Character::getHealth() const { return health; }
-int16_t Character::getDir() const { return dir; }
+int16_t Character::getHealth()  { return health; }
+int16_t Character::getDir()  { return dir; }
 int16_t Character::getCharacterId() const { return characterId; }
 float Character::getRespawnTime() const { return respawnTime; }
-bool Character::characIsIntoxicated() const { return isIntoxicated; }
-float Character::getIntoxicatedTime() const { return intoxicatedTime; }
+bool Character::characIsIntoxicated()  { return isIntoxicated; }
+float Character::getIntoxicatedTime()  { return intoxicatedTime; }
 
 void Character::moveRight() {
     int16_t newX = x + 1;
