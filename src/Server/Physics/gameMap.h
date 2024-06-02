@@ -6,7 +6,7 @@
 #include <vector>
 
 #include "../../Common/Types/character.h"
-#include "../../Common/Types/direction.h"
+#include "../../Common/Types/move.h"
 #include "../../Common/Types/enemy.h"
 #include "../../Common/vector.h"
 #include "enemies/enemy.h"
@@ -30,21 +30,13 @@ private:
 public:
     explicit GameMap(Vector<int16_t> size);
 
-<<<<<<< Updated upstream
     std::vector<std::shared_ptr<Entity>> getObjectsInShootRange(Vector<int16_t> mapPosition,
-                                                                Direction dir);
+                                                                Move dir);
 
     std::vector<std::shared_ptr<Entity>> getObjectsInExplosionRange(Vector<int16_t> mapPosition,
                                                                     int16_t radius);
-=======
-    void getObjectsInShootRange(Vector<int16_t> mapPosition, int16_t dir,
-                                std::unique_ptr<Entity>& entities);
 
-    void getObjectsInExplosionRange(Vector<int16_t> mapPosition, float radius,
-                                    std::unique_ptr<Entity>& entities);
->>>>>>> Stashed changes
-
-    void moveObject(Vector<int16_t>& position, Vector<int16_t> mapPosition, Direction dir);
+    void moveObject(Vector<int16_t>& position, Vector<int16_t> mapPosition, Move dir);
 
     Vector<int16_t> getAvailablePosition();
 
@@ -53,6 +45,8 @@ public:
     void addEnemy(EnemyType type);
 
     void update(float time);
+
+ 
 };
 
 #endif  // GAME_MAP_H_

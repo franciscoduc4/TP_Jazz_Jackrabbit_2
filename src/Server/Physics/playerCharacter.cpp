@@ -1,6 +1,9 @@
 #include "playerCharacter.h"
 
+#include <utility>
+
 #include "../../Common/Types/character.h"
+#include "../../Common/Types/weapon.h"
 #include "../../Common/Types/direction.h"
 #include "../../Common/Types/move.h"
 #include "states/dead.h"
@@ -8,17 +11,10 @@
 #include "states/intoxicated.h"
 #include "states/jazzSpecialAttack.h"
 #include "states/jumping.h"
-<<<<<<< Updated upstream
-#include "states/loriSpecialAttack.h"
-#include "states/running.h"
-=======
->>>>>>> Stashed changes
 #include "states/shooting.h"
 #include "states/spazSpecialAttack.h"
-<<<<<<< Updated upstream
 
-#include "config.h"
-
+#include "gameMap.h"
 #define CONFIG Configuration::getInstance()
 
 Character::Character(GameMap& map, int16_t x, int16_t y, int16_t characterId, CharacterType type):
@@ -28,31 +24,12 @@ Character::Character(GameMap& map, int16_t x, int16_t y, int16_t characterId, Ch
         characterId(0),
         health(100),
         initialHealth(100),
-        dir(1),
+        dir(Move::RIGHT),
         maxMoves(5),
         timesRevived(0),
-        maxRevived(3) {}
-=======
-#include "../../Common/Types/move.h"
-#include "../../Common/Types/character.h"
-#include <utility>
-
-#define CONFIG Configuration::getInstance()
-
-Character::Character(GameMap& map, int16_t x, int16_t y, int16_t characterId, CharacterType type) : 
-    map(map), 
-    x(0), 
-    y(0), 
-    characterId(0),
-    health(100),
-    initialHealth(100),
-    dir(Move::RIGHT),
-    maxMoves(5),
-    timesRevived(0),
-    maxRevived(3),
-    currentWeapon(std::make_unique<Blaster>()),
-    state(std::make_unique<IdleState>()) {}
->>>>>>> Stashed changes
+        maxRevived(3),
+        currentWeapon(std::make_unique<Blaster>()),
+        state(std::make_unique<IdleState>()) {}
 
 int16_t Character::getX() { return x; }
 int16_t Character::getY() { return y; }
@@ -64,18 +41,12 @@ void Character::recvDamage(uint16_t dmg, float time) {
         health = 0;
         die(time);
     } else {
-<<<<<<< Updated upstream
-        State* newState = state->receiveDamage(*this, dmg, time);
-        if (newState != nullptr) {
-            delete state;
-            state = newState;
-=======
         auto newState = std::unique_ptr<State>(state->receiveDamage(*this, dmg, time));
         if (newState) {
             state = std::move(newState);
->>>>>>> Stashed changes
         }
     }
+    return;
 }
 
 void Character::setDir(Move dir) { this->dir = dir; }
@@ -85,102 +56,61 @@ void Character::update(float time) {
     if (newState) {
         state = std::move(newState);
     }
-    currentWeapon->update(time);
+    //currentWeapon->update(time);
 }
 
 void Character::shoot(float time) {
-<<<<<<< Updated upstream
-    State* newState = state->shoot(*this, currentWeapon, time);
-    if (newState != nullptr) {
-        delete state;
-        state = newState;
-    }
-}
-
-void Character::moveRight(float time) {
-    State* newState = state->move(*this, Move::RIGHT, time);
-    if (newState != nullptr) {
-        delete state;
-        state = newState;
-    }
-}
-
-void Character::sprintRight(float time) {}
-
-void Character::moveLeft(float time) {
-    State* newState = state->move(*this, Move::LEFT, time);
-    if (newState != nullptr) {
-        delete state;
-        state = newState;
-    }
-}
-
-void Character::sprintLeft(float time) {}
-
-void Character::moveUp(float time) {
-    State* newState = state->move(*this, Move::UP, time);
-    if (newState != nullptr) {
-        delete state;
-        state = newState;
-    }
-}
-
-void Character::moveDown(float time) {
-    State* newState = state->move(*this, Move::DOWN, time);
-    if (newState != nullptr) {
-        delete state;
-        state = newState;
-    }
-}
-
-void Character::becomeIntoxicated(float duration) {}
-=======
     auto newState = std::unique_ptr<State>(state->shoot(*this, std::move(currentWeapon), time));
     if (newState) {
         state = std::move(newState);
-    }    
+    }
+    return;
 }
 
-void Character::moveToRight(float time) {
+void Character::moveRight(float time) {
     auto newState = std::unique_ptr<State>(state->move(*this, Move::RIGHT, time));
     if (newState) {
         state = std::move(newState);
     }
+    return;
 }
 
-void Character::sprintToRight(float time) {
-    // Sprint logic here
-}
+// void Character::sprintToRight(float time) {
+//     // Sprint logic here
+// }
 
-void Character::moveToLeft(float time) {
+void Character::moveLeft(float time) {
     auto newState = std::unique_ptr<State>(state->move(*this, Move::LEFT, time));
     if (newState) {
         state = std::move(newState);
     }
+    return;
 }
 
-void Character::sprintToLeft(float time) {
-    // Sprint logic here
-}
+// void Character::sprintToLeft(float time) {
+//     // Sprint logic here
+// }
 
-void Character::moveToUp(float time) {
+void Character::moveUp(float time) {
     auto newState = std::unique_ptr<State>(state->move(*this, Move::UP, time));
     if (newState) {
         state = std::move(newState);
     }
+    return;
 }
 
-void Character::moveToDown(float time) {
+void Character::moveDown(float time) {
     auto newState = std::unique_ptr<State>(state->move(*this, Move::DOWN, time));
     if (newState) {
         state = std::move(newState);
     }
+    return;
 }
 
 void Character::becomeIntoxicated(float duration) {
     // Intoxicated logic here
+    return;
 }
->>>>>>> Stashed changes
 
 void Character::die(float respawnTime) {
     isDead = true;
@@ -190,13 +120,10 @@ void Character::die(float respawnTime) {
     }
 }
 
-<<<<<<< Updated upstream
-void Character::heal(uint16_t amount) {}
-=======
 void Character::heal(uint16_t amount) {
     // Healing logic here
+    return;
 }
->>>>>>> Stashed changes
 
 void Character::revive(float time) {
     if (maxRevived <= 0)
@@ -213,11 +140,7 @@ void Character::revive(float time) {
 bool Character::isAlive() const { return !isDead; }
 
 int16_t Character::getHealth() { return health; }
-<<<<<<< Updated upstream
-int16_t Character::getDir() { return dir; }
-=======
 Move Character::getDir() { return dir; }
->>>>>>> Stashed changes
 int16_t Character::getCharacterId() const { return characterId; }
 float Character::getRespawnTime() const { return respawnTime; }
 bool Character::characIsIntoxicated() { return isIntoxicated; }
@@ -230,14 +153,7 @@ void Character::moveRight() {
         return;
     }
     int16_t newMapX = -1;
-<<<<<<< Updated upstream
-    map.moveObject(getPosition(), getMapPosition(), Direction::RIGHT);
-=======
-    map.moveToRight(getMatrixX(), getMatrixY(), newMapX);
->>>>>>> Stashed changes
-    if (newMapX >= 0) {
-        x += 1;
-    }
+    map.moveObject(getPosition(), getMapPosition(), Move::RIGHT);
 }
 
 void Character::moveLeft() {
@@ -247,11 +163,7 @@ void Character::moveLeft() {
         return;
     }
     int16_t newMapX = -1;
-<<<<<<< Updated upstream
-    map.moveToLeft(getMapX(), getMapY(), newMapX);
-=======
-    map.moveToLeft(getMatrixX(), getMatrixY(), newMapX);
->>>>>>> Stashed changes
+    map.moveObject(getPosition(), getMapPosition(), Move::LEFT);
     if (newMapX >= 0) {
         x -= 1;
     }
@@ -264,11 +176,7 @@ void Character::moveUp() {
         return;
     }
     int16_t newMapY = -1;
-<<<<<<< Updated upstream
-    map.moveToUp(getMapX(), getMapY(), newMapY);
-=======
-    map.moveToUp(getMatrixX(), getMatrixY(), newMapY);
->>>>>>> Stashed changes
+    map.moveObject(getPosition(), getMapPosition(), Move::UP);
     if (newMapY >= 0) {
         y -= 1;
     }
@@ -281,46 +189,58 @@ void Character::moveDown() {
         return;
     }
     int16_t newMapY = -1;
-<<<<<<< Updated upstream
-    map.moveToDown(getMapX(), getMapY(), newMapY);
-=======
-    map.moveToDown(getMatrixX(), getMatrixY(), newMapY);
->>>>>>> Stashed changes
+    map.moveObject(getPosition(), getMapPosition(), Move::DOWN);
     if (newMapY >= 0) {
         y += 1;
     }
 }
 
-<<<<<<< Updated upstream
 int16_t Character::getX() { return x; }
+
 int16_t Character::getY() { return y; }
+
 int16_t Character::getId() { return characterId; }
-int16_t Character::getMapX() { return x / maxMoves; }
-int16_t Character::getMapY() { return y / maxMoves; }
-=======
-int16_t Character::getX() {
-    return x;
-}
 
-int16_t Character::getY() {
-    return y;
-}
+int16_t Character::getMatrixX() { return x / maxMoves; }
 
-int16_t Character::getId() {
-    return characterId;
-}
-
-int16_t Character::getMatrixX() {
-    return x / maxMoves;
-}
-
-int16_t Character::getMatrixY() {
-    return y / maxMoves;
-}
+int16_t Character::getMatrixY() { return y / maxMoves; }
 
 std::vector<std::shared_ptr<Entity>> Character::getTargets() {
     std::vector<std::shared_ptr<Entity>> targets;
-    map.getTargetsShooting(targets, getMatrixX(), getMatrixY(), direction);
+    map.getObjectsInShootRange({getMatrixX(), getMatrixY()}, direction);
     return targets;
 }
->>>>>>> Stashed changes
+
+Vector<int16_t> Character::getPosition() { return {x, y}; }
+
+Vector<int16_t> Character::getMapPosition() { return {getMatrixX(), getMatrixY()}; }
+
+void Character::setPosition(Vector<int16_t> newPosition) {
+    x = newPosition.x;
+    y = newPosition.y;
+}
+
+void Character::interact(Entity& other) {
+    // Interaction logic here
+    return;
+}
+
+void Character::switchWeapon(WeaponType type) {
+    switch (type) {
+        case WeaponType::BLASTER:
+            currentWeapon = std::make_unique<Blaster>();
+            break;
+        case WeaponType::BOUNCER:
+            currentWeapon = std::make_unique<Bouncer>();
+            break;
+        case WeaponType::FREEZER:
+            currentWeapon = std::make_unique<Freezer>();
+            break;
+        case WeaponType::RFMISSILE:
+            currentWeapon = std::make_unique<RFMissile>();
+            break;
+        default:
+            currentWeapon = std::make_unique<Blaster>();
+            return;
+    }
+}

@@ -6,11 +6,14 @@
 #include <vector>
 
 #include "../../Common/Types/character.h"
-#include "../../Common/Types/direction.h"
+#include "../../Common/Types/move.h"
 #include "states/state.h"
 #include "states/idle.h"
 #include "weapons/weapon.h"
 #include "weapons/blaster.h"
+#include "weapons/freezer.h"
+#include "weapons/bouncer.h"
+#include "weapons/rfMissile.h"
 #include "entity.h"
 
 class GameMap;
@@ -46,18 +49,16 @@ private:
 
 public:
     Character(GameMap& map, int16_t x, int16_t y, int16_t characterId, CharacterType type);
-<<<<<<< Updated upstream
-    Vector<int16_t> getPosition() override;
-=======
     ~Character() = default;
 
-    Vector<float> getPosition() override;
->>>>>>> Stashed changes
+    Vector<int16_t> getPosition() override;
     int16_t getId() override;
-    int16_t getMove() override;
+    Move getDir() override;
     Vector<int16_t> getMapPosition() override;
     void recvDamage(uint16_t damage, float time) override;
     void setDir(Move dir);
+    void setPosition(Vector<int16_t> newPosition) override;
+    void interact(Entity& other) override;
 
     void update(float time);
     void shoot(float time);
@@ -80,24 +81,17 @@ public:
     bool isAlive() const { return !isDead; }
 
     int16_t getHealth() { return health; }
-<<<<<<< Updated upstream
-    int16_t getDir() { return dir; }
-    int16_t getX() { return x; }
-=======
     Move getDir() { return dir; }
     int16_t getX() { return x; }
     int16_t getMatrixX() { return x / maxMoves; }
     int16_t getMatrixY() { return y / maxMoves; }
->>>>>>> Stashed changes
     int16_t getY() { return y; }
     int16_t getCharacterId() const { return characterId; }
     float getRespawnTime() const { return respawnTime; }
     bool characIsIntoxicated() { return isIntoxicated; }
     float getIntoxicatedTime() { return intoxicatedTime; }
-<<<<<<< Updated upstream
-=======
     std::vector<std::shared_ptr<Entity>> getTargets();
->>>>>>> Stashed changes
+    void switchWeapon(WeaponType type);
 
     void moveRight();
     void moveLeft();

@@ -3,23 +3,25 @@
 GameMap::GameMap(Vector<int16_t> size): size(size), entityFactory() {}
 
 std::vector<std::shared_ptr<Entity>> GameMap::getObjectsInShootRange(Vector<int16_t> mapPosition,
-                                                                     Direction dir) {
+                                                                     Move dir) {
     std::vector<std::shared_ptr<Entity>> entities;
-    if (dir == Direction::LEFT) {
+    if (dir == Move::LEFT) {
         for (int16_t i = mapPosition.x - 1; i >= 0; i--) {
             Vector<int16_t> pos = {i, mapPosition.y};
             if (mapGrid.find(pos) != mapGrid.end()) {
                 entities.push_back(mapGrid[pos]);
             }
         }
-    } else if (dir == Direction::RIGHT) {
+    } else if (dir == Move::RIGHT) {
         for (int16_t i = mapPosition.x + 1; i < size.x; i++) {
             Vector<int16_t> pos = {i, mapPosition.y};
             if (mapGrid.find(pos) != mapGrid.end()) {
                 entities.push_back(mapGrid[pos]);
             }
         }
+        
     }
+    return entities;
 }
 
 std::vector<std::shared_ptr<Entity>> GameMap::getObjectsInExplosionRange(
@@ -36,27 +38,27 @@ std::vector<std::shared_ptr<Entity>> GameMap::getObjectsInExplosionRange(
     return entities;
 }
 
-void GameMap::moveObject(Vector<int16_t>& position, Vector<int16_t> mapPosition, Direction dir) {
+void GameMap::moveObject(Vector<int16_t>& position, Vector<int16_t> mapPosition, Move dir) {
     Vector<int16_t> delta;
-    if (dir == Direction::LEFT) {
+    if (dir == Move::LEFT) {
         if (position.x % movesPerCell != 0) {
             position.x -= 1;
             return;
         }
         delta = {-1, 0};
-    } else if (dir == Direction::RIGHT) {
+    } else if (dir == Move::RIGHT) {
         if (position.x % movesPerCell != 0) {
             position.x += 1;
             return;
         }
         delta = {1, 0};
-    } else if (dir == Direction::UP) {
+    } else if (dir == Move::UP) {
         if (position.y % movesPerCell != 0) {
             position.y -= 1;
             return;
         }
         delta = {0, -1};
-    } else if (dir == Direction::DOWN) {
+    } else if (dir == Move::DOWN) {
         if (position.y % movesPerCell != 0) {
             position.y += 1;
             return;
@@ -138,3 +140,4 @@ void GameMap::update(float time) {
         enemy->update(time);
     }
 }
+

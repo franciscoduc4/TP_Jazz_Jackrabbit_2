@@ -18,7 +18,7 @@ private:
     QueueMonitor<std::unique_ptr<GameDTO>>& queueMonitor;
 
 public:
-    GameMonitor(QueueMonitor<std::unique_ptr<GameDTO>>& queueMonitor);
+    explicit GameMonitor(QueueMonitor<std::unique_ptr<GameDTO>>& queueMonitor);
     bool createGame(int32_t playerId, Episode episode, GameMode gameMode, uint8_t maxPlayers,
                     CharacterType characterType, std::string gameName,
                     std::shared_ptr<Queue<std::unique_ptr<CommandDTO>>> recvQueue);

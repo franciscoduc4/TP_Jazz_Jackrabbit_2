@@ -5,6 +5,7 @@
 #include "../../../Common/Types/weapon.h"
 #include <vector>
 #include <iostream>
+#include <memory>
 
 class RFMissile : public Weapon {
 private:
@@ -20,7 +21,8 @@ public:
 
     void update(float time) override;
 
-    void shoot(std::shared_ptr<Entity>& shootingEntities, int16_t xPos, float time) override;
+    void shoot(std::shared_ptr<Entity>& shootingEntities, 
+    int16_t xPos, float time) override;
 
     void reload() override;
 

@@ -1,9 +1,9 @@
 #include "receiver.h"
 
 #include <memory>
-
+#include <utility>
 #include "../../Common/DTO/lobby.h"
-#include "../CommandHandlers/command.h"
+#include "../CommandHandlers/Game/gameCommand.h"
 
 ReceiverThread::ReceiverThread(std::shared_ptr<Socket> socket, std::atomic<bool>& keepPlaying,
                                std::atomic<bool>& inGame, GameMonitor& gameMonitor,

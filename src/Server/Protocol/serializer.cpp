@@ -23,9 +23,9 @@ void Serializer::sendCommand(const CommandDTO& dto, bool& wasClosed) {
         case Command::GAMES_LIST:
             buffer = serializeGamesList(dto);
             break;
-        case Command::CHARACTER_TYPE:
-            buffer = serializeCharacterType(static_cast<const CharacterTypeDTO&>(dto));
-            break;
+        // case Command::CHARACTER_TYPE:
+        //     buffer = serializeCharacterType(static_cast<const CharacterTypeDTO&>(dto));
+        //     break;
         case Command::MOVE:
             buffer = serializeMove(static_cast<const MoveDTO&>(dto));
             break;

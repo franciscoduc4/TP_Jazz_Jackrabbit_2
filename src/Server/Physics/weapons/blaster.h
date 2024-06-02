@@ -5,6 +5,7 @@
 #include "../../../Common/Types/weapon.h"
 #include <vector>
 #include <iostream>
+#include <memory>
 
 class Blaster : public Weapon {
     private:

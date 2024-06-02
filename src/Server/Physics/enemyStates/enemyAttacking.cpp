@@ -1,6 +1,9 @@
 #include "enemyAttacking.h" 
 #include "../playerCharacter.h"
 #include "enemyIdle.h"
+#include "enemyReceivingDmg.h"
+#include "enemyDead.h"
+
 
 EnemyAttacking::EnemyAttacking(Character* target, int16_t damage, float attackTime) 
     : 

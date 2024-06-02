@@ -3,11 +3,11 @@
 
 #include <memory>
 
-#include "../../Common/DTO/command.h"
-#include "../../Common/DTO/game.h"
-#include "../../Common/Types/command.h"
-#include "../../Common/queue.h"
-#include "../Game/game.h"
+#include "../../../Common/DTO/command.h"
+#include "../../../Common/DTO/game.h"
+#include "../../../Common/Types/command.h"
+#include "../../../Common/queue.h"
+#include "../../Game/game.h"
 
 class GameCommandHandler {
 public:

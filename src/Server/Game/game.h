@@ -3,7 +3,7 @@
 
 #include <cstdint>
 #include <map>
-
+#include <memory>
 #include "../../Common/DTO/game.h"
 #include "../../Common/Types/character.h"
 #include "../CommandHandlers/Game/gameCommand.h"

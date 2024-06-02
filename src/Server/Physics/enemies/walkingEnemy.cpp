@@ -26,7 +26,7 @@ void WalkingEnemy::update(std::vector<Character*> characters, float time) {
         state.reset();
         state = std::move(newState);
     }
-    state->attackCharacter(characters[0], dmg, time);
+    state->attack(characters, time);
 }
 
 void WalkingEnemy::receiveDmg(int16_t dmg, float time) {
