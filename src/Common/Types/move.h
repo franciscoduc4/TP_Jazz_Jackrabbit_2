@@ -1,6 +1,6 @@
-#ifndef MOVE_H_
-#define MOVE_H_
+#ifndef MOVESTATE_H_
+#define MOVESTATE_H_
 
 enum class Move : char { UP, DOWN, LEFT, RIGHT, IDLE };
 
-#endif  // MOVE_H_
+#endif  // MOVESTATE_H_

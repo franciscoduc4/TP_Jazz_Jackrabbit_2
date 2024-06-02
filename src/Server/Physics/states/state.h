@@ -16,7 +16,7 @@ public:
 
     virtual State* update(float time) = 0;
     virtual State* shoot(Character& character, Weapon* weapon, float time) = 0;
-    virtual State* move(Character& character, std::int16_t direction, float time) = 0;
+    virtual State* move(Character& character, Move direction, float time) = 0;
     virtual State* sprint(Character& character, float time) = 0;
     virtual State* reload(Weapon* weapon, float time) = 0;
     virtual State* receiveDamage(Character& character, uint16_t dmg, float time) = 0;

@@ -4,6 +4,7 @@
 #include "../../Common/Types/episode.h"
 #include "../../Common/Types/gameMode.h"
 #include "../../Common/Types/move.h"
+#include "../../Common/Types/weapon.h"
 
 Deserializer::Deserializer(std::shared_ptr<Socket> socket): socket(socket) {}
 
@@ -22,6 +23,8 @@ std::unique_ptr<CommandDTO> Deserializer::getCommand(bool& wasClosed, int32_t& p
             return deserializeStart(wasClosed, playerId);
         case Command::MOVE:
             return deserializeMove(wasClosed, playerId);
+        case Command::SWITCH_WEAPON:
+            return deserializeSwitchWeapon(wasClosed, playerId);
         default:
             return nullptr;
     }
@@ -77,5 +80,7 @@ std::unique_ptr<CommandDTO> Deserializer::deserializeShooting(bool& wasClosed, i
 
 std::unique_ptr<CommandDTO> Deserializer::deserializeSwitchWeapon(bool& wasClosed,
                                                                   int32_t& playerId) {
-    return std::make_unique<CommandDTO>(playerId, Command::SWITCH_WEAPON);
+    WeaponType weaponType;
+    socket->recvall(&weaponType, 1, &wasClosed);
+    return std::make_unique<SwitchWeaponDTO>(playerId, weaponType);
 }

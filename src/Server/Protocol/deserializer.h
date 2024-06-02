@@ -11,6 +11,7 @@
 #include "../../Common/DTO/joinGame.h"
 #include "../../Common/DTO/move.h"
 #include "../../Common/DTO/startGame.h"
+#include "../../Common/DTO/switchWeapon.h"
 #include "../../Common/Types/command.h"
 #include "../../Common/socket.h"
 

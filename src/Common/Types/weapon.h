@@ -1,15 +1,8 @@
-#ifndef WEAPON_TYPE_H_
-#define WEAPON_TYPE_H_
+#ifndef WEAPON_TYPE_H
+#define WEAPON_TYPE_H
 
-enum class WeaponType : char {
-    BLASTER,      // Default weapon
-    BOUNCER,      // Bouncing projectiles
-    TOASTER,      // Flamethrower-like weapon
-    RF_MISSILES,  // Rapid-fire missiles
-    LAUNCHER,     // Single large missile
-    TNT,          // Timed explosive
-    FREEZER,      // Ice gun to freeze enemies
-    SEEKER        // Homing missiles
-};
+#include <cstdint>
 
-#endif  // WEAPON_TYPE_H_
+enum class WeaponType : char { BLASTER, BOUNCER, RFMISSILE, FREEZER };
+
+#endif  // WEAPON_TYPE_H

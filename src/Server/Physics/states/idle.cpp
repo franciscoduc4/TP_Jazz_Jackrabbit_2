@@ -1,10 +1,10 @@
 #include "idle.h"
-// #include "running.h"
-// #include "jumping.h"
-// #include "shooting.h"
-// #include "specialAttack.h"
-// #include "intoxicated.h"
-// #include "dead.h"
+#include "running.h"
+#include "jumping.h"
+#include "shooting.h"
+#include "specialAttack.h"
+#include "intoxicated.h"
+#include "dead.h"
 
 IdleState::IdleState() {
     characterState = IDLE;
@@ -21,7 +21,7 @@ State* IdleState::shoot(Character& character, Weapon* weapon, float time) {
     return new ShootingState(character, weapon, time);
 }
 
-State* IdleState::move(Character& character, std::int16_t direction, float time) {
+State* IdleState::move(Character& character, Move direction, float time) {
     character.setDir(direction);
     if (direction > 0) {
         character.moveToRight(time);
@@ -51,7 +51,7 @@ State* IdleState::receiveDamage(Character& character, uint16_t dmg, float time) 
 
 State* IdleState::die(Character& character, float time) {
     character.die(time);
-    return new DeadState();
+    return new DeadState(time);
 }
 
 State* IdleState::revive(Character& character, float time) {

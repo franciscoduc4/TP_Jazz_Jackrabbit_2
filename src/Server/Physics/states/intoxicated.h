@@ -3,6 +3,7 @@
 
 #include "state.h"
 #include <utility>
+#include "../../../Common/Types/move.h"
 
 
 class IntoxicatedState : public State {
@@ -16,7 +17,7 @@ public:
 
     State* update(float time) override;
     State* shoot(Character& character, Weapon* weapon, float time) override;
-    State* move(Character& character, std::int16_t direction, float time) override;
+    State* move(Character& character, Move direction, float time) override;
     State* sprint(Character& character, float time) override;
     State* reload(Weapon* weapon, float time) override;
     State* receiveDamage(Character& character, uint16_t dmg, float time) override;

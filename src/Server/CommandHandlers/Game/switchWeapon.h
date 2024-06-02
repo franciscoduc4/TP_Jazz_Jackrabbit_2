@@ -1,16 +1,16 @@
 #ifndef SWITCH_WEAPON_HANDLER_H_
 #define SWITCH_WEAPON_HANDLER_H_
 
-#include "../../Common/DTO/command.h"
+#include "../../Common/DTO/switchWeapon.h"
 
 #include "gameCommand.h"
 
 class SwitchWeaponHandler: public GameCommandHandler {
 private:
-    std::unique_ptr<CommandDTO> switchWeaponCommand;
+    std::unique_ptr<SwitchWeaponDTO> switchWeaponCommand;
 
 public:
-    explicit SwitchWeaponHandler(std::unique_ptr<CommandDTO> switchWeaponCommand);
+    explicit SwitchWeaponHandler(std::unique_ptr<SwitchWeaponDTO> switchWeaponCommand);
 
     virtual void execute(Game& game, std::atomic<bool>& keepRunning, double deltaTime);
 };

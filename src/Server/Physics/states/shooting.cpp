@@ -1,6 +1,14 @@
 #include "shooting.h"
 #include "idle_state.h"
 
+ShootingState::ShootingState(Character& character, Weapon* weapon, float time) : 
+    character(character), 
+    weapon(weapon), 
+    time(time) {
+    characterState = CharacterState::SHOOTING;
+    shoot(character, weapon, time)
+    }
+
 State* ShootingState::update(float time) {
     // Lógica de actualización específica para el estado de disparo
     // Volver al estado idle después de disparar
@@ -12,7 +20,7 @@ State* ShootingState::shoot(Character& character, Weapon* weapon, float time) {
     return this;
 }
 
-State* ShootingState::move(Character& character, std::int16_t direction, float time) {
+State* ShootingState::move(Character& character, Move direction, float time) {
     // Puede moverse mientras dispara
     character.setDir(direction);
     if (direction > 0) {

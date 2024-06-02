@@ -24,6 +24,7 @@ private:
     std::shared_ptr<Queue<std::unique_ptr<CommandDTO>>> recvQueue;
     uint8_t maxPlayers;
     uint8_t currentPlayers;
+    size_t commandsToProcess;
 
 public:
     GameLoopThread(int32_t gameId, std::string gameName, int32_t& playerId, Episode episode,

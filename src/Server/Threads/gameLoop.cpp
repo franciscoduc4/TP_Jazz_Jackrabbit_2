@@ -17,7 +17,8 @@ GameLoopThread::GameLoopThread(int32_t gameId, std::string gameName, int32_t& pl
         keepRunning(true),
         recvQueue(recvQueue),
         maxPlayers(maxPlayers),
-        currentPlayers(1) {
+        currentPlayers(1),
+        commandsToProcess(1) {
     game.addCharacter(playerId, characterType);
 }
 
@@ -27,19 +28,46 @@ void GameLoopThread::run() {
         auto currentTime = std::chrono::high_resolution_clock::now();
         std::chrono::duration<double> deltaTime = currentTime - lastTime;
 
+        size_t processedCommands = 0;
+        double totalProcessingTime = 0.0;
+
         // Procesamos los comandos
-        std::unique_ptr<CommandDTO> command;
-        recvQueue->try_pop(command);
-        std::unique_ptr<GameCommandHandler> handler =
-                GameCommandHandler::createHandler(std::move(command));
-        handler->execute(game, keepRunning, deltaTime.count());
-        // game.update(deltaTime.count());
+        for (size_t i = 0; i < commandsToProcess; ++i) {
+            std::unique_ptr<CommandDTO> command;
+            if (recvQueue->try_pop(command)) {
+                auto commandStartTime = std::chrono::high_resolution_clock::now();
+
+                std::unique_ptr<GameCommandHandler> handler =
+                        GameCommandHandler::createHandler(std::move(command));
+                handler->execute(game, keepRunning, deltaTime.count());
+
+                auto commandEndTime = std::chrono::high_resolution_clock::now();
+                std::chrono::duration<double> commandDuration = commandEndTime - commandStartTime;
+                totalProcessingTime += commandDuration.count();
+                processedCommands++;
+            } else {
+                break;
+            }
+        }
+
+        game.update(totalProcessingTime);
         std::unique_ptr<GameDTO> gameDTO = game.getGameDTO();
         queueMonitor.broadcast(gameDTO);
 
-        // Maintain a consistent frame rate
+        // Ajustamos los commandsToProcess dependiendo del tiempo que tardamos en procesar el batch
+        // actual
+        auto processingEndTime = std::chrono::high_resolution_clock::now();
+        std::chrono::duration<double> processingDuration = processingEndTime - currentTime;
+
+        if (processingDuration.count() < frameRate) {
+            commandsToProcess++;
+        } else if (processingDuration.count() > frameRate && commandsToProcess > 1) {
+            commandsToProcess--;
+        }
+
+        // Hacemos sleep para mantener el frame rate
         std::chrono::duration<double> frameDuration(frameRate);
-        auto sleepTime = frameDuration - deltaTime;
+        auto sleepTime = frameDuration - processingDuration;
         if (sleepTime > std::chrono::duration<double>(0)) {
             std::this_thread::sleep_for(sleepTime);
         }

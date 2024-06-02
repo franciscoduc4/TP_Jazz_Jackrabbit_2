@@ -109,3 +109,7 @@ std::vector<std::int16_t> Configuration::getEnemyProbDropPoints() {
     return enemyProbDropPoints;
 }
 
+std::int16_t Configuration::getMaxMoves() {
+    return maxMoves;
+}
+

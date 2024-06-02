@@ -1,59 +1,65 @@
 #include "loriSpecialAttack.h"
 #include "idle.h"
+#include "dead.h"
+#include "move.h"
+#include "shooting.h"
+#include "damage.h"
+#include "intoxicated.h"
+
+LoriSpecialAttackState::LoriSpecialAttackState(float time):
+    startTime(startTime),
+    duration(2)
+    {
+    characterState = CharacterState::SPECIAL_ATTACK;
+    }
+
 
 State* LoriSpecialAttackState::update(float time) {
-    // Lógica de actualización específica para el ataque especial de Lori
     // Volver al estado idle después de realizar el ataque especial
     return new IdleState();
 }
 
 State* LoriSpecialAttackState::shoot(Character& character, Weapon* weapon, float time) {
     // No puede disparar mientras realiza un ataque especial
-    return this;
+    return new ShootingState(character, weapon, time);
 }
 
-State* LoriSpecialAttackState::move(Character& character, std::int16_t direction, float time) {
+State* LoriSpecialAttackState::move(Character& character, Move direction, float time) {
     // Puede moverse mientras realiza un ataque especial
-    character.setDir(direction);
-    if (direction > 0) {
-        character.moveToRight(time);
-    } else {
-        character.moveToLeft(time);
-    }
-    return this;
+    return new MoveState(character, direction, time);
+}
+
+State* LoriSpecialAttackState::sprint(Character& character, float time) {
+    // No puede correr más rápido de lo que ya lo hace
+    return nullptr;
 }
 
 State* LoriSpecialAttackState::reload(Weapon* weapon, float time) {
     // No puede recargar mientras realiza un ataque especial
-    return this;
+    return nullptr;
 }
 
 State* LoriSpecialAttackState::receiveDamage(Character& character, uint16_t dmg, float time) {
-    character.recvDmg(dmg, time);
-    if (character.getHealth() <= 0) {
-        return new DeadState();
-    }
-    return this;
+    return new ReceivingDamageState(time);
 }
 
 State* LoriSpecialAttackState::die(Character& character, float time) {
-    character.die(time);
-    return new DeadState();
+    return new DeadState(time);
 }
 
 State* LoriSpecialAttackState::revive(Character& character, float time) {
     // Lógica de reanimación
-    return this;
+    return nullptr;
 }
 
 State* LoriSpecialAttackState::jump(Character& character, float time) {
     // No puede saltar mientras realiza un ataque especial
-    return this;
+    return nullptr;
 }
 
 State* LoriSpecialAttackState::specialAttack(Character& character, float time) {
-    // Ya está realizando un ataque especial
-    return this;
+    startTime = time;
+    return nullptr;
 }
 
 State* LoriSpecialAttackState::becomeIntoxicated(Character& character, float duration) {
