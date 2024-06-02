@@ -20,7 +20,7 @@ class Blaster : public Weapon {
 
     void update(float time) override;
 
-    void shoot(std::vector<Object*>& shootingObjects, int16_t xPos, float time) override;
+    void shoot(std::shared_ptr<Entity>& shootingEntities, int16_t xPos, float time) override;
 
     void reload() override;
 

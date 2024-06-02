@@ -1,75 +1,81 @@
 #include "shooting.h"
-#include "idle_state.h"
+#include "idle.h"
+#include "jumping.h"
+#include "intoxicated.h"
+#include "dead.h"
+#include "move.h"
+#include "../playerCharacter.h"
+#include <vector>
 
-ShootingState::ShootingState(Character& character, Weapon* weapon, float time) : 
+ShootingState::ShootingState(Character& character, std::unique_ptr<Weapon> weapon, float time): 
     character(character), 
-    weapon(weapon), 
-    time(time) {
-    characterState = CharacterState::SHOOTING;
-    shoot(character, weapon, time)
-    }
+    weapon(weapon) {
+    characterState = CharacterStateEntityEntity::SHOOTING;
+    shoot(character, weapon, time);
+}
 
-State* ShootingState::update(float time) {
+std::unique_ptr<State> ShootingState::update(float time) {
     // Lógica de actualización específica para el estado de disparo
     // Volver al estado idle después de disparar
-    return new IdleState();
+    return std::make_unique<IdleState>();
 }
 
-State* ShootingState::shoot(Character& character, Weapon* weapon, float time) {
+std::unique_ptr<State> ShootingState::shoot(Character& character, 
+    std::unique_ptr<Weapon> weapon, float time) {
     // Ya está disparando
-    return this;
+    if (!weapon->isEmpty() && (time - startTime) > waitToShoot){
+        startTime = time; 
+        std::vector<std::shared_ptr<Entity>> characters = character.getTargets();
+        int16_t x = character.getMatrixX();
+        weapon->shoot(characters, x, time);
+    }
+    return nullptr;
 }
 
-State* ShootingState::move(Character& character, Move direction, float time) {
+std::unique_ptr<State> ShootingState::move(Character& character, Move direction, float time) {
     // Puede moverse mientras dispara
-    character.setDir(direction);
-    if (direction > 0) {
-        character.moveToRight(time);
-    } else {
-        character.moveToLeft(time);
-    }
-    return this;
+    return std::make_unique<MoveState>(character, direction, time);
 }
 
-State* ShootingState::reload(Weapon* weapon, float time) {
+std::unique_ptr<State> ShootingState::reload(std::unique_ptr<Weapon> weapon, float time) {
     // Transición al estado de recarga
-    return this;
+    return std::unique_ptr<State>(this);
 }
 
-State* ShootingState::receiveDamage(Character& character, uint16_t dmg, float time) {
-    character.recvDmg(dmg, time);
+std::unique_ptr<State> ShootingState::receiveDamage(Character& character, uint16_t dmg, float time) {
+    character.recvDamage(dmg, time);
     if (character.getHealth() <= 0) {
-        return new DeadState();
+        return std::make_unique<DeadState>();
     }
-    return this;
+    return std::unique_ptr<State>(this);
 }
 
-State* ShootingState::die(Character& character, float time) {
+std::unique_ptr<State> ShootingState::die(Character& character, float time) {
     character.die(time);
-    return new DeadState();
+    return std::make_unique<DeadState>();
 }
 
-State* ShootingState::revive(Character& character, float time) {
+std::unique_ptr<State> ShootingState::revive(Character& character, float time) {
     // Lógica de reanimación
-    return this;
+    return std::unique_ptr<State>(this);
 }
 
-State* ShootingState::jump(Character& character, float time) {
+std::unique_ptr<State> ShootingState::jump(Character& character, float time) {
     // Transición al estado de salto
-    return new JumpingState();
+    return std::make_unique<JumpingState>();
 }
 
-State* ShootingState::specialAttack(Character& character, float time) {
-    // Transición al estado de ataque especial
-    return new SpecialAttackState();
-}
+// std::unique_ptr<State> ShootingState::specialAttack(Character& character, float time) {
+//     // Transición al estado de ataque especial
+//     return std::make_unique<SpecialAttackState>();
+// }
 
-State* ShootingState::becomeIntoxicated(Character& character, float duration) {
+std::unique_ptr<State> ShootingState::becomeIntoxicated(Character& character, float duration) {
     // Transición al estado de intoxicación
-    return new IntoxicatedState(duration);
+    return std::make_unique<IntoxicatedState>(duration);
 }
 
-State* ShootingState::stopAction() {
+std::unique_ptr<State> ShootingState::stopAction() {
     // Transición al estado idle
-    return new IdleState();
+    return std::make_unique<IdleState>();
 }

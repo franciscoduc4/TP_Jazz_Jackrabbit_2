@@ -11,56 +11,59 @@ ReceivingDamageState::ReceivingDamageState(float startTime) :
     startTime(startTime),
     stopDamageTime(1) //CONFIG.getDamageTime();
     {
-        characterState = CharacterState::TAKING_DAMAGE;
+        characterState = CharacterStateEntity::TAKING_DAMAGE;
     }
 
-State* ReceivingDamageState::update(float time) {
+std::unique_ptr<State> ReceivingDamageState::update(float time) {
     if (time - startTime >= stopDamageTime) {
-        return new IdleState();  
+        return std::unique_ptr<IdleState>();  
     }
     return nullptr;
 }
 
-State* ReceivingDamageState::shoot(Character& character, Weapon* weapon, float time) {
+std::unique_ptr<State> ReceivingDamageState::shoot(Character& character, 
+std::unique_ptr<Weapon> weapon, float time) {
     if (time - startTime >= stopDamageTime) {
-        return new ShootingState(character, weapon, time);  
+        return std::make_unique<ShootingState>(character, weapon, time);  
     }
     return nullptr;
 }
 
-State* ReceivingDamageState::move(Character& character, Move direction, float time) {
+std::unique_ptr<State> ReceivingDamageState::move(Character& character, Move direction, float time) {
     if (time - startTime >= stopDamageTime) {
-        return new MoveState(character, direction, time);  
+        return std::make_unique<MoveState>(character, direction, time);  
     }
     return nullptr;
 }
 
-State* ReceivingDamageState::reload(Weapon* weapon, float time) {
-    return new IdleState();
+std::unique_ptr<State> ReceivingDamageState::reload(std::unique_ptr<Weapon> weapon, float time) {
+    return std::unique_ptr<IdleState>();
 }
 
-State* ReceivingDamageState::receiveDamage(Character& character, uint16_t damage, float time) {
+std::unique_ptr<State> ReceivingDamageState::receiveDamage(Character& character, 
+uint16_t damage, float time) {
     startTime = time;
     return nullptr;
 }
 
-State* ReceivingDamageState::die(Character& character, float respawnTime) {
-    return new DeadState(respawnTime);
+std::unique_ptr<State> ReceivingDamageState::die(Character& character, float respawnTime) {
+    return std::make_unique<DeadState>(respawnTime);
 }
 
-State* ReceivingDamageState::becomeIntoxicated(Character& character, float duration) {
+std::unique_ptr<State> ReceivingDamageState::becomeIntoxicated
+    (Character& character, float duration) {
     return nullptr;
 }
 
-State* ReceivingDamageState::jump(Character& character, float time) {
+std::unique_ptr<State> ReceivingDamageState::jump(Character& character, float time) {
     return nullptr;
 }
 
-State* ReceivingDamageState::stopAction() {
+std::unique_ptr<State> ReceivingDamageState::stopAction() {
     return nullptr;
 }
 
-State* ReceivingDamageState::revive(Character& character, float time) {
+std::unique_ptr<State> ReceivingDamageState::revive(Character& character, float time) {
     return nullptr;
 }
 

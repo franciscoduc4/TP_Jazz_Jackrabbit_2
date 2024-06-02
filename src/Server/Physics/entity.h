@@ -4,6 +4,8 @@
 #include <cstdint>
 #include <iostream>
 #include <utility>
+#include <vector>
+#include <memory>
 
 #include "../../Common/vector.h"
 
@@ -21,7 +23,13 @@ public:
     virtual void setPosition(Vector<float> newPosition) = 0;
     virtual bool isAlive() = 0;
     virtual void update(float time) = 0;
+<<<<<<< Updated upstream
     virtual void interact(std::shared_ptr<Entity> other) = 0;
+=======
+    virtual void interact(Entity& other) = 0;
+    virtual std::vector<std::shared_ptr<Entity>> getTargets() = 0;
+
+>>>>>>> Stashed changes
 };
 
 #endif  // ENTITY_H

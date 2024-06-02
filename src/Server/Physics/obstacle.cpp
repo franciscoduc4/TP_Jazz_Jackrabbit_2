@@ -26,7 +26,7 @@ int16_t Obstacle::getId() {
     return id;
 }
 
-void Obstacle::recvDmg(uint16_t dmg, float time) {
+void Obstacle::recvDamage(uint16_t dmg, float time) {
     // No hace nada
 }
 

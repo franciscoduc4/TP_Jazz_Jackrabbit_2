@@ -15,15 +15,15 @@ void Blaster::update(float time){
         }        
     }
 
-void Blaster::shoot(std::vector<Object*>& shootingObjects, int16_t xPos, float time){
+void Blaster::shoot(std::shared_ptr<Entity>& shootingEntities, int16_t xPos, float time){
     lastTimeShot = time;
     bullets--;
     bulletsShot++;
 
-    if (shootingObjects.empty()) return;
+    if (shootingEntities.empty()) return;
 
-    for (auto& object : shootingObjects) {
-        object->recvDmg(damage, time);
+    for (auto& object : shootingEntities) {
+        object->recvDamage(damage, time);
     }
 }
 

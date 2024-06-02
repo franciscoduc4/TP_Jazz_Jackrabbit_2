@@ -1,4 +1,4 @@
-#include "rfmissile.h"
+#include "rfMissile.h"
 
 RFMissile::RFMissile() :
     bullets(10),
@@ -14,15 +14,15 @@ void RFMissile::update(float time){
     }
 }
 
-void RFMissile::shoot(std::vector<Object*>& shootingObjects, int16_t xPos, float time){
+void RFMissile::shoot(std::shared_ptr<Entity>& shootingEntities, int16_t xPos, float time){
     lastTimeShot = time;
     bullets--;
     bulletsShot++;
 
-    if (shootingObjects.empty()) return;
+    if (shootingEntities.empty()) return;
 
-    for (auto& object : shootingObjects) {
-        object->recvDmg(damage, time);
+    for (auto& object : shootingEntities) {
+        object->recvDamage(damage, time);
     }
 }
 

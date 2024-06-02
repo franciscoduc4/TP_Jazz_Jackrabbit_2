@@ -28,13 +28,21 @@ private:
     bool isValidPosition(Vector<int16_t> position);
 
 public:
-    GameMap(Vector<int16_t> size);
+    explicit GameMap(Vector<int16_t> size);
 
+<<<<<<< Updated upstream
     std::vector<std::shared_ptr<Entity>> getObjectsInShootRange(Vector<int16_t> mapPosition,
                                                                 Direction dir);
 
     std::vector<std::shared_ptr<Entity>> getObjectsInExplosionRange(Vector<int16_t> mapPosition,
                                                                     int16_t radius);
+=======
+    void getObjectsInShootRange(Vector<int16_t> mapPosition, int16_t dir,
+                                std::unique_ptr<Entity>& entities);
+
+    void getObjectsInExplosionRange(Vector<int16_t> mapPosition, float radius,
+                                    std::unique_ptr<Entity>& entities);
+>>>>>>> Stashed changes
 
     void moveObject(Vector<int16_t>& position, Vector<int16_t> mapPosition, Direction dir);
 
@@ -48,3 +56,4 @@ public:
 };
 
 #endif  // GAME_MAP_H_
+
