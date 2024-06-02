@@ -33,6 +33,6 @@ public:
 
 
     virtual ~Weapon() {}
-}
+};
 
 #endif  // WEAPON_H_

@@ -9,7 +9,7 @@
 
 class Entity {
 public:
-    virtual Vector<float> getPosition() = 0;
+    virtual Vector<int16_t> getPosition() = 0;
     virtual int16_t getId() = 0;
     virtual int16_t getDirection() = 0;
     virtual int16_t getHealth() = 0;
@@ -21,7 +21,7 @@ public:
     virtual void setPosition(Vector<float> newPosition) = 0;
     virtual bool isAlive() = 0;
     virtual void update(float time) = 0;
-    virtual void interact(Entity& other) = 0;
+    virtual void interact(std::shared_ptr<Entity> other) = 0;
 };
 
 #endif  // ENTITY_H

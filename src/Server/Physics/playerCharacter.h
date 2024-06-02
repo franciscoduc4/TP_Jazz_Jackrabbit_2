@@ -43,7 +43,7 @@ private:
 
 public:
     Character(GameMap& map, int16_t x, int16_t y, int16_t characterId, CharacterType type);
-    Vector<float> getPosition() override;
+    Vector<int16_t> getPosition() override;
     int16_t getId() override;
     int16_t getDirection() override;
     Vector<int16_t> getMapPosition() override;
@@ -53,12 +53,12 @@ public:
     void update(float time);
     void shoot(float time);
 
-    void moveToRight(float time);
-    void sprintToRight(float time);
-    void moveToLeft(float time);
-    void sprintToLeft(float time);
-    void moveToUp(float time);
-    void moveToDown(float time);
+    void moveRight(float time);
+    void sprintRight(float time);
+    void moveLeft(float time);
+    void sprintLeft(float time);
+    void moveUp(float time);
+    void moveDown(float time);
 
 
     virtual void specialAttack(float time) = 0;
@@ -71,14 +71,14 @@ public:
 
     bool isAlive() const { return !isDead; }
 
-    int16_t getHealth()  { return health; }
-    int16_t getDir()  { return dir; }
-    int16_t getX()  { return x; }
-    int16_t getY()  { return y; }
+    int16_t getHealth() { return health; }
+    int16_t getDir() { return dir; }
+    int16_t getX() { return x; }
+    int16_t getY() { return y; }
     int16_t getCharacterId() const { return characterId; }
     float getRespawnTime() const { return respawnTime; }
-    bool characIsIntoxicated()  { return isIntoxicated; }
-    float getIntoxicatedTime()  { return intoxicatedTime; }
+    bool characIsIntoxicated() { return isIntoxicated; }
+    float getIntoxicatedTime() { return intoxicatedTime; }
 
     void moveRight();
     void moveLeft();

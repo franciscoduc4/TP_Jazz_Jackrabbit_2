@@ -6,33 +6,45 @@
 #include <vector>
 
 #include "../../Common/Types/character.h"
+#include "../../Common/Types/direction.h"
+#include "../../Common/Types/enemy.h"
 #include "../../Common/vector.h"
+#include "enemies/enemy.h"
 
 #include "entity.h"
+#include "entityFactory.h"
 #include "playerCharacter.h"
 
 class GameMap {
 private:
     Vector<int16_t> size;
-    std::map<Vector<int16_t>, Entity> mapGrid;
+    std::map<Vector<int16_t>, std::shared_ptr<Entity>> mapGrid;
     std::vector<std::shared_ptr<Character>> characters;
-    // std::vector<std::shared_ptr<Enemy>> enemies;
-    // GameCreator ver despues
+    std::vector<std::shared_ptr<Enemy>> enemies;
+    EntityFactory entityFactory;
+    int16_t movesPerCell = 2;
+
+    bool isFreePosition(Vector<int16_t> position);
+    bool isValidPosition(Vector<int16_t> position);
 
 public:
     GameMap(Vector<int16_t> size);
 
-    void getObjectsInShootRange(Vector<int16_t> mapPosition, int16_t dir,
-                                std::vector<Entity*>& entities);
+    std::vector<std::shared_ptr<Entity>> getObjectsInShootRange(Vector<int16_t> mapPosition,
+                                                                Direction dir);
 
-    void getObjectsInExplosionRange(Vector<int16_t> mapPosition, float radius,
-                                    std::vector<Entity*>& entities);
+    std::vector<std::shared_ptr<Entity>> getObjectsInExplosionRange(Vector<int16_t> mapPosition,
+                                                                    int16_t radius);
 
-    void moveObject(Vector<int16_t> deltaPosition, Entity& entity);
+    void moveObject(Vector<int16_t>& position, Vector<int16_t> mapPosition, Direction dir);
 
-    void getEntityPosition(Vector<int16_t> mapPosition);
+    Vector<int16_t> getAvailablePosition();
 
     std::shared_ptr<Character> addCharacter(CharacterType type);
+
+    void addEnemy(EnemyType type);
+
+    void update(float time);
 };
 
 #endif  // GAME_MAP_H_

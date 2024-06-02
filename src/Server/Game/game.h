@@ -6,15 +6,20 @@
 
 #include "../../Common/DTO/game.h"
 #include "../../Common/Types/character.h"
+#include "../CommandHandlers/Game/gameCommand.h"
+#include "../Physics/gameMap.h"
 #include "../Physics/playerCharacter.h"
 
 class Game {
 private:
-    // Map gameMap;
+    GameMap gameMap;
     std::map<int32_t, std::shared_ptr<Character>> characters;
 
 
 public:
+    void handleCommand(std::unique_ptr<CommandDTO> commandDTO, std::atomic<bool>& keepRunning,
+                       double deltaTime);
+
     void addCharacter(int32_t playerId, CharacterType characterType);
 
     std::shared_ptr<Character> getCharacter(int32_t playerId);
