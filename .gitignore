@@ -50,3 +50,5 @@ server
 # QT Debug
 build-UI-Lobby-Qt6-Debug/
 build-UI-Lobby-Qt6-Debug/*
+build-Lobby-Qt6-Debug/
+build-Lobby-Qt6-Debug/*

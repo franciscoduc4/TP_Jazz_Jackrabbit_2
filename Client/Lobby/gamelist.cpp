@@ -19,8 +19,9 @@ GameList::~GameList()
 
 void GameList::on_btnJoin_clicked()
 {
-    this->msg.setGameName(nombrePartida.toStdString());
-    this->sender.sendMessage(this->msg);
+    //ui->
+    //this->msg.setGameName(nombrePartida.toStdString());
+    this->monitor.send_message(this->msg.toString());
 
     WaitingRoom* wr = new WaitingRoom(this, this->monitor, this->msg);
     wr->show();
@@ -30,7 +31,7 @@ void GameList::on_btnJoin_clicked()
 
 void GameList::on_btnBack_clicked()
 {
-    this->setGameName("");
+    this->msg.setGameName("");
     QWidget* parent = this->parentWidget();
     if (parent){
         parent->show();

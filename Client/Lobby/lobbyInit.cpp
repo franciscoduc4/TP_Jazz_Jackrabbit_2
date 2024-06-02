@@ -3,12 +3,14 @@
 #include <QApplication>
 
 #include "../Client/QTMonitor.h"
+#include "../Client/gameStatusMonitor.h"
 #include "../Client/senderThread.h"
 #include "../Client/receiverThread.h"
 #include "../Common/protocol.h"
 #include "../Common/socket.h"
 #include "../Common/queue.h"
 #include "../Client/lobbyMessage.h"
+#include "./welcome.h"
 
 int main(int argc, char *argv[])
 {
@@ -17,14 +19,15 @@ int main(int argc, char *argv[])
     Socket skt(ip, port);
     Protocol protocol(std::move(skt));
     Queue<ProtocolMessage> cmdQueue;
-    SenderThread sender(protocol, &skt, &cmdQueue);
+    GameStatusMonitor gameMonitor;
+    SenderThread sender(protocol, cmdQueue, gameMonitor);
     sender.start();
-    ReceiverThread receiver(&skt, &protocol);
+    ReceiverThread receiver(protocol, gameMonitor);
     receiver.start();
     LobbyMessage msg;
-    QTMonitor monitor(&protocol, &sender, &receiver);
+    QTMonitor qtMonitor(sender, receiver);
     QApplication a(argc, argv);
-    Welcome w(&sender, &receiver, &monitor, &msg);
+    Welcome w(nullptr, qtMonitor, msg);
     w.show();
     return a.exec();
 }

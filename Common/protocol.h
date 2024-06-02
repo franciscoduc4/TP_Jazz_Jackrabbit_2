@@ -22,7 +22,8 @@ struct ProtocolMessage {
 
 class Protocol {
     Socket socket;
-    std::atomic<bool> was_closed;
+    // std::atomic<bool> was_closed;
+    bool was_closed;
 
     void send_msg(void* data, size_t size);
     void recv_msg(void* data, size_t size);

@@ -4,6 +4,7 @@
 #include <QPixmap>
 #include <QPainter>
 #include <QKeyEvent>
+#include <QWidget>
 #include <vector>
 #include "../Client/sprite.h"
 
@@ -21,7 +22,7 @@ protected:
 private:
     std::vector<QPixmap> sprites;
     size_t currentSpriteIndex;
-    std::vector<Sprite> spritePositions;
+    std::vector<RectangularSprite> spritePositions;
 };
 
 #endif // SCENESPRITESWIDGET_H

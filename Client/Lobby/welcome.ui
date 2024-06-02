@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>Lobby</class>
- <widget class="QMainWindow" name="Lobby">
+ <class>Welcome</class>
+ <widget class="QMainWindow" name="Welcome">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -14,7 +14,7 @@
    <string>Lobby</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">background: &quot;../assets/Miscellaneous/fondo_blanco.png&quot;;</string>
+   <string notr="true">background: &quot;../assets/Miscellaneous/carga.png&quot;;</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <widget class="QLabel" name="labelTitle">

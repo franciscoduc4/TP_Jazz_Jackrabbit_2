@@ -23,7 +23,7 @@ SceneSelection::~SceneSelection()
 
 void SceneSelection::on_btnChoose_clicked()
 {
-    size_t selection = sceneSpritesWidget->getCurrentSprite();
+    size_t selection = sceneSpritesWidget->getCurrentSpriteIndex();
     EpisodeSelect episode = static_cast<EpisodeSelect>(selection + 1);
     this->msg.setEpisode(episode);
     CreateGame* cg = new CreateGame(this, this->monitor, this->msg);

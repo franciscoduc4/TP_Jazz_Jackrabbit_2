@@ -5,7 +5,7 @@
 #include <yaml-cpp/yaml.h>
 #include <vector>
 
-#include "Common/logger.h"
+#include "../logger.h"
 
 class ClientConfig {
  private:
@@ -16,8 +16,8 @@ class ClientConfig {
  public:
     static ClientConfig* getInstance();
     Logger& getLogger();
-    std::string getEpisodeFile();
-    std::vector<std::vector<int>> getEpisodesSprites();
+    static std::string getEpisodeFile();
+    static std::vector<std::vector<int>> getEpisodesSprites();
     static void deleteInstance();
 };
 

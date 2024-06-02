@@ -4,20 +4,20 @@
 #include <QKeyEvent>
 
 #include "../Common/Config/ClientConfig.h"
+#include "../sprite.h"
 
 SceneSpritesWidget::SceneSpritesWidget(QWidget *parent)
     : QWidget{parent}, currentSpriteIndex(0)
 {
-    QPixmap spritesheet(ClientConfig::getEpisodesFiles());
+    std::string spritesheetFilePath = ClientConfig::getEpisodeFile();
+    QPixmap spritesheet(QString::fromStdString(spritesheetFilePath));
 
-    // Sprites: {x, y, ancho, alto}, x e y son las coordenadas del vértice superior izquierdo.
-    spritePositions = {
-        RectangularSprites::createSprites(ClientConfig::getEpisodesSprites());
-    };
+    std::vector<std::vector<int>> spritesData = ClientConfig::getEpisodesSprites();
+    spritePositions = RectangularSprite::createSprites(spritesData);
 
     // Extract the sprites
-    for (const Sprite& sprite : spritePositions) {
-        QPixmap extractedSprite = spritesheet.copy(sprite.x, sprite.y, sprite.width, sprite.height);
+    for (const RectangularSprite& sprite : spritePositions) {
+        QPixmap extractedSprite = spritesheet.copy(sprite.get_x(), sprite.get_y(), sprite.get_width(), sprite.get_height());
         sprites.push_back(extractedSprite);
     }
 

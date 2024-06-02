@@ -17,7 +17,7 @@ WaitingRoom::~WaitingRoom()
 
 void WaitingRoom::on_btnBack_clicked()
 {
-    this->monitor.send_message(this->msg);
+    this->monitor.send_message(this->msg.toString());
     QWidget* parent = this->parentWidget();
     if (parent){
         parent->show();

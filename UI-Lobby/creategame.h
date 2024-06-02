@@ -4,6 +4,8 @@
 #include <QMainWindow>
 #include "../Client/QTMonitor.h"
 #include "../Client/lobbyMessage.h"
+#include <QMessageBox>
+#include <QObject>
 
 namespace Ui {
 class CreateGame;

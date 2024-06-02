@@ -44,6 +44,7 @@ class Sprite {
     std::tuple<int, int, int> getColourKey() const {
         return colourKey;
     }
+
 };
 
 class RectangularSprite : public Sprite {
@@ -52,12 +53,12 @@ class RectangularSprite : public Sprite {
 
  public:
     RectangularSprite(int x, int y, int width, int height) : 
-        x(x), y(y), width(width), height(height),
-        Sprite({{x, y},
-                {x + width, y},
-                {x + width, y + height},
-                {x, y + height}, 
-                {x, y}}) {}
+    x(x), y(y), width(width), height(height), 
+    Sprite({{this->x, this->y},
+            {this->x + this->width, this->y},
+            {this->x + this->width, this->y + this->height},
+            {this->x, this->y + this->height}, 
+            {this->x, this->y}}) {}
 
     explicit RectangularSprite(const std::vector<int>& values)
         : Sprite({{values[0], values[1]},
@@ -98,6 +99,22 @@ class RectangularSprite : public Sprite {
             sprites.push_back(RectangularSprite(values));
         }
         return sprites;
+    }
+
+    int get_x() const {
+        return this->x;
+    } 
+
+    int get_y() const {
+        return this->y;
+    }
+
+    int get_width() const {
+        return this->width;
+    }
+
+    int get_height() const {
+        return this->height;
     }
 };
 

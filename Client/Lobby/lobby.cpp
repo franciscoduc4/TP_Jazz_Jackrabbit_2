@@ -2,6 +2,7 @@
 #include "ui_lobby.h"
 
 #include "../Common/Constants/lobbyCommands.h"
+#include "sceneselection.h"
 #include "characterselection.h"
 
 Lobby::Lobby(QWidget *parent, QTMonitor& monitor, LobbyMessage& msg) :

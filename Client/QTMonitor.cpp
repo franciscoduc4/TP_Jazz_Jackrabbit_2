@@ -11,5 +11,5 @@ void QTMonitor::send_message(const std::string& msg) {
 
 LobbyMessage QTMonitor::recv_message() {
     std::lock_guard<std::mutex> lock(this->mutex);
-    return this->receiver.receive_message();
+    return this->receiver.recv_msg();
 }

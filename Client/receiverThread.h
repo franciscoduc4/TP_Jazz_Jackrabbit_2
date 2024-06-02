@@ -16,7 +16,7 @@ class ReceiverThread : public Thread {
  public:
    explicit ReceiverThread(Protocol& protocol, GameStatusMonitor& monitor);
 
-   LobbyMessage receive_message();
+   LobbyMessage recv_msg();
 
    void run() override;
    

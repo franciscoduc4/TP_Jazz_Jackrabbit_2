@@ -5,6 +5,7 @@
 #include <ctime>
 #include <fstream>
 #include <string>
+#include "fmt/core.h"
 
 class Logger {
 private:
@@ -30,19 +31,19 @@ public:
     template <typename... Args>
     void debug(const std::string& func, const int& line, const std::string& format, Args... args) {
         fileStream << getCurrentTime() << " | DEBUG | Function: " << func << " | Line: " << line
-                   << " | " << std::format(format, args...) << std::endl;
+                   << " | " << fmt::format(format, args...) << std::endl;
     }
 
     template <typename... Args>
     void error(const std::string& func, int line, const std::string& format, Args... args) {
         fileStream << getCurrentTime() << " | ERROR | Function: " << func << " | Line: " << line
-                   << " | " << std::format(format, args...) << std::endl;
+                   << " | " << fmt::format(format, args...) << std::endl;
     }
 
     template <typename... Args>
     void info(const std::string& func, int line, const std::string& format, Args... args) {
         fileStream << getCurrentTime() << " | INFO | Function: " << func << " | Line: " << line
-                   << " | " << std::format(format, args...) << std::endl;
+                   << " | " << fmt::format(format, args...) << std::endl;
     }
 
 };

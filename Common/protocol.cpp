@@ -7,14 +7,14 @@
 #include <arpa/inet.h>
 
 #include "../Common/socket.h"
-#include "../Server/Game/gameStatus.h"
+// #include "../Server/Game/gameStatus.h"
 #include "Constants/lobbyCommands.h"
 #include "Constants/playerCommands.h"
 
 Protocol::Protocol(Socket&& socket): socket(std::move(socket)), was_closed(false) {}
 
 bool Protocol::server_closed() {
-    return this->was_closed.load();
+    return this->was_closed;
 }
 
 void Protocol::send_msg(void* data, size_t size) {
@@ -63,12 +63,12 @@ ProtocolMessage Protocol::recvMessage() {
     return protocolMessage;
 }
 
-void Protocol::sendGameState(GameStatus& gameStatus) {
-    ProtocolMessage currentGameStatus;
-    currentGameStatus.cmd = 0x00;
-    currentGameStatus.args = gameStatus.snapshot();
-    sendMessage(currentGameStatus);
-}
+// void Protocol::sendGameState(GameStatus& gameStatus) {
+//     ProtocolMessage currentGameStatus;
+//     currentGameStatus.cmd = 0x00;
+//     currentGameStatus.args = gameStatus.snapshot();
+//     sendMessage(currentGameStatus);
+// }
 
 // void Protocol::sendJoinGame(const std::string& gameName) {
 //     std::ostringstream oss;
@@ -83,4 +83,4 @@ void Protocol::sendGameState(GameStatus& gameStatus) {
 // }
 
 
-int Protocol::getId() const { return socket.getSocketId(); }
+// int Protocol::getId() const { return socket.getSocketId(); }
