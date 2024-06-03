@@ -30,21 +30,21 @@ public:
     }
 
     template <typename... Args>
-    void debug(const std::string& file, const int& line, const std::string& format, Args... args) {
-        std::cout << "DEBUG: " << file << ":" << line << " | " << fmt::format(format, args...)
-                  << std::endl;
+    void debug(const std::string& func, const int& line, const std::string& format, Args... args) {
+        fileStream << getCurrentTime() << " | DEBUG | Function: " << func << " | Line: " << line
+                   << " | " << fmt::format(format, args...) << std::endl;
     }
 
     template <typename... Args>
-    void error(const std::string& file, int line, const std::string& format, Args... args) {
-        std::cerr << "ERROR: " << file << ":" << line << " | " << fmt::format(format, args...)
-                  << std::endl;
+    void error(const std::string& func, int line, const std::string& format, Args... args) {
+        fileStream << getCurrentTime() << " | ERROR | Function: " << func << " | Line: " << line
+                   << " | " << fmt::format(format, args...) << std::endl;
     }
 
     template <typename... Args>
-    void info(const std::string& file, int line, const std::string& format, Args... args) {
-        std::cout << "INFO: " << file << ":" << line << " | " << fmt::format(format, args...)
-                  << std::endl;
+    void info(const std::string& func, int line, const std::string& format, Args... args) {
+        fileStream << getCurrentTime() << " | INFO | Function: " << func << " | Line: " << line
+                   << " | " << fmt::format(format, args...) << std::endl;
     }
 
 };
