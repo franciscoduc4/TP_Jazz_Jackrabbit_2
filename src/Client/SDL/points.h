@@ -6,7 +6,7 @@
 #include <list>
 
 class Points {
-	std::map<int, std::list<Sprite>> sprites;
+	std::map<int, std::list<RectangularSprite>> sprites;
 	std::vector<std::vector<int>> redgems;
 	std::vector<std::vector<int>> goldcoin;
 	std::vector<std::vector<int>> silvercoin;
@@ -26,7 +26,7 @@ public:
 	
 	void draw_points(SDL2pp::Renderer& renderer, SDL2pp::Texture& points);
 	
-	std::list<Sprite>::iterator actual_sprite_coord(int typepoint);
+	std::list<RectangularSprite>::iterator actual_sprite_coord(int typepoint);
 	
 	void verify_point_obtained(SDL2pp::Rect& player_rect);
 };

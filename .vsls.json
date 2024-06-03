@@ -1,0 +1,12 @@
+{
+  "$schema": "http://json.schemastore.org/vsls",
+  "include": [
+    "src/Server/**",
+    "src/Common/**",
+    "src/Client/**"
+  ],
+  "exclude": [
+    "node_modules/**",
+    ".git/**"
+  ]
+}

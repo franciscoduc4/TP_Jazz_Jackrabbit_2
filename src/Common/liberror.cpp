@@ -17,7 +17,7 @@
 #undef _GNU_SOURCE
 #undef GNU_SOURCE
 
-#include "liberror.h"
+#include "./liberror.h"
 
 #include <cstdarg>
 #include <cstdio>
@@ -107,8 +107,7 @@ LibError::LibError(int error_code, const char* fmt, ...) noexcept {
      * de lo escrito por `vsnprintf` pisándole el `\0`.
      * */
 
-
-    //strerror_r(error_code, msg_error + s, sizeof(msg_error) - s);
+    strerror_r(error_code, msg_error + s, sizeof(msg_error) - s);
 
     /*
      * `strerror_r` garantiza que el string termina siempre en un `\0`

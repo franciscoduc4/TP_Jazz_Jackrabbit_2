@@ -9,7 +9,7 @@
 
 class Enemy {
 	std::string path;	
-	std::map<int, std::list<Sprite>> sprites;	
+	std::map<int, std::list<RectangularSprite>> sprites;	
 	EnemyWeapon weapon;
 	int count;
 	int pos_x;
@@ -25,7 +25,7 @@ public:
 	
 	std::string getPath();
 
-	std::list<Sprite>::iterator enemy_img_coords(int mov_type, int num_mov);	
+	std::list<RectangularSprite>::iterator enemy_img_coords(int mov_type, int num_mov);	
 	
-	void draw_enemy(SDL2pp::Renderer& renderer, SDL2pp::Texture& enemy, int mov_type);
+	void draw_enemy(SDL2pp::Window& window, SDL2pp::Renderer& renderer, SDL2pp::Texture& enemy, int mov_type);
 };

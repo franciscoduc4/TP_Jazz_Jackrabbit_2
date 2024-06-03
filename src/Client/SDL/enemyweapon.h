@@ -8,7 +8,7 @@
 
 
 class EnemyWeapon {
-	std::list<Sprite> sprites;
+	std::list<RectangularSprite> sprites;
 	int count;
 	int x;
 	int y;
@@ -23,8 +23,8 @@ public:
 	
 	void activate(int x, int y, int flip);	
 	
-	std::list<Sprite>::iterator weapon_coords();
+	std::list<RectangularSprite>::iterator weapon_coords();
 
-	bool draw_weapon(SDL2pp::Renderer& renderer, SDL2pp::Texture& weapon);
+	bool draw_weapon(SDL2pp::Window& window, SDL2pp::Renderer& renderer, SDL2pp::Texture& weapon);
 };
 #endif 

@@ -30,8 +30,8 @@
 *.exe
 *.out
 *.app
-client
-server
+src/Client
+src/Server
 
 # Mac
 .DS_Store
@@ -50,6 +50,8 @@ server
 #build
 build
 build/*
-
-#liveshare
-.vsls.json
+=======
+# QT Debug
+build-UI-Lobby-Qt6-Debug/
+build-UI-Lobby-Qt6-Debug/*
+>>>>>>> client

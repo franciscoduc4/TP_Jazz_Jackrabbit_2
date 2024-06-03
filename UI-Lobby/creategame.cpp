@@ -24,7 +24,7 @@ void CreateGame::on_btnCreate_clicked()
     int waitTime = ui->waitTime->value();
 
     if (gameName.isEmpty()) {
-        QMessageBox::warning(this, "Ingrese un nombre para la partida");
+        QMessageBox::warning(this, "Ingrese un nombre para la partida", "Warning");
         return;
     }
     this->msg.setGameName(gameName.toStdString());

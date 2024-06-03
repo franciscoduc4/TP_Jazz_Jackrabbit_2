@@ -2,22 +2,24 @@
 #define __CLIENT_CONFIG_H__
 
 #include <string>
-#include <yaml-cpp/yaml.h>
 #include <vector>
+
+#include <yaml-cpp/yaml.h>
 
 #include "logger.h"
 
 class ClientConfig {
- private:
+private:
     static ClientConfig* instance;
     YAML::Node root;
     ClientConfig();
     static std::string getLogFile();
- public:
+
+public:
     static ClientConfig* getInstance();
     Logger& getLogger();
-    std::string getEpisodeFile();
-    std::vector<std::vector<int>> getEpisodesSprites();
+    static std::string getEpisodeFile();
+    static std::vector<std::vector<int>> getEpisodesSprites();
     static void deleteInstance();
 };
 
