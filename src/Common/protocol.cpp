@@ -6,7 +6,7 @@
 
 #include <arpa/inet.h>
 
-#include "../Common/socket.h"
+#include "socket.h"
 // #include "../Server/Game/gameStatus.h"
 #include "Constants/lobbyCommands.h"
 #include "Constants/playerCommands.h"
