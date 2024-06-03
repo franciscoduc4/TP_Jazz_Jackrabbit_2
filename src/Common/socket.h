@@ -165,5 +165,10 @@ public:
      * automáticamente.
      * */
     ~Socket();
+
+    /*
+    Devuelve el id del socket.
+    */
+    int getSocketId() const { return skt; }
 };
 #endif
