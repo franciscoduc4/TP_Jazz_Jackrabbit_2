@@ -54,6 +54,11 @@ std::unique_ptr<State> MovingState::reload(std::shared_ptr<Weapon> weapon, float
     return std::unique_ptr<IdleState>();
 }
 
+std::unique_ptr<State> MovingState::sprint(Character& character, Direction direction, float time) {
+    // Cambia al estado de sprint
+    return std::unique_ptr<MovingState>();
+}
+
 std::unique_ptr<State> MovingState::receiveDamage(Character& character, uint16_t damage,
                                                   float time) {
     // Maneja la recepción de daño
@@ -65,15 +70,25 @@ std::unique_ptr<State> MovingState::die(Character& character, float respawnTime)
     return std::make_unique<DeadState>(respawnTime);
 }
 
+std::unique_ptr<State> MovingState::revive(Character& character, float time) {
+    // Lógica de reanimación
+    return nullptr;
+}
+
+std::unique_ptr<State> MovingState::jump(Character& character, float time) {
+    // No puede saltar mientras realiza un ataque especial
+    return nullptr;
+}
+
 std::unique_ptr<State> MovingState::becomeIntoxicated(Character& character, float duration) {
     // Cambia al estado de intoxicación
     return std::make_unique<IntoxicatedState>(duration);
 }
 
-// std::unique_ptr<State> MovingState::jump(Character& character, float time) {
-//     // Cambia al estado de salto
-//     return std::unique_ptr<JumpingState>();
-// }
+std::unique_ptr<State> MovingState::specialAttack(Character& character, float time) {
+    // Cambia al estado de ataque especial
+    return nullptr;
+}
 
 std::unique_ptr<State> MovingState::stopAction() {
     // Cambia al estado inactivo

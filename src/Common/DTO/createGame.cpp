@@ -3,15 +3,16 @@
 CreateGameDTO::CreateGameDTO(int32_t gameId): CommandDTO(gameId, Command::CREATE_GAME) {}
 
 CreateGameDTO::CreateGameDTO(int32_t playerId, Episode episodeName, GameMode gameMode,
-                             uint8_t maxPlayers, CharacterType characterType, std::string gameName):
+                             uint8_t maxPlayers, CharacterType characterType, std::string gameName,
+                             int32_t gameId):
         CommandDTO(playerId, Command::CREATE_GAME),
         playerId(playerId),
         episodeName(episodeName),
         gameMode(gameMode),
-        gameId(gameId),
         maxPlayers(maxPlayers),
         characterType(characterType),
-        gameName(gameName) {}
+        gameName(gameName),
+        gameId(gameId) {}
 
 int32_t CreateGameDTO::getPlayerId() const { return playerId; }
 

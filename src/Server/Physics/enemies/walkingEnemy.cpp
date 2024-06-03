@@ -112,3 +112,5 @@ std::shared_ptr<Character> WalkingEnemy::getClosestCharacter(
     }
     return closestCharacter;
 }
+
+EnemyType WalkingEnemy::getEnemyType() { return EnemyType::FLYING_ENEMY; }

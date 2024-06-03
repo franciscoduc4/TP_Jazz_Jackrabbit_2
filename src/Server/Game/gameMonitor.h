@@ -21,7 +21,7 @@ public:
     explicit GameMonitor(QueueMonitor<std::unique_ptr<GameDTO>>& queueMonitor);
     bool createGame(int32_t playerId, Episode episode, GameMode gameMode, uint8_t maxPlayers,
                     CharacterType characterType, std::string gameName,
-                    std::shared_ptr<Queue<std::unique_ptr<CommandDTO>>> recvQueue);
+                    std::shared_ptr<Queue<std::unique_ptr<CommandDTO>>> recvQueue, int32_t gameId);
     std::map<int32_t, std::string> getGamesList();
     bool joinGame(int32_t playerId, int32_t gameId, CharacterType characterType);
     bool startGame(int32_t playerId, int32_t gameId);

@@ -44,6 +44,12 @@ std::unique_ptr<State> ShootingState::reload(std::shared_ptr<Weapon> weapon, flo
     return std::unique_ptr<State>(this);
 }
 
+std::unique_ptr<State> ShootingState::sprint(Character& character, Direction direction,
+                                             float time) {
+    // Cambia al estado de sprint
+    return std::unique_ptr<MovingState>();
+}
+
 std::unique_ptr<State> ShootingState::receiveDamage(Character& character, uint16_t dmg,
                                                     float time) {
     character.recvDamage(dmg, time);
@@ -68,10 +74,11 @@ std::unique_ptr<State> ShootingState::jump(Character& character, float time) {
     return std::make_unique<JumpingState>();
 }
 
-// std::unique_ptr<State> ShootingState::specialAttack(Character& character, float time) {
-//     // Transición al estado de ataque especial
-//     return std::make_unique<SpecialAttackState>();
-// }
+std::unique_ptr<State> ShootingState::specialAttack(Character& character, float time) {
+    // Cambia al estado de sprint
+    return nullptr;
+}
+
 
 std::unique_ptr<State> ShootingState::becomeIntoxicated(Character& character, float duration) {
     // Transición al estado de intoxicación

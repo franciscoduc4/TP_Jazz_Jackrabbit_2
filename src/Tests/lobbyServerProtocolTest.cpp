@@ -1,137 +1,127 @@
-#include <gtest/gtest.h>
 #include <memory>
-#include <arpa/inet.h>
-#include "../src/Common/socket.h"
-#include "../src/Server/Protocol/deserializer.h"
-#include "../src/Server/Protocol/serializer.h"
-#include "../src/Common/Types/command.h"
-#include "../src/Common/Types/episode.h"
-#include "../src/Common/Types/gameMode.h"
-#include "../src/Common/Types/character.h"
-#include "../src/Common/DTO/createGame.h"
-#include "../src/Common/DTO/joinGame.h"
-#include "../src/Common/DTO/gamesList.h"
-#include "../src/Common/DTO/command.h"
-#include "../src/Common/DTO/move.h"
-#include "../src/Server/Threads/receiver.h"
 
-// Mock socket class to simulate communication
-class MockSocket {
-public:
-    MockSocket() = default;
+#include <arpa/inet.h>
+#include <gtest/gtest.h>
+
+#include "../Common/DTO/command.h"
+#include "../Common/DTO/createGame.h"
+#include "../Common/DTO/gamesList.h"
+#include "../Common/DTO/joinGame.h"
+#include "../Common/DTO/move.h"
+#include "../Common/Types/character.h"
+#include "../Common/Types/command.h"
+#include "../Common/Types/episode.h"
+#include "../Common/Types/gameMode.h"
+#include "../Common/Types/lobbyState.h"
+#include "../Common/socket.h"
+#include "../Server/Protocol/deserializer.h"
+#include "../Server/Protocol/serializer.h"
+#include "../Server/Threads/receiver.h"
+
+
+TEST(lobbyServerProtocolTest, testSerializeCreateGame) {
+    Serializer serializer;
+    int32_t gameId = 1;
+    CreateGameDTO createGame(gameId);
+
+    std::vector<char> buffer =
+            serializer.serializeCreateGame(std::make_unique<CreateGameDTO>(createGame));
+
+    ASSERT_EQ(buffer.size(), 5);
+    ASSERT_EQ(buffer[0], Command::CREATE_GAME);
+    ASSERT_EQ(buffer[1], 0);
+    ASSERT_EQ(buffer[2], 0);
+    ASSERT_EQ(buffer[3], 0);
+    ASSERT_EQ(buffer[4], gameId);
+}
+
+TEST(lobbyServerProtocolTest, testSerializeJoinGame) {
+    Serializer serializer;
+    int32_t gameId = 1;
+    int32_t playerId = 2;
+    CharacterType characterType = CharacterType::JAZZ;
+    JoinGameDTO joinGame(playerId, gameId, characterType);
+
+    std::vector<char> buffer =
+            serializer.serializeJoinGame(std::make_unique<JoinGameDTO>(joinGame));
+
+    ASSERT_EQ(buffer.size(), 7);
+    ASSERT_EQ(buffer[0], Command::JOIN_GAME);
+    ASSERT_EQ(buffer[1], 0);
+    ASSERT_EQ(buffer[2], 0);
+    ASSERT_EQ(buffer[3], 0);
+    ASSERT_EQ(buffer[4], playerId);
+    ASSERT_EQ(buffer[5], gameId);
+    ASSERT_EQ(buffer[6], characterType);
+}
+
+
+TEST(lobbyServerProtocolTest, testSerializeGamesList) {
+    Serializer serializer;
+    std::map<int32_t, std::string> gamesList;
+    gamesList[1] = "game1";
+    gamesList[2] = "game2";
 
     std::vector<char> buffer;
+    serializer.serializeGamesList(gamesList, buffer);
 
-    void sendall(const void* data, size_t len, bool* was_closed) {
-        buffer.insert(buffer.end(), (char*)data, (char*)data + len);
-        *was_closed = false;
-    }
-
-    void recvall(void* data, size_t len, bool* was_closed) {
-        std::copy(buffer.begin(), buffer.begin() + len, (char*)data);
-        buffer.erase(buffer.begin(), buffer.begin() + len);
-        *was_closed = false;
-    }
-};
-
-// Wrapper class to use MockSocket with Deserializer and Serializer
-class MockSocketWrapper : public Socket {
-public:
-    explicit MockSocketWrapper(MockSocket& mockSocket) : Socket(0), mockSocket(mockSocket) {}
-
-    void sendall(const void* data, size_t len, bool* was_closed)  {
-        mockSocket.sendall(data, len, was_closed);
-    }
-
-    void recvall(void* data, size_t len, bool* was_closed)  {
-        mockSocket.recvall(data, len, was_closed);
-    }
-
-    std::vector<char>& getBuffer() {
-        return mockSocket.buffer;
-    }
-
-private:
-    MockSocket& mockSocket;
-};
-
-// Test to check if the server correctly handles a client creating a game
-TEST(LobbyProtocolTest, ServerHandlesCreateGame) {
-    MockSocket mockSocket;
-    auto socket = std::make_shared<MockSocketWrapper>(mockSocket);
-    Deserializer deserializer(socket);
-
-    uint8_t episode = static_cast<uint8_t>(Episode::FORMERLY_PRINCE);
-    uint8_t gameMode = static_cast<uint8_t>(GameMode::SINGLE_PLAYER);
-    uint8_t maxPlayers = 4;
-    uint8_t character = static_cast<uint8_t>(CharacterType::JAZZ);
-    uint8_t lengthName = 4;
-    std::vector<char> name = {'T', 'e', 's', 't'};
-    bool wasClosed = false;
-
-    // Simular recibir el comando
-    socket->getBuffer().push_back(static_cast<char>(Command::CREATE_GAME));
-    socket->getBuffer().push_back(static_cast<char>(episode));
-    socket->getBuffer().push_back(static_cast<char>(gameMode));
-    socket->getBuffer().push_back(static_cast<char>(maxPlayers));
-    socket->getBuffer().push_back(static_cast<char>(character));
-    socket->getBuffer().push_back(static_cast<char>(lengthName));
-    socket->getBuffer().insert(socket->getBuffer().end(), name.begin(), name.end());
-
-    // Deserializar el comando
-    int32_t playerId = 1;
-    auto command = deserializer.getCommand(wasClosed, playerId);
-    auto createGameDTO = dynamic_cast<CreateGameDTO*>(command.get());
-    ASSERT_NE(createGameDTO, nullptr);
-    EXPECT_EQ(createGameDTO->getEpisodeName(), Episode::FORMERLY_PRINCE);
-    EXPECT_EQ(createGameDTO->getGameMode(), GameMode::SINGLE_PLAYER);
-    EXPECT_EQ(createGameDTO->getMaxPlayers(), 4);
-    EXPECT_EQ(createGameDTO->getCharacterType(), CharacterType::JAZZ);
-    EXPECT_EQ(createGameDTO->getGameName(), "Test");
+    ASSERT_EQ(buffer.size(), 13);
+    ASSERT_EQ(buffer[0], 1);
+    ASSERT_EQ(buffer[1], 5);
+    ASSERT_EQ(buffer[2], 'g');
+    ASSERT_EQ(buffer[3], 'a');
+    ASSERT_EQ(buffer[4], 'm');
+    ASSERT_EQ(buffer[5], 'e');
+    ASSERT_EQ(buffer[6], 1);
+    ASSERT_EQ(buffer[7], 5);
+    ASSERT_EQ(buffer[8], 'g');
+    ASSERT_EQ(buffer[9], 'a');
+    ASSERT_EQ(buffer[10], 'm');
+    ASSERT_EQ(buffer[11], 'e');
+    ASSERT_EQ(buffer[12], 2);
 }
 
-// Test to check if the server correctly handles a client joining a game
-TEST(LobbyProtocolTest, ServerHandlesJoinGame) {
-    MockSocket mockSocket;
-    auto socket = std::make_shared<MockSocketWrapper>(mockSocket);
-    Deserializer deserializer(socket);
 
-    int32_t gameId = 1234;
-    uint8_t character = static_cast<uint8_t>(CharacterType::SPAZ);
-    bool wasClosed = false;
-
-    // Simular recibir el comando
-    socket->getBuffer().push_back(static_cast<char>(Command::JOIN_GAME));
-    int32_t gameIdNetworkOrder = htonl(gameId);
-    socket->getBuffer().insert(socket->getBuffer().end(), 
-        reinterpret_cast<char*>(&gameIdNetworkOrder), 
-    reinterpret_cast<char*>(&gameIdNetworkOrder) + sizeof(gameIdNetworkOrder));
-    socket->getBuffer().push_back(static_cast<char>(character));
-
-    // Deserializar el comando
+TEST(lobbyServerProtocolTest, testSerializeMove) {
+    Serializer serializer;
     int32_t playerId = 1;
-    auto command = deserializer.getCommand(wasClosed, playerId);
-    auto joinGameDTO = dynamic_cast<JoinGameDTO*>(command.get());
-    ASSERT_NE(joinGameDTO, nullptr);
-    EXPECT_EQ(joinGameDTO->getGameId(), gameId);
-    EXPECT_EQ(joinGameDTO->getCharacterType(), CharacterType::SPAZ);
+    Direction direction = Direction::UP;
+    MoveDTO move(playerId, direction);
+
+    std::vector<char> buffer = serializer.serializeMove(move);
+
+    ASSERT_EQ(buffer.size(), 3);
+    ASSERT_EQ(buffer[0], Command::MOVE);
+    ASSERT_EQ(buffer[1], playerId);
+    ASSERT_EQ(buffer[2], direction);
 }
 
-// Test to check if the server correctly handles a client requesting the games list
-TEST(LobbyProtocolTest, ServerHandlesGamesList) {
-    MockSocket mockSocket;
-    auto socket = std::make_shared<MockSocketWrapper>(mockSocket);
-    Deserializer deserializer(socket);
+TEST(lobbyServerProtocolTest, testSerializeStart) {
+    Serializer serializer;
+    CommandDTO command(Command::START_GAME);
 
-    bool wasClosed = false;
+    std::vector<char> buffer = serializer.serializeStart(command);
 
-    // Simular recibir el comando
-    socket->getBuffer().push_back(static_cast<char>(Command::GAMES_LIST));
+    ASSERT_EQ(buffer.size(), 1);
+    ASSERT_EQ(buffer[0], Command::START_GAME);
+}
 
-    // Deserializar el comando
-    int32_t playerId = 1;
-    auto command = deserializer.getCommand(wasClosed, playerId);
-    auto gamesListDTO = dynamic_cast<CommandDTO*>(command.get());
-    ASSERT_NE(gamesListDTO, nullptr);
-    EXPECT_EQ(gamesListDTO->getCommand(), Command::GAMES_LIST);
+TEST(lobbyServerProtocolTest, testSerializeShooting) {
+    Serializer serializer;
+    CommandDTO command(Command::SHOOT);
+
+    std::vector<char> buffer = serializer.serializeShooting(command);
+
+    ASSERT_EQ(buffer.size(), 1);
+    ASSERT_EQ(buffer[0], Command::SHOOT);
+}
+
+TEST(lobbyServerProtocolTest, testSerializeSwitchWeapon) {
+    Serializer serializer;
+    CommandDTO command(Command::SWITCH_WEAPON);
+
+    std::vector<char> buffer = serializer.serializeSwitchWeapon(command);
+
+    ASSERT_EQ(buffer.size(), 1);
+    ASSERT_EQ(buffer[0], Command::SWITCH_WEAPON);
 }

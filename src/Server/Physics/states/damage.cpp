@@ -39,6 +39,14 @@ std::unique_ptr<State> ReceivingDamageState::move(Character& character, Directio
     return nullptr;
 }
 
+std::unique_ptr<State> ReceivingDamageState::sprint(Character& character, Direction direction,
+                                                    float time) {
+    if (time - startTime >= stopDamageTime) {
+        return std::make_unique<MovingState>(character, direction, time);
+    }
+    return nullptr;
+}
+
 std::unique_ptr<State> ReceivingDamageState::reload(std::shared_ptr<Weapon> weapon, float time) {
     return std::unique_ptr<IdleState>();
 }
@@ -59,6 +67,10 @@ std::unique_ptr<State> ReceivingDamageState::becomeIntoxicated(Character& charac
 }
 
 std::unique_ptr<State> ReceivingDamageState::jump(Character& character, float time) {
+    return nullptr;
+}
+
+std::unique_ptr<State> ReceivingDamageState::specialAttack(Character& character, float time) {
     return nullptr;
 }
 

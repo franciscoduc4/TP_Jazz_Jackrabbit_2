@@ -12,7 +12,7 @@
 
 class LobbyCommandHandler {
 public:
-    virtual std::unique_ptr<LobbyDTO> execute(
+    virtual std::unique_ptr<CommandDTO> execute(
             GameMonitor& gameMonitor, std::atomic<bool>& inGame,
             std::shared_ptr<Queue<std::unique_ptr<CommandDTO>>> recvQueue) = 0;
     static std::unique_ptr<LobbyCommandHandler> createHandler(std::unique_ptr<CommandDTO> command);

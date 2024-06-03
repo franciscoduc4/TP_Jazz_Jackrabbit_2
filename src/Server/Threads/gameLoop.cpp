@@ -93,3 +93,13 @@ void GameLoopThread::addPlayer(int32_t playerId, CharacterType characterType) {
 }
 
 bool GameLoopThread::isFull() const { return currentPlayers == maxPlayers; }
+
+void GameLoopThread::stop() { keepRunning = false; }
+
+bool GameLoopThread::deletePlayer(int32_t playerId) {
+    if (game.removeCharacter(playerId)) {
+        currentPlayers--;
+        return true;
+    }
+    return false;
+}

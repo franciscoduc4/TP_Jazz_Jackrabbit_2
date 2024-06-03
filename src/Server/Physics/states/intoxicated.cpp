@@ -24,7 +24,8 @@ std::unique_ptr<State> IntoxicatedState::move(Character& character, Direction di
     return nullptr;
 }
 
-std::unique_ptr<State> IntoxicatedState::sprint(Character& character, float time) {
+std::unique_ptr<State> IntoxicatedState::sprint(Character& character, Direction direction,
+                                                float time) {
     // No puede correr mientras está intoxicado
     return nullptr;
 }

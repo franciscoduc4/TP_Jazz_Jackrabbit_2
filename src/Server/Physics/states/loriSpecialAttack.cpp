@@ -29,7 +29,8 @@ std::unique_ptr<State> LoriSpecialAttackState::move(Character& character, Direct
     return std::make_unique<MovingState>(character, direction, time);
 }
 
-std::unique_ptr<State> LoriSpecialAttackState::sprint(Character& character, float time) {
+std::unique_ptr<State> LoriSpecialAttackState::sprint(Character& character, Direction direction,
+                                                      float time) {
     // No puede correr más rápido de lo que ya lo hace
     return nullptr;
 }

@@ -33,7 +33,7 @@ public:
 
     bool getVisibility();
 
-    virtual ~GameElementDTO() {}
+    virtual ~GameElementDTO();
 };
 
 #endif  // COMMAND_DTO_H_

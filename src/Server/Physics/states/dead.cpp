@@ -25,7 +25,7 @@ std::unique_ptr<State> DeadState::move(Character& character, Direction direction
     return nullptr;
 }
 
-std::unique_ptr<State> DeadState::sprint(Character& character, float time) {
+std::unique_ptr<State> DeadState::sprint(Character& character, Direction direction, float time) {
     // No puede correr estando muerto
     return nullptr;
 }

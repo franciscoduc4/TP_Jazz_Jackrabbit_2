@@ -4,7 +4,9 @@
 #include <map>
 #include <string>
 
-class GamesListDTO {
+#include "command.h"
+
+class GamesListDTO: public CommandDTO {
 private:
     std::map<int32_t, std::string> games;
 

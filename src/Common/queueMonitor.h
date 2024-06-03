@@ -5,6 +5,7 @@
 #include <memory>
 #include <mutex>
 #include <vector>
+
 #include "queue.h"
 
 template <typename T>

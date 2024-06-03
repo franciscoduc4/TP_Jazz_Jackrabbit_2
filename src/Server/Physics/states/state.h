@@ -20,7 +20,8 @@ public:
     virtual std::unique_ptr<State> shoot(Character& character, std::shared_ptr<Weapon> weapon,
                                          float time) = 0;
     virtual std::unique_ptr<State> move(Character& character, Direction direction, float time) = 0;
-    virtual std::unique_ptr<State> sprint(Character& character, float time) = 0;
+    virtual std::unique_ptr<State> sprint(Character& character, Direction direction,
+                                          float time) = 0;
     virtual std::unique_ptr<State> reload(std::shared_ptr<Weapon> weapon, float time) = 0;
     virtual std::unique_ptr<State> receiveDamage(Character& character, uint16_t dmg,
                                                  float time) = 0;
