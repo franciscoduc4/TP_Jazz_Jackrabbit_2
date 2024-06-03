@@ -1,38 +1,27 @@
-#ifndef OBSTACLE_H_
-#define OBSTACLE_H_
+#ifndef OBSTACLE_H
+#define OBSTACLE_H
 
-#include "../../Common/Models/vector.h"
-#include <string>
-#include <memory>
-#include "character.h"
+#include <iostream>
 
-class Obstacle {
+#include "entity.h"
+
+class Obstacle: public Entity {
 private:
-    Vector position;
-    Vector size;  // ancho x alto
-    int damage;
+    int16_t moves;
+    int16_t x;
+    int16_t y;
+    int16_t id;
 
 public:
-    Obstacle(Vector startPosition, Vector obstacleSize, int damage):
-            position(startPosition), size(obstacleSize), damage(damage) {}
+    Obstacle(int16_t x, int16_t y, int16_t id);
 
-    Vector getPosition() const { return position; }
+    int16_t getX();
+    int16_t getY();
+    int16_t getMatrixX();
+    int16_t getMatrixY();
 
-    Vector getSize() const { return size; }
-
-    int getDamage() const { return damage; }
-
-    bool isColliding(std::shared_ptr<Character> character) const {
-        Vector charPos = character->getPosition();
-        return (charPos.x < position.x + size.x &&
-                charPos.x + character->getSize().x > position.x &&
-                charPos.y < position.y + size.y && charPos.y + character->getSize().y > position.y);
-    }
-
-    std::string serialize() const {
-        return std::to_string(position.x) + " " + std::to_string(position.y) + " " +
-               std::to_string(size.x) + " " + std::to_string(size.y) + " " + std::to_string(damage);
-    }
+    int16_t getId();
+    void recvDamage(uint16_t dmg, float time) override;
 };
 
-#endif  // OBSTACLE_H_
+#endif  // OBSTACLE_H

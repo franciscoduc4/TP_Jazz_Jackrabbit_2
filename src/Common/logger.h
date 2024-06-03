@@ -5,7 +5,7 @@
 #include <ctime>
 #include <fstream>
 #include <string>
-
+#include <iostream>
 #include <fmt/core.h>
 
 class Logger {

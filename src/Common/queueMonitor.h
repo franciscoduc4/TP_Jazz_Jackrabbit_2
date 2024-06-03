@@ -5,8 +5,6 @@
 #include <memory>
 #include <mutex>
 #include <vector>
-
-#include "protocol.h"
 #include "queue.h"
 
 template <typename T>
@@ -23,6 +21,5 @@ public:
     void removeQueues();
     void broadcast(const T& event);
 };
-
 
 #endif  // QUEUE_MANAGER_H

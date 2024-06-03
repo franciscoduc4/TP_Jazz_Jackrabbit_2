@@ -1,35 +1,24 @@
 #include "player.h"
 
-#include "../Physics/character.h"
+#include <sys/socket.h>
 
 
-Player::Player(Protocol&& protocol, const std::string& characterName):
-        protocol(std::move(protocol)),
-        id(protocol.getId()),
-        gameName(""),
-        name(""),
-        character(Character::createCharacter(characterName)),
-        inGame(false) {}
-
-std::string Player::getGameName() const { return gameName; }
-
-std::string Player::getName() const { return name; }
-
-int Player::getId() const { return id; }
-
-void Player::setInGame() { inGame = true; }
-
-std::unique_ptr<ReceiverThread> Player::initReceiver(
-        std::shared_ptr<Queue<GameTypes::Action>> recvQueue) {
-    receiver = std::make_unique<ReceiverThread>(std::make_shared<Protocol>(std::move(protocol)),
-                                                recvQueue);
-    return std::move(receiver);
+Player::Player(std::shared_ptr<Socket> socket, GameMonitor& gameMonitor,
+               QueueMonitor<std::unique_ptr<GameDTO>>& queueMonitor, int32_t playerId):
+        playerId(playerId),
+        socket(socket),
+        sender(socket, std::ref(keepPlaying), std::ref(inGame), gameMonitor, playerId,
+               queueMonitor.createQueue()) {
+    sender.start();
 }
 
-std::unique_ptr<SenderThread> Player::initSender(std::shared_ptr<Queue<std::string>> sendQueue) {
-    sender = std::make_unique<SenderThread>(std::make_shared<Protocol>(std::move(protocol)),
-                                            sendQueue);
-    return std::move(sender);
+void Player::disconnect() {
+    keepPlaying = false;
+    inGame = false;
+    socket->shutdown(SHUT_RDWR);
+    socket->close();
+    sender.stop();
+    sender.join();
 }
 
-std::unique_ptr<Character> Player::getCharacter() { return std::move(character); }
+bool Player::isPlaying() const { return keepPlaying; }

@@ -4,22 +4,29 @@
 
 #include "../Common/Config/ServerConfig.h"
 #include "../Common/logger.h"
+#include "server.h"
 
 #define SUCCESS 0
 #define FAIL -1
 #define SERVER_ARGS 2
 
 int main(int argc, char** argv) {
-    Logger logger(ServerConfig::getLogFile());
     if (argc != SERVER_ARGS) {
-        logger.error(__func__, __LINE__, "Invalid number of arguments. Expected: %d, got: %d",
-                     SERVER_ARGS, argc);
+        std::cerr << "Invalid number of arguments. Expected: " << 
+        SERVER_ARGS << ", got: " << argc << std::endl;
         return FAIL;
     }
+
+    //const std::string configPath = "../src/config/server.yaml";
+    
     try {
-        // Init Server con Logger.
+        //ServerConfig::loadConfig(configPath);
+        //Logger logger(ServerConfig::getLogFile());
+        Server server(argv[1]);
+        server.run();
+        // Init Server with Logger.
     } catch (const std::exception& e) {
-        logger.error(__func__, __LINE__, "Exception caught: %s", e.what());
+        std::cerr << "Exception caught: " << e.what() << std::endl;
         return FAIL;
     }
     return SUCCESS;

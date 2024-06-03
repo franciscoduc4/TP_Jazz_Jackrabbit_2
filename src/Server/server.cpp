@@ -1,7 +1,6 @@
 #include "server.h"
 
-
-Server::Server(std::string& servname): servname(servname) {}
+Server::Server(const std::string& servname): servname(servname.c_str()) {}
 
 void Server::run() {
     AcceptorThread acceptor(servname);

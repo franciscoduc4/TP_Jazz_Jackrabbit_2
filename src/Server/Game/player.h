@@ -6,36 +6,26 @@
 #include <string>
 #include <utility>
 
-#include "../../Common/Models/gameTypes.h"
-#include "../../Common/protocol.h"
 #include "../../Common/queue.h"
+#include "../../Common/queueMonitor.h"
 #include "../../Common/socket.h"
-#include "../Physics/character.h"
-#include "../Threads/receiverThread.h"
-#include "../Threads/senderThread.h"
+#include "../Game/gameMonitor.h"
+#include "../Threads/receiver.h"
+#include "../Threads/sender.h"
 
 class Player {
 private:
-    Protocol protocol;
-    int id;
-    std::string gameName;
-    std::string name;
-    std::unique_ptr<Character> character;
-    bool inGame;
-    std::unique_ptr<ReceiverThread> receiver;
-    std::unique_ptr<SenderThread> sender;
+    int32_t playerId;
+    std::shared_ptr<Socket> socket;
+    std::atomic<bool> inGame{false};
+    std::atomic<bool> keepPlaying{true};
+    SenderThread sender;
 
 public:
-    explicit Player(Protocol&& protocol, const std::string& characterName);
-    std::string getGameName() const;
-    std::string getName() const;
-    int getId() const;
-    void setInGame();
-    std::unique_ptr<Character> getCharacter();
-
-    std::unique_ptr<SenderThread> initSender(std::shared_ptr<Queue<std::string>> eventQueue);
-    std::unique_ptr<ReceiverThread> initReceiver(
-            std::shared_ptr<Queue<GameTypes::Action>> gameQueue);
+    Player(std::shared_ptr<Socket> socket, GameMonitor& gameMonitor,
+           QueueMonitor<std::unique_ptr<GameDTO>>& queueMonitor, int32_t playerId);
+    void disconnect();
+    bool isPlaying() const;
 };
 
 #endif  // PLAYER_H_

@@ -1,50 +1,34 @@
 #ifndef GAME_H_
 #define GAME_H_
 
-#include <algorithm>
+#include <cstdint>
 #include <map>
 #include <memory>
-#include <string>
-#include <utility>
-#include <vector>
 
-#include "../../Common/queue.h"
-#include "../../Common/thread.h"
-#include "../Physics/gameStatus.h"
-#include "../Threads/gameLoopThread.h"
-
-#include "player.h"
-#include "queueMonitor.h"
+#include "../../Common/DTO/game.h"
+#include "../../Common/Types/character.h"
+#include "../CommandHandlers/Game/gameCommand.h"
+#include "../Physics/gameMap.h"
+#include "../Physics/playerCharacter.h"
 
 class Game {
 private:
-    std::string name;
-    int maxPlayers;
-    int currentPlayers;
-    std::shared_ptr<Queue<GameTypes::Action>> recvQueue;
-    std::shared_ptr<QueueMonitor<std::string>> queueMonitor;
-    std::vector<Player> players;
-    std::map<int, std::unique_ptr<ReceiverThread>> receiverThreads;
-    std::map<int, std::unique_ptr<SenderThread>> senderThreads;
-    bool running;
-    GameLoopThread gameLoop;
-    std::shared_ptr<GameStatus> gameStatus;
+    GameMap gameMap;
+    std::map<int32_t, std::shared_ptr<Character>> characters;
+
 
 public:
-    Game() = default;
+    explicit Game(Vector<int16_t> size);
+    void handleCommand(std::unique_ptr<CommandDTO> commandDTO, std::atomic<bool>& keepRunning,
+                       double deltaTime);
 
-    Game(const std::string& name, int maxPlayers, Player&& firstPlayer);
-    void addPlayer(Player&& player);
-    void removePlayer(int playerId);
-    void initPlayerThreads(Player& player);
-    void launch();
-    void stop();
-    bool isRunning() const;
-    bool isFull() const;
-    std::string getName() const;
-    int getMaxPlayers() const;
-    int getCurrentPlayers() const;
-    ~Game();
+    void addCharacter(int32_t playerId, CharacterType characterType);
+
+    std::shared_ptr<Character> getCharacter(int32_t playerId);
+
+    std::unique_ptr<GameDTO> getGameDTO();
+
+    void update(float time);
 };
 
 #endif  // GAME_H_

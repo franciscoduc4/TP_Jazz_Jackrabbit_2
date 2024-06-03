@@ -1,52 +1,59 @@
 #include "gameMonitor.h"
-#include <utility>
+
 #include <sstream>
+#include <utility>
 
-GameMonitor::GameMonitor() {}
+GameMonitor::GameMonitor(QueueMonitor<std::unique_ptr<GameDTO>>& queueMonitor):
+        queueMonitor(queueMonitor) {}
 
-void GameMonitor::createGame(const std::string& gameName, int maxPlayers, Player&& player) {
+bool GameMonitor::createGame(int32_t playerId, Episode episode, GameMode gameMode,
+                             uint8_t maxPlayers, CharacterType characterType, std::string gameName,
+                             std::shared_ptr<Queue<std::unique_ptr<CommandDTO>>> recvQueue) {
     std::lock_guard<std::mutex> lock(mtx);
-    games[gameName] = std::make_unique<Game>(gameName, maxPlayers, std::move(player));
+    for (auto& [id, game]: games) {
+        if (game->getGameName() == gameName) {
+            return false;
+        }
+    }
+    int32_t gameId = games.size();
+    games[gameId] =
+            std::make_unique<GameLoopThread>(gameId, gameName, playerId, episode, gameMode,
+                                             maxPlayers, characterType, recvQueue, queueMonitor);
+
+    return true;
 }
 
-void GameMonitor::addPlayer(const std::string& gameName, Player&& player) {
+bool GameMonitor::joinGame(int32_t playerId, int32_t gameId, CharacterType characterType) {
     std::lock_guard<std::mutex> lock(mtx);
-    auto it = games.find(gameName);
+    auto it = games.find(gameId);
     if (it != games.end()) {
-        it->second->addPlayer(std::move(player));
+        auto& [id, game] = *it;
+        if (!game->isFull()) {
+            game->addPlayer(playerId, characterType);
+            return true;
+        }
     }
+    return false;
 }
 
-void GameMonitor::launchGame(const std::string& gameName) {
+bool GameMonitor::startGame(int32_t playerId, int32_t gameId) {
     std::lock_guard<std::mutex> lock(mtx);
-    auto it = games.find(gameName);
+    auto it = games.find(gameId);
     if (it != games.end()) {
-        it->second->launch();
+        auto& [id, game] = *it;
+        if (game->isFull()) {
+            game->start();
+            return true;
+        }
     }
+    return false;
 }
 
-void GameMonitor::listGames(std::string& list) {
+std::map<int32_t, std::string> GameMonitor::getGamesList() {
     std::lock_guard<std::mutex> lock(mtx);
-    std::stringstream ss;
-    for (const auto& [name, game]: games) {
-        ss << name << "\n";
+    std::map<int32_t, std::string> list;
+    for (auto& [id, game]: games) {
+        list[id] = game->getGameName();
     }
-    list = ss.str();
-}
-
-void GameMonitor::endGame(const std::string& gameName) {
-    std::lock_guard<std::mutex> lock(mtx);
-    auto it = games.find(gameName);
-    if (it != games.end()) {
-        it->second->stop();
-        games.erase(it);
-    }
-}
-
-void GameMonitor::endAllGames() {
-    std::lock_guard<std::mutex> lock(mtx);
-    for (auto& [name, game]: games) {
-        game->stop();
-    }
-    games.clear();
+    return list;
 }
