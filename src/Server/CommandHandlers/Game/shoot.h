@@ -1,7 +1,7 @@
 #ifndef SHOOT_HANDLER_H_
 #define SHOOT_HANDLER_H_
 
-#include "../../Common/DTO/command.h"
+#include "../../../Common/DTO/command.h"
 
 #include "gameCommand.h"
 

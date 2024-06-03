@@ -3,8 +3,8 @@
 
 #include <memory>
 
-#include "../../Common/DTO/joinGame.h"
-#include "../../Common/queue.h"
+#include "../../../Common/DTO/joinGame.h"
+#include "../../../Common/queue.h"
 
 #include "lobbyCommand.h"
 

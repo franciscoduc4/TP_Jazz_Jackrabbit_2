@@ -1,25 +1,26 @@
 #include "dead.h"
-#include "idle.h"
+
 #include <utility>
 
+#include "idle.h"
+
 DeadState::DeadState(float deathTime):
-    startTime(deathTime),
-    reviveTime(3) { //CONFIG.getReviveTime()
-        characterState = CharacterStateEntity::DEAD;
-    }
+        startTime(deathTime), reviveTime(3) {  // CONFIG.getReviveTime()
+    characterState = CharacterStateEntity::DEAD;
+}
 
 std::unique_ptr<State> DeadState::update(float time) {
     // No hay lógica de actualización para el estado de muerte
     return nullptr;
 }
 
-std::unique_ptr<State> DeadState::shoot(Character& character, 
-    std::unique_ptr<Weapon> weapon, float time) {
+std::unique_ptr<State> DeadState::shoot(Character& character, std::shared_ptr<Weapon> weapon,
+                                        float time) {
     // No puede disparar estando muerto
     return nullptr;
 }
 
-std::unique_ptr<State> DeadState::move(Character& character, Move direction, float time) {
+std::unique_ptr<State> DeadState::move(Character& character, Direction direction, float time) {
     // No puede moverse estando muerto
     return nullptr;
 }
@@ -29,7 +30,7 @@ std::unique_ptr<State> DeadState::sprint(Character& character, float time) {
     return nullptr;
 }
 
-std::unique_ptr<State> DeadState::reload(std::unique_ptr<Weapon> weapon, float time) {
+std::unique_ptr<State> DeadState::reload(std::shared_ptr<Weapon> weapon, float time) {
     // No puede recargar estando muerto
     return nullptr;
 }
@@ -45,7 +46,7 @@ std::unique_ptr<State> DeadState::die(Character& character, float time) {
 }
 
 std::unique_ptr<State> DeadState::revive(Character& character, float time) {
-    if (time < reviveTime + startTime){
+    if (time < reviveTime + startTime) {
         return std::unique_ptr<IdleState>();
     }
     return nullptr;
@@ -70,4 +71,3 @@ std::unique_ptr<State> DeadState::stopAction() {
     // Permanecer en el estado de muerte
     return nullptr;
 }
-

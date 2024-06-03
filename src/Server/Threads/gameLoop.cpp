@@ -3,13 +3,13 @@
 #include <chrono>
 
 
-GameLoopThread::GameLoopThread(int32_t gameId, std::string gameName, int32_t& playerId,
+GameLoopThread::GameLoopThread(int32_t gameId, std::string gameName, int32_t playerId,
                                Episode episode, GameMode gameMode, uint8_t maxPlayers,
                                CharacterType characterType,
                                std::shared_ptr<Queue<std::unique_ptr<CommandDTO>>> recvQueue,
                                QueueMonitor<std::unique_ptr<GameDTO>>& queueMonitor):
         frameRate(0.016),  // 1 frame per 16 ms === 60 fps
-        game(),
+        game({100, 100}),  // config del YAML
         queueMonitor(),
         gameId(gameId),
         gameName(gameName),

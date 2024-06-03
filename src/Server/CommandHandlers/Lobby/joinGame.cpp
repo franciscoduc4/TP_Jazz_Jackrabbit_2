@@ -3,12 +3,12 @@
 #include <memory>
 #include <utility>
 
-#include "../../Common/DTO/createGame.h"
-#include "../../Common/DTO/game.h"
-#include "../../Common/Types/episode.h"
-#include "../../Common/Types/gameMode.h"
-#include "../../Common/queue.h"
-#include "../Game/gameMonitor.h"
+#include "../../../Common/DTO/createGame.h"
+#include "../../../Common/DTO/game.h"
+#include "../../../Common/Types/episode.h"
+#include "../../../Common/Types/gameMode.h"
+#include "../../../Common/queue.h"
+#include "../../Game/gameMonitor.h"
 
 
 JoinGameHandler::JoinGameHandler(std::unique_ptr<JoinGameDTO> command):

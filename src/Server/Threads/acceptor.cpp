@@ -1,5 +1,6 @@
 #include "acceptor.h"
 
+#include <memory>
 
 AcceptorThread::AcceptorThread(const std::string& servname):
         serverSocket(std::make_shared<Socket>(servname.c_str())),
@@ -10,13 +11,13 @@ AcceptorThread::AcceptorThread(const std::string& servname):
 void AcceptorThread::run() {
     while (isAlive) {
         try {
-            Socket playerSocket = serverSocket->accept();
+            auto playerSocket = std::make_shared<Socket>(serverSocket->accept());
             std::cout << "New player connected" << std::endl;
             if (!isAlive) {
                 break;
             }
             auto player = std::make_unique<Player>(playerSocket, gameMonitor, queueMonitor,
-                                                   static_cast<uint8_t>(players.size()));
+                                                   static_cast<int32_t>(players.size()));
             players.emplace_back(std::move(player));
             removeDeadPlayers();
         } catch (const std::exception& e) {

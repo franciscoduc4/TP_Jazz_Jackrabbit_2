@@ -3,23 +3,22 @@
 GameMap::GameMap(Vector<int16_t> size): size(size), entityFactory() {}
 
 std::vector<std::shared_ptr<Entity>> GameMap::getObjectsInShootRange(Vector<int16_t> mapPosition,
-                                                                     Move dir) {
+                                                                     Direction dir) {
     std::vector<std::shared_ptr<Entity>> entities;
-    if (dir == Move::LEFT) {
+    if (dir == Direction::LEFT) {
         for (int16_t i = mapPosition.x - 1; i >= 0; i--) {
             Vector<int16_t> pos = {i, mapPosition.y};
             if (mapGrid.find(pos) != mapGrid.end()) {
                 entities.push_back(mapGrid[pos]);
             }
         }
-    } else if (dir == Move::RIGHT) {
+    } else if (dir == Direction::RIGHT) {
         for (int16_t i = mapPosition.x + 1; i < size.x; i++) {
             Vector<int16_t> pos = {i, mapPosition.y};
             if (mapGrid.find(pos) != mapGrid.end()) {
                 entities.push_back(mapGrid[pos]);
             }
         }
-        
     }
     return entities;
 }
@@ -38,27 +37,27 @@ std::vector<std::shared_ptr<Entity>> GameMap::getObjectsInExplosionRange(
     return entities;
 }
 
-void GameMap::moveObject(Vector<int16_t>& position, Vector<int16_t> mapPosition, Move dir) {
+void GameMap::moveObject(Vector<int16_t>& position, Vector<int16_t> mapPosition, Direction dir) {
     Vector<int16_t> delta;
-    if (dir == Move::LEFT) {
+    if (dir == Direction::LEFT) {
         if (position.x % movesPerCell != 0) {
             position.x -= 1;
             return;
         }
         delta = {-1, 0};
-    } else if (dir == Move::RIGHT) {
+    } else if (dir == Direction::RIGHT) {
         if (position.x % movesPerCell != 0) {
             position.x += 1;
             return;
         }
         delta = {1, 0};
-    } else if (dir == Move::UP) {
+    } else if (dir == Direction::UP) {
         if (position.y % movesPerCell != 0) {
             position.y -= 1;
             return;
         }
         delta = {0, -1};
-    } else if (dir == Move::DOWN) {
+    } else if (dir == Direction::DOWN) {
         if (position.y % movesPerCell != 0) {
             position.y += 1;
             return;
@@ -86,38 +85,36 @@ bool GameMap::isFreePosition(Vector<int16_t> position) {
 std::shared_ptr<Character> GameMap::addCharacter(CharacterType type) {
     Vector<int16_t> initPosition = getAvailablePosition();
     std::shared_ptr<Character> character;
-    switch (type) {
-        case CharacterType::JAZZ:
-            character = entityFactory.createJazz(initPosition);
-            break;
-        case CharacterType::SPAZ:
-            character = entityFactory.createSpaz(initPosition);
-            break;
-        case CharacterType::LORI:
-            character = entityFactory.createLori(initPosition);
-            break;
-    }
+    // switch (type) {
+    //     case CharacterType::JAZZ:
+    //         character = entityFactory.createJazz(initPosition);
+    //         break;
+    //     case CharacterType::SPAZ:
+    //         character = entityFactory.createSpaz(initPosition);
+    //         break;
+    //     case CharacterType::LORI:
+    //         character = entityFactory.createLori(initPosition);
+    //         break;
+    // }
     mapGrid[initPosition] = character;
-    characters.push_back(character);
     return character;
 }
 
 void GameMap::addEnemy(EnemyType type) {
     Vector<int16_t> initPosition = getAvailablePosition();
     std::shared_ptr<Enemy> enemy;
-    switch (type) {
-        case EnemyType::WALKING_ENEMY:
-            enemy = entityFactory.createWalker(initPosition);
-            break;
-        case EnemyType::FLYING_ENEMY:
-            enemy = entityFactory.createFlyer(initPosition);
-            break;
-        case EnemyType::JUMPING_ENEMY:
-            enemy = entityFactory.createJumper(initPosition);
-            break;
-    }
+    // switch (type) {
+    //     case EnemyType::WALKING_ENEMY:
+    //         enemy = entityFactory.createWalker(initPosition);
+    //         break;
+    //     case EnemyType::FLYING_ENEMY:
+    //         enemy = entityFactory.createFlyer(initPosition);
+    //         break;
+    //     case EnemyType::JUMPING_ENEMY:
+    //         enemy = entityFactory.createJumper(initPosition);
+    //         break;
+    // }
     mapGrid[initPosition] = enemy;
-    enemies.push_back(enemy);
 }
 
 bool GameMap::isValidPosition(Vector<int16_t> position) {
@@ -127,17 +124,15 @@ bool GameMap::isValidPosition(Vector<int16_t> position) {
 Vector<int16_t> GameMap::getAvailablePosition() {
     Vector<int16_t> pos;
     do {
-        pos = {rand() % size.x, rand() % size.y};
+        pos = {static_cast<int16_t>(rand() % size.x), static_cast<int16_t>(rand() % size.y)};
     } while (mapGrid.find(pos) != mapGrid.end() && isValidPosition(pos));
     return pos;
 }
 
 void GameMap::update(float time) {
-    for (auto& character: characters) {
-        character->update(time);
-    }
-    for (auto& enemy: enemies) {
-        enemy->update(time);
+    for (auto& [_, entity]: mapGrid) {
+        entity->update(time);
     }
 }
 
+void GameMap::removeCharacter(Vector<int16_t> position) { mapGrid.erase(position); }

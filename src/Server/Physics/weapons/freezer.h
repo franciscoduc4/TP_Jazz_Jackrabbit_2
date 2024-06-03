@@ -1,13 +1,15 @@
 #ifndef FREEZER_H
 #define FREEZER_H
 
-#include "weapon.h"
-#include "../../../Common/Types/weapon.h"
-#include <vector>
 #include <iostream>
 #include <memory>
+#include <vector>
 
-class Freezer : public Weapon {
+#include "../../../Common/Types/weapon.h"
+
+#include "weapon.h"
+
+class Freezer: public Weapon {
 private:
     uint16_t bullets;
     const uint16_t maxBullets;
@@ -21,7 +23,8 @@ public:
 
     void update(float time) override;
 
-    void shoot(std::shared_ptr<Entity>& shootingEntities, int16_t xPos, float time) override;
+    void shoot(std::vector<std::shared_ptr<Entity>>& shootingEntities, int16_t xPos,
+               float time) override;
 
     void reload() override;
 
@@ -40,4 +43,4 @@ public:
     float getFireRate() override;
 };
 
-#endif // FREEZER_H
+#endif  // FREEZER_H

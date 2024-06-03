@@ -11,7 +11,8 @@
 #include <string>
 #include <utility>
 #include <vector>
-#include "Threads/acceptorThread.h"
+
+#include "Threads/acceptor.h"
 
 class Server {
 private:

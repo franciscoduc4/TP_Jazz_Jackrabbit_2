@@ -35,6 +35,8 @@ private:
 
     std::unique_ptr<CommandDTO> deserializeSwitchWeapon(bool& wasClosed, int32_t& playerId);
 
+    std::unique_ptr<CommandDTO> deserializeSprint(bool& wasClosed, int32_t& playerId);
+
 
 public:
     explicit Deserializer(std::shared_ptr<Socket> socket);

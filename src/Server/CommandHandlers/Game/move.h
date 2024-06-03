@@ -1,7 +1,7 @@
 #ifndef MOVE_HANDLER_H_
 #define MOVE_HANDLER_H_
 
-#include "../../Common/DTO/move.h"
+#include "../../../Common/DTO/move.h"
 
 #include "gameCommand.h"
 

@@ -6,7 +6,7 @@
 #include <vector>
 
 #include "../../Common/Types/character.h"
-#include "../../Common/Types/move.h"
+#include "../../Common/Types/direction.h"
 #include "../../Common/Types/enemy.h"
 #include "../../Common/vector.h"
 #include "enemies/enemy.h"
@@ -19,8 +19,6 @@ class GameMap {
 private:
     Vector<int16_t> size;
     std::map<Vector<int16_t>, std::shared_ptr<Entity>> mapGrid;
-    std::vector<std::shared_ptr<Character>> characters;
-    std::vector<std::shared_ptr<Enemy>> enemies;
     EntityFactory entityFactory;
     int16_t movesPerCell = 2;
 
@@ -31,12 +29,12 @@ public:
     explicit GameMap(Vector<int16_t> size);
 
     std::vector<std::shared_ptr<Entity>> getObjectsInShootRange(Vector<int16_t> mapPosition,
-                                                                Move dir);
+                                                                Direction dir);
 
     std::vector<std::shared_ptr<Entity>> getObjectsInExplosionRange(Vector<int16_t> mapPosition,
                                                                     int16_t radius);
 
-    void moveObject(Vector<int16_t>& position, Vector<int16_t> mapPosition, Move dir);
+    void moveObject(Vector<int16_t>& position, Vector<int16_t> mapPosition, Direction dir);
 
     Vector<int16_t> getAvailablePosition();
 
@@ -46,8 +44,9 @@ public:
 
     void update(float time);
 
- 
+    void removeCharacter(Vector<int16_t> position);
+
+    void removeEnemy(Vector<int16_t> position);
 };
 
 #endif  // GAME_MAP_H_
-

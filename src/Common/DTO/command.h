@@ -6,12 +6,17 @@
 
 #include "../Types/command.h"
 
+#include "dto.h"
 
-class CommandDTO {
+
+class CommandDTO: public DTO {
 private:
     Command commandType;
 
     int32_t playerId;
+
+    DTOType type = DTOType::COMMAND_DTO;
+
 
 public:
     CommandDTO();
@@ -23,6 +28,8 @@ public:
     Command getCommand() const;
 
     int getPlayerId() const;
+
+    DTOType getType() const;
 
     virtual ~CommandDTO() {}
 };

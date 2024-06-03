@@ -13,7 +13,7 @@
 
 class GameMonitor {
 private:
-    std::map<int32_t, GameLoopThread> games;
+    std::map<int32_t, std::unique_ptr<GameLoopThread>> games;
     std::mutex mtx;
     QueueMonitor<std::unique_ptr<GameDTO>>& queueMonitor;
 

@@ -2,35 +2,38 @@
 #define GAME_ELEMENT_DTO_H_
 
 #include <cstdint>
-#include <vector>
 #include <utility>
+#include <vector>
+
 #include "../Types/elements.h"
 
+
 class GameElementDTO {
-    private:
-        ElementType type;
+private:
+    ElementType type;
 
-        int32_t playerId;
-        uint16_t x;
-        uint16_t y;
-        bool isVisible;
+    int32_t playerId;
+    uint16_t x;
+    uint16_t y;
+    bool isVisible;
 
-    public:
-        GameElementDTO();
 
-        explicit GameElementDTO(ElementType element);
+public:
+    GameElementDTO();
 
-        GameElementDTO(int32_t& playerId, ElementType element);
+    explicit GameElementDTO(ElementType element);
 
-        ElementType getElementType() const;
+    GameElementDTO(int32_t& playerId, ElementType element);
 
-        int getPlayerId() const;
+    ElementType getElementType() const;
 
-        std::pair<uint16_t, uint16_t> getPosition();
+    int getPlayerId() const;
 
-        bool getVisibility();
+    std::pair<uint16_t, uint16_t> getPosition();
 
-        virtual ~GameElementDTO() {}
+    bool getVisibility();
+
+    virtual ~GameElementDTO() {}
 };
 
 #endif  // COMMAND_DTO_H_

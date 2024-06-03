@@ -1,15 +1,17 @@
 #ifndef SWITCH_WEAPON_DTO_H_
 #define SWITCH_WEAPON_DTO_H_
 
+#include "../Types/weapon.h"
+
 #include "command.h"
 
 class SwitchWeaponDTO: public CommandDTO {
 private:
-    uint8_t weaponId;
+    WeaponType type;
 
 public:
-    SwitchWeaponDTO(uint8_t weaponId);
-    uint8_t getWeaponType() const;
+    SwitchWeaponDTO(int32_t& playerId, WeaponType type);
+    WeaponType getWeaponType() const;
 };
 
 #endif  // SWITCH_WEAPON_H_

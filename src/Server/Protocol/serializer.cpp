@@ -77,7 +77,7 @@ std::vector<char> Serializer::serializeGamesList(const CommandDTO& dto) {
 std::vector<char> Serializer::serializeMove(const MoveDTO& dto) {
     std::vector<char> buffer;
     buffer.push_back(static_cast<char>(Command::MOVE));
-    Move moveType = dto.getMoveType();
+    Direction moveType = dto.getMoveType();
     buffer.push_back(static_cast<char>(moveType));
     return buffer;
 }

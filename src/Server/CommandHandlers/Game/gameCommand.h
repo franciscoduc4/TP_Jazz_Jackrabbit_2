@@ -9,6 +9,8 @@
 #include "../../../Common/queue.h"
 #include "../../Game/game.h"
 
+class Game;
+
 class GameCommandHandler {
 public:
     virtual void execute(Game& game, std::atomic<bool>& keepRunning, double deltaTime) = 0;

@@ -1,9 +1,11 @@
 #ifndef SWITCH_WEAPON_HANDLER_H_
 #define SWITCH_WEAPON_HANDLER_H_
 
-#include "../../../Common/DTO/switchWeapon.h"
 #include <memory>
 #include <utility>
+
+#include "../../../Common/DTO/switchWeapon.h"
+
 #include "gameCommand.h"
 
 class SwitchWeaponHandler: public GameCommandHandler {

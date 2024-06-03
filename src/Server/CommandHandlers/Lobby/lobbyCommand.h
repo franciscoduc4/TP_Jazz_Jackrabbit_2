@@ -3,11 +3,11 @@
 
 #include <memory>
 
-#include "../../Common/DTO/command.h"
-#include "../../Common/DTO/lobby.h"
-#include "../../Common/Types/command.h"
-#include "../../Common/queue.h"
-#include "../Game/gameMonitor.h"
+#include "../../../Common/DTO/command.h"
+#include "../../../Common/DTO/lobby.h"
+#include "../../../Common/Types/command.h"
+#include "../../../Common/queue.h"
+#include "../../Game/gameMonitor.h"
 
 
 class LobbyCommandHandler {

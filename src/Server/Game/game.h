@@ -4,6 +4,7 @@
 #include <cstdint>
 #include <map>
 #include <memory>
+
 #include "../../Common/DTO/game.h"
 #include "../../Common/Types/character.h"
 #include "../CommandHandlers/Game/gameCommand.h"
@@ -17,6 +18,7 @@ private:
 
 
 public:
+    explicit Game(Vector<int16_t> size);
     void handleCommand(std::unique_ptr<CommandDTO> commandDTO, std::atomic<bool>& keepRunning,
                        double deltaTime);
 
@@ -25,6 +27,8 @@ public:
     std::shared_ptr<Character> getCharacter(int32_t playerId);
 
     std::unique_ptr<GameDTO> getGameDTO();
+
+    void update(float time);
 };
 
 #endif  // GAME_H_

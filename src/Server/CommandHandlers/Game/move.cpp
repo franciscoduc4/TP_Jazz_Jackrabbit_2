@@ -6,20 +6,19 @@ MoveHandler::MoveHandler(std::unique_ptr<MoveDTO> moveCommand):
 void MoveHandler::execute(Game& game, std::atomic<bool>& keepRunning, double deltaTime) {
     std::shared_ptr<Character> character = game.getCharacter(moveCommand->getPlayerId());
     switch (moveCommand->getMoveType()) {
-        case Move::UP:
-            character.moveUp(deltaTime);
+        case Direction::UP:
+            character->moveUp(deltaTime);
             break;
-        case Move::DOWN:
-            character.moveDown(deltaTime);
+        case Direction::DOWN:
+            character->moveDown(deltaTime);
             break;
-        case Move::LEFT:
-            character.moveLeft(deltaTime);
+        case Direction::LEFT:
+            character->moveLeft(deltaTime);
             break;
-        case Move::RIGHT:
-            character.moveRight(deltaTime);
+        case Direction::RIGHT:
+            character->moveRight(deltaTime);
             break;
-        case Move::IDLE:
-            character.stopMove(deltaTime);
+        default:
             break;
     }
 }

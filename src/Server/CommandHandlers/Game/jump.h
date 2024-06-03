@@ -1,7 +1,7 @@
 #ifndef JUMP_HANDLER_H_
 #define JUMP_HANDLER_H_
 
-#include "../../Common/DTO/command.h"
+#include "../../../Common/DTO/command.h"
 
 #include "gameCommand.h"
 

@@ -3,9 +3,9 @@
 
 #include <memory>
 
-#include "../../Common/DTO/createGame.h"
-#include "../../Common/DTO/lobby.h"
-#include "../../Common/queue.h"
+#include "../../../Common/DTO/createGame.h"
+#include "../../../Common/DTO/lobby.h"
+#include "../../../Common/queue.h"
 
 #include "lobbyCommand.h"
 

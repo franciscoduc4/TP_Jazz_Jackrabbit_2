@@ -1,18 +1,18 @@
 #ifndef MOVE_DTO_H
 #define MOVE_DTO_H
 
-#include "../Types/move.h"
+#include "../Types/direction.h"
 
 #include "command.h"
 
 class MoveDTO: public CommandDTO {
 private:
-    Move moveType;
+    Direction moveType;
 
 public:
-    MoveDTO(int32_t& player_id, Move moveType);
+    MoveDTO(int32_t& player_id, Direction moveType);
 
-    Move getMoveType() const;
+    Direction getMoveType() const;
 };
 
 #endif  // MOVE_DTO_H

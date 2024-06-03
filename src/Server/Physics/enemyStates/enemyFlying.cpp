@@ -1,15 +1,12 @@
 #include "enemyFlying.h"
+
+#include "enemyAttacking.h"
+#include "enemyDead.h"
 #include "enemyIdle.h"
 #include "enemyReceivingDmg.h"
-#include "enemyDead.h"
-#include "enemyAttacking.h"
 
 
-EnemyFlying::EnemyFlying(float time) :
-    timeToFly(0.2f) 
- {
-    enemyState = ENEMY_FLYING;
-}
+EnemyFlying::EnemyFlying(float time): timeToFly(0.2f) { enemyState = ENEMY_FLYING; }
 
 std::unique_ptr<EnemyState> EnemyFlying::update(float time) {
     if (timeMoved == -1) {
@@ -21,9 +18,9 @@ std::unique_ptr<EnemyState> EnemyFlying::update(float time) {
     return nullptr;
 }
 
-std::unique_ptr<EnemyState> EnemyFlying::attackCharacter(Character* character, 
-    int16_t dmg, float time) {
-        if (time - timeMoved > timeToFly) {
+std::unique_ptr<EnemyState> EnemyFlying::attackCharacter(std::shared_ptr<Character> character,
+                                                         int16_t dmg, float time) {
+    if (time - timeMoved > timeToFly) {
         return std::make_unique<EnemyAttacking>(character, dmg, time);
     }
     return nullptr;
@@ -37,11 +34,4 @@ std::unique_ptr<EnemyState> EnemyFlying::die(float time) {
     return std::make_unique<EnemyDead>(time);
 }
 
-void EnemyFlying::setVelocity(float vel) {
-    timeToFly = vel;
-}
-
-
-
-
-
+void EnemyFlying::setVelocity(float vel) { timeToFly = vel; }

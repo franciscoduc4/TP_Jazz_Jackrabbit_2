@@ -1,5 +1,8 @@
 #include "game.h"
+
 #include <utility>
+
+Game::Game(Vector<int16_t> size): gameMap(size) {}
 
 void Game::handleCommand(std::unique_ptr<CommandDTO> commandDTO, std::atomic<bool>& keepRunning,
                          double deltaTime) {
@@ -14,5 +17,5 @@ void Game::addCharacter(int32_t playerId, CharacterType characterType) {
 
 std::shared_ptr<Character> Game::getCharacter(int32_t playerId) { return characters[playerId]; }
 
-std::unique_ptr<GameDTO> Game::getGameDTO() {}
 
+void Game::update(float time) { gameMap.update(time); }

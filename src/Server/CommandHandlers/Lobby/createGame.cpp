@@ -4,13 +4,13 @@
 #include <string>
 #include <utility>
 
-#include "../../Common/DTO/createGame.h"
-#include "../../Common/DTO/lobby.h"
-#include "../../Common/Types/episode.h"
-#include "../../Common/Types/gameMode.h"
-#include "../../Common/Types/lobbyState.h"
-#include "../../Common/queue.h"
-#include "../Game/gameMonitor.h"
+#include "../../../Common/DTO/createGame.h"
+#include "../../../Common/DTO/lobby.h"
+#include "../../../Common/Types/episode.h"
+#include "../../../Common/Types/gameMode.h"
+#include "../../../Common/Types/lobbyState.h"
+#include "../../../Common/queue.h"
+#include "../../Game/gameMonitor.h"
 
 
 CreateGameHandler::CreateGameHandler(std::unique_ptr<CreateGameDTO> command):

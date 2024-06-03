@@ -29,6 +29,14 @@ struct Vector {
         x *= scalar;
         y *= scalar;
     }
+
+    bool operator==(const Vector& other) const { return x == other.x && y == other.y; }
+
+    bool operator!=(const Vector& other) const { return !(*this == other); }
+
+    bool operator<(const Vector& other) const {
+        return (x < other.x) || (x == other.x && y < other.y);
+    }
 };
 
 #endif  // VECTOR_H

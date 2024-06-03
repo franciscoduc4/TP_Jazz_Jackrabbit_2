@@ -32,11 +32,11 @@ private:
 public:
     WalkingEnemy(int16_t x, int16_t y, int16_t id, GameMap& map, int16_t health, int16_t dmg);
 
-    void update(std::vector<Character*> characters, float time) override;
+    void update(std::vector<std::shared_ptr<Character>> characters, float time) override;
 
     void receiveDmg(int16_t dmg, float time) override;
 
-    void attack(std::vector<Character*> characters, float time) override;
+    void attack(std::vector<std::shared_ptr<Character>>, float time) override;
 
     void die(float time) override;
 
@@ -49,12 +49,15 @@ public:
     int16_t getId() override;
     int16_t getHealth() override;
 
-    int16_t getDistanceToCharacter(Character* character);
-    int16_t getXDistanceToCharacter(Character* character);
-    int16_t getYDistanceToCharacter(Character* character);
-    Character* getClosestCharacter(std::vector<Character*> characters);
+    int16_t getDistanceToCharacter(std::shared_ptr<Character> character);
+    int16_t getXDistanceToCharacter(std::shared_ptr<Character> character);
+    int16_t getYDistanceToCharacter(std::shared_ptr<Character> character);
+    std::shared_ptr<Character> getClosestCharacter(
+            std::vector<std::shared_ptr<Character>> characters);
 
     EnemyType getEnemyType() override;
 
     ~WalkingEnemy();
 };
+
+#endif  // WALKING_ENEMY_H

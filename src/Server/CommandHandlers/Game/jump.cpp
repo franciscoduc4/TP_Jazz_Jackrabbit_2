@@ -5,5 +5,5 @@ JumpHandler::JumpHandler(std::unique_ptr<CommandDTO> jumpCommand):
 
 void JumpHandler::execute(Game& game, std::atomic<bool>& keepRunning, double deltaTime) {
     std::shared_ptr<Character> character = game.getCharacter(moveCommand->getPlayerId());
-    character->jump(deltaTime);
+    // character->jump(deltaTime);
 }

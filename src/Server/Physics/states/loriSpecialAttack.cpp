@@ -1,17 +1,15 @@
 #include "loriSpecialAttack.h"
-#include "idle.h"
-#include "dead.h"
-#include "move.h"
-#include "shooting.h"
-#include "damage.h"
-#include "intoxicated.h"
 
-LoriSpecialAttackState::LoriSpecialAttackState(float time):
-    startTime(time),
-    duration(2)
-    {
+#include "damage.h"
+#include "dead.h"
+#include "idle.h"
+#include "intoxicated.h"
+#include "moving.h"
+#include "shooting.h"
+
+LoriSpecialAttackState::LoriSpecialAttackState(float time): startTime(time), duration(2) {
     characterState = CharacterStateEntity::SPECIAL_ATTACK;
-    }
+}
 
 
 std::unique_ptr<State> LoriSpecialAttackState::update(float time) {
@@ -19,16 +17,16 @@ std::unique_ptr<State> LoriSpecialAttackState::update(float time) {
     return std::unique_ptr<IdleState>();
 }
 
-std::unique_ptr<State> LoriSpecialAttackState::shoot(Character& character, 
-std::unique_ptr<Weapon> weapon, float time) {
+std::unique_ptr<State> LoriSpecialAttackState::shoot(Character& character,
+                                                     std::shared_ptr<Weapon> weapon, float time) {
     // No puede disparar mientras realiza un ataque especial
     return std::make_unique<ShootingState>(character, weapon, time);
 }
 
-std::unique_ptr<State> LoriSpecialAttackState::move(Character& character, 
-Move direction, float time) {
+std::unique_ptr<State> LoriSpecialAttackState::move(Character& character, Direction direction,
+                                                    float time) {
     // Puede moverse mientras realiza un ataque especial
-    return std::make_unique<MoveState>(character, direction, time);
+    return std::make_unique<MovingState>(character, direction, time);
 }
 
 std::unique_ptr<State> LoriSpecialAttackState::sprint(Character& character, float time) {
@@ -36,13 +34,13 @@ std::unique_ptr<State> LoriSpecialAttackState::sprint(Character& character, floa
     return nullptr;
 }
 
-std::unique_ptr<State> LoriSpecialAttackState::reload(std::unique_ptr<Weapon> weapon, float time) {
+std::unique_ptr<State> LoriSpecialAttackState::reload(std::shared_ptr<Weapon> weapon, float time) {
     // No puede recargar mientras realiza un ataque especial
     return nullptr;
 }
 
-std::unique_ptr<State> LoriSpecialAttackState::receiveDamage(Character& character, 
-uint16_t dmg, float time) {
+std::unique_ptr<State> LoriSpecialAttackState::receiveDamage(Character& character, uint16_t dmg,
+                                                             float time) {
     return std::make_unique<ReceivingDamageState>(time);
 }
 
@@ -65,8 +63,8 @@ std::unique_ptr<State> LoriSpecialAttackState::specialAttack(Character& characte
     return nullptr;
 }
 
-std::unique_ptr<State> LoriSpecialAttackState::becomeIntoxicated(Character& character, 
-    float duration) {
+std::unique_ptr<State> LoriSpecialAttackState::becomeIntoxicated(Character& character,
+                                                                 float duration) {
     // Puede intoxicarse mientras realiza un ataque especial
     return std::make_unique<IntoxicatedState>(duration);
 }

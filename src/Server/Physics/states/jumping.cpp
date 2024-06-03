@@ -1,10 +1,12 @@
 #include "jumping.h"
-#include "idle.h"
-#include "dead.h"
-#include "intoxicated.h"
-#include "move.h"
-#include "shooting.h"
+
 #include "../playerCharacter.h"
+
+#include "dead.h"
+#include "idle.h"
+#include "intoxicated.h"
+#include "moving.h"
+#include "shooting.h"
 
 std::unique_ptr<State> JumpingState::update(float time) {
     // Lógica de actualización específica para el estado de salto
@@ -12,14 +14,14 @@ std::unique_ptr<State> JumpingState::update(float time) {
     return std::unique_ptr<IdleState>();
 }
 
-std::unique_ptr<State> JumpingState::shoot(Character& character, 
-std::unique_ptr<Weapon> weapon, float time) {
+std::unique_ptr<State> JumpingState::shoot(Character& character, std::shared_ptr<Weapon> weapon,
+                                           float time) {
     // Puede disparar mientras está en el aire
     // Lógica para disparar
     return nullptr;
 }
 
-std::unique_ptr<State> JumpingState::move(Character& character, Move direction, float time) {
+std::unique_ptr<State> JumpingState::move(Character& character, Direction direction, float time) {
     // Puede moverse en el aire
     // character.setDir(direction);
     // if (direction > 0) {
@@ -35,7 +37,7 @@ std::unique_ptr<State> JumpingState::sprint(Character& character, float time) {
     return nullptr;
 }
 
-std::unique_ptr<State> JumpingState::reload(std::unique_ptr<Weapon> weapon, float time) {
+std::unique_ptr<State> JumpingState::reload(std::shared_ptr<Weapon> weapon, float time) {
     // No puede recargar mientras está en el aire
     return nullptr;
 }
@@ -50,7 +52,7 @@ std::unique_ptr<State> JumpingState::receiveDamage(Character& character, uint16_
 
 std::unique_ptr<State> JumpingState::die(Character& character, float time) {
     character.die(time);
-    return std::make_unique<DeadState>();
+    return std::make_unique<DeadState>(time);
 }
 
 std::unique_ptr<State> JumpingState::revive(Character& character, float time) {

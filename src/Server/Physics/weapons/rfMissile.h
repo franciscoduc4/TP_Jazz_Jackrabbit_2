@@ -1,13 +1,15 @@
 #ifndef RFMISSILE_H
 #define RFMISSILE_H
 
-#include "weapon.h"
-#include "../../../Common/Types/weapon.h"
-#include <vector>
 #include <iostream>
 #include <memory>
+#include <vector>
 
-class RFMissile : public Weapon {
+#include "../../../Common/Types/weapon.h"
+
+#include "weapon.h"
+
+class RFMissile: public Weapon {
 private:
     uint16_t bullets;
     const uint16_t maxBullets;
@@ -21,8 +23,8 @@ public:
 
     void update(float time) override;
 
-    void shoot(std::shared_ptr<Entity>& shootingEntities, 
-    int16_t xPos, float time) override;
+    void shoot(std::vector<std::shared_ptr<Entity>>& shootingEntities, int16_t xPos,
+               float time) override;
 
     void reload() override;
 
@@ -41,4 +43,4 @@ public:
     float getFireRate() override;
 };
 
-#endif // RFMISSILE_H
+#endif  // RFMISSILE_H

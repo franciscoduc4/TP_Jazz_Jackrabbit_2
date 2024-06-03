@@ -1,14 +1,16 @@
 #ifndef BLASTER_H
 #define BLASTER_H
 
-#include "weapon.h"
-#include "../../../Common/Types/weapon.h"
-#include <vector>
 #include <iostream>
 #include <memory>
+#include <vector>
 
-class Blaster : public Weapon {
-    private:
+#include "../../../Common/Types/weapon.h"
+
+#include "weapon.h"
+
+class Blaster: public Weapon {
+private:
     uint16_t bullets;
     const uint16_t maxBullets;
     const uint16_t damage;
@@ -16,12 +18,13 @@ class Blaster : public Weapon {
     int32_t bulletsShot = 0;
     int16_t lastTimeShot;
 
-    public:
+public:
     Blaster();
 
     void update(float time) override;
 
-    void shoot(std::shared_ptr<Entity>& shootingEntities, int16_t xPos, float time) override;
+    void shoot(std::vector<std::shared_ptr<Entity>>& shootingEntities, int16_t xPos,
+               float time) override;
 
     void reload() override;
 
@@ -38,8 +41,6 @@ class Blaster : public Weapon {
     WeaponType getWeaponType() override;
 
     float getFireRate() override;
-
 };
 
-#endif // BLASTER_H
-
+#endif  // BLASTER_H

@@ -12,10 +12,10 @@
 
 class Enemy: public Entity {
 public:
-    virtual void update(std::vector<Character*> characters, float time) = 0;
+    virtual void update(std::vector<std::shared_ptr<Character>> characters, float time) = 0;
     virtual void setDir(int16_t dir) = 0;
     virtual void receiveDmg(int16_t dmg, float time) = 0;
-    virtual void attack(std::vector<Character*> characters, float time) = 0;
+    virtual void attack(std::vector<std::shared_ptr<Character>> characters, float time) = 0;
     virtual void die(float time) = 0;
     virtual std::unique_ptr<EnemyState>& getState() = 0;
     virtual int16_t getMatrixX() = 0;

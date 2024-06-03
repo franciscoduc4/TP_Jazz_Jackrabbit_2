@@ -27,7 +27,7 @@ private:
     size_t commandsToProcess;
 
 public:
-    GameLoopThread(int32_t gameId, std::string gameName, int32_t& playerId, Episode episode,
+    GameLoopThread(int32_t gameId, std::string gameName, int32_t playerId, Episode episode,
                    GameMode gameMode, uint8_t maxPlayers, CharacterType characterType,
                    std::shared_ptr<Queue<std::unique_ptr<CommandDTO>>> recvQueue,
                    QueueMonitor<std::unique_ptr<GameDTO>>& queueMonitor);

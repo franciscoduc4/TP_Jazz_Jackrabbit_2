@@ -11,13 +11,15 @@ bool GameMonitor::createGame(int32_t playerId, Episode episode, GameMode gameMod
                              std::shared_ptr<Queue<std::unique_ptr<CommandDTO>>> recvQueue) {
     std::lock_guard<std::mutex> lock(mtx);
     for (auto& [id, game]: games) {
-        if (game.getGameName() == gameName) {
+        if (game->getGameName() == gameName) {
             return false;
         }
     }
     int32_t gameId = games.size();
-    games.emplace(gameId, GameLoopThread(gameId, gameName, playerId, episode, gameMode, maxPlayers,
-                                         characterType, recvQueue, queueMonitor));
+    games[gameId] =
+            std::make_unique<GameLoopThread>(gameId, gameName, playerId, episode, gameMode,
+                                             maxPlayers, characterType, recvQueue, queueMonitor);
+
     return true;
 }
 
@@ -26,8 +28,8 @@ bool GameMonitor::joinGame(int32_t playerId, int32_t gameId, CharacterType chara
     auto it = games.find(gameId);
     if (it != games.end()) {
         auto& [id, game] = *it;
-        if (!game.isFull()) {
-            game.addPlayer(playerId, characterType);
+        if (!game->isFull()) {
+            game->addPlayer(playerId, characterType);
             return true;
         }
     }
@@ -39,8 +41,8 @@ bool GameMonitor::startGame(int32_t playerId, int32_t gameId) {
     auto it = games.find(gameId);
     if (it != games.end()) {
         auto& [id, game] = *it;
-        if (game.isFull()) {
-            game.start();
+        if (game->isFull()) {
+            game->start();
             return true;
         }
     }
@@ -51,7 +53,7 @@ std::map<int32_t, std::string> GameMonitor::getGamesList() {
     std::lock_guard<std::mutex> lock(mtx);
     std::map<int32_t, std::string> list;
     for (auto& [id, game]: games) {
-        list[id] = game.getGameName();
+        list[id] = game->getGameName();
     }
     return list;
 }

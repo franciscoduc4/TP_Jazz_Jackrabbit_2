@@ -1,18 +1,17 @@
-#include "enemyAttacking.h" 
+#include "enemyAttacking.h"
+
 #include "../playerCharacter.h"
+
+#include "enemyDead.h"
 #include "enemyIdle.h"
 #include "enemyReceivingDmg.h"
-#include "enemyDead.h"
 
 
-EnemyAttacking::EnemyAttacking(Character* target, int16_t damage, float attackTime) 
-    : 
-    startTime(attackTime),
-    waitingToAttack(0.5f)
-    {
-        enemyState = ENEMY_ATTACKING;
-        target->recvDamage(damage, attackTime);
-    }
+EnemyAttacking::EnemyAttacking(std::shared_ptr<Character> target, int16_t damage, float attackTime):
+        startTime(attackTime), waitingToAttack(0.5f) {
+    enemyState = ENEMY_ATTACKING;
+    target->recvDamage(damage, attackTime);
+}
 
 std::unique_ptr<EnemyState> EnemyAttacking::update(float time) {
     if (time - startTime > waitingToAttack) {
@@ -21,12 +20,12 @@ std::unique_ptr<EnemyState> EnemyAttacking::update(float time) {
     return nullptr;
 }
 
-std::unique_ptr<EnemyState> EnemyAttacking::attackCharacter(Character* character, 
-    int16_t dmg, float time) {
+std::unique_ptr<EnemyState> EnemyAttacking::attackCharacter(std::shared_ptr<Character> character,
+                                                            int16_t dmg, float time) {
     if (time - startTime > waitingToAttack) {
         startTime = time;
         character->recvDamage(dmg, time);
-        }
+    }
     return nullptr;
 }
 
@@ -38,6 +37,4 @@ std::unique_ptr<EnemyState> EnemyAttacking::die(float time) {
     return std::make_unique<EnemyDead>(time);
 }
 
-void EnemyAttacking::setVelocity(float vel) {
-    waitingToAttack = vel;
-}
+void EnemyAttacking::setVelocity(float vel) { waitingToAttack = vel; }

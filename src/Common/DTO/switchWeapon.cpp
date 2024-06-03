@@ -1,5 +1,5 @@
 #include "switchWeapon.h"
 
-SwitchWeaponDTO::SwitchWeaponDTO(uint8_t weaponId): weaponId(weaponId) {}
+SwitchWeaponDTO::SwitchWeaponDTO(int32_t& playerId, WeaponType type): type(type) {}
 
-uint8_t SwitchWeaponDTO::getWeaponType() const { return weaponId; }
+WeaponType SwitchWeaponDTO::getWeaponType() const { return type; }

@@ -1,8 +1,8 @@
 #include "lobbyCommand.h"
 
-#include "../../Common/DTO/createGame.h"
-#include "../../Common/DTO/joinGame.h"
-#include "../../Common/DTO/startGame.h"
+#include "../../../Common/DTO/createGame.h"
+#include "../../../Common/DTO/joinGame.h"
+#include "../../../Common/DTO/startGame.h"
 
 #include "createGame.h"
 #include "gamesList.h"

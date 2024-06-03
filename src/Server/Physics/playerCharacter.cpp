@@ -3,9 +3,8 @@
 #include <utility>
 
 #include "../../Common/Types/character.h"
-#include "../../Common/Types/weapon.h"
 #include "../../Common/Types/direction.h"
-#include "../../Common/Types/move.h"
+#include "../../Common/Types/weapon.h"
 #include "states/dead.h"
 #include "states/idle.h"
 #include "states/intoxicated.h"
@@ -24,15 +23,13 @@ Character::Character(GameMap& map, int16_t x, int16_t y, int16_t characterId, Ch
         characterId(0),
         health(100),
         initialHealth(100),
-        dir(Move::RIGHT),
+        dir(Direction::RIGHT),
         maxMoves(5),
         timesRevived(0),
         maxRevived(3),
         currentWeapon(std::make_unique<Blaster>()),
         state(std::make_unique<IdleState>()) {}
 
-int16_t Character::getX() { return x; }
-int16_t Character::getY() { return y; }
 int16_t Character::getId() { return characterId; }
 
 void Character::recvDamage(uint16_t dmg, float time) {
@@ -49,14 +46,14 @@ void Character::recvDamage(uint16_t dmg, float time) {
     return;
 }
 
-void Character::setDir(Move dir) { this->dir = dir; }
+void Character::setDir(Direction dir) { this->dir = dir; }
 
 void Character::update(float time) {
     auto newState = std::unique_ptr<State>(state->update(time));
     if (newState) {
         state = std::move(newState);
     }
-    //currentWeapon->update(time);
+    // currentWeapon->update(time);
 }
 
 void Character::shoot(float time) {
@@ -68,7 +65,7 @@ void Character::shoot(float time) {
 }
 
 void Character::moveRight(float time) {
-    auto newState = std::unique_ptr<State>(state->move(*this, Move::RIGHT, time));
+    auto newState = std::unique_ptr<State>(state->move(*this, Direction::RIGHT, time));
     if (newState) {
         state = std::move(newState);
     }
@@ -80,7 +77,7 @@ void Character::moveRight(float time) {
 // }
 
 void Character::moveLeft(float time) {
-    auto newState = std::unique_ptr<State>(state->move(*this, Move::LEFT, time));
+    auto newState = std::unique_ptr<State>(state->move(*this, Direction::LEFT, time));
     if (newState) {
         state = std::move(newState);
     }
@@ -92,7 +89,7 @@ void Character::moveLeft(float time) {
 // }
 
 void Character::moveUp(float time) {
-    auto newState = std::unique_ptr<State>(state->move(*this, Move::UP, time));
+    auto newState = std::unique_ptr<State>(state->move(*this, Direction::UP, time));
     if (newState) {
         state = std::move(newState);
     }
@@ -100,7 +97,7 @@ void Character::moveUp(float time) {
 }
 
 void Character::moveDown(float time) {
-    auto newState = std::unique_ptr<State>(state->move(*this, Move::DOWN, time));
+    auto newState = std::unique_ptr<State>(state->move(*this, Direction::DOWN, time));
     if (newState) {
         state = std::move(newState);
     }
@@ -139,71 +136,33 @@ void Character::revive(float time) {
 
 bool Character::isAlive() const { return !isDead; }
 
-int16_t Character::getHealth() { return health; }
-Move Character::getDir() { return dir; }
 int16_t Character::getCharacterId() const { return characterId; }
 float Character::getRespawnTime() const { return respawnTime; }
-bool Character::characIsIntoxicated() { return isIntoxicated; }
-float Character::getIntoxicatedTime() { return intoxicatedTime; }
 
 void Character::moveRight() {
-    int16_t newX = x + 1;
-    if ((newX % maxMoves) != 0) {
-        newX += 1;
-        return;
-    }
-    int16_t newMapX = -1;
-    map.moveObject(getPosition(), getMapPosition(), Move::RIGHT);
+    auto position = getPosition();
+    auto mapPosition = getMapPosition();
+    map.moveObject(position, mapPosition, Direction::RIGHT);
 }
 
 void Character::moveLeft() {
-    int16_t newX = x - 1;
-    if ((newX % maxMoves) != 0) {
-        newX -= 1;
-        return;
-    }
-    int16_t newMapX = -1;
-    map.moveObject(getPosition(), getMapPosition(), Move::LEFT);
-    if (newMapX >= 0) {
-        x -= 1;
-    }
+    auto position = getPosition();
+    auto mapPosition = getMapPosition();
+    map.moveObject(position, mapPosition, Direction::LEFT);
 }
 
 void Character::moveUp() {
-    int16_t newY = y - 1;
-    if ((newY % maxMoves) != 0) {
-        newY -= 1;
-        return;
-    }
-    int16_t newMapY = -1;
-    map.moveObject(getPosition(), getMapPosition(), Move::UP);
-    if (newMapY >= 0) {
-        y -= 1;
-    }
+    auto position = getPosition();
+    auto mapPosition = getMapPosition();
+    map.moveObject(position, mapPosition, Direction::UP);
 }
 
 void Character::moveDown() {
-    int16_t newY = y + 1;
-    if ((newY % maxMoves) != 0) {
-        newY += 1;
-        return;
-    }
-    int16_t newMapY = -1;
-    map.moveObject(getPosition(), getMapPosition(), Move::DOWN);
-    if (newMapY >= 0) {
-        y += 1;
-    }
+    auto position = getPosition();
+    auto mapPosition = getMapPosition();
+    map.moveObject(position, mapPosition, Direction::DOWN);
 }
 
-int16_t Character::getX() { return x; }
-
-int16_t Character::getY() { return y; }
-
-int16_t Character::getId() { return characterId; }
-
-int16_t Character::getMatrixX() { return x / maxMoves; }
-
-int16_t Character::getMatrixY() { return y / maxMoves; }
 
 std::vector<std::shared_ptr<Entity>> Character::getTargets() {
     std::vector<std::shared_ptr<Entity>> targets;
@@ -215,12 +174,12 @@ Vector<int16_t> Character::getPosition() { return {x, y}; }
 
 Vector<int16_t> Character::getMapPosition() { return {getMatrixX(), getMatrixY()}; }
 
-void Character::setPosition(Vector<int16_t> newPosition) {
-    x = newPosition.x;
-    y = newPosition.y;
-}
+// void Character::setPosition(Vector<int16_t> newPosition) {
+//     x = newPosition.x;
+//     y = newPosition.y;
+// }
 
-void Character::interact(Entity& other) {
+void Character::interact(std::shared_ptr<Entity>& other) {
     // Interaction logic here
     return;
 }
@@ -244,3 +203,13 @@ void Character::switchWeapon(WeaponType type) {
             return;
     }
 }
+
+
+int16_t Character::getHealth() const { return health; }
+Direction Character::getDir() const { return dir; }
+int16_t Character::getX() const { return x; }
+int16_t Character::getMatrixX() const { return x / maxMoves; }
+int16_t Character::getMatrixY() const { return y / maxMoves; }
+int16_t Character::getY() const { return y; }
+bool Character::characIsIntoxicated() const { return isIntoxicated; }
+float Character::getIntoxicatedTime() const { return intoxicatedTime; }

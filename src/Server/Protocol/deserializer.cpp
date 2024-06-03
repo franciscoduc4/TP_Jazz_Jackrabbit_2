@@ -1,9 +1,9 @@
 #include "deserializer.h"
 
 #include "../../Common/Types/character.h"
+#include "../../Common/Types/direction.h"
 #include "../../Common/Types/episode.h"
 #include "../../Common/Types/gameMode.h"
-#include "../../Common/Types/move.h"
 #include "../../Common/Types/weapon.h"
 
 Deserializer::Deserializer(std::shared_ptr<Socket> socket): socket(socket) {}
@@ -25,6 +25,8 @@ std::unique_ptr<CommandDTO> Deserializer::getCommand(bool& wasClosed, int32_t& p
             return deserializeMove(wasClosed, playerId);
         case Command::SWITCH_WEAPON:
             return deserializeSwitchWeapon(wasClosed, playerId);
+        case Command::SPRINT:
+            return deserializeSprint(wasClosed, playerId);
         default:
             return nullptr;
     }
@@ -63,9 +65,9 @@ std::unique_ptr<CommandDTO> Deserializer::deserializeGamesList(bool& wasClosed, 
 
 
 std::unique_ptr<MoveDTO> Deserializer::deserializeMove(bool& wasClosed, int32_t& playerId) {
-    Move moveType;
-    socket->recvall(&moveType, 1, &wasClosed);
-    return std::make_unique<MoveDTO>(playerId, moveType);
+    Direction direction;
+    socket->recvall(&direction, 1, &wasClosed);
+    return std::make_unique<MoveDTO>(playerId, direction);
 }
 
 std::unique_ptr<StartGameDTO> Deserializer::deserializeStart(bool& wasClosed, int32_t& playerId) {
@@ -83,4 +85,10 @@ std::unique_ptr<CommandDTO> Deserializer::deserializeSwitchWeapon(bool& wasClose
     WeaponType weaponType;
     socket->recvall(&weaponType, 1, &wasClosed);
     return std::make_unique<SwitchWeaponDTO>(playerId, weaponType);
+}
+
+std::unique_ptr<CommandDTO> Deserializer::deserializeSprint(bool& wasClosed, int32_t& playerId) {
+    Direction direction;
+    socket->recvall(&direction, 1, &wasClosed);
+    return std::make_unique<MoveDTO>(playerId, direction);
 }

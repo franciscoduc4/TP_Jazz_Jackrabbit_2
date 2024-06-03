@@ -1,37 +1,35 @@
 #include "idle.h"
-#include "jumping.h"
-#include "shooting.h"
-#include "intoxicated.h"
-#include "dead.h"
-#include "move.h"
+
 #include "../playerCharacter.h"
 
-IdleState::IdleState() {
-    characterState = IDLE;
-}
+#include "dead.h"
+#include "intoxicated.h"
+#include "jumping.h"
+#include "moving.h"
+#include "shooting.h"
 
-std::unique_ptr<State> IdleState::update(float time) {
-    return nullptr;
-}
+IdleState::IdleState() { characterState = IDLE; }
 
-std::unique_ptr<State> IdleState::shoot(Character& character, 
-    std::unique_ptr<Weapon> weapon, float time) {
+std::unique_ptr<State> IdleState::update(float time) { return nullptr; }
+
+std::unique_ptr<State> IdleState::shoot(Character& character, std::shared_ptr<Weapon> weapon,
+                                        float time) {
     if (weapon->isEmpty() || !weapon->shootTime(time)) {
         return nullptr;
     }
     return std::make_unique<ShootingState>(character, weapon, time);
 }
 
-std::unique_ptr<State> IdleState::move(Character& character, Move direction, float time) {
-    return std::make_unique<MoveState>(character, direction, time);
+std::unique_ptr<State> IdleState::move(Character& character, Direction direction, float time) {
+    return std::make_unique<MovingState>(character, direction, time);
 }
 
 // std::unique_ptr<State> IdleState::sprint(Character& character, float time) {
 //     character.sprint(time);
-//     return std::unique_ptr<MoveState>(character, direction, time)(character.getDir());
+//     return std::unique_ptr<MovingState>(character, direction, time)(character.getDir());
 // }
 
-std::unique_ptr<State> IdleState::reload(std::unique_ptr<Weapon> weapon, float time) {
+std::unique_ptr<State> IdleState::reload(std::shared_ptr<Weapon> weapon, float time) {
 
     return nullptr;
 }
@@ -49,10 +47,7 @@ std::unique_ptr<State> IdleState::die(Character& character, float time) {
     return std::make_unique<DeadState>(time);
 }
 
-std::unique_ptr<State> IdleState::revive(Character& character, float time) {
-
-    return nullptr;
-}
+std::unique_ptr<State> IdleState::revive(Character& character, float time) { return nullptr; }
 
 // std::unique_ptr<State> IdleState::jump(Character& character, float time) {
 //     character.jump(time);
@@ -67,6 +62,4 @@ std::unique_ptr<State> IdleState::becomeIntoxicated(Character& character, float 
     return std::make_unique<IntoxicatedState>(duration);
 }
 
-std::unique_ptr<State> IdleState::stopAction() {
-    return nullptr;
-}
+std::unique_ptr<State> IdleState::stopAction() { return nullptr; }
