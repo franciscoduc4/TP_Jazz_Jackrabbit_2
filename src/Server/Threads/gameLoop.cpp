@@ -23,44 +23,23 @@ GameLoopThread::GameLoopThread(int32_t gameId, std::string gameName, int32_t pla
 
 void GameLoopThread::run() {
     auto lastTime = std::chrono::high_resolution_clock::now();
+
     while (keepRunning) {
         auto currentTime = std::chrono::high_resolution_clock::now();
         std::chrono::duration<double> deltaTime = currentTime - lastTime;
 
-        size_t processedCommands = 0;
-        double totalProcessingTime = 0.0;
+        processCommands(deltaTime.count());
 
-        // Procesamos los comandos
-        for (size_t i = 0; i < commandsToProcess; ++i) {
-            std::unique_ptr<CommandDTO> command;
-            if (recvQueue->try_pop(command)) {
-                auto commandStartTime = std::chrono::high_resolution_clock::now();
-                game.handleCommand(std::move(command), keepRunning, deltaTime.count());
-                auto commandEndTime = std::chrono::high_resolution_clock::now();
-                std::chrono::duration<double> commandDuration = commandEndTime - commandStartTime;
-                totalProcessingTime += commandDuration.count();
-                processedCommands++;
-            } else {
-                break;
-            }
-        }
+        game.update(deltaTime.count());
 
-        game.update(totalProcessingTime);
         std::unique_ptr<GameDTO> gameDTO = game.getGameDTO();
         queueMonitor.broadcast(gameDTO);
 
-        // Ajustamos los commandsToProcess dependiendo del tiempo que tardamos en procesar el batch
-        // actual
         auto processingEndTime = std::chrono::high_resolution_clock::now();
         std::chrono::duration<double> processingDuration = processingEndTime - currentTime;
 
-        if (processingDuration.count() < frameRate) {
-            commandsToProcess++;
-        } else if (processingDuration.count() > frameRate && commandsToProcess > 1) {
-            commandsToProcess--;
-        }
+        adjustCommandsToProcess(processingDuration, frameRate);
 
-        // Hacemos sleep para mantener el frame rate
         std::chrono::duration<double> frameDuration(frameRate);
         auto sleepTime = frameDuration - processingDuration;
         if (sleepTime > std::chrono::duration<double>(0)) {
@@ -69,6 +48,39 @@ void GameLoopThread::run() {
 
         lastTime = std::chrono::high_resolution_clock::now();
     }
+}
+
+void GameLoopThread::processCommands(double deltaTime) {
+    size_t processedCommands = 0;
+    for (size_t i = 0; i < commandsToProcess; ++i) {
+        std::unique_ptr<CommandDTO> command;
+        if (recvQueue->try_pop(command)) {
+            game.handleCommand(std::move(command), keepRunning, deltaTime);
+            processedCommands++;
+        } else {
+            break;
+        }
+    }
+}
+
+void GameLoopThread::adjustCommandsToProcess(std::chrono::duration<double> processingDuration,
+                                             double frameRate) {
+    if (processingDuration.count() < frameRate) {
+        if (exponentialIncrease) {
+            commandsToProcess *= 2;
+            if (commandsToProcess >= exponentialThreshold) {
+                exponentialIncrease = false;
+            }
+        } else {
+            commandsToProcess++;
+        }
+    } else if (processingDuration.count() > frameRate) {
+        commandsToProcess /= 2;
+        if (commandsToProcess < exponentialThreshold) {
+            exponentialIncrease = true;
+        }
+    }
+    commandsToProcess = std::max(size_t(1), commandsToProcess);
 }
 
 std::string GameLoopThread::getGameName() { return gameName; }

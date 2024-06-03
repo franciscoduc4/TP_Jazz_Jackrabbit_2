@@ -20,6 +20,8 @@ private:
     QueueMonitor<std::unique_ptr<GameDTO>> queueMonitor;
     int32_t gameId;
     std::string gameName;
+    bool exponentialIncrease = true;
+    const size_t exponentialThreshold = 100;
     std::atomic<bool> keepRunning;
     std::shared_ptr<Queue<std::unique_ptr<CommandDTO>>> recvQueue;
     uint8_t maxPlayers;
@@ -39,6 +41,9 @@ public:
     std::string getGameName();
     void stop();
     bool isFull() const;
+    void processCommands(double deltaTime);
+    void adjustCommandsToProcess(std::chrono::duration<double> processingDuration,
+                                 double frameRate);
 };
 
 #endif  // GAMELOOP_THREAD_H_
