@@ -7,7 +7,6 @@
 #include <utility>
 
 #include "../../../Common/Types/entity.h"
-#include "../config.h"
 
 class Weapon;
 class Character;

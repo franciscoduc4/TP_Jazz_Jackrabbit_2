@@ -12,21 +12,22 @@
 #include "states/jumping.h"
 #include "states/shooting.h"
 #include "states/spazSpecialAttack.h"
-
 #include "gameMap.h"
-#define CONFIG Configuration::getInstance()
+
+#include "../../Common/Config/ServerConfig.h"
+#define CONFIG ServerConfig::getInstance()
 
 Character::Character(GameMap& map, int16_t x, int16_t y, int16_t characterId, CharacterType type):
         map(map),
-        x(0),
-        y(0),
+        x(CONFIG->getCharacterInitialX()),
+        y(CONFIG->getCharacterInitialY()),
         characterId(0),
-        health(100),
-        initialHealth(100),
+        health(CONFIG->getCharacterInitialHealth()),
+        initialHealth(CONFIG->getCharacterInitialHealth()),
         dir(Direction::RIGHT),
-        maxMoves(5),
+        maxMoves(CONFIG->getCharacterMaxMoves()),
         timesRevived(0),
-        maxRevived(3),
+        maxRevived(CONFIG->getCharacterMaxRevived()),
         currentWeapon(std::make_unique<Blaster>()),
         state(std::make_unique<IdleState>()) {}
 
@@ -213,3 +214,4 @@ int16_t Character::getMatrixY() const { return y / maxMoves; }
 int16_t Character::getY() const { return y; }
 bool Character::characIsIntoxicated() const { return isIntoxicated; }
 float Character::getIntoxicatedTime() const { return intoxicatedTime; }
+

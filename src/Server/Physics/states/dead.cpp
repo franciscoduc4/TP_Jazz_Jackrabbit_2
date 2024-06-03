@@ -3,9 +3,11 @@
 #include <utility>
 
 #include "idle.h"
+#include "../../../Common/Config/ServerConfig.h"
+#define CONFIG ServerConfig::getInstance()
 
 DeadState::DeadState(float deathTime):
-        startTime(deathTime), reviveTime(3) {  // CONFIG.getReviveTime()
+        startTime(deathTime), reviveTime(CONFIG->getCharacterReviveTime()) {  
     characterState = CharacterStateEntity::DEAD;
 }
 

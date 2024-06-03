@@ -1,2 +1,68 @@
 # Log File
 LOG_FILE: "logs/server.log"
+
+# Game
+GAME:
+  MAX_MOVES: 5
+  MAX_REVIVED: 3
+
+# Character
+CHARACTER:
+  INITIAL_X: 0
+  INITIAL_Y: 0
+  INITIAL_HEALTH: 100
+  MAX_MOVES: 5
+  MAX_REVIVED: 3
+  DAMAGE_TIME: 1
+  REVIVE_TIME: 1
+  MAX_MOVES_PER_CELL: 3
+
+# Weapon
+WEAPON:
+  BLASTER:
+    BULLETS: 30
+    DAMAGE: 10
+    FIRE_RATE: 0.5
+  BOUNCER:
+    BULLETS: 25
+    DAMAGE: 20
+    FIRE_RATE: 0.75
+  FREEZER:
+    BULLETS: 20
+    DAMAGE: 15
+    FIRE_RATE: 1.0
+  RFMISSILE:
+    BULLETS: 10
+    DAMAGE: 30
+    FIRE_RATE: 1.5
+
+# Obstacle
+OBSTACLE:
+  MOVES: 2
+
+# Game Map
+GAME_MAP:
+  SIZE_X: 100  
+  SIZE_Y: 100
+
+# Enemy
+ENEMY:
+  WALKING_ENEMY:
+    INITIAL_X: 0
+    INITIAL_Y: 0
+    INITIAL_HEALTH: 100
+    DAMAGE: 20
+    MAX_MOVES: 5
+    MAX_REVIVED: 3
+    DAMAGE_TIME: 1
+    REVIVE_TIME: 1
+    MAX_MOVES_PER_CELL: 3
+    HIT_DISTANCE: 1
+    HIT_DISTANCE_Y: 1
+    VIEW_DISTANCE: 5
+    VIEW_DISTANCE_HIT: 1
+    WALK_PROB: [1, 0, 1, 0, 0, 1, 0,1 , 0, 0]
+    FLY_PROB: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    JUMP_PROB: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    
+

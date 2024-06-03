@@ -19,3 +19,4 @@ std::shared_ptr<Character> Game::getCharacter(int32_t playerId) { return charact
 
 
 void Game::update(float time) { gameMap.update(time); }
+
