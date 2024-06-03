@@ -4,9 +4,9 @@
 #include <string>
 #include <vector>
 
+#include "../logger.h"
 #include <yaml-cpp/yaml.h>
 
-#include "logger.h"
 
 class ClientConfig {
 private:
