@@ -16,25 +16,49 @@
 #include "../src/Server/Threads/receiver.h"
 
 // Mock socket class to simulate communication
-class MockSocket : public Socket {
+class MockSocket {
 public:
+    MockSocket() = default;
+
     std::vector<char> buffer;
 
-    void sendall(const void* data, size_t len, bool* was_closed)  {
+    void sendall(const void* data, size_t len, bool* was_closed) {
         buffer.insert(buffer.end(), (char*)data, (char*)data + len);
         *was_closed = false;
     }
 
-    void recvall(void* data, size_t len, bool* was_closed)  {
+    void recvall(void* data, size_t len, bool* was_closed) {
         std::copy(buffer.begin(), buffer.begin() + len, (char*)data);
         buffer.erase(buffer.begin(), buffer.begin() + len);
         *was_closed = false;
     }
 };
 
+// Wrapper class to use MockSocket with Deserializer and Serializer
+class MockSocketWrapper : public Socket {
+public:
+    explicit MockSocketWrapper(MockSocket& mockSocket) : Socket(0), mockSocket(mockSocket) {}
+
+    void sendall(const void* data, size_t len, bool* was_closed)  {
+        mockSocket.sendall(data, len, was_closed);
+    }
+
+    void recvall(void* data, size_t len, bool* was_closed)  {
+        mockSocket.recvall(data, len, was_closed);
+    }
+
+    std::vector<char>& getBuffer() {
+        return mockSocket.buffer;
+    }
+
+private:
+    MockSocket& mockSocket;
+};
+
 // Test to check if the server correctly handles a client creating a game
 TEST(LobbyProtocolTest, ServerHandlesCreateGame) {
-    auto socket = std::make_shared<MockSocket>();
+    MockSocket mockSocket;
+    auto socket = std::make_shared<MockSocketWrapper>(mockSocket);
     Deserializer deserializer(socket);
 
     uint8_t episode = static_cast<uint8_t>(Episode::FORMERLY_PRINCE);
@@ -46,13 +70,13 @@ TEST(LobbyProtocolTest, ServerHandlesCreateGame) {
     bool wasClosed = false;
 
     // Simular recibir el comando
-    socket->buffer.push_back(static_cast<char>(Command::CREATE_GAME));
-    socket->buffer.push_back(static_cast<char>(episode));
-    socket->buffer.push_back(static_cast<char>(gameMode));
-    socket->buffer.push_back(static_cast<char>(maxPlayers));
-    socket->buffer.push_back(static_cast<char>(character));
-    socket->buffer.push_back(static_cast<char>(lengthName));
-    socket->buffer.insert(socket->buffer.end(), name.begin(), name.end());
+    socket->getBuffer().push_back(static_cast<char>(Command::CREATE_GAME));
+    socket->getBuffer().push_back(static_cast<char>(episode));
+    socket->getBuffer().push_back(static_cast<char>(gameMode));
+    socket->getBuffer().push_back(static_cast<char>(maxPlayers));
+    socket->getBuffer().push_back(static_cast<char>(character));
+    socket->getBuffer().push_back(static_cast<char>(lengthName));
+    socket->getBuffer().insert(socket->getBuffer().end(), name.begin(), name.end());
 
     // Deserializar el comando
     int32_t playerId = 1;
@@ -68,7 +92,8 @@ TEST(LobbyProtocolTest, ServerHandlesCreateGame) {
 
 // Test to check if the server correctly handles a client joining a game
 TEST(LobbyProtocolTest, ServerHandlesJoinGame) {
-    auto socket = std::make_shared<MockSocket>();
+    MockSocket mockSocket;
+    auto socket = std::make_shared<MockSocketWrapper>(mockSocket);
     Deserializer deserializer(socket);
 
     int32_t gameId = 1234;
@@ -76,11 +101,12 @@ TEST(LobbyProtocolTest, ServerHandlesJoinGame) {
     bool wasClosed = false;
 
     // Simular recibir el comando
-    socket->buffer.push_back(static_cast<char>(Command::JOIN_GAME));
+    socket->getBuffer().push_back(static_cast<char>(Command::JOIN_GAME));
     int32_t gameIdNetworkOrder = htonl(gameId);
-    socket->buffer.insert(socket->buffer.end(), reinterpret_cast<char*>(&gameIdNetworkOrder), 
+    socket->getBuffer().insert(socket->getBuffer().end(), 
+        reinterpret_cast<char*>(&gameIdNetworkOrder), 
     reinterpret_cast<char*>(&gameIdNetworkOrder) + sizeof(gameIdNetworkOrder));
-    socket->buffer.push_back(static_cast<char>(character));
+    socket->getBuffer().push_back(static_cast<char>(character));
 
     // Deserializar el comando
     int32_t playerId = 1;
@@ -93,13 +119,14 @@ TEST(LobbyProtocolTest, ServerHandlesJoinGame) {
 
 // Test to check if the server correctly handles a client requesting the games list
 TEST(LobbyProtocolTest, ServerHandlesGamesList) {
-    auto socket = std::make_shared<MockSocket>();
+    MockSocket mockSocket;
+    auto socket = std::make_shared<MockSocketWrapper>(mockSocket);
     Deserializer deserializer(socket);
 
     bool wasClosed = false;
 
     // Simular recibir el comando
-    socket->buffer.push_back(static_cast<char>(Command::GAMES_LIST));
+    socket->getBuffer().push_back(static_cast<char>(Command::GAMES_LIST));
 
     // Deserializar el comando
     int32_t playerId = 1;
