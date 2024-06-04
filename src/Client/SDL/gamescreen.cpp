@@ -1,26 +1,36 @@
 #include "gamescreen.h"
+#include "projectile.h"
+#include "../Common/sprite.h"
 
-#include <iostream>
+#include "../Common/queue.h"
+#include "../Common/DTO/game.h"
+#include "../Common/DTO/player.h"
+#include "../Common/DTO/enemy.h"
+#include "../Common/Types/command.h"
+#include "../Common/Types/direction.h"
+
+#include "../Client/client.h"
+
+
+#include <SDL2pp/SDL2pp.hh>
+
 #include <iterator>
 #include <map>
 #include <vector>
 
-#include <SDL2pp/SDL2pp.hh>
+#include <iostream>
 
-#include "../../Common/sprite.h"
 
-#include "projectile.h"
+GameScreen::GameScreen(int character, Queue<GameDTO>& cola): pj(character), colaDto(cola), turtle(0, 0, 200), schartz_guard(1, 0, 400), yellowM(2, 0, 100), points(0), state(true) {}
 
-#include "../../Common/sprite.h"
 
-#include "projectile.h"
-
-GameScreen::GameScreen(int character, std::string map):
-        pj(character), turtle(0, 0, 200), schartz_guard(1, 0, 400), yellowM(2, 0, 100), points(0) {}
+//GameScreen::GameScreen(Client& player): client(player) {}
 
 void GameScreen::run() {
-    SDL2pp::SDL sdl(SDL_INIT_VIDEO);
-    SDL2pp::SDLTTF ttf;
+	/*
+	SDL2pp::SDL sdl(SDL_INIT_VIDEO);
+	SDL2pp::SDLTTF ttf;
+	
 	int window_width= 800;
 	int window_height = 500;
 	
@@ -30,13 +40,163 @@ void GameScreen::run() {
 		
 	SDL2pp::Texture background(renderer, "../assets/Tilesets/BeachWorld-1.png"); //FONDO DE PRUEBA
  	
- 	SDL2pp::Surface pjSurface(this->pj.getPath());
+ 	Player pj(0);
+ 	SDL2pp::Surface pjSurface(pj.getPath());
  	pjSurface.SetColorKey(true, SDL_MapRGB(pjSurface.Get()->format, 44, 102, 150));
  	SDL2pp::Texture jazz_sprite(renderer, pjSurface);	
 	
-	SDL2pp::Surface turtleSurface(this->turtle.getPath());
+	Enemy turtle(0, 0, 200);
+	SDL2pp::Surface turtleSurface(turtle.getPath());
 	turtleSurface.SetColorKey(true, SDL_MapRGB(turtleSurface.Get()->format, 0, 128, 255));
 	SDL2pp::Texture turtle_enemy(renderer, turtleSurface);
+	
+	Points points(0);
+	SDL2pp::Surface itemsSurface("../assets/Miscellaneous/Items&Objects.png");
+	itemsSurface.SetColorKey(true, SDL_MapRGB(itemsSurface.Get()->format, 0, 128, 255));
+	SDL2pp::Texture items(renderer, itemsSurface);
+	/*
+	SDL2pp::Surface schSurface(this->schartz_guard.getPath());
+	schSurface.SetColorKey(true, SDL_MapRGB(schSurface.Get()->format, 0, 128, 255));
+	SDL2pp::Texture schartzenguard(renderer, schSurface);
+	
+	SDL2pp::Surface yellowSurface(this->yellowM.getPath());
+	yellowSurface.SetColorKey(true, SDL_MapRGB(yellowSurface.Get()->format, 0, 128, 255));
+	SDL2pp::Texture yellowMonster(renderer, yellowSurface);
+	
+	
+	SDL2pp::Surface projectileSurface("../assets/Miscellaneous/SFX.png");
+	projectileSurface.SetColorKey(true, SDL_MapRGB(projectileSurface.Get()->format, 0, 128, 255));
+	SDL2pp::Texture projectile(renderer, projectileSurface);
+	
+	
+	SDL2pp::Surface itemsSurface("../assets/Miscellaneous/Items&Objects.png");
+	itemsSurface.SetColorKey(true, SDL_MapRGB(itemsSurface.Get()->format, 0, 128, 255));
+	SDL2pp::Texture items(renderer, itemsSurface);
+	
+	
+	bool gameFinished = false;
+	
+	int pixel_x_screen = 0;
+	int pixel_y_screen = 0;
+	int pixel_width_screen = 200;
+	int pixel_height_screen = 200;
+	
+	
+	int pos_x;
+	int pos_y;
+	
+	int walk_mov = 0;
+	int count_walk = 0;
+	
+	std::list<RectangularSprite>::iterator it = pj.img_coords(walk_mov, count_walk); 
+	int pixel_x = it->getX();
+	int pixel_y = it->getY();
+	int pixel_width = it->getWidth();
+	int pixel_height = it->getHeight();
+	int flip = 0;
+	
+	while (!gameFinished) {
+		std::cout << "PASA POR EL PRINCIPIO DEL LOOP\n";
+		
+		SDL_Event event;
+		while (SDL_PollEvent(&event)) {
+			if (event.type == SDL_QUIT) {
+				this->state = false;
+				std::cout << "TERMINO EL LOOP\n";
+				return;
+			} else if (event.type == SDL_KEYDOWN) {
+				switch (event.key.keysym.sym) {
+					case SDLK_RIGHT: 
+						std::vector<uint8_t> parameters(static_cast<uint8_t>(Direction::RIGHT));
+						Command move = Command::MOVE;
+						this->client.sendMsg(move, parameters);
+						break;
+				}
+			}
+		}
+		renderer.Clear();
+
+		renderer.Copy(background, SDL2pp::Rect(pixel_x_screen, pixel_y_screen, pixel_width_screen, pixel_height_screen), SDL2pp::Rect(0, 0, window_width, window_height));
+
+		
+		GameDTO snapshot = dynamic_cast<GameDTO>(this->client.getServerMsg());
+		std::cout << "POPEO DE LA COLA\n";
+		
+		std::vector<PlayerDTO> players = snapshot.getPlayers();
+		for (auto p: players) {
+			pos_x = p.getX();
+			pos_y = p.getY();
+			
+			SDL2pp::Rect player_rect = SDL2pp::Rect(pos_x, pos_y, 50, 80);
+			renderer.Copy(jazz_sprite, SDL2pp::Rect(pixel_x, pixel_y, pixel_width, pixel_height), player_rect, 0.0, SDL2pp::NullOpt, flip);
+		}			
+		
+		
+		std::list<RectangularSprite>::iterator it2 = turtle.enemy_img_coords(walk_mov, count_walk); 
+		int pixel_enemy_x = it2->getX();
+		int pixel_enemy_y = it2->getY();
+		int pixel_enemy_width = it2->getWidth();
+		int pixel_enemy_height = it2->getHeight();
+
+		std::vector<EnemyDTO> enemies = snapshot.getEnemies();
+		for (auto e : enemies) {
+			int enemy_pos_x = e.getX();
+			int enemy_pos_y = e.getY();	
+
+			renderer.Copy(turtle_enemy, SDL2pp::Rect(pixel_enemy_x, pixel_enemy_y, pixel_enemy_width, pixel_enemy_height), SDL2pp::Rect(enemy_pos_x, enemy_pos_y, 50, 50), 0.0, SDL2pp::NullOpt, flip);	
+			
+		}
+	
+		std::list<RectangularSprite>::iterator it3 = points.actual_sprite_coord(0); 
+		int pixel_item_x = it3->getX();
+		int pixel_item_y = it3->getY();
+		int pixel_item_width = it3->getWidth();
+		int pixel_item_height = it3->getHeight();
+		std::vector<ItemDTO> itemsSnapshot = snapshot.getItems();
+		for (auto item : itemsSnapshot) {
+			int item_pos_x = item.getX();
+			int item_pos_y = item.getY();	
+			//int item_type = item.getType();
+			renderer.Copy(items, SDL2pp::Rect(pixel_item_x, pixel_item_y, pixel_item_width, pixel_item_height), SDL2pp::Rect(item_pos_x, item_pos_y, 20, 20), 0.0, SDL2pp::NullOpt, flip);	
+			
+		}
+		
+		renderer.Present();
+		
+		SDL_Delay(70);
+		/*
+		std::vector<BulletDTO> bullets = snapshot.getBullets();
+		std::vector<ItemDTO> items = snapshot.getItems();
+		std::vector<WeaponDTO> weapons = snapshot.getWeapons();
+		std::vector<TileDTO> tiles = snapshot.getTiles();
+		*/
+	}
+	
+	*/
+
+	SDL2pp::SDL sdl(SDL_INIT_VIDEO);
+	SDL2pp::SDLTTF ttf;
+	
+	int window_width= 800;
+	int window_height = 500;
+	
+	SDL2pp::Window window("GAME", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, window_width, window_height, SDL_WINDOW_RESIZABLE);
+
+	SDL2pp::Renderer renderer(window, -1, SDL_RENDERER_ACCELERATED);
+		
+	SDL2pp::Texture background(renderer, "../assets/Tilesets/BeachWorld-1.png"); //FONDO DE PRUEBA
+ 	
+ 	SDL2pp::Surface pjSurface(pj.getPath());
+ 	pjSurface.SetColorKey(true, SDL_MapRGB(pjSurface.Get()->format, 44, 102, 150));
+ 	SDL2pp::Texture jazz_sprite(renderer, pjSurface);	
+	
+	SDL2pp::Surface turtleSurface(turtle.getPath());
+	turtleSurface.SetColorKey(true, SDL_MapRGB(turtleSurface.Get()->format, 0, 128, 255));
+	SDL2pp::Texture turtle_enemy(renderer, turtleSurface);
+	
+	SDL2pp::Surface itemsSurface("../assets/Miscellaneous/Items&Objects.png");
+	itemsSurface.SetColorKey(true, SDL_MapRGB(itemsSurface.Get()->format, 0, 128, 255));
+	SDL2pp::Texture items(renderer, itemsSurface);
 	
 	SDL2pp::Surface schSurface(this->schartz_guard.getPath());
 	schSurface.SetColorKey(true, SDL_MapRGB(schSurface.Get()->format, 0, 128, 255));
@@ -57,22 +217,41 @@ void GameScreen::run() {
 	SDL2pp::Texture items(renderer, itemsSurface);
 	
 	
+	int walk_mov = 0;
+	int count_walk = 0;
 
-    SDL2pp::Renderer renderer(window, -1, SDL_RENDERER_ACCELERATED);
-    SDL2pp::Texture background(renderer, "../assets/Tilesets/BeachWorld-1.png");  // FONDO DE PRUEBA
+	int shoot_mov = 1;
+	int count_shoot = 0;
+	
+	int run_mov = 2;
+	int count_run = 0;
+	
+	int jump_mov = 3;
+	int count_jump = 0;
+	
+	int dash_mov = 4;
+	int count_dash = 0;
+	int dash_timer = 0;
+	
+	bool is_walking = false;
+	bool is_running = false;
+	bool is_shooting = false;
+	bool is_jumping = false;
+	bool is_dashing = false;
 
-    SDL2pp::Texture jazz_sprite(renderer, SDL2pp::Surface(this->pj.getPath()));
-    SDL2pp::Texture turtle_enemy(renderer, SDL2pp::Surface(this->turtle.getPath()));
-    SDL2pp::Texture schartzenguard(renderer, SDL2pp::Surface(this->schartz_guard.getPath()));
-    SDL2pp::Texture yellowMonster(renderer, SDL2pp::Surface(this->yellowM.getPath()));
-    SDL2pp::Texture projectile(renderer, "../assets/Miscellaneous/SFX.png");
-    SDL2pp::Texture items(renderer, "../assets/Miscellaneous/Items&Objects.png");
+		
+	int dir_x = 0;
+	int dir_y = 0;
+	int speed_run = 1;
+	
+	int pos_x = 0;
+	int pos_y = 0;
 
 	std::list<RectangularSprite>::iterator it = this->pj.img_coords(walk_mov, count_walk); 
-	int pixel_x = it->x;
-	int pixel_y = it->y;
-	int pixel_width = it->width;
-	int pixel_height = it->height;
+	int pixel_x = it->getX();
+	int pixel_y = it->getY();
+	int pixel_width = it->getWidth();
+	int pixel_height = it->getHeight();
 
 	
 	int flip = 0;
@@ -298,11 +477,16 @@ void GameScreen::run() {
 		
 		this->points.draw_points(renderer, items);
 		
+		
+		
 		renderer.Present();
 		
 		SDL_Delay(70);
 		
 	}
-	
 	return;
 }
+
+
+
+

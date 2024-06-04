@@ -1,12 +1,11 @@
-#include <list>
-#include <map>
-#include <string>
+#include "projectile.h"
+#include "../sprite.h"
 
 #include <SDL2pp/SDL2pp.hh>
 
-#include "../../Common/sprite.h"
-
-#include "projectile.h"
+#include <string>
+#include <map>
+#include <list>
 
 class Player {
 	std::string image_path;

@@ -1,12 +1,11 @@
-#include <list>
-#include <map>
-#include <string>
+#include "../sprite.h"
+#include "enemyweapon.h"
 
 #include <SDL2pp/SDL2pp.hh>
 
-#include "../../Common/sprite.h"
-
-#include "enemyweapon.h"
+#include <map>
+#include <string>
+#include <list>
 
 class Enemy {
 	std::string path;	

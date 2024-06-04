@@ -1,11 +1,10 @@
 #ifndef ENEMYWEAPON
 #define ENEMYWEAPON
 
-#include <list>
+#include "../sprite.h"
 
 #include <SDL2pp/SDL2pp.hh>
-
-#include "../../Common/sprite.h"
+#include <list>
 
 
 class EnemyWeapon {

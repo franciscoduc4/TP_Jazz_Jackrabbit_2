@@ -1,10 +1,8 @@
 #include "enemyweapon.h"
-
-#include <list>
+#include "../sprite.h"
 
 #include <SDL2pp/SDL2pp.hh>
-
-#include "../../Common/sprite.h"
+#include <list>
 
 enum weapon_type { NoneWeapon, MangualWeapon, BombWeapon };
 
@@ -41,29 +39,12 @@ EnemyWeapon::EnemyWeapon(int enemy_weapon) {
 }
 
 void EnemyWeapon::activate(int pos_x, int pos_y, int flip) {
-    if (this->speed != 0) {
-        this->x = pos_x;
-        this->y = pos_y;
-        this->flip = flip;
-        this->activated = true;
-    }
-}
-
-bool EnemyWeapon::draw_weapon(SDL2pp::Window& window, SDL2pp::Renderer& renderer, SDL2pp::Texture& weapon) {
-    if (this->activated) {
-        std::list<RectangularSprite>::iterator it = weapon_coords();
-        int weapon_pixel_x = it->getX();
-        int weapon_pixel_w = it->getWidth();
-        int weapon_pixel_y = it->getY();
-        int weapon_pixel_h = it->getHeight();
-
-        renderer.Copy(weapon,
-                      SDL2pp::Rect(weapon_pixel_x, weapon_pixel_y, weapon_pixel_w, weapon_pixel_h),
-                      SDL2pp::Rect(this->x, this->y, this->width, this->height), 0.0,
-                      SDL2pp::NullOpt, this->flip);
+	if (this->speed != 0) {
+		this->x = pos_x;
+		this->y = pos_y;
+		this->flip = flip;
+		this->activated = true;
 	}
-	return this->activated;
-
 }
 
 std::list<RectangularSprite>::iterator EnemyWeapon::weapon_coords() {
@@ -73,15 +54,29 @@ std::list<RectangularSprite>::iterator EnemyWeapon::weapon_coords() {
 		if (it == this->sprites.end()) {
 			it = this->sprites.begin();
 		}
-
-        if (this->x > 800 || this->x < 0) {  // WIDTH DE PANTALLA HARDCODEADO
-            this->activated = false;
-            this->x = -1;
-            this->y = -1;
-        } else {
-            this->x += (this->flip == 0) ? this->speed : -this->speed;
-        }
-        this->count++;
-    }
+	}
 	return it;
+}
+
+bool EnemyWeapon::draw_weapon(SDL2pp::Window& window, SDL2pp::Renderer& renderer, SDL2pp::Texture& weapon) {
+	if (this->activated) {
+		std::list<RectangularSprite>::iterator it = weapon_coords(); 
+		int weapon_pixel_x = it->getX();
+		int weapon_pixel_w = it->getWidth();
+		int weapon_pixel_y = it->getY();
+		int weapon_pixel_h = it->getHeight();
+
+		renderer.Copy(weapon, SDL2pp::Rect(weapon_pixel_x, weapon_pixel_y, weapon_pixel_w, weapon_pixel_h), SDL2pp::Rect(this->x, this->y, this->width, this->height), 0.0, SDL2pp::NullOpt, this->flip);
+		
+		if (this->x > window.GetWidth() || this->x < 0) {
+			this->activated = false;
+			this->x = -1;
+			this->y = -1;
+		} else {
+			this->x += (this->flip == 0) ? this->speed : -this->speed;
+		}
+		this->count++;
+	}
+	return this->activated;
+
 }

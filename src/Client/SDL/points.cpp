@@ -1,4 +1,5 @@
 #include "points.h"
+#include "../sprite.h"
 
 #include <SDL2pp/SDL2pp.hh>
 #include <list>
@@ -21,7 +22,7 @@ Points::Points(int level_type) {
 	this->sprites[RedGem].push_back(RectangularSprite(349, 1240, 30, 30));
 	
 	this->sprites[GoldCoin].push_back(RectangularSprite(481, 1218, 27, 27));
-	this->sprites[GoldCoin].push_back(RectangularSprite(508, 1218, 35, 27));
+	this->sprites[GoldCoin].push_back(RectangularSprite(508, 1218, 25, 27));
 	this->sprites[GoldCoin].push_back(RectangularSprite(533, 1218, 23, 27));
 	this->sprites[GoldCoin].push_back(RectangularSprite(556, 1218, 19, 27));
 	this->sprites[GoldCoin].push_back(RectangularSprite(575, 1218, 15, 27));
@@ -42,7 +43,7 @@ Points::Points(int level_type) {
 	this->sprites[GoldCoin].push_back(RectangularSprite(859, 1218, 23, 27));
 	
 	this->sprites[SilverCoin].push_back(RectangularSprite(482, 1266, 27, 26));
-	this->sprites[SilverCoin].push_back(RectangularSprite(509, 1266, 33, 26));
+	this->sprites[SilverCoin].push_back(RectangularSprite(509, 1266, 25, 26));
 	this->sprites[SilverCoin].push_back(RectangularSprite(532, 1266, 23, 26));
 	this->sprites[SilverCoin].push_back(RectangularSprite(555, 1266, 18, 26));
 	this->sprites[SilverCoin].push_back(RectangularSprite(573, 1266, 14, 26));
@@ -122,7 +123,7 @@ void Points::draw_points(SDL2pp::Renderer& renderer, SDL2pp::Texture& points) {
 	std::list<RectangularSprite>::iterator it;
 	for (int i = 0; i < this->cant_redgems; i++) {
 		it = actual_sprite_coord(RedGem);
-		renderer.Copy(points, SDL2pp::Rect(it->x, it->y, it->width, it->height), 
+		renderer.Copy(points, SDL2pp::Rect(it->getX(), it->getY(), it->getWidth(), it->getHeight()), 
 				SDL2pp::Rect(this->redgems[i][index_x], this->redgems[i][index_y], this->draw_width, this->draw_height), 0.0, SDL2pp::NullOpt, 0);
 	}
 	this->counts[RedGem]++;
@@ -130,7 +131,7 @@ void Points::draw_points(SDL2pp::Renderer& renderer, SDL2pp::Texture& points) {
 
 	for (int i = 0; i < this->cant_goldcoin; i++) {
 		it = actual_sprite_coord(GoldCoin);
-		renderer.Copy(points, SDL2pp::Rect(it->x, it->y, it->width, it->height), 
+		renderer.Copy(points, SDL2pp::Rect(it->getX(), it->getY(), it->getWidth(), it->getHeight()), 
 				SDL2pp::Rect(this->goldcoin[i][index_x], this->goldcoin[i][index_y], this->draw_width, this->draw_height), 0.0, SDL2pp::NullOpt, 0);
 	}
 	this->counts[GoldCoin]++;	
@@ -138,7 +139,7 @@ void Points::draw_points(SDL2pp::Renderer& renderer, SDL2pp::Texture& points) {
 	
 	for (int i = 0; i < this->cant_silvercoin; i++) {
 		it = actual_sprite_coord(SilverCoin);
-		renderer.Copy(points, SDL2pp::Rect(it->x, it->y, it->width, it->height), 
+		renderer.Copy(points, SDL2pp::Rect(it->getX(), it->getY(), it->getWidth(), it->getHeight()), 
 				SDL2pp::Rect(this->silvercoin[i][index_x], this->silvercoin[i][index_y], this->draw_width, this->draw_height), 0.0, SDL2pp::NullOpt, 0);
 	}	
 	this->counts[SilverCoin]++;		

@@ -1,16 +1,14 @@
 #include "player.h"
+#include "../sprite.h"
+#include "projectile.h"
 
-#include <iostream>
-#include <iterator>
-#include <map>
 #include <string>
+#include <map>
+#include <iterator>
 #include <vector>
-
 #include <SDL2pp/SDL2pp.hh>
 
-#include "../../Common/sprite.h"
-
-#include "projectile.h"
+#include <iostream>
 
 enum character_type { Jazz, Lori, Spaz };
 enum type_mov { Walk, Shoot, Run, Jump, Dash };
@@ -135,7 +133,9 @@ Player::Player(int character) {
 	}
 }
 
-std::string Player::getPath() { return this->image_path; }
+std::string Player::getPath() {
+	return this->image_path;
+}
 
 
 std::list<RectangularSprite>::iterator Player::img_coords(int mov_type, int num_mov) {
@@ -151,17 +151,18 @@ std::list<RectangularSprite>::iterator Player::img_coords(int mov_type, int num_
 
 
 void Player::shoot(int x, int y, int flip) {
-    Projectile p(4, x, y, flip);
-    this->projectiles.push_back(p);
+	
+	Projectile p(0, x, y, flip);
+	this->projectiles.push_back(p);
 }
 
 
-void Player::draw_projectiles(SDL2pp::Renderer& renderer, SDL2pp::Texture& projectile) {
-    std::list<Projectile>::iterator it = this->projectiles.begin();
-
-    while (it != this->projectiles.end()) {
-        if (!it->draw_projectile(renderer, projectile)) {
-            it = this->projectiles.erase(it);
+void Player::draw_projectiles(SDL2pp::Window& window, SDL2pp::Renderer& renderer, SDL2pp::Texture& projectile) {
+	std::list<Projectile>::iterator it = this->projectiles.begin();
+	
+	while (it != this->projectiles.end()) {
+		if (!it->draw_projectile(window, renderer, projectile)) {
+			it = this->projectiles.erase(it);
 		} else {
 			++it;
 		}

@@ -1,11 +1,11 @@
 #include "enemy.h"
-
-#include "../../Common/sprite.h"
-
+#include "../sprite.h"
 #include "enemyweapon.h"
 
 enum type_enemies { Turtle, Schartzen, YellowMons };
 enum actions { Walk, Attack, Death };
+
+/*Solo que caminen*/
 
 Enemy::Enemy(int enemy, int x, int y): pos_x(x), pos_y(y), weapon(enemy) {
 	this->count = 0;
@@ -142,7 +142,9 @@ Enemy::Enemy(int enemy, int x, int y): pos_x(x), pos_y(y), weapon(enemy) {
 	}
 }
 
-std::string Enemy::getPath() { return this->path; }
+std::string Enemy::getPath() {
+	return this->path;
+}
 
 
 std::list<RectangularSprite>::iterator Enemy::enemy_img_coords(int mov_type, int num_mov) {
