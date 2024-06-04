@@ -1,7 +1,7 @@
 #ifndef TILE_DTO_H_
 #define TILE_DTO_H_
 
-#include "../sprite.h"
+#include "../../Common/sprite.h"
 
 #include "gameElement.h"
 

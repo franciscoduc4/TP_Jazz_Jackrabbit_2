@@ -3,8 +3,6 @@
 
 #include <memory>
 
-#include "../sprite.h"
-
 #include "bullet.h"
 #include "gameElement.h"
 
@@ -17,15 +15,12 @@ private:
     BulletDTO bullet;
     int damage;
     int ammo;
-    Sprite currentSprite;
 
 public:
-    WeaponDTO(uint8_t weaponId, uint16_t x, uint16_t y, int damage, int ammo,
-              const Sprite& currentSprite);
+    WeaponDTO(uint8_t weaponId, uint16_t x, uint16_t y, int damage, int ammo);
     uint16_t getX() const;
     uint16_t getY() const;
     uint8_t getWeaponId() const;
-    Sprite getSprite() const;
     int getShootSpeed() const;
     std::unique_ptr<BulletDTO> getBullet() const;
     int getDamage() const;

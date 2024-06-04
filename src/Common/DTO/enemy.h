@@ -3,8 +3,6 @@
 
 #include <cstdint>
 
-#include "../sprite.h"
-
 #include "gameElement.h"
 
 class EnemyDTO: public GameElementDTO {
@@ -17,12 +15,10 @@ private:
     int speed;
     bool enemyIsAlive;
     int respawnTime;
-    Sprite currentSprite;
 
 
 public:
-    EnemyDTO(uint16_t x, uint16_t y, uint32_t enemy_id, int health, int damage, int speed,
-             const Sprite& currentSprite);
+    EnemyDTO(uint16_t x, uint16_t y, uint32_t enemy_id, int health, int damage, int speed);
     uint32_t getEnemyId() const;
     uint16_t getX() const;
     uint16_t getY() const;
