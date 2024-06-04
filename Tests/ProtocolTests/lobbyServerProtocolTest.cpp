@@ -4,19 +4,19 @@
 #include <arpa/inet.h>
 #include <gtest/gtest.h>
 
-#include "../Common/DTO/command.h"
-#include "../Common/DTO/createGame.h"
-#include "../Common/DTO/gamesList.h"
-#include "../Common/DTO/joinGame.h"
-#include "../Common/Types/character.h"
-#include "../Common/Types/command.h"
-#include "../Common/Types/episode.h"
-#include "../Common/Types/gameMode.h"
-#include "../Common/Types/lobbyState.h"
-#include "../Common/socket.h"
-#include "../Server/Protocol/deserializer.h"
-#include "../Server/Protocol/serializer.h"
-#include "../Server/Threads/receiver.h"
+#include "../../Common/DTO/command.h"
+#include "../../Common/DTO/createGame.h"
+#include "../../Common/DTO/gamesList.h"
+#include "../../Common/DTO/joinGame.h"
+#include "../../Common/Types/character.h"
+#include "../../Common/Types/command.h"
+#include "../../Common/Types/episode.h"
+#include "../../Common/Types/gameMode.h"
+#include "../../Common/Types/lobbyState.h"
+#include "../../Common/socket.h"
+#include "../../Server/Protocol/deserializer.h"
+#include "../../Server/Protocol/serializer.h"
+#include "../../Server/Threads/receiver.h"
 
 TEST(lobbyServerProtocolTest, testSerializeCreateGame) {
     Serializer serializer;
