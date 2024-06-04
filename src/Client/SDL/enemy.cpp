@@ -128,15 +128,15 @@ Enemy::Enemy(int enemy, int x, int y): pos_x(x), pos_y(y), weapon(enemy) {
 			this->sprites[Attack].push_back(RectangularSprite(614, 75, 70, 78));			
 			this->sprites[Attack].push_back(RectangularSprite(695, 75, 46, 78));			
 
-			this->sprites[Death].push_back(RectangularSprite(917, 10, 33, 63));			
+			this->sprites[Death].push_back(RectangularSprite(917, 10, 33, 63));
 			this->sprites[Death].push_back(RectangularSprite(953, 10, 36, 63));
 			this->sprites[Death].push_back(RectangularSprite(990, 10, 35, 63));
 			this->sprites[Death].push_back(RectangularSprite(1030, 10, 35, 63));
 			this->sprites[Death].push_back(RectangularSprite(1030, 10, 35, 63));
-			this->sprites[Death].push_back(RectangularSprite(1030, 10, 35, 63));						
-			this->sprites[Death].push_back(RectangularSprite(1030, 10, 35, 63));
-			this->sprites[Death].push_back(RectangularSprite(1030, 10, 35, 63));		
-			
+            this->sprites[Death].push_back(RectangularSprite(1030, 10, 35, 63));
+            this->sprites[Death].push_back(RectangularSprite(1030, 10, 35, 63));
+            this->sprites[Death].push_back(RectangularSprite(1030, 10, 35, 63));
+
 			
 			break;
 	}

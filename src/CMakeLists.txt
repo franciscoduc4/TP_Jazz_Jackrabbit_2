@@ -33,15 +33,29 @@ set_target_properties(server
 )
 
 # Cliente (si se implementa más adelante)
-# file(GLOB_RECURSE CLIENT_SOURCES
-#     ${PROJECT_SOURCE_DIR}/src/Client/*.cpp
-#     ${PROJECT_SOURCE_DIR}/src/Client/*.h
-# )
-# add_executable(client ${CLIENT_SOURCES})
+file(GLOB_RECURSE CLIENT_SOURCES
+    ${PROJECT_SOURCE_DIR}/src/Client/*.cpp
+    ${PROJECT_SOURCE_DIR}/src/Client/*.h
+)
+add_executable(client ${CLIENT_SOURCES})
 
+target_link_libraries(client common Qt5::Widgets Qt5::Core SDL2 yaml-cpp fmt::fmt -pthread)
+target_include_directories(client PUBLIC ${PROJECT_SOURCE_DIR}/src/Common)
 
-# target_link_libraries(client common Qt5::Widgets Qt5::Core SDL2 yaml-cpp fmt::fmt -pthread)
-# target_include_directories(client PUBLIC ${PROJECT_SOURCE_DIR}/src/Common)
+set(UI_FILES
+        Client/Lobby/characterselection.ui
+        Client/Lobby/creategame.ui
+        Client/Lobby/gamelist.ui
+        Client/Lobby/lobby.ui
+        Client/Lobby/sceneselection.ui
+        Client/Lobby/waitingroom.ui
+        Client/Lobby/welcome.ui
+)
+
+qt5_wrap_ui(UIS_HEADERS ${UI_FILES})
+
+# Then link the generated headers to your target
+target_include_directories(client PUBLIC ${CMAKE_CURRENT_BINARY_DIR})
 #
 # set_target_properties(client
 #     PROPERTIES
