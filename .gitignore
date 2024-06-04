@@ -30,8 +30,6 @@
 *.exe
 *.out
 *.app
-client
-server
 
 # Mac
 .DS_Store
@@ -47,9 +45,22 @@ server
 .vscode
 .vscode/*
 
+# CLion
+.idea
+.idea/*
+
 #build
 build
 build/*
 
-#liveshare
-.vsls.json
+# QT Debug
+build-Lobby-Qt6-Debug/
+build-Lobby-Qt6-Debug/*
+
+# Cmake build debug
+cmake-build-debug/
+cmake-build-debug/*
+*/cmake-build-debug/*
+**/cmake-build-debug/*
+**/cmake-build-debug/**
+

@@ -3,11 +3,12 @@
 
 #include "lobby.h"
 
-Welcome::Welcome(QWidget *parent, QTMonitor& monitor, LobbyMessage& msg)
-    : QMainWindow(parent),
-      ui(new Ui::Welcome),
-      monitor(monitor),
-      msg(msg)
+Welcome::Welcome(QWidget *parent, Client& client, LobbyMessage& msg, bool& clientJoinedGame) :
+    QMainWindow(parent),
+    ui(new Ui::Welcome),
+    client(client),
+    msg(msg),
+    clientJoinedGame(clientJoinedGame)
 {
     ui->setupUi(this);
 }
@@ -29,7 +30,7 @@ void Welcome::on_btnIngresar_clicked()
 
     this->msg.setPlayerName(playerName.toStdString());
 
-    Lobby* lobby = new Lobby(this, this->monitor, this->msg);
+    Lobby* lobby = new Lobby(this, this->client, this->msg, this->clientJoinedGame);
     lobby->show();
     this->close();
 }

@@ -1,11 +1,12 @@
 #ifndef LOBBY_MESSAGE_H
 #define LOBBY_MESSAGE_H
 
-#include <string>
 #include <sstream>
-#include "../Common/Constants/lobbyCommands.h"
-#include "../Common/Constants/characterSelect.h"
-#include "../Common/Constants/episodeSelect.h"
+#include <string>
+
+#include "../../Common/Constants/characterSelect.h"
+#include "../../Common/Constants/episodeSelect.h"
+#include "../../Common/Constants/lobbyCommands.h"
 
 struct LobbyMessage {
     std::string playerName;
@@ -46,6 +47,10 @@ struct LobbyMessage {
 
     void setPlayerName(const std::string& name) {
         playerName = name;
+    }
+
+    std::string getPlayerName() {
+        return playerName;
     }
 
     void setLobbyCmd(LobbyCommands cmd) {

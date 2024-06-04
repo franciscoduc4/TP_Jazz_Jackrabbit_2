@@ -3,8 +3,8 @@
 
 #include <QMainWindow>
 
-#include "../Client/QTMonitor.h"
-#include "../Client/lobbyMessage.h"
+#include "../client.h"
+#include "../Protocol/lobbyMessage.h"
 
 namespace Ui {
 class GameList;
@@ -16,7 +16,7 @@ class GameList : public QMainWindow
     
 
 public:
-    explicit GameList(QWidget *parent, QTMonitor& monitor, LobbyMessage& msg);
+    explicit GameList(QWidget *parent, Client& client, LobbyMessage& msg, bool& clientJoinedGame);
     ~GameList();
 
 private slots:
@@ -26,8 +26,9 @@ private slots:
 
 private:
     Ui::GameList *ui;
-    QTMonitor& monitor;
+    Client& client;
     LobbyMessage& msg;
+    bool& clientJoinedGame;
 };
 
 #endif // GAMELIST_H

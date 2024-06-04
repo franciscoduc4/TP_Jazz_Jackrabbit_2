@@ -3,11 +3,12 @@
 
 #include "waitingroom.h"
 
-GameList::GameList(QWidget *parent, QTMonitor& monitor, LobbyMessage& msg) :
+GameList::GameList(QWidget *parent, Client& client, LobbyMessage& msg, bool& clientJoinedGame) :
     QMainWindow(parent),
     ui(new Ui::GameList),
-    monitor(monitor),
-    msg(msg)
+    client(client),
+    msg(msg),
+    clientJoinedGame(clientJoinedGame)
 {
     ui->setupUi(this);
 }
@@ -17,12 +18,25 @@ GameList::~GameList()
     delete ui;
 }
 
-void GameList::on_btnJoin_clicked()
-{
-    this->msg.setGameName(nombrePartida.toStdString());
-    this->sender.sendMessage(this->msg);
+void GameList::updateGameList() {
+    ui->listGames->clear();
 
-    WaitingRoom* wr = new WaitingRoom(this, this->monitor, this->msg);
+    auto games = client.getGameList();
+    for (const auto& game : games) {
+        GameListItem* itemWidget = new GameListItem(game.name, game.players, game.totalPlayers);
+        QListWidgetItem* item = new QListWidgetItem(ui->listGames);
+        item->setSizeHint(itemWidget->sizeHint());
+        ui->listGames->setItemWidget(item, itemWidget);
+
+        connect(itemWidget, &GameListItem::joinGame, this, &GameList::joinGame);
+    }
+}
+
+void GameList::joinGame(const QString& gameName) {
+    this->msg.setGameName(gameName);
+    client.joinGame(this->msg);
+
+    WaitingRoom* wr = new WaitingRoom(this, this->client, this->msg, this->clientJoinedGame);
     wr->show();
     this->close();
 }

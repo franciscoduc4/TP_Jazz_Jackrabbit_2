@@ -23,7 +23,7 @@ void Welcome::on_btnIngresar_clicked()
     QString playerName = ui->inputName->text();
 
     if (playerName.isEmpty()) {
-        QMessageBox::warning(this, "Ingrese su nombre para ingresar.");
+        QMessageBox::warning(this, "Ingrese su nombre para ingresar.", "Warning");
         return;
     }
 

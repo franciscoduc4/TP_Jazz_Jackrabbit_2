@@ -34,7 +34,7 @@ void CharacterSelection::on_btnChoose_clicked()
         this->close();
     } else {
         // Este caso no debería suceder.
-        QMessageBox::warning(this, "Ocurrió un error inesperado.");
+        QMessageBox::warning(this, "Ocurrió un error inesperado.", "Warning");
         return;
     }
 }

@@ -1,30 +1,65 @@
 #include "./client.h"
 #include "../Common/socket.h"
-#include "../Common/queue.h"
-#include "../Common/protocol.h"
-#include "./senderThread.h"
-#include "./receiverThread.h"
-#include "./QTMonitor.h"
-#include "Lobby/init.h"
+#include "./Threads/senderThread.h"
+#include "./Threads/receiverThread.h"
+#include "./Threads/cmdReaderThread.h"
+#include "./Protocol/serializer.h"
+#include "./Protocol/deserializer.h"
+#include "Lobby/lobbyInit.h"
+
+#include "../Client/SDL/gamescreen.h"
+#include "../Common/DTO/game.h"
+#include "../Common/Types/command.h"
 
 
-Client::Client(char* ip, char* port) : ip(ip), port(port) {}
+Client::Client(char* ip, char* port) :
+        ip(ip),
+        port(port),
+        skt(std::make_shared<Socket>(ip, port)),
+        was_closed(false),
+        senderQueue(std::make_shared<Queue<DTO>>()),
+        playerCmdsQueue(std::make_shared<Queue<DTO>>()),
+        receiverQueue(std::make_shared<Queue<DTO>>()),
+        sender(this->skt, this->senderQueue, this->was_closed),
+        serializer(this->sender),
+        cmdReader(this->serializer, this->playerCmdsQueue),
+        deserializer(),
+        receiver(this->skt, this->deserializer){
+    this->sender.start();
+    this->receiver.start();
+    this->cmdReader.start();
+}
 
 void Client::start() {
-    bool runApp = false;
+    bool clientJoinedGame = false;
     do {
-        Socket skt(ip, port);
-        Protocol protocol(std::move(skt));
-        Queue cmdQueue;
-        SenderThread sender(&protocol, &cmdQueue);
-        sender.start();
-        ReceiverThread receiver(&protocol);
-        receiver.start();
-        QTMonitor monitor();
+        LobbyInit init;
+        clientJoinedGame = init.launchQT(this);
 
-        LobbyInit init(&sender, &receiver, &monitor);
-        init.run();
+        if (!clientJoinedGame) {
+            break;
+        }
 
-        // TODO: Ver cómo salir de QT y arrancar SDL.
-    } while (runApp);
+        // TODO: Continue with SDL.
+        GameScreen game(this);
+        game.run();
+
+    } while (clientJoinedGame);
+}
+
+DTO Client::getServerMsg() {
+    return receiverQueue.pop();
+}
+
+void Client::sendMsg(Command& cmd, std::vector<uint8_t>& parameters) {
+    switch (cmd) {
+        case Command::MOVE:
+            move_msg(parameters);
+    }
+}
+
+void Client::move_msg(std::vector<uint8_t>& parameters) {
+    Direction dir = static_cast<int32_t>(parameters[0]);
+    MoveDTO move(this->playerId, dir);
+    serializer.sendMsg(move);
 }
