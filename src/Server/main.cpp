@@ -1,7 +1,6 @@
 #include <exception>
 #include <iostream>
 #include <sstream>
-
 #include "../Common/Config/ServerConfig.h"
 #include "../Common/logger.h"
 #include "server.h"
@@ -17,14 +16,16 @@ int main(int argc, char** argv) {
         return FAIL;
     }
 
-    //const std::string configPath = "../src/config/server.yaml";
-    
     try {
-        //ServerConfig::loadConfig(configPath);
-        //Logger logger(ServerConfig::getLogFile());
+        // Load the server configuration
+        ServerConfig* config = ServerConfig::getInstance();
+
+        // Initialize Logger
+        //Logger logger(config->getLogFile());
+
+        // Create and run the server
         Server server(argv[1]);
         server.run();
-        // Init Server with Logger.
     } catch (const std::exception& e) {
         std::cerr << "Exception caught: " << e.what() << std::endl;
         return FAIL;

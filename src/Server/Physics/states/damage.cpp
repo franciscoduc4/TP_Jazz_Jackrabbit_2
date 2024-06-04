@@ -9,9 +9,12 @@
 #include "moving.h"
 #include "shooting.h"
 
+#include "../../../Common/Config/ServerConfig.h"
+#define CONFIG ServerConfig::getInstance()
+
 ReceivingDamageState::ReceivingDamageState(float startTime):
         startTime(startTime),
-        stopDamageTime(1)  // CONFIG.getDamageTime();
+        stopDamageTime(CONFIG->getDamageTime())  // CONFIG.getDamageTime();
 {
     characterState = CharacterStateEntity::TAKING_DAMAGE;
 }
