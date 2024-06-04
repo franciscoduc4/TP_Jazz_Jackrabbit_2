@@ -5,7 +5,7 @@
 #include <QMessageBox>
 
 #include "../client.h"
-#include "../Protocol/lobbyMessage.h"
+#include "../Protocol/Types/lobbyMessage.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class Welcome; }

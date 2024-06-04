@@ -1,10 +1,10 @@
 #include "characterselectionwidget.h"
 
-#include "../../Common/Config/ClientConfig.h"
-#include "../../Common/Types/character.h"
+#include "../../../Common/Config/ClientConfig.h"
+#include "../../../Common/Types/character.h"
 
-CharacterSelectionWidget::CharacterSelectionWidget(QWidget* parent)
-        : QWidget{parent}, currentCharacterIndex(0)
+CharacterSelectionWidget::CharacterSelectionWidget(QWidget* parent, const std::tuple<int, int, int>& colourKey)
+        : QWidget{parent}, currentCharacterIndex(0), colourKey(std::get<0>(colourKey), std::get<1>(colourKey), std::get<2>(colourKey))
 {
     QVBoxLayout* layout = new QVBoxLayout(this);
     nameAnimationView = new QGraphicsView(this);
@@ -13,10 +13,10 @@ CharacterSelectionWidget::CharacterSelectionWidget(QWidget* parent)
     layout->addWidget(characterAnimationView);
 
     characters = {
-            {Sprite::createSprites(ClientConfig::getJazzNameSprites()), Sprite::createSprites(ClientConfig::getJazzSprites())},
-            {Sprite::createSprites(ClientConfig::getSpazNameSprites()), Sprite::createSprites(ClientConfig::getSpazSprites())},
-            {Sprite::createSprites(ClientConfig::getLoriNameSprites()), Sprite::createSprites(ClientConfig::getLoriSprites())}
-    };
+        CharacterData([](){ return Sprite::createSprites(ClientConfig::getJazzSelectNameSprites()); }, [](){ return Sprite::createSprites(ClientConfig::getJazzSelectSprites()); }),
+        CharacterData([](){ return Sprite::createSprites(ClientConfig::getSpazSelectNameSprites()); }, [](){ return Sprite::createSprites(ClientConfig::getSpazSelectSprites()); }),
+        CharacterData([](){ return Sprite::createSprites(ClientConfig::getLoriSelectNameSprites()); }, [](){ return Sprite::createSprites(ClientConfig::getLoriSelectSprites()); })
+};
 
     updateCharacter(currentCharacterIndex);
 }
@@ -30,13 +30,13 @@ void CharacterSelectionWidget::updateCharacter(int index) {
     QGraphicsScene* characterScene = new QGraphicsScene(this);
 
     for (const auto& sprite : nameSprites) {
-        QPixmap pixmap = spriteToPixmap(sprite);
+        QPixmap pixmap = this->spriteToPixmap(sprite);
         QGraphicsPixmapItem* item = new QGraphicsPixmapItem(pixmap);
         nameScene->addItem(item);
     }
 
     for (const auto& sprite : characterSprites) {
-        QPixmap pixmap = spriteToPixmap(sprite);
+        QPixmap pixmap = this->spriteToPixmap(sprite);
         QGraphicsPixmapItem* item = new QGraphicsPixmapItem(pixmap);
         characterScene->addItem(item);
     }
@@ -45,7 +45,7 @@ void CharacterSelectionWidget::updateCharacter(int index) {
     characterAnimationView->setScene(characterScene);
 }
 
-QPixmap spriteToPixmap(const Sprite& sprite) {
+QPixmap CharacterSelectionWidget::spriteToPixmap(const Sprite& sprite) {
 
     QPixmap spriteSheet(QString::fromStdString(sprite.getSpriteSheetPath()));
 
@@ -92,14 +92,14 @@ void CharacterSelectionWidget::keyPressEvent(QKeyEvent* event) {
 }
 
 
-Character CharacterSelectionWidget::getSelectedCharacter() const {
+CharacterType CharacterSelectionWidget::getSelectedCharacter() const {
     switch (currentCharacterIndex) {
         case 0:
-            return Character::JAZZ;
+            return CharacterType::JAZZ;
         case 1:
-            return Character::SPAZ;
+            return CharacterType::SPAZ;
         case 2:
-            return Character::LORI;
+            return CharacterType::LORI;
         default:
             throw std::runtime_error("Invalid character index");
     }

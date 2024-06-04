@@ -27,6 +27,7 @@ CharacterSelection::~CharacterSelection()
 
 void CharacterSelection::on_btnChoose_clicked()
 {
+    /*
     this->msg.setCharacter(characterSelectionWidget->getCurrentCharacter());
     this->client.sendCharacterSelection(this->msg);
     if (this->msg.isCreateGame()) {
@@ -42,6 +43,7 @@ void CharacterSelection::on_btnChoose_clicked()
         QMessageBox::warning(this, "Ocurrió un error inesperado.", "Error");
         return;
     }
+    */
 }
 
 

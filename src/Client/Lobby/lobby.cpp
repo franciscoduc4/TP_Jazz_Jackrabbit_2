@@ -25,7 +25,7 @@ Lobby::~Lobby()
 
 void Lobby::on_btnCreateGame_clicked()
 {
-    this->msg.setLobbyCmd(LobbyCommands::CREATE_GAME);
+    // this->msg.setLobbyCmd(LobbyCommands::CREATE_GAME);
     SceneSelection* ss = new SceneSelection(this, this->client, this->msg, this->clientJoinedGame);
     ss->show();
     this->close();
@@ -34,7 +34,7 @@ void Lobby::on_btnCreateGame_clicked()
 
 void Lobby::on_btnJoinGame_clicked()
 {
-    this->msg.setLobbyCmd(LobbyCommands::JOIN_GAME);
+    // this->msg.setLobbyCmd(LobbyCommands::JOIN_GAME);
     CharacterSelection* cs = new CharacterSelection(this, this->client, this->msg, this->clientJoinedGame);
     cs->show();
     this->close();

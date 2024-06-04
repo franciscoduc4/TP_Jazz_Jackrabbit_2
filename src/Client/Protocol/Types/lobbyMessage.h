@@ -4,40 +4,40 @@
 #include <sstream>
 #include <string>
 
-#include "../../Common/Constants/characterSelect.h"
-#include "../../Common/Constants/episodeSelect.h"
-#include "../../Common/Constants/lobbyCommands.h"
+#include "../../../Common/Types/character.h"
+#include "../../../Common/Types/episode.h"
+// #include "../../../Common/Types/lobbyCommands.h"
 
 struct LobbyMessage {
     std::string playerName;
-    LobbyCommands lobbyCmd;
+    // LobbyCommands lobbyCmd;
     int maxPlayers;
     std::string gameName;
     int waitTime;
-    CharacterSelect character;
-    EpisodeSelect episode;
+    CharacterType character;
+    Episode episode;
     int playerId;
 
     LobbyMessage() : 
         playerName(""), 
-        lobbyCmd(LobbyCommands::INVALID_CMD),
+        // lobbyCmd(LobbyCommands::INVALID_CMD),
         maxPlayers(0),
         gameName(""),
         waitTime(0),
-        character(CharacterSelect::INVALID),
-        episode(EpisodeSelect::INVALID),
+        character(CharacterType::INVALID),
+        episode(Episode::INVALID),
         playerId(-1) {}
     
     LobbyMessage(const std::string& playerName,
-    const LobbyCommands& lobbyCmd,
+    // const LobbyCommands& lobbyCmd,
     const int& maxPlayers,
     const std::string& gameName,
     const int& waitTime,
-    const CharacterSelect& character,
-    const EpisodeSelect& episode,
+    const CharacterType& character,
+    const Episode& episode,
     const int& playerId) :
         playerName(playerName), 
-        lobbyCmd(lobbyCmd),
+        // lobbyCmd(lobbyCmd),
         maxPlayers(maxPlayers),
         gameName(gameName),
         waitTime(waitTime),
@@ -53,9 +53,11 @@ struct LobbyMessage {
         return playerName;
     }
 
+    /*
     void setLobbyCmd(LobbyCommands cmd) {
         lobbyCmd = cmd;
     }
+    */
 
     void setMaxPlayers(int players) {
         maxPlayers = players;
@@ -69,14 +71,15 @@ struct LobbyMessage {
         waitTime = time;
     }
 
-    void setCharacter(CharacterSelect chara) {
-        character = chara;
+    void setCharacter(CharacterType selectedCharacter) {
+        character = selectedCharacter;
     }
 
-    void setEpisode(EpisodeSelect ep) {
+    void setEpisode(Episode ep) {
         episode = ep;
     }
 
+    /*
     bool isCreateGame() {
         return lobbyCmd == LobbyCommands::CREATE_GAME;
     }
@@ -84,11 +87,12 @@ struct LobbyMessage {
     bool isJoinGame() {
         return lobbyCmd == LobbyCommands::JOIN_GAME;
     }
+    */
 
     std::string toString() {
         std::stringstream ss;
         ss << playerName
-           << static_cast<int>(lobbyCmd)
+           // << static_cast<int>(lobbyCmd)
            << maxPlayers
            << gameName
            << waitTime
@@ -98,15 +102,15 @@ struct LobbyMessage {
     }
 
     LobbyMessage& build(const std::string& playerName,
-    LobbyCommands lobbyCmd,
+    // LobbyCommands lobbyCmd,
     int maxPlayers,
     const std::string& gameName,
     int waitTime,
-    CharacterSelect character,
-    EpisodeSelect episode,
+    CharacterType character,
+    Episode episode,
     int playerId) {
         this->playerName = playerName;
-        this->lobbyCmd = lobbyCmd;
+        // this->lobbyCmd = lobbyCmd;
         this->maxPlayers = maxPlayers;
         this->gameName = gameName;
         this->waitTime = waitTime;
