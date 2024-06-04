@@ -1,4 +1,4 @@
-#include "../sprite.h"
+#include "../../Common/sprite.h"
 #include "enemyweapon.h"
 
 #include <SDL2pp/SDL2pp.hh>

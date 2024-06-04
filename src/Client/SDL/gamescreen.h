@@ -3,9 +3,9 @@
 #include "enemy.h"
 #include "points.h"
 
-#include "../Common/queue.h"
-#include "../Common/DTO/game.h"
-#include "../Client/client.h"
+#include "../../Common/queue.h"
+#include "../../Common/DTO/game.h"
+#include "../../Client/client.h"
 
 class GameScreen {
 	Player pj;

@@ -3,6 +3,17 @@
 
 #include <memory>
 #include <atomic>
+#include "../Common/socket.h"
+#include "Threads/senderThread.h"
+#include "Threads/receiverThread.h"
+#include "Threads/cmdReaderThread.h"
+#include "./Protocol/serializer.h"
+#include "./Protocol/deserializer.h"
+#include "Lobby/lobbyInit.h"
+
+#include "SDL/gamescreen.h"
+#include "../Common/DTO/game.h"
+#include "../Common/Types/command.h"
 
 class Client {
     private:

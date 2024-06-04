@@ -1,9 +1,9 @@
 #ifndef DESERIALIZER_H
 #define DESERIALIZER_H
 
-#include "../Common/socket.h"
-#include "../Common/DTO/dto.h"
-#include "../Common/queue.h"
+#include "../../Common/socket.h"
+#include "../../Common/DTO/dto.h"
+#include "../../Common/queue.h"
 
 #include <map>
 #include <vector>

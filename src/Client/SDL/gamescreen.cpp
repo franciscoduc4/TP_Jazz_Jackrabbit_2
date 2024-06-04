@@ -1,15 +1,15 @@
 #include "gamescreen.h"
 #include "projectile.h"
-#include "../Common/sprite.h"
+#include "../../Common/sprite.h"
 
-#include "../Common/queue.h"
-#include "../Common/DTO/game.h"
-#include "../Common/DTO/player.h"
-#include "../Common/DTO/enemy.h"
-#include "../Common/Types/command.h"
-#include "../Common/Types/direction.h"
+#include "../../Common/queue.h"
+#include "../../Common/DTO/game.h"
+#include "../../Common/DTO/player.h"
+#include "../../Common/DTO/enemy.h"
+#include "../../Common/Types/command.h"
+#include "../../Common/Types/direction.h"
 
-#include "../Client/client.h"
+#include "../../Client/client.h"
 
 
 #include <SDL2pp/SDL2pp.hh>

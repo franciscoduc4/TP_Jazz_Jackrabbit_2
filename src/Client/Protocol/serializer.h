@@ -1,6 +1,8 @@
-#include "../Common/socket.h"
-#include "../Common/queue.h"
-#include "../Common/DTO/dto.h"
+#ifndef SERIALIZER_CLIENT_H
+#define SERIALIZER_CLIENT_H
+#include "../../Common/socket.h"
+#include "../../Common/queue.h"
+#include "../../Common/DTO/dto.h"
 
 #include <vector>
 #include <cstdint>
@@ -16,3 +18,5 @@ public:
 	void sendMsg(DTO& dto);
 
 };
+
+#endif  // SERIALIZER_CLIENT_H

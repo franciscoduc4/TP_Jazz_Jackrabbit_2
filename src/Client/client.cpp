@@ -1,15 +1,4 @@
 #include "./client.h"
-#include "../Common/socket.h"
-#include "./Threads/senderThread.h"
-#include "./Threads/receiverThread.h"
-#include "./Threads/cmdReaderThread.h"
-#include "./Protocol/serializer.h"
-#include "./Protocol/deserializer.h"
-#include "Lobby/lobbyInit.h"
-
-#include "../Client/SDL/gamescreen.h"
-#include "../Common/DTO/game.h"
-#include "../Common/Types/command.h"
 
 
 Client::Client(char* ip, char* port) :

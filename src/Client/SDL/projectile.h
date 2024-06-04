@@ -2,7 +2,7 @@
 #define PROJECTILE
 
 #include <SDL2pp/SDL2pp.hh>
-#include "../sprite.h"
+#include "../../Common/sprite.h"
 
 #include <map>
 #include <list>

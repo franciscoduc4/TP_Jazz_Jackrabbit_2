@@ -4,7 +4,7 @@
 #include "../../Common/thread.h"
 #include "../../Common/queue.h"
 #include "../../Common/socket.h"
-#include "../Client/Protocol/deserializer.h"
+#include "../Protocol/deserializer.h"
 
 #include <atomic>
 #include <memory>

@@ -1,5 +1,5 @@
 #include "player.h"
-#include "../sprite.h"
+#include "../../Common/sprite.h"
 #include "projectile.h"
 
 #include <string>
