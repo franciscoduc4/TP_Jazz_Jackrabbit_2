@@ -3,7 +3,7 @@
 
 #include <QMainWindow>
 
-#include "../Monitors/QTMonitor.h"
+#include "../client.h"
 #include "../Protocol/lobbyMessage.h"
 
 namespace Ui {
@@ -16,7 +16,7 @@ class CreateGame : public QMainWindow
     
 
 public:
-    explicit CreateGame(QWidget *parent, QTMonitor& monitor, LobbyMessage& msg);
+    explicit CreateGame(QWidget *parent, Client& client, LobbyMessage& msg, bool& clientJoinedGame);
     ~CreateGame();
 
 private slots:
@@ -26,8 +26,9 @@ private slots:
 
 private:
     Ui::CreateGame *ui;
-    QTMonitor& monitor;
+    Client& client;
     LobbyMessage& msg;
+    bool& clientJoinedGame;
 };
 
 #endif // CREATEGAME_H

@@ -7,13 +7,17 @@
 #include "waitingroom.h"
 #include "gamelist.h"
 
-CharacterSelection::CharacterSelection(QWidget *parent, QTMonitor& monitor, LobbyMessage& msg) :
-    QMainWindow(parent),
-    ui(new Ui::CharacterSelection),
-    monitor(monitor),
-    msg(msg)
+CharacterSelection::CharacterSelection(QWidget *parent, Client& client, LobbyMessage& msg, bool& clientJoinedGame) :
+        QMainWindow(parent),
+        ui(new Ui::CharacterSelection),
+        client(client),
+        msg(msg),
+        clientJoinedGame(clientJoinedGame),
+        characterSelectionWidget(new CharacterSelectionWidget(this))
 {
     ui->setupUi(this);
+    QVBoxLayout* layout = new QVBoxLayout(ui->widgetCharacters);
+    layout->addWidget(characterSelectionWidget);
 }
 
 CharacterSelection::~CharacterSelection()
@@ -25,11 +29,11 @@ void CharacterSelection::on_btnChoose_clicked()
 {
     // this->msg.setCharacter(CharacterSelection::);
     if (this->msg.isCreateGame()) {
-        WaitingRoom* wr = new WaitingRoom(this, this->monitor, this->msg);
+        WaitingRoom* wr = new WaitingRoom(this, this->client, this->msg, this->clientJoinedGame);
         wr->show();
         this->close();
     } else if (this->msg.isJoinGame()) {
-        GameList* gl = new GameList(this, this->monitor, this->msg);
+        GameList* gl = new GameList(this, this->client, this->msg, this->clientJoinedGame);
         gl->show();
         this->close();
     } else {

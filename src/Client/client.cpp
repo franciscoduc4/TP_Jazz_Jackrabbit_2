@@ -14,17 +14,28 @@ Client::Client(char* ip, char* port) :
         skt(std::make_shared<Socket>(ip, port)),
         was_closed(false),
         senderQueue(std::make_shared<Queue<DTO>>()),
+        playerCmdsQueue(std::make_shared<Queue<DTO>>()),
         sender(this->skt, this->senderQueue, this->was_closed),
         serializer(this->sender),
-        cmdReader(this->serializer),
+        cmdReader(this->serializer, this->playerCmdsQueue),
         deserializer(),
-        receiver(this->skt, this->deserializer){}
+        receiver(this->skt, this->deserializer){
+    this->sender.start();
+    this->receiver.start();
+    this->cmdReader.start();
+}
 
-void Client::start(int argc, char *argv[]) {
-    bool runApp = false;
+void Client::start() {
+    bool clientJoinedGame = false;
     do {
         LobbyInit init;
-        init.startQT(this, argc, argv);
+        clientJoinedGame = init.launchQT(this);
 
-    } while (runApp);
+        if (!clientJoinedGame) {
+            break;
+        }
+
+        // TODO: Continue with SDL.
+
+    } while (clientJoinedGame);
 }

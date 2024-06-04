@@ -3,11 +3,12 @@
 
 #include "characterselection.h"
 
-CreateGame::CreateGame(QWidget *parent, QTMonitor& monitor, LobbyMessage& msg) :
+CreateGame::CreateGame(QWidget *parent, Client& client, LobbyMessage& msg, bool& clientJoinedGame) :
     QMainWindow(parent),
     ui(new Ui::CreateGame),
-    monitor(monitor),
-    msg(msg)
+    client(client),
+    msg(msg),
+    clientJoinedGame(clientJoinedGame)
 {
     ui->setupUi(this);
 }
@@ -31,7 +32,7 @@ void CreateGame::on_btnCreate_clicked()
     this->msg.setMaxPlayers(numPlayers);
     this->msg.setWaitTime(waitTime);
 
-    CharacterSelection* cs = new CharacterSelection(this, this->monitor, this->msg);
+    CharacterSelection* cs = new CharacterSelection(this, this->client, this->msg, this->clientJoinedGame);
     cs->show();
     this->close();
 }

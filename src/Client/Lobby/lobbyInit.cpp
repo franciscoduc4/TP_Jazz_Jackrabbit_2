@@ -5,10 +5,20 @@
 
 #include "welcome.h"
 
-int startQT(Client& client, int argc, char *argv[]) {
+LobbyInit::LobbyInit() {}
+
+bool LobbyInit::launchQT(Client& client, bool& clientJoinedGame) {
     LobbyMessage msg;
+
+    int argc = 0;
+    char arg1[] = "";
+    char* argv[] = { arg1 };
+
     QApplication a(argc, argv);
-    Welcome w(client, &msg);
+
+    Welcome w(nullptr, client, &msg, clientJoinedGame);
     w.show();
-    return a.exec();
+    a.exec();
+
+    return clientJoinedGame;
 }

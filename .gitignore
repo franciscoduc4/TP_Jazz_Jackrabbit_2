@@ -47,6 +47,10 @@ src/Server
 .vscode
 .vscode/*
 
+# CLion
+.idea
+.idea/*
+
 #build
 build
 build/*

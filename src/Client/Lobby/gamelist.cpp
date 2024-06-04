@@ -3,11 +3,12 @@
 
 #include "waitingroom.h"
 
-GameList::GameList(QWidget *parent, QTMonitor& monitor, LobbyMessage& msg) :
+GameList::GameList(QWidget *parent, Client& client, LobbyMessage& msg, bool& clientJoinedGame) :
     QMainWindow(parent),
     ui(new Ui::GameList),
-    monitor(monitor),
-    msg(msg)
+    client(client),
+    msg(msg),
+    clientJoinedGame(clientJoinedGame)
 {
     ui->setupUi(this);
 }
@@ -20,11 +21,17 @@ GameList::~GameList()
 void GameList::on_btnJoin_clicked()
 {
     this->msg.setGameName(nombrePartida.toStdString());
-    this->sender.sendMessage(this->msg);
 
-    WaitingRoom* wr = new WaitingRoom(this, this->monitor, this->msg);
-    wr->show();
-    this->close();
+    bool joinResult = this->client.sendLobbyMessage(this->msg);
+
+    if (joinResult) {
+        this->clientJoinedGame = true;
+        WaitingRoom* wr = new WaitingRoom(this, this->client, this->msg, this->clientJoinedGame);
+        wr->show();
+        this->close();
+    } else {
+        QMessageBox::warning(this, "Error al unirse a la partida.", "Error");
+    }
 }
 
 

@@ -11,6 +11,7 @@ class Client {
         std::shared_ptr<Socket> skt;
         std::atomic<bool> was_closed;
         std::shared_ptr<Queue<DTO>> senderQueue;
+        std::shared_ptr<Queue<DTO>> playerCmdsQueue;
         SenderThread sender;
         Serializer serializer;
         CmdReaderThread cmdReader;
@@ -18,7 +19,7 @@ class Client {
         ReceiverThread receiver;
     public:
         Client(char* ip, char* port);
-        void start(int argc, char* argv[]);
+        void start();
 };
 
 #endif  // CLIENT_H

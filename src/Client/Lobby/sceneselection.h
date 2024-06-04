@@ -4,10 +4,9 @@
 #include <QMainWindow>
 #include <QVBoxLayout>
 
-#include "../Monitors/QTMonitor.h"
 #include "../Protocol/lobbyMessage.h"
-
-#include "scenespriteswidget.h"
+#include "../client.h"
+#include "SelectScreens/scenespriteswidget.h"
 
 namespace Ui {
 class SceneSelection;
@@ -20,7 +19,7 @@ class SceneSelection : public QMainWindow
     
 
 public:
-    explicit SceneSelection(QWidget *parent, QTMonitor& monitor, LobbyMessage& msg);
+    explicit SceneSelection(QWidget *parent, Client& client, LobbyMessage& msg, bool& clientJoinedGame);
     ~SceneSelection();
 
 private slots:
@@ -30,8 +29,9 @@ private slots:
 
 private:
     Ui::SceneSelection *ui;
-    QTMonitor& monitor;
+    Client& client;
     LobbyMessage& msg;
+    bool& clientJoinedGame;
     SceneSpritesWidget* sceneSpritesWidget;
 };
 

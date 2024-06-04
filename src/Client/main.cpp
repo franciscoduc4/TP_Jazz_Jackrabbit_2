@@ -19,7 +19,7 @@ int main(int argc, char* argv[]) {
     }
     try {
         Client(argv[1], argv[2]);
-        client.start(argc, argv);
+        client.start();
     } catch (const std::exception& e) {
         logger.error(__func__, __LINE__, "Exception caught: %s", e.what());
         return FAIL;
