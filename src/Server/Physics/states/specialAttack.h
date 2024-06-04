@@ -1,5 +1,5 @@
-#ifndef LORI_SPECIAL_ATTACK_STATE_H_
-#define LORI_SPECIAL_ATTACK_STATE_H_
+#ifndef SPECIAL_ATTACK_STATE_H_
+#define SPECIAL_ATTACK_STATE_H_
 
 #include <memory>
 #include <utility>
@@ -8,14 +8,15 @@
 
 #include "state.h"
 
-class LoriSpecialAttackState: public State {
+class SpecialAttackState: public State {
 private:
     float startTime;
     float duration;
 
 public:
-    explicit LoriSpecialAttackState(float time);
-    std::unique_ptr<State> update(float time) override;
+    explicit SpecialAttackState(float time);
+
+    std::unique_ptr<State> exec(Character& character, float time) override;
     std::unique_ptr<State> shoot(Character& character, std::shared_ptr<Weapon> weapon,
                                  float time) override;
     std::unique_ptr<State> move(Character& character, Direction direction, float time) override;
@@ -30,4 +31,4 @@ public:
     std::unique_ptr<State> stopAction() override;
 };
 
-#endif  // LORI_SPECIAL_ATTACK_STATE_H_
+#endif  // SPECIAL_ATTACK_STATE_H_

@@ -26,14 +26,9 @@ std::unique_ptr<State> IntoxicatedState::move(Character& character, Direction di
 
 std::unique_ptr<State> IntoxicatedState::sprint(Character& character, Direction direction,
                                                 float time) {
-    // No puede correr mientras está intoxicado
     return nullptr;
 }
 
-std::unique_ptr<State> IntoxicatedState::reload(std::shared_ptr<Weapon> weapon, float time) {
-    // No puede recargar mientras está intoxicado
-    return nullptr;
-}
 
 std::unique_ptr<State> IntoxicatedState::receiveDamage(Character& character, uint16_t dmg,
                                                        float time) {

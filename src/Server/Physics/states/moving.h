@@ -18,7 +18,7 @@ private:
 public:
     MovingState(Character& character, Direction direction, float time);
 
-    std::unique_ptr<State> update(float time) override;
+    std::unique_ptr<State> exec(Character& character, float time) override;
     std::unique_ptr<State> shoot(Character& character, std::shared_ptr<Weapon> weapon,
                                  float time) override;
     std::unique_ptr<State> move(Character& character, Direction direction, float time) override;
