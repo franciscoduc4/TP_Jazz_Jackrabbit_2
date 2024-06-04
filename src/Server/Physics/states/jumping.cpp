@@ -8,7 +8,7 @@
 #include "moving.h"
 #include "shooting.h"
 
-std::unique_ptr<State> JumpingState::update(float time) {
+std::unique_ptr<State> JumpingState::exec(Character& character, float time) {
     // Lógica de actualización específica para el estado de salto
     // Transición al estado idle si ha aterrizado
     return std::unique_ptr<IdleState>();
@@ -34,11 +34,6 @@ std::unique_ptr<State> JumpingState::move(Character& character, Direction direct
 
 std::unique_ptr<State> JumpingState::sprint(Character& character, Direction direction, float time) {
     // No puede correr mientras está en el aire
-    return nullptr;
-}
-
-std::unique_ptr<State> JumpingState::reload(std::shared_ptr<Weapon> weapon, float time) {
-    // No puede recargar mientras está en el aire
     return nullptr;
 }
 

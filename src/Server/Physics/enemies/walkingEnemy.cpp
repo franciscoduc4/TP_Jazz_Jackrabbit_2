@@ -2,8 +2,8 @@
 
 #include <utility>
 
-#include "../gameMap.h"
 #include "../../../Common/Config/ServerConfig.h"
+#include "../gameMap.h"
 #define CONFIG ServerConfig::getInstance()
 
 WalkingEnemy::WalkingEnemy(int16_t x, int16_t y, int16_t id, GameMap& map, int16_t health,
@@ -21,7 +21,7 @@ WalkingEnemy::WalkingEnemy(int16_t x, int16_t y, int16_t id, GameMap& map, int16
         viewDistanceHit(CONFIG->getWalkingEnemyViewDistanceHit()),
         walkProb(CONFIG->getWalkingEnemyWalkProb()),
         flyProb(CONFIG->getWalkingEnemyFlyProb()),
-        jumpProb(CONFIG->getWalkingEnemyJumpProb()) {} 
+        jumpProb(CONFIG->getWalkingEnemyJumpProb()) {}
 
 
 void WalkingEnemy::update(std::vector<std::shared_ptr<Character>> characters, float time) {

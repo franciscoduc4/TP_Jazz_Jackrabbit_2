@@ -31,7 +31,10 @@ find_package(fmt REQUIRED)
 add_subdirectory(src/Common)
 add_subdirectory(src/Server)
 add_subdirectory(src/Client)
-add_subdirectory(Tests)
+
+if (TESTING)
+    add_subdirectory(Tests)
+endif()
 
 # Install
 if(SERVER AND INSTALL)

@@ -12,7 +12,7 @@ DeadState::DeadState(float deathTime):
     characterState = CharacterStateEntity::DEAD;
 }
 
-std::unique_ptr<State> DeadState::update(float time) { return nullptr; }
+std::unique_ptr<State> DeadState::exec(Character& character, float time) { return nullptr; }
 
 std::unique_ptr<State> DeadState::shoot(Character& character, std::shared_ptr<Weapon> weapon,
                                         float time) {
@@ -27,9 +27,6 @@ std::unique_ptr<State> DeadState::sprint(Character& character, Direction directi
     return nullptr;
 }
 
-std::unique_ptr<State> DeadState::reload(std::shared_ptr<Weapon> weapon, float time) {
-    return nullptr;
-}
 
 std::unique_ptr<State> DeadState::receiveDamage(Character& character, uint16_t dmg, float time) {
     return nullptr;

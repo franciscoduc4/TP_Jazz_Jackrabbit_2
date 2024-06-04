@@ -11,7 +11,7 @@ SpecialAttackState::SpecialAttackState(float time): startTime(time), duration(2.
     characterState = CharacterStateEntity::SPECIAL_ATTACK;
 }
 
-std::unique_ptr<State> SpecialAttackState::update(float time) {
+std::unique_ptr<State> SpecialAttackState::exec(Character& character, float time) {
     // Volver al estado idle después de realizar el ataque especial
     return std::make_unique<IdleState>();
 }
@@ -34,10 +34,6 @@ std::unique_ptr<State> SpecialAttackState::sprint(Character& character, Directio
     return nullptr;
 }
 
-std::unique_ptr<State> SpecialAttackState::reload(std::shared_ptr<Weapon> weapon, float time) {
-    // No puede recargar mientras realiza un ataque especial
-    return nullptr;
-}
 
 std::unique_ptr<State> SpecialAttackState::receiveDamage(Character& character, uint16_t dmg,
                                                          float time) {

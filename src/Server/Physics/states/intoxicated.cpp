@@ -3,7 +3,7 @@
 #include "dead.h"
 #include "idle.h"
 
-std::unique_ptr<State> IntoxicatedState::update(float time) {
+std::unique_ptr<State> IntoxicatedState::exec(Character& character, float time) {
     intoxicatedDuration -= time;
     if (intoxicatedDuration <= 0) {
         return std::unique_ptr<IdleState>();

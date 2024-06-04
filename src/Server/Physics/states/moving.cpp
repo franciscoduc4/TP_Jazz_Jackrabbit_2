@@ -17,7 +17,9 @@ MovingState::MovingState(Character& character, Direction direction, float time):
     move(character, direction, time);
 }
 
-std::unique_ptr<State> MovingState::update(float time) { return move(character, direction, time); }
+std::unique_ptr<State> MovingState::exec(Character& character, float time) {
+    return move(character, direction, time);
+}
 
 std::unique_ptr<State> MovingState::shoot(Character& character, std::shared_ptr<Weapon> weapon,
                                           float time) {
@@ -49,10 +51,6 @@ std::unique_ptr<State> MovingState::move(Character& character, Direction directi
     return nullptr;
 }
 
-std::unique_ptr<State> MovingState::reload(std::shared_ptr<Weapon> weapon, float time) {
-    // Cambia al estado de recarga
-    return std::unique_ptr<IdleState>();
-}
 
 std::unique_ptr<State> MovingState::sprint(Character& character, Direction direction, float time) {
     // Cambia al estado de sprint

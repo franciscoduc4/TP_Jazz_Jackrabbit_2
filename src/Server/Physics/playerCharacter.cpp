@@ -2,19 +2,18 @@
 
 #include <utility>
 
+#include "../../Common/Config/ServerConfig.h"
 #include "../../Common/Types/character.h"
 #include "../../Common/Types/direction.h"
 #include "../../Common/Types/weapon.h"
 #include "states/dead.h"
 #include "states/idle.h"
 #include "states/intoxicated.h"
-#include "states/jazzSpecialAttack.h"
 #include "states/jumping.h"
 #include "states/shooting.h"
-#include "states/spazSpecialAttack.h"
-#include "gameMap.h"
+#include "states/specialAttack.h"
 
-#include "../../Common/Config/ServerConfig.h"
+#include "gameMap.h"
 #define CONFIG ServerConfig::getInstance()
 
 Character::Character(GameMap& map, int16_t x, int16_t y, int16_t characterId, CharacterType type):
@@ -50,7 +49,7 @@ void Character::recvDamage(uint16_t dmg, float time) {
 void Character::setDir(Direction dir) { this->dir = dir; }
 
 void Character::update(float time) {
-    auto newState = std::unique_ptr<State>(state->update(time));
+    auto newState = std::unique_ptr<State>(state->exec(*this, time));
     if (newState) {
         state = std::move(newState);
     }
@@ -214,4 +213,3 @@ int16_t Character::getMatrixY() const { return y / maxMoves; }
 int16_t Character::getY() const { return y; }
 bool Character::characIsIntoxicated() const { return isIntoxicated; }
 float Character::getIntoxicatedTime() const { return intoxicatedTime; }
-
