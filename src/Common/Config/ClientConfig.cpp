@@ -1,14 +1,12 @@
 #include "ClientConfig.h"
 
-#include <unistd.h> 
+#include <unistd.h>
 
 const static std::string YAML_FILE_PATH = "config/client.yaml";
 
 ClientConfig* ClientConfig::instance = nullptr;
 
-ClientConfig::ClientConfig() {
-    this->root = YAML::LoadFile(YAML_FILE_PATH);
-}
+ClientConfig::ClientConfig() { this->root = YAML::LoadFile(YAML_FILE_PATH); }
 
 ClientConfig* ClientConfig::getInstance() {
     if (instance == nullptr) {
@@ -35,7 +33,8 @@ std::string ClientConfig::getEpisodeFile() {
 std::vector<std::vector<int>> ClientConfig::getEpisodesSprites() {
     YAML::Node episodesSpritesNode = getInstance()->root["EPISODES_SPRITES"];
     std::vector<std::vector<int>> episodesSprites;
-    for (YAML::const_iterator it = episodesSpritesNode.begin(); it != episodesSpritesNode.end(); ++it) {
+    for (YAML::const_iterator it = episodesSpritesNode.begin(); it != episodesSpritesNode.end();
+         ++it) {
         episodesSprites.push_back(it->as<std::vector<int>>());
     }
     return episodesSprites;

@@ -12,6 +12,7 @@
 #include "../../Common/DTO/joinGame.h"
 #include "../../Common/DTO/lobby.h"
 #include "../../Common/DTO/move.h"
+#include "../../Common/DTO/startGame.h"
 #include "../../Common/Types/command.h"
 #include "../../Common/socket.h"
 
@@ -23,10 +24,7 @@ public:
     std::vector<char> serializeCreateGame(const std::unique_ptr<CreateGameDTO>& dto);
     std::vector<char> serializeJoinGame(const std::unique_ptr<JoinGameDTO>& dto);
     std::vector<char> serializeGamesList(const std::unique_ptr<CommandDTO>& dto);
-    std::vector<char> serializeMove(const std::unique_ptr<MoveDTO>& dto);
-    std::vector<char> serializeStart(const std::unique_ptr<CommandDTO>& dto);
-    std::vector<char> serializeShooting(const std::unique_ptr<CommandDTO>& dto);
-    std::vector<char> serializeSwitchWeapon(const std::unique_ptr<CommandDTO>& dto);
+    std::vector<char> serializeStartGame(const std::unique_ptr<StartGameDTO>& dto);
     std::vector<char> serializeGamesList(const std::unique_ptr<GamesListDTO>& dto);
     std::vector<char> serializeGameDTO(const std::unique_ptr<GameDTO> dto);
     std::vector<char> serializePlayerDTO(const std::unique_ptr<PlayerDTO> dto);
@@ -35,7 +33,6 @@ public:
     std::vector<char> serializeItemDTO(const std::unique_ptr<ItemDTO> dto);
     std::vector<char> serializeWeaponDTO(const std::unique_ptr<WeaponDTO> dto);
     std::vector<char> serializeTileDTO(const std::unique_ptr<TileDTO> dto);
-
 
     Serializer() {}
     explicit Serializer(std::shared_ptr<Socket> socket);

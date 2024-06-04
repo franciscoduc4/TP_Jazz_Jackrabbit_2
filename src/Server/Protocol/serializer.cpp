@@ -27,6 +27,10 @@ void Serializer::sendCommand(const std::unique_ptr<CommandDTO> dto, bool& wasClo
             buffer = serializeGamesList(
                     std::make_unique<GamesListDTO>(static_cast<const GamesListDTO&>(*dto)));
             break;
+        case Command::START_GAME:
+            buffer = serializeStartGame(
+                    std::make_unique<StartGameDTO>(static_cast<const StartGameDTO&>(*dto)));
+            break;
         default:
             return;
     }
@@ -95,33 +99,21 @@ std::vector<char> Serializer::serializeJoinGame(const std::unique_ptr<JoinGameDT
 std::vector<char> Serializer::serializeGamesList(const std::unique_ptr<GamesListDTO>& dto) {
     std::vector<char> buffer;
     buffer.push_back(static_cast<char>(Command::GAMES_LIST));
+    auto games = dto->getGames();
+    for (const auto& [id, gameName]: games) {
+        int32_t gameId = htonl(id);
+        unsigned char const* p = reinterpret_cast<unsigned char const*>(&gameId);
+        buffer.insert(buffer.end(), p, p + sizeof(int32_t));
+        buffer.push_back(gameName.length());
+        buffer.insert(buffer.end(), gameName.begin(), gameName.end());
+        buffer.push_back('\0');
+    }
     return buffer;
 }
 
-std::vector<char> Serializer::serializeMove(const std::unique_ptr<MoveDTO>& dto) {
-    std::vector<char> buffer;
-    buffer.push_back(static_cast<char>(Command::MOVE));
-    Direction moveType = dto->getMoveType();
-    buffer.push_back(static_cast<char>(moveType));
-    return buffer;
-}
-
-std::vector<char> Serializer::serializeStart(const std::unique_ptr<CommandDTO>& dto) {
+std::vector<char> Serializer::serializeStartGame(const std::unique_ptr<StartGameDTO>& dto) {
     std::vector<char> buffer;
     buffer.push_back(static_cast<char>(Command::START_GAME));
-    return buffer;
-}
-
-std::vector<char> Serializer::serializeShooting(const std::unique_ptr<CommandDTO>& dto) {
-    std::vector<char> buffer;
-    buffer.push_back(static_cast<char>(Command::SHOOT));
-    return buffer;
-}
-
-
-std::vector<char> Serializer::serializeSwitchWeapon(const std::unique_ptr<CommandDTO>& dto) {
-    std::vector<char> buffer;
-    buffer.push_back(static_cast<char>(Command::SWITCH_WEAPON));
     return buffer;
 }
 
@@ -172,19 +164,11 @@ std::vector<char> Serializer::serializeItemDTO(const std::unique_ptr<ItemDTO> dt
     return buffer;
 }
 
-// std::vector<char> Serializer::serializeSprite(const std::unique_ptr<Sprite> sprite){
-//     std::vector<char> buffer;
-//     buffer.push_back(static_cast<char>(sprite->getSpriteSheetPath()));
-//     buffer.push_back(static_cast<char>(sprite->getVertices()));
-//     buffer.push_back(static_cast<char>(sprite->getColourKey()));
-//     return buffer;
-// }
 
 std::vector<char> Serializer::serializeTileDTO(const std::unique_ptr<TileDTO> dto) {
     std::vector<char> buffer;
     buffer.push_back(static_cast<char>(dto->getX()));
     buffer.push_back(static_cast<char>(dto->getY()));
-    // buffer.push_back(static_cast<char>(dto->getSprite()));
     return buffer;
 }
 
@@ -199,8 +183,6 @@ std::vector<char> Serializer::serializeWeaponDTO(const std::unique_ptr<WeaponDTO
     buffer.push_back(static_cast<char>(dto->getY()));
     std::vector<char> bullet = serializeBulletDTO(dto->getBullet());
     buffer.insert(buffer.end(), bullet.begin(), bullet.end());
-    // std::vector<char> sprite = serializeSprite(dto->getSprite());
-    // buffer.insert(buffer.end(), sprite.begin(), sprite.end());
     return buffer;
 }
 
