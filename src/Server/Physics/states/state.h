@@ -1,7 +1,5 @@
 #ifndef STATE_H
 #define STATE_H
-
-#define CONFIG Configuration::getInstance()
 #include <cstdint>
 #include <memory>
 #include <utility>

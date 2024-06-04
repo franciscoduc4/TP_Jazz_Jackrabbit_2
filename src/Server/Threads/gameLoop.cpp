@@ -33,7 +33,7 @@ void GameLoopThread::run() {
         game.update(deltaTime.count());
 
         std::unique_ptr<GameDTO> gameDTO = game.getGameDTO();
-        queueMonitor.broadcast(gameDTO);
+        queueMonitor.broadcast(std::move(gameDTO));
 
         auto processingEndTime = std::chrono::high_resolution_clock::now();
         std::chrono::duration<double> processingDuration = processingEndTime - currentTime;

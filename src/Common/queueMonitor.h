@@ -20,7 +20,7 @@ public:
     void removeQueue(std::shared_ptr<Queue<T>> queue);
     void closeQueues();
     void removeQueues();
-    void broadcast(const T& event);
+    void broadcast(T&& event);
 };
 
 #endif  // QUEUE_MANAGER_H
