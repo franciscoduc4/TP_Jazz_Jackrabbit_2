@@ -38,6 +38,51 @@ public:
     static std::tuple<int, int, int> getItemsColourKey();
     // Rectangular Sprites
     static std::vector<std::vector<int>> getEpisodesSprites();
+    // Enemies Sprites
+    // Turtle
+    static std::vector<std::vector<int>> getTurtleWalkingSprites();
+    static std::vector<std::vector<int>> getTurtleAttackingSprites();
+    static std::vector<std::vector<int>> getTurtleDyingSprites();
+    // Schwartzenguard
+    static std::vector<std::vector<int>> getSchwartzenguardWalkingSprites();
+    static std::vector<std::vector<int>> getSchwartzenguardAttackingSprites();
+    static std::vector<std::vector<int>> getSchwartzenguardDyingSprites();
+    // YellowMons
+    static std::vector<std::vector<int>> getYellowMonsWalkingSprites();
+    static std::vector<std::vector<int>> getYellowMonsAttackingSprites();
+    static std::vector<std::vector<int>> getYellowMonsDyingSprites();
+    // Players Sprites
+    // Jazz
+    static std::vector<std::vector<int>> getJazzWalkingSprites();
+    static std::vector<std::vector<int>> getJazzRunningSprites();
+    static std::vector<std::vector<int>> getJazzShootingSprites();
+    static std::vector<std::vector<int>> getJazzJumpingSprites();
+    static std::vector<std::vector<int>> getJazzDashingSprites();
+    // Spaz
+    static std::vector<std::vector<int>> getSpazWalkingSprites();
+    static std::vector<std::vector<int>> getSpazRunningSprites();
+    static std::vector<std::vector<int>> getSpazShootingSprites();
+    static std::vector<std::vector<int>> getSpazJumpingSprites();
+    // Lori
+    static std::vector<std::vector<int>> getLoriWalkingSprites();
+    static std::vector<std::vector<int>> getLoriRunningSprites();
+    static std::vector<std::vector<int>> getLoriShootingSprites();
+    static std::vector<std::vector<int>> getLoriJumpingSprites();
+    // Items Sprites
+    static std::vector<std::vector<int>> getRedGemSprites();
+    static std::vector<std::vector<int>> getGoldCoinSprites();
+    static std::vector<std::vector<int>> getSilverCoinSprites();
+    // Projectiles
+    static std::vector<std::vector<int>> getNormalProjectileSprites();
+    static std::vector<std::vector<int>> getBlueBulletSprites();
+    static std::vector<std::vector<int>> getVioletBulletSprites();
+    static std::vector<std::vector<int>> getRedBombSprites();
+    static std::vector<std::vector<int>> getVioletBombSprites();
+    // Projectile fire
+    static int getFireX();
+    static int getFireY();
+    static int getFireWidth();
+    static int getFireHeight();
     // Sprites
     static std::vector<std::vector<std::pair<int, int>>> getJazzSelectNameSprites();
     static std::vector<std::vector<std::pair<int, int>>> getJazzSelectSprites();
