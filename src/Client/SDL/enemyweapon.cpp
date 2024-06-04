@@ -49,30 +49,23 @@ void EnemyWeapon::activate(int pos_x, int pos_y, int flip) {
     }
 }
 
-std::list<Sprite>::iterator EnemyWeapon::weapon_coords() {
-    std::list<Sprite>::iterator it = this->sprites.begin();
-    for (int i = 0; i < this->count; i++) {
-        ++it;
-        if (it == this->sprites.end()) {
-            it = this->sprites.begin();
-        }
-    }
-    return it;
-}
-
-bool EnemyWeapon::draw_weapon(SDL2pp::Renderer& renderer, SDL2pp::Texture& weapon) {
+bool EnemyWeapon::draw_weapon(SDL2pp::Window& window, SDL2pp::Renderer& renderer, SDL2pp::Texture& weapon) {
     if (this->activated) {
-        std::list<Sprite>::iterator it = weapon_coords();
-        int weapon_pixel_x = it->x;
-        int weapon_pixel_w = it->width;
-        int weapon_pixel_y = it->y;
-        int weapon_pixel_h = it->height;
+        std::list<RectangularSprite>::iterator it = weapon_coords();
+        int weapon_pixel_x = it->getX();
+        int weapon_pixel_w = it->getWidth();
+        int weapon_pixel_y = it->getY();
+        int weapon_pixel_h = it->getHeight();
 
         renderer.Copy(weapon,
                       SDL2pp::Rect(weapon_pixel_x, weapon_pixel_y, weapon_pixel_w, weapon_pixel_h),
                       SDL2pp::Rect(this->x, this->y, this->width, this->height), 0.0,
                       SDL2pp::NullOpt, this->flip);
-					  
+	}
+	return this->activated;
+
+}
+
 std::list<RectangularSprite>::iterator EnemyWeapon::weapon_coords() {
 	std::list<RectangularSprite>::iterator it = this->sprites.begin();
 	for (int i = 0; i < this->count; i++) {
@@ -90,5 +83,5 @@ std::list<RectangularSprite>::iterator EnemyWeapon::weapon_coords() {
         }
         this->count++;
     }
-    return this->activated;
+	return it;
 }

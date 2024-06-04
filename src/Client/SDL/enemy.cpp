@@ -163,10 +163,10 @@ void Enemy::draw_enemy(SDL2pp::Window& window, SDL2pp::Renderer& renderer, SDL2p
 		this->weapon.activate((this->flip == 0) ? this->pos_x + this->draw_width : this->pos_x, this->pos_y + this->draw_height / 2, this->flip);	
 	}
 	std::list<RectangularSprite>::iterator it = enemy_img_coords(mov_type, this->count); 
-	int enemy_pixel_x = it->x;
-	int enemy_pixel_w = it->width;
-	int enemy_pixel_y = it->y;
-	int enemy_pixel_h = it->height;
+	int enemy_pixel_x = it->getX();
+	int enemy_pixel_w = it->getWidth();
+	int enemy_pixel_y = it->getY();
+	int enemy_pixel_h = it->getHeight();
 
 	renderer.Copy(enemy, SDL2pp::Rect(enemy_pixel_x, enemy_pixel_y, enemy_pixel_w, enemy_pixel_h), SDL2pp::Rect(this->pos_x, this->pos_y, this->draw_width, this->draw_height), 0.0, SDL2pp::NullOpt, this->flip);
 	

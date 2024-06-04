@@ -57,7 +57,6 @@ void GameScreen::run() {
 	SDL2pp::Texture items(renderer, itemsSurface);
 	
 	
->>>>>>> qt-lobby
 
     SDL2pp::Renderer renderer(window, -1, SDL_RENDERER_ACCELERATED);
     SDL2pp::Texture background(renderer, "../assets/Tilesets/BeachWorld-1.png");  // FONDO DE PRUEBA
@@ -239,10 +238,10 @@ void GameScreen::run() {
 		}
 		
 		it = this->pj.img_coords(mov, count);
-		pixel_x = it->x;
-		pixel_y = it->y;
-		pixel_width = it->width;
-		pixel_height = it->height;
+		pixel_x = it->getX();
+		pixel_y = it->getY();
+		pixel_width = it->getWidth();
+		pixel_height = it->getHeight();
 			
 		
 		
