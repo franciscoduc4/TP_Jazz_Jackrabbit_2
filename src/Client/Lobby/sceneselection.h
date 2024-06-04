@@ -4,10 +4,10 @@
 #include <QMainWindow>
 #include <QVBoxLayout>
 
-#include "scenespriteswidget.h"
+#include "../Monitors/QTMonitor.h"
+#include "../Protocol/lobbyMessage.h"
 
-#include "../Client/QTMonitor.h"
-#include "../Client/lobbyMessage.h"
+#include "scenespriteswidget.h"
 
 namespace Ui {
 class SceneSelection;

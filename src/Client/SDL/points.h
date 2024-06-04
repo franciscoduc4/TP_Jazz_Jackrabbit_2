@@ -1,9 +1,10 @@
-#include "../sprite.h"
-
-#include <SDL2pp/SDL2pp.hh>
+#include <list>
 #include <map>
 #include <vector>
-#include <list>
+
+#include <SDL2pp/SDL2pp.hh>
+
+#include "../../Common/sprite.h"
 
 class Points {
 	std::map<int, std::list<RectangularSprite>> sprites;

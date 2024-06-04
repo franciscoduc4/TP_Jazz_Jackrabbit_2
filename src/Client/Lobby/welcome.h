@@ -4,8 +4,8 @@
 #include <QMainWindow>
 #include <QMessageBox>
 
-#include "../Client/QTMonitor.h"
-#include "../Client/lobbyMessage.h"
+#include "../Monitors/QTMonitor.h"
+#include "../Protocol/lobbyMessage.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class Welcome; }

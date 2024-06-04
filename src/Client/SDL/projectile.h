@@ -1,12 +1,13 @@
 #ifndef PROJECTILE
 #define PROJECTILE
 
-#include <SDL2pp/SDL2pp.hh>
-#include "../sprite.h"
-
-#include <map>
 #include <list>
+#include <map>
 #include <vector>
+
+#include <SDL2pp/SDL2pp.hh>
+
+#include "../../Common/sprite.h"
 
 class Projectile {
 	int type;

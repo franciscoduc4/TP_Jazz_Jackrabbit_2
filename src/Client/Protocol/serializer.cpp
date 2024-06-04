@@ -5,63 +5,40 @@
 #include <vector>
 #include <cstdint>
 
+Serialize::Serializer(std::shared_ptr<Queue<DTO>>& queue): queue(queue) {}
 
-bool Serializer::msg_create_game(uint8_t& episode, uint8_t& gameMode, uint8_t& maxPlayers, uint8_t& character, uint8_t& lengthName, std::vector<char>& name) {
-	bool was_closed = false;
-	uint8_t createGame = CREATE_GAME;
-	skt->sendall(&createGame, sizeof(uint8_t), &was_closed);
-	skt->sendall(&episode, sizeof(uint8_t), &was_closed);
-	skt->sendall(&gameMode, sizeof(uint8_t), &was_closed);
-	skt->sendall(&maxPlayers, sizeof(uint8_t), &was_closed);
-	skt->sendall(&character, sizeof(uint8_t), &was_closed);
-	skt->sendall(&lengthName, sizeof(uint8_t), &was_closed);
-	skt->sendall(&createGame, sizeof(char) * lengthName, &was_closed);
-	
-	return was_closed;
+void Serializer::msg_create_game(int32_t& playerId, uint8_t& episode, uint8_t& gameMode, int& maxPlayers, uint8_t& character, std::vector<char>& name) {
 
+    CreateGameDTO createGame(playerId, episode, gameMode, maxPlayers, character, name);
+    queue.push(createGame);
 }
 
 
-bool Serializer::msg_move(uint8_t& mov_type) {
-	bool was_closed = false; 
-	uint8_t move = MOVE;
-	skt->sendall(&move, sizeof(uint8_t), &was_closed);
-	
-	skt->sendall(&mov_type, sizeof(uint8_t), &was_closed); 
-	return was_closed;	
+void Serializer::msg_move(int32_t& playerId, uint8_t& mov_type) {
+	MoveDTO move(playerId, mov_type);
+    queue.push(move);
 }
 	
-bool Serialize::msg_shoot() {
-	bool was_closed = false; 
-	uint8_t shoot = SHOOT;
-	skt->sendall(&shoot, sizeof(uint8_t), &was_closed);
-	
-	return was_closed;	
+void Serializer::msg_shoot(int32_t& playerId) {
+    CommandDTO shoot(playerId, Command::SHOOT);
+    queue.push(shoot);
+
 }
 
-bool Serialize::msg_jump() {
-	bool was_closed = false; 
-	uint8_t jump = JUMP;
-	skt->sendall(&jump, sizeof(uint8_t), &was_closed);
-	
-	return was_closed;
+void Serialize::msg_jump(int32_t& playerId) {
+	CommandDTO jump(playerId, Command::JUMP);
+    queue.push(jump);
 }
 
 
-bool Serialize::msg_run() {
-	bool was_closed = false; 
-	uint8_t run = RUN;
-	skt->sendall(&run, sizeof(uint8_t), &was_closed);
-	
-	return was_closed;
+void Serialize::msg_run(int32_t& playerId) {
+	CommandDTO run(playerId, Command::RUN);
+    queue.push(run);
 }
 
-bool Serialize::msg_dash() {
-	bool was_closed = false; 
-	uint8_t dash = DASH;
-	skt->sendall(&dash, sizeof(uint8_t), &was_closed);
-	
-	return was_closed;
+void Serialize::msg_dash(int32_t& playerId) {
+    CommandDTO dash(playerId, Command::DASH);
+    queue.push(dash);
 }
 
 

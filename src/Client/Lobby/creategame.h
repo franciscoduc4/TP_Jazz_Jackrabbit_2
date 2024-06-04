@@ -2,8 +2,9 @@
 #define CREATEGAME_H
 
 #include <QMainWindow>
-#include "../Client/QTMonitor.h"
-#include "../Client/lobbyMessage.h"
+
+#include "../Monitors/QTMonitor.h"
+#include "../Protocol/lobbyMessage.h"
 
 namespace Ui {
 class CreateGame;

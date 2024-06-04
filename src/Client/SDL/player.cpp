@@ -1,14 +1,16 @@
 #include "player.h"
-#include "../sprite.h"
-#include "projectile.h"
-
-#include <string>
-#include <map>
-#include <iterator>
-#include <vector>
-#include <SDL2pp/SDL2pp.hh>
 
 #include <iostream>
+#include <iterator>
+#include <map>
+#include <string>
+#include <vector>
+
+#include <SDL2pp/SDL2pp.hh>
+
+#include "../../Common/sprite.h"
+
+#include "projectile.h"
 
 enum character_type { Jazz, Lori, Spaz };
 enum type_mov { Walk, Shoot, Run, Jump, Dash };

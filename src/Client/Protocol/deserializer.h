@@ -1,4 +1,5 @@
 #include "../Common/socket.h"
+#include "../Common/DTO/dto.h"
 
 #include <map>
 #include <vector>
@@ -7,15 +8,13 @@
 
 class Deserializer {
 private:
-	std::shared_ptr<Socket> skt;
 
-	std::unique_ptr<GameDTO> show_snapshot(bool& was_closed)
-	
-	
-public:
-	explicit Deserializer(std::shared_ptr<Socket> socket);
+public
+	void deserialize_msg(DTO& dto);
 
-	std::unique_ptr<CommandDTO> deserializar_msg();
-	
-	
+    void lobby_msg(DTO& dto);
+
+    void command_msg(DTO& dto);
+
+    void show_snapshot(DTO& dto);
 }

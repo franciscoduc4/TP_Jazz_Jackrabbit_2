@@ -1,14 +1,15 @@
 #include "gamescreen.h"
-#include "projectile.h"
-#include "../sprite.h"
 
-#include <SDL2pp/SDL2pp.hh>
-
+#include <iostream>
 #include <iterator>
 #include <map>
 #include <vector>
 
-#include <iostream>
+#include <SDL2pp/SDL2pp.hh>
+
+#include "../../Common/sprite.h"
+
+#include "projectile.h"
 
 GameScreen::GameScreen(int character, std::string map): pj(character), turtle(0, 0, 200), schartz_guard(1, 0, 400), yellowM(2, 0, 100), points(0) {
 	

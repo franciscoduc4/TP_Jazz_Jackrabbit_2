@@ -1,8 +1,10 @@
 #include "enemyweapon.h"
-#include "../sprite.h"
+
+#include <list>
 
 #include <SDL2pp/SDL2pp.hh>
-#include <list>
+
+#include "../../Common/sprite.h"
 
 enum weapon_type { NoneWeapon, MangualWeapon, BombWeapon };
 

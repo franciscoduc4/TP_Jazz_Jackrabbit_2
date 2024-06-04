@@ -1,7 +1,8 @@
 #include "projectile.h"
-#include "../sprite.h"
 
 #include <SDL2pp/SDL2pp.hh>
+
+#include "../../Common/sprite.h"
 
 
 enum projectile_type { Normal, BlueBullet, VioletBullet, RedBomb, VioletBomb };

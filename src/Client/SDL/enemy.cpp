@@ -1,5 +1,7 @@
 #include "enemy.h"
-#include "../sprite.h"
+
+#include "../../Common/sprite.h"
+
 #include "enemyweapon.h"
 
 enum type_enemies { Turtle, Schartzen, YellowMons };
