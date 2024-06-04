@@ -45,7 +45,7 @@ std::unique_ptr<State> IdleState::jump(Character& character, float time) {
 }
 
 std::unique_ptr<State> IdleState::specialAttack(Character& character, float time) {
-    return std::make_unique<SpecialAttackState>();
+    return std::make_unique<SpecialAttackState>(time);
 }
 
 std::unique_ptr<State> IdleState::becomeIntoxicated(Character& character, float duration) {

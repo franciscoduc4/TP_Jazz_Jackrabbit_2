@@ -1,4 +1,7 @@
-#include "../client.h"
+// #include "client.h"
+
+
+class Client;
 
 class LobbyInit {
 public:

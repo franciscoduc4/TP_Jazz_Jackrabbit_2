@@ -28,6 +28,8 @@ find_package(yaml-cpp REQUIRED)
 find_package(fmt REQUIRED)
 
 # Add subdirectories
+add_subdirectory(./extlibs/libsdl2pp)
+
 add_subdirectory(src/Common)
 add_subdirectory(src/Server)
 add_subdirectory(src/Client)

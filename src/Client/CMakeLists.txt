@@ -1,7 +1,6 @@
 set(SDL2PP_WITH_IMAGE ON)
 set(SDL2PP_WITH_MIXER ON)
 set(SDL2PP_WITH_TTF ON)
-add_subdirectory(${CMAKE_SOURCE_DIR}/extlibs/libsdl2pp ${CMAKE_SOURCE_DIR}/build/lib/libsdl2pp)
 
 # List of source files for gameview
 set(GAMEVIEW_SOURCES
@@ -24,7 +23,8 @@ set(GAMEVIEW_SOURCES
 
 add_library(gameview ${GAMEVIEW_SOURCES})
 
-target_include_directories(gameview PUBLIC ${PROJECT_SOURCE_DIR}/extlibs/libsdl2pp)
+target_include_directories(gameview PRIVATE ${PROJECT_SOURCE_DIR}/src/Client/Lobby)
+# target_include_directories(gameview PUBLIC ${PROJECT_SOURCE_DIR}/extlibs/libsdl2pp)
 target_include_directories(gameview PRIVATE ${PROJECT_SOURCE_DIR}/src/Client)
 target_link_libraries(gameview PUBLIC SDL2pp)
 target_compile_definitions(gameview PUBLIC ASSETS_PATH="${VARDIR}/assets/")
