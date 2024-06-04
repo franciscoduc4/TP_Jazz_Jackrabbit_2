@@ -1,25 +1,27 @@
 #ifndef CHARACTERSELECTIONWIDGET_H
 #define CHARACTERSELECTIONWIDGET_H
 
+#include <QBitmap>
+#include <QGraphicsPixmapItem>
+#include <QGraphicsScene>
+#include <QGraphicsView>
 #include <QKeyEvent>
 #include <QVBoxLayout>
-#include <QGraphicsView>
-#include <QGraphicsScene>
-#include <QGraphicsPixmapItem>
-#include <QBitmap>
+
 #include "../../../Common/Config/ClientConfig.h"
-#include "../../../Common/sprite.h"
 #include "../../../Common/Types/character.h"
+#include "../../../Common/sprite.h"
 
 struct CharacterData {
     std::function<std::vector<Sprite>()> nameSpritesGetter;
     std::function<std::vector<Sprite>()> characterSpritesGetter;
 
-    CharacterData(std::function<std::vector<Sprite>()> nameGetter, std::function<std::vector<Sprite>()> characterGetter)
-        : nameSpritesGetter(nameGetter), characterSpritesGetter(characterGetter) {}
+    CharacterData(std::function<std::vector<Sprite>()> nameGetter,
+                  std::function<std::vector<Sprite>()> characterGetter):
+            nameSpritesGetter(nameGetter), characterSpritesGetter(characterGetter) {}
 };
 
-class CharacterSelectionWidget : public QWidget {
+class CharacterSelectionWidget: public QWidget {
     Q_OBJECT
 
 public:

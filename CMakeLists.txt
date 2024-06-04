@@ -36,6 +36,7 @@ find_package(fmt REQUIRED)
 # Incluir subdirectorios
 add_subdirectory(src)
 # add_subdirectory(Tests)
+add_subdirectory(./extlibs/libsdl2pp)
 
 # if (TESTING)
 #     enable_testing()

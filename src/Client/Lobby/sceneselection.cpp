@@ -1,32 +1,29 @@
 #include "sceneselection.h"
+
+#include "../Common/Config/ClientConfig.h"
+#include "../Common/Types/episode.h"
+
+#include "creategame.h"
 #include "ui_sceneselection.h"
 
-#include "../Common/Constants/episodeSelect.h"
-#include "../Common/Config/clientConfig.h"
-#include "creategame.h"
-
-SceneSelection::SceneSelection(QWidget *parent, Client& client, LobbyMessage& msg, bool& clientJoinedGame) :
-    QMainWindow(parent),
-    ui(new Ui::SceneSelection),
-    client(client),
-    msg(msg),
-    clientJoinedGame(clientJoinedGame)
-    sceneSpritesWidget(new SceneSpritesWidget(nullptr, ClientConfig::getEpisodesColourKey()))
-{
+SceneSelection::SceneSelection(QWidget* parent, Client& client, LobbyMessage& msg,
+                               bool& clientJoinedGame):
+        QMainWindow(parent),
+        ui(new Ui::SceneSelection),
+        client(client),
+        msg(msg),
+        clientJoinedGame(clientJoinedGame),
+        sceneSpritesWidget(new SceneSpritesWidget(nullptr, ClientConfig::getEpisodesColourKey())) {
     ui->setupUi(this);
     QVBoxLayout* layout = new QVBoxLayout(ui->widgetScenes);
     layout->addWidget(sceneSpritesWidget);
 }
 
-SceneSelection::~SceneSelection()
-{
-    delete ui;
-}
+SceneSelection::~SceneSelection() { delete ui; }
 
-void SceneSelection::on_btnChoose_clicked()
-{
-    size_t selection = sceneSpritesWidget->getCurrentSprite();
-    EpisodeSelect episode = static_cast<EpisodeSelect>(selection + 1);
+void SceneSelection::on_btnChoose_clicked() {
+    size_t selection = sceneSpritesWidget->getCurrentSpriteIndex();
+    Episode episode = static_cast<Episode>(selection + 1);
     this->msg.setEpisode(episode);
     CreateGame* cg = new CreateGame(this, this->client, this->msg, this->clientJoinedGame);
     cg->show();
@@ -34,13 +31,11 @@ void SceneSelection::on_btnChoose_clicked()
 }
 
 
-void SceneSelection::on_btnBack_clicked()
-{
-    this->msg.setEpisode(EpisodeSelect::INVALID);
+void SceneSelection::on_btnBack_clicked() {
+    this->msg.setEpisode(Episode::INVALID);
     QWidget* parent = this->parentWidget();
-    if (parent){
+    if (parent) {
         parent->show();
     }
     this->close();
 }
-

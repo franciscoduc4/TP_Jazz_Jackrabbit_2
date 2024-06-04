@@ -1,18 +1,7 @@
 #include "./client.h"
-#include "../Common/socket.h"
-#include "./Threads/senderThread.h"
-#include "./Threads/receiverThread.h"
-#include "./Threads/cmdReaderThread.h"
-#include "./Protocol/serializer.h"
-#include "./Protocol/deserializer.h"
-#include "Lobby/lobbyInit.h"
-
-#include "../Client/SDL/gamescreen.h"
-#include "../Common/DTO/game.h"
-#include "../Common/Types/command.h"
 
 
-Client::Client(char* ip, char* port) :
+Client::Client(char* ip, char* port):
         ip(ip),
         port(port),
         skt(std::make_shared<Socket>(ip, port)),
@@ -24,7 +13,7 @@ Client::Client(char* ip, char* port) :
         serializer(this->sender),
         cmdReader(this->serializer, this->playerCmdsQueue),
         deserializer(),
-        receiver(this->skt, this->deserializer){
+        receiver(this->skt, this->deserializer) {
     this->sender.start();
     this->receiver.start();
     this->cmdReader.start();
@@ -47,9 +36,7 @@ void Client::start() {
     } while (clientJoinedGame);
 }
 
-DTO Client::getServerMsg() {
-    return receiverQueue.pop();
-}
+DTO Client::getServerMsg() { return receiverQueue.pop(); }
 
 void Client::sendMsg(Command& cmd, std::vector<uint8_t>& parameters) {
     switch (cmd) {

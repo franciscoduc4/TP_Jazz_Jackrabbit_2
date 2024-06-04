@@ -1,23 +1,24 @@
 #ifndef DESERIALIZER_H
 #define DESERIALIZER_H
 
-#include "../Common/socket.h"
+#include <cstdint>
+#include <map>
+#include <memory>
+#include <vector>
+
 #include "../Common/DTO/dto.h"
 #include "../Common/queue.h"
-
-#include <map>
-#include <vector>
-#include <cstdint>
-#include <memory>
+#include "../Common/socket.h"
 
 
 class Deserializer {
 private:
-    std::shared_ptr<Queue<DTO>>& queue;
-public:
-    Deserializer(std::shared_ptr<Queue<DTO>>& queue);
+    std::shared_ptr<Queue<std::unique_ptr<DTO>>>& queue;
 
-	void deserialize_msg(DTO& dto);
+public:
+    Deserializer(std::shared_ptr<Queue<std::unique_ptr<DTO>>>& queue);
+
+    void deserialize_msg(std::unique_ptr<DTO>& dto);
 };
 
 #endif
