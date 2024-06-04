@@ -8,13 +8,9 @@
 
 class Deserializer {
 private:
-
+    std::shared_ptr<Queue<DTO>>& queue;
 public
-	void deserialize_msg(DTO& dto);
+    Deserializer(std::shared_ptr<Queue<DTO>>& queue);
 
-    void lobby_msg(DTO& dto);
-
-    void command_msg(DTO& dto);
-
-    void show_snapshot(DTO& dto);
+	void deserialize_msg();
 }

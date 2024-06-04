@@ -2,6 +2,7 @@
 #include "ui_sceneselection.h"
 
 #include "../Common/Constants/episodeSelect.h"
+#include "../Common/Config/clientConfig.h"
 #include "creategame.h"
 
 SceneSelection::SceneSelection(QWidget *parent, Client& client, LobbyMessage& msg, bool& clientJoinedGame) :
@@ -10,7 +11,7 @@ SceneSelection::SceneSelection(QWidget *parent, Client& client, LobbyMessage& ms
     client(client),
     msg(msg),
     clientJoinedGame(clientJoinedGame)
-    sceneSpritesWidget(new SceneSpritesWidget)
+    sceneSpritesWidget(new SceneSpritesWidget(nullptr, ClientConfig::getEpisodesColourKey()))
 {
     ui->setupUi(this);
     QVBoxLayout* layout = new QVBoxLayout(ui->widgetScenes);

@@ -2,7 +2,7 @@
 #include "ui_characterselection.h"
 
 #include "../Common/Constants/lobbyCommands.h"
-#include "../Common/Constants/characterSelect.h"
+#include "../../Common/Types/character.h"
 
 #include "waitingroom.h"
 #include "gamelist.h"
@@ -27,7 +27,8 @@ CharacterSelection::~CharacterSelection()
 
 void CharacterSelection::on_btnChoose_clicked()
 {
-    // this->msg.setCharacter(CharacterSelection::);
+    this->msg.setCharacter(characterSelectionWidget->getCurrentCharacter());
+    this->client.sendCharacterSelection(this->msg);
     if (this->msg.isCreateGame()) {
         WaitingRoom* wr = new WaitingRoom(this, this->client, this->msg, this->clientJoinedGame);
         wr->show();
@@ -38,7 +39,7 @@ void CharacterSelection::on_btnChoose_clicked()
         this->close();
     } else {
         // Este caso no debería suceder.
-        QMessageBox::warning(this, "Ocurrió un error inesperado.");
+        QMessageBox::warning(this, "Ocurrió un error inesperado.", "Error");
         return;
     }
 }

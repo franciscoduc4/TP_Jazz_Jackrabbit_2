@@ -2,4 +2,4 @@
     <qresource prefix="/">
         assets/*
     </qresource>
-<RCC/>
+</RCC>
