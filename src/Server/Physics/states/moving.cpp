@@ -85,10 +85,27 @@ std::unique_ptr<State> MovingState::becomeIntoxicated(Character& character, floa
 
 std::unique_ptr<State> MovingState::specialAttack(Character& character, float time) {
     // Cambia al estado de ataque especial
+    return nullptr; 
+}
+std::unique_ptr<State> MovingState::jump(Character& character, float time) {
+//     // Cambia al estado de salto
+//     return std::unique_ptr<JumpingState>();
     return nullptr;
 }
 
 std::unique_ptr<State> MovingState::stopAction() {
     // Cambia al estado inactivo
     return std::unique_ptr<IdleState>();
+}
+
+std::unique_ptr<State> MovingState::sprint(Character& character, float time) {
+    return nullptr;
+}
+
+std::unique_ptr<State> MovingState::revive(Character& character, float time) {
+    return nullptr;
+}
+
+std::unique_ptr<State> MovingState::specialAttack(Character& character, float time) {
+    return nullptr;
 }

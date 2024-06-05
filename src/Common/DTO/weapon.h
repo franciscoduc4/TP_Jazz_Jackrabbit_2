@@ -16,16 +16,20 @@ private:
     int damage;
     int ammo;
 
-public:
-    WeaponDTO(uint8_t weaponId, uint16_t x, uint16_t y, int damage, int ammo);
-    uint16_t getX() const;
-    uint16_t getY() const;
-    uint8_t getWeaponId() const;
-    int getShootSpeed() const;
-    std::unique_ptr<BulletDTO> getBullet() const;
-    int getDamage() const;
-    int getAmmo() const;
-    void setAmmo(int ammo);
+
+    public:
+        WeaponDTO(uint8_t weaponId, uint16_t x, uint16_t y, int damage, 
+        int ammo, const Sprite& currentSprite);
+        uint16_t getX() const;
+        uint16_t getY() const;
+        uint8_t getWeaponId() const;
+        Sprite getSprite() const;
+        int getShootSpeed() const;
+        std::unique_ptr<BulletDTO> getBullet() const;
+        int getDamage() const;
+        int getAmmo() const;
+        void setAmmo(int ammo);
+
 };
 
 #endif  // WEAPON_H_

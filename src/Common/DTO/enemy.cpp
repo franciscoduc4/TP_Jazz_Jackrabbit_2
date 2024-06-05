@@ -7,6 +7,7 @@ EnemyDTO::EnemyDTO(uint16_t x, uint16_t y, uint32_t enemy_id, int health, int da
 uint32_t EnemyDTO::getEnemyId() const { return enemy_id; }
 uint16_t EnemyDTO::getX() const { return x; }
 uint16_t EnemyDTO::getY() const { return y; }
+
 int EnemyDTO::getHealth() const { return health; }
 int EnemyDTO::getDamage() const { return damage; }
 int EnemyDTO::getSpeed() const { return speed; }

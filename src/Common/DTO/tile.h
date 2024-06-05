@@ -16,6 +16,7 @@ public:
     uint16_t getX() const;
     uint16_t getY() const;
     Sprite getSprite() const;
+
 };
 
 #endif  // TILE_DTO_H_
