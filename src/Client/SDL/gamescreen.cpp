@@ -10,7 +10,7 @@
 #include "../../Common/sprite.h"
 #include "projectile.h"
 
-GameScreen::GameScreen(int character, Queue<GameDTO>& cola):
+GameScreen::GameScreen(int character):
         pj(character), turtle(0, 0, 200), schartz_guard(1, 0, 400), yellowM(2, 0, 100), points(0) {}
 
 void GameScreen::run() {
@@ -96,6 +96,8 @@ void GameScreen::run() {
 
     int flip = 0;
 
+	int x_screen = 0;
+	int y_screen = 0;
     int pixel_x_screen = 0;
     int pixel_y_screen = 0;
     int pixel_width_screen = 200;
@@ -271,6 +273,7 @@ void GameScreen::run() {
             } else {
                 pixel_x_screen += dir_x;
             }
+            x_screen = (dir_x * speed_run);
         } else {
             pos_x += (dir_x * speed_run);
         }
@@ -284,33 +287,38 @@ void GameScreen::run() {
             } else {
                 pixel_y_screen += dir_y;
             }
+            y_screen = dir_y;
         } else {
             pos_y += dir_y;
         }
 
-        renderer.Clear();
+		renderer.Clear();
 
         renderer.Copy(background,
                       SDL2pp::Rect(pixel_x_screen, pixel_y_screen, pixel_width_screen,
                                    pixel_height_screen),
                       SDL2pp::Rect(0, 0, window_width, window_height));
-
+		
         SDL2pp::Rect player_rect = SDL2pp::Rect(pos_x, pos_y, 50, 80);
-
-        this->points.verify_point_obtained(player_rect);
-
+		
+		this->points.verify_point_obtained(player_rect);
+		
         renderer.Copy(jazz_sprite, SDL2pp::Rect(pixel_x, pixel_y, pixel_width, pixel_height),
                       player_rect, 0.0, SDL2pp::NullOpt, flip);
-
+		
         this->pj.draw_projectiles(window, renderer, projectile);
 
-        this->turtle.draw_enemy(window, renderer, turtle_enemy, 0);
+		
+        this->turtle.draw_enemy(window, renderer, turtle_enemy, 0, x_screen, y_screen);
 
-        this->schartz_guard.draw_enemy(window, renderer, schartzenguard, 1);
+        this->schartz_guard.draw_enemy(window, renderer, schartzenguard, 1, x_screen, y_screen);
 
-        this->yellowM.draw_enemy(window, renderer, yellowMonster, 0);
+        this->yellowM.draw_enemy(window, renderer, yellowMonster, 0, x_screen, y_screen);
 
-        this->points.draw_points(renderer, items);
+        this->points.draw_points(renderer, items, x_screen, y_screen);
+
+		x_screen = 0;
+		y_screen = 0;
 
         renderer.Present();
 
