@@ -1,6 +1,6 @@
 #include "player.h"
 
-PlayerDTO::PlayerDTO(uint16_t x, uint16_t y, uint32_t playerId, int health, int damage, int speed):
+PlayerDTO::PlayerDTO(uint16_t x, uint16_t y, uint32_t playerId, int health, int damage, int speed, WeaponDTO currentWeapon):
         x(x),
         y(y),
         player_id(playerId),
@@ -10,7 +10,7 @@ PlayerDTO::PlayerDTO(uint16_t x, uint16_t y, uint32_t playerId, int health, int 
         playerIsAlive(true),
         respawnTime(0),
         weapons(),
-        currentWeapon(0, 0, 0, 0, 0) {}
+        currentWeapon(currentWeapon) {}
 
 
 uint32_t PlayerDTO::getPlayerId() const { return player_id; }

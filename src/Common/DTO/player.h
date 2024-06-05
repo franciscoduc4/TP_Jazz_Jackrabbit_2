@@ -22,7 +22,7 @@ private:
     WeaponDTO currentWeapon;
 
 public:
-    PlayerDTO(uint16_t x, uint16_t y, uint32_t player_id, int health, int damage, int speed);
+    PlayerDTO(uint16_t x, uint16_t y, uint32_t player_id, int health, int damage, int speed, WeaponDTO currentWeapon);
     uint32_t getPlayerId() const;
     uint16_t getX() const;
     uint16_t getY() const;

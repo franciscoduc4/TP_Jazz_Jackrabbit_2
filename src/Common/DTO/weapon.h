@@ -5,6 +5,7 @@
 
 #include "bullet.h"
 #include "gameElement.h"
+#include "../sprite.h"
 
 class WeaponDTO: public GameElementDTO {
 private:
@@ -19,7 +20,7 @@ private:
 
     public:
         WeaponDTO(uint8_t weaponId, uint16_t x, uint16_t y, int damage, 
-        int ammo, const Sprite& currentSprite);
+        int ammo);
         uint16_t getX() const;
         uint16_t getY() const;
         uint8_t getWeaponId() const;

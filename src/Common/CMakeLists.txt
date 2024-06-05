@@ -69,7 +69,7 @@
 
 # target_include_directories(common PUBLIC ${PROJECT_SOURCE_DIR}/src/Common)
 # src/Common/CMakeLists.txt
-file(GLOB COMMON_SOURCES
+file(GLOB_RECURSE COMMON_SOURCES
     ${PROJECT_SOURCE_DIR}/src/Common/*.cpp
     ${PROJECT_SOURCE_DIR}/src/Common/*.h
 )

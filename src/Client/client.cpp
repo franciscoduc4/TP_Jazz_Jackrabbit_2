@@ -30,7 +30,9 @@ void Client::start() {
         }
 
         // TODO: Continue with SDL.
-        GameScreen game(0, "");
+        Queue<GameDTO> queue;
+
+        GameScreen game(0, queue);
         game.run();
 
     } while (clientJoinedGame);

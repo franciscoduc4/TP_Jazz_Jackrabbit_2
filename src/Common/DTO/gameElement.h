@@ -19,13 +19,13 @@ private:
 
 
 public:
-    /*
+    
     GameElementDTO();
 
     explicit GameElementDTO(ElementType element);
 
     GameElementDTO(int32_t& playerId, ElementType element);
-    */
+    
 
     ElementType getElementType() const;
 

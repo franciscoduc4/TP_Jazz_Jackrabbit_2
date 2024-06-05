@@ -10,7 +10,7 @@
 #include "../../Common/sprite.h"
 #include "projectile.h"
 
-GameScreen::GameScreen(int character, std::string map):
+GameScreen::GameScreen(int character, Queue<GameDTO>& cola):
         pj(character), turtle(0, 0, 200), schartz_guard(1, 0, 400), yellowM(2, 0, 100), points(0) {}
 
 void GameScreen::run() {

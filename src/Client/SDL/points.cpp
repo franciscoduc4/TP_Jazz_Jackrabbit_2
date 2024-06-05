@@ -177,4 +177,5 @@ void Points::verify_point_obtained(SDL2pp::Rect& player_rect) {
         this->silvercoin.erase(it);
         return;
     }
+    }
 }
