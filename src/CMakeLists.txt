@@ -48,26 +48,22 @@ add_executable(client ${CLIENT_SOURCES})
 target_link_libraries(client common Qt5::Widgets Qt5::Core SDL2 SDL2pp SDL2_image yaml-cpp fmt::fmt -pthread)
 target_include_directories(client PUBLIC ${PROJECT_SOURCE_DIR}/src/Common)
 
-# set(UI_FILES
-#         ${PROJECT_SOURCE_DIR}/src/Client/charactereselection.ui
-#         ${PROJECT_SOURCE_DIR}/src/Client/creategame.ui
-#         ${PROJECT_SOURCE_DIR}/src/Client/gamelist.ui
-#         ${PROJECT_SOURCE_DIR}/src/Client/lobby.ui
-#         ${PROJECT_SOURCE_DIR}/src/Client/sceneselection.ui
-#         ${PROJECT_SOURCE_DIR}/src/Client/waitingroom.ui
-#         ${PROJECT_SOURCE_DIR}/src/Client/welcomes.ui
-# )
+set(UI_FILES
+        ${PROJECT_SOURCE_DIR}/src/Client/charactereselection.ui
+        ${PROJECT_SOURCE_DIR}/src/Client/creategame.ui
+        ${PROJECT_SOURCE_DIR}/src/Client/gamelist.ui
+        ${PROJECT_SOURCE_DIR}/src/Client/lobby.ui
+        ${PROJECT_SOURCE_DIR}/src/Client/sceneselection.ui
+        ${PROJECT_SOURCE_DIR}/src/Client/waitingroom.ui
+        ${PROJECT_SOURCE_DIR}/src/Client/welcomes.ui
+)
 
-# qt5_wrap_ui(UIS_HEADERS ${UI_FILES})
+qt5_wrap_ui(UIS_HEADERS ${UI_FILES})
 
 target_include_directories(client PUBLIC ${CMAKE_CURRENT_BINARY_DIR})
 
-#
-# set_target_properties(client
-#     PROPERTIES
-#     RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}
-# )
-
-#add_subdirectory("extlibs/libsdl2pp")
-
-#add_executable(main.cpp SDL2PP)
+set_target_properties(client
+    PROPERTIES
+    RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}
+)
+add_executable(main.cpp)
