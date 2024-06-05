@@ -10,7 +10,7 @@
 #include "../Common/socket.h"
 #include "./Protocol/deserializer.h"
 #include "./Protocol/serializer.h"
-#include "./Threads/cmdReaderThread.h"
+// #include "./Threads/cmdReaderThread.h"
 #include "./Threads/receiverThread.h"
 #include "./Threads/senderThread.h"
 #include "Lobby/lobbyInit.h"

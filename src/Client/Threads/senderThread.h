@@ -17,7 +17,6 @@ private:
 public:
     SenderThread(std::shared_ptr<Queue<std::unique_ptr<DTO>>>& queue, std::shared_ptr<Socket>& socket, std::atomic<bool>& was_closed);
     void run() override;
-    void stop();
     ~SenderThread();
 };
 

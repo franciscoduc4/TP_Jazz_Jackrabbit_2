@@ -37,6 +37,9 @@ void GameList::joinGame(const QString& gameName) {
     // this->close();
 }
 
+void GameList::on_btnJoin_clicked() {
+    // Do Something.
+}
 
 void GameList::on_btnBack_clicked() {
     this->msg.setGameName("");

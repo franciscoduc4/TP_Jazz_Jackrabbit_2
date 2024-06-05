@@ -2,7 +2,6 @@
 
 # Incluir directorios de encabezados
 include_directories(${PROJECT_SOURCE_DIR}/src/Common)
-
 # Dependencias
 find_package(Qt5Widgets CONFIG REQUIRED)
 find_package(Qt5Core CONFIG REQUIRED)
@@ -46,7 +45,7 @@ file(GLOB_RECURSE CLIENT_SOURCES
 add_executable(client ${CLIENT_SOURCES})
 
 
-target_link_libraries(client common Qt5::Widgets Qt5::Core SDL2 SDL2pp yaml-cpp fmt::fmt -pthread)
+target_link_libraries(client common Qt5::Widgets Qt5::Core SDL2 SDL2pp SDL2_image yaml-cpp fmt::fmt -pthread)
 target_include_directories(client PUBLIC ${PROJECT_SOURCE_DIR}/src/Common)
 
 # set(UI_FILES

@@ -16,3 +16,7 @@ WaitingRoom::~WaitingRoom()
     delete ui;
 }
 
+void WaitingRoom::on_btnBack_clicked() {
+    // Do Something.
+}
+

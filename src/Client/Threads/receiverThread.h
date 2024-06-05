@@ -19,7 +19,6 @@ private:
 public:
     ReceiverThread(Deserializer& deserializer, std::shared_ptr<Socket>& socket, std::atomic<bool>& was_closed);
     void run() override;
-    ~ReceiverThread();
 
 };
 

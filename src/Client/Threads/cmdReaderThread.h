@@ -17,7 +17,7 @@ public:
 
     void run() override;
 
-    ~CmdReader();
+    //~CmdReader();
 };
 
 #endif  // CMD_READER_H
