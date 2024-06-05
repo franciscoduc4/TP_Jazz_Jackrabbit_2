@@ -65,10 +65,11 @@ std::unique_ptr<State> JumpingState::jump(Character& character, float time) {
     return nullptr;
 }
 
-// std::unique_ptr<State> JumpingState::specialAttack(Character& character, float time) {
+std::unique_ptr<State> JumpingState::specialAttack(Character& character, float time) {
 //     // Puede realizar un ataque especial mientras está en el aire
 //     return new SpecialAttackState();
-// }
+    return nullptr;
+}
 
 std::unique_ptr<State> JumpingState::becomeIntoxicated(Character& character, float duration) {
     // Puede intoxicarse mientras está en el aire

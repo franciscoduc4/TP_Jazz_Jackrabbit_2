@@ -43,7 +43,7 @@ std::unique_ptr<State> ReceivingDamageState::reload(std::shared_ptr<Weapon> weap
     return std::unique_ptr<IdleState>();
 }
 
-std::unique_ptr<State> ReceivingDamageState::receiveDamage(Character& character, uint16_t damage,
+std::unique_ptr<State> ReceivingDamageState::receiveDamage(Character& character, uint16_t dmg,
                                                            float time) {
     startTime = time;
     return nullptr;
@@ -65,5 +65,13 @@ std::unique_ptr<State> ReceivingDamageState::jump(Character& character, float ti
 std::unique_ptr<State> ReceivingDamageState::stopAction() { return nullptr; }
 
 std::unique_ptr<State> ReceivingDamageState::revive(Character& character, float time) {
+    return nullptr;
+}
+
+std::unique_ptr<State> ReceivingDamageState::specialAttack(Character& character, float time) {
+    return nullptr;
+}
+
+std::unique_ptr<State> ReceivingDamageState::sprint(Character& character, float time) {
     return nullptr;
 }

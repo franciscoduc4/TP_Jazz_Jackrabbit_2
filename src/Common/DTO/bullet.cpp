@@ -13,6 +13,10 @@ BulletDTO::BulletDTO(uint16_t x, uint16_t y, uint32_t bullet_id, int damage, int
 
 uint32_t BulletDTO::getBulletId() const { return bullet_id; }
 
+uint16_t BulletDTO::getX() const { return x; };
+
+uint16_t BulletDTO::getY() const { return y; };
+
 int BulletDTO::getDamage() const { return damage; }
 
 int BulletDTO::getSpeed() const { return speed; }

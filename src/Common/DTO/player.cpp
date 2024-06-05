@@ -17,6 +17,11 @@ PlayerDTO::PlayerDTO(uint16_t x, uint16_t y, uint32_t playerId, int health, int 
 
 uint32_t PlayerDTO::getPlayerId() const { return player_id; }
 
+uint16_t PlayerDTO::getX() const { return x; };
+
+uint16_t PlayerDTO::getY() const { return y; };
+    
+
 int PlayerDTO::getDamage() const { return damage; }
 
 int PlayerDTO::getHealth() const { return health; }

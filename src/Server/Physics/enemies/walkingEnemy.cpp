@@ -3,6 +3,7 @@
 #include <utility>
 
 #include "../gameMap.h"
+#include "../../../Common/Types/enemy.h"
 
 WalkingEnemy::WalkingEnemy(int16_t x, int16_t y, int16_t id, GameMap& map, int16_t health,
                            int16_t dmg):
@@ -112,3 +113,5 @@ std::shared_ptr<Character> WalkingEnemy::getClosestCharacter(
     }
     return closestCharacter;
 }
+
+EnemyType WalkingEnemy::getEnemyType() { return EnemyType::WALKING_ENEMY; }

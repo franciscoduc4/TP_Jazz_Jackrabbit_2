@@ -29,7 +29,7 @@ class WeaponDTO: public GameElementDTO {
         int getDamage() const;
         int getAmmo() const;
         void setAmmo(int ammo);
-        ~WeaponDTO();
+        //~WeaponDTO();
 };
 
 #endif // WEAPON_H_

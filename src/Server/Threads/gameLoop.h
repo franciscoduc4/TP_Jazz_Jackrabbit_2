@@ -39,7 +39,7 @@ public:
     bool deletePlayer(int32_t playerId);
     int32_t getGameId();
     std::string getGameName();
-    void stop();
+    //void stop();
     bool isFull() const;
     void processCommands(double deltaTime);
     void adjustCommandsToProcess(std::chrono::duration<double> processingDuration,

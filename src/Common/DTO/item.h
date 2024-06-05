@@ -17,7 +17,7 @@ public:
     uint16_t getY() const;
 
     Sprite getSprite() const;
-    ~ItemDTO();
+    //~ItemDTO();
 };
 
 #endif  // ITEM_DTO_H_

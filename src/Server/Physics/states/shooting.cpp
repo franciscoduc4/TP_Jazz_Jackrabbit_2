@@ -68,10 +68,11 @@ std::unique_ptr<State> ShootingState::jump(Character& character, float time) {
     return std::make_unique<JumpingState>();
 }
 
-// std::unique_ptr<State> ShootingState::specialAttack(Character& character, float time) {
+std::unique_ptr<State> ShootingState::specialAttack(Character& character, float time) {
 //     // Transición al estado de ataque especial
-//     return std::make_unique<SpecialAttackState>();
-// }
+    //return std::make_unique<SpecialAttackState>();
+    return nullptr;
+}
 
 std::unique_ptr<State> ShootingState::becomeIntoxicated(Character& character, float duration) {
     // Transición al estado de intoxicación
@@ -81,4 +82,8 @@ std::unique_ptr<State> ShootingState::becomeIntoxicated(Character& character, fl
 std::unique_ptr<State> ShootingState::stopAction() {
     // Transición al estado idle
     return std::make_unique<IdleState>();
+}
+
+std::unique_ptr<State> ShootingState::sprint(Character& character, float time) {
+    return nullptr;
 }
