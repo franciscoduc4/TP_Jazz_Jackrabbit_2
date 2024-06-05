@@ -86,6 +86,3 @@ std::unique_ptr<State> ShootingState::stopAction() {
     return std::make_unique<IdleState>();
 }
 
-std::unique_ptr<State> ShootingState::sprint(Character& character, float time) {
-    return nullptr;
-}

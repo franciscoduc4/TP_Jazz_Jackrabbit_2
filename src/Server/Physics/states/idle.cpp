@@ -26,16 +26,12 @@ std::unique_ptr<State> IdleState::move(Character& character, Direction direction
     return std::make_unique<MovingState>(character, direction, time);
 }
 
-std::unique_ptr<State> IdleState::sprint(Character& character, float time) {
+std::unique_ptr<State> IdleState::sprint(Character& character, Direction direction, float time) {
     //character.sprint(time);
     //return std::unique_ptr<MovingState>(character, direction, time)(character.getDir());
     return nullptr;
 }
 
-std::unique_ptr<State> IdleState::reload(std::shared_ptr<Weapon> weapon, float time) {
-
-    return nullptr;
-}
 
 std::unique_ptr<State> IdleState::receiveDamage(Character& character, uint16_t dmg, float time) {
     return std::make_unique<ReceivingDamageState>(time);

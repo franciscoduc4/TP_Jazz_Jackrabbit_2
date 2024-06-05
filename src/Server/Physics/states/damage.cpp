@@ -92,10 +92,5 @@ std::unique_ptr<State> ReceivingDamageState::revive(Character& character, float 
 
 bool ReceivingDamageState::isReceivingDamage(float time) {
     return (time - startTime) < timeReceivingDamage;
-std::unique_ptr<State> ReceivingDamageState::specialAttack(Character& character, float time) {
-    return nullptr;
 }
 
-std::unique_ptr<State> ReceivingDamageState::sprint(Character& character, float time) {
-    return nullptr;
-}

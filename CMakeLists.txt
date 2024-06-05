@@ -65,6 +65,8 @@ endif()
 
 option(TESTING "Build internal testing suite" OFF)
 option(INSTALL "Apply install settings" OFF)
+option(SERVER "Build server" ON)
+option(CLIENT "Build client" ON)
 
 # Configuraciones de instalación
 if (INSTALL)
@@ -86,3 +88,21 @@ find_package(fmt REQUIRED)
 add_subdirectory(src)
 # add_subdirectory(Tests)
 add_subdirectory(./extlibs/libsdl2pp)
+
+
+
+if (TESTING)
+    add_subdirectory(Tests)
+endif()
+
+# Install
+if(SERVER AND INSTALL)
+    install (FILES "${CMAKE_SOURCE_DIR}/config/configurations.yaml" DESTINATION ${VARDIR})
+    install(TARGETS jazzserver RUNTIME DESTINATION ${BINDIR})
+endif()
+
+if(CLIENT AND INSTALL)
+    install(TARGETS jazzclient RUNTIME DESTINATION ${BINDIR})
+    install(TARGETS SDL2pp ARCHIVE DESTINATION ${LIBDIR})
+    install(DIRECTORY ${CMAKE_SOURCE_DIR}/assets DESTINATION ${VARDIR})
+endif()

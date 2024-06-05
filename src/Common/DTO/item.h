@@ -1,6 +1,7 @@
 #ifndef ITEM_DTO_H_
 #define ITEM_DTO_H_
 
+#include "../sprite.h"
 
 #include "gameElement.h"
 
