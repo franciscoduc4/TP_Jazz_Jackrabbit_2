@@ -1,12 +1,13 @@
 #include "blaster.h"
+#include "../../../Common/Config/ServerConfig.h"
+#define CONFIG ServerConfig::getInstance()
 
 Blaster::Blaster():
-        bullets(30),
-        maxBullets(30),
-        damage(10),
-        fireRate(0.5),
-        lastTimeShot(-1) {}  // todas las settings deberian salir del YAML
-
+        bullets(CONFIG->getWeaponBlasterBullets()),
+        maxBullets(CONFIG->getWeaponBlasterBullets()),
+        damage(CONFIG->getWeaponBlasterDamage()),
+        fireRate(CONFIG->getWeaponBlasterFireRate()),
+        lastTimeShot(-1) {}  
 
 void Blaster::update(float time) {
     if (lastTimeShot != -1 && time - lastTimeShot >= fireRate) {

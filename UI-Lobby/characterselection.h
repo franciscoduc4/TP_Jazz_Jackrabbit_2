@@ -2,8 +2,9 @@
 #define CHARACTERSELECTION_H
 
 #include <QMainWindow>
-#include "../Client/QTMonitor.h"
-#include "../Client/lobbyMessage.h"
+
+#include "../src/Client/Monitors/QTMonitor.h"
+#include "../src/Client/Protocol/lobbyMessage.h"
 
 namespace Ui {
 class CharacterSelection;

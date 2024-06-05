@@ -1,6 +1,5 @@
 #ifndef SOCKET_H
 #define SOCKET_H
-
 /*
  * TDA Socket.
  * Por simplificación este TDA se enfocará solamente

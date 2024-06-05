@@ -1,9 +1,10 @@
 #ifndef SERIALIZER_H_
 #define SERIALIZER_H_
 
-#include <string>
 #include <sstream>
-#include "../Client/lobbyMessage.h"
+#include <string>
+
+#include "../Client/Protocol/lobbyMessage.h"
 
 class Serializer {
   public:

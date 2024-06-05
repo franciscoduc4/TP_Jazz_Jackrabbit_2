@@ -1,11 +1,13 @@
 #include "bouncer.h"
+#include "../../../Common/Config/ServerConfig.h"
+#define CONFIG ServerConfig::getInstance()
 
 Bouncer::Bouncer():
-        bullets(25),
-        maxBullets(25),
-        damage(20),
-        fireRate(0.75),
-        lastTimeShot(-1) {}  // Todas las configuraciones deberían salir del YAML
+        bullets(CONFIG->getWeaponBouncerBullets()),
+        maxBullets(CONFIG->getWeaponBouncerBullets()),
+        damage(CONFIG->getWeaponBouncerDamage()),
+        fireRate(CONFIG->getWeaponBouncerFireRate()),
+        lastTimeShot(-1) {}  
 
 void Bouncer::update(float time) {
     if (lastTimeShot != -1 && time - lastTimeShot >= fireRate) {

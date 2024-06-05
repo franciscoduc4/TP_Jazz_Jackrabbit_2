@@ -19,3 +19,12 @@ std::shared_ptr<Character> Game::getCharacter(int32_t playerId) { return charact
 
 
 void Game::update(float time) { gameMap.update(time); }
+
+bool Game::removeCharacter(int32_t playerId) {
+    gameMap.removeCharacter({0, 0});
+    return true;
+}
+
+std::unique_ptr<GameDTO> Game::getGameDTO() {
+    return std::make_unique<GameDTO>(gameMap.getGameDTO());
+}

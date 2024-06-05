@@ -31,7 +31,7 @@
      </font>
     </property>
     <property name="text">
-     <string>Bienvenido a Jazz Jackrabbit 2, </string>
+     <string>Bienvenido/a a Jazz Jackrabbit 2, </string>
     </property>
     <property name="alignment">
      <set>Qt::AlignCenter</set>

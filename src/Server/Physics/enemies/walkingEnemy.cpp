@@ -2,24 +2,27 @@
 
 #include <utility>
 
+#include "../../../Common/Config/ServerConfig.h"
 #include "../gameMap.h"
+#define CONFIG ServerConfig::getInstance()
+#include "../../../Common/Types/enemy.h"
 
 WalkingEnemy::WalkingEnemy(int16_t x, int16_t y, int16_t id, GameMap& map, int16_t health,
                            int16_t dmg):
-        movesPerCell(2),
-        x(x),
-        y(y),
+        movesPerCell(CONFIG->getWalkingEnemyMaxMovesPerCell()),
+        x(CONFIG->getWalkingEnemyInitialX()),
+        y(CONFIG->getWalkingEnemyInitialY()),
         id(id),
         map(map),
-        health(health),
-        dmg(dmg),
-        hitDistance(1),
-        hitDistanceY(1),
-        viewDistance(5),
-        viewDistanceHit(1),
-        walkProb({0, 0, 0, 0, 0, 0, 0, 0, 0, 0}),
-        flyProb({0, 0, 0, 0, 0, 0, 0, 0, 0, 0}),
-        jumpProb({0, 0, 0, 0, 0, 0, 0, 0, 0, 0}) {}  // todo esto saldria del YAML
+        health(CONFIG->getWalkingEnemyInitialHealth()),
+        dmg(CONFIG->getWalkingEnemyDamage()),
+        hitDistance(CONFIG->getWalkingEnemyHitDistance()),
+        hitDistanceY(CONFIG->getWalkingEnemyHitDistanceY()),
+        viewDistance(CONFIG->getWalkingEnemyViewDistance()),
+        viewDistanceHit(CONFIG->getWalkingEnemyViewDistanceHit()),
+        walkProb(CONFIG->getWalkingEnemyWalkProb()),
+        flyProb(CONFIG->getWalkingEnemyFlyProb()),
+        jumpProb(CONFIG->getWalkingEnemyJumpProb()) {}
 
 
 void WalkingEnemy::update(std::vector<std::shared_ptr<Character>> characters, float time) {
@@ -112,3 +115,6 @@ std::shared_ptr<Character> WalkingEnemy::getClosestCharacter(
     }
     return closestCharacter;
 }
+
+
+EnemyType WalkingEnemy::getEnemyType() { return EnemyType::WALKING_ENEMY; }

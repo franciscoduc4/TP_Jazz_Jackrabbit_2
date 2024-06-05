@@ -4,8 +4,8 @@
 #include <QMainWindow>
 #include <QMessageBox>
 
-#include "../Client/QTMonitor.h"
-#include "../Client/lobbyMessage.h"
+#include "../client.h"
+#include "../Protocol/Types/lobbyMessage.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class Welcome; }
@@ -16,7 +16,7 @@ class Welcome : public QMainWindow
     Q_OBJECT
 
 public:
-    Welcome(QWidget *parent, QTMonitor& monitor, LobbyMessage& msg);
+    Welcome(QWidget *parent, Client& client, LobbyMessage& msg, bool& clientJoinedGame);
     ~Welcome();
 
 private slots:
@@ -24,8 +24,9 @@ private slots:
 
 private:
     Ui::Welcome *ui;
-    QTMonitor& monitor;
+    Client& client;
     LobbyMessage& msg;
+    bool& clientJoinedGame;
 };
 
 #endif // WELCOME_H

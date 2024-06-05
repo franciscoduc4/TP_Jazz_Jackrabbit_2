@@ -1,11 +1,12 @@
 #ifndef SCENESPRITESWIDGET_H
 #define SCENESPRITESWIDGET_H
 
-#include <QPixmap>
-#include <QPainter>
 #include <QKeyEvent>
+#include <QPainter>
+#include <QPixmap>
 #include <vector>
-#include "../Client/sprite.h"
+
+#include "../src/Common/sprite.h"
 
 class SceneSpritesWidget : public QWidget {
     Q_OBJECT

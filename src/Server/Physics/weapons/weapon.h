@@ -7,6 +7,7 @@
 #include "../../../Common/Types/character.h"
 #include "../../../Common/Types/weapon.h"
 #include "../entity.h"
+#include <memory>
 
 class GameMap;
 class State;

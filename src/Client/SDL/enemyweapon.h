@@ -1,7 +1,7 @@
 #ifndef ENEMYWEAPON
 #define ENEMYWEAPON
 
-#include "../sprite.h"
+#include "../../Common/sprite.h"
 
 #include <SDL2pp/SDL2pp.hh>
 #include <list>

@@ -25,14 +25,14 @@ void AcceptorThread::run() {
                 std::cerr << e.what() << std::endl;
             }
             removeAllPlayers();
-            gameMonitor.endAllGames();
+            //gameMonitor.endAllGames();
         }
     }
 }
 
 void AcceptorThread::stop() {
     removeAllPlayers();
-    gameMonitor.endAllGames();
+    //gameMonitor.endAllGames();
     isAlive = false;
     serverSocket->shutdown(SHUT_RDWR);
     serverSocket->close();

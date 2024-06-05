@@ -5,6 +5,7 @@
 #include <memory>
 #include <vector>
 
+#include "../../Common/DTO/game.h"
 #include "../../Common/Types/character.h"
 #include "../../Common/Types/direction.h"
 #include "../../Common/Types/enemy.h"
@@ -47,6 +48,8 @@ public:
     void removeCharacter(Vector<int16_t> position);
 
     void removeEnemy(Vector<int16_t> position);
+
+    GameDTO getGameDTO();
 };
 
 #endif  // GAME_MAP_H_

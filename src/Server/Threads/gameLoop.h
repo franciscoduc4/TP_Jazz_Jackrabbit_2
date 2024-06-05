@@ -44,6 +44,7 @@ public:
     void processCommands(double deltaTime);
     void adjustCommandsToProcess(std::chrono::duration<double> processingDuration,
                                  double frameRate);
+                            
 };
 
 #endif  // GAMELOOP_THREAD_H_

@@ -1,26 +1,22 @@
-#include "../Common/socket.h"
+#ifndef CLIENT_SERIALIZER_H
+#define CLIENT_SERIALIZER_H
 
-#include <vector>
 #include <cstdint>
+#include <memory>
+#include <vector>
+
+#include "../../Common/DTO/dto.h"
+#include "../../Common/queue.h"
+#include "../../Common/socket.h"
 
 class Serializer {
 private:
-	std::shared_ptr<Socket> skt;
+    std::shared_ptr<Queue<std::unique_ptr<DTO>>>& queue;
 
 public:
-	explicit Serializer(std::shared_ptr<Socket> socket);
-	
-	bool msg_create_game(uint8_t& episode, uint8_t& gameMode, uint8_t& maxPlayers, uint8_t& character, uint8_t& lengthName, std::vector<char>& name);
+    explicit Serializer(std::shared_ptr<Queue<std::unique_ptr<DTO>>>& queue);
 
-	bool msg_move(uint8_t& mov_type);
-	
-	bool msg_shoot();
-	
-	bool msg_jump();
+    void sendMsg(std::unique_ptr<DTO>& dto);
+};
 
-	bool msg_run();
-
-	bool msg_dash();
-
-
-}
+#endif  // CLIENT_SERIALIZER_H
