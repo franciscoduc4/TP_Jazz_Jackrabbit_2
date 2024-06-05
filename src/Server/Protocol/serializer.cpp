@@ -1,5 +1,6 @@
 #include "serializer.h"
 
+#include <iostream>
 #include <map>
 #include <memory>
 #include <string>
@@ -10,6 +11,7 @@
 Serializer::Serializer(std::shared_ptr<Socket> socket): socket(socket) {}
 
 void Serializer::sendCommand(const std::unique_ptr<CommandDTO> dto, bool& wasClosed) {
+    std::cout << "Sending command" << std::endl;
     Command command = dto->getCommand();
     socket->sendall(&command, 1, &wasClosed);
     std::vector<char> buffer;
@@ -117,10 +119,12 @@ std::vector<char> Serializer::serializeStartGame(const std::unique_ptr<StartGame
     return buffer;
 }
 
-void Serializer::sendId(int32_t id) {
+void Serializer::sendId(int32_t id, bool& wasClosed) {
+    std::cout << "Sending id" << std::endl;
     int32_t idToSend = htonl(id);
+    std::cout << "Id to send: " << idToSend << std::endl;
     unsigned char const* p = reinterpret_cast<unsigned char const*>(&idToSend);
-    socket->sendall(p, sizeof(int32_t), nullptr);
+    socket->sendall(p, sizeof(int32_t), &wasClosed);
 }
 
 std::vector<char> Serializer::serializePlayerDTO(const std::unique_ptr<PlayerDTO> dto) {
@@ -186,7 +190,7 @@ std::vector<char> Serializer::serializeWeaponDTO(const std::unique_ptr<WeaponDTO
     return buffer;
 }
 
-void Serializer::sendGameDTO(const std::unique_ptr<GameDTO> dto) {
+void Serializer::sendGameDTO(const std::unique_ptr<GameDTO> dto, bool& wasClosed) {
     std::vector<char> buffer;
 
 
@@ -227,5 +231,5 @@ void Serializer::sendGameDTO(const std::unique_ptr<GameDTO> dto) {
     }
 
 
-    socket->sendall(buffer.data(), buffer.size(), nullptr);
+    socket->sendall(buffer.data(), buffer.size(), &wasClosed);
 }

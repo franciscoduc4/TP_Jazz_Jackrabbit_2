@@ -20,14 +20,16 @@ SenderThread::SenderThread(std::shared_ptr<Socket> socket, std::atomic<bool>& ke
         gameMonitor(gameMonitor) {}
 
 void SenderThread::run() {
-    serializer.sendId(playerId);
+    bool wasClosed = false;
+    std::cout << "Sender started" << std::endl;
+    serializer.sendId(playerId, wasClosed);
     while (keepPlaying) {
-        runLobby();
+        runLobby(wasClosed);
 
         while (inGame) {
             try {
                 std::unique_ptr<GameDTO> gameDTO = sendQueue->pop();
-                serializer.sendGameDTO(std::move(gameDTO));
+                serializer.sendGameDTO(std::move(gameDTO), wasClosed);
             } catch (const std::exception& e) {
                 if (wasClosed) {
                     return;
@@ -37,10 +39,10 @@ void SenderThread::run() {
     }
 }
 
-void SenderThread::runLobby() {
-    bool wasClosed = false;
+void SenderThread::runLobby(bool& wasClosed) {
     while (keepPlaying && !inGame) {
         try {
+            std::cout << "Waiting for command" << std::endl;
             std::unique_ptr<CommandDTO> command = deserializer.getCommand(wasClosed, playerId);
             if (command == nullptr) {
                 continue;

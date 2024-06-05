@@ -9,6 +9,7 @@ Player::Player(std::shared_ptr<Socket> socket, GameMonitor& gameMonitor,
         socket(socket),
         sender(socket, std::ref(keepPlaying), std::ref(inGame), gameMonitor, playerId,
                queueMonitor.createQueue()) {
+    std::cout << "Player created" << std::endl;
     sender.start();
 }
 

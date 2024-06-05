@@ -36,7 +36,7 @@ public:
 
     void run() override;
 
-    void runLobby();
+    void runLobby(bool& wasClosed);
 };
 
 #endif  // SENDER_THREAD_H_
