@@ -8,17 +8,17 @@
 LobbyInit::LobbyInit() {}
 
 bool LobbyInit::launchQT(Client& client, bool& clientJoinedGame) {
-    // LobbyMessage msg;
+    LobbyMessage msg;
 
-    // int argc = 0;
-    // char arg1[] = "";
-    // char* argv[] = { arg1 };
+    int argc = 0;
+    char arg1[] = "";
+    char* argv[] = { arg1 };
 
-    // QApplication a(argc, argv);
+    QApplication a(argc, argv);
 
-    // Welcome w(nullptr, client, &msg, clientJoinedGame);
-    // w.show();
-    // a.exec();
+    Welcome w(nullptr, client, msg, clientJoinedGame);
+    w.show();
+    a.exec();
 
-    // return clientJoinedGame;
+    return clientJoinedGame;
 }

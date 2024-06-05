@@ -6,9 +6,9 @@ Client::Client(char* ip, char* port):
         port(port),
         skt(std::make_shared<Socket>(ip, port)),
         was_closed(false),
-        senderQueue(std::make_shared<Queue<DTO>>()),
-        playerCmdsQueue(std::make_shared<Queue<DTO>>()),
-        receiverQueue(std::make_shared<Queue<DTO>>()),
+        senderQueue(std::make_shared<Queue<std::unique_ptr<DTO>>>()),
+        playerCmdsQueue(std::make_shared<Queue<std::unique_ptr<DTO>>>()),
+        receiverQueue(std::make_shared<Queue<std::unique_ptr<DTO>>>()),
         sender(this->skt, this->senderQueue, this->was_closed),
         serializer(this->sender),
         cmdReader(this->serializer, this->playerCmdsQueue),
@@ -36,7 +36,7 @@ void Client::start() {
     } while (clientJoinedGame);
 }
 
-DTO Client::getServerMsg() { return receiverQueue.pop(); }
+std::unique_ptr<DTO> Client::getServerMsg() { return receiverQueue->pop(); }
 
 void Client::sendMsg(Command& cmd, std::vector<uint8_t>& parameters) {
     switch (cmd) {

@@ -1,14 +1,13 @@
 #include "gamescreen.h"
-
 #include <iostream>
 #include <iterator>
 #include <map>
 #include <vector>
-
 #include <SDL2pp/SDL2pp.hh>
-
+#include <SDL2/SDL.h>
+#include <SDL2/SDL_image.h>
+//#include <SDL2/SDL_ttf.h>
 #include "../../Common/sprite.h"
-
 #include "projectile.h"
 
 GameScreen::GameScreen(int character, std::string map):
@@ -16,7 +15,7 @@ GameScreen::GameScreen(int character, std::string map):
 
 void GameScreen::run() {
     SDL2pp::SDL sdl(SDL_INIT_VIDEO);
-    SDL2pp::SDLTTF ttf;
+    //SDL2pp::SDLTTF ttf;
 
     int window_width = 800;
     int window_height = 500;
@@ -26,34 +25,39 @@ void GameScreen::run() {
 
     SDL2pp::Renderer renderer(window, -1, SDL_RENDERER_ACCELERATED);
 
-    SDL2pp::Texture background(renderer, "../assets/Tilesets/BeachWorld-1.png");  // FONDO DE PRUEBA
+    SDL_Surface* bg_surf = IMG_Load("../assets/Tilesets/BeachWorld-1.png");
+    SDL2pp::Surface backgroundSurface(bg_surf);
+    SDL2pp::Texture background(renderer, backgroundSurface);
 
-    SDL2pp::Surface pjSurface(this->pj.getPath());
+    SDL_Surface* pj_surf = IMG_Load(this->pj.getPath().c_str());
+    SDL2pp::Surface pjSurface(pj_surf);
     pjSurface.SetColorKey(true, SDL_MapRGB(pjSurface.Get()->format, 44, 102, 150));
     SDL2pp::Texture jazz_sprite(renderer, pjSurface);
 
-    SDL2pp::Surface turtleSurface(this->turtle.getPath());
+    SDL_Surface* turtle_surf = IMG_Load(this->turtle.getPath().c_str());
+    SDL2pp::Surface turtleSurface(turtle_surf);
     turtleSurface.SetColorKey(true, SDL_MapRGB(turtleSurface.Get()->format, 0, 128, 255));
     SDL2pp::Texture turtle_enemy(renderer, turtleSurface);
 
-    SDL2pp::Surface schSurface(this->schartz_guard.getPath());
+    SDL_Surface* sch_surf = IMG_Load(this->schartz_guard.getPath().c_str());
+    SDL2pp::Surface schSurface(sch_surf);
     schSurface.SetColorKey(true, SDL_MapRGB(schSurface.Get()->format, 0, 128, 255));
     SDL2pp::Texture schartzenguard(renderer, schSurface);
 
-    SDL2pp::Surface yellowSurface(this->yellowM.getPath());
+    SDL_Surface* yellow_surf = IMG_Load(this->yellowM.getPath().c_str());
+    SDL2pp::Surface yellowSurface(yellow_surf);
     yellowSurface.SetColorKey(true, SDL_MapRGB(yellowSurface.Get()->format, 0, 128, 255));
     SDL2pp::Texture yellowMonster(renderer, yellowSurface);
 
-
-    SDL2pp::Surface projectileSurface("../assets/Miscellaneous/SFX.png");
+    SDL_Surface* projectile_surf = IMG_Load("../assets/Miscellaneous/SFX.png");
+    SDL2pp::Surface projectileSurface(projectile_surf);
     projectileSurface.SetColorKey(true, SDL_MapRGB(projectileSurface.Get()->format, 0, 128, 255));
     SDL2pp::Texture projectile(renderer, projectileSurface);
 
-
-    SDL2pp::Surface itemsSurface("../assets/Miscellaneous/Items&Objects.png");
+    SDL_Surface* items_surf = IMG_Load("../assets/Miscellaneous/Items&Objects.png");
+    SDL2pp::Surface itemsSurface(items_surf);
     itemsSurface.SetColorKey(true, SDL_MapRGB(itemsSurface.Get()->format, 0, 128, 255));
     SDL2pp::Texture items(renderer, itemsSurface);
-
 
     int walk_mov = 0;
     int count_walk = 0;
@@ -77,7 +81,6 @@ void GameScreen::run() {
     bool is_jumping = false;
     bool is_dashing = false;
 
-
     int dir_x = 0;
     int dir_y = 0;
     int speed_run = 1;
@@ -91,9 +94,7 @@ void GameScreen::run() {
     int pixel_width = it->getWidth();
     int pixel_height = it->getHeight();
 
-
     int flip = 0;
-
 
     int pixel_x_screen = 0;
     int pixel_y_screen = 0;
@@ -163,7 +164,6 @@ void GameScreen::run() {
             }
         }
 
-
         int mov = walk_mov;
         int count = count_walk;
         if (is_running) {
@@ -182,7 +182,6 @@ void GameScreen::run() {
                 count_walk++;
             }
         }
-
 
         if (is_dashing) {
             if (count_dash == 17) {
@@ -260,7 +259,6 @@ void GameScreen::run() {
         pixel_width = it->getWidth();
         pixel_height = it->getHeight();
 
-
         window_width = window.GetWidth();
         window_height = window.GetHeight();
 
@@ -290,24 +288,19 @@ void GameScreen::run() {
             pos_y += dir_y;
         }
 
-
         renderer.Clear();
-
 
         renderer.Copy(background,
                       SDL2pp::Rect(pixel_x_screen, pixel_y_screen, pixel_width_screen,
                                    pixel_height_screen),
                       SDL2pp::Rect(0, 0, window_width, window_height));
 
-
         SDL2pp::Rect player_rect = SDL2pp::Rect(pos_x, pos_y, 50, 80);
 
         this->points.verify_point_obtained(player_rect);
 
-
         renderer.Copy(jazz_sprite, SDL2pp::Rect(pixel_x, pixel_y, pixel_width, pixel_height),
                       player_rect, 0.0, SDL2pp::NullOpt, flip);
-
 
         this->pj.draw_projectiles(window, renderer, projectile);
 

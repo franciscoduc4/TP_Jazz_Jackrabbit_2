@@ -1,6 +1,6 @@
 #include "senderThread.h"
 
-SenderThread::SenderThread(std::shared_ptr<Queue<DTO>>& queue, Socket& socket, std::atomic<bool>& was_closed):
+SenderThread::SenderThread(std::shared_ptr<Queue<std::unique_ptr<DTO>>>& queue, std::shared_ptr<Socket>& socket, std::atomic<bool>& was_closed):
     queue(queue),
     socket(socket),
     was_closed(was_closed),
@@ -9,10 +9,10 @@ SenderThread::SenderThread(std::shared_ptr<Queue<DTO>>& queue, Socket& socket, s
 void SenderThread::run() {
     try {
         while (_keep_running) {
-            DTO msg = queue->pop();
+            std::unique_ptr<DTO> msg = queue->pop();
             uint8_t msg_size = sizeof(msg);
-            socket->sendall(&msg_size, sizeof(uint8_t), &was_closed);
-            socket->sendall(&msg, msg_size, &was_closed);
+            socket->sendall(&msg_size, sizeof(uint8_t), &closed);
+            socket->sendall(&msg, msg_size, &closed);
             if (was_closed) {
                 stop();
             }

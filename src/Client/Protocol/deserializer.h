@@ -6,9 +6,9 @@
 #include <memory>
 #include <vector>
 
-#include "../Common/DTO/dto.h"
-#include "../Common/queue.h"
-#include "../Common/socket.h"
+#include "../../Common/DTO/dto.h"
+#include "../../Common/queue.h"
+#include "../../Common/socket.h"
 
 
 class Deserializer {

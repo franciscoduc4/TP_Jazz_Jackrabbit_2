@@ -2,6 +2,8 @@ set(SDL2PP_WITH_IMAGE ON)
 set(SDL2PP_WITH_MIXER ON)
 set(SDL2PP_WITH_TTF ON)
 
+add_subdirectory(${PROJECT_SOURCE_DIR}/extlibs/libsdl2pp)
+
 # List of source files for gameview
 set(GAMEVIEW_SOURCES
     SDL/enemy.cpp
@@ -24,10 +26,14 @@ set(GAMEVIEW_SOURCES
 add_library(gameview ${GAMEVIEW_SOURCES})
 
 target_include_directories(gameview PRIVATE ${PROJECT_SOURCE_DIR}/src/Client/Lobby)
-# target_include_directories(gameview PUBLIC ${PROJECT_SOURCE_DIR}/extlibs/libsdl2pp)
+target_include_directories(gameview PUBLIC ${PROJECT_SOURCE_DIR}/extlibs/libsdl2pp)
 target_include_directories(gameview PRIVATE ${PROJECT_SOURCE_DIR}/src/Client)
 target_link_libraries(gameview PUBLIC SDL2pp)
 target_compile_definitions(gameview PUBLIC ASSETS_PATH="${VARDIR}/assets/")
+
+
+#include_directories(SDL2pp_INCLUDE_DIRS)
+
 
 # Qt UI components
 include_directories(${PROJECT_SOURCE_DIR}/src/Client/Lobby)
@@ -58,7 +64,7 @@ file(GLOB_RECURSE CLIENT_SOURCES
     main.cpp
 )
 
-add_executable(jazzclient ${CLIENT_SOURCES} ${UIS_HEADERS})
+add_executable(jazzclient ${CLIENT_SOURCES} ${UIS_HEADERS} ${SDL2pp_INCLUDE_DIRS})
 target_link_libraries(jazzclient PUBLIC Qt5::Widgets Qt5::Core gameview)
 target_include_directories(jazzclient PRIVATE ${PROJECT_SOURCE_DIR}/src)
 target_include_directories(jazzclient PUBLIC ${PROJECT_SOURCE_DIR}/src/Client)
