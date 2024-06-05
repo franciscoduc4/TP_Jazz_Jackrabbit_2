@@ -4,7 +4,7 @@
 #include <QMainWindow>
 
 #include "../client.h"
-#include "../Protocol/lobbyMessage.h"
+#include "../Protocol/Types/lobbyMessage.h"
 #include "./SelectWidgets/characterselectionwidget.h"
 
 namespace Ui {

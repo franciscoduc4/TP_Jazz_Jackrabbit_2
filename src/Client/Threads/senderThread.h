@@ -4,19 +4,19 @@
 #include "../../Common/thread.h"
 #include "../../Common/queue.h"
 #include "../../Common/socket.h"
+#include "../../Common/DTO/dto.h"
 #include <atomic>
 #include <memory>
 
 class SenderThread : public Thread {
 private:
-    std::shared_ptr<Queue<DTO>>& queue;
+    std::shared_ptr<Queue<std::unique_ptr<DTO>>>& queue;
     std::shared_ptr<Socket>& socket;
     std::atomic<bool>& was_closed;
     bool closed;
 public:
-    SenderThread(std::shared_ptr<Queue<DTO>>& queue, Socket& socket, std::atomic<bool>& was_closed);
+    SenderThread(std::shared_ptr<Queue<std::unique_ptr<DTO>>>& queue, std::shared_ptr<Socket>& socket, std::atomic<bool>& was_closed);
     void run() override;
-    void stop();
     ~SenderThread();
 };
 

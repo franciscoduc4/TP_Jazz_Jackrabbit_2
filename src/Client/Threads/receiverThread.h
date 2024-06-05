@@ -4,7 +4,7 @@
 #include "../../Common/thread.h"
 #include "../../Common/queue.h"
 #include "../../Common/socket.h"
-#include "../Protocol/deserializer.h"
+#include "../../Client/Protocol/deserializer.h"
 
 #include <atomic>
 #include <memory>
@@ -19,7 +19,6 @@ private:
 public:
     ReceiverThread(Deserializer& deserializer, std::shared_ptr<Socket>& socket, std::atomic<bool>& was_closed);
     void run() override;
-    ~ReceiverThread();
 
 };
 

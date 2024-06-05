@@ -2,21 +2,22 @@
 
 #include <QKeyEvent>
 #include <QPainter>
+#include <QBitmap>
 #include <QVBoxLayout>
 
 #include "../../../Common/Config/ClientConfig.h"
 
-SceneSpritesWidget::SceneSpritesWidget(QWidget *parent, std::tuple<int, int, int> colourKey)
+SceneSpritesWidget::SceneSpritesWidget(QWidget *parent, const std::tuple<int, int, int>& colourKey)
     : QWidget{parent}, currentSpriteIndex(0), colourKey(std::get<0>(colourKey), std::get<1>(colourKey), std::get<2>(colourKey))
 {
-    QPixmap spritesheet(ClientConfig::getEpisodesFiles());
+    QPixmap spritesheet(QString::fromStdString(ClientConfig::getEpisodeFile()));
 
-    // RectangularSprites: {x, y, ancho, alto}, x e y son las coordenadas del vértice superior izquierdo.
+    // RectangularSprite: {x, y, ancho, alto}, x e y son las coordenadas del vértice superior izquierdo.
     spritePositions = {
-        RectangularSprites::createSprites(ClientConfig::getEpisodesSprites());
+        RectangularSprite::createSprites(ClientConfig::getEpisodesSprites())
     };
 
-    for (const RectangularSprites& sprite : spritePositions) {
+    for (const RectangularSprite& sprite : spritePositions) {
         QPixmap extractedSprite = spritesheet.copy(sprite.getX(), sprite.getY(), sprite.getWidth(), sprite.getHeight());
         sprites.push_back(extractedSprite);
     }
@@ -27,7 +28,7 @@ SceneSpritesWidget::SceneSpritesWidget(QWidget *parent, std::tuple<int, int, int
 void SceneSpritesWidget::paintEvent(QPaintEvent* event) {
     QPainter painter(this);
     QPixmap sprite = sprites[currentSpriteIndex];
-    sprite.setMask(sprite.createMaskFromColor(this->colorKey, Qt::MaskInColor));
+    sprite.setMask(sprite.createMaskFromColor(this->colourKey, Qt::MaskInColor));
     painter.drawPixmap(0, 0, sprite);
 }
 

@@ -1,7 +1,7 @@
 #include <QApplication>
 
+#include "../Protocol/Types/lobbyMessage.h"
 #include "../client.h"
-#include "../Protocol/lobbyMessage.h"
 
 #include "welcome.h"
 
@@ -16,7 +16,7 @@ bool LobbyInit::launchQT(Client& client, bool& clientJoinedGame) {
 
     QApplication a(argc, argv);
 
-    Welcome w(nullptr, client, &msg, clientJoinedGame);
+    Welcome w(nullptr, client, msg, clientJoinedGame);
     w.show();
     a.exec();
 

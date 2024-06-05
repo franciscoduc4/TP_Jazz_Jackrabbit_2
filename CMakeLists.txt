@@ -27,7 +27,9 @@ find_package(SDL2 REQUIRED)
 find_package(yaml-cpp REQUIRED)
 find_package(fmt REQUIRED)
 
-# Add subdirectories
+# Incluir subdirectorios
+add_subdirectory(src)
+# add_subdirectory(Tests)
 add_subdirectory(./extlibs/libsdl2pp)
 
 add_subdirectory(src/Common)

@@ -10,14 +10,14 @@
 class CmdReader : public Thread {
 private:
     Serializer& serializer;
-    std::shared_ptr<Queue<DTO>>& playerCmdsQueue;
+    std::shared_ptr<Queue<std::unique_ptr<DTO>>>& playerCmdsQueue;
 
 public:
-    CmdReader(Serializer& serializer, std::shared_ptr<Queue<DTO>>& playerCmdsQueue);
+    CmdReader(Serializer& serializer, std::shared_ptr<Queue<std::unique_ptr<DTO>>>& playerCmdsQueue);
 
     void run() override;
 
-    ~CmdReader();
+    //~CmdReader();
 };
 
 #endif  // CMD_READER_H

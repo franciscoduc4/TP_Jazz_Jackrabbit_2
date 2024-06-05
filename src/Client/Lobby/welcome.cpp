@@ -1,30 +1,25 @@
 #include "welcome.h"
-#include "ui_welcome.h"
 
 #include "lobby.h"
+#include "ui_welcome.h"
 
-Welcome::Welcome(QWidget *parent, Client& client, LobbyMessage& msg, bool& clientJoinedGame) :
-    QMainWindow(parent),
-    ui(new Ui::Welcome),
-    client(client),
-    msg(msg),
-    clientJoinedGame(clientJoinedGame)
-{
+Welcome::Welcome(QWidget* parent, Client& client, LobbyMessage& msg, bool& clientJoinedGame):
+        QMainWindow(parent),
+        ui(new Ui::Welcome),
+        client(client),
+        msg(msg),
+        clientJoinedGame(clientJoinedGame) {
     ui->setupUi(this);
 }
 
-Welcome::~Welcome()
-{
-    delete ui;
-}
+Welcome::~Welcome() { delete ui; }
 
 
-void Welcome::on_btnIngresar_clicked()
-{
+void Welcome::on_btnIngresar_clicked() {
     QString playerName = ui->inputName->text();
 
     if (playerName.isEmpty()) {
-        QMessageBox::warning(this, "Ingrese su nombre para ingresar.");
+        QMessageBox::warning(this, "Ingrese su nombre para ingresar.", "Error");
         return;
     }
 
@@ -34,4 +29,3 @@ void Welcome::on_btnIngresar_clicked()
     lobby->show();
     this->close();
 }
-

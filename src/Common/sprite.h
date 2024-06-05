@@ -54,9 +54,11 @@ class Sprite {
 
 class RectangularSprite : public Sprite {
  private:
-    int x, y, width, height;
+    //int x, y, width, height;
 
  public:
+    int x, y, width, height;
+
     RectangularSprite(int x, int y, int width, int height) : 
         x(x), y(y), width(width), height(height),
         Sprite({{x, y},

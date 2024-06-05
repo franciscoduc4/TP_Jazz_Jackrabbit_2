@@ -3,21 +3,25 @@
 
 #include <QMainWindow>
 
+#include "../Protocol/Types/lobbyMessage.h"
 #include "../client.h"
-#include "../Protocol/lobbyMessage.h"
 
 namespace Ui {
 class GameList;
 }
 
-class GameList : public QMainWindow
-{
+class GameList: public QMainWindow {
     Q_OBJECT
-    
+
 
 public:
-    explicit GameList(QWidget *parent, Client& client, LobbyMessage& msg, bool& clientJoinedGame);
+    explicit GameList(QWidget* parent, Client& client, LobbyMessage& msg, bool& clientJoinedGame);
     ~GameList();
+
+    void updateGameList();
+
+    void joinGame(const QString& gameName);
+
 
 private slots:
     void on_btnBack_clicked();
@@ -25,10 +29,10 @@ private slots:
     void on_btnJoin_clicked();
 
 private:
-    Ui::GameList *ui;
+    Ui::GameList* ui;
     Client& client;
     LobbyMessage& msg;
     bool& clientJoinedGame;
 };
 
-#endif // GAMELIST_H
+#endif  // GAMELIST_H

@@ -1,32 +1,30 @@
 #include "characterselection.h"
-#include "ui_characterselection.h"
 
-#include "../Common/Constants/lobbyCommands.h"
 #include "../../Common/Types/character.h"
+#include "../Common/Constants/lobbyCommands.h"
 
-#include "waitingroom.h"
 #include "gamelist.h"
+#include "ui_characterselection.h"
+#include "waitingroom.h"
 
-CharacterSelection::CharacterSelection(QWidget *parent, Client& client, LobbyMessage& msg, bool& clientJoinedGame) :
+CharacterSelection::CharacterSelection(QWidget* parent, Client& client, LobbyMessage& msg,
+                                       bool& clientJoinedGame):
         QMainWindow(parent),
         ui(new Ui::CharacterSelection),
         client(client),
         msg(msg),
         clientJoinedGame(clientJoinedGame),
-        characterSelectionWidget(new CharacterSelectionWidget(this))
-{
+        characterSelectionWidget(
+                new CharacterSelectionWidget(this, ClientConfig::getCharacterSelectColourKey())) {
     ui->setupUi(this);
     QVBoxLayout* layout = new QVBoxLayout(ui->widgetCharacters);
     layout->addWidget(characterSelectionWidget);
 }
 
-CharacterSelection::~CharacterSelection()
-{
-    delete ui;
-}
+CharacterSelection::~CharacterSelection() { delete ui; }
 
-void CharacterSelection::on_btnChoose_clicked()
-{
+void CharacterSelection::on_btnChoose_clicked() {
+    /*
     this->msg.setCharacter(characterSelectionWidget->getCurrentCharacter());
     this->client.sendCharacterSelection(this->msg);
     if (this->msg.isCreateGame()) {
@@ -42,16 +40,15 @@ void CharacterSelection::on_btnChoose_clicked()
         QMessageBox::warning(this, "Ocurrió un error inesperado.", "Error");
         return;
     }
+    */
 }
 
 
-void CharacterSelection::on_btnBack_clicked()
-{
-    this->msg.setCharacter(CharacterSelect::INVALID);
+void CharacterSelection::on_btnBack_clicked() {
+    this->msg.setCharacter(CharacterType::INVALID);
     QWidget* parent = this->parentWidget();
-    if (parent){
+    if (parent) {
         parent->show();
     }
     this->close();
 }
-
