@@ -1,25 +1,26 @@
 #ifndef WEAPON_DTO_H_
 #define WEAPON_DTO_H_
 
-#include "gameElement.h"
-#include "bullet.h"
-#include "../sprite.h"
 #include <memory>
 
+#include "bullet.h"
+#include "gameElement.h"
+#include "../sprite.h"
+
 class WeaponDTO: public GameElementDTO {
-    private:
-        uint8_t weaponId;
-        uint16_t x;
-        uint16_t y;
-        int shootSpeed;
-        BulletDTO bullet;
-        int damage;
-        int ammo;
-        Sprite currentSprite;
+private:
+    uint8_t weaponId;
+    uint16_t x;
+    uint16_t y;
+    int shootSpeed;
+    BulletDTO bullet;
+    int damage;
+    int ammo;
+
 
     public:
         WeaponDTO(uint8_t weaponId, uint16_t x, uint16_t y, int damage, 
-        int ammo, const Sprite& currentSprite);
+        int ammo);
         uint16_t getX() const;
         uint16_t getY() const;
         uint8_t getWeaponId() const;
@@ -29,7 +30,7 @@ class WeaponDTO: public GameElementDTO {
         int getDamage() const;
         int getAmmo() const;
         void setAmmo(int ammo);
-        ~WeaponDTO();
+
 };
 
-#endif // WEAPON_H_
+#endif  // WEAPON_H_

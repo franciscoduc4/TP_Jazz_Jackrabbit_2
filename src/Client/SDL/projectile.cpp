@@ -1,5 +1,5 @@
 #include "projectile.h"
-#include "../sprite.h"
+#include "../../Common/sprite.h"
 
 #include <SDL2pp/SDL2pp.hh>
 
@@ -129,10 +129,10 @@ bool Projectile::draw_projectile(SDL2pp::Window& window, SDL2pp::Renderer& rende
 		this->count++;
 	} else {
 		std::list<RectangularSprite>::iterator it2 = img_coords(); 
-		proj_pixel_x = it2->x;
-		proj_pixel_w = it2->width;	
-		proj_pixel_y = it2->y;
-		proj_pixel_h = it2->height;	
+		proj_pixel_x = it2->getX();
+		proj_pixel_w = it2->getWidth();	
+		proj_pixel_y = it2->getY();
+		proj_pixel_h = it2->getHeight();	
 	}		
 	int proj_speed = 20;
 	if (this->flip == 1) {

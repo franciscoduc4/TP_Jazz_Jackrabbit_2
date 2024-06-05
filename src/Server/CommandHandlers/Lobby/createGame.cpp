@@ -16,7 +16,7 @@
 CreateGameHandler::CreateGameHandler(std::unique_ptr<CreateGameDTO> command):
         command(std::move(command)) {}
 
-std::unique_ptr<LobbyDTO> CreateGameHandler::execute(
+std::unique_ptr<CommandDTO> CreateGameHandler::execute(
         GameMonitor& gameMonitor, std::atomic<bool>& inGame,
         std::shared_ptr<Queue<std::unique_ptr<CommandDTO>>> recvQueue) {
     int32_t playerId = command->getPlayerId();
@@ -25,10 +25,12 @@ std::unique_ptr<LobbyDTO> CreateGameHandler::execute(
     uint8_t maxPlayers = command->getMaxPlayers();
     CharacterType characterType = command->getCharacterType();
     std::string gameName = command->getGameName();
+    int32_t gameId = gameMonitor.getGamesList().size();
     if (gameMonitor.createGame(playerId, episode, gameMode, maxPlayers, characterType, gameName,
-                               recvQueue)) {
-        return std::make_unique<LobbyDTO>(LobbyState::GAME_CREATED);
+                               recvQueue, gameId)) {
+        return std::make_unique<CreateGameDTO>(playerId, episode, gameMode, maxPlayers,
+                                               characterType, gameName, gameId);
     } else {
-        return std::make_unique<LobbyDTO>(LobbyState::GAME_NOT_CREATED);
+        return nullptr;
     }
 }

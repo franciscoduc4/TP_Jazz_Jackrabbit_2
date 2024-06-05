@@ -2,8 +2,10 @@
 #define CHARACTERSELECTION_H
 
 #include <QMainWindow>
-#include "../Client/QTMonitor.h"
-#include "../Client/lobbyMessage.h"
+
+#include "../client.h"
+#include "../Protocol/Types/lobbyMessage.h"
+#include "./SelectWidgets/characterselectionwidget.h"
 
 namespace Ui {
 class CharacterSelection;
@@ -15,7 +17,7 @@ class CharacterSelection : public QMainWindow
     
 
 public:
-    explicit CharacterSelection(QWidget *parent, QTMonitor& monitor, LobbyMessage& msg);
+    explicit CharacterSelection(QWidget *parent, Client& client, LobbyMessage& msg, bool& clientJoinedGame);
     ~CharacterSelection();
 
 private slots:
@@ -25,8 +27,10 @@ private slots:
 
 private:
     Ui::CharacterSelection *ui;
-    QTMonitor& monitor;
+    Client& client;
     LobbyMessage& msg;
+    bool& clientJoinedGame;
+    CharacterSelectionWidget* characterSelectionWidget;
 };
 
 #endif // CHARACTERSELECTION_H

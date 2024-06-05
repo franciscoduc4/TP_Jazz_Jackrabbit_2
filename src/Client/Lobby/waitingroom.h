@@ -3,8 +3,8 @@
 
 #include <QMainWindow>
 
-#include "../Client/QTMonitor.h"
-#include "../Client/lobbyMessage.h"
+#include "../client.h"
+#include "../Protocol/Types/lobbyMessage.h"
 
 namespace Ui {
 class WaitingRoom;
@@ -17,7 +17,7 @@ class WaitingRoom : public QMainWindow
 
 
 public:
-    explicit WaitingRoom(QWidget *parent , QTMonitor& monitor, LobbyMessage& msg);
+    explicit WaitingRoom(QWidget *parent, Client& client, LobbyMessage& msg, bool& clientJoinedGame);
     ~WaitingRoom();
 
 private slots:
@@ -25,8 +25,9 @@ private slots:
 
 private:
     Ui::WaitingRoom *ui;
-    QTMonitor& monitor;
+    Client& client;
     LobbyMessage& msg;
+    bool& clientJoinedGame;
 };
 
 #endif // WAITINGROOM_H

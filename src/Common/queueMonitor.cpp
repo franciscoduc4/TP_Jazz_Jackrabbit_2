@@ -1,4 +1,9 @@
 #include "queueMonitor.h"
+#include <string>
+#include <memory>
+#include <algorithm>
+#include <utility>
+#include "DTO/game.h"
 
 template <typename T>
 std::shared_ptr<Queue<T>> QueueMonitor<T>::createQueue() {
@@ -38,12 +43,12 @@ void QueueMonitor<T>::removeQueues() {
 }
 
 template <typename T>
-void QueueMonitor<T>::broadcast(const T& event) {
+void QueueMonitor<T>::broadcast(T&& event) {
     std::lock_guard<std::mutex> lock(mtx);
     for (auto& queue: queues) {
-        queue->try_push(event);
+        queue->try_push(std::move(event));
     }
 }
 
 template class QueueMonitor<std::string>;
-
+template class QueueMonitor<std::unique_ptr<GameDTO>>;

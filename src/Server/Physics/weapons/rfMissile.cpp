@@ -1,11 +1,13 @@
 #include "rfMissile.h"
+#include "../../../Common/Config/ServerConfig.h"
+#define CONFIG ServerConfig::getInstance()
 
 RFMissile::RFMissile():
-        bullets(10),
-        maxBullets(10),
-        damage(30),
-        fireRate(1.5),
-        lastTimeShot(-1) {}  // Todas las configuraciones deberían salir del YAML
+        bullets(CONFIG->getWeaponRFMissileBullets()),
+        maxBullets(CONFIG->getWeaponRFMissileBullets()),
+        damage(CONFIG->getWeaponRFMissileDamage()),
+        fireRate(CONFIG->getWeaponRFMissileFireRate()),
+        lastTimeShot(-1) {}  
 
 void RFMissile::update(float time) {
     if (lastTimeShot != -1 && time - lastTimeShot >= fireRate) {

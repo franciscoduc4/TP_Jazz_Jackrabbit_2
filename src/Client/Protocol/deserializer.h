@@ -1,21 +1,24 @@
-#include "../Common/socket.h"
+#ifndef DESERIALIZER_H
+#define DESERIALIZER_H
 
-#include <map>
-#include <vector>
 #include <cstdint>
+#include <map>
+#include <memory>
+#include <vector>
+
+#include "../../Common/DTO/dto.h"
+#include "../../Common/queue.h"
+#include "../../Common/socket.h"
 
 
 class Deserializer {
 private:
-	std::shared_ptr<Socket> skt;
+    std::shared_ptr<Queue<std::unique_ptr<DTO>>>& queue;
 
-	std::unique_ptr<GameDTO> show_snapshot(bool& was_closed)
-	
-	
 public:
-	explicit Deserializer(std::shared_ptr<Socket> socket);
+    Deserializer(std::shared_ptr<Queue<std::unique_ptr<DTO>>>& queue);
 
-	std::unique_ptr<CommandDTO> deserializar_msg();
-	
-	
-}
+    void deserialize_msg(std::unique_ptr<DTO>& dto);
+};
+
+#endif

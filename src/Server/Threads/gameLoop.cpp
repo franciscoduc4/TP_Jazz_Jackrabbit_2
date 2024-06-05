@@ -32,8 +32,8 @@ void GameLoopThread::run() {
 
         game.update(deltaTime.count());
 
-        std::unique_ptr<GameDTO> gameDTO = game.getGameDTO();
-        queueMonitor.broadcast(gameDTO);
+        //std::unique_ptr<GameDTO> gameDTO = game.getGameDTO();
+        //queueMonitor.broadcast(gameDTO);
 
         auto processingEndTime = std::chrono::high_resolution_clock::now();
         std::chrono::duration<double> processingDuration = processingEndTime - currentTime;
@@ -93,3 +93,13 @@ void GameLoopThread::addPlayer(int32_t playerId, CharacterType characterType) {
 }
 
 bool GameLoopThread::isFull() const { return currentPlayers == maxPlayers; }
+
+void GameLoopThread::stop() { keepRunning = false; }
+
+bool GameLoopThread::deletePlayer(int32_t playerId) {
+    if (game.removeCharacter(playerId)) {
+        currentPlayers--;
+        return true;
+    }
+    return false;
+}

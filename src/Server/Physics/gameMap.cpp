@@ -136,3 +136,11 @@ void GameMap::update(float time) {
 }
 
 void GameMap::removeCharacter(Vector<int16_t> position) { mapGrid.erase(position); }
+
+void GameMap::removeEnemy(Vector<int16_t> position) { mapGrid.erase(position); }
+
+GameDTO GameMap::getGameDTO() {
+    GameDTO gameDTO;
+    return gameDTO;
+}
+

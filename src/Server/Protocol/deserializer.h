@@ -5,7 +5,6 @@
 #include <string>
 #include <vector>
 
-#include "../../Common/DTO/characterType.h"
 #include "../../Common/DTO/command.h"
 #include "../../Common/DTO/createGame.h"
 #include "../../Common/DTO/joinGame.h"
@@ -24,8 +23,6 @@ private:
     std::unique_ptr<JoinGameDTO> deserializeJoinGame(bool& wasClosed, int32_t& playerId);
 
     std::unique_ptr<CommandDTO> deserializeGamesList(bool& wasClosed, int32_t& playerId);
-
-    std::unique_ptr<CharacterTypeDTO> deserializeCharacterType(bool& wasClosed, int32_t& playerId);
 
     std::unique_ptr<MoveDTO> deserializeMove(bool& wasClosed, int32_t& playerId);
 

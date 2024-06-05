@@ -1,17 +1,19 @@
 #ifndef SCENESPRITESWIDGET_H
 #define SCENESPRITESWIDGET_H
 
-#include <QPixmap>
-#include <QPainter>
+#include <QWidget>
 #include <QKeyEvent>
+#include <QPainter>
+#include <QPixmap>
 #include <vector>
-#include "../Client/sprite.h"
+
+#include "../../../Common/sprite.h"
 
 class SceneSpritesWidget : public QWidget {
     Q_OBJECT
 
 public:
-    SceneSpritesWidget(QWidget* parent = nullptr);
+    SceneSpritesWidget(QWidget* parent, const std::tuple<int, int, int>& colourKey);
     size_t getCurrentSpriteIndex() const { return currentSpriteIndex; }
 
 protected:
@@ -21,7 +23,8 @@ protected:
 private:
     std::vector<QPixmap> sprites;
     size_t currentSpriteIndex;
-    std::vector<Sprite> spritePositions;
+    std::vector<RectangularSprite> spritePositions;
+    QColor colourKey;
 };
 
-#endif // SCENESPRITESWIDGET_H
+#endif  // SCENESPRITESWIDGET_H

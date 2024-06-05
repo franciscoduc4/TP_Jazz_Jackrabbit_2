@@ -2,31 +2,31 @@
 
 #include <utility>
 
+#include "../../Common/Config/ServerConfig.h"
 #include "../../Common/Types/character.h"
 #include "../../Common/Types/direction.h"
 #include "../../Common/Types/weapon.h"
 #include "states/dead.h"
 #include "states/idle.h"
 #include "states/intoxicated.h"
-#include "states/jazzSpecialAttack.h"
 #include "states/jumping.h"
 #include "states/shooting.h"
-#include "states/spazSpecialAttack.h"
+#include "states/specialAttack.h"
 
 #include "gameMap.h"
-#define CONFIG Configuration::getInstance()
+#define CONFIG ServerConfig::getInstance()
 
 Character::Character(GameMap& map, int16_t x, int16_t y, int16_t characterId, CharacterType type):
         map(map),
-        x(0),
-        y(0),
+        x(CONFIG->getCharacterInitialX()),
+        y(CONFIG->getCharacterInitialY()),
         characterId(0),
-        health(100),
-        initialHealth(100),
+        health(CONFIG->getCharacterInitialHealth()),
+        initialHealth(CONFIG->getCharacterInitialHealth()),
         dir(Direction::RIGHT),
-        maxMoves(5),
+        maxMoves(CONFIG->getCharacterMaxMoves()),
         timesRevived(0),
-        maxRevived(3),
+        maxRevived(CONFIG->getCharacterMaxRevived()),
         currentWeapon(std::make_unique<Blaster>()),
         state(std::make_unique<IdleState>()) {}
 
@@ -49,7 +49,7 @@ void Character::recvDamage(uint16_t dmg, float time) {
 void Character::setDir(Direction dir) { this->dir = dir; }
 
 void Character::update(float time) {
-    auto newState = std::unique_ptr<State>(state->update(time));
+    auto newState = std::unique_ptr<State>(state->exec(*this, time));
     if (newState) {
         state = std::move(newState);
     }

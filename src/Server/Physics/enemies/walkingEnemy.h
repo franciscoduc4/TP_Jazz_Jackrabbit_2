@@ -56,8 +56,6 @@ public:
             std::vector<std::shared_ptr<Character>> characters);
 
     EnemyType getEnemyType() override;
-
-    ~WalkingEnemy();
 };
 
 #endif  // WALKING_ENEMY_H

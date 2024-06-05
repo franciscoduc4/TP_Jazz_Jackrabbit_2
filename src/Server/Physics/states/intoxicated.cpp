@@ -3,7 +3,7 @@
 #include "dead.h"
 #include "idle.h"
 
-std::unique_ptr<State> IntoxicatedState::update(float time) {
+std::unique_ptr<State> IntoxicatedState::exec(Character& character, float time) {
     intoxicatedDuration -= time;
     if (intoxicatedDuration <= 0) {
         return std::unique_ptr<IdleState>();
@@ -24,15 +24,11 @@ std::unique_ptr<State> IntoxicatedState::move(Character& character, Direction di
     return nullptr;
 }
 
-std::unique_ptr<State> IntoxicatedState::sprint(Character& character, float time) {
-    // No puede correr mientras está intoxicado
+std::unique_ptr<State> IntoxicatedState::sprint(Character& character, Direction direction,
+                                                float time) {
     return nullptr;
 }
 
-std::unique_ptr<State> IntoxicatedState::reload(std::shared_ptr<Weapon> weapon, float time) {
-    // No puede recargar mientras está intoxicado
-    return nullptr;
-}
 
 std::unique_ptr<State> IntoxicatedState::receiveDamage(Character& character, uint16_t dmg,
                                                        float time) {

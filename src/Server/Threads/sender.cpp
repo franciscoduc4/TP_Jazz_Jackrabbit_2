@@ -38,6 +38,7 @@ void SenderThread::run() {
 }
 
 void SenderThread::runLobby() {
+    bool wasClosed = false;
     while (keepPlaying && !inGame) {
         try {
             std::unique_ptr<CommandDTO> command = deserializer.getCommand(wasClosed, playerId);
@@ -46,9 +47,9 @@ void SenderThread::runLobby() {
             }
             std::unique_ptr<LobbyCommandHandler> handler =
                     LobbyCommandHandler::createHandler(std::move(command));
-            std::unique_ptr<LobbyDTO> lobbyDTO =
+            std::unique_ptr<CommandDTO> commandDTO =
                     handler->execute(gameMonitor, std::ref(inGame), recvQueue);
-            serializer.sendLobbyDTO(std::move(lobbyDTO));
+            serializer.sendCommand(std::move(commandDTO), wasClosed);
         } catch (const std::exception& e) {
             if (wasClosed) {
                 return;

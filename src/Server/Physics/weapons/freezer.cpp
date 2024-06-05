@@ -1,11 +1,13 @@
 #include "freezer.h"
+#include "../../../Common/Config/ServerConfig.h"
+#define CONFIG ServerConfig::getInstance()
 
 Freezer::Freezer():
-        bullets(20),
-        maxBullets(20),
-        damage(15),
-        fireRate(1.0),
-        lastTimeShot(-1) {}  // Todas las configuraciones deberían salir del YAML
+        bullets(CONFIG->getWeaponFreezerBullets()),
+        maxBullets(CONFIG->getWeaponFreezerBullets()),
+        damage(CONFIG->getWeaponFreezerDamage()),
+        fireRate(CONFIG->getWeaponFreezerFireRate()),
+        lastTimeShot(-1) {}  
 
 void Freezer::update(float time) {
     if (lastTimeShot != -1 && time - lastTimeShot >= fireRate) {

@@ -26,6 +26,8 @@ public:
 
     std::shared_ptr<Character> getCharacter(int32_t playerId);
 
+    bool removeCharacter(int32_t playerId);
+
     std::unique_ptr<GameDTO> getGameDTO();
 
     void update(float time);

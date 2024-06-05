@@ -1,40 +1,51 @@
 #include "gamelist.h"
-#include "ui_gamelist.h"
 
+#include "ui_gamelist.h"
 #include "waitingroom.h"
 
-GameList::GameList(QWidget *parent, QTMonitor& monitor, LobbyMessage& msg) :
-    QMainWindow(parent),
-    ui(new Ui::GameList),
-    monitor(monitor),
-    msg(msg)
-{
+GameList::GameList(QWidget* parent, Client& client, LobbyMessage& msg, bool& clientJoinedGame):
+        QMainWindow(parent),
+        ui(new Ui::GameList),
+        client(client),
+        msg(msg),
+        clientJoinedGame(clientJoinedGame) {
     ui->setupUi(this);
 }
 
-GameList::~GameList()
-{
-    delete ui;
+GameList::~GameList() { delete ui; }
+
+void GameList::updateGameList() {
+    // ui->listGames->clear();
+
+    // auto games = client.getGameList();
+    // for (const auto& game: games) {
+    //     GameListItem* itemWidget = new GameListItem(game.name, game.players, game.totalPlayers);
+    //     QListWidgetItem* item = new QListWidgetItem(ui->listGames);
+    //     item->setSizeHint(itemWidget->sizeHint());
+    //     ui->listGames->setItemWidget(item, itemWidget);
+
+    //     connect(itemWidget, &GameListItem::joinGame, this, &GameList::joinGame);
+    // }
 }
 
-void GameList::on_btnJoin_clicked()
-{
-    this->msg.setGameName(nombrePartida.toStdString());
-    this->sender.sendMessage(this->msg);
+void GameList::joinGame(const QString& gameName) {
+    // this->msg.setGameName(gameName);
+    // client.joinGame(this->msg);
 
-    WaitingRoom* wr = new WaitingRoom(this, this->monitor, this->msg);
-    wr->show();
-    this->close();
+    // WaitingRoom* wr = new WaitingRoom(this, this->client, this->msg, this->clientJoinedGame);
+    // wr->show();
+    // this->close();
 }
 
+void GameList::on_btnJoin_clicked() {
+    // Do Something.
+}
 
-void GameList::on_btnBack_clicked()
-{
-    this->setGameName("");
+void GameList::on_btnBack_clicked() {
+    this->msg.setGameName("");
     QWidget* parent = this->parentWidget();
-    if (parent){
+    if (parent) {
         parent->show();
     }
     this->close();
 }
-

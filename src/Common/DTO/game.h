@@ -7,7 +7,6 @@
 #include "../Types/dto.h"
 
 #include "bullet.h"
-#include "characterType.h"
 #include "dto.h"
 #include "enemy.h"
 #include "item.h"
@@ -27,6 +26,7 @@ private:
     DTOType type = DTOType::GAME_DTO;
 
 public:
+    GameDTO() {}
     GameDTO(std::vector<PlayerDTO> players, std::vector<EnemyDTO> enemies,
             std::vector<BulletDTO> bullets, std::vector<ItemDTO> items,
             std::vector<WeaponDTO> weapons, std::vector<TileDTO> tiles);

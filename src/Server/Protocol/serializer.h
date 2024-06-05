@@ -12,6 +12,7 @@
 #include "../../Common/DTO/joinGame.h"
 #include "../../Common/DTO/lobby.h"
 #include "../../Common/DTO/move.h"
+#include "../../Common/DTO/startGame.h"
 #include "../../Common/Types/command.h"
 #include "../../Common/socket.h"
 
@@ -19,15 +20,12 @@ class Serializer {
 private:
     std::shared_ptr<Socket> socket;
 
-    std::vector<char> serializeCreateGame(const CreateGameDTO& dto);
-    std::vector<char> serializeJoinGame(const JoinGameDTO& dto);
-    std::vector<char> serializeGamesList(const CommandDTO& dto);
-    std::vector<char> serializeMove(const MoveDTO& dto);
-    std::vector<char> serializeStart(const CommandDTO& dto);
-    std::vector<char> serializeShooting(const CommandDTO& dto);
-    std::vector<char> serializeReloading(const CommandDTO& dto);
-    std::vector<char> serializeSwitchWeapon(const CommandDTO& dto);
-    void serializeGamesList(const std::map<int32_t, std::string>& map, std::vector<char>& buffer);
+public:
+    std::vector<char> serializeCreateGame(const std::unique_ptr<CreateGameDTO>& dto);
+    std::vector<char> serializeJoinGame(const std::unique_ptr<JoinGameDTO>& dto);
+    std::vector<char> serializeGamesList(const std::unique_ptr<CommandDTO>& dto);
+    std::vector<char> serializeStartGame(const std::unique_ptr<StartGameDTO>& dto);
+    std::vector<char> serializeGamesList(const std::unique_ptr<GamesListDTO>& dto);
     std::vector<char> serializeGameDTO(const std::unique_ptr<GameDTO> dto);
     std::vector<char> serializePlayerDTO(const std::unique_ptr<PlayerDTO> dto);
     std::vector<char> serializeEnemyDTO(const std::unique_ptr<EnemyDTO> dto);
@@ -35,25 +33,12 @@ private:
     std::vector<char> serializeItemDTO(const std::unique_ptr<ItemDTO> dto);
     std::vector<char> serializeWeaponDTO(const std::unique_ptr<WeaponDTO> dto);
     std::vector<char> serializeTileDTO(const std::unique_ptr<TileDTO> dto);
-    std::vector<char> serializeSprite(const std::unique_ptr<Sprite> sprite);
 
-
-public:
     Serializer() {}
     explicit Serializer(std::shared_ptr<Socket> socket);
-    void sendCommand(const CommandDTO& dto, bool& wasClosed);
-    void sendCreateGame(const CreateGameDTO& dto);
-    void sendJoinGame(const JoinGameDTO& dto);
-    void sendGamesList(const CommandDTO& dto);
-    void sendCharacterType(const CharacterTypeDTO& dto);
-    void sendMove(const MoveDTO& dto);
-    void sendStart(const CommandDTO& dto);
-    void sendShooting(const CommandDTO& dto);
-    void sendReloading(const CommandDTO& dto);
-    void sendSwitchWeapon(const CommandDTO& dto);
     void sendId(int32_t id);
+    void sendCommand(const std::unique_ptr<CommandDTO> dto, bool& wasClosed);
     void sendGameDTO(const std::unique_ptr<GameDTO> dto);
-    void sendLobbyDTO(const std::unique_ptr<LobbyDTO> dto);
 };
 
 

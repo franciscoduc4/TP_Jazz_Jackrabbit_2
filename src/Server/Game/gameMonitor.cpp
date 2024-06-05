@@ -8,14 +8,14 @@ GameMonitor::GameMonitor(QueueMonitor<std::unique_ptr<GameDTO>>& queueMonitor):
 
 bool GameMonitor::createGame(int32_t playerId, Episode episode, GameMode gameMode,
                              uint8_t maxPlayers, CharacterType characterType, std::string gameName,
-                             std::shared_ptr<Queue<std::unique_ptr<CommandDTO>>> recvQueue) {
+                             std::shared_ptr<Queue<std::unique_ptr<CommandDTO>>> recvQueue,
+                             int32_t gameId) {
     std::lock_guard<std::mutex> lock(mtx);
     for (auto& [id, game]: games) {
         if (game->getGameName() == gameName) {
             return false;
         }
     }
-    int32_t gameId = games.size();
     games[gameId] =
             std::make_unique<GameLoopThread>(gameId, gameName, playerId, episode, gameMode,
                                              maxPlayers, characterType, recvQueue, queueMonitor);
@@ -56,4 +56,25 @@ std::map<int32_t, std::string> GameMonitor::getGamesList() {
         list[id] = game->getGameName();
     }
     return list;
+}
+
+void GameMonitor::endGame(const std::string& gameName) {
+    std::lock_guard<std::mutex> lock(mtx);
+    for (auto it = games.begin(); it != games.end(); ++it) {
+        if (it->second->getGameName() == gameName) {
+            it->second->stop();
+            it->second->join();
+            games.erase(it);
+            return;
+        }
+    }
+}
+
+void GameMonitor::endAllGames() {
+    std::lock_guard<std::mutex> lock(mtx);
+    for (auto& [id, game]: games) {
+        game->stop();
+        game->join();
+    }
+    games.clear();
 }

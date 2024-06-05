@@ -1,6 +1,5 @@
 #ifndef SOCKET_H
 #define SOCKET_H
-class MockSocketWrapper;
 /*
  * TDA Socket.
  * Por simplificación este TDA se enfocará solamente
@@ -10,7 +9,6 @@ class Socket {
 private:
     int skt;
     bool closed;
-    friend class MockSocketWrapper; 
 
     /*
      * Construye el socket pasándole directamente el file descriptor.

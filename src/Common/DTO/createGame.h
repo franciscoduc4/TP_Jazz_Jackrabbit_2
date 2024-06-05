@@ -15,16 +15,16 @@ private:
     int32_t playerId;
     Episode episodeName;
     GameMode gameMode;
-    int32_t gameId;
     uint8_t maxPlayers;
     CharacterType characterType;
     std::string gameName;
+    int32_t gameId;
 
 public:
     explicit CreateGameDTO(int32_t gameId);
 
     CreateGameDTO(int32_t playerId, Episode episodeName, GameMode gameMode, uint8_t maxPlayers,
-                  CharacterType character, std::string gameName);
+                  CharacterType character, std::string gameName, int32_t gameId);
 
     int32_t getPlayerId() const;
 

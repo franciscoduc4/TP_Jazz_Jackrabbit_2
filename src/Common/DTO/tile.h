@@ -1,7 +1,7 @@
 #ifndef TILE_DTO_H_
 #define TILE_DTO_H_
 
-#include "../sprite.h"
+#include "../../Common/sprite.h"
 
 #include "gameElement.h"
 
@@ -16,7 +16,7 @@ public:
     uint16_t getX() const;
     uint16_t getY() const;
     Sprite getSprite() const;
-    ~TileDTO();
+
 };
 
 #endif  // TILE_DTO_H_

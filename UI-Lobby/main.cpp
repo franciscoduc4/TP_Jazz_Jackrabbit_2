@@ -1,14 +1,14 @@
-#include "welcome.h"
-
 #include <QApplication>
 
-#include "../Client/QTMonitor.h"
-#include "../Client/senderThread.h"
 #include "../Client/receiverThread.h"
+#include "../Client/senderThread.h"
 #include "../Common/protocol.h"
-#include "../Common/socket.h"
 #include "../Common/queue.h"
-#include "../Client/lobbyMessage.h"
+#include "../Common/socket.h"
+#include "../src/Client/Monitors/QTMonitor.h"
+#include "../src/Client/Protocol/lobbyMessage.h"
+
+#include "welcome.h"
 
 int main(int argc, char *argv[])
 {

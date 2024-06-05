@@ -1,30 +1,24 @@
-#include "welcome.h"
-
 #include <QApplication>
 
-#include "../Client/QTMonitor.h"
-#include "../Client/senderThread.h"
-#include "../Client/receiverThread.h"
-#include "../Common/protocol.h"
-#include "../Common/socket.h"
-#include "../Common/queue.h"
-#include "../Client/lobbyMessage.h"
+#include "../Protocol/Types/lobbyMessage.h"
+#include "../client.h"
 
-int main(int argc, char *argv[])
-{
-    char* ip = "127.0.0.1";
-    char* port = "8080";
-    Socket skt(ip, port);
-    Protocol protocol(std::move(skt));
-    Queue<ProtocolMessage> cmdQueue;
-    SenderThread sender(protocol, &skt, &cmdQueue);
-    sender.start();
-    ReceiverThread receiver(&skt, &protocol);
-    receiver.start();
+#include "welcome.h"
+
+LobbyInit::LobbyInit() {}
+
+bool LobbyInit::launchQT(Client& client, bool& clientJoinedGame) {
     LobbyMessage msg;
-    QTMonitor monitor(&protocol, &sender, &receiver);
+
+    int argc = 0;
+    char arg1[] = "";
+    char* argv[] = { arg1 };
+
     QApplication a(argc, argv);
-    Welcome w(&sender, &receiver, &monitor, &msg);
+
+    Welcome w(nullptr, client, msg, clientJoinedGame);
     w.show();
-    return a.exec();
+    a.exec();
+
+    return clientJoinedGame;
 }

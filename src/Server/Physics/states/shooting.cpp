@@ -16,7 +16,7 @@ ShootingState::ShootingState(Character& character, std::shared_ptr<Weapon> weapo
     shoot(character, weapon, time);
 }
 
-std::unique_ptr<State> ShootingState::update(float time) {
+std::unique_ptr<State> ShootingState::exec(Character& character, float time) {
     // Lógica de actualización específica para el estado de disparo
     // Volver al estado idle después de disparar
     return std::make_unique<IdleState>();
@@ -39,9 +39,11 @@ std::unique_ptr<State> ShootingState::move(Character& character, Direction direc
     return std::make_unique<MovingState>(character, direction, time);
 }
 
-std::unique_ptr<State> ShootingState::reload(std::shared_ptr<Weapon> weapon, float time) {
-    // Transición al estado de recarga
-    return std::unique_ptr<State>(this);
+
+std::unique_ptr<State> ShootingState::sprint(Character& character, Direction direction,
+                                             float time) {
+    // Cambia al estado de sprint
+    return std::unique_ptr<MovingState>();
 }
 
 std::unique_ptr<State> ShootingState::receiveDamage(Character& character, uint16_t dmg,
@@ -68,10 +70,11 @@ std::unique_ptr<State> ShootingState::jump(Character& character, float time) {
     return std::make_unique<JumpingState>();
 }
 
-// std::unique_ptr<State> ShootingState::specialAttack(Character& character, float time) {
-//     // Transición al estado de ataque especial
-//     return std::make_unique<SpecialAttackState>();
-// }
+std::unique_ptr<State> ShootingState::specialAttack(Character& character, float time) {
+    // Cambia al estado de sprint
+    return nullptr;
+}
+
 
 std::unique_ptr<State> ShootingState::becomeIntoxicated(Character& character, float duration) {
     // Transición al estado de intoxicación
@@ -82,3 +85,4 @@ std::unique_ptr<State> ShootingState::stopAction() {
     // Transición al estado idle
     return std::make_unique<IdleState>();
 }
+
