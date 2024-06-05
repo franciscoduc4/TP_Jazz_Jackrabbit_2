@@ -18,7 +18,6 @@ int main(int argc, char** argv) {
 
     try {
         // Load the server configuration
-        ServerConfig* config = ServerConfig::getInstance();
 
         // Initialize Logger
         //Logger logger(config->getLogFile());

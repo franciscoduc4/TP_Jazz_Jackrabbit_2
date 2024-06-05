@@ -13,15 +13,13 @@
 
 int main(int argc, char* argv[]) {
     if (argc != CLIENT_ARGS) {
-        //logger.error(__func__, __LINE__, "Invalid number of arguments. Expected: %d, got: %d",
-                     // CLIENT_ARGS, argc);
+        std::cerr << "Invalid number of arguments. Expected: " << CLIENT_ARGS << ", got: " << argc << std::endl;
         return FAIL;
     }
     try {
         Client client(argv[1], argv[2]);
         client.start();
     } catch (const std::exception& e) {
-        // logger.error(__func__, __LINE__, "Exception caught: %s", e.what());
         return FAIL;
     }
     return SUCCESS;
