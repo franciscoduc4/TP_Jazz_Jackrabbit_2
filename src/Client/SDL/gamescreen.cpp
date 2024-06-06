@@ -10,8 +10,25 @@
 #include "../../Common/sprite.h"
 #include "projectile.h"
 
-GameScreen::GameScreen(int character):
-        pj(character), turtle(0, 0, 200), schartz_guard(1, 0, 400), yellowM(2, 0, 100), points(0) {}
+#include "../../Common/Config/ClientConfig.h"
+#include "../../Common/DTO/game.h"
+#include "../../Common/DTO/player.h"
+#include "../../Common/DTO/enemy.h"
+#include "../../Common/DTO/bullet.h"
+#include "../../Common/DTO/item.h"
+#include "../../Common/DTO/weapon.h"
+#include "../../Common/DTO/tile.h"
+#include "../../Common/Types/command.h"
+#include "../../Common/Types/direction.h"
+
+
+//GameScreen::GameScreen(int character):
+//        pj(character), turtle(0, 0, 200), schartz_guard(1, 0, 400), yellowM(2, 0, 100), points(0) {}
+
+GameScreen::GameScreen(Client& player): client(player), pj(0), turtle(0, 0, 200), schartz_guard(1, 0, 400), yellowM(2, 0, 100), points(0)/*, config(ClientConfig::getInstance())*/ {
+
+}
+
 
 void GameScreen::run() {
     SDL2pp::SDL sdl(SDL_INIT_VIDEO);
@@ -34,7 +51,7 @@ void GameScreen::run() {
     pjSurface.SetColorKey(true, SDL_MapRGB(pjSurface.Get()->format, 44, 102, 150));
     SDL2pp::Texture jazz_sprite(renderer, pjSurface);
 
-    SDL_Surface* turtle_surf = IMG_Load(this->turtle.getPath().c_str());
+    SDL_Surface* turtle_surf = IMG_Load(this->turtle.getPath().c_str());//IMG_Load(this->config->getTurtleFile().c_str());
     SDL2pp::Surface turtleSurface(turtle_surf);
     turtleSurface.SetColorKey(true, SDL_MapRGB(turtleSurface.Get()->format, 0, 128, 255));
     SDL2pp::Texture turtle_enemy(renderer, turtleSurface);
@@ -114,16 +131,32 @@ void GameScreen::run() {
             } else if (event.type == SDL_KEYDOWN) {
                 switch (event.key.keysym.sym) {
                     case SDLK_RIGHT:
-                        is_walking = true;
-                        dir_x = 5;
-                        flip = 0;
-                        break;
+                        {
+		                    /*
+		                    is_walking = true;
+		                    dir_x = 5;
+		                    flip = 0;
+		                	*/
+		                    Command move = Command::MOVE;
+		                    std::vector<uint8_t> par{static_cast<uint8_t>(Direction::RIGHT)};
+		                    this->client.sendMsg(move, par);
+		                    break;
+                    	}
                     case SDLK_LEFT:
-                        is_walking = true;
-                        dir_x = -5;
-                        flip = 1;
-                        break;
-                    case SDLK_LSHIFT:
+		                {    
+		                    /*
+		                    is_walking = true;
+		                    dir_x = -5;
+		                    flip = 1;
+		                    break;
+		                	*/
+                    		Command move = Command::MOVE;
+		                    std::vector<uint8_t> par{static_cast<uint8_t>(Direction::LEFT)};
+		                    this->client.sendMsg(move, par);
+		                    break;
+                    	}
+
+                  	case SDLK_LSHIFT:
                         if (is_walking) {
                             speed_run = 3;
                             is_running = true;
@@ -165,160 +198,34 @@ void GameScreen::run() {
                 }
             }
         }
-
-        int mov = walk_mov;
-        int count = count_walk;
-        if (is_running) {
-            mov = run_mov;
-        }
-
-        if ((is_walking || is_running) && !is_shooting) {
-            if (is_running) {
-                count = count_run;
-            } else {
-                count = count_walk;
-            }
-            if (is_running) {
-                count_run++;
-            } else {
-                count_walk++;
-            }
-        }
-
-        if (is_dashing) {
-            if (count_dash == 17) {
-                count_dash = 13;
-                if (flip == 0) {
-                    dir_x = 20;
-                } else {
-                    dir_x = -20;
-                }
-                dash_timer++;
-            }
-            mov = dash_mov;
-            count = count_dash;
-            count_dash++;
-            if (dash_timer == 5) {
-                is_dashing = false;
-                count_dash = 0;
-                dash_timer = 0;
-                dir_x = 0;
-                mov = walk_mov;
-                count = count_walk;
-            }
-        }
-
-        if (is_shooting) {
-            if (count_shoot == 2) {
-                int proj_x = pos_x;
-                if (flip == 0) {
-                    proj_x += 50;
-                }
-                int proj_y = pos_y + (50 / 2);
-                this->pj.shoot(proj_x, proj_y, flip);
-            }
-
-            if (count_shoot == 7) {
-                count_shoot = 0;
-                is_shooting = false;
-                mov = walk_mov;
-                count = count_walk;
-
-            } else {
-                mov = shoot_mov;
-                count = count_shoot;
-                count_shoot++;
-            }
-        }
-
-        if (is_jumping && count_jump < 12) {
-            if (count_jump == 0) {
-                if (dir_x != 0) {
-                    if (flip == 0) {
-                        dir_x = 10;
-                    } else {
-                        dir_x = -10;
-                    }
-                }
-                dir_y = -8;
-            } else if (count_jump == 6) {
-                dir_y = 8;
-            }
-            mov = jump_mov;
-            count = count_jump;
-            count_jump++;
-        } else if (is_jumping) {
-            is_jumping = false;
-            count_jump = 0;
-            dir_y = 0;
-            mov = walk_mov;
-            count = count_walk;
-        }
-
-        it = this->pj.img_coords(mov, count);
-        pixel_x = it->getX();
-        pixel_y = it->getY();
-        pixel_width = it->getWidth();
-        pixel_height = it->getHeight();
-
-        window_width = window.GetWidth();
-        window_height = window.GetHeight();
-
-        if (pos_x + (dir_x * speed_run) > window_width / 4 * 2 ||
-            (pos_x + (dir_x * speed_run) < window_width / 4 && dir_x < 0)) {
-            if (pixel_x_screen + dir_x > img_width - pixel_width_screen) {
-                pixel_x_screen = 0;
-            } else if (pixel_x_screen < 0) {
-                pixel_x_screen = img_width - pixel_width_screen;
-            } else {
-                pixel_x_screen += dir_x;
-            }
-            x_screen = (dir_x * speed_run);
-        } else {
-            pos_x += (dir_x * speed_run);
-        }
-
-        if (pos_y + dir_y > window_height / 4 * 2 ||
-            (pos_y + dir_y < window_height / 4 && dir_y < 0)) {
-            if (pixel_y_screen + dir_y > img_height - pixel_height_screen) {
-                pixel_y_screen = 0;
-            } else if (pixel_y_screen < 0) {
-                pixel_y_screen = img_height - pixel_height_screen;
-            } else {
-                pixel_y_screen += dir_y;
-            }
-            y_screen = dir_y;
-        } else {
-            pos_y += dir_y;
-        }
-
+		
 		renderer.Clear();
 
         renderer.Copy(background,
                       SDL2pp::Rect(pixel_x_screen, pixel_y_screen, pixel_width_screen,
                                    pixel_height_screen),
                       SDL2pp::Rect(0, 0, window_width, window_height));
-		
-        SDL2pp::Rect player_rect = SDL2pp::Rect(pos_x, pos_y, 50, 80);
-		
-		this->points.verify_point_obtained(player_rect);
-		
-        renderer.Copy(jazz_sprite, SDL2pp::Rect(pixel_x, pixel_y, pixel_width, pixel_height),
-                      player_rect, 0.0, SDL2pp::NullOpt, flip);
-		
-        this->pj.draw_projectiles(window, renderer, projectile);
+        
+        
+        std::unique_ptr<DTO> serverMsg = this->client.getServerMsg();
+		auto derived_ptr = static_cast<GameDTO*>(serverMsg.release());        
+        std::unique_ptr<GameDTO> snapshot = std::unique_ptr<GameDTO>(derived_ptr);
+   		
+   		std::vector<PlayerDTO> players = snapshot->getPlayers();
+       	this->pj.draw_players(window, renderer, jazz_sprite, players, 0);
+        
+        
+        std::vector<EnemyDTO> enemies = snapshot->getEnemies();
+      	
+        
+        std::vector<BulletDTO> bullets = snapshot->getBullets();
+        
+        std::vector<ItemDTO> items = snapshot->getItems();
+        
+        std::vector<WeaponDTO> weapons = snapshot->getWeapons();
+        
+        std::vector<TileDTO> tiles = snapshot->getTiles(); 
 
-		
-        this->turtle.draw_enemy(window, renderer, turtle_enemy, 0, x_screen, y_screen);
-
-        this->schartz_guard.draw_enemy(window, renderer, schartzenguard, 1, x_screen, y_screen);
-
-        this->yellowM.draw_enemy(window, renderer, yellowMonster, 0, x_screen, y_screen);
-
-        this->points.draw_points(renderer, items, x_screen, y_screen);
-
-		x_screen = 0;
-		y_screen = 0;
 
         renderer.Present();
 

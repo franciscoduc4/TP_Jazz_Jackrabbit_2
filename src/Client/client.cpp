@@ -1,5 +1,7 @@
 #include "./client.h"
-
+#include "./SDL/gamescreen.h"
+#include "../Common/Types/direction.h"
+#include "../Common/DTO/move.h"
 
 Client::Client(char* ip, char* port):
         ip(ip),
@@ -13,33 +15,38 @@ Client::Client(char* ip, char* port):
         serializer(this->senderQueue),
         // cmdReader(this->serializer, this->playerCmdsQueue),
         deserializer(this->receiverQueue),
-        receiver(this->deserializer, this->skt, this->was_closed) {
+        receiver(this->deserializer, this->skt, this->was_closed),
+        playerId(0) {
     this->sender.start();
     this->receiver.start();
     // this->cmdReader.start();
 }
 
 void Client::start() {
+	/*
     bool clientJoinedGame = false;
-    do {
-        LobbyInit init;
-        clientJoinedGame = init.launchQT(*this, (bool&) clientJoinedGame);
+    LobbyInit init;
+    clientJoinedGame = init.launchQT(*this, (bool&) clientJoinedGame);
 
-        if (!clientJoinedGame) {
-            break;
-        }
+    if (!clientJoinedGame) {
+        return;
+    }
+	*/
+    // TODO: Continue with SDL.
+    
+    GameScreen game(*this);
+    game.run();
 
-        // TODO: Continue with SDL.
-        
-        GameScreen game(0);
-        game.run();
 
-    } while (clientJoinedGame);
 }
 
-std::unique_ptr<DTO> Client::getServerMsg() { return receiverQueue->pop(); }
+std::unique_ptr<DTO> Client::getServerMsg() { 
+	std::unique_ptr<DTO> dto;
+	receiverQueue->try_pop(dto);
+	return dto; 
+}
 
-/*
+
 void Client::sendMsg(Command& cmd, std::vector<uint8_t>& parameters) {
     switch (cmd) {
         case Command::MOVE:
@@ -48,8 +55,8 @@ void Client::sendMsg(Command& cmd, std::vector<uint8_t>& parameters) {
 }
 
 void Client::move_msg(std::vector<uint8_t>& parameters) {
-    Direction dir = static_cast<int32_t>(parameters[0]);
-    MoveDTO move(this->playerId, dir);
+    Direction dir = static_cast<Direction>(parameters[0]);
+    std::unique_ptr<DTO> move = std::make_unique<MoveDTO>(this->playerId, dir);
     serializer.sendMsg(move);
 }
-*/
+

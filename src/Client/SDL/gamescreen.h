@@ -7,6 +7,8 @@
 #include "../../Common/DTO/game.h"
 #include "../../Common/queue.h"
 
+#include "../../Common/Config/ClientConfig.h"
+
 #include "enemy.h"
 #include "player.h"
 #include "points.h"
@@ -18,15 +20,13 @@ class GameScreen {
     Enemy yellowM;
     Points points;
 
-
-    /*
+	//ClientConfig* config;
     Client& client;
-    bool state;
-    */
-public:
-    GameScreen(int character);
 
-    // explicit GameScreen(Client& player);
+public:
+    //GameScreen(int character);
+
+    explicit GameScreen(Client& player);
 
     void run();
 };

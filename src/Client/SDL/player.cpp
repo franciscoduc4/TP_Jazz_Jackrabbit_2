@@ -1,6 +1,8 @@
 #include "player.h"
-#include "../../Common/sprite.h"
 #include "projectile.h"
+#include "../../Common/sprite.h"
+#include "../Common/Config/ClientConfig.h"
+
 
 #include <string>
 #include <map>
@@ -14,9 +16,49 @@ enum character_type { Jazz, Lori, Spaz };
 enum type_mov { Walk, Shoot, Run, Jump, Dash };
 
 Player::Player(int character) {
+	/*
+	int index_x = 0;
+	int index_y = 1;
+	int index_width = 3;
+	int index_height = 4;
+	*/
+	this->counts[Walk] = 0;
+	this->counts[Run] = 0;
+	this->counts[Shoot] = 0;
+	this->counts[Jump] = 0;
+	this->width = 50;
+	this->height = 80;
+	this->flip = 0;
 	switch (character) {
 		case Jazz:
 			this->image_path = "../assets/Characters/Jazz.png";
+			/*
+			std::vector<std::vector<int>> walk_sprites = ClientConfig::getJazzWalkingSprites();
+			for (int i = 0; i < walk_sprites.size(); i++) {
+				this->sprites[Walk].push_back(RectangularSprite(walk_sprites[i][index_x], walk_sprites[i][index_y], walk_sprites[i][index_width], walk_sprites[i][index_height]));
+			}
+
+						
+			std::vector<std::vector<int>> running_sprites = ClientConfig::getJazzRunningSprites();
+    		for (int i = 0; i < running_sprites.size(); i++) {
+    			this->sprites[Run].push_back(RectangularSprite(running_sprites[i][index_x], running_sprites[i][index_y], running_sprites[i][index_width], running_sprites[i][index_height]));
+    		}
+    		
+    		std::vector<std::vector<int>> shoot_sprites = ClientConfig::getJazzShootingSprites();
+    		for (int i = 0; i < shoot_sprites.size(); i++) {
+    			this->sprites[Shoot].push_back(RectangularSprite(shoot_sprites[i][index_x], shoot_sprites[i][index_y], shoot_sprites[i][index_width], shoot_sprites[i][index_height]));
+    		}
+    		
+    		std::vector<std::vector<int>> jump_sprites = ClientConfig::getJazzJumpingSprites();
+    		for (int i = 0; i < jump_sprites.size(); i++) {
+    			this->sprites[Jump].push_back(RectangularSprite(jump_sprites[i][index_x], jump_sprites[i][index_y], jump_sprites[i][index_width], jump_sprites[i][index_height]));
+    		}
+    		
+			std::vector<std::vector<int>> dash_sprites = ClientConfig::getJazzDashingSprites();
+			for (int i = 0; i < dash_sprites.size(); i++) {
+				this->sprites[Dash].push_back(RectangularSprite(dash_sprites[i][index_x], dash_sprites[i][index_y], dash_sprites[i][index_width], dash_sprites[i][index_height]));
+			}
+			*/
 			
 			for (int i = 0; i < 8; i++) {
 				this->sprites[Walk].push_back(RectangularSprite(57 * i, 790, 57, 46));
@@ -149,7 +191,20 @@ std::list<RectangularSprite>::iterator Player::img_coords(int mov_type, int num_
 	return it;
 }
 
+void Player::draw_players(SDL2pp::Window& window, SDL2pp::Renderer& renderer, SDL2pp::Texture& texture, std::vector<PlayerDTO>& players, int mov_type) {
+	for (auto p: players) {
+		std::list<RectangularSprite>::iterator it = img_coords(mov_type, this->counts[mov_type]);
+		renderer.Copy(texture, SDL2pp::Rect(it->getX(), it->getY(), it->getWidth(), it->getHeight()),
+                      SDL2pp::Rect(p.getX(), p.getY(), this->width, this->height), 0.0, SDL2pp::NullOpt, flip);
+        
+	
+	}
+}
 
+
+
+
+/*
 void Player::shoot(int x, int y, int flip) {
 	
 	Projectile p(0, x, y, flip);
@@ -169,3 +224,4 @@ void Player::draw_projectiles(SDL2pp::Window& window, SDL2pp::Renderer& renderer
 		
 	}
 }
+*/
