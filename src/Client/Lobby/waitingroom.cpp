@@ -9,7 +9,6 @@ WaitingRoom::WaitingRoom(QWidget *parent, Client& client, LobbyMessage& msg, boo
     clientJoinedGame(clientJoinedGame)
 {
     ui->setupUi(this);
-    this->setAttribute(Qt::WA_DeleteOnClose);
 }
 
 WaitingRoom::~WaitingRoom()
@@ -18,6 +17,13 @@ WaitingRoom::~WaitingRoom()
 }
 
 void WaitingRoom::on_btnBack_clicked() {
-    // Do Something.
+     this->hide();
+
+     QWidget* parent = this->parentWidget();
+     if (parent) {
+         parent->show();
+     }
+
+     this->close();
 }
 

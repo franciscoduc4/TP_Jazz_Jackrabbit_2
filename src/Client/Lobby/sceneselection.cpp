@@ -15,7 +15,6 @@ SceneSelection::SceneSelection(QWidget* parent, Client& client, LobbyMessage& ms
         clientJoinedGame(clientJoinedGame),
         sceneSpritesWidget(new SceneSpritesWidget(nullptr, ClientConfig::getEpisodesColourKey())) {
     ui->setupUi(this);
-    this->setAttribute(Qt::WA_DeleteOnClose);
     QVBoxLayout* layout = new QVBoxLayout(ui->widgetScenes);
     layout->addWidget(sceneSpritesWidget);
 }
@@ -34,9 +33,13 @@ void SceneSelection::on_btnChoose_clicked() {
 
 void SceneSelection::on_btnBack_clicked() {
     this->msg.setEpisode(Episode::INVALID);
+
+    this->hide();
+
     QWidget* parent = this->parentWidget();
     if (parent) {
         parent->show();
     }
+
     this->close();
 }

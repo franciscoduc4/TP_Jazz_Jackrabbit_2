@@ -17,7 +17,6 @@ CharacterSelection::CharacterSelection(QWidget* parent, Client& client, LobbyMes
         characterSelectionWidget(
                 new CharacterSelectionWidget(this, ClientConfig::getCharacterSelectColourKey())) {
     ui->setupUi(this);
-    this->setAttribute(Qt::WA_DeleteOnClose);
     QVBoxLayout* layout = new QVBoxLayout(ui->widgetCharacters);
     layout->addWidget(characterSelectionWidget);
 }
@@ -47,9 +46,13 @@ void CharacterSelection::on_btnChoose_clicked() {
 
 void CharacterSelection::on_btnBack_clicked() {
     this->msg.setCharacter(CharacterType::INVALID);
+
+    this->hide();
+
     QWidget* parent = this->parentWidget();
     if (parent) {
         parent->show();
     }
+
     this->close();
 }

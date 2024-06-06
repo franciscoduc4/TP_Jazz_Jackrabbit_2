@@ -12,7 +12,6 @@ CreateGame::CreateGame(QWidget* parent, Client& client, LobbyMessage& msg, bool&
         msg(msg),
         clientJoinedGame(clientJoinedGame) {
     ui->setupUi(this);
-    this->setAttribute(Qt::WA_DeleteOnClose);
 }
 
 CreateGame::~CreateGame() { delete ui; }
@@ -42,9 +41,12 @@ void CreateGame::on_btnBack_clicked() {
     this->msg.setMaxPlayers(0);
     this->msg.setWaitTime(0);
 
+    this->hide();
+
     QWidget* parent = this->parentWidget();
     if (parent) {
         parent->show();
     }
+
     this->close();
 }

@@ -10,7 +10,6 @@ GameList::GameList(QWidget* parent, Client& client, LobbyMessage& msg, bool& cli
         msg(msg),
         clientJoinedGame(clientJoinedGame) {
     ui->setupUi(this);
-    this->setAttribute(Qt::WA_DeleteOnClose);
 }
 
 GameList::~GameList() { delete ui; }
@@ -44,9 +43,13 @@ void GameList::on_btnJoin_clicked() {
 
 void GameList::on_btnBack_clicked() {
     this->msg.setGameName("");
+
+    this->hide();
+
     QWidget* parent = this->parentWidget();
     if (parent) {
         parent->show();
     }
+
     this->close();
 }
