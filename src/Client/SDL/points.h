@@ -28,7 +28,7 @@ class Points {
 public:
     Points(int level_type);
 
-    void draw_points(SDL2pp::Renderer& renderer, SDL2pp::Texture& points);
+    void draw_points(SDL2pp::Renderer& renderer, SDL2pp::Texture& points, int x_screen, int y_screen);
 
     std::list<RectangularSprite>::iterator actual_sprite_coord(int typepoint);
 

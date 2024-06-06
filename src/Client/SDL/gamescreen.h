@@ -24,7 +24,7 @@ class GameScreen {
     bool state;
     */
 public:
-    GameScreen(int character, Queue<GameDTO>& cola);
+    GameScreen(int character);
 
     // explicit GameScreen(Client& player);
 

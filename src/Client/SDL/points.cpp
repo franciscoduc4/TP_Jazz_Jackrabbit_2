@@ -112,12 +112,14 @@ std::list<RectangularSprite>::iterator Points::actual_sprite_coord(int typepoint
     return it;
 }
 
-void Points::draw_points(SDL2pp::Renderer& renderer, SDL2pp::Texture& points) {
+void Points::draw_points(SDL2pp::Renderer& renderer, SDL2pp::Texture& points, int x_screen, int y_screen) {
     int index_x = 0;
     int index_y = 1;
     std::list<RectangularSprite>::iterator it;
     for (int i = 0; i < this->cant_redgems; i++) {
         it = actual_sprite_coord(RedGem);
+        this->redgems[i][index_x] -= x_screen;
+        this->redgems[i][index_y] -= y_screen;
         renderer.Copy(points, SDL2pp::Rect(it->getX(), it->getY(), it->getWidth(), it->getHeight()),
                       SDL2pp::Rect(this->redgems[i][index_x], this->redgems[i][index_y],
                                    this->draw_width, this->draw_height),
@@ -128,6 +130,8 @@ void Points::draw_points(SDL2pp::Renderer& renderer, SDL2pp::Texture& points) {
 
     for (int i = 0; i < this->cant_goldcoin; i++) {
         it = actual_sprite_coord(GoldCoin);
+        this->goldcoin[i][index_x] -= x_screen;
+        this->goldcoin[i][index_y] -= y_screen;
         renderer.Copy(points, SDL2pp::Rect(it->getX(), it->getY(), it->getWidth(), it->getHeight()),
                       SDL2pp::Rect(this->goldcoin[i][index_x], this->goldcoin[i][index_y],
                                    this->draw_width, this->draw_height),
@@ -138,6 +142,8 @@ void Points::draw_points(SDL2pp::Renderer& renderer, SDL2pp::Texture& points) {
 
     for (int i = 0; i < this->cant_silvercoin; i++) {
         it = actual_sprite_coord(SilverCoin);
+        this->silvercoin[i][index_x] -= x_screen;
+        this->silvercoin[i][index_y] -= y_screen;
         renderer.Copy(points, SDL2pp::Rect(it->getX(), it->getY(), it->getWidth(), it->getHeight()),
                       SDL2pp::Rect(this->silvercoin[i][index_x], this->silvercoin[i][index_y],
                                    this->draw_width, this->draw_height),
@@ -157,13 +163,41 @@ void Points::verify_point_obtained(SDL2pp::Rect& player_rect) {
         SDL2pp::Rect gem_rect = SDL2pp::Rect(this->redgems[i][index_x], this->redgems[i][index_y],
                                              this->draw_width, this->draw_height);
         if (gem_rect.GetIntersection(player_rect) != SDL2pp::NullOpt) {
-        return;
+        	this->cant_redgems--;
+        	obtained = true;
+        	break;
+        }	
+        ++it;
+        i++;
     }
+    if (obtained) {
+    	this->redgems.erase(it);
+    	return;
+    }
+    
+    
+    i = 0;
+    it = this->goldcoin.begin();
+    while (it != this->goldcoin.end()) {
+    	SDL2pp::Rect goldcoin_rect = SDL2pp::Rect(this->goldcoin[i][index_x], this->goldcoin[i][index_y], this->draw_width, this->draw_height);
+    	if (goldcoin_rect.GetIntersection(player_rect) != SDL2pp::NullOpt) {
+    		this->cant_goldcoin--;
+    		obtained = true;
+    		break;
+    	}
+    	++it;
+    	i++;
+    }
+    if (obtained) {
+    	this->goldcoin.erase(it);
+    	return;
+    }    
+    
+
     i = 0;
     it = this->silvercoin.begin();
     while (it != this->silvercoin.end()) {
-        SDL2pp::Rect silver_rect =
-                SDL2pp::Rect(this->silvercoin[i][index_x], this->silvercoin[i][index_y],
+        SDL2pp::Rect silver_rect = SDL2pp::Rect(this->silvercoin[i][index_x], this->silvercoin[i][index_y],
                              this->draw_width, this->draw_height);
         if (silver_rect.GetIntersection(player_rect) != SDL2pp::NullOpt) {
             this->cant_silvercoin--;
@@ -177,5 +211,5 @@ void Points::verify_point_obtained(SDL2pp::Rect& player_rect) {
         this->silvercoin.erase(it);
         return;
     }
-    }
+    
 }

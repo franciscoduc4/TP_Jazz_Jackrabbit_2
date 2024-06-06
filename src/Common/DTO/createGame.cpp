@@ -1,6 +1,6 @@
 #include "createGame.h"
 
-CreateGameDTO::CreateGameDTO(int32_t gameId): CommandDTO(gameId, Command::CREATE_GAME) {}
+CreateGameDTO::CreateGameDTO(int32_t gameId): gameId(gameId) {}
 
 CreateGameDTO::CreateGameDTO(int32_t playerId, Episode episodeName, GameMode gameMode,
                              uint8_t maxPlayers, CharacterType characterType, std::string gameName,

@@ -27,6 +27,7 @@ private:
     std::shared_ptr<Queue<std::unique_ptr<CommandDTO>>> recvQueue;
     ReceiverThread receiver;
     GameMonitor& gameMonitor;
+    std::shared_ptr<Socket> socket;
 
 
 public:

@@ -32,7 +32,7 @@ public:
     std::list<RectangularSprite>::iterator enemy_img_coords(int mov_type, int num_mov);
 
     void draw_enemy(SDL2pp::Window& window, SDL2pp::Renderer& renderer, SDL2pp::Texture& enemy,
-                    int mov_type);
+                    int mov_type, int x_screen, int y_screen);
 };
 
 #endif  // CLIENT_ENEMY_H_

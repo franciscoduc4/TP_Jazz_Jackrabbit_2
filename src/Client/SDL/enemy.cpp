@@ -160,7 +160,9 @@ std::list<RectangularSprite>::iterator Enemy::enemy_img_coords(int mov_type, int
 
 
 void Enemy::draw_enemy(SDL2pp::Window& window, SDL2pp::Renderer& renderer, SDL2pp::Texture& enemy,
-                       int mov_type) {
+                       int mov_type, int x_screen, int y_screen) {
+    this->pos_x -= x_screen;
+    this->pos_y -= y_screen;
     if (this->count == 17 && mov_type == 1) {
         this->weapon.activate((this->flip == 0) ? this->pos_x + this->draw_width : this->pos_x,
                               this->pos_y + this->draw_height / 2, this->flip);
