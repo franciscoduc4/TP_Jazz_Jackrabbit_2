@@ -15,7 +15,7 @@
 
 ReceivingDamageState::ReceivingDamageState(float startTime):
         startTime(startTime),
-        timeReceivingDamage(CONFIG->getDamageTime())  // CONFIG.getDamageTime();
+        timeReceivingDamage(CONFIG->getDamageTime())  
 {
     characterState = CharacterStateEntity::TAKING_DAMAGE;
 }
