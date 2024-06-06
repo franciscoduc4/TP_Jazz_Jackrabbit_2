@@ -49,11 +49,12 @@ bool GameMonitor::startGame(int32_t playerId, int32_t gameId) {
     return false;
 }
 
-std::map<int32_t, std::string> GameMonitor::getGamesList() {
+std::map<int32_t, GameInfo> GameMonitor::getGamesList() {
     std::lock_guard<std::mutex> lock(mtx);
-    std::map<int32_t, std::string> list;
+    std::map<int32_t, GameInfo> list;
     for (auto& [id, game]: games) {
-        list[id] = game->getGameName();
+        GameInfo gameInfo = game->getGameInfo();
+        list[id] = gameInfo;
     }
     return list;
 }
