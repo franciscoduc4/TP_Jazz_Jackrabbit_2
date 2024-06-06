@@ -51,6 +51,10 @@ void Client::sendMsg(Command& cmd, std::vector<uint8_t>& parameters) {
     switch (cmd) {
         case Command::MOVE:
             move_msg(parameters);
+       		break;
+       	case Command::SHOOT:
+       		shoot_msg();
+       		break;
     }
 }
 
@@ -60,3 +64,7 @@ void Client::move_msg(std::vector<uint8_t>& parameters) {
     serializer.sendMsg(move);
 }
 
+void Client::shoot_msg() {
+	std::unique_ptr<DTO> shoot = std::make_unique<CommandDTO>(this->playerId, Command::SHOOT);
+	serializer.sendMsg(shoot);
+}

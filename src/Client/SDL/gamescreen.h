@@ -15,9 +15,12 @@
 
 class GameScreen {
     Player pj;
+    /*
     Enemy turtle;
     Enemy schartz_guard;
     Enemy yellowM;
+    */
+    Enemy enemies;
     Points points;
 
 	//ClientConfig* config;

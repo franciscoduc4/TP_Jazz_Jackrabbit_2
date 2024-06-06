@@ -21,6 +21,8 @@ Points::Points(int level_type) {
     this->sprites[RedGem].push_back(RectangularSprite(291, 1240, 29, 30));
     this->sprites[RedGem].push_back(RectangularSprite(320, 1240, 29, 30));
     this->sprites[RedGem].push_back(RectangularSprite(349, 1240, 30, 30));
+    this->counts.push_back(0);
+	
 
     this->sprites[GoldCoin].push_back(RectangularSprite(481, 1218, 27, 27));
     this->sprites[GoldCoin].push_back(RectangularSprite(508, 1218, 35, 27));
@@ -42,6 +44,8 @@ Points::Points(int level_type) {
     this->sprites[GoldCoin].push_back(RectangularSprite(818, 1218, 18, 27));
     this->sprites[GoldCoin].push_back(RectangularSprite(836, 1218, 23, 27));
     this->sprites[GoldCoin].push_back(RectangularSprite(859, 1218, 23, 27));
+    this->counts.push_back(0);
+	
 
     this->sprites[SilverCoin].push_back(RectangularSprite(482, 1266, 27, 26));
     this->sprites[SilverCoin].push_back(RectangularSprite(509, 1266, 33, 26));
@@ -63,41 +67,7 @@ Points::Points(int level_type) {
     this->sprites[SilverCoin].push_back(RectangularSprite(817, 1266, 19, 26));
     this->sprites[SilverCoin].push_back(RectangularSprite(836, 1266, 24, 26));
     this->sprites[SilverCoin].push_back(RectangularSprite(860, 1266, 15, 26));
-
-
-    switch (level_type) {
-        case lvl1:
-            this->cant_redgems = 5;
-            this->cant_goldcoin = 10;
-            this->cant_silvercoin = 20;
-    }
-    int i;
-    int x = 0;
-    int y = 100;
-    for (i = 0; i < this->cant_redgems; i++) {
-        std::vector v({x, y});
-        this->redgems.push_back(v);
-        x += 90;
-    }
-    this->counts.push_back(0);
-
-    y += 100;
-    x = 0;
-    for (i = 0; i < this->cant_goldcoin; i++) {
-        std::vector v2({x, y});
-        this->goldcoin.push_back(v2);
-        x += 60;
-    }
-    this->counts.push_back(0);
-
-    y += 100;
-    x = 0;
-    for (i = 0; i < this->cant_silvercoin; i++) {
-        std::vector v3({x, y});
-        this->silvercoin.push_back(v3);
-        x += 40;
-    }
-    this->counts.push_back(0);
+	this->counts.push_back(0);
 }
 
 
@@ -112,104 +82,15 @@ std::list<RectangularSprite>::iterator Points::actual_sprite_coord(int typepoint
     return it;
 }
 
-void Points::draw_points(SDL2pp::Renderer& renderer, SDL2pp::Texture& points, int x_screen, int y_screen) {
-    int index_x = 0;
-    int index_y = 1;
-    std::list<RectangularSprite>::iterator it;
-    for (int i = 0; i < this->cant_redgems; i++) {
-        it = actual_sprite_coord(RedGem);
-        this->redgems[i][index_x] -= x_screen;
-        this->redgems[i][index_y] -= y_screen;
+void Points::draw_points(SDL2pp::Renderer& renderer, SDL2pp::Texture& points, std::vector<ItemDTO> pointsdto) {
+   	int index_x = 0;
+   	int index_y = 1;
+   	for (auto p : pointsdto) {
+   		std::list<RectangularSprite>::iterator it = actual_sprite_coord(RedGem/*p.getType()*/);
         renderer.Copy(points, SDL2pp::Rect(it->getX(), it->getY(), it->getWidth(), it->getHeight()),
-                      SDL2pp::Rect(this->redgems[i][index_x], this->redgems[i][index_y],
-                                   this->draw_width, this->draw_height),
+                      SDL2pp::Rect(p.getX(), p.getY(), this->draw_width, this->draw_height),
                       0.0, SDL2pp::NullOpt, 0);
-    }
-    this->counts[RedGem]++;
-
-
-    for (int i = 0; i < this->cant_goldcoin; i++) {
-        it = actual_sprite_coord(GoldCoin);
-        this->goldcoin[i][index_x] -= x_screen;
-        this->goldcoin[i][index_y] -= y_screen;
-        renderer.Copy(points, SDL2pp::Rect(it->getX(), it->getY(), it->getWidth(), it->getHeight()),
-                      SDL2pp::Rect(this->goldcoin[i][index_x], this->goldcoin[i][index_y],
-                                   this->draw_width, this->draw_height),
-                      0.0, SDL2pp::NullOpt, 0);
-    }
-    this->counts[GoldCoin]++;
-
-
-    for (int i = 0; i < this->cant_silvercoin; i++) {
-        it = actual_sprite_coord(SilverCoin);
-        this->silvercoin[i][index_x] -= x_screen;
-        this->silvercoin[i][index_y] -= y_screen;
-        renderer.Copy(points, SDL2pp::Rect(it->getX(), it->getY(), it->getWidth(), it->getHeight()),
-                      SDL2pp::Rect(this->silvercoin[i][index_x], this->silvercoin[i][index_y],
-                                   this->draw_width, this->draw_height),
-                      0.0, SDL2pp::NullOpt, 0);
-    }
-    this->counts[SilverCoin]++;
+        this->counts[RedGem/*p.getType()*/]++;
+   	}
 }
 
-
-void Points::verify_point_obtained(SDL2pp::Rect& player_rect) {
-    int index_x = 0;
-    int index_y = 1;
-    int i = 0;
-    bool obtained = false;
-    std::vector<std::vector<int>>::iterator it = this->redgems.begin();
-    while (it != this->redgems.end()) {
-        SDL2pp::Rect gem_rect = SDL2pp::Rect(this->redgems[i][index_x], this->redgems[i][index_y],
-                                             this->draw_width, this->draw_height);
-        if (gem_rect.GetIntersection(player_rect) != SDL2pp::NullOpt) {
-        	this->cant_redgems--;
-        	obtained = true;
-        	break;
-        }	
-        ++it;
-        i++;
-    }
-    if (obtained) {
-    	this->redgems.erase(it);
-    	return;
-    }
-    
-    
-    i = 0;
-    it = this->goldcoin.begin();
-    while (it != this->goldcoin.end()) {
-    	SDL2pp::Rect goldcoin_rect = SDL2pp::Rect(this->goldcoin[i][index_x], this->goldcoin[i][index_y], this->draw_width, this->draw_height);
-    	if (goldcoin_rect.GetIntersection(player_rect) != SDL2pp::NullOpt) {
-    		this->cant_goldcoin--;
-    		obtained = true;
-    		break;
-    	}
-    	++it;
-    	i++;
-    }
-    if (obtained) {
-    	this->goldcoin.erase(it);
-    	return;
-    }    
-    
-
-    i = 0;
-    it = this->silvercoin.begin();
-    while (it != this->silvercoin.end()) {
-        SDL2pp::Rect silver_rect = SDL2pp::Rect(this->silvercoin[i][index_x], this->silvercoin[i][index_y],
-                             this->draw_width, this->draw_height);
-        if (silver_rect.GetIntersection(player_rect) != SDL2pp::NullOpt) {
-            this->cant_silvercoin--;
-            obtained = true;
-            break;
-        }
-        ++it;
-        i++;
-    }
-    if (obtained) {
-        this->silvercoin.erase(it);
-        return;
-    }
-    
-}

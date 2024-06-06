@@ -25,7 +25,7 @@
 //GameScreen::GameScreen(int character):
 //        pj(character), turtle(0, 0, 200), schartz_guard(1, 0, 400), yellowM(2, 0, 100), points(0) {}
 
-GameScreen::GameScreen(Client& player): client(player), pj(0), turtle(0, 0, 200), schartz_guard(1, 0, 400), yellowM(2, 0, 100), points(0)/*, config(ClientConfig::getInstance())*/ {
+GameScreen::GameScreen(Client& player): client(player), pj(0), points(0)/*, config(ClientConfig::getInstance())*/ {
 
 }
 
@@ -51,12 +51,20 @@ void GameScreen::run() {
     pjSurface.SetColorKey(true, SDL_MapRGB(pjSurface.Get()->format, 44, 102, 150));
     SDL2pp::Texture jazz_sprite(renderer, pjSurface);
 
-    SDL_Surface* turtle_surf = IMG_Load(this->turtle.getPath().c_str());//IMG_Load(this->config->getTurtleFile().c_str());
+	SDL_Surface* enemy_surf = IMG_Load(this->enemies.getPath(EnemyType::WALKING_ENEMY).c_str());//IMG_Load(this->config->getTurtleFile().c_str());
+    SDL2pp::Surface enemySurface(enemy_surf);
+    enemySurface.SetColorKey(true, SDL_MapRGB(enemySurface.Get()->format, 0, 128, 255));
+    SDL2pp::Texture enemy(renderer, enemySurface);
+	/*
+    
+	
+	/*
+	SDL_Surface* turtle_surf = IMG_Load(this->turtle.getPath().c_str());//IMG_Load(this->config->getTurtleFile().c_str());
     SDL2pp::Surface turtleSurface(turtle_surf);
     turtleSurface.SetColorKey(true, SDL_MapRGB(turtleSurface.Get()->format, 0, 128, 255));
     SDL2pp::Texture turtle_enemy(renderer, turtleSurface);
-
-    SDL_Surface* sch_surf = IMG_Load(this->schartz_guard.getPath().c_str());
+	
+	SDL_Surface* sch_surf = IMG_Load(this->schartz_guard.getPath().c_str());
     SDL2pp::Surface schSurface(sch_surf);
     schSurface.SetColorKey(true, SDL_MapRGB(schSurface.Get()->format, 0, 128, 255));
     SDL2pp::Texture schartzenguard(renderer, schSurface);
@@ -65,6 +73,7 @@ void GameScreen::run() {
     SDL2pp::Surface yellowSurface(yellow_surf);
     yellowSurface.SetColorKey(true, SDL_MapRGB(yellowSurface.Get()->format, 0, 128, 255));
     SDL2pp::Texture yellowMonster(renderer, yellowSurface);
+	*/
 
     SDL_Surface* projectile_surf = IMG_Load("../assets/Miscellaneous/SFX.png");
     SDL2pp::Surface projectileSurface(projectile_surf);
@@ -105,12 +114,7 @@ void GameScreen::run() {
     int pos_x = 0;
     int pos_y = 0;
 
-    std::list<RectangularSprite>::iterator it = this->pj.img_coords(walk_mov, count_walk);
-    int pixel_x = it->getX();
-    int pixel_y = it->getY();
-    int pixel_width = it->getWidth();
-    int pixel_height = it->getHeight();
-
+    
     int flip = 0;
 
 	int x_screen = 0;
@@ -151,8 +155,8 @@ void GameScreen::run() {
 		                    break;
 		                	*/
                     		Command move = Command::MOVE;
-		                    std::vector<uint8_t> par{static_cast<uint8_t>(Direction::LEFT)};
-		                    this->client.sendMsg(move, par);
+		                    std::vector<uint8_t> elements{static_cast<uint8_t>(Direction::LEFT)};
+		                    this->client.sendMsg(move, elements);
 		                    break;
                     	}
 
@@ -169,8 +173,13 @@ void GameScreen::run() {
                         dir_y = 10;
                         break;
                     case SDLK_m:
-                        is_shooting = true;
-                        break;
+                    	{
+		                    //is_shooting = true;
+		                    Command shoot = Command::SHOOT;
+		                    std::vector<uint8_t> elements;
+		                    this->client.sendMsg(shoot, elements);
+		                    break;
+		               	}
                     case SDLK_SPACE:
                         is_jumping = true;
                         break;
@@ -215,12 +224,13 @@ void GameScreen::run() {
        	this->pj.draw_players(window, renderer, jazz_sprite, players, 0);
         
         
-        std::vector<EnemyDTO> enemies = snapshot->getEnemies();
-      	
+        std::vector<EnemyDTO> enemiesSnapshot = snapshot->getEnemies();
+      	this->enemies.draw_enemy(window, renderer, enemy, enemiesSnapshot);
         
         std::vector<BulletDTO> bullets = snapshot->getBullets();
         
-        std::vector<ItemDTO> items = snapshot->getItems();
+        std::vector<ItemDTO> itemsSnapshot = snapshot->getItems();
+        this->points.draw_points(renderer, items, itemsSnapshot); 
         
         std::vector<WeaponDTO> weapons = snapshot->getWeapons();
         

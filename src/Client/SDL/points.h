@@ -8,6 +8,7 @@
 #include <SDL2pp/SDL2pp.hh>
 
 #include "../../Common/sprite.h"
+#include "../../Common/DTO/item.h"
 
 class Points {
     std::map<int, std::list<RectangularSprite>> sprites;
@@ -28,11 +29,10 @@ class Points {
 public:
     Points(int level_type);
 
-    void draw_points(SDL2pp::Renderer& renderer, SDL2pp::Texture& points, int x_screen, int y_screen);
+    void draw_points(SDL2pp::Renderer& renderer, SDL2pp::Texture& points, std::vector<ItemDTO> pointsdto);
 
     std::list<RectangularSprite>::iterator actual_sprite_coord(int typepoint);
 
-    void verify_point_obtained(SDL2pp::Rect& player_rect);
 };
 
 
