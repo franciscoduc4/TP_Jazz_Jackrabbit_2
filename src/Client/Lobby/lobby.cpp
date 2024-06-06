@@ -6,12 +6,13 @@
 #include "ui_lobby.h"
 
 Lobby::Lobby(QWidget* parent, Client& client, LobbyMessage& msg, bool& clientJoinedGame):
-        QMainWindow(parent),
+        QDialog(parent),
         ui(new Ui::Lobby),
         client(client),
         msg(msg),
         clientJoinedGame(clientJoinedGame) {
     ui->setupUi(this);
+    this->setAttribute(Qt::WA_DeleteOnClose);
     QString playerName = QString::fromStdString(this->msg.getPlayerName());
     QString welcomeText = ui->labelTitle->text();
     welcomeText.append(playerName);

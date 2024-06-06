@@ -8,13 +8,14 @@
 
 SceneSelection::SceneSelection(QWidget* parent, Client& client, LobbyMessage& msg,
                                bool& clientJoinedGame):
-        QMainWindow(parent),
+        QDialog(parent),
         ui(new Ui::SceneSelection),
         client(client),
         msg(msg),
         clientJoinedGame(clientJoinedGame),
         sceneSpritesWidget(new SceneSpritesWidget(nullptr, ClientConfig::getEpisodesColourKey())) {
     ui->setupUi(this);
+    this->setAttribute(Qt::WA_DeleteOnClose);
     QVBoxLayout* layout = new QVBoxLayout(ui->widgetScenes);
     layout->addWidget(sceneSpritesWidget);
 }

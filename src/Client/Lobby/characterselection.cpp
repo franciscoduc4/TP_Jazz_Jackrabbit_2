@@ -9,7 +9,7 @@
 
 CharacterSelection::CharacterSelection(QWidget* parent, Client& client, LobbyMessage& msg,
                                        bool& clientJoinedGame):
-        QMainWindow(parent),
+        QDialog(parent),
         ui(new Ui::CharacterSelection),
         client(client),
         msg(msg),
@@ -17,6 +17,7 @@ CharacterSelection::CharacterSelection(QWidget* parent, Client& client, LobbyMes
         characterSelectionWidget(
                 new CharacterSelectionWidget(this, ClientConfig::getCharacterSelectColourKey())) {
     ui->setupUi(this);
+    this->setAttribute(Qt::WA_DeleteOnClose);
     QVBoxLayout* layout = new QVBoxLayout(ui->widgetCharacters);
     layout->addWidget(characterSelectionWidget);
 }

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
  <class>SceneSelection</class>
- <widget class="QMainWindow" name="SceneSelection">
+ <widget class="QDialog" name="SceneSelection">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -17,7 +17,7 @@
    </font>
   </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>Scene Selection</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <widget class="QLabel" name="labelTitle">

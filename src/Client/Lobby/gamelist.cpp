@@ -4,12 +4,13 @@
 #include "waitingroom.h"
 
 GameList::GameList(QWidget* parent, Client& client, LobbyMessage& msg, bool& clientJoinedGame):
-        QMainWindow(parent),
+        QDialog(parent),
         ui(new Ui::GameList),
         client(client),
         msg(msg),
         clientJoinedGame(clientJoinedGame) {
     ui->setupUi(this);
+    this->setAttribute(Qt::WA_DeleteOnClose);
 }
 
 GameList::~GameList() { delete ui; }

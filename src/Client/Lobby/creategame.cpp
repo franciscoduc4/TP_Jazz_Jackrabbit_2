@@ -6,12 +6,13 @@
 #include "ui_creategame.h"
 
 CreateGame::CreateGame(QWidget* parent, Client& client, LobbyMessage& msg, bool& clientJoinedGame):
-        QMainWindow(parent),
+        QDialog(parent),
         ui(new Ui::CreateGame),
         client(client),
         msg(msg),
         clientJoinedGame(clientJoinedGame) {
     ui->setupUi(this);
+    this->setAttribute(Qt::WA_DeleteOnClose);
 }
 
 CreateGame::~CreateGame() { delete ui; }
