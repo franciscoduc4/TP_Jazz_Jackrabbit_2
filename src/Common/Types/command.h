@@ -23,7 +23,8 @@ enum class Command : char {
     HEAL,
     UPPERCUT,
     SHORT_KICK,
-    SIDE_KICK
+    SIDE_KICK,
+    INVALID
 };
 
 #endif  // COMMAND_H

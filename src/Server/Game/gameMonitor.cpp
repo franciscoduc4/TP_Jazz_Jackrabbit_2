@@ -16,9 +16,8 @@ bool GameMonitor::createGame(int32_t playerId, Episode episode, GameMode gameMod
             return false;
         }
     }
-    games[gameId] =
-            std::make_unique<GameLoopThread>(gameId, gameName, playerId, episode, gameMode,
-                                             maxPlayers, characterType, recvQueue, queueMonitor);
+    games[gameId] = std::make_unique<Game>(gameId, gameName, playerId, episode, gameMode,
+                                           maxPlayers, characterType, recvQueue, queueMonitor);
 
     return true;
 }
@@ -42,18 +41,19 @@ bool GameMonitor::startGame(int32_t playerId, int32_t gameId) {
     if (it != games.end()) {
         auto& [id, game] = *it;
         if (game->isFull()) {
-            game->start();
+            game->launch();
             return true;
         }
     }
     return false;
 }
 
-std::map<int32_t, std::string> GameMonitor::getGamesList() {
+std::map<int32_t, GameInfo> GameMonitor::getGamesList() {
     std::lock_guard<std::mutex> lock(mtx);
-    std::map<int32_t, std::string> list;
+    std::map<int32_t, GameInfo> list;
     for (auto& [id, game]: games) {
-        list[id] = game->getGameName();
+        GameInfo gameInfo = game->getGameInfo();
+        list[id] = gameInfo;
     }
     return list;
 }
@@ -62,8 +62,7 @@ void GameMonitor::endGame(const std::string& gameName) {
     std::lock_guard<std::mutex> lock(mtx);
     for (auto it = games.begin(); it != games.end(); ++it) {
         if (it->second->getGameName() == gameName) {
-            it->second->stop();
-            it->second->join();
+            it->second->endGame();
             games.erase(it);
             return;
         }
@@ -73,8 +72,7 @@ void GameMonitor::endGame(const std::string& gameName) {
 void GameMonitor::endAllGames() {
     std::lock_guard<std::mutex> lock(mtx);
     for (auto& [id, game]: games) {
-        game->stop();
-        game->join();
+        game->endGame();
     }
     games.clear();
 }

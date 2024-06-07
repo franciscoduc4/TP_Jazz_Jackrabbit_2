@@ -7,13 +7,14 @@
 #include <string>
 
 #include "../../Common/Types/episode.h"
+#include "../../Common/Types/gameInfo.h"
 #include "../../Common/Types/gameMode.h"
 #include "../../Common/queueMonitor.h"
-#include "../Threads/gameLoop.h"
+#include "../Game/game.h"
 
 class GameMonitor {
 private:
-    std::map<int32_t, std::unique_ptr<GameLoopThread>> games;
+    std::map<int32_t, std::unique_ptr<Game>> games;
     std::mutex mtx;
     QueueMonitor<std::unique_ptr<GameDTO>>& queueMonitor;
 
@@ -22,7 +23,7 @@ public:
     bool createGame(int32_t playerId, Episode episode, GameMode gameMode, uint8_t maxPlayers,
                     CharacterType characterType, std::string gameName,
                     std::shared_ptr<Queue<std::unique_ptr<CommandDTO>>> recvQueue, int32_t gameId);
-    std::map<int32_t, std::string> getGamesList();
+    std::map<int32_t, GameInfo> getGamesList();
     bool joinGame(int32_t playerId, int32_t gameId, CharacterType characterType);
     bool startGame(int32_t playerId, int32_t gameId);
     void endGame(const std::string& gameName);

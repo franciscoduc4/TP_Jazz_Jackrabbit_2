@@ -3,23 +3,15 @@
 #include <chrono>
 
 
-GameLoopThread::GameLoopThread(int32_t gameId, std::string gameName, int32_t playerId,
-                               Episode episode, GameMode gameMode, uint8_t maxPlayers,
-                               CharacterType characterType,
-                               std::shared_ptr<Queue<std::unique_ptr<CommandDTO>>> recvQueue,
-                               QueueMonitor<std::unique_ptr<GameDTO>>& queueMonitor):
+GameLoopThread::GameLoopThread(std::shared_ptr<Queue<std::unique_ptr<CommandDTO>>> recvQueue,
+                               QueueMonitor<std::unique_ptr<GameDTO>>& queueMonitor,
+                               GameMap& gameMap):
         frameRate(0.016),  // 1 frame per 16 ms === 60 fps
-        game({100, 100}),  // config del YAML
-        queueMonitor(),
-        gameId(gameId),
-        gameName(gameName),
         keepRunning(true),
+        commandsToProcess(1),
         recvQueue(recvQueue),
-        maxPlayers(maxPlayers),
-        currentPlayers(1),
-        commandsToProcess(1) {
-    game.addCharacter(playerId, characterType);
-}
+        queueMonitor(),
+        gameMap(gameMap) {}
 
 void GameLoopThread::run() {
     auto lastTime = std::chrono::high_resolution_clock::now();
@@ -30,10 +22,10 @@ void GameLoopThread::run() {
 
         processCommands(deltaTime.count());
 
-        game.update(deltaTime.count());
+        gameMap.update(deltaTime.count());
 
-        //std::unique_ptr<GameDTO> gameDTO = game.getGameDTO();
-        //queueMonitor.broadcast(gameDTO);
+        std::unique_ptr<GameDTO> gameDTO = gameMap.getGameDTO();
+        queueMonitor.broadcast(std::move(gameDTO));
 
         auto processingEndTime = std::chrono::high_resolution_clock::now();
         std::chrono::duration<double> processingDuration = processingEndTime - currentTime;
@@ -55,7 +47,9 @@ void GameLoopThread::processCommands(double deltaTime) {
     for (size_t i = 0; i < commandsToProcess; ++i) {
         std::unique_ptr<CommandDTO> command;
         if (recvQueue->try_pop(command)) {
-            game.handleCommand(std::move(command), keepRunning, deltaTime);
+            std::unique_ptr<GameCommandHandler> handler =
+                    GameCommandHandler::createHandler(std::move(command));
+            handler->execute(gameMap, keepRunning, deltaTime);
             processedCommands++;
         } else {
             break;
@@ -83,23 +77,5 @@ void GameLoopThread::adjustCommandsToProcess(std::chrono::duration<double> proce
     commandsToProcess = std::max(size_t(1), commandsToProcess);
 }
 
-std::string GameLoopThread::getGameName() { return gameName; }
-
-int32_t GameLoopThread::getGameId() { return gameId; }
-
-void GameLoopThread::addPlayer(int32_t playerId, CharacterType characterType) {
-    currentPlayers++;
-    game.addCharacter(playerId, characterType);
-}
-
-bool GameLoopThread::isFull() const { return currentPlayers == maxPlayers; }
 
 void GameLoopThread::stop() { keepRunning = false; }
-
-bool GameLoopThread::deletePlayer(int32_t playerId) {
-    if (game.removeCharacter(playerId)) {
-        currentPlayers--;
-        return true;
-    }
-    return false;
-}

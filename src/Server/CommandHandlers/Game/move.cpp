@@ -3,8 +3,8 @@
 MoveHandler::MoveHandler(std::unique_ptr<MoveDTO> moveCommand):
         moveCommand(std::move(moveCommand)) {}
 
-void MoveHandler::execute(Game& game, std::atomic<bool>& keepRunning, double deltaTime) {
-    std::shared_ptr<Character> character = game.getCharacter(moveCommand->getPlayerId());
+void MoveHandler::execute(GameMap& gameMap, std::atomic<bool>& keepRunning, double deltaTime) {
+    std::shared_ptr<Character> character = gameMap.getCharacter(moveCommand->getPlayerId());
     switch (moveCommand->getMoveType()) {
         case Direction::UP:
             character->moveUp(deltaTime);

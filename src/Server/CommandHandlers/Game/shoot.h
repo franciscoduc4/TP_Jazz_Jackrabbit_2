@@ -12,7 +12,7 @@ private:
 public:
     explicit ShootHandler(std::unique_ptr<CommandDTO> shootCommand);
 
-    virtual void execute(Game& game, std::atomic<bool>& keepRunning, double deltaTime);
+    virtual void execute(GameMap& gameMap, std::atomic<bool>& keepRunning, double deltaTime);
 };
 
 #endif  // SHOOT_HANDLER_H_

@@ -1,3 +1,9 @@
+# Root CMakeLists.txt
+
+# Copy YAML files to the build directory
+file(COPY ${CMAKE_SOURCE_DIR}/src/config DESTINATION ${CMAKE_BINARY_DIR})
+
+# Existing content...
 cmake_minimum_required(VERSION 3.16)
 
 project(TP_Jazz_Jackrabbit_2
@@ -19,6 +25,7 @@ option(INSTALL "Apply install settings" OFF)
 option(SERVER "Build server" ON)
 option(CLIENT "Build client" ON)
 
+
 # Configuraciones de instalación
 if (INSTALL)
     message(STATUS "Applying install settings")
@@ -37,10 +44,7 @@ find_package(fmt REQUIRED)
 
 # Incluir subdirectorios
 add_subdirectory(src)
-# add_subdirectory(Tests)
 add_subdirectory(./extlibs/libsdl2pp)
-
-
 
 if (TESTING)
     add_subdirectory(Tests)

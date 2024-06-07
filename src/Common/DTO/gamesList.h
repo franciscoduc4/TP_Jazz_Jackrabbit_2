@@ -5,15 +5,21 @@
 #include <string>
 
 #include "command.h"
+#include "../Types/gameInfo.h"
 
 class GamesListDTO: public CommandDTO {
 private:
-    std::map<int32_t, std::string> games;
+    std::map<int32_t, GameInfo> games;
 
 public:
     GamesListDTO() {}
-    explicit GamesListDTO(std::map<int32_t, std::string> games);
-    std::map<int32_t, std::string> getGames() const;
+    explicit GamesListDTO(std::map<int32_t, GameInfo> games);
+    
+    std::map<int32_t, GameInfo> getGames() const;
+    
+    int32_t getMaxPlayers() const;
+    
+    int32_t getCurrentPlayers() const;
     ~GamesListDTO() {}
 };
 

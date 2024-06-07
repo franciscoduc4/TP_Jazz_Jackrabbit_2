@@ -2,7 +2,7 @@
 #define GAMES_LIST_HANDLER_H_
 
 #include <memory>
-
+#include "../../../Common/Types/gameInfo.h"
 #include "../../../Common/DTO/command.h"
 #include "../../../Common/DTO/lobby.h"
 #include "../../../Common/queue.h"
