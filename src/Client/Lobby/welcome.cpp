@@ -1,5 +1,7 @@
 #include "welcome.h"
 
+#include <QFile>
+
 #include "lobby.h"
 #include "ui_welcome.h"
 
@@ -10,6 +12,12 @@ Welcome::Welcome(QWidget* parent, Client& client, LobbyMessage& msg, bool& clien
         msg(msg),
         clientJoinedGame(clientJoinedGame) {
     ui->setupUi(this);
+    QFile file(":/Lobby/Styles/welcome.qss");
+    file.open(QFile::ReadOnly);
+    QString styleSheet = QLatin1String(file.readAll());
+
+    ui->centralwidget->setStyleSheet(styleSheet);
+    ui->labelName->setAttribute(Qt::WA_TranslucentBackground);
 }
 
 Welcome::~Welcome() { delete ui; }

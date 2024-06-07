@@ -13,30 +13,7 @@
   <property name="windowTitle">
    <string>Lobby</string>
   </property>
-  <property name="styleSheet">
-   <string notr="true">background: &quot;../assets/Miscellaneous/fondo_blanco.png&quot;;</string>
-  </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QLabel" name="labelTitle">
-    <property name="geometry">
-     <rect>
-      <x>150</x>
-      <y>50</y>
-      <width>471</width>
-      <height>51</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <family>Jazz Jackrabbit 2</family>
-      <pointsize>36</pointsize>
-      <bold>true</bold>
-     </font>
-    </property>
-    <property name="text">
-     <string>Jazz Jackrabbit 2</string>
-    </property>
-   </widget>
    <widget class="QLineEdit" name="inputName">
     <property name="geometry">
      <rect>
@@ -75,10 +52,10 @@
    <widget class="QPushButton" name="btnIngresar">
     <property name="geometry">
      <rect>
-      <x>300</x>
-      <y>380</y>
-      <width>161</width>
-      <height>51</height>
+      <x>600</x>
+      <y>395</y>
+      <width>160</width>
+      <height>50</height>
      </rect>
     </property>
     <property name="font">
