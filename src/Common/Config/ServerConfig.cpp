@@ -21,36 +21,40 @@ int ServerConfig::getGameMaxRevived() {
     return getInstance()->root["GAME"]["MAX_REVIVED"].as<int>();
 }
 
+int ServerConfig::getCharacterInitialX() {
+    return getInstance()->root["CHARACTER"]["INITIAL_X"].as<int>();
+}
+
+int ServerConfig::getCharacterInitialY() {
+    return getInstance()->root["CHARACTER"]["INITIAL_Y"].as<int>();
+}
+
 int ServerConfig::getCharacterInitialHealth() {
     return getInstance()->root["CHARACTER"]["INITIAL_HEALTH"].as<int>();
-}
-
-int ServerConfig::getCharacterReviveTime() {
-    return getInstance()->root["CHARACTER"]["REVIVE_TIME"].as<int>();
-}
-
-int ServerConfig::getCharacterDamage() {
-    return getInstance()->root["CHARACTER"]["DAMAGE"].as<int>();
 }
 
 int ServerConfig::getCharacterMaxRevived() {
     return getInstance()->root["CHARACTER"]["MAX_REVIVED"].as<int>();
 }
 
-int ServerConfig::getCharacterMaxMovesPerCell() {
-    return getInstance()->root["CHARACTER"]["MAX_MOVES_PER_CELL"].as<int>();
+int ServerConfig::getCharacterDamageTime() {
+    return getInstance()->root["CHARACTER"]["DAMAGE_TIME"].as<int>();
+}
+
+int ServerConfig::getCharacterReviveTime() {
+    return getInstance()->root["CHARACTER"]["REVIVE_TIME"].as<int>();
 }
 
 int ServerConfig::getCharacterRespawnTime() {
     return getInstance()->root["CHARACTER"]["RESPAWN_TIME"].as<int>();
 }
 
-int ServerConfig::getCharacterDamageTime() {
-    return getInstance()->root["CHARACTER"]["DAMAGE_TIME"].as<int>();
-}
-
 int ServerConfig::getCharacterIntoxicatedTime() {
     return getInstance()->root["CHARACTER"]["INTOXICATED_TIME"].as<int>();
+}
+
+int ServerConfig::getCharacterMaxMovesPerCell() {
+    return getInstance()->root["CHARACTER"]["MAX_MOVES_PER_CELL"].as<int>();
 }
 
 int ServerConfig::getJazzShootCooldownTime() {
@@ -180,10 +184,6 @@ int ServerConfig::getWalkingEnemyInitialHealth() {
 
 int ServerConfig::getWalkingEnemyDamage() {
     return getInstance()->root["ENEMY"]["WALKING"]["DAMAGE"].as<int>();
-}
-
-int ServerConfig::getWalkingEnemyMaxMoves() {
-    return getInstance()->root["ENEMY"]["WALKING"]["MAX_MOVES"].as<int>();
 }
 
 int ServerConfig::getWalkingEnemyMaxRevived() {

@@ -26,8 +26,6 @@ bool Entity::getIsDead() const { return isDead; }
 
 void Entity::die(float time) { isDead = true; }
 
-void Entity::move(Vector<int16_t> delta) { pos += delta; }
-
 void Entity::setPosition(Vector<int16_t> newPosition) { pos = newPosition; }
 
 void Entity::setDirection(Direction newDir) { dir = newDir; }

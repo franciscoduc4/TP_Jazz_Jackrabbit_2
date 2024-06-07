@@ -18,9 +18,10 @@ public:
     static int getGameMaxMoves();
     static int getGameMaxRevived();
 
+    static int getCharacterInitialX();
+    static int getCharacterInitialY();
     static int getCharacterInitialHealth();
     static int getCharacterReviveTime();
-    static int getCharacterDamage();
     static int getCharacterMaxRevived();
     static int getCharacterMaxMovesPerCell();
     static int getCharacterRespawnTime();

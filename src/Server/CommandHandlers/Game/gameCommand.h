@@ -7,7 +7,6 @@
 #include "../../../Common/DTO/game.h"
 #include "../../../Common/Types/command.h"
 #include "../../../Common/queue.h"
-#include "../../Game/characters/character.h"
 #include "../../Game/gameMap.h"
 
 class GameCommandHandler {

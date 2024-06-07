@@ -1,5 +1,7 @@
 #include "gameMap.h"
 
+#include <iostream>
+
 GameMap::GameMap(Vector<int16_t> size): size(size), entityFactory(*this) {}
 
 std::vector<std::shared_ptr<Entity>> GameMap::getObjectsInShootRange(Vector<int16_t> mapPosition,
@@ -65,28 +67,29 @@ void GameMap::moveObject(Vector<int16_t>& position, Vector<int16_t> mapPosition,
         delta = {0, 1};
     }
 
-    Vector<int16_t> newPos = mapPosition + delta;
-    if (isFreePosition(newPos)) {
-        mapGrid[newPos] = mapGrid[mapPosition];
-        mapGrid.erase(mapPosition);
-        position += delta;
-    } else {
-        auto character = std::dynamic_pointer_cast<Character>(mapGrid[mapPosition]);
-        character->interact(mapGrid[newPos]);
+    Vector<int16_t> newMapPosition = mapPosition + delta;
+    if (isValidPosition(newMapPosition)) {
+        if (isFreePosition(newMapPosition)) {
+            mapGrid[newMapPosition] = mapGrid[mapPosition];
+            mapGrid.erase(mapPosition);
+            position += delta;
+        } else {
+            auto character = std::dynamic_pointer_cast<Character>(mapGrid[mapPosition]);
+            character->interact(mapGrid[newMapPosition]);
+        }
     }
 }
 
+
 bool GameMap::isFreePosition(Vector<int16_t> position) {
-    if (!isValidPosition(position)) {
-        return false;
-    }
     return mapGrid.find(position) == mapGrid.end();
 }
 
 
 void GameMap::addEntityToMap(std::shared_ptr<Entity> entity, Vector<int16_t> position) {
-    if (isFreePosition(position)) {
-        mapGrid[position] = entity;
+    Vector<int16_t> mapPosition = entity->getMapPosition(movesPerCell);
+    if (isFreePosition(mapPosition)) {
+        mapGrid[mapPosition] = entity;
     } else {
         position = getAvailablePosition();
         mapGrid[position] = entity;
@@ -110,8 +113,9 @@ void GameMap::addEnemy(EnemyType type, std::optional<Vector<int16_t>> position) 
     addEntityToMap(enemy, initPosition);
 }
 
-bool GameMap::isValidPosition(Vector<int16_t> position) {
-    return position.x > 0 || position.x <= size.x || position.y > 0 || position.y <= size.y;
+bool GameMap::isValidPosition(Vector<int16_t> mapPosition) {
+    return mapPosition.x >= 0 && mapPosition.x <= size.x && mapPosition.y >= 0 &&
+           mapPosition.y <= size.y;
 }
 
 Vector<int16_t> GameMap::getAvailablePosition() {
@@ -136,9 +140,9 @@ void GameMap::removeCharacter(int32_t playerId) {
 
 void GameMap::removeEnemy(Vector<int16_t> position) { mapGrid.erase(position); }
 
-std::shared_ptr<Entity> GameMap::getEntityAt(Vector<int16_t> position) {
-    if (isValidPosition(position) && mapGrid.find(position) != mapGrid.end()) {
-        return mapGrid[position];
+std::shared_ptr<Entity> GameMap::getEntityAt(Vector<int16_t> mapPosition) {
+    if (isValidPosition(mapPosition) && mapGrid.find(mapPosition) != mapGrid.end()) {
+        return mapGrid[mapPosition];
     }
     return nullptr;
 }

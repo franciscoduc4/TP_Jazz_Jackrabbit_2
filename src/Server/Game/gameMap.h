@@ -26,9 +26,6 @@ private:
     int16_t movesPerCell = 2;
     int16_t entityCount = 0;
 
-    bool isFreePosition(Vector<int16_t> position);
-    bool isValidPosition(Vector<int16_t> position);
-
 public:
     explicit GameMap(Vector<int16_t> size);
 
@@ -60,6 +57,10 @@ public:
     std::unique_ptr<GameDTO> getGameDTO();
 
     std::shared_ptr<Character> getCharacter(int32_t playerId);
+
+    bool isFreePosition(Vector<int16_t> position);
+
+    bool isValidPosition(Vector<int16_t> position);
 };
 
 #endif  // GAME_MAP_H_

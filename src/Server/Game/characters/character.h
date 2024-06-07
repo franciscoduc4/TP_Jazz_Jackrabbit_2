@@ -22,16 +22,17 @@
 #include "states/specialAttack.h"
 #include "states/state.h"
 
+class GameMap;
+
 class Character: public Entity {
 protected:
     CharacterType type;
-    GameMap& map;
+    GameMap& gameMap;
 
     int16_t maxHealth;
     int16_t reviveTime;
-    uint16_t damage;
     int16_t maxRevived;
-    int16_t maxMoves;
+    int16_t movesPerCell;
     int16_t timesRevived;
     int16_t respawnTime;
     int16_t damageTime;
@@ -49,7 +50,7 @@ protected:
     float shootCooldown = 0.0f;
 
 public:
-    Character(GameMap& map, Vector<int16_t> pos, int16_t characterId, CharacterType type,
+    Character(GameMap& gameMap, Vector<int16_t> pos, int16_t characterId, CharacterType type,
               float speed, float sprintSpeed, float jumpHeight, float shootCooldownTime);
 
     void recvDamage(uint16_t damage, float time) override;

@@ -1,17 +1,18 @@
 #include "character.h"
 
+#include "../gameMap.h"
+
 #define CONFIG ServerConfig::getInstance()
 
-Character::Character(GameMap& map, Vector<int16_t> pos, int16_t characterId, CharacterType type,
+Character::Character(GameMap& gameMap, Vector<int16_t> pos, int16_t characterId, CharacterType type,
                      float speed, float sprintSpeed, float jumpHeight, float shootCooldownTime):
         Entity(pos, characterId, CONFIG->getCharacterInitialHealth(), Direction::RIGHT),
         type(type),
-        map(map),
+        gameMap(gameMap),
         maxHealth(CONFIG->getCharacterInitialHealth()),
         reviveTime(CONFIG->getCharacterReviveTime()),
-        damage(CONFIG->getCharacterDamage()),
         maxRevived(CONFIG->getCharacterMaxRevived()),
-        maxMoves(CONFIG->getCharacterMaxMovesPerCell()),
+        movesPerCell(CONFIG->getCharacterMaxMovesPerCell()),
         timesRevived(0),
         respawnTime(CONFIG->getCharacterRespawnTime()),
         damageTime(CONFIG->getCharacterDamageTime()),
@@ -145,26 +146,23 @@ void Character::switchWeapon(WeaponType type) {
 
 void Character::moveRight() {
     auto position = getPosition();
-    auto mapPosition = getMapPosition(maxMoves);
-    // map.moveObject(position, mapPosition, Direction::RIGHT);
+    auto mapPosition = getMapPosition(movesPerCell);
+    gameMap.moveObject(pos, mapPosition, Direction::RIGHT);
 }
 
 void Character::moveLeft() {
-    auto position = getPosition();
-    auto mapPosition = getMapPosition(maxMoves);
-    // map.moveObject(position, mapPosition, Direction::LEFT);
+    auto mapPosition = getMapPosition(movesPerCell);
+    gameMap.moveObject(pos, mapPosition, Direction::LEFT);
 }
 
 void Character::moveUp() {
-    auto position = getPosition();
-    auto mapPosition = getMapPosition(maxMoves);
-    // map.moveObject(position, mapPosition, Direction::UP);
+    auto mapPosition = getMapPosition(movesPerCell);
+    gameMap.moveObject(pos, mapPosition, Direction::UP);
 }
 
 void Character::moveDown() {
-    auto position = getPosition();
-    auto mapPosition = getMapPosition(maxMoves);
-    // map.moveObject(position, mapPosition, Direction::DOWN);
+    auto mapPosition = getMapPosition(movesPerCell);
+    gameMap.moveObject(pos, mapPosition, Direction::DOWN);
 }
 
 bool Character::characIsIntoxicated() const { return isIntoxicated; }

@@ -10,7 +10,6 @@ find_package(yaml-cpp REQUIRED)
 find_package(fmt REQUIRED)
 
 # Crear biblioteca comun
-
 add_subdirectory("Common")
 
 target_link_libraries(common yaml-cpp fmt::fmt -pthread)
@@ -28,7 +27,6 @@ if(SERVER)
     target_include_directories(jazzserver PUBLIC ${PROJECT_SOURCE_DIR}/src/Common)
     set_target_properties(jazzserver PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
 endif()
-
 
 # Cliente
 if(CLIENT)
@@ -60,4 +58,8 @@ if(CLIENT)
 
     set_target_properties(jazzclient PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
 endif()
+
+# Copy YAML files to the build directory
+file(COPY ${CMAKE_SOURCE_DIR}/src/config DESTINATION ${CMAKE_BINARY_DIR})
+
 #add_executable(main.cpp)

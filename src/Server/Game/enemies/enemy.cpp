@@ -1,5 +1,7 @@
 #include "enemy.h"
 
+#include "../gameMap.h"
+
 Enemy::Enemy(GameMap& gameMap, Vector<int16_t> pos, int16_t id, int16_t health, Direction dir,
              uint16_t dmg, std::unique_ptr<EnemyState> initialState, int16_t viewDistance,
              int16_t viewDistanceHit, int16_t movesPerCell, int16_t hitDistance,

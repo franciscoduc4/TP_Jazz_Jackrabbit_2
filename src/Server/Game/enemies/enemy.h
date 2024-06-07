@@ -9,8 +9,9 @@
 #include "../../../Common/vector.h"
 #include "../characters/character.h"
 #include "../entity.h"
-#include "../gameMap.h"
 #include "states/enemyState.h"
+
+class GameMap;
 
 class Enemy: public Entity {
 protected:

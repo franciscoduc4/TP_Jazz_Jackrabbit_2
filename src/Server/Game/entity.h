@@ -37,8 +37,6 @@ public:
 
     virtual void die(float time);
 
-    void move(Vector<int16_t> delta);
-
     void setPosition(Vector<int16_t> newPosition);
 
     void setDirection(Direction newDir);
