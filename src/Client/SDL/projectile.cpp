@@ -9,106 +9,76 @@ enum projectile_type { Normal, BlueBullet, VioletBullet, RedBomb, VioletBomb };
 Projectile::Projectile(int p_type, int pos_x, int pos_y, int flip): x(pos_x), y(pos_y), flip(flip) {
 	this->type = p_type;
 	this->count = 0;
-	switch (p_type) {
-		case Normal:
-			this->sprites.push_back(RectangularSprite(44, 36, 13, 7));
-			this->sprites.push_back(RectangularSprite(58, 36, 13, 7));		
-			this->sprites.push_back(RectangularSprite(73, 36, 13, 7));
-			this->y_fire = 45;
-			this->x_fire = 48;
-			this->width_fire = 15;
-			this->height_fire = 12;	
-			
-			break;
-		case BlueBullet:
-			this->sprites.push_back(RectangularSprite(144, 31, 12, 10));
-			this->sprites.push_back(RectangularSprite(156, 31, 13, 10));
-			this->sprites.push_back(RectangularSprite(169, 31, 11, 10));
-			this->sprites.push_back(RectangularSprite(180, 31, 10, 10));
-			this->sprites.push_back(RectangularSprite(190, 31, 10, 10));
-			this->sprites.push_back(RectangularSprite(200, 31, 10, 10));
-			this->sprites.push_back(RectangularSprite(210, 31, 11, 10));
-			this->sprites.push_back(RectangularSprite(221, 31, 13, 10));
-			this->sprites.push_back(RectangularSprite(234, 31, 11, 10));
-			this->y_fire = 45;
-			this->x_fire = 48;
-			this->width_fire = 15;
-			this->height_fire = 12;	
-			
-			break;
-			
-		case VioletBullet:
-			this->sprites.push_back(RectangularSprite(139, 41, 14, 12));	
-			this->sprites.push_back(RectangularSprite(153, 41, 16, 12));
-			this->sprites.push_back(RectangularSprite(169, 41, 14, 12));
-			this->sprites.push_back(RectangularSprite(183, 41, 12, 12));
-			this->sprites.push_back(RectangularSprite(195, 41, 12, 12));
-			this->sprites.push_back(RectangularSprite(207, 41, 12, 12));
-			this->sprites.push_back(RectangularSprite(219, 41, 14, 12));
-			this->sprites.push_back(RectangularSprite(233, 41, 16, 12));
-			this->y_fire = 45;
-			this->x_fire = 48;
-			this->width_fire = 15;
-			this->height_fire = 12;	
-			
-			break;
-		
-		case RedBomb:
-			/*
-			this->sprites.push_back(RectangularSprite(83, 361, 18, 14));
-			this->sprites.push_back(RectangularSprite(101, 361, 17, 14));
-			this->sprites.push_back(RectangularSprite(118, 361, 15, 14));
-			this->sprites.push_back(RectangularSprite(133, 361, 17, 14));
-			this->sprites.push_back(RectangularSprite(150, 361, 15, 14));
-			this->sprites.push_back(RectangularSprite(165, 361, 17, 14));
-			this->sprites.push_back(RectangularSprite(182, 361, 15, 14));
-			this->sprites.push_back(RectangularSprite(197, 361, 14, 14));
-			this->sprites.push_back(RectangularSprite(211, 361, 16, 14));
-			this->sprites.push_back(RectangularSprite(227, 361, 16, 14));
-			*/
-			
-			this->sprites.push_back(RectangularSprite(286, 323, 23, 8));
-			this->sprites.push_back(RectangularSprite(309, 323, 24, 8));
-			this->sprites.push_back(RectangularSprite(333, 323, 24, 8));
-			this->y_fire = 45;
-			this->x_fire = 48;
-			this->width_fire = 15;
-			this->height_fire = 12;	
-			
-			break;
-		
-		case VioletBomb:
-			/*
-			this->sprites.push_back(RectangularSprite(83, 377, 18, 14));
-			this->sprites.push_back(RectangularSprite(101, 377, 17, 14));
-			this->sprites.push_back(RectangularSprite(118, 377, 15, 14));
-			this->sprites.push_back(RectangularSprite(133, 377, 17, 14));
-			this->sprites.push_back(RectangularSprite(150, 377, 15, 14));
-			this->sprites.push_back(RectangularSprite(165, 377, 17, 14));
-			this->sprites.push_back(RectangularSprite(182, 377, 15, 14));
-			this->sprites.push_back(RectangularSprite(197, 377, 14, 14));
-			this->sprites.push_back(RectangularSprite(211, 377, 16, 14));
-			this->sprites.push_back(RectangularSprite(227, 377, 16, 14));
-			*/
-			this->sprites.push_back(RectangularSprite(286, 137, 23, 8));
-			this->sprites.push_back(RectangularSprite(309, 137, 24, 8));
-			this->sprites.push_back(RectangularSprite(333, 137, 24, 8));			
-			this->y_fire = 45;
-			this->x_fire = 48;
-			this->width_fire = 15;
-			this->height_fire = 12;	
-			
-			break;
-	}	
+	
+	this->y_fire = 45;
+	this->x_fire = 48;
+	this->width_fire = 15;
+	this->height_fire = 12;	
 
+	this->sprites[Normal].push_back(RectangularSprite(44, 36, 13, 7));
+	this->sprites[Normal].push_back(RectangularSprite(58, 36, 13, 7));		
+	this->sprites[Normal].push_back(RectangularSprite(73, 36, 13, 7));
+			
+	this->sprites[BlueBullet].push_back(RectangularSprite(144, 31, 12, 10));
+	this->sprites[BlueBullet].push_back(RectangularSprite(156, 31, 13, 10));
+	this->sprites[BlueBullet].push_back(RectangularSprite(169, 31, 11, 10));
+	this->sprites[BlueBullet].push_back(RectangularSprite(180, 31, 10, 10));
+	this->sprites[BlueBullet].push_back(RectangularSprite(190, 31, 10, 10));
+	this->sprites[BlueBullet].push_back(RectangularSprite(200, 31, 10, 10));
+	this->sprites[BlueBullet].push_back(RectangularSprite(210, 31, 11, 10));
+	this->sprites[BlueBullet].push_back(RectangularSprite(221, 31, 13, 10));
+	this->sprites[BlueBullet].push_back(RectangularSprite(234, 31, 11, 10));
+			
+	this->sprites[VioletBullet].push_back(RectangularSprite(139, 41, 14, 12));	
+	this->sprites[VioletBullet].push_back(RectangularSprite(153, 41, 16, 12));
+	this->sprites[VioletBullet].push_back(RectangularSprite(169, 41, 14, 12));
+	this->sprites[VioletBullet].push_back(RectangularSprite(183, 41, 12, 12));
+	this->sprites[VioletBullet].push_back(RectangularSprite(195, 41, 12, 12));
+	this->sprites[VioletBullet].push_back(RectangularSprite(207, 41, 12, 12));
+	this->sprites[VioletBullet].push_back(RectangularSprite(219, 41, 14, 12));
+	this->sprites[VioletBullet].push_back(RectangularSprite(233, 41, 16, 12));
+		
+	/*
+	this->sprites.push_back(RectangularSprite(83, 361, 18, 14));
+	this->sprites.push_back(RectangularSprite(101, 361, 17, 14));
+	this->sprites.push_back(RectangularSprite(118, 361, 15, 14));
+	this->sprites.push_back(RectangularSprite(133, 361, 17, 14));
+	this->sprites.push_back(RectangularSprite(150, 361, 15, 14));
+	this->sprites.push_back(RectangularSprite(165, 361, 17, 14));
+	this->sprites.push_back(RectangularSprite(182, 361, 15, 14));
+	this->sprites.push_back(RectangularSprite(197, 361, 14, 14));
+	this->sprites.push_back(RectangularSprite(211, 361, 16, 14));
+	this->sprites.push_back(RectangularSprite(227, 361, 16, 14));
+	*/
+	
+	this->sprites[RedBomb].push_back(RectangularSprite(286, 323, 23, 8));
+	this->sprites[RedBomb].push_back(RectangularSprite(309, 323, 24, 8));
+	this->sprites[RedBomb].push_back(RectangularSprite(333, 323, 24, 8));
+		
+	/*
+	this->sprites.push_back(RectangularSprite(83, 377, 18, 14));
+	this->sprites.push_back(RectangularSprite(101, 377, 17, 14));
+	this->sprites.push_back(RectangularSprite(118, 377, 15, 14));
+	this->sprites.push_back(RectangularSprite(133, 377, 17, 14));
+	this->sprites.push_back(RectangularSprite(150, 377, 15, 14));
+	this->sprites.push_back(RectangularSprite(165, 377, 17, 14));
+	this->sprites.push_back(RectangularSprite(182, 377, 15, 14));
+	this->sprites.push_back(RectangularSprite(197, 377, 14, 14));
+	this->sprites.push_back(RectangularSprite(211, 377, 16, 14));
+	this->sprites.push_back(RectangularSprite(227, 377, 16, 14));
+	*/
+	this->sprites[VioletBomb].push_back(RectangularSprite(286, 137, 23, 8));
+	this->sprites[VioletBomb].push_back(RectangularSprite(309, 137, 24, 8));
+	this->sprites[VioletBomb].push_back(RectangularSprite(333, 137, 24, 8));			
 }
 
 std::list<RectangularSprite>::iterator Projectile::img_coords() {
-	std::list<RectangularSprite>::iterator it = this->sprites.begin();
+	//Modificar que se pueda cambiar de bala
+	std::list<RectangularSprite>::iterator it = this->sprites[Normal].begin();
 	for (int i = 0; i != this->count; i++) {
 		++it;
-		if (it == this->sprites.end()) {
-			it = this->sprites.begin();
+		if (it == this->sprites[Normal].end()) {
+			it = this->sprites[Normal].begin();
 		}
 		
 	}
@@ -116,7 +86,7 @@ std::list<RectangularSprite>::iterator Projectile::img_coords() {
 	return it;
 
 }
-bool Projectile::draw_projectile(SDL2pp::Window& window, SDL2pp::Renderer& renderer, SDL2pp::Texture& projectile) {
+bool Projectile::draw_projectile(SDL2pp::Window& window, SDL2pp::Renderer& renderer, SDL2pp::Texture& projectile, std::vector<BulletDTO>& bullets) {
 	int proj_pixel_x;
 	int proj_pixel_w;
 	int proj_pixel_y;

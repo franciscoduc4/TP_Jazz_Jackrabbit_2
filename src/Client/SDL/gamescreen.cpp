@@ -25,7 +25,7 @@
 //GameScreen::GameScreen(int character):
 //        pj(character), turtle(0, 0, 200), schartz_guard(1, 0, 400), yellowM(2, 0, 100), points(0) {}
 
-GameScreen::GameScreen(Client& player): client(player), pj(0), points(0)/*, config(ClientConfig::getInstance())*/ {
+GameScreen::GameScreen(Client& player): client(player), pj(1), points(0)/*, config(ClientConfig::getInstance())*/ {
 
 }
 
@@ -127,6 +127,20 @@ void GameScreen::run() {
     int img_width = 318;
     int img_height = 2687;
 
+	std::unique_ptr<DTO> serverMsg = this->client.getServerMsg();
+	auto derived_ptr = static_cast<GameDTO*>(serverMsg.release());        
+   	std::unique_ptr<GameDTO> snapshot = std::unique_ptr<GameDTO>(derived_ptr);
+   	
+   	std::vector<PlayerDTO> players = snapshot->getPlayers();
+    this->pj.draw_players(window, renderer, jazz_sprite, players, 6);
+        
+        
+    std::vector<EnemyDTO> enemiesSnapshot = snapshot->getEnemies();
+    this->enemies.draw_enemy(window, renderer, enemy, enemiesSnapshot);
+        
+
+	
+
     while (true) {
         SDL_Event event;
         while (SDL_PollEvent(&event)) {
@@ -216,12 +230,12 @@ void GameScreen::run() {
                       SDL2pp::Rect(0, 0, window_width, window_height));
         
         
-        std::unique_ptr<DTO> serverMsg = this->client.getServerMsg();
-		auto derived_ptr = static_cast<GameDTO*>(serverMsg.release());        
-        std::unique_ptr<GameDTO> snapshot = std::unique_ptr<GameDTO>(derived_ptr);
+        serverMsg = this->client.getServerMsg();
+		derived_ptr = static_cast<GameDTO*>(serverMsg.release());        
+        snapshot = std::unique_ptr<GameDTO>(derived_ptr);
    		
    		std::vector<PlayerDTO> players = snapshot->getPlayers();
-       	this->pj.draw_players(window, renderer, jazz_sprite, players, 0);
+       	this->pj.draw_players(window, renderer, jazz_sprite, players, 6);
         
         
         std::vector<EnemyDTO> enemiesSnapshot = snapshot->getEnemies();
