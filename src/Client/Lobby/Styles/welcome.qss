@@ -1,0 +1,25 @@
+QWidget {
+    border-image: url(:/assets/LobbyImages/WelcomeBackground.png) 0 0 0 0 stretch stretch;
+}
+
+QPushButton {
+    background-color: transparent;
+    border-image: none;
+    border: none;
+    color: white;
+}
+
+QPushButton:hover {
+    color: #FFD700;
+}
+
+QLineEdit {
+    background-color: white;
+    border-image: none;
+    color: black;
+}
+
+QLabel {
+    background-color: white;
+    border-image: none;
+}

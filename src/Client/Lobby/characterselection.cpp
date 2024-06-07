@@ -9,7 +9,7 @@
 
 CharacterSelection::CharacterSelection(QWidget* parent, Client& client, LobbyMessage& msg,
                                        bool& clientJoinedGame):
-        QMainWindow(parent),
+        QDialog(parent),
         ui(new Ui::CharacterSelection),
         client(client),
         msg(msg),
@@ -46,9 +46,13 @@ void CharacterSelection::on_btnChoose_clicked() {
 
 void CharacterSelection::on_btnBack_clicked() {
     this->msg.setCharacter(CharacterType::INVALID);
+
+    this->hide();
+
     QWidget* parent = this->parentWidget();
     if (parent) {
         parent->show();
     }
+
     this->close();
 }

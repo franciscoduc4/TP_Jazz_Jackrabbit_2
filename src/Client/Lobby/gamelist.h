@@ -1,7 +1,7 @@
 #ifndef GAMELIST_H
 #define GAMELIST_H
 
-#include <QMainWindow>
+#include <QDialog>
 
 #include "../Protocol/Types/lobbyMessage.h"
 #include "../client.h"
@@ -10,7 +10,7 @@ namespace Ui {
 class GameList;
 }
 
-class GameList: public QMainWindow {
+class GameList: public QDialog {
     Q_OBJECT
 
 

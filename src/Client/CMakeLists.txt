@@ -51,6 +51,10 @@ qt5_wrap_ui(UIS_HEADERS
     ${PROJECT_SOURCE_DIR}/src/Client/Lobby/waitingroom.ui
     ${PROJECT_SOURCE_DIR}/src/Client/Lobby/welcome.ui
 )
+
+set(CLIENT_RESOURCES ${CMAKE_CURRENT_SOURCE_DIR}/resources.qrc)
+qt5_add_resources(CLIENT_RESOURCES_RCC ${CLIENT_RESOURCES})
+
 set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
@@ -61,12 +65,14 @@ file(GLOB_RECURSE CLIENT_SOURCES
     *.h
     Lobby/*.cpp
     Lobby/*.h
+    Lobby/SelectWidgets/*.cpp
+    Lobby/SelectWidgets/*.h
     Protocol/*.cpp
     Protocol/*.h
     main.cpp
 )
 
-add_executable(jazzclient ${CLIENT_SOURCES} ${UIS_HEADERS})
+add_executable(jazzclient ${CLIENT_SOURCES} ${UIS_HEADERS} ${CLIENT_RESOURCES_RCC})
 target_link_libraries(jazzclient PUBLIC Qt5::Widgets Qt5::Core gameview)
 target_link_libraries(jazzclient PUBLIC SDL2 SDL2_image)
 target_include_directories(jazzclient PRIVATE ${PROJECT_INCLUDE_DIRS})

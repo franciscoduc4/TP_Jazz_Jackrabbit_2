@@ -1,7 +1,7 @@
 #ifndef CHARACTERSELECTION_H
 #define CHARACTERSELECTION_H
 
-#include <QMainWindow>
+#include <QDialog>
 
 #include "../client.h"
 #include "../Protocol/Types/lobbyMessage.h"
@@ -11,7 +11,7 @@ namespace Ui {
 class CharacterSelection;
 }
 
-class CharacterSelection : public QMainWindow
+class CharacterSelection : public QDialog
 {
     Q_OBJECT
     

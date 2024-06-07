@@ -4,7 +4,7 @@
 #include "waitingroom.h"
 
 GameList::GameList(QWidget* parent, Client& client, LobbyMessage& msg, bool& clientJoinedGame):
-        QMainWindow(parent),
+        QDialog(parent),
         ui(new Ui::GameList),
         client(client),
         msg(msg),
@@ -43,9 +43,13 @@ void GameList::on_btnJoin_clicked() {
 
 void GameList::on_btnBack_clicked() {
     this->msg.setGameName("");
+
+    this->hide();
+
     QWidget* parent = this->parentWidget();
     if (parent) {
         parent->show();
     }
+
     this->close();
 }

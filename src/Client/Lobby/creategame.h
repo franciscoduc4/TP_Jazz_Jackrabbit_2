@@ -1,7 +1,7 @@
 #ifndef CREATEGAME_H
 #define CREATEGAME_H
 
-#include <QMainWindow>
+#include <QDialog>
 
 #include "../client.h"
 #include "../Protocol/Types/lobbyMessage.h"
@@ -10,7 +10,7 @@ namespace Ui {
 class CreateGame;
 }
 
-class CreateGame : public QMainWindow
+class CreateGame : public QDialog
 {
     Q_OBJECT
     
