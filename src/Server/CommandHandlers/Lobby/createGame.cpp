@@ -19,7 +19,7 @@ CreateGameHandler::CreateGameHandler(std::unique_ptr<CreateGameDTO> command):
 std::unique_ptr<CommandDTO> CreateGameHandler::execute(
         GameMonitor& gameMonitor, std::atomic<bool>& inGame,
         std::shared_ptr<Queue<std::unique_ptr<CommandDTO>>> recvQueue) {
-    int32_t playerId = command->getPlayerId();
+    int32_t playerId = 0;
     Episode episode = command->getEpisodeName();
     GameMode gameMode = command->getGameMode();
     uint8_t maxPlayers = command->getMaxPlayers();
@@ -28,8 +28,7 @@ std::unique_ptr<CommandDTO> CreateGameHandler::execute(
     int32_t gameId = gameMonitor.getGamesList().size();
     if (gameMonitor.createGame(playerId, episode, gameMode, maxPlayers, characterType, gameName,
                                recvQueue, gameId)) {
-        return std::make_unique<CreateGameDTO>(playerId, episode, gameMode, maxPlayers,
-                                               characterType, gameName, gameId);
+        return std::make_unique<CreateGameDTO>(gameId);
     } else {
         return nullptr;
     }

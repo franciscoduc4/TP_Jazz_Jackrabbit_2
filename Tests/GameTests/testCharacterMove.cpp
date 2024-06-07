@@ -47,13 +47,16 @@ TEST(testCharacterMove, testCharacterMoveRightOneCell) {
     Vector<int16_t> characterPos = {5, 5};
     auto character = gameMap.addCharacter(characterId, CharacterType::JAZZ, characterPos);
     Vector<int16_t> mapPosition = character->getMapPosition(MOVEMENTS_PER_CELL);
-
+    std::cout << "x: " << mapPosition.x << " y: " << mapPosition.y << std::endl;
     for (int i = 0; i < MOVEMENTS_PER_CELL; i++) {
         character->moveRight();
     }
 
     auto characterAtNewPos = gameMap.getCharacter(characterId);
     auto entityAtOldPos = gameMap.getEntityAt(mapPosition);
+
+    std::cout << "x: " << entityAtOldPos->getMapPosition(MOVEMENTS_PER_CELL).x
+              << " y: " << entityAtOldPos->getMapPosition(MOVEMENTS_PER_CELL).y << std::endl;
 
     ASSERT_EQ(characterAtNewPos, character);
     ASSERT_EQ(characterAtNewPos->getPosition(), Vector<int16_t>({5 + MOVEMENTS_PER_CELL, 5}));

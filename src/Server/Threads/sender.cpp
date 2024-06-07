@@ -47,10 +47,8 @@ void SenderThread::runLobby(bool& wasClosed) {
             if (command == nullptr) {
                 continue;
             }
-            std::unique_ptr<LobbyCommandHandler> handler =
-                    LobbyCommandHandler::createHandler(std::move(command));
-            std::unique_ptr<CommandDTO> commandDTO =
-                    handler->execute(gameMonitor, std::ref(inGame), recvQueue);
+            auto handler = LobbyCommandHandler::createHandler(std::move(command));
+            auto commandDTO = handler->execute(gameMonitor, std::ref(inGame), recvQueue);
             serializer.sendCommand(std::move(commandDTO), wasClosed);
         } catch (const std::exception& e) {
             if (wasClosed) {

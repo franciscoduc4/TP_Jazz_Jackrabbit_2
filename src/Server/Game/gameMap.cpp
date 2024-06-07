@@ -55,13 +55,13 @@ void GameMap::moveObject(Vector<int16_t>& position, Vector<int16_t> mapPosition,
         delta = {1, 0};
     } else if (dir == Direction::UP) {
         if (position.y % movesPerCell != 0) {
-            position.y -= 1;
+            position.y += 1;
             return;
         }
         delta = {0, -1};
     } else if (dir == Direction::DOWN) {
         if (position.y % movesPerCell != 0) {
-            position.y += 1;
+            position.y -= 1;
             return;
         }
         delta = {0, 1};

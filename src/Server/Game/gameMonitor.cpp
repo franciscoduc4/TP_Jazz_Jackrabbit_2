@@ -58,6 +58,25 @@ std::map<int32_t, GameInfo> GameMonitor::getGamesList() {
     return list;
 }
 
+uint8_t GameMonitor::getCurrentPlayers(int32_t gameId) {
+    std::lock_guard<std::mutex> lock(mtx);
+    auto it = games.find(gameId);
+    if (it != games.end()) {
+        auto& [id, game] = *it;
+        return game->getGameInfo().currentPlayers;
+    }
+    return 0;
+}
+
+// void GameMonitor::broadcastToGame(int32_t gameId, std::unique_ptr<CommandDTO> command) {
+//     std::lock_guard<std::mutex> lock(mtx);
+//     auto it = games.find(gameId);
+//     if (it != games.end()) {
+//         auto& [id, game] = *it;
+//         game->broadcast(std::move(command));
+//     }
+// }
+
 void GameMonitor::endGame(const std::string& gameName) {
     std::lock_guard<std::mutex> lock(mtx);
     for (auto it = games.begin(); it != games.end(); ++it) {

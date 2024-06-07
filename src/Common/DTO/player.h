@@ -4,9 +4,10 @@
 #include <map>
 
 #include "../../Common/sprite.h"
+#include "../Types/character.h"
+#include "../Types/entity.h"
 
 #include "gameElement.h"
-#include "../Types/character.h"
 #include "weapon.h"
 
 class PlayerDTO: public GameElementDTO {
@@ -22,9 +23,11 @@ private:
     std::map<uint8_t, WeaponDTO> weapons;
     WeaponDTO currentWeapon;
     CharacterType type;
+    CharacterStateEntity state;
 
 public:
-    PlayerDTO(uint16_t x, uint16_t y, uint32_t player_id, int health, int damage, int speed, WeaponDTO currentWeapon, CharacterType type);
+    PlayerDTO(uint16_t x, uint16_t y, uint32_t player_id, int health, int damage, int speed,
+              WeaponDTO currentWeapon, CharacterType type, CharacterStateEntity state);
     uint32_t getPlayerId() const;
     uint16_t getX() const;
     uint16_t getY() const;
@@ -36,7 +39,7 @@ public:
     void setRespawnTime(int time);
     int getRespawnTime() const;
     CharacterType getType() const;
-
+    CharacterStateEntity getState() const;
 };
 
 #endif  // PLAYER_DTO_H_

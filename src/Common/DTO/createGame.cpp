@@ -1,18 +1,15 @@
 #include "createGame.h"
 
-CreateGameDTO::CreateGameDTO(int32_t gameId): gameId(gameId) {}
+CreateGameDTO::CreateGameDTO(int32_t gameId): CommandDTO(Command::CREATE_GAME), gameId(gameId) {}
 
-CreateGameDTO::CreateGameDTO(int32_t playerId, Episode episodeName, GameMode gameMode,
-                             uint8_t maxPlayers, CharacterType characterType, std::string gameName,
-                             int32_t gameId):
-        CommandDTO(playerId, Command::CREATE_GAME),
-        playerId(playerId),
+CreateGameDTO::CreateGameDTO(Episode episodeName, GameMode gameMode, uint8_t maxPlayers,
+                             CharacterType characterType, std::string gameName):
+        CommandDTO(Command::CREATE_GAME),
         episodeName(episodeName),
         gameMode(gameMode),
         maxPlayers(maxPlayers),
         characterType(characterType),
-        gameName(gameName),
-        gameId(gameId) {}
+        gameName(gameName) {}
 
 int32_t CreateGameDTO::getPlayerId() const { return playerId; }
 
