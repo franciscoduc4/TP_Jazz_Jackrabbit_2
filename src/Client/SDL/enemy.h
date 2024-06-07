@@ -10,6 +10,7 @@
 #include "../../Common/sprite.h"
 #include "../../Common/Types/enemy.h"
 #include "../../Common/DTO/enemy.h"
+#include "../../Common/DTO/player.h"
 
 #include "enemyweapon.h"
 
@@ -28,7 +29,7 @@ public:
 
     std::list<RectangularSprite>::iterator enemy_img_coords(EnemyType enemy_type, int mov_type, int num_mov);
 
-    void draw_enemy(SDL2pp::Window& window, SDL2pp::Renderer& renderer, SDL2pp::Texture& enemy, std::vector<EnemyDTO> enemies);
+    void draw_enemy(SDL2pp::Window& window, SDL2pp::Renderer& renderer, SDL2pp::Texture& enemy, std::vector<EnemyDTO> enemies, PlayerDTO& player, int dir_x_screen, int dir_y_screen);
 };
 
 #endif  // CLIENT_ENEMY_H_

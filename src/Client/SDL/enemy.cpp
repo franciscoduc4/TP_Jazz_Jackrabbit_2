@@ -3,6 +3,7 @@
 #include "../../Common/DTO/enemy.h"
 
 
+
 #include "enemyweapon.h"
 
 enum type_enemies { Turtle, Schartzen, YellowMons };
@@ -153,14 +154,29 @@ std::list<RectangularSprite>::iterator Enemy::enemy_img_coords(EnemyType enemy_t
 }
 
 
-void Enemy::draw_enemy(SDL2pp::Window& window, SDL2pp::Renderer& renderer, SDL2pp::Texture& enemy, std::vector<EnemyDTO> enemies) {
+void Enemy::draw_enemy(SDL2pp::Window& window, SDL2pp::Renderer& renderer, SDL2pp::Texture& enemy, std::vector<EnemyDTO> enemies, PlayerDTO& player, int dir_x_screen, int dir_y_screen) {
 	int index_width = 0;
 	int index_height = 1;
 	int mov_type = 0;
+    int x; 
+    int y;
+    int distance_main_enemy_x;
+    int distance_main_enemy_y;
     for (auto e : enemies) {
-    	std::list<RectangularSprite>::iterator it = enemy_img_coords(EnemyType::WALKING_ENEMY/*e.getType()*/, mov_type, this->count);
-    	renderer.Copy(enemy, SDL2pp::Rect(it->getX(), it->getY(), it->getWidth(), it->getHeight()),
-                  SDL2pp::Rect(e.getX(), e.getY(), this->width_height[EnemyType::WALKING_ENEMY/*e.getType()*/][index_width], this->width_height[EnemyType::WALKING_ENEMY/*e.getType()*/][index_height]), 0.0,
+    	std::list<RectangularSprite>::iterator it = enemy_img_coords(e.getType(), mov_type, this->count);
+        x = e.getX();
+		y = e.getY();
+		
+        if (dir_x_screen != 0) { 
+            distance_main_enemy_x = x - player.getX();
+            x = dir_x_screen + distance_main_enemy_x;
+        }
+        if (dir_y_screen != 0) {
+            distance_main_enemy_y = y - player.getX();
+            y = dir_y_screen + distance_main_enemy_y;
+        }
+		renderer.Copy(enemy, SDL2pp::Rect(it->getX(), it->getY(), it->getWidth(), it->getHeight()),
+                  SDL2pp::Rect(x, y, this->width_height[e.getType()][index_width], this->width_height[e.getType()][index_height]), 0.0,
                   SDL2pp::NullOpt, this->flip);
 
     }

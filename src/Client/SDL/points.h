@@ -9,9 +9,11 @@
 
 #include "../../Common/sprite.h"
 #include "../../Common/DTO/item.h"
+#include "../../Common/Types/item.h"
+#include "../../Common/DTO/player.h"
 
 class Points {
-    std::map<int, std::list<RectangularSprite>> sprites;
+    std::map<ItemType, std::list<RectangularSprite>> sprites;
     std::vector<std::vector<int>> redgems;
     std::vector<std::vector<int>> goldcoin;
     std::vector<std::vector<int>> silvercoin;
@@ -29,9 +31,9 @@ class Points {
 public:
     Points(int level_type);
 
-    void draw_points(SDL2pp::Renderer& renderer, SDL2pp::Texture& points, std::vector<ItemDTO> pointsdto);
+    void draw_points(SDL2pp::Renderer& renderer, SDL2pp::Texture& points, std::vector<ItemDTO> pointsdto, PlayerDTO& player, int dir_x_screen, int dir_y_screen);
 
-    std::list<RectangularSprite>::iterator actual_sprite_coord(int typepoint);
+    std::list<RectangularSprite>::iterator actual_sprite_coord(ItemType typepoint);
 
 };
 

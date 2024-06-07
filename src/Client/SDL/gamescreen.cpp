@@ -20,6 +20,7 @@
 #include "../../Common/DTO/tile.h"
 #include "../../Common/Types/command.h"
 #include "../../Common/Types/direction.h"
+#include "../../Common/Types/character.h"
 
 
 //GameScreen::GameScreen(int character):
@@ -42,22 +43,38 @@ void GameScreen::run() {
 
     SDL2pp::Renderer renderer(window, -1, SDL_RENDERER_ACCELERATED);
 
+    //TEXTURA FONDO
     SDL_Surface* bg_surf = IMG_Load("../assets/Tilesets/BeachWorld-1.png");
     SDL2pp::Surface backgroundSurface(bg_surf);
     SDL2pp::Texture background(renderer, backgroundSurface);
 
-    SDL_Surface* pj_surf = IMG_Load(this->pj.getPath().c_str());
-    SDL2pp::Surface pjSurface(pj_surf);
-    pjSurface.SetColorKey(true, SDL_MapRGB(pjSurface.Get()->format, 44, 102, 150));
-    SDL2pp::Texture jazz_sprite(renderer, pjSurface);
+    //TEXTURAS PERSONAJES
+    SDL_Surface* jazz_surf = IMG_Load(this->pj.getPath(CharacterType::JAZZ).c_str());
+    SDL2pp::Surface jazzSurface(jazz_surf);
+    jazzSurface.SetColorKey(true, SDL_MapRGB(jazzSurface.Get()->format, 44, 102, 150));
+    SDL2pp::Texture jazz_sprite(renderer, jazzSurface);
 
+    SDL_Surface* lori_surf = IMG_Load(this->pj.getPath(CharacterType::LORI).c_str());
+    SDL2pp::Surface loriSurface(lori_surf);
+    loriSurface.SetColorKey(true, SDL_MapRGB(loriSurface.Get()->format, 44, 102, 150));
+    SDL2pp::Texture lori_sprite(renderer, loriSurface);
+
+    SDL_Surface* spaz_surf = IMG_Load(this->pj.getPath(CharacterType::SPAZ).c_str());
+    SDL2pp::Surface spazSurface(spaz_surf);
+    spazSurface.SetColorKey(true, SDL_MapRGB(spazSurface.Get()->format, 44, 102, 150));
+    SDL2pp::Texture spaz_sprite(renderer, spazSurface);
+
+    std::map<CharacterType, SDL2pp::Texture*> pjs_textures;
+    pjs_textures[CharacterType::JAZZ] = &jazz_sprite;
+    pjs_textures[CharacterType::LORI] = &lori_sprite;
+    pjs_textures[CharacterType::SPAZ] = &spaz_sprite;
+
+
+    //TEXTURA ENEMIGOS
 	SDL_Surface* enemy_surf = IMG_Load(this->enemies.getPath(EnemyType::WALKING_ENEMY).c_str());//IMG_Load(this->config->getTurtleFile().c_str());
     SDL2pp::Surface enemySurface(enemy_surf);
     enemySurface.SetColorKey(true, SDL_MapRGB(enemySurface.Get()->format, 0, 128, 255));
     SDL2pp::Texture enemy(renderer, enemySurface);
-	/*
-    
-	
 	/*
 	SDL_Surface* turtle_surf = IMG_Load(this->turtle.getPath().c_str());//IMG_Load(this->config->getTurtleFile().c_str());
     SDL2pp::Surface turtleSurface(turtle_surf);
@@ -74,12 +91,13 @@ void GameScreen::run() {
     yellowSurface.SetColorKey(true, SDL_MapRGB(yellowSurface.Get()->format, 0, 128, 255));
     SDL2pp::Texture yellowMonster(renderer, yellowSurface);
 	*/
-
+    //TEXTURAS PROJECTILES
     SDL_Surface* projectile_surf = IMG_Load("../assets/Miscellaneous/SFX.png");
     SDL2pp::Surface projectileSurface(projectile_surf);
     projectileSurface.SetColorKey(true, SDL_MapRGB(projectileSurface.Get()->format, 0, 128, 255));
     SDL2pp::Texture projectile(renderer, projectileSurface);
 
+    //TEXTURAS ITEMS
     SDL_Surface* items_surf = IMG_Load("../assets/Miscellaneous/Items&Objects.png");
     SDL2pp::Surface itemsSurface(items_surf);
     itemsSurface.SetColorKey(true, SDL_MapRGB(itemsSurface.Get()->format, 0, 128, 255));
@@ -132,11 +150,9 @@ void GameScreen::run() {
    	std::unique_ptr<GameDTO> snapshot = std::unique_ptr<GameDTO>(derived_ptr);
    	
    	std::vector<PlayerDTO> players = snapshot->getPlayers();
-    this->pj.draw_players(window, renderer, jazz_sprite, players, 6);
         
         
     std::vector<EnemyDTO> enemiesSnapshot = snapshot->getEnemies();
-    this->enemies.draw_enemy(window, renderer, enemy, enemiesSnapshot);
         
 
 	
@@ -229,27 +245,58 @@ void GameScreen::run() {
                                    pixel_height_screen),
                       SDL2pp::Rect(0, 0, window_width, window_height));
         
-        
         serverMsg = this->client.getServerMsg();
 		derived_ptr = static_cast<GameDTO*>(serverMsg.release());        
         snapshot = std::unique_ptr<GameDTO>(derived_ptr);
    		
    		std::vector<PlayerDTO> players = snapshot->getPlayers();
-       	this->pj.draw_players(window, renderer, jazz_sprite, players, 6);
+
+        window_width = window.GetWidth();
+        window_height = window.GetHeight();
+
+        if (players[0].getX() > window_width / 4 * 2 ||
+            (players[0].getX() < window_width / 4 && players[0].getSpeed() < 0)) {
+            if (pixel_x_screen + players[0].getSpeed() > img_width - pixel_width_screen) {
+                pixel_x_screen = 0;
+            } else if (pixel_x_screen < 0) {
+                pixel_x_screen = img_width - pixel_width_screen;
+            } else {
+                pixel_x_screen += players[0].getSpeed();
+            }
+            x_screen = window_width / 4 * 2;
+        }
+
+        if (players[0].getY() > window_height / 4 * 2 ||
+            (players[0].getY() < window_height / 4 && players[0].getSpeed() < 0)) {
+            if (pixel_y_screen + players[0].getSpeed() > img_height - pixel_height_screen) {
+                pixel_y_screen = 0;
+            } else if (pixel_y_screen < 0) {
+                pixel_y_screen = img_height - pixel_height_screen;
+            } else {
+                pixel_y_screen += players[0].getSpeed();
+            }
+            y_screen = window_height / 4 * 2;
+        }
+
+
+
+       	this->pj.draw_players(window, renderer, pjs_textures, players, 6, x_screen, y_screen);
         
         
         std::vector<EnemyDTO> enemiesSnapshot = snapshot->getEnemies();
-      	this->enemies.draw_enemy(window, renderer, enemy, enemiesSnapshot);
+      	this->enemies.draw_enemy(window, renderer, enemy, enemiesSnapshot, players[0], x_screen, y_screen);
         
         std::vector<BulletDTO> bullets = snapshot->getBullets();
         
         std::vector<ItemDTO> itemsSnapshot = snapshot->getItems();
-        this->points.draw_points(renderer, items, itemsSnapshot); 
+        this->points.draw_points(renderer, items, itemsSnapshot, players[0], x_screen, y_screen); 
         
         std::vector<WeaponDTO> weapons = snapshot->getWeapons();
         
         std::vector<TileDTO> tiles = snapshot->getTiles(); 
 
+        x_screen = 0;
+        y_screen = 0;
 
         renderer.Present();
 
