@@ -1,7 +1,7 @@
 #ifndef WAITINGROOM_H
 #define WAITINGROOM_H
 
-#include <QMainWindow>
+#include <QDialog>
 
 #include "../client.h"
 #include "../Protocol/Types/lobbyMessage.h"
@@ -10,7 +10,7 @@ namespace Ui {
 class WaitingRoom;
 }
 
-class WaitingRoom : public QMainWindow
+class WaitingRoom : public QDialog
 {
     Q_OBJECT
     

@@ -3,10 +3,11 @@
 #include "../Common/Constants/lobbyCommands.h"
 
 #include "characterselection.h"
+#include "sceneselection.h"
 #include "ui_lobby.h"
 
 Lobby::Lobby(QWidget* parent, Client& client, LobbyMessage& msg, bool& clientJoinedGame):
-        QMainWindow(parent),
+        QDialog(parent),
         ui(new Ui::Lobby),
         client(client),
         msg(msg),
@@ -16,31 +17,49 @@ Lobby::Lobby(QWidget* parent, Client& client, LobbyMessage& msg, bool& clientJoi
     QString welcomeText = ui->labelTitle->text();
     welcomeText.append(playerName);
     ui->labelTitle->setText(welcomeText);
+    QFile file(":/Lobby/Styles/lobby.qss");
+    file.open(QFile::ReadOnly);
+    QString styleSheet = QLatin1String(file.readAll());
+    ui->centralwidget->setStyleSheet(styleSheet);
+    ui->labelTitle->setAttribute(Qt::WA_TranslucentBackground);
 }
 
 Lobby::~Lobby() { delete ui; }
 
 void Lobby::on_btnCreateGame_clicked() {
-    // this->msg.setLobbyCmd(LobbyCommands::CREATE_GAME);
-    // SceneSelection* ss = new SceneSelection(this, this->client, this->msg,
-    // this->clientJoinedGame); ss->show(); this->close();
+    this->msg.setLobbyCmd(Command::CREATE_GAME);
+
+    this->hide();
+
+    SceneSelection ss(this, this->client, this->msg, this->clientJoinedGame);
+    ss.setModal(true);
+    ss.exec();
+
+    this->close();
 }
 
 
 void Lobby::on_btnJoinGame_clicked() {
-    // this->msg.setLobbyCmd(LobbyCommands::JOIN_GAME);
-    // CharacterSelection* cs =
-    //         new CharacterSelection(this, this->client, this->msg, this->clientJoinedGame);
-    // cs->show();
-    // this->close();
+    this->msg.setLobbyCmd(Command::JOIN_GAME);
+
+    this->hide();
+
+    CharacterSelection cs(this, this->client, this->msg, this->clientJoinedGame);
+    cs.setModal(true);
+    cs.exec();
+
+    this->close();
 }
 
 
 void Lobby::on_btnBack_clicked() {
-    // this->msg.setLobbyCmd(LobbyCommands::INVALID_CMD);
-    // QWidget* parent = this->parentWidget();
-    // if (parent) {
-    //     parent->show();
-    // }
-    // this->close();
+    this->msg.setLobbyCmd(Command::IDLE);
+    this->hide();
+
+    QWidget* parent = this->parentWidget();
+    if (parent) {
+        parent->show();
+    }
+
+    this->close();
 }
