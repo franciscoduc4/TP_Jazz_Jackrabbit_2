@@ -19,6 +19,7 @@ option(INSTALL "Apply install settings" OFF)
 option(SERVER "Build server" ON)
 option(CLIENT "Build client" ON)
 
+
 # Configuraciones de instalación
 if (INSTALL)
     message(STATUS "Applying install settings")
@@ -37,7 +38,6 @@ find_package(fmt REQUIRED)
 
 # Incluir subdirectorios
 add_subdirectory(src)
-# add_subdirectory(Tests)
 add_subdirectory(./extlibs/libsdl2pp)
 
 

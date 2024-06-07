@@ -103,3 +103,7 @@ bool GameLoopThread::deletePlayer(int32_t playerId) {
     }
     return false;
 }
+
+GameInfo GameLoopThread::getGameInfo() {
+    return {gameName, currentPlayers, maxPlayers};
+}

@@ -11,6 +11,7 @@
 #include "../../Common/queueMonitor.h"
 #include "../../Common/thread.h"
 #include "../Game/game.h"
+#include "../../Common/Types/gameInfo.h"
 
 
 class GameLoopThread: public Thread {
@@ -44,6 +45,7 @@ public:
     void processCommands(double deltaTime);
     void adjustCommandsToProcess(std::chrono::duration<double> processingDuration,
                                  double frameRate);
+    GameInfo getGameInfo();
                             
 };
 

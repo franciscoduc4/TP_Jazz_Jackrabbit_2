@@ -6,6 +6,7 @@
 #include "../../Common/sprite.h"
 
 #include "gameElement.h"
+#include "../Types/character.h"
 #include "weapon.h"
 
 class PlayerDTO: public GameElementDTO {
@@ -20,9 +21,10 @@ private:
     int respawnTime;
     std::map<uint8_t, WeaponDTO> weapons;
     WeaponDTO currentWeapon;
+    CharacterType type;
 
 public:
-    PlayerDTO(uint16_t x, uint16_t y, uint32_t player_id, int health, int damage, int speed, WeaponDTO currentWeapon);
+    PlayerDTO(uint16_t x, uint16_t y, uint32_t player_id, int health, int damage, int speed, WeaponDTO currentWeapon, CharacterType type);
     uint32_t getPlayerId() const;
     uint16_t getX() const;
     uint16_t getY() const;
@@ -33,6 +35,8 @@ public:
     bool isAlive() const;
     void setRespawnTime(int time);
     int getRespawnTime() const;
+    CharacterType getType() const;
+
 };
 
 #endif  // PLAYER_DTO_H_

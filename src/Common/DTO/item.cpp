@@ -1,12 +1,13 @@
 #include "item.h"
 
-ItemDTO::ItemDTO(uint16_t x, uint16_t y): 
+ItemDTO::ItemDTO(uint16_t x, uint16_t y, ItemType type): 
         x(x),
-        y(y){}
+        y(y),
+        type(type){}
 
 
 uint16_t ItemDTO::getX() const { return x; }
     
 uint16_t ItemDTO::getY() const { return y; }
 
-//Sprite ItemDTO::getSprite() const { return currentSprite; }
+ItemType ItemDTO::getType() const { return type; }

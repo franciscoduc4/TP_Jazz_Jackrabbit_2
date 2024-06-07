@@ -37,11 +37,14 @@ cmake ..
 make -j$(nproc)
 
 # Ejecutar el cliente
-./jazz_jackrabbit_2
+./jazzclient localhost 8080
 
 # Ejecutar el servidor
-./jazz_jackrabbit_2-server
+./jazzserver 8080
 
 # Ejecutar las pruebas
-ctest
-
+mkdir build
+cd build
+cmake .. -DTESTING=ON 
+make -j$(nproc)
+./Tests/tests
