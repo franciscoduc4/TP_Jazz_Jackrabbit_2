@@ -31,22 +31,20 @@ public:
           int16_t movesPerCell, int16_t hitDistance, std::vector<int16_t> walkProb,
           std::vector<int16_t> jumpProb, std::vector<int16_t> flyProb);
 
-    virtual void update(std::vector<std::shared_ptr<Character>> characters, float time);
+    void update(std::vector<std::shared_ptr<Character>> characters, float time);
 
-    virtual void recvDamage(uint16_t dmg, float time) override;
+    void recvDamage(uint16_t dmg, float time) override;
 
-    virtual void attack(std::vector<std::shared_ptr<Character>> characters, float time);
+    void attack(std::vector<std::shared_ptr<Character>> characters, float time);
 
-    virtual void die(float time) override;
+    void die(float time) override;
 
-    virtual std::unique_ptr<EnemyState>& getState() = 0;
+    std::unique_ptr<EnemyState>& getState();
 
     virtual EnemyType getEnemyType() = 0;
 
     std::shared_ptr<Character> getClosestCharacter(
             std::vector<std::shared_ptr<Character>> characters);
-
-    virtual ~Enemy() = default;
 };
 
 #endif  // ENEMY_H_

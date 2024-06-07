@@ -15,6 +15,13 @@ Vector<int16_t> Entity::getMapPosition(int16_t movesPerCell) const {
     return {static_cast<int16_t>(pos.x / movesPerCell), static_cast<int16_t>(pos.y / movesPerCell)};
 }
 
+void Entity::recvDamage(uint16_t damage, float time) {
+    health -= damage;
+    if (health <= 0) {
+        die(time);
+    }
+}
+
 bool Entity::getIsDead() const { return isDead; }
 
 void Entity::die(float time) { isDead = true; }

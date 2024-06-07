@@ -22,8 +22,6 @@
 #include "states/specialAttack.h"
 #include "states/state.h"
 
-class GameMap;
-
 class Character: public Entity {
 protected:
     CharacterType type;
@@ -55,7 +53,7 @@ public:
               float speed, float sprintSpeed, float jumpHeight, float shootCooldownTime);
 
     void recvDamage(uint16_t damage, float time) override;
-    void update(float time) override;
+    void update(float time);
     void shoot(float time);
 
     void moveRight(float time);
@@ -73,8 +71,8 @@ public:
 
     void heal(uint16_t amount);
 
-    std::vector<std::shared_ptr<Entity>> getTargets() override;
-    void interact(std::shared_ptr<Entity>& other) override;
+    std::vector<std::shared_ptr<Entity>> getTargets();
+    void interact(std::shared_ptr<Entity>& other);
     void switchWeapon(WeaponType type);
 
     void moveRight();

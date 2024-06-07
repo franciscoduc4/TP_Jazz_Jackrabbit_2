@@ -1,9 +1,7 @@
 #include "gameMap.h"
 
-#include "characters/character.h"
-#include "enemies/enemy.h"
 
-GameMap::GameMap(Vector<int16_t> size): size(size), entityFactory() {}
+GameMap::GameMap(Vector<int16_t> size): size(size), entityFactory(*this) {}
 
 std::vector<std::shared_ptr<Entity>> GameMap::getObjectsInShootRange(Vector<int16_t> mapPosition,
                                                                      Direction dir) {
@@ -74,7 +72,8 @@ void GameMap::moveObject(Vector<int16_t>& position, Vector<int16_t> mapPosition,
         mapGrid.erase(mapPosition);
         position += delta;
     } else {
-        mapGrid[mapPosition]->interact(mapGrid[newPos]);
+        auto character = std::dynamic_pointer_cast<Character>(mapGrid[mapPosition]);
+        character->interact(mapGrid[newPos]);
     }
 }
 
@@ -85,61 +84,31 @@ bool GameMap::isFreePosition(Vector<int16_t> position) {
     return mapGrid.find(position) == mapGrid.end();
 }
 
-std::shared_ptr<Character> GameMap::addCharacter(CharacterType type) {
-    Vector<int16_t> initPosition = getAvailablePosition();
-    std::shared_ptr<Character> character;
-    // switch (type) {
-    //     case CharacterType::JAZZ:
-    //         character = entityFactory.createJazz(initPosition);
-    //         break;
-    //     case CharacterType::SPAZ:
-    //         character = entityFactory.createSpaz(initPosition);
-    //         break;
-    //     case CharacterType::LORI:
-    //         character = entityFactory.createLori(initPosition);
-    //         break;
-    // }
-    mapGrid[initPosition] = character;
-    return character;
-}
 
-std::shared_ptr<Character> GameMap::addCharacterAt(CharacterType type, Vector<int16_t> position) {
-    std::shared_ptr<Character> character;
-    // switch (type) {
-    //     case CharacterType::JAZZ:
-    //         character = entityFactory.createJazz(position);
-    //         break;
-    //     case CharacterType::SPAZ:
-    //         character = entityFactory.createSpaz(position);
-    //         break;
-    //     case CharacterType::LORI:
-    //         character = entityFactory.createLori(position);
-    //         break;
-    // }
+void GameMap::addEntityToMap(std::shared_ptr<Entity> entity, Vector<int16_t> position) {
     if (isFreePosition(position)) {
-        mapGrid[position] = character;
+        mapGrid[position] = entity;
     } else {
         position = getAvailablePosition();
-        mapGrid[position] = character;
+        mapGrid[position] = entity;
     }
+}
+
+std::shared_ptr<Character> GameMap::addCharacter(int32_t playerId, CharacterType type,
+                                                 std::optional<Vector<int16_t>> position) {
+    Vector<int16_t> initPosition = position ? *position : getAvailablePosition();
+    auto character = entityFactory.createCharacter(entityCount, type, initPosition);
+    characters[playerId] = character;
+    addEntityToMap(character, initPosition);
+    entityCount++;
     return character;
 }
 
-void GameMap::addEnemy(EnemyType type) {
-    Vector<int16_t> initPosition = getAvailablePosition();
-    std::shared_ptr<Enemy> enemy;
-    // switch (type) {
-    //     case EnemyType::WALKING_ENEMY:
-    //         enemy = entityFactory.createWalker(initPosition);
-    //         break;
-    //     case EnemyType::FLYING_ENEMY:
-    //         enemy = entityFactory.createFlyer(initPosition);
-    //         break;
-    //     case EnemyType::JUMPING_ENEMY:
-    //         enemy = entityFactory.createJumper(initPosition);
-    //         break;
-    // }
-    mapGrid[initPosition] = enemy;
+void GameMap::addEnemy(EnemyType type, std::optional<Vector<int16_t>> position) {
+    Vector<int16_t> initPosition = position ? *position : getAvailablePosition();
+    auto enemy = entityFactory.createEnemy(entityCount, type, initPosition);
+    entityCount++;
+    addEntityToMap(enemy, initPosition);
 }
 
 bool GameMap::isValidPosition(Vector<int16_t> position) {
@@ -156,11 +125,15 @@ Vector<int16_t> GameMap::getAvailablePosition() {
 
 void GameMap::update(float time) {
     for (auto& [_, entity]: mapGrid) {
-        entity->update(time);
+        auto character = std::dynamic_pointer_cast<Character>(entity);
+        character->update(time);
     }
 }
 
-void GameMap::removeCharacter(Vector<int16_t> position) { mapGrid.erase(position); }
+void GameMap::removeCharacter(int32_t playerId) {
+    auto character = characters[playerId];
+    mapGrid.erase(character->getPosition());
+}
 
 void GameMap::removeEnemy(Vector<int16_t> position) { mapGrid.erase(position); }
 
@@ -171,7 +144,9 @@ std::shared_ptr<Entity> GameMap::getEntityAt(Vector<int16_t> position) {
     return nullptr;
 }
 
-GameDTO GameMap::getGameDTO() {
+std::unique_ptr<GameDTO> GameMap::getGameDTO() {
     GameDTO gameDTO;
-    return gameDTO;
+    return std::make_unique<GameDTO>(gameDTO);
 }
+
+std::shared_ptr<Character> GameMap::getCharacter(int32_t playerId) { return characters[playerId]; }

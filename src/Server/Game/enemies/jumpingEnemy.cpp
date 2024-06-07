@@ -2,10 +2,10 @@
 
 #define CONFIG ServerConfig::getInstance()
 
-JumpingEnemy::JumpingEnemy(Vector<int16_t> pos, int16_t id, GameMap& map, int16_t health,
-                           uint16_t dmg):
+JumpingEnemy::JumpingEnemy(GameMap& map, Vector<int16_t> pos, int16_t id):
         map(map),
-        Enemy(pos, id, health, Direction::LEFT, dmg, std::make_unique<EnemyIdle>(),
+        Enemy(pos, id, CONFIG->getJumpingEnemyInitialHealth(), Direction::LEFT,
+              CONFIG->getJumpingEnemyDamage(), std::make_unique<EnemyIdle>(),
               CONFIG->getJumpingEnemyViewDistance(), CONFIG->getJumpingEnemyViewDistanceHit(),
               CONFIG->getJumpingEnemyMaxMovesPerCell(), CONFIG->getJumpingEnemyHitDistance(), {},
               CONFIG->getJumpingEnemyJumpProb(), {}) {}

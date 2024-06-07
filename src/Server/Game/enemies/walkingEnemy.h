@@ -5,18 +5,19 @@
 #include <vector>
 
 #include "../../../Common/Config/ServerConfig.h"
-#include "../gameMap.h"
 #include "states/enemyIdle.h"
 #include "states/enemyState.h"
 
 #include "enemy.h"
+
+class GameMap;
 
 class WalkingEnemy: public Enemy {
 private:
     GameMap& map;
 
 public:
-    WalkingEnemy(Vector<int16_t> pos, int16_t id, GameMap& map, int16_t health, uint16_t dmg);
+    WalkingEnemy(GameMap& map, Vector<int16_t> pos, int16_t id);
 
     EnemyType getEnemyType() override;
 };

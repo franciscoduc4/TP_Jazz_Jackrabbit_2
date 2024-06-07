@@ -2,10 +2,10 @@
 
 #define CONFIG ServerConfig::getInstance()
 
-WalkingEnemy::WalkingEnemy(Vector<int16_t> pos, int16_t id, GameMap& map, int16_t health,
-                           uint16_t dmg):
+WalkingEnemy::WalkingEnemy(GameMap& map, Vector<int16_t> pos, int16_t id):
         map(map),
-        Enemy(pos, id, health, Direction::LEFT, dmg, std::make_unique<EnemyIdle>(),
+        Enemy(pos, id, CONFIG->getWalkingEnemyInitialHealth(), Direction::LEFT,
+              CONFIG->getWalkingEnemyDamage(), std::make_unique<EnemyIdle>(),
               CONFIG->getWalkingEnemyViewDistance(), CONFIG->getWalkingEnemyViewDistanceHit(),
               CONFIG->getWalkingEnemyMaxMovesPerCell(), CONFIG->getWalkingEnemyHitDistance(),
               CONFIG->getWalkingEnemyWalkProb(), {}, {}) {}

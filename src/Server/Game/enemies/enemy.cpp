@@ -75,3 +75,5 @@ std::shared_ptr<Character> Enemy::getClosestCharacter(
     }
     return closestCharacter;
 }
+
+std::unique_ptr<EnemyState>& Enemy::getState() { return state; }

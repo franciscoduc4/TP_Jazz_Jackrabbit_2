@@ -12,7 +12,7 @@ private:
 public:
     explicit MoveHandler(std::unique_ptr<MoveDTO> moveCommand);
 
-    virtual void execute(Game& game, std::atomic<bool>& keepRunning, double deltaTime);
+    virtual void execute(GameMap& gameMap, std::atomic<bool>& keepRunning, double deltaTime);
 };
 
 #endif  // MOVE_HANDLER_H_

@@ -3,6 +3,7 @@
 
 #include <map>
 #include <memory>
+#include <optional>
 #include <vector>
 
 #include "../../Common/DTO/game.h"
@@ -10,6 +11,8 @@
 #include "../../Common/Types/direction.h"
 #include "../../Common/Types/enemy.h"
 #include "../../Common/vector.h"
+#include "characters/character.h"
+#include "enemies/enemy.h"
 
 #include "entity.h"
 #include "entityFactory.h"
@@ -17,12 +20,15 @@
 class Character;
 class Enemy;
 
+class EntityFactory;
 class GameMap {
 private:
     Vector<int16_t> size;
     std::map<Vector<int16_t>, std::shared_ptr<Entity>> mapGrid;
+    std::map<int16_t, std::shared_ptr<Character>> characters;
     EntityFactory entityFactory;
     int16_t movesPerCell = 2;
+    int16_t entityCount = 0;
 
     bool isFreePosition(Vector<int16_t> position);
     bool isValidPosition(Vector<int16_t> position);
@@ -40,21 +46,24 @@ public:
 
     Vector<int16_t> getAvailablePosition();
 
-    std::shared_ptr<Character> addCharacter(CharacterType type);
+    void addEntityToMap(std::shared_ptr<Entity> entity, Vector<int16_t> position);
 
-    std::shared_ptr<Character> addCharacterAt(CharacterType type, Vector<int16_t> position);
+    std::shared_ptr<Character> addCharacter(int32_t playerId, CharacterType type,
+                                            std::optional<Vector<int16_t>> position);
 
-    void addEnemy(EnemyType type);
+    void addEnemy(EnemyType type, std::optional<Vector<int16_t>> position);
 
     void update(float time);
 
-    void removeCharacter(Vector<int16_t> position);
+    void removeCharacter(int32_t playerId);
 
     void removeEnemy(Vector<int16_t> position);
 
     std::shared_ptr<Entity> getEntityAt(Vector<int16_t> position);
 
-    GameDTO getGameDTO();
+    std::unique_ptr<GameDTO> getGameDTO();
+
+    std::shared_ptr<Character> getCharacter(int32_t playerId);
 };
 
 #endif  // GAME_MAP_H_
