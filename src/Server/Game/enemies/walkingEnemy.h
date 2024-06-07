@@ -10,11 +10,7 @@
 
 #include "enemy.h"
 
-class GameMap;
-
 class WalkingEnemy: public Enemy {
-private:
-    GameMap& map;
 
 public:
     WalkingEnemy(GameMap& map, Vector<int16_t> pos, int16_t id);

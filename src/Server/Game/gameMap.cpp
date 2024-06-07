@@ -1,6 +1,5 @@
 #include "gameMap.h"
 
-
 GameMap::GameMap(Vector<int16_t> size): size(size), entityFactory(*this) {}
 
 std::vector<std::shared_ptr<Entity>> GameMap::getObjectsInShootRange(Vector<int16_t> mapPosition,

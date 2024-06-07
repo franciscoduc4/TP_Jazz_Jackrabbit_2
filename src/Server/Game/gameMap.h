@@ -17,10 +17,6 @@
 #include "entity.h"
 #include "entityFactory.h"
 
-class Character;
-class Enemy;
-
-class EntityFactory;
 class GameMap {
 private:
     Vector<int16_t> size;
