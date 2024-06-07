@@ -1,6 +1,8 @@
 #ifndef VECTOR_H
 #define VECTOR_H
 
+#include <math.h>
+
 template <typename T>
 struct Vector {
     T x;
@@ -36,6 +38,14 @@ struct Vector {
 
     bool operator<(const Vector& other) const {
         return (x < other.x) || (x == other.x && y < other.y);
+    }
+
+    bool operator<=(const Vector& other) const { return *this < other || *this == other; }
+
+    double distance(const Vector& other) const {
+        T dx = x - other.x;
+        T dy = y - other.y;
+        return std::sqrt(dx * dx + dy * dy);
     }
 };
 

@@ -12,7 +12,7 @@ private:
 public:
     explicit JumpHandler(std::unique_ptr<CommandDTO> moveCommand);
 
-    virtual void execute(Game& game, std::atomic<bool>& keepRunning, double deltaTime);
+    virtual void execute(GameMap& gameMap, std::atomic<bool>& keepRunning, double deltaTime);
 };
 
 #endif  // JUMP_HANDLER_H_

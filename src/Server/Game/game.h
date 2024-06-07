@@ -7,30 +7,49 @@
 
 #include "../../Common/DTO/game.h"
 #include "../../Common/Types/character.h"
+#include "../../Common/Types/episode.h"
+#include "../../Common/Types/gameInfo.h"
+#include "../../Common/Types/gameMode.h"
+#include "../../Common/queueMonitor.h"
 #include "../CommandHandlers/Game/gameCommand.h"
-#include "../Physics/gameMap.h"
-#include "../Physics/playerCharacter.h"
+#include "../Threads/gameLoop.h"
+#include "characters/character.h"
+
+#include "gameMap.h"
 
 class Game {
 private:
+    int32_t gameId;
+    std::string gameName;
+    Episode episode;
+    GameMode gameMode;
+    uint8_t maxPlayers;
+    uint8_t currentPlayers;
+    GameLoopThread gameLoop;
     GameMap gameMap;
-    std::map<int32_t, std::shared_ptr<Character>> characters;
-
 
 public:
-    explicit Game(Vector<int16_t> size);
-    void handleCommand(std::unique_ptr<CommandDTO> commandDTO, std::atomic<bool>& keepRunning,
-                       double deltaTime);
+    explicit Game(int32_t gameId, std::string gameName, int32_t playerId, Episode episode,
+                  GameMode gameMode, uint8_t maxPlayers, CharacterType characterType,
+                  std::shared_ptr<Queue<std::unique_ptr<CommandDTO>>> recvQueue,
+                  QueueMonitor<std::unique_ptr<GameDTO>>& queueMonitor);
 
-    void addCharacter(int32_t playerId, CharacterType characterType);
 
-    std::shared_ptr<Character> getCharacter(int32_t playerId);
+    int32_t getGameId() const;
 
-    bool removeCharacter(int32_t playerId);
+    std::string getGameName() const;
 
-    std::unique_ptr<GameDTO> getGameDTO();
+    void addPlayer(int32_t playerId, CharacterType characterType);
 
-    void update(float time);
+    bool isFull() const;
+
+    void removePlayer(int32_t playerId);
+
+    GameInfo getGameInfo();
+
+    void launch();
+
+    void endGame();
 };
 
 #endif  // GAME_H_
