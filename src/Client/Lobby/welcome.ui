@@ -14,6 +14,14 @@
    <string>Lobby</string>
   </property>
   <widget class="QWidget" name="centralwidget">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>800</width>
+     <height>600</height>
+    </rect>
+   </property>
    <widget class="QLineEdit" name="inputName">
     <property name="geometry">
      <rect>
@@ -52,8 +60,8 @@
    <widget class="QPushButton" name="btnIngresar">
     <property name="geometry">
      <rect>
-      <x>600</x>
-      <y>395</y>
+      <x>637</x>
+      <y>312</y>
       <width>160</width>
       <height>50</height>
      </rect>
@@ -81,7 +89,7 @@
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>23</height>
+     <height>0</height>
     </rect>
    </property>
   </widget>

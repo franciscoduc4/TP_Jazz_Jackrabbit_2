@@ -22,6 +22,9 @@ public:
 private slots:
     void on_btnIngresar_clicked();
 
+protected:
+    void keyPressEvent(QKeyEvent* event) override;
+
 private:
     Ui::Welcome *ui;
     Client& client;

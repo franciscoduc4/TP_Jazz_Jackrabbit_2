@@ -6,20 +6,19 @@ QPushButton {
     background-color: transparent;
     border-image: none;
     border: none;
-    color: white;
+    color: black;
 }
 
 QPushButton:hover {
-    color: #FFD700;
+    color: #FFA400;
 }
 
-QLineEdit {
-    background-color: white;
-    border-image: none;
-    color: black;
+QPushButton#btnBack:hover {
+    color: #228B22;
 }
 
 QLabel {
     background-color: white;
     border-image: none;
+    color: #00A35B;
 }

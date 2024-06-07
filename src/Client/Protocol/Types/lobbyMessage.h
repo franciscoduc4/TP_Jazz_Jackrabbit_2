@@ -6,11 +6,11 @@
 
 #include "../../../Common/Types/character.h"
 #include "../../../Common/Types/episode.h"
-// #include "../../../Common/Types/lobbyCommands.h"
+#include "../../../Common/Types/command.h"
 
 struct LobbyMessage {
     std::string playerName;
-    // LobbyCommands lobbyCmd;
+    Command cmd;
     int maxPlayers;
     std::string gameName;
     int waitTime;
@@ -20,7 +20,8 @@ struct LobbyMessage {
 
     LobbyMessage():
             playerName(""),
-            // lobbyCmd(LobbyCommands::INVALID_CMD),
+            // cmd(Command::INVALID_CMD),
+            cmd(Command::IDLE),
             maxPlayers(0),
             gameName(""),
             waitTime(0),
@@ -29,11 +30,11 @@ struct LobbyMessage {
             playerId(-1) {}
 
     LobbyMessage(const std::string& playerName,
-                 // const LobbyCommands& lobbyCmd,
+                 const Command& cmd,
                  const int& maxPlayers, const std::string& gameName, const int& waitTime,
                  const CharacterType& character, const Episode& episode, const int& playerId):
             playerName(playerName),
-            // lobbyCmd(lobbyCmd),
+            cmd(cmd),
             maxPlayers(maxPlayers),
             gameName(gameName),
             waitTime(waitTime),
@@ -45,11 +46,9 @@ struct LobbyMessage {
 
     std::string getPlayerName() { return playerName; }
 
-    /*
-    void setLobbyCmd(LobbyCommands cmd) {
-        lobbyCmd = cmd;
+    void setLobbyCmd(Command cmd) {
+        this->cmd = cmd;
     }
-    */
 
     void setMaxPlayers(int players) { maxPlayers = players; }
 
@@ -61,15 +60,13 @@ struct LobbyMessage {
 
     void setEpisode(Episode ep) { episode = ep; }
 
-    /*
     bool isCreateGame() {
-        return lobbyCmd == LobbyCommands::CREATE_GAME;
+        return cmd == Command::CREATE_GAME;
     }
 
     bool isJoinGame() {
-        return lobbyCmd == LobbyCommands::JOIN_GAME;
+        return cmd == Command::JOIN_GAME;
     }
-    */
 
     std::string toString() {
         std::stringstream ss;

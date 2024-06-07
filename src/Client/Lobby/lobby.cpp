@@ -17,12 +17,17 @@ Lobby::Lobby(QWidget* parent, Client& client, LobbyMessage& msg, bool& clientJoi
     QString welcomeText = ui->labelTitle->text();
     welcomeText.append(playerName);
     ui->labelTitle->setText(welcomeText);
+    QFile file(":/Lobby/Styles/lobby.qss");
+    file.open(QFile::ReadOnly);
+    QString styleSheet = QLatin1String(file.readAll());
+    ui->centralwidget->setStyleSheet(styleSheet);
+    ui->labelTitle->setAttribute(Qt::WA_TranslucentBackground);
 }
 
 Lobby::~Lobby() { delete ui; }
 
 void Lobby::on_btnCreateGame_clicked() {
-    // this->msg.setLobbyCmd(LobbyCommands::CREATE_GAME);
+    this->msg.setLobbyCmd(Command::CREATE_GAME);
 
     this->hide();
 
@@ -35,7 +40,7 @@ void Lobby::on_btnCreateGame_clicked() {
 
 
 void Lobby::on_btnJoinGame_clicked() {
-    // this->msg.setLobbyCmd(LobbyCommands::JOIN_GAME);
+    this->msg.setLobbyCmd(Command::JOIN_GAME);
 
     this->hide();
 
@@ -48,7 +53,7 @@ void Lobby::on_btnJoinGame_clicked() {
 
 
 void Lobby::on_btnBack_clicked() {
-    // this->msg.setLobbyCmd(LobbyCommands::INVALID_CMD);
+    this->msg.setLobbyCmd(Command::IDLE);
     this->hide();
 
     QWidget* parent = this->parentWidget();

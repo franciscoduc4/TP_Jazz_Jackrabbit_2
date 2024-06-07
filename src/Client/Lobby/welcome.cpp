@@ -1,6 +1,7 @@
 #include "welcome.h"
 
 #include <QFile>
+#include <QKeyEvent>
 
 #include "lobby.h"
 #include "ui_welcome.h"
@@ -38,4 +39,12 @@ void Welcome::on_btnIngresar_clicked() {
     Lobby lobby(this, this->client, this->msg, this->clientJoinedGame);
     lobby.setModal(true);
     lobby.exec();
+}
+
+void Welcome::keyPressEvent(QKeyEvent* event) {
+    if (event->key() == Qt::Key_Enter || event->key() == Qt::Key_Return) {
+        on_btnIngresar_clicked();
+    } else {
+        QMainWindow::keyPressEvent(event);
+    }
 }
