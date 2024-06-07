@@ -3,9 +3,9 @@
 #include <arpa/inet.h>
 #include <gtest/gtest.h>
 
-#include "../../src/Server/Physics/entity.h"
-#include "../../src/Server/Physics/gameMap.h"
-#include "../../src/Server/Physics/playerCharacter.h"
+#include "../../src/Server/Game/character.h"
+#include "../../src/Server/Game/entity.h"
+#include "../../src/Server/Game/gameMap.h"
 
 #define MOVEMENTS_PER_CELL 2
 

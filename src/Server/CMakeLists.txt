@@ -3,8 +3,6 @@ file(GLOB_RECURSE SERVER_SOURCES
     CommandHandlers/*.h
     Game/*.cpp
     Game/*.h
-    Physics/*.cpp
-    Physics/*.h
     Protocol/*.cpp
     Protocol/*.h
     Threads/*.cpp

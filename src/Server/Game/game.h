@@ -8,8 +8,9 @@
 #include "../../Common/DTO/game.h"
 #include "../../Common/Types/character.h"
 #include "../CommandHandlers/Game/gameCommand.h"
-#include "../Physics/gameMap.h"
-#include "../Physics/playerCharacter.h"
+#include "characters/character.h"
+
+#include "gameMap.h"
 
 class Game {
 private:
