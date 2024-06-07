@@ -1,6 +1,8 @@
 <RCC>
     <qresource prefix="/">
+        <file>../../assets/LobbyImages/WelcomeBackground.png</file>
         <file>../../assets/LobbyImages/LobbyBackground.png</file>
         <file>Lobby/Styles/welcome.qss</file>
+        <file>Lobby/Styles/lobby.qss</file>
     </qresource>
 </RCC>

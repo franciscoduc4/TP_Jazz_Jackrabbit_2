@@ -1,5 +1,5 @@
 QWidget {
-    border-image: url(:/assets/LobbyImages/WelcomeBackground.png) 0 0 0 0 stretch stretch;
+    border-image: url(:/assets/LobbyImages/LobbyBackground.png) 0 0 0 0 stretch stretch;
 }
 
 QPushButton {
