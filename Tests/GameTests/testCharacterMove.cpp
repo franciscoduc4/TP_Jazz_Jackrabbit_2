@@ -87,29 +87,30 @@ TEST(testCharacterMove, testCharacterAtTheEdgeDoesNotMove) {
     ASSERT_EQ(gameMap.isFreePosition(mapPosition), false);
 }
 
-// TEST(testCharacterMove, testCharacterSpawnsOutOfBounds) {
-//     GameMap gameMap({10, 10});
-//     int16_t characterId = 1;
-//     Vector<int16_t> characterPos = {15, 15};  // Fuera de los límites del mapa
-//     auto character = gameMap.addCharacter(characterId, CharacterType::JAZZ, characterPos);
+TEST(testCharacterMove, testCharacterSpawnsOutOfBounds) {
+    GameMap gameMap({10, 10});
+    int16_t characterId = 1;
+    Vector<int16_t> characterPos = {15, 15};  
+    auto character = gameMap.addCharacter(characterId, CharacterType::JAZZ, characterPos);
 
-//     ASSERT_EQ(character, nullptr);
-// }
+    ASSERT_EQ(character, nullptr);
+}
 
 
-// TEST(testCharacterMove, testCharacterMovesOutOfBounds) {
-//     GameMap gameMap({10, 10});
-//     int16_t characterId = 1;
-//     Vector<int16_t> characterPos = {9, 5};
-//     auto character = gameMap.addCharacter(characterId, CharacterType::JAZZ, characterPos);
+TEST(testCharacterMove, testCharacterMovesOutOfBounds) {
+    GameMap gameMap({10, 10});
+    int16_t characterId = 1;
+    Vector<int16_t> characterPos = {9, 5};
+    auto character = gameMap.addCharacter(characterId, CharacterType::JAZZ, characterPos);
 
-//     for (int i = 0; i < MOVEMENTS_PER_CELL; i++) {
-//         character->moveRight();
-//     }
+    for (int i = 0; i < MOVEMENTS_PER_CELL; i++) {
+        character->moveRight();
+    }
 
-//     auto characterAtNewPos = gameMap.getCharacter(characterId);
-//     ASSERT_EQ(characterAtNewPos->getPosition(), Vector<int16_t>({9, 5}));  
-// }
+    auto characterAtNewPos = gameMap.getCharacter(characterId);
+    ASSERT_EQ(characterAtNewPos->getPosition(), Vector<int16_t>({9, 5})); 
+}
+
 
 
 TEST(testCharacterMove, testCharacterReceivesDamage) {
@@ -162,7 +163,7 @@ TEST(testCharacterMove, testCharacterDiesAndRevives) {
     auto character = gameMap.addCharacter(characterId, CharacterType::JAZZ, characterPos);
     int initialHealth = character->getHealth();
 
-    character->recvDamage(initialHealth, 1.0f);  // Lethal damage
+    character->recvDamage(initialHealth, 1.0f);  
     ASSERT_EQ(character->getIsDead(), true);
 
     character->revive(5.0f);
@@ -187,31 +188,20 @@ TEST(testCharacterMove, testCharacterSwitchWeapon) {
     ASSERT_EQ(character->getCurrentWeaponType(), WeaponType::RFMISSILE);
 }
 
-// TEST(testCharacterMove, testCharacterSpecialAttack) {
-//     GameMap gameMap({10, 10});
-//     int16_t characterId = 1;
-//     Vector<int16_t> characterPos = {5, 5};
-//     auto character = gameMap.addCharacter(characterId, CharacterType::JAZZ, characterPos);
+TEST(testCharacterMove, testCharacterCannotMoveWhileIntoxicated) {
+    GameMap gameMap({10, 10});
+    int16_t characterId = 1;
+    Vector<int16_t> characterPos = {5, 5};
+    auto character = gameMap.addCharacter(characterId, CharacterType::JAZZ, characterPos);
 
-//     character->specialAttack(1.0f);
-//     // Assuming the Character class has a way to check if the special attack was executed.
-//     ASSERT_EQ(character->didSpecialAttack(), true);
-// }
+    character->becomeIntoxicated(5.0f);
+    Vector<int16_t> mapPosition = character->getMapPosition(MOVEMENTS_PER_CELL);
+    for (int i = 0; i < MOVEMENTS_PER_CELL; i++) {
+        character->moveRight();
+    }
 
-// TEST(testCharacterMove, testCharacterCannotMoveWhileIntoxicated) {
-//     GameMap gameMap({10, 10});
-//     int16_t characterId = 1;
-//     Vector<int16_t> characterPos = {5, 5};
-//     auto character = gameMap.addCharacter(characterId, CharacterType::JAZZ, characterPos);
-
-//     character->becomeIntoxicated(5.0f);
-//     Vector<int16_t> mapPosition = character->getMapPosition(MOVEMENTS_PER_CELL);
-//     for (int i = 0; i < MOVEMENTS_PER_CELL; i++) {
-//         character->moveRight();
-//     }
-
-//     ASSERT_EQ(character->getPosition(), Vector<int16_t>({5, 5}));
-// }
+    ASSERT_EQ(character->getPosition(), Vector<int16_t>({5, 5}));
+}
 
 TEST(testCharacterMove, testCharacterReceivesContinuousDamage) {
     GameMap gameMap({10, 10});
@@ -221,8 +211,10 @@ TEST(testCharacterMove, testCharacterReceivesContinuousDamage) {
     int initialHealth = character->getHealth();
 
     for (int i = 0; i < 5; i++) {
-        character->recvDamage(2, 1.0f);  // Continuous damage
+        character->recvDamage(2, 1.0f);  
     }
 
     ASSERT_EQ(character->getHealth(), initialHealth - 10);
 }
+
+

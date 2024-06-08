@@ -75,7 +75,7 @@ public:
 
     void printMapGrid() const;
 
-    Vector<int16_t> getMapPosition(Vector<int16_t> position, int16_t movesPerCell) const;
+    Vector<int16_t> getMapPosition(Vector<int16_t> position, int16_t movesPerCell);
 };
 
 #endif  // GAME_MAP_H_

@@ -46,6 +46,8 @@ void GameMap::moveObject(Vector<int16_t>& position, Vector<int16_t> mapPosition,
     Vector<int16_t> newPosition = calculateNewPosition(position, dir);
     Vector<int16_t> newMapPosition = getMapPosition(newPosition, movesPerCell);
 
+    if (!isValidPosition(newPosition)) return;
+
     if (!handleMovement(position, mapPosition, newPosition, newMapPosition)) {
         auto character = std::dynamic_pointer_cast<Character>(mapGrid[mapPosition]);
         if (character && !isFreePosition(newMapPosition)) {
@@ -72,7 +74,7 @@ void GameMap::addEntityToMap(std::shared_ptr<Entity> entity, Vector<int16_t> pos
 std::shared_ptr<Character> GameMap::addCharacter(int32_t playerId, CharacterType type,
                                                  std::optional<Vector<int16_t>> position = std::nullopt) {
     Vector<int16_t> initPosition = position ? *position : getAvailablePosition();
-    if (!isValidPosition(initPosition)) {
+    if (!isValidMapPosition(initPosition)) {
         return nullptr;
     }
 
@@ -148,7 +150,7 @@ void GameMap::printMapGrid() const {
     }
 }
 
-Vector<int16_t> GameMap::getMapPosition(Vector<int16_t> position, int16_t movesPerCell) const {
+Vector<int16_t> GameMap::getMapPosition(Vector<int16_t> position, int16_t movesPerCell) {
     return {static_cast<int16_t>(position.x / movesPerCell),
             static_cast<int16_t>(position.y / movesPerCell)};
 }
