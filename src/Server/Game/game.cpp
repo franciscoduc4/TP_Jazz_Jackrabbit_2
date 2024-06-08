@@ -2,29 +2,42 @@
 
 #include <utility>
 
-Game::Game(Vector<int16_t> size): gameMap(size) {}
-
-void Game::handleCommand(std::unique_ptr<CommandDTO> commandDTO, std::atomic<bool>& keepRunning,
-                         double deltaTime) {
-    std::unique_ptr<GameCommandHandler> handler =
-            GameCommandHandler::createHandler(std::move(commandDTO));
-    handler->execute(*this, keepRunning, deltaTime);
+Game::Game(int32_t gameId, std::string gameName, int32_t playerId, Episode episode,
+           GameMode gameMode, uint8_t maxPlayers, CharacterType characterType,
+           std::shared_ptr<Queue<std::unique_ptr<CommandDTO>>> recvQueue,
+           QueueMonitor<std::unique_ptr<GameDTO>>& queueMonitor):
+        gameId(gameId),
+        gameName(std::move(gameName)),
+        episode(episode),
+        gameMode(gameMode),
+        maxPlayers(maxPlayers),
+        gameMap({100, 100}),
+        currentPlayers(1),
+        gameLoop(recvQueue, queueMonitor, gameMap) {
+    gameMap.addCharacter(playerId, characterType, {});
 }
 
-void Game::addCharacter(int32_t playerId, CharacterType characterType) {
-    characters[playerId] = gameMap.addCharacter(characterType);
+std::string Game::getGameName() const { return gameName; }
+
+bool Game::isFull() const { return currentPlayers == maxPlayers; }
+
+
+void Game::addPlayer(int32_t playerId, CharacterType characterType) {
+    gameMap.addCharacter(playerId, characterType, {});
+    currentPlayers++;
+}
+void Game::removePlayer(int32_t playerId) {
+    gameMap.removeCharacter(playerId);
+    currentPlayers--;
 }
 
-std::shared_ptr<Character> Game::getCharacter(int32_t playerId) { return characters[playerId]; }
+int32_t Game::getGameId() const { return gameId; }
 
+GameInfo Game::getGameInfo() { return {gameName, currentPlayers, maxPlayers}; }
 
-void Game::update(float time) { gameMap.update(time); }
+void Game::launch() { gameLoop.start(); }
 
-bool Game::removeCharacter(int32_t playerId) {
-    gameMap.removeCharacter({0, 0});
-    return true;
-}
-
-std::unique_ptr<GameDTO> Game::getGameDTO() {
-    return std::make_unique<GameDTO>(gameMap.getGameDTO());
+void Game::endGame() {
+    gameLoop.stop();
+    gameLoop.join();
 }

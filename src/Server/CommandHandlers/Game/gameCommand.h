@@ -7,13 +7,11 @@
 #include "../../../Common/DTO/game.h"
 #include "../../../Common/Types/command.h"
 #include "../../../Common/queue.h"
-#include "../../Game/game.h"
-
-class Game;
+#include "../../Game/gameMap.h"
 
 class GameCommandHandler {
 public:
-    virtual void execute(Game& game, std::atomic<bool>& keepRunning, double deltaTime) = 0;
+    virtual void execute(GameMap& gameMap, std::atomic<bool>& keepRunning, double deltaTime) = 0;
     static std::unique_ptr<GameCommandHandler> createHandler(std::unique_ptr<CommandDTO> command);
 };
 

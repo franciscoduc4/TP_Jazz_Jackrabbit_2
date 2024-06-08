@@ -16,9 +16,8 @@ bool GameMonitor::createGame(int32_t playerId, Episode episode, GameMode gameMod
             return false;
         }
     }
-    games[gameId] =
-            std::make_unique<GameLoopThread>(gameId, gameName, playerId, episode, gameMode,
-                                             maxPlayers, characterType, recvQueue, queueMonitor);
+    games[gameId] = std::make_unique<Game>(gameId, gameName, playerId, episode, gameMode,
+                                           maxPlayers, characterType, recvQueue, queueMonitor);
 
     return true;
 }
@@ -42,7 +41,7 @@ bool GameMonitor::startGame(int32_t playerId, int32_t gameId) {
     if (it != games.end()) {
         auto& [id, game] = *it;
         if (game->isFull()) {
-            game->start();
+            game->launch();
             return true;
         }
     }
@@ -59,12 +58,30 @@ std::map<int32_t, GameInfo> GameMonitor::getGamesList() {
     return list;
 }
 
+uint8_t GameMonitor::getCurrentPlayers(int32_t gameId) {
+    std::lock_guard<std::mutex> lock(mtx);
+    auto it = games.find(gameId);
+    if (it != games.end()) {
+        auto& [id, game] = *it;
+        return game->getGameInfo().currentPlayers;
+    }
+    return 0;
+}
+
+// void GameMonitor::broadcastToGame(int32_t gameId, std::unique_ptr<CommandDTO> command) {
+//     std::lock_guard<std::mutex> lock(mtx);
+//     auto it = games.find(gameId);
+//     if (it != games.end()) {
+//         auto& [id, game] = *it;
+//         game->broadcast(std::move(command));
+//     }
+// }
+
 void GameMonitor::endGame(const std::string& gameName) {
     std::lock_guard<std::mutex> lock(mtx);
     for (auto it = games.begin(); it != games.end(); ++it) {
         if (it->second->getGameName() == gameName) {
-            it->second->stop();
-            it->second->join();
+            it->second->endGame();
             games.erase(it);
             return;
         }
@@ -74,8 +91,7 @@ void GameMonitor::endGame(const std::string& gameName) {
 void GameMonitor::endAllGames() {
     std::lock_guard<std::mutex> lock(mtx);
     for (auto& [id, game]: games) {
-        game->stop();
-        game->join();
+        game->endGame();
     }
     games.clear();
 }

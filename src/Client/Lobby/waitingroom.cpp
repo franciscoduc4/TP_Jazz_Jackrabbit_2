@@ -2,7 +2,7 @@
 #include "ui_waitingroom.h"
 
 WaitingRoom::WaitingRoom(QWidget *parent, Client& client, LobbyMessage& msg, bool& clientJoinedGame) :
-    QMainWindow(parent),
+    QDialog (parent),
     ui(new Ui::WaitingRoom),
     client(client),
     msg(msg),
@@ -17,6 +17,13 @@ WaitingRoom::~WaitingRoom()
 }
 
 void WaitingRoom::on_btnBack_clicked() {
-    // Do Something.
+     this->hide();
+
+     QWidget* parent = this->parentWidget();
+     if (parent) {
+         parent->show();
+     }
+
+     this->close();
 }
 

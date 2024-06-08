@@ -1,0 +1,24 @@
+QWidget {
+    border-image: url(:/assets/LobbyImages/LobbyBackground.png) 0 0 0 0 stretch stretch;
+}
+
+QPushButton {
+    background-color: transparent;
+    border-image: none;
+    border: none;
+    color: black;
+}
+
+QPushButton:hover {
+    color: #FFA400;
+}
+
+QPushButton#btnBack:hover {
+    color: #228B22;
+}
+
+QLabel {
+    background-color: white;
+    border-image: none;
+    color: #00A35B;
+}

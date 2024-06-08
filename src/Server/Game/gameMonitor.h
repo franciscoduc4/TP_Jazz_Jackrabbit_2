@@ -5,15 +5,16 @@
 #include <memory>
 #include <mutex>
 #include <string>
-#include "../../Common/Types/gameInfo.h"
+
 #include "../../Common/Types/episode.h"
+#include "../../Common/Types/gameInfo.h"
 #include "../../Common/Types/gameMode.h"
 #include "../../Common/queueMonitor.h"
-#include "../Threads/gameLoop.h"
+#include "../Game/game.h"
 
 class GameMonitor {
 private:
-    std::map<int32_t, std::unique_ptr<GameLoopThread>> games;
+    std::map<int32_t, std::unique_ptr<Game>> games;
     std::mutex mtx;
     QueueMonitor<std::unique_ptr<GameDTO>>& queueMonitor;
 
@@ -25,6 +26,8 @@ public:
     std::map<int32_t, GameInfo> getGamesList();
     bool joinGame(int32_t playerId, int32_t gameId, CharacterType characterType);
     bool startGame(int32_t playerId, int32_t gameId);
+    // void broadcastToGame(int32_t gameId, std::unique_ptr<CommandDTO> command);
+    uint8_t getCurrentPlayers(int32_t gameId);
     void endGame(const std::string& gameName);
     void endAllGames();
 };

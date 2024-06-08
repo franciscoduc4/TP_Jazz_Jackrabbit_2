@@ -92,32 +92,41 @@ std::vector<char> Serializer::serializeCreateGame(const std::unique_ptr<CreateGa
 std::vector<char> Serializer::serializeJoinGame(const std::unique_ptr<JoinGameDTO>& dto) {
     std::vector<char> buffer;
     buffer.push_back(static_cast<char>(Command::JOIN_GAME));
-
+    int32_t playerId = htonl(dto->getPlayerId());
+    const unsigned char* p = reinterpret_cast<const unsigned char*>(&playerId);
+    buffer.insert(buffer.end(), p, p + sizeof(int32_t));
     int32_t gameId = htonl(dto->getGameId());
     const unsigned char* p1 = reinterpret_cast<const unsigned char*>(&gameId);
     buffer.insert(buffer.end(), p1, p1 + sizeof(int32_t));
+    uint8_t currentPlayers = dto->getCurrentPlayers();
+    buffer.push_back(static_cast<char>(currentPlayers));
 
     return buffer;
 }
-
 
 
 std::vector<char> Serializer::serializeGamesList(const std::unique_ptr<GamesListDTO>& dto) {
     std::vector<char> buffer;
     buffer.push_back(static_cast<char>(Command::GAMES_LIST));
     auto games = dto->getGames();
+    int32_t gamesSize = htonl(games.size());
+    const unsigned char* p = reinterpret_cast<const unsigned char*>(&gamesSize);
+    buffer.insert(buffer.end(), p, p + sizeof(int32_t));
     for (const auto& [id, gameInfo]: games) {
         int32_t gameId = htonl(id);
         const unsigned char* p = reinterpret_cast<const unsigned char*>(&gameId);
         buffer.insert(buffer.end(), p, p + sizeof(int32_t));
 
-        buffer.push_back(gameInfo.name.length());
+        int32_t nameLength = htonl(gameInfo.name.length());
+        const unsigned char* np = reinterpret_cast<const unsigned char*>(&nameLength);
+        buffer.insert(buffer.end(), np, np + sizeof(int32_t));
+
         buffer.insert(buffer.end(), gameInfo.name.begin(), gameInfo.name.end());
-        
+
         int32_t maxPlayers = htonl(gameInfo.maxPlayers);
         const unsigned char* mp = reinterpret_cast<const unsigned char*>(&maxPlayers);
         buffer.insert(buffer.end(), mp, mp + sizeof(int32_t));
-        
+
         int32_t currentPlayers = htonl(gameInfo.currentPlayers);
         const unsigned char* cp = reinterpret_cast<const unsigned char*>(&currentPlayers);
         buffer.insert(buffer.end(), cp, cp + sizeof(int32_t));

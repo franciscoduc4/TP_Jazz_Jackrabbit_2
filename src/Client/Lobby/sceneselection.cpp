@@ -8,7 +8,7 @@
 
 SceneSelection::SceneSelection(QWidget* parent, Client& client, LobbyMessage& msg,
                                bool& clientJoinedGame):
-        QMainWindow(parent),
+        QDialog(parent),
         ui(new Ui::SceneSelection),
         client(client),
         msg(msg),
@@ -33,9 +33,13 @@ void SceneSelection::on_btnChoose_clicked() {
 
 void SceneSelection::on_btnBack_clicked() {
     this->msg.setEpisode(Episode::INVALID);
+
+    this->hide();
+
     QWidget* parent = this->parentWidget();
     if (parent) {
         parent->show();
     }
+
     this->close();
 }

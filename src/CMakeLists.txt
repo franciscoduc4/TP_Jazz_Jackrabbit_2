@@ -10,7 +10,6 @@ find_package(yaml-cpp REQUIRED)
 find_package(fmt REQUIRED)
 
 # Crear biblioteca comun
-
 add_subdirectory("Common")
 
 target_link_libraries(common yaml-cpp fmt::fmt -pthread)
@@ -29,7 +28,6 @@ if(SERVER)
     set_target_properties(jazzserver PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
 endif()
 
-
 # Cliente
 if(CLIENT)
     set(CMAKE_AUTOUIC ON)
@@ -42,9 +40,6 @@ if(CLIENT)
         ${PROJECT_SOURCE_DIR}/src/Client/*.cpp
         ${PROJECT_SOURCE_DIR}/src/Client/*.h
     )
-    add_executable(jazzclient ${CLIENT_SOURCES})
-    target_link_libraries(jazzclient common Qt5::Widgets Qt5::Core SDL2 SDL2pp SDL2_image yaml-cpp fmt::fmt -pthread)
-    target_include_directories(jazzclient PUBLIC ${PROJECT_SOURCE_DIR}/src/Common)
 
     set(UI_FILES
             ${PROJECT_SOURCE_DIR}/src/Client/charactereselection.ui
@@ -58,6 +53,16 @@ if(CLIENT)
 
     qt5_wrap_ui(UIS_HEADERS ${UI_FILES})
 
+    qt5_add_resources(RESOURCES ${PROJECT_SOURCE_DIR}/src/Client/resources.qrc)
+
+    add_executable(jazzclient ${CLIENT_SOURCES} ${UIS_HEADERS} ${RESOURCES})
+    target_link_libraries(jazzclient common Qt5::Widgets Qt5::Core SDL2 SDL2pp SDL2_image yaml-cpp fmt::fmt -pthread)
+    target_include_directories(jazzclient PUBLIC ${PROJECT_SOURCE_DIR}/src/Common)
+
     set_target_properties(jazzclient PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
 endif()
+
+# Copy YAML files to the build directory
+file(COPY ${CMAKE_SOURCE_DIR}/src/config DESTINATION ${CMAKE_BINARY_DIR})
+
 #add_executable(main.cpp)

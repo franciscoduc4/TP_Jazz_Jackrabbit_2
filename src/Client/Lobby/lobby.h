@@ -1,7 +1,7 @@
 #ifndef LOBBY_H
 #define LOBBY_H
 
-#include <QMainWindow>
+#include <QDialog>
 
 #include "../client.h"
 #include "../Protocol/Types/lobbyMessage.h"
@@ -10,7 +10,7 @@ namespace Ui {
 class Lobby;
 }
 
-class Lobby : public QMainWindow
+class Lobby : public QDialog
 {
     Q_OBJECT
 

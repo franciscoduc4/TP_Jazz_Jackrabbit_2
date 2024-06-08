@@ -1,7 +1,7 @@
 #ifndef SCENESELECTION_H
 #define SCENESELECTION_H
 
-#include <QMainWindow>
+#include <QDialog>
 #include <QVBoxLayout>
 
 #include "../Protocol/Types/lobbyMessage.h"
@@ -12,7 +12,7 @@ namespace Ui {
 class SceneSelection;
 }
 
-class SceneSelection: public QMainWindow {
+class SceneSelection: public QDialog {
     Q_OBJECT
 
 

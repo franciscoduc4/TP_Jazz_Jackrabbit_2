@@ -14,14 +14,14 @@ enum CharacterStateEntity : char {
 };
 
 enum EnemyStateEntity : char {
-    ENEMY_IDLE,           // El enemigo está quieto
-    ENEMY_WALKING,         // El enemigo se está moviendo
-    ENEMY_JUMPING,        // El enemigo está saltando
-    ENEMY_FLYING,         // El enemigo está volando
-    ENEMY_ATTACKING,      // El enemigo está atacando
+    ENEMY_IDLE,              // El enemigo está quieto
+    ENEMY_WALKING,           // El enemigo se está moviendo
+    ENEMY_JUMPING,           // El enemigo está saltando
+    ENEMY_FLYING,            // El enemigo está volando
+    ENEMY_ATTACKING,         // El enemigo está atacando
     ENEMY_RECEIVING_DAMAGE,  // El enemigo está recibiendo daño
-    ENEMY_DEAD,           // El enemigo está muerto
-    ENEMY_RESPAWNING      // El enemigo está reapareciendo
+    ENEMY_DEAD,              // El enemigo está muerto
+    ENEMY_RESPAWNING         // El enemigo está reapareciendo
 };
 
 #endif  // ENTITYSTATE_H
