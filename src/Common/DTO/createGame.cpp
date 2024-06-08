@@ -2,9 +2,9 @@
 
 CreateGameDTO::CreateGameDTO(int32_t gameId): CommandDTO(Command::CREATE_GAME), gameId(gameId) {}
 
-CreateGameDTO::CreateGameDTO(Episode episodeName, GameMode gameMode, uint8_t maxPlayers,
-                             CharacterType characterType, std::string gameName):
-        CommandDTO(Command::CREATE_GAME),
+CreateGameDTO::CreateGameDTO(int32_t playerId, Episode episodeName, GameMode gameMode,
+                             uint8_t maxPlayers, CharacterType characterType, std::string gameName):
+        CommandDTO(playerId, Command::CREATE_GAME),
         episodeName(episodeName),
         gameMode(gameMode),
         maxPlayers(maxPlayers),

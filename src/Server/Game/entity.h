@@ -6,6 +6,7 @@
 #include <utility>
 #include <vector>
 
+#include "../../Common/Config/ServerConfig.h"
 #include "../../Common/Types/direction.h"
 #include "../../Common/vector.h"
 

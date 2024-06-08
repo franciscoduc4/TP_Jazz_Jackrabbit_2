@@ -19,7 +19,7 @@ CreateGameHandler::CreateGameHandler(std::unique_ptr<CreateGameDTO> command):
 std::unique_ptr<CommandDTO> CreateGameHandler::execute(
         GameMonitor& gameMonitor, std::atomic<bool>& inGame,
         std::shared_ptr<Queue<std::unique_ptr<CommandDTO>>> recvQueue) {
-    int32_t playerId = 0;
+    int32_t playerId = command->getPlayerId();
     Episode episode = command->getEpisodeName();
     GameMode gameMode = command->getGameMode();
     uint8_t maxPlayers = command->getMaxPlayers();

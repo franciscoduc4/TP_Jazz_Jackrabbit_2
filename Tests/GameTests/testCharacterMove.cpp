@@ -37,6 +37,9 @@ TEST(testCharacterMove, testCharacterMoveLeftOneCell) {
 
     ASSERT_EQ(characterAtNewPos, character);
     ASSERT_EQ(characterAtNewPos->getPosition(), Vector<int16_t>({5 - MOVEMENTS_PER_CELL, 5}));
+    ASSERT_EQ(characterAtNewPos->getMapPosition(MOVEMENTS_PER_CELL),
+              Vector<int16_t>(
+                      {(5 - MOVEMENTS_PER_CELL) / MOVEMENTS_PER_CELL, 5 / MOVEMENTS_PER_CELL}));
     ASSERT_EQ(entityAtOldPos, nullptr);
     ASSERT_EQ(gameMap.isFreePosition(mapPosition), true);
 }
@@ -46,8 +49,8 @@ TEST(testCharacterMove, testCharacterMoveRightOneCell) {
     int16_t characterId = 1;
     Vector<int16_t> characterPos = {5, 5};
     auto character = gameMap.addCharacter(characterId, CharacterType::JAZZ, characterPos);
+
     Vector<int16_t> mapPosition = character->getMapPosition(MOVEMENTS_PER_CELL);
-    std::cout << "x: " << mapPosition.x << " y: " << mapPosition.y << std::endl;
     for (int i = 0; i < MOVEMENTS_PER_CELL; i++) {
         character->moveRight();
     }
@@ -55,11 +58,11 @@ TEST(testCharacterMove, testCharacterMoveRightOneCell) {
     auto characterAtNewPos = gameMap.getCharacter(characterId);
     auto entityAtOldPos = gameMap.getEntityAt(mapPosition);
 
-    std::cout << "x: " << entityAtOldPos->getMapPosition(MOVEMENTS_PER_CELL).x
-              << " y: " << entityAtOldPos->getMapPosition(MOVEMENTS_PER_CELL).y << std::endl;
-
     ASSERT_EQ(characterAtNewPos, character);
     ASSERT_EQ(characterAtNewPos->getPosition(), Vector<int16_t>({5 + MOVEMENTS_PER_CELL, 5}));
+    ASSERT_EQ(characterAtNewPos->getMapPosition(MOVEMENTS_PER_CELL),
+              Vector<int16_t>(
+                      {(5 + MOVEMENTS_PER_CELL) / MOVEMENTS_PER_CELL, 5 / MOVEMENTS_PER_CELL}));
     ASSERT_EQ(entityAtOldPos, nullptr);
     ASSERT_EQ(gameMap.isFreePosition(mapPosition), true);
 }
@@ -69,8 +72,8 @@ TEST(testCharacterMove, testCharacterAtTheEdgeDoesNotMove) {
     int16_t characterId = 1;
     Vector<int16_t> characterPos = {0, 5};
     auto character = gameMap.addCharacter(characterId, CharacterType::JAZZ, characterPos);
-    Vector<int16_t> mapPosition = character->getMapPosition(MOVEMENTS_PER_CELL);
 
+    Vector<int16_t> mapPosition = character->getMapPosition(MOVEMENTS_PER_CELL);
     for (int i = 0; i < MOVEMENTS_PER_CELL; i++) {
         character->moveLeft();
     }

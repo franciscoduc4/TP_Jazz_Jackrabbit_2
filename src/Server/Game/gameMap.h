@@ -6,6 +6,7 @@
 #include <optional>
 #include <vector>
 
+#include "../../Common/Config/ServerConfig.h"
 #include "../../Common/DTO/game.h"
 #include "../../Common/Types/character.h"
 #include "../../Common/Types/direction.h"
@@ -25,6 +26,14 @@ private:
     EntityFactory entityFactory;
     int16_t movesPerCell = 2;
     int16_t entityCount = 0;
+    float gravity;
+
+    Vector<int16_t> calculateNewPosition(const Vector<int16_t>& position, Direction dir) const;
+
+
+    bool handleMovement(Vector<int16_t>& position, Vector<int16_t> mapPosition,
+                        const Vector<int16_t>& newPosition, const Vector<int16_t>& newMapPosition);
+
 
 public:
     explicit GameMap(Vector<int16_t> size);
@@ -60,7 +69,13 @@ public:
 
     bool isFreePosition(Vector<int16_t> position);
 
+    bool isValidMapPosition(Vector<int16_t> mapPosition);
+
     bool isValidPosition(Vector<int16_t> position);
+
+    void printMapGrid() const;
+
+    Vector<int16_t> getMapPosition(Vector<int16_t> position, int16_t movesPerCell) const;
 };
 
 #endif  // GAME_MAP_H_

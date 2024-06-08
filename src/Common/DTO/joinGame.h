@@ -16,8 +16,8 @@ private:
     bool joined;
 
 public:
-    JoinGameDTO(int32_t playerId, int32_t gameId, uint8_t currentPlayers);
-    JoinGameDTO(int32_t& gameId, CharacterType characterType);
+    JoinGameDTO(int32_t gameId, uint8_t currentPlayers);
+    JoinGameDTO(int32_t playerId, int32_t& gameId, CharacterType characterType);
     int32_t getGameId() const;
     CharacterType getCharacterType() const;
     bool getJoined() const;

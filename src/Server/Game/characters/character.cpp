@@ -5,7 +5,8 @@
 #define CONFIG ServerConfig::getInstance()
 
 Character::Character(GameMap& gameMap, Vector<int16_t> pos, int16_t characterId, CharacterType type,
-                     float speed, float sprintSpeed, float jumpHeight, float shootCooldownTime):
+                     float horizontalSpeed, float sprintSpeed, float verticalSpeed,
+                     float jumpHeight, float shootCooldownTime):
         Entity(pos, characterId, CONFIG->getCharacterInitialHealth(), Direction::RIGHT),
         type(type),
         gameMap(gameMap),
@@ -17,8 +18,9 @@ Character::Character(GameMap& gameMap, Vector<int16_t> pos, int16_t characterId,
         respawnTime(CONFIG->getCharacterRespawnTime()),
         damageTime(CONFIG->getCharacterDamageTime()),
         intoxicatedTime(CONFIG->getCharacterIntoxicatedTime()),
-        speed(speed),
+        horizontalSpeed(horizontalSpeed),
         sprintSpeed(sprintSpeed),
+        verticalSpeed(verticalSpeed),
         jumpHeight(jumpHeight),
         shootCooldownTime(shootCooldownTime),
         currentWeapon(std::make_unique<Blaster>()),

@@ -42,33 +42,23 @@ TEST(lobbyServerProtocolTest, testSerializeCreateGame) {
 TEST(lobbyServerProtocolTest, testSerializeJoinGame) {
     Serializer serializer;
     int32_t gameId = 1;
-    int32_t playerId = 2;
     uint8_t currentPlayers = 3;
-    auto dto = std::make_unique<JoinGameDTO>(playerId, gameId, currentPlayers);
+    auto dto = std::make_unique<JoinGameDTO>(gameId, currentPlayers);
 
     std::vector<char> buffer = serializer.serializeJoinGame(dto);
 
-    ASSERT_EQ(buffer.size(), 10); // Ajustado a 10
+    ASSERT_EQ(buffer.size(), 6);
     ASSERT_EQ(buffer[0], static_cast<char>(Command::JOIN_GAME));
-
-    int32_t expectedPlayerId = htonl(playerId);
-    const unsigned char* p1 = reinterpret_cast<const unsigned char*>(&expectedPlayerId);
-    ASSERT_EQ(buffer[1], p1[0]);
-    ASSERT_EQ(buffer[2], p1[1]);
-    ASSERT_EQ(buffer[3], p1[2]);
-    ASSERT_EQ(buffer[4], p1[3]);
 
     int32_t expectedGameId = htonl(gameId);
     const unsigned char* p2 = reinterpret_cast<const unsigned char*>(&expectedGameId);
-    ASSERT_EQ(buffer[5], p2[0]);
-    ASSERT_EQ(buffer[6], p2[1]);
-    ASSERT_EQ(buffer[7], p2[2]);
-    ASSERT_EQ(buffer[8], p2[3]);
+    ASSERT_EQ(buffer[1], p2[0]);
+    ASSERT_EQ(buffer[2], p2[1]);
+    ASSERT_EQ(buffer[3], p2[2]);
+    ASSERT_EQ(buffer[4], p2[3]);
 
-    ASSERT_EQ(buffer[9], static_cast<char>(currentPlayers)); // Ajustado a 9
+    ASSERT_EQ(buffer[5], static_cast<char>(currentPlayers));
 }
-
-
 
 
 TEST(lobbyServerProtocolTest, testSerializeGamesList) {
@@ -82,7 +72,6 @@ TEST(lobbyServerProtocolTest, testSerializeGamesList) {
 
     ASSERT_EQ(buffer[0], static_cast<char>(Command::GAMES_LIST));
 
-    // Verificación del tamaño de la lista de juegos
     int32_t expectedSize = htonl(gamesList.size());
     const unsigned char* sizePtr = reinterpret_cast<const unsigned char*>(&expectedSize);
     ASSERT_EQ(buffer[1], sizePtr[0]);
@@ -90,7 +79,6 @@ TEST(lobbyServerProtocolTest, testSerializeGamesList) {
     ASSERT_EQ(buffer[3], sizePtr[2]);
     ASSERT_EQ(buffer[4], sizePtr[3]);
 
-    // Verificación del primer juego
     int32_t expectedGameId1 = htonl(1);
     const unsigned char* p1 = reinterpret_cast<const unsigned char*>(&expectedGameId1);
     ASSERT_EQ(buffer[5], p1[0]);

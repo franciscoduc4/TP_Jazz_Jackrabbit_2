@@ -1,5 +1,6 @@
 #include "entity.h"
 
+
 Entity::Entity(Vector<int16_t> pos, int16_t id, int16_t health, Direction dir):
         pos(pos), id(id), health(health), initialHealth(health), dir(dir), isDead(false) {}
 
