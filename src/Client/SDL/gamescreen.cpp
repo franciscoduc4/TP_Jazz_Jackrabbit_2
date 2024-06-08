@@ -280,7 +280,7 @@ void GameScreen::run() {
 
 
 
-       	this->pj.draw_players(window, renderer, pjs_textures, players, 6, x_screen, y_screen);
+       	this->pj.draw_players(window, renderer, pjs_textures, players, x_screen, y_screen);
         
         
         std::vector<EnemyDTO> enemiesSnapshot = snapshot->getEnemies();

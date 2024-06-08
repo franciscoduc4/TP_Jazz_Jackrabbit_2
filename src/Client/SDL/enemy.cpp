@@ -11,9 +11,18 @@ enum actions { Walk, Attack, Death };
 
 /*Solo que caminen*/
 
+/*
+ENEMY_IDLE,              
+ENEMY_JUMPING,           
+ENEMY_FLYING,            
+ENEMY_RECEIVING_DAMAGE,  
+ENEMY_DEAD,              
+ENEMY_RESPAWNING         
+*/
+
 Enemy::Enemy() {
-    this->count = 0;
     this->flip = 0;
+    this->init = false;
 
 	//WALKING ENEMY
     this->enemies_path[EnemyType::WALKING_ENEMY] = "../assets/Enemies/TurtleEnemies.png";
@@ -21,37 +30,37 @@ Enemy::Enemy() {
 	std::vector<int> walking_enemy_w_h{50, 50};
 	this->width_height[EnemyType::WALKING_ENEMY] = walking_enemy_w_h;
 	
-    this->sprites[EnemyType::WALKING_ENEMY][Walk].push_back(RectangularSprite(12, 56, 67, 56));
-    this->sprites[EnemyType::WALKING_ENEMY][Walk].push_back(RectangularSprite(80, 56, 69, 56));
-    this->sprites[EnemyType::WALKING_ENEMY][Walk].push_back(RectangularSprite(150, 56, 68, 56));
-    this->sprites[EnemyType::WALKING_ENEMY][Walk].push_back(RectangularSprite(220, 56, 66, 56));
-    this->sprites[EnemyType::WALKING_ENEMY][Walk].push_back(RectangularSprite(290, 56, 68, 56));
-    this->sprites[EnemyType::WALKING_ENEMY][Walk].push_back(RectangularSprite(360, 56, 61, 56));
-    this->sprites[EnemyType::WALKING_ENEMY][Walk].push_back(RectangularSprite(422, 56, 65, 56));
-    this->sprites[EnemyType::WALKING_ENEMY][Walk].push_back(RectangularSprite(487, 56, 65, 56));
-    this->sprites[EnemyType::WALKING_ENEMY][Walk].push_back(RectangularSprite(555, 56, 61, 56));
-    this->sprites[EnemyType::WALKING_ENEMY][Walk].push_back(RectangularSprite(616, 56, 63, 56));
-    this->sprites[EnemyType::WALKING_ENEMY][Walk].push_back(RectangularSprite(680, 56, 66, 56));
-    this->sprites[EnemyType::WALKING_ENEMY][Walk].push_back(RectangularSprite(746, 56, 68, 56));
+    this->sprites[EnemyType::WALKING_ENEMY][EnemyStateEntity::ENEMY_WALKING].push_back(RectangularSprite(12, 56, 67, 56));
+    this->sprites[EnemyType::WALKING_ENEMY][EnemyStateEntity::ENEMY_WALKING].push_back(RectangularSprite(80, 56, 69, 56));
+    this->sprites[EnemyType::WALKING_ENEMY][EnemyStateEntity::ENEMY_WALKING].push_back(RectangularSprite(150, 56, 68, 56));
+    this->sprites[EnemyType::WALKING_ENEMY][EnemyStateEntity::ENEMY_WALKING].push_back(RectangularSprite(220, 56, 66, 56));
+    this->sprites[EnemyType::WALKING_ENEMY][EnemyStateEntity::ENEMY_WALKING].push_back(RectangularSprite(290, 56, 68, 56));
+    this->sprites[EnemyType::WALKING_ENEMY][EnemyStateEntity::ENEMY_WALKING].push_back(RectangularSprite(360, 56, 61, 56));
+    this->sprites[EnemyType::WALKING_ENEMY][EnemyStateEntity::ENEMY_WALKING].push_back(RectangularSprite(422, 56, 65, 56));
+    this->sprites[EnemyType::WALKING_ENEMY][EnemyStateEntity::ENEMY_WALKING].push_back(RectangularSprite(487, 56, 65, 56));
+    this->sprites[EnemyType::WALKING_ENEMY][EnemyStateEntity::ENEMY_WALKING].push_back(RectangularSprite(555, 56, 61, 56));
+    this->sprites[EnemyType::WALKING_ENEMY][EnemyStateEntity::ENEMY_WALKING].push_back(RectangularSprite(616, 56, 63, 56));
+    this->sprites[EnemyType::WALKING_ENEMY][EnemyStateEntity::ENEMY_WALKING].push_back(RectangularSprite(680, 56, 66, 56));
+    this->sprites[EnemyType::WALKING_ENEMY][EnemyStateEntity::ENEMY_WALKING].push_back(RectangularSprite(746, 56, 68, 56));
 
-    this->sprites[EnemyType::WALKING_ENEMY][Attack].push_back(RectangularSprite(5, 120, 58, 50));
-    this->sprites[EnemyType::WALKING_ENEMY][Attack].push_back(RectangularSprite(63, 120, 60, 50));
-    this->sprites[EnemyType::WALKING_ENEMY][Attack].push_back(RectangularSprite(123, 120, 60, 50));
-    this->sprites[EnemyType::WALKING_ENEMY][Attack].push_back(RectangularSprite(183, 120, 77, 50));
-    this->sprites[EnemyType::WALKING_ENEMY][Attack].push_back(RectangularSprite(260, 120, 95, 50));
-    this->sprites[EnemyType::WALKING_ENEMY][Attack].push_back(RectangularSprite(357, 120, 99, 50));
-    this->sprites[EnemyType::WALKING_ENEMY][Attack].push_back(RectangularSprite(458, 120, 114, 50));
-    this->sprites[EnemyType::WALKING_ENEMY][Attack].push_back(RectangularSprite(572, 120, 120, 50));
-    this->sprites[EnemyType::WALKING_ENEMY][Attack].push_back(RectangularSprite(692, 120, 114, 50));
-    this->sprites[EnemyType::WALKING_ENEMY][Attack].push_back(RectangularSprite(809, 120, 84, 50));
-    this->sprites[EnemyType::WALKING_ENEMY][Attack].push_back(RectangularSprite(893, 120, 60, 50));
+    this->sprites[EnemyType::WALKING_ENEMY][EnemyStateEntity::ENEMY_ATTACKING].push_back(RectangularSprite(5, 120, 58, 50));
+    this->sprites[EnemyType::WALKING_ENEMY][EnemyStateEntity::ENEMY_ATTACKING].push_back(RectangularSprite(63, 120, 60, 50));
+    this->sprites[EnemyType::WALKING_ENEMY][EnemyStateEntity::ENEMY_ATTACKING].push_back(RectangularSprite(123, 120, 60, 50));
+    this->sprites[EnemyType::WALKING_ENEMY][EnemyStateEntity::ENEMY_ATTACKING].push_back(RectangularSprite(183, 120, 77, 50));
+    this->sprites[EnemyType::WALKING_ENEMY][EnemyStateEntity::ENEMY_ATTACKING].push_back(RectangularSprite(260, 120, 95, 50));
+    this->sprites[EnemyType::WALKING_ENEMY][EnemyStateEntity::ENEMY_ATTACKING].push_back(RectangularSprite(357, 120, 99, 50));
+    this->sprites[EnemyType::WALKING_ENEMY][EnemyStateEntity::ENEMY_ATTACKING].push_back(RectangularSprite(458, 120, 114, 50));
+    this->sprites[EnemyType::WALKING_ENEMY][EnemyStateEntity::ENEMY_ATTACKING].push_back(RectangularSprite(572, 120, 120, 50));
+    this->sprites[EnemyType::WALKING_ENEMY][EnemyStateEntity::ENEMY_ATTACKING].push_back(RectangularSprite(692, 120, 114, 50));
+    this->sprites[EnemyType::WALKING_ENEMY][EnemyStateEntity::ENEMY_ATTACKING].push_back(RectangularSprite(809, 120, 84, 50));
+    this->sprites[EnemyType::WALKING_ENEMY][EnemyStateEntity::ENEMY_ATTACKING].push_back(RectangularSprite(893, 120, 60, 50));
 
-    this->sprites[EnemyType::WALKING_ENEMY][Death].push_back(RectangularSprite(384, 9, 75, 42));
-    this->sprites[EnemyType::WALKING_ENEMY][Death].push_back(RectangularSprite(460, 9, 70, 42));
-    this->sprites[EnemyType::WALKING_ENEMY][Death].push_back(RectangularSprite(530, 9, 62, 42));
-    this->sprites[EnemyType::WALKING_ENEMY][Death].push_back(RectangularSprite(592, 9, 52, 42));
-    this->sprites[EnemyType::WALKING_ENEMY][Death].push_back(RectangularSprite(644, 9, 47, 42));
-    this->sprites[EnemyType::WALKING_ENEMY][Death].push_back(RectangularSprite(691, 9, 42, 42));
+    this->sprites[EnemyType::WALKING_ENEMY][EnemyStateEntity::ENEMY_DEAD].push_back(RectangularSprite(384, 9, 75, 42));
+    this->sprites[EnemyType::WALKING_ENEMY][EnemyStateEntity::ENEMY_DEAD].push_back(RectangularSprite(460, 9, 70, 42));
+    this->sprites[EnemyType::WALKING_ENEMY][EnemyStateEntity::ENEMY_DEAD].push_back(RectangularSprite(530, 9, 62, 42));
+    this->sprites[EnemyType::WALKING_ENEMY][EnemyStateEntity::ENEMY_DEAD].push_back(RectangularSprite(592, 9, 52, 42));
+    this->sprites[EnemyType::WALKING_ENEMY][EnemyStateEntity::ENEMY_DEAD].push_back(RectangularSprite(644, 9, 47, 42));
+    this->sprites[EnemyType::WALKING_ENEMY][EnemyStateEntity::ENEMY_DEAD].push_back(RectangularSprite(691, 9, 42, 42));
 
 	/*
     this->path = "../assets/Enemies/Schwartzenguard.png";
@@ -90,14 +99,14 @@ Enemy::Enemy() {
     this->sprites[Attack].push_back(RectangularSprite(95, 221, 61, 48));
 
 
-    this->sprites[Death].push_back(RectangularSprite(384, 207, 41, 61));
-    this->sprites[Death].push_back(RectangularSprite(426, 207, 44, 61));
-    this->sprites[Death].push_back(RectangularSprite(470, 207, 61, 61));
-    this->sprites[Death].push_back(RectangularSprite(531, 207, 56, 61));
-    this->sprites[Death].push_back(RectangularSprite(531, 207, 56, 61));
-    this->sprites[Death].push_back(RectangularSprite(531, 207, 56, 61));
-    this->sprites[Death].push_back(RectangularSprite(531, 207, 56, 61));
-    this->sprites[Death].push_back(RectangularSprite(531, 207, 56, 61));
+    this->sprites[Dead].push_back(RectangularSprite(384, 207, 41, 61));
+    this->sprites[Dead].push_back(RectangularSprite(426, 207, 44, 61));
+    this->sprites[Dead].push_back(RectangularSprite(470, 207, 61, 61));
+    this->sprites[Dead].push_back(RectangularSprite(531, 207, 56, 61));
+    this->sprites[Dead].push_back(RectangularSprite(531, 207, 56, 61));
+    this->sprites[Dead].push_back(RectangularSprite(531, 207, 56, 61));
+    this->sprites[Dead].push_back(RectangularSprite(531, 207, 56, 61));
+    this->sprites[Dead].push_back(RectangularSprite(531, 207, 56, 61));
 	*/
 
 	/*
@@ -127,29 +136,34 @@ Enemy::Enemy() {
     this->sprites[Attack].push_back(RectangularSprite(614, 75, 70, 78));
     this->sprites[Attack].push_back(RectangularSprite(695, 75, 46, 78));
 
-    this->sprites[Death].push_back(RectangularSprite(917, 10, 33, 63));
-    this->sprites[Death].push_back(RectangularSprite(953, 10, 36, 63));
-    this->sprites[Death].push_back(RectangularSprite(990, 10, 35, 63));
-    this->sprites[Death].push_back(RectangularSprite(1030, 10, 35, 63));
-    this->sprites[Death].push_back(RectangularSprite(1030, 10, 35, 63));
-    this->sprites[Death].push_back(RectangularSprite(1030, 10, 35, 63));
-    this->sprites[Death].push_back(RectangularSprite(1030, 10, 35, 63));
-    this->sprites[Death].push_back(RectangularSprite(1030, 10, 35, 63));
+    this->sprites[Dead].push_back(RectangularSprite(917, 10, 33, 63));
+    this->sprites[Dead].push_back(RectangularSprite(953, 10, 36, 63));
+    this->sprites[Dead].push_back(RectangularSprite(990, 10, 35, 63));
+    this->sprites[Dead].push_back(RectangularSprite(1030, 10, 35, 63));
+    this->sprites[Dead].push_back(RectangularSprite(1030, 10, 35, 63));
+    this->sprites[Dead].push_back(RectangularSprite(1030, 10, 35, 63));
+    this->sprites[Dead].push_back(RectangularSprite(1030, 10, 35, 63));
+    this->sprites[Dead].push_back(RectangularSprite(1030, 10, 35, 63));
 	*/
 }
 
 std::string Enemy::getPath(EnemyType enemy_type) { return this->enemies_path[enemy_type]; }
 
 
-std::list<RectangularSprite>::iterator Enemy::enemy_img_coords(EnemyType enemy_type, int mov_type, int num_mov) {
+std::list<RectangularSprite>::iterator Enemy::enemy_img_coords(EnemyType enemy_type, EnemyStateEntity mov_type, int enemyId) {
+    if (mov_type != last_move[enemyId]) {
+        this->counts[enemyId][mov_type] = 0;
+		this->last_move[enemyId] = mov_type;
+    }
+
     std::list<RectangularSprite>::iterator it = this->sprites[enemy_type][mov_type].begin();
-    for (int i = 0; i != num_mov; i++) {
+    for (int i = 0; i != this->counts[enemyId][mov_type]; i++) {
         ++it;
         if (it == this->sprites[enemy_type][mov_type].end()) {
             it = this->sprites[enemy_type][mov_type].begin();
         }
     }
-    this->count++;
+    this->counts[enemyId][mov_type]++;
     return it;
 }
 
@@ -163,7 +177,15 @@ void Enemy::draw_enemy(SDL2pp::Window& window, SDL2pp::Renderer& renderer, SDL2p
     int distance_main_enemy_x;
     int distance_main_enemy_y;
     for (auto e : enemies) {
-    	std::list<RectangularSprite>::iterator it = enemy_img_coords(e.getType(), mov_type, this->count);
+        EnemyStateEntity mov_type = e.getState();
+		int enemyId = e.getEnemyId();
+        if (!this->init) {
+            this->last_move[enemyId] = mov_type;
+			this->counts[enemyId][EnemyStateEntity::ENEMY_WALKING] = 0;
+			this->counts[enemyId][EnemyStateEntity::ENEMY_ATTACKING] = 0;
+			this->counts[enemyId][EnemyStateEntity::ENEMY_DEAD] = 0;
+		}	
+    	std::list<RectangularSprite>::iterator it = enemy_img_coords(e.getType(), mov_type, enemyId);
         x = e.getX();
 		y = e.getY();
 		
@@ -180,4 +202,5 @@ void Enemy::draw_enemy(SDL2pp::Window& window, SDL2pp::Renderer& renderer, SDL2p
                   SDL2pp::NullOpt, this->flip);
 
     }
+    this->init = true;
 }
