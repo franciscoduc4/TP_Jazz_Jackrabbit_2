@@ -88,7 +88,8 @@ void Character::moveDown(float time) {
 }
 
 void Character::becomeIntoxicated(float duration) {
-    // Intoxicated logic here
+    isIntoxicated = true;
+    intoxicatedTime = duration;
 }
 
 void Character::die(float respawnTime) {
@@ -99,8 +100,8 @@ void Character::die(float respawnTime) {
     }
 }
 
-void Character::heal(uint16_t amount) {
-    // Healing logic here
+void Character::heal(int32_t healQnt) {
+    Entity::heal(healQnt);
 }
 
 void Character::revive(float time) {
@@ -143,6 +144,10 @@ void Character::switchWeapon(WeaponType type) {
             currentWeapon = std::make_unique<Blaster>();
             return;
     }
+}
+
+WeaponType Character::getCurrentWeaponType() {
+    return currentWeapon->getWeaponType();
 }
 
 

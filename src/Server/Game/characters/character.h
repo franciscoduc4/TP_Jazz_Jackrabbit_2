@@ -92,7 +92,11 @@ public:
     bool characIsIntoxicated() const;
     float getIntoxicatedTime() const;
 
+    WeaponType getCurrentWeaponType();
+
     CharacterType getCharacterType();
+
+    void heal(int32_t healQnt);
 };
 
 #endif  // PLAYER_CHARACTER_H

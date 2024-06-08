@@ -70,9 +70,17 @@ void GameMap::addEntityToMap(std::shared_ptr<Entity> entity, Vector<int16_t> pos
 }
 
 std::shared_ptr<Character> GameMap::addCharacter(int32_t playerId, CharacterType type,
-                                                 std::optional<Vector<int16_t>> position) {
+                                                 std::optional<Vector<int16_t>> position = std::nullopt) {
     Vector<int16_t> initPosition = position ? *position : getAvailablePosition();
+    if (!isValidPosition(initPosition)) {
+        return nullptr;
+    }
+
     auto character = entityFactory.createCharacter(entityCount, type, initPosition);
+    if (!character) {
+        return nullptr;
+    }
+
     characters[playerId] = character;
     addEntityToMap(character, initPosition);
     entityCount++;

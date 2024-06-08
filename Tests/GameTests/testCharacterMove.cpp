@@ -86,3 +86,143 @@ TEST(testCharacterMove, testCharacterAtTheEdgeDoesNotMove) {
     ASSERT_EQ(entityAtOldPos, character);
     ASSERT_EQ(gameMap.isFreePosition(mapPosition), false);
 }
+
+// TEST(testCharacterMove, testCharacterSpawnsOutOfBounds) {
+//     GameMap gameMap({10, 10});
+//     int16_t characterId = 1;
+//     Vector<int16_t> characterPos = {15, 15};  // Fuera de los límites del mapa
+//     auto character = gameMap.addCharacter(characterId, CharacterType::JAZZ, characterPos);
+
+//     ASSERT_EQ(character, nullptr);
+// }
+
+
+// TEST(testCharacterMove, testCharacterMovesOutOfBounds) {
+//     GameMap gameMap({10, 10});
+//     int16_t characterId = 1;
+//     Vector<int16_t> characterPos = {9, 5};
+//     auto character = gameMap.addCharacter(characterId, CharacterType::JAZZ, characterPos);
+
+//     for (int i = 0; i < MOVEMENTS_PER_CELL; i++) {
+//         character->moveRight();
+//     }
+
+//     auto characterAtNewPos = gameMap.getCharacter(characterId);
+//     ASSERT_EQ(characterAtNewPos->getPosition(), Vector<int16_t>({9, 5}));  
+// }
+
+
+TEST(testCharacterMove, testCharacterReceivesDamage) {
+    GameMap gameMap({10, 10});
+    int16_t characterId = 1;
+    Vector<int16_t> characterPos = {5, 5};
+    auto character = gameMap.addCharacter(characterId, CharacterType::JAZZ, characterPos);
+    int initialHealth = character->getHealth();
+
+    character->recvDamage(10, 1.0f);
+
+    ASSERT_EQ(character->getHealth(), initialHealth - 10);
+}
+
+
+TEST(testCharacterMove, testCharacterHeals) {
+    GameMap gameMap({10, 10});
+    int16_t characterId = 1;
+    Vector<int16_t> characterPos = {5, 5};
+    auto character = gameMap.addCharacter(characterId, CharacterType::JAZZ, characterPos);
+
+    character->recvDamage(10, 1.0f);
+    int healthAfterDamage = character->getHealth();
+
+    character->heal(5);
+
+    ASSERT_EQ(character->getHealth(), healthAfterDamage + 5);
+}
+
+
+
+TEST(testCharacterMove, testCharacterIntoxicated) {
+    GameMap gameMap({10, 10});
+    int16_t characterId = 1;
+    Vector<int16_t> characterPos = {5, 5};
+    auto character = gameMap.addCharacter(characterId, CharacterType::JAZZ, characterPos);
+
+    character->becomeIntoxicated(5.0f);
+
+    ASSERT_EQ(character->characIsIntoxicated(), true);
+    ASSERT_FLOAT_EQ(character->getIntoxicatedTime(), 5.0f);
+}
+
+
+
+TEST(testCharacterMove, testCharacterDiesAndRevives) {
+    GameMap gameMap({10, 10});
+    int16_t characterId = 1;
+    Vector<int16_t> characterPos = {5, 5};
+    auto character = gameMap.addCharacter(characterId, CharacterType::JAZZ, characterPos);
+    int initialHealth = character->getHealth();
+
+    character->recvDamage(initialHealth, 1.0f);  // Lethal damage
+    ASSERT_EQ(character->getIsDead(), true);
+
+    character->revive(5.0f);
+    ASSERT_EQ(character->getIsDead(), false);
+    ASSERT_EQ(character->getHealth(), initialHealth);
+}
+
+TEST(testCharacterMove, testCharacterSwitchWeapon) {
+    GameMap gameMap({10, 10});
+    int16_t characterId = 1;
+    Vector<int16_t> characterPos = {5, 5};
+    auto character = gameMap.addCharacter(characterId, CharacterType::JAZZ, characterPos);
+
+    character->switchWeapon(WeaponType::BOUNCER);
+    // Assuming the Character class has a method to get the current weapon type.
+    ASSERT_EQ(character->getCurrentWeaponType(), WeaponType::BOUNCER);
+    character->switchWeapon(WeaponType::BLASTER);
+    ASSERT_EQ(character->getCurrentWeaponType(), WeaponType::BLASTER);
+    character->switchWeapon(WeaponType::FREEZER);
+    ASSERT_EQ(character->getCurrentWeaponType(), WeaponType::FREEZER);
+    character->switchWeapon(WeaponType::RFMISSILE);
+    ASSERT_EQ(character->getCurrentWeaponType(), WeaponType::RFMISSILE);
+}
+
+// TEST(testCharacterMove, testCharacterSpecialAttack) {
+//     GameMap gameMap({10, 10});
+//     int16_t characterId = 1;
+//     Vector<int16_t> characterPos = {5, 5};
+//     auto character = gameMap.addCharacter(characterId, CharacterType::JAZZ, characterPos);
+
+//     character->specialAttack(1.0f);
+//     // Assuming the Character class has a way to check if the special attack was executed.
+//     ASSERT_EQ(character->didSpecialAttack(), true);
+// }
+
+// TEST(testCharacterMove, testCharacterCannotMoveWhileIntoxicated) {
+//     GameMap gameMap({10, 10});
+//     int16_t characterId = 1;
+//     Vector<int16_t> characterPos = {5, 5};
+//     auto character = gameMap.addCharacter(characterId, CharacterType::JAZZ, characterPos);
+
+//     character->becomeIntoxicated(5.0f);
+//     Vector<int16_t> mapPosition = character->getMapPosition(MOVEMENTS_PER_CELL);
+//     for (int i = 0; i < MOVEMENTS_PER_CELL; i++) {
+//         character->moveRight();
+//     }
+
+//     ASSERT_EQ(character->getPosition(), Vector<int16_t>({5, 5}));
+// }
+
+TEST(testCharacterMove, testCharacterReceivesContinuousDamage) {
+    GameMap gameMap({10, 10});
+    int16_t characterId = 1;
+    Vector<int16_t> characterPos = {5, 5};
+    auto character = gameMap.addCharacter(characterId, CharacterType::JAZZ, characterPos);
+    int initialHealth = character->getHealth();
+
+    for (int i = 0; i < 5; i++) {
+        character->recvDamage(2, 1.0f);  // Continuous damage
+    }
+
+    ASSERT_EQ(character->getHealth(), initialHealth - 10);
+}
