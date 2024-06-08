@@ -27,7 +27,6 @@ void CreateGame::on_btnCreate_clicked() {
     }
     this->msg.setGameName(gameName.toStdString());
     this->msg.setMaxPlayers(numPlayers);
-    this->msg.setWaitTime(waitTime);
 
     CharacterSelection* cs =
             new CharacterSelection(this, this->client, this->msg, this->clientJoinedGame);
@@ -39,7 +38,6 @@ void CreateGame::on_btnCreate_clicked() {
 void CreateGame::on_btnBack_clicked() {
     this->msg.setGameName("");
     this->msg.setMaxPlayers(0);
-    this->msg.setWaitTime(0);
 
     this->hide();
 

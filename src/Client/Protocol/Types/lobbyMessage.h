@@ -3,6 +3,7 @@
 
 #include <sstream>
 #include <string>
+#include <utility>
 
 #include "../../../Common/Types/character.h"
 #include "../../../Common/Types/episode.h"
@@ -11,86 +12,76 @@
 struct LobbyMessage {
     std::string playerName;
     Command cmd;
-    int maxPlayers;
+    int8_t maxPlayers;
     std::string gameName;
-    int waitTime;
+    int32_t gameId;
     CharacterType character;
     Episode episode;
-    int playerId;
 
     LobbyMessage():
             playerName(""),
-            // cmd(Command::INVALID_CMD),
             cmd(Command::IDLE),
             maxPlayers(0),
             gameName(""),
-            waitTime(0),
+            gameId(-1),
             character(CharacterType::INVALID),
-            episode(Episode::INVALID),
-            playerId(-1) {}
+            episode(Episode::INVALID) {}
 
-    LobbyMessage(const std::string& playerName,
+    LobbyMessage(std::string  playerName,
                  const Command& cmd,
-                 const int& maxPlayers, const std::string& gameName, const int& waitTime,
-                 const CharacterType& character, const Episode& episode, const int& playerId):
-            playerName(playerName),
+                 const int8_t& maxPlayers, std::string  gameName, const int32_t& gameId,
+                 const CharacterType& character, const Episode& episode):
+            playerName(std::move(playerName)),
             cmd(cmd),
             maxPlayers(maxPlayers),
-            gameName(gameName),
-            waitTime(waitTime),
+            gameName(std::move(gameName)),
+            gameId(gameId),
             character(character),
-            episode(episode),
-            playerId(playerId) {}
+            episode(episode) {}
 
     void setPlayerName(const std::string& name) { playerName = name; }
 
-    std::string getPlayerName() { return playerName; }
-
-    void setLobbyCmd(Command cmd) {
-        this->cmd = cmd;
+    void setLobbyCmd(const Command& command) {
+        cmd = command;
     }
 
-    void setMaxPlayers(int players) { maxPlayers = players; }
+    void setMaxPlayers(const int8_t& players) { maxPlayers = players; }
 
     void setGameName(const std::string& name) { gameName = name; }
 
-    void setWaitTime(int time) { waitTime = time; }
+    void setGameId(const int32_t& id) { gameId = id; }
 
     void setCharacter(CharacterType selectedCharacter) { character = selectedCharacter; }
 
     void setEpisode(Episode ep) { episode = ep; }
 
-    bool isCreateGame() {
-        return cmd == Command::CREATE_GAME;
-    }
+    std::string getPlayerName() const { return playerName; }
 
-    bool isJoinGame() {
-        return cmd == Command::JOIN_GAME;
-    }
+    Command getLobbyCmd() const { return cmd; }
 
-    std::string toString() {
-        std::stringstream ss;
-        ss << playerName
-           // << static_cast<int>(lobbyCmd)
-           << maxPlayers << gameName << waitTime << static_cast<int>(character)
-           << static_cast<int>(episode);
-        return ss.str();
-    }
+    int8_t getMaxPlayers() const { return maxPlayers; }
 
-    LobbyMessage& build(const std::string& playerName,
-                        // LobbyCommands lobbyCmd,
-                        int maxPlayers, const std::string& gameName, int waitTime,
-                        CharacterType character, Episode episode, int playerId) {
-        this->playerName = playerName;
-        // this->lobbyCmd = lobbyCmd;
-        this->maxPlayers = maxPlayers;
-        this->gameName = gameName;
-        this->waitTime = waitTime;
-        this->character = character;
-        this->episode = episode;
-        this->playerId = playerId;
+    std::string getGameName() const { return gameName; }
+
+    int32_t getGameId() const { return gameId; }
+
+    CharacterType getCharacter() const { return character; }
+
+    Episode getEpisode() const { return episode; }
+
+    LobbyMessage& build(const std::string& namePlayer,
+                        Command lobbyCmd,
+                        int8_t maxPlayerNumber, const std::string& nameGame, int32_t idGame,
+                        CharacterType characterType, Episode ep) {
+        this->playerName = namePlayer;
+        this->cmd = lobbyCmd;
+        this->maxPlayers = maxPlayerNumber;
+        this->gameName = nameGame;
+        this->gameId = idGame;
+        this->character = characterType;
+        this->episode = ep;
         return *this;
     }
 };
 
-#endif  // CLIENT_LOBBYMESSAGE_H
+#endif  // LOBBY_MESSAGE_H

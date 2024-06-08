@@ -36,8 +36,6 @@ std::unique_ptr<CreateGameDTO> Deserializer::deserializeCreateGame(bool& wasClos
                                                                    int32_t& playerId) {
     Episode episodeName;
     socket->recvall(&episodeName, 1, &wasClosed);
-    GameMode gameMode;
-    socket->recvall(&gameMode, 1, &wasClosed);
     uint8_t maxPlayers;
     socket->recvall(&maxPlayers, 1, &wasClosed);
     CharacterType characterType;
@@ -48,7 +46,7 @@ std::unique_ptr<CreateGameDTO> Deserializer::deserializeCreateGame(bool& wasClos
     socket->recvall(nameBuffer.data(), lengthName, &wasClosed);
     uint32_t gameId;
     socket->recvall(&gameId, 4, &wasClosed);
-    return std::make_unique<CreateGameDTO>(playerId, episodeName, gameMode, maxPlayers,
+    return std::make_unique<CreateGameDTO>(playerId, episodeName, maxPlayers,
                                            characterType,
                                            std::string(nameBuffer.begin(), nameBuffer.end()), gameId);
 }
