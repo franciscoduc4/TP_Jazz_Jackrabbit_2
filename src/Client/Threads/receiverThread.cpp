@@ -1,4 +1,5 @@
 #include "./receiverThread.h"
+#include "../../Common/Types/command.h"
 
 ReceiverThread::ReceiverThread(Deserializer& deserializer, std::shared_ptr<Socket>& socket, std::atomic<bool>& was_closed) :
         deserializer(deserializer),
@@ -9,11 +10,13 @@ ReceiverThread::ReceiverThread(Deserializer& deserializer, std::shared_ptr<Socke
 void ReceiverThread::run() {
     while (!this->was_closed.load() && _keep_running) {
         try {
-            uint8_t dtoSize;
-            socket->recvall(&dtoSize, sizeof(uint8_t), &closed);
-            std::unique_ptr<DTO> msgDto;
-            socket->recvall(&msgDto, dtoSize, &closed);
-            deserializer.deserialize_msg(msgDto);
+            Command cmd;
+            socket->recvall(&cmd, sizeof(char), &closed);
+            uint8_t bufferSize;
+            socket->recvall(&bufferSize, sizeof(uint8_t), &closed);
+            std::vector<char> buffer(bufferSize);
+            socket->recvall(&buffer[0], bufferSize, &closed);
+            deserializer.deserialize_msg(cmd, buffer);
 
 
         } catch (const std::exception& e) {

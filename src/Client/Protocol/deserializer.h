@@ -2,13 +2,13 @@
 #define DESERIALIZER_H
 
 #include <cstdint>
-#include <map>
 #include <memory>
 #include <vector>
 
 #include "../../Common/DTO/dto.h"
 #include "../../Common/queue.h"
 #include "../../Common/socket.h"
+#include "../../Common/Types/command.h"
 
 
 class Deserializer {
@@ -18,7 +18,9 @@ private:
 public:
     Deserializer(std::shared_ptr<Queue<std::unique_ptr<DTO>>>& queue);
 
-    void deserialize_msg(std::unique_ptr<DTO>& dto);
+    void deserialize_msg(Command cmd, std::vector<char>& buffer);
+
+    void receiveSnapshot(std::vector<char>& buffer);
 };
 
 #endif
