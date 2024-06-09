@@ -5,10 +5,10 @@
 #include "characterselection.h"
 #include "ui_creategame.h"
 
-CreateGame::CreateGame(QWidget* parent, Client& client, LobbyMessage& msg, bool& clientJoinedGame):
+CreateGame::CreateGame(QWidget* parent, LobbyController& controller, LobbyMessage& msg, bool& clientJoinedGame):
         QDialog(parent),
         ui(new Ui::CreateGame),
-        client(client),
+        controller(controller),
         msg(msg),
         clientJoinedGame(clientJoinedGame) {
     ui->setupUi(this);
@@ -28,9 +28,8 @@ void CreateGame::on_btnCreate_clicked() {
     this->msg.setGameName(gameName.toStdString());
     this->msg.setMaxPlayers(numPlayers);
 
-    CharacterSelection* cs =
-            new CharacterSelection(this, this->client, this->msg, this->clientJoinedGame);
-    cs->show();
+    CharacterSelection cs(this, this->controller, this->msg, this->clientJoinedGame);
+    cs.show();
     this->close();
 }
 

@@ -6,11 +6,12 @@
 #include "creategame.h"
 #include "ui_sceneselection.h"
 
-SceneSelection::SceneSelection(QWidget* parent, Client& client, LobbyMessage& msg,
+SceneSelection::SceneSelection(QWidget* parent, LobbyController& controller, LobbyMessage& msg,
                                bool& clientJoinedGame):
         QDialog(parent),
         ui(new Ui::SceneSelection),
-        client(client),
+        controller(controller),
+        controller(controller),
         msg(msg),
         clientJoinedGame(clientJoinedGame),
         sceneSpritesWidget(new SceneSpritesWidget(nullptr, ClientConfig::getEpisodesColourKey())) {
@@ -25,8 +26,8 @@ void SceneSelection::on_btnChoose_clicked() {
     size_t selection = sceneSpritesWidget->getCurrentSpriteIndex();
     Episode episode = static_cast<Episode>(selection + 1);
     this->msg.setEpisode(episode);
-    CreateGame* cg = new CreateGame(this, this->client, this->msg, this->clientJoinedGame);
-    cg->show();
+    CreateGame cg(this, this->controller, this->msg, this->clientJoinedGame);
+    cg.show();
     this->close();
 }
 

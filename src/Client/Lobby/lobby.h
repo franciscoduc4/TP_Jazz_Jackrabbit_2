@@ -15,7 +15,7 @@ class Lobby : public QDialog
     Q_OBJECT
 
 public:
-    explicit Lobby(QWidget *parent, Client& client, LobbyMessage& msg, bool& clientJoinedGame);
+    explicit Lobby(QWidget *parent, LobbyController& controller, LobbyMessage& msg, bool& clientJoinedGame);
     ~Lobby();
 
 private slots:
@@ -27,7 +27,7 @@ private slots:
 
 private:
     Ui::Lobby *ui;
-    Client& client;
+    LobbyController& controller;
     LobbyMessage& msg;
     bool& clientJoinedGame;
 };

@@ -7,11 +7,11 @@
 #include "ui_characterselection.h"
 #include "waitingroom.h"
 
-CharacterSelection::CharacterSelection(QWidget* parent, Client& client, LobbyMessage& msg,
+CharacterSelection::CharacterSelection(QWidget* parent, LobbyController& controller, LobbyMessage& msg,
                                        bool& clientJoinedGame):
         QDialog(parent),
         ui(new Ui::CharacterSelection),
-        client(client),
+        controller(controller),
         msg(msg),
         clientJoinedGame(clientJoinedGame),
         characterSelectionWidget(
@@ -28,11 +28,11 @@ void CharacterSelection::on_btnChoose_clicked() {
     this->msg.setCharacter(characterSelectionWidget->getCurrentCharacter());
     this->client.sendCharacterSelection(this->msg);
     if (this->msg.isCreateGame()) {
-        WaitingRoom* wr = new WaitingRoom(this, this->client, this->msg, this->clientJoinedGame);
+        WaitingRoom* wr = new WaitingRoom(this, this->controller, this->msg, this->clientJoinedGame);
         wr->show();
         this->close();
     } else if (this->msg.isJoinGame()) {
-        GameList* gl = new GameList(this, this->client, this->msg, this->clientJoinedGame);
+        GameList* gl = new GameList(this, this->controller, this->msg, this->clientJoinedGame);
         gl->show();
         this->close();
     } else {

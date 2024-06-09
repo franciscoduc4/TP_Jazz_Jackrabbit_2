@@ -15,7 +15,7 @@ class GameList: public QDialog {
 
 
 public:
-    explicit GameList(QWidget* parent, Client& client, LobbyMessage& msg, bool& clientJoinedGame);
+    explicit GameList(QWidget* parent, LobbyController& controller, LobbyMessage& msg, bool& clientJoinedGame);
     ~GameList();
 
     void updateGameList();
@@ -30,7 +30,7 @@ private slots:
 
 private:
     Ui::GameList* ui;
-    Client& client;
+    LobbyController& controller;
     LobbyMessage& msg;
     bool& clientJoinedGame;
 };

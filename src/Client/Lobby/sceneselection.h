@@ -18,7 +18,7 @@ class SceneSelection: public QDialog {
 
 
 public:
-    explicit SceneSelection(QWidget* parent, Client& client, LobbyMessage& msg,
+    explicit SceneSelection(QWidget* parent, LobbyController& controller, LobbyMessage& msg,
                             bool& clientJoinedGame);
     ~SceneSelection();
 
@@ -29,7 +29,7 @@ private slots:
 
 private:
     Ui::SceneSelection* ui;
-    Client& client;
+    LobbyController& controller;
     LobbyMessage& msg;
     bool& clientJoinedGame;
     SceneSpritesWidget* sceneSpritesWidget;

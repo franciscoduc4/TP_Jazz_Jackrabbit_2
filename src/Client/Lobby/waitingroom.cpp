@@ -1,10 +1,10 @@
 #include "waitingroom.h"
 #include "ui_waitingroom.h"
 
-WaitingRoom::WaitingRoom(QWidget *parent, Client& client, LobbyMessage& msg, bool& clientJoinedGame) :
+WaitingRoom::WaitingRoom(QWidget *parent, LobbyController& controller, LobbyMessage& msg, bool& clientJoinedGame) :
     QDialog (parent),
     ui(new Ui::WaitingRoom),
-    client(client),
+    controller(controller),
     msg(msg),
     clientJoinedGame(clientJoinedGame)
 {

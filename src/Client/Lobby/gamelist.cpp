@@ -3,10 +3,10 @@
 #include "ui_gamelist.h"
 #include "waitingroom.h"
 
-GameList::GameList(QWidget* parent, Client& client, LobbyMessage& msg, bool& clientJoinedGame):
+GameList::GameList(QWidget* parent, LobbyController& controller, LobbyMessage& msg, bool& clientJoinedGame):
         QDialog(parent),
         ui(new Ui::GameList),
-        client(client),
+        controller(controller),
         msg(msg),
         clientJoinedGame(clientJoinedGame) {
     ui->setupUi(this);
@@ -32,7 +32,7 @@ void GameList::joinGame(const QString& gameName) {
     // this->msg.setGameName(gameName);
     // client.joinGame(this->msg);
 
-    // WaitingRoom* wr = new WaitingRoom(this, this->client, this->msg, this->clientJoinedGame);
+    // WaitingRoom* wr = new WaitingRoom(this, this->controller, this->msg, this->clientJoinedGame);
     // wr->show();
     // this->close();
 }
