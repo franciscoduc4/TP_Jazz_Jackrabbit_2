@@ -11,7 +11,6 @@ SceneSelection::SceneSelection(QWidget* parent, LobbyController& controller, Lob
         QDialog(parent),
         ui(new Ui::SceneSelection),
         controller(controller),
-        controller(controller),
         msg(msg),
         clientJoinedGame(clientJoinedGame),
         sceneSpritesWidget(new SceneSpritesWidget(nullptr, ClientConfig::getEpisodesColourKey())) {
