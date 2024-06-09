@@ -55,7 +55,11 @@ if(CLIENT)
 
     qt5_add_resources(RESOURCES ${PROJECT_SOURCE_DIR}/src/Client/resources.qrc)
 
-    add_executable(jazzclient ${CLIENT_SOURCES} ${UIS_HEADERS} ${RESOURCES})
+    add_executable(jazzclient ${CLIENT_SOURCES} ${UIS_HEADERS} ${RESOURCES}
+            Client/Controllers/LobbyController.h
+            Client/Controllers/LobbyController.cpp
+            Client/Controllers/GameController.cpp
+            Client/Controllers/GameController.h)
     target_link_libraries(jazzclient common Qt5::Widgets Qt5::Core SDL2 SDL2pp SDL2_image yaml-cpp fmt::fmt -pthread)
     target_include_directories(jazzclient PUBLIC ${PROJECT_SOURCE_DIR}/src/Common)
 

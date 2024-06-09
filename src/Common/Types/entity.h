@@ -10,7 +10,7 @@ enum CharacterStateEntity : char {
     INTOXICATED,     // El personaje está intoxicado
     TAKING_DAMAGE,   // El personaje está recibiendo daño
     DEAD,            // El personaje está muerto
-    REVIVING         // El personaje se está reanimando
+    RESPAWNING       // El personaje se está reanimando
 };
 
 enum EnemyStateEntity : char {

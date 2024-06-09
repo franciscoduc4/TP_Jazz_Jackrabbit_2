@@ -3,8 +3,8 @@
 
 #include <QDialog>
 
-#include "../client.h"
 #include "../Protocol/Types/lobbyMessage.h"
+#include "../client.h"
 
 namespace Ui {
 class Lobby;

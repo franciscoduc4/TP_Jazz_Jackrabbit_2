@@ -5,9 +5,9 @@
 #include <string>
 #include <utility>
 
-#include "../../../Common/Types/character.h"
-#include "../../../Common/Types/episode.h"
-#include "../../../Common/Types/command.h"
+#include "Types/character.h"
+#include "Types/command.h"
+#include "Types/episode.h"
 
 struct LobbyMessage {
     std::string playerName;

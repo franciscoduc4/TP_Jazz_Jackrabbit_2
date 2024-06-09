@@ -1,22 +1,19 @@
 #include "./client.h"
 
-
 Client::Client(char* ip, char* port):
         ip(ip),
         port(port),
         skt(std::make_shared<Socket>(ip, port)),
         was_closed(false),
         senderQueue(std::make_shared<Queue<std::unique_ptr<DTO>>>()),
-        playerCmdsQueue(std::make_shared<Queue<std::unique_ptr<DTO>>>()),
-        receiverQueue(std::make_shared<Queue<std::unique_ptr<DTO>>>()),
+        lobbyQueue(std::make_shared<Queue<std::unique_ptr<DTO>>>()),
+        gameQueue(std::make_shared<Queue<std::unique_ptr<DTO>>>()),
         sender(this->senderQueue, this->skt, this->was_closed),
         serializer(this->senderQueue),
-        // cmdReader(this->serializer, this->playerCmdsQueue),
         deserializer(this->receiverQueue),
         receiver(this->deserializer, this->skt, this->was_closed) {
     this->sender.start();
     this->receiver.start();
-    // this->cmdReader.start();
 }
 
 void Client::start() {
@@ -37,7 +34,7 @@ void Client::start() {
     } while (clientJoinedGame);
 }
 
-std::unique_ptr<DTO> Client::getServerMsg() { return receiverQueue->pop(); }
+// std::unique_ptr<DTO> Client::getServerMsg() { return receiverQueue->pop(); }
 
 /*
 void Client::sendMsg(Command& cmd, std::vector<uint8_t>& parameters) {
@@ -52,4 +49,21 @@ void Client::move_msg(std::vector<uint8_t>& parameters) {
     MoveDTO move(this->playerId, dir);
     serializer.sendMsg(move);
 }
+
 */
+
+std::map<int32_t, GameListInfo> Client::requestGameList(const LobbyMessage& msg) {
+    std::map<int32_t, GameListInfo> gameMap;
+    this->serializer.serializeLobbyMessage(msg);
+    try {
+        std::pair<int, std::map<int32_t, GameListInfo>> result = this->deserializer.getGameList();
+        if (result.first > 0) {
+            gameMap = result.second;
+        }
+    } catch (const std::exception &e) {
+        std::cerr << "Unexpected Exception retrieving GameList" << e.what() << std::endl;
+    }
+
+    return gameMap;
+}
+
