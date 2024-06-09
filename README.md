@@ -1,4 +1,4 @@
-# TP_Jazz_Jackrabbit_2
+# TP Jazz Jackrabbit 2
 
 ![Banner](assets/Miscellaneous/banner.png)
 
