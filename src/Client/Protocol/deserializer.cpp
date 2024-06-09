@@ -18,6 +18,8 @@
 #include "../../Common/DTO/tile.h"
 #include "../../Common/Types/entity.h"
 
+#include <iostream>
+
 
 Deserializer::Deserializer(std::shared_ptr<Queue<std::unique_ptr<DTO>>>& queue): queue(queue) {}
 

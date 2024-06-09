@@ -26,7 +26,7 @@
 //GameScreen::GameScreen(int character):
 //        pj(character), turtle(0, 0, 200), schartz_guard(1, 0, 400), yellowM(2, 0, 100), points(0) {}
 
-GameScreen::GameScreen(Client& player): client(player), pj(1), points(0)/*, config(ClientConfig::getInstance())*/ {
+GameScreen::GameScreen(Client& player): client(player), pj(1), points(0), level(0)/*, config(ClientConfig::getInstance())*/ {
 
 }
 
@@ -43,10 +43,22 @@ void GameScreen::run() {
 
     SDL2pp::Renderer renderer(window, -1, SDL_RENDERER_ACCELERATED);
 
-    //TEXTURA FONDO
-    SDL_Surface* bg_surf = IMG_Load("../assets/Tilesets/BeachWorld-1.png");
+    //TEXTURAS NIVEL
+    SDL_Surface* bg_surf = IMG_Load(this->level.getLevelPath(0).c_str()/* "../assets/scenes/BeachWorld/background.png" */);
     SDL2pp::Surface backgroundSurface(bg_surf);
     SDL2pp::Texture background(renderer, backgroundSurface);
+
+    SDL_Surface* sandFloor_surf = IMG_Load(this->level.getLevelPath(1).c_str()/* "../assets/scenes/BeachWorld/fullFloor.png" */);
+    SDL2pp::Surface sandFloorSurface(sandFloor_surf);
+    sandFloorSurface.SetColorKey(true, SDL_MapRGB(sandFloorSurface.Get()->format, 87, 0, 203));
+    SDL2pp::Texture sandFloor(renderer, sandFloorSurface);
+
+    SDL_Surface* largeColumn_surf = IMG_Load("../assets/scenes/BeachWorld/woodLargeColumn.png");
+    SDL2pp::Surface largeColumnSurface(largeColumn_surf);
+    largeColumnSurface.SetColorKey(true, SDL_MapRGB(largeColumnSurface.Get()->format, 87, 0, 203));
+    SDL2pp::Texture largeColumn(renderer, largeColumnSurface);
+
+
 
     //TEXTURAS PERSONAJES
     SDL_Surface* jazz_surf = IMG_Load(this->pj.getPath(CharacterType::JAZZ).c_str());
@@ -136,26 +148,7 @@ void GameScreen::run() {
     int flip = 0;
 
 	int x_screen = 0;
-	int y_screen = 0;
-    int pixel_x_screen = 0;
-    int pixel_y_screen = 0;
-    int pixel_width_screen = 200;
-    int pixel_height_screen = 200;
-
-    int img_width = 318;
-    int img_height = 2687;
-
-	std::unique_ptr<DTO> serverMsg = this->client.getServerMsg();
-	auto derived_ptr = static_cast<GameDTO*>(serverMsg.release());        
-   	std::unique_ptr<GameDTO> snapshot = std::unique_ptr<GameDTO>(derived_ptr);
-   	
-   	std::vector<PlayerDTO> players = snapshot->getPlayers();
-        
-        
-    std::vector<EnemyDTO> enemiesSnapshot = snapshot->getEnemies();
-        
-
-	
+	int y_screen = 0;	
 
     while (true) {
         SDL_Event event;
@@ -166,11 +159,6 @@ void GameScreen::run() {
                 switch (event.key.keysym.sym) {
                     case SDLK_RIGHT:
                         {
-		                    /*
-		                    is_walking = true;
-		                    dir_x = 5;
-		                    flip = 0;
-		                	*/
 		                    Command move = Command::MOVE;
 		                    std::vector<uint8_t> par{static_cast<uint8_t>(Direction::RIGHT)};
 		                    this->client.sendMsg(move, par);
@@ -178,13 +166,7 @@ void GameScreen::run() {
                     	}
                     case SDLK_LEFT:
 		                {    
-		                    /*
-		                    is_walking = true;
-		                    dir_x = -5;
-		                    flip = 1;
-		                    break;
-		                	*/
-                    		Command move = Command::MOVE;
+		             		Command move = Command::MOVE;
 		                    std::vector<uint8_t> elements{static_cast<uint8_t>(Direction::LEFT)};
 		                    this->client.sendMsg(move, elements);
 		                    break;
@@ -240,45 +222,18 @@ void GameScreen::run() {
 		
 		renderer.Clear();
 
-        renderer.Copy(background,
-                      SDL2pp::Rect(pixel_x_screen, pixel_y_screen, pixel_width_screen,
-                                   pixel_height_screen),
-                      SDL2pp::Rect(0, 0, window_width, window_height));
-        
-        serverMsg = this->client.getServerMsg();
-		derived_ptr = static_cast<GameDTO*>(serverMsg.release());        
-        snapshot = std::unique_ptr<GameDTO>(derived_ptr);
-   		
-   		std::vector<PlayerDTO> players = snapshot->getPlayers();
+        std::unique_ptr<DTO> serverMsg = this->client.getServerMsg();
+        auto derived_ptr = static_cast<GameDTO*>(serverMsg.release());        
+        std::unique_ptr<GameDTO> snapshot = std::unique_ptr<GameDTO>(derived_ptr);
 
-        window_width = window.GetWidth();
-        window_height = window.GetHeight();
-
-        if (players[0].getX() > window_width / 4 * 2 ||
-            (players[0].getX() < window_width / 4 && players[0].getSpeed() < 0)) {
-            if (pixel_x_screen + players[0].getSpeed() > img_width - pixel_width_screen) {
-                pixel_x_screen = 0;
-            } else if (pixel_x_screen < 0) {
-                pixel_x_screen = img_width - pixel_width_screen;
-            } else {
-                pixel_x_screen += players[0].getSpeed();
-            }
-            x_screen = window_width / 4 * 2;
-        }
-
-        if (players[0].getY() > window_height / 4 * 2 ||
-            (players[0].getY() < window_height / 4 && players[0].getSpeed() < 0)) {
-            if (pixel_y_screen + players[0].getSpeed() > img_height - pixel_height_screen) {
-                pixel_y_screen = 0;
-            } else if (pixel_y_screen < 0) {
-                pixel_y_screen = img_height - pixel_height_screen;
-            } else {
-                pixel_y_screen += players[0].getSpeed();
-            }
-            y_screen = window_height / 4 * 2;
-        }
+        std::vector<PlayerDTO> players = snapshot->getPlayers();
 
 
+        std::vector<int> dir_screen = this->level.draw_background(window, renderer, background, players[0]);
+        this->level.draw_floor(window, renderer, sandFloor, players[0].getSpeed());
+        x_screen = dir_screen[0];
+        y_screen = dir_screen[1];
+        //renderer.Copy(largeColumn, SDL2pp::Rect(0, 0, 24, 91), SDL2pp::Rect(400, window_height - 120, 30, 70));
 
        	this->pj.draw_players(window, renderer, pjs_textures, players, x_screen, y_screen);
         
@@ -297,7 +252,7 @@ void GameScreen::run() {
 
         x_screen = 0;
         y_screen = 0;
-
+        
         renderer.Present();
 
         SDL_Delay(70);

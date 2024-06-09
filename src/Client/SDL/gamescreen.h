@@ -12,6 +12,7 @@
 #include "enemy.h"
 #include "player.h"
 #include "points.h"
+#include "level.h"
 
 class GameScreen {
     Player pj;
@@ -22,6 +23,7 @@ class GameScreen {
     */
     Enemy enemies;
     Points points;
+    Level level;
 
 	//ClientConfig* config;
     Client& client;

@@ -16,9 +16,7 @@ void ReceiverThread::run() {
             socket->recvall(&bufferSize, sizeof(uint8_t), &closed);
             std::vector<char> buffer(bufferSize);
             socket->recvall(&buffer[0], bufferSize, &closed);
-            deserializer.deserialize_msg(cmd, buffer);
-
-
+            deserializer.deserialize_msg(cmd, buffer);   
         } catch (const std::exception& e) {
             if (!this->was_closed.load() || _keep_running) {
                 std::cerr << "ReceiverThread error: " << e.what() << std::endl;
