@@ -23,11 +23,13 @@ SceneSelection::SceneSelection(QWidget* parent, LobbyController& controller, Lob
 SceneSelection::~SceneSelection() { delete ui; }
 
 void SceneSelection::on_btnChoose_clicked() {
-    size_t selection = sceneSpritesWidget->getCurrentSpriteIndex();
-    Episode episode = static_cast<Episode>(selection + 1);
-    this->msg.setEpisode(episode);
+    // size_t selection = sceneSpritesWidget->getCurrentSpriteIndex();
+    // Episode episode = static_cast<Episode>(selection + 1);
+    // this->msg.setEpisode(episode);
+    this->hide();
     CreateGame cg(this, this->controller, this->msg, this->clientJoinedGame);
-    cg.show();
+    cg.setModal(true);
+    cg.exec();
     this->close();
 }
 

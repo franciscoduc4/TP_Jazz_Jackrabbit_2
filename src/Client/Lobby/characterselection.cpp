@@ -7,6 +7,8 @@
 #include "ui_characterselection.h"
 #include "waitingroom.h"
 
+#include <QMessageBox>
+
 CharacterSelection::CharacterSelection(QWidget* parent, LobbyController& controller, LobbyMessage& msg,
                                        bool& clientJoinedGame):
         QDialog(parent),
@@ -24,23 +26,24 @@ CharacterSelection::CharacterSelection(QWidget* parent, LobbyController& control
 CharacterSelection::~CharacterSelection() { delete ui; }
 
 void CharacterSelection::on_btnChoose_clicked() {
-    /*
-    this->msg.setCharacter(characterSelectionWidget->getCurrentCharacter());
-    this->client.sendCharacterSelection(this->msg);
-    if (this->msg.isCreateGame()) {
-        WaitingRoom* wr = new WaitingRoom(this, this->controller, this->msg, this->clientJoinedGame);
-        wr->show();
+    // this->msg.setCharacter(characterSelectionWidget->getCurrentCharacter());
+    // this->controller.sendCharacterSelection(this->msg);
+    this->hide();
+    if (this->msg.getLobbyCmd() == Command::CREATE_GAME) {
+        WaitingRoom wr(this, this->controller, this->msg, this->clientJoinedGame);
+        wr.setModal(true);
+        wr.exec();
         this->close();
-    } else if (this->msg.isJoinGame()) {
-        GameList* gl = new GameList(this, this->controller, this->msg, this->clientJoinedGame);
-        gl->show();
+    } else if (this->msg.getLobbyCmd() == Command::JOIN_GAME) {
+        GameList gl(this, this->controller, this->msg, this->clientJoinedGame);
+        gl.setModal(true);
+        gl.exec();
         this->close();
     } else {
         // Este caso no debería suceder.
-        QMessageBox::warning(this, "Ocurrió un error inesperado.", "Error");
+        QMessageBox::warning(this, "Error", "Ocurrió un error inesperado.");
         return;
     }
-    */
 }
 
 

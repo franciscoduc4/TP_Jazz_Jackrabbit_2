@@ -32,13 +32,21 @@ void GameList::joinGame(const QString& gameName) {
     // this->msg.setGameName(gameName);
     // client.joinGame(this->msg);
 
-    // WaitingRoom* wr = new WaitingRoom(this, this->controller, this->msg, this->clientJoinedGame);
-    // wr->show();
-    // this->close();
+    this->hide();
+
+    WaitingRoom wr(this, this->controller, this->msg, this->clientJoinedGame);
+    wr.setModal(true);
+    wr.exec();
+
+    this->close();
 }
 
 void GameList::on_btnJoin_clicked() {
-    // Do Something.
+    this->hide();
+    WaitingRoom wr(this, this->controller, this->msg, this->clientJoinedGame);
+    wr.setModal(true);
+    wr.exec();
+    this->close();
 }
 
 void GameList::on_btnBack_clicked() {

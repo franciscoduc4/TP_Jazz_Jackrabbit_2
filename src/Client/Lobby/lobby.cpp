@@ -46,7 +46,7 @@ void Lobby::on_btnJoinGame_clicked() {
     cs.setModal(true);
     cs.exec();
 
-    this->close();
+    // this->close();
 }
 
 

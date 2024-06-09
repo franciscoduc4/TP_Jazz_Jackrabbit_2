@@ -17,19 +17,22 @@ CreateGame::CreateGame(QWidget* parent, LobbyController& controller, LobbyMessag
 CreateGame::~CreateGame() { delete ui; }
 
 void CreateGame::on_btnCreate_clicked() {
+
     QString gameName = ui->gameName->text();
     int numPlayers = ui->numPlayers->value();
-    int waitTime = ui->waitTime->value();
 
     if (gameName.isEmpty()) {
-        QMessageBox::warning(this, "Ingrese un nombre para la partida", "Error");
+        QMessageBox::warning(this, "Error", "Ingrese un nombre para la partida");
         return;
     }
     this->msg.setGameName(gameName.toStdString());
     this->msg.setMaxPlayers(numPlayers);
 
+    this->hide();
+
     CharacterSelection cs(this, this->controller, this->msg, this->clientJoinedGame);
-    cs.show();
+    cs.setModal(true);
+    cs.exec();
     this->close();
 }
 
