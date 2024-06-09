@@ -21,6 +21,7 @@
 #include "../../Common/Types/command.h"
 #include "../../Common/Types/direction.h"
 #include "../../Common/Types/character.h"
+#include "../../Common/Types/tile.h"
 
 
 //GameScreen::GameScreen(int character):
@@ -44,21 +45,16 @@ void GameScreen::run() {
     SDL2pp::Renderer renderer(window, -1, SDL_RENDERER_ACCELERATED);
 
     //TEXTURAS NIVEL
-    SDL_Surface* bg_surf = IMG_Load(this->level.getLevelPath(0).c_str()/* "../assets/scenes/BeachWorld/background.png" */);
+    SDL_Surface* bg_surf = IMG_Load(this->level.getLevelPath(TileType::BACKGROUND).c_str()/* "../assets/scenes/BeachWorld/background.png" */);
     SDL2pp::Surface backgroundSurface(bg_surf);
     SDL2pp::Texture background(renderer, backgroundSurface);
 
-    SDL_Surface* sandFloor_surf = IMG_Load(this->level.getLevelPath(1).c_str()/* "../assets/scenes/BeachWorld/fullFloor.png" */);
+    SDL_Surface* sandFloor_surf = IMG_Load(this->level.getLevelPath(TileType::FLOOR).c_str()/* "../assets/scenes/BeachWorld/fullFloor.png" */);
     SDL2pp::Surface sandFloorSurface(sandFloor_surf);
     sandFloorSurface.SetColorKey(true, SDL_MapRGB(sandFloorSurface.Get()->format, 87, 0, 203));
     SDL2pp::Texture sandFloor(renderer, sandFloorSurface);
-
-    SDL_Surface* largeColumn_surf = IMG_Load("../assets/scenes/BeachWorld/woodLargeColumn.png");
-    SDL2pp::Surface largeColumnSurface(largeColumn_surf);
-    largeColumnSurface.SetColorKey(true, SDL_MapRGB(largeColumnSurface.Get()->format, 87, 0, 203));
-    SDL2pp::Texture largeColumn(renderer, largeColumnSurface);
-
-
+    
+    std::map<TileType, std::unique_ptr<SDL2pp::Texture>> tiles_textures = this->level.getTilesTextures(renderer);
 
     //TEXTURAS PERSONAJES
     SDL_Surface* jazz_surf = IMG_Load(this->pj.getPath(CharacterType::JAZZ).c_str());
@@ -233,10 +229,8 @@ void GameScreen::run() {
         this->level.draw_floor(window, renderer, sandFloor, players[0].getSpeed());
         x_screen = dir_screen[0];
         y_screen = dir_screen[1];
-        //renderer.Copy(largeColumn, SDL2pp::Rect(0, 0, 24, 91), SDL2pp::Rect(400, window_height - 120, 30, 70));
-
-       	this->pj.draw_players(window, renderer, pjs_textures, players, x_screen, y_screen);
         
+       	this->pj.draw_players(window, renderer, pjs_textures, players, x_screen, y_screen);
         
         std::vector<EnemyDTO> enemiesSnapshot = snapshot->getEnemies();
       	this->enemies.draw_enemy(window, renderer, enemy, enemiesSnapshot, players[0], x_screen, y_screen);
@@ -249,7 +243,8 @@ void GameScreen::run() {
         std::vector<WeaponDTO> weapons = snapshot->getWeapons();
         
         std::vector<TileDTO> tiles = snapshot->getTiles(); 
-
+        this->level.draw_tiles(window, renderer, tiles_textures, tiles);
+        
         x_screen = 0;
         y_screen = 0;
         

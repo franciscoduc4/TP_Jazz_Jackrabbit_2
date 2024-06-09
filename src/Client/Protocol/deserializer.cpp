@@ -68,12 +68,12 @@ void Deserializer::receiveSnapshot(std::vector<char>& buffer) {
         PlayerDTO player(x, y, playerId, health, damage, speed, weapon, pj_type, state);
         players.push_back(player);
     }
-
+    
     std::vector<EnemyDTO> enemies;
     uint8_t cant_enemies = buffer[i];
     i++;
     uint8_t cant_enemies_atributos = 8;
-    i_max += cant_enemies * cant_enemies_atributos;
+    i_max = i + cant_enemies * cant_enemies_atributos;
     while (i < i_max) {
         uint32_t enemyId = static_cast<uint32_t>(buffer[i]);
         i++;
@@ -99,7 +99,7 @@ void Deserializer::receiveSnapshot(std::vector<char>& buffer) {
     uint8_t cant_bullets = buffer[i];
     i++;
     uint8_t cant_bullets_atributos = 6;
-    i_max += cant_bullets * cant_bullets_atributos;
+    i_max = i + cant_bullets * cant_bullets_atributos;
     while (i < i_max) {
         uint32_t bulletId = static_cast<uint32_t>(buffer[i]);
         i++;
@@ -121,7 +121,7 @@ void Deserializer::receiveSnapshot(std::vector<char>& buffer) {
     uint8_t cant_items = buffer[i];
     i++;
     uint8_t cant_items_atributos = 3;
-    i_max += cant_items * cant_items_atributos;
+    i_max = i + cant_items * cant_items_atributos;
     while (i < i_max) {
         uint16_t item_x = static_cast<uint16_t>(buffer[i]);
         i++;
@@ -131,13 +131,13 @@ void Deserializer::receiveSnapshot(std::vector<char>& buffer) {
         i++;
         ItemDTO item(item_x, item_y, item_type);
         items.push_back(item);
-    }    
-
+    }  
+    
     std::vector<WeaponDTO> weapons;
     uint8_t cant_weapons = buffer[i];
     i++;
     uint8_t cant_weapons_atributos = 8 + cant_bullets_atributos;
-    i_max += cant_weapons * cant_weapons_atributos;
+    i_max = i + cant_weapons * cant_weapons_atributos;
     while (i < i_max) { 
         uint8_t weaponId = static_cast<uint8_t>(buffer[i]);
         i++;
@@ -169,13 +169,12 @@ void Deserializer::receiveSnapshot(std::vector<char>& buffer) {
         WeaponDTO weapon(weaponId, weapon_x, weapon_y, weapon_damage, weapon_ammo);
         weapons.push_back(weapon);
     }
-
     
     std::vector<TileDTO> tiles;
     uint8_t cant_tiles = buffer[i];
     i++;
     uint8_t cant_tiles_atributos = 2;
-    i_max += cant_tiles * cant_tiles_atributos;
+    i_max = i + cant_tiles * cant_tiles_atributos;
     while (i < i_max) {
         uint16_t tile_x = static_cast<uint16_t>(buffer[i]);
         i++;
@@ -184,7 +183,6 @@ void Deserializer::receiveSnapshot(std::vector<char>& buffer) {
         TileDTO tile(tile_x, tile_y);
         tiles.push_back(tile);
     }
-
     //std::unique_ptr<DTO> game = std::make_unique<GameDTO>(players, enemies, bullets, items, weapons, tiles);
     queue->push(std::make_unique<GameDTO>(players, enemies, bullets, items, weapons, tiles));
     
