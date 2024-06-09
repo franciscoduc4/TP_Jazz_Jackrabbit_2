@@ -31,7 +31,9 @@ void Game::removePlayer(int32_t playerId) {
 
 int32_t Game::getGameId() const { return gameId; }
 
-GameInfo Game::getGameInfo() { return {gameName, currentPlayers, maxPlayers}; }
+GameInfo Game::getGameInfo() {
+    return {gameId, gameName, maxPlayers, currentPlayers};
+}
 
 void Game::launch() { gameLoop.start(); }
 

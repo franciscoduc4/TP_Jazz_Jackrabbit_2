@@ -17,6 +17,7 @@ SceneSelection::SceneSelection(QWidget* parent, LobbyController& controller, Lob
     ui->setupUi(this);
     QVBoxLayout* layout = new QVBoxLayout(ui->widgetScenes);
     layout->addWidget(sceneSpritesWidget);
+    sceneSpritesWidget->show();
 }
 
 SceneSelection::~SceneSelection() { delete ui; }

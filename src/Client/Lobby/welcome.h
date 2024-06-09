@@ -4,7 +4,7 @@
 #include <QMainWindow>
 #include <QMessageBox>
 
-#include "../Protocol/Types/lobbyMessage.h"
+#include "../../Common/Types/lobbyMessage.h"
 #include "../client.h"
 
 QT_BEGIN_NAMESPACE

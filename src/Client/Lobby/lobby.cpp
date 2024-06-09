@@ -1,7 +1,5 @@
 #include "lobby.h"
 
-#include "../Common/Constants/lobbyCommands.h"
-
 #include "characterselection.h"
 #include "sceneselection.h"
 #include "ui_lobby.h"

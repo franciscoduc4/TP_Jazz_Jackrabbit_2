@@ -1,6 +1,6 @@
 #include <QApplication>
 
-#include "../Protocol/Types/lobbyMessage.h"
+#include "../../Common/Types/lobbyMessage.h"
 #include "../client.h"
 
 #include "welcome.h"

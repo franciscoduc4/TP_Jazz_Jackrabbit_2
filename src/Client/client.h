@@ -13,6 +13,7 @@
 #include "./Protocol/serializer.h"
 #include "./Threads/receiverThread.h"
 #include "./Threads/senderThread.h"
+#include "Controllers/GameController.h"
 #include "Controllers/LobbyController.h"
 #include "Lobby/lobbyInit.h"
 
@@ -30,6 +31,7 @@ private:
     Deserializer deserializer;
     ReceiverThread receiver;
     LobbyController lobbyController;
+    GameController gameController;
 
 
 public:

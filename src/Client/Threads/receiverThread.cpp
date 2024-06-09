@@ -65,7 +65,7 @@ void ReceiverThread::receiveGamesList() {
         gamesMap[id] = gameInfo;
     }
     std::unique_ptr<DTO> message = std::make_unique<GamesListDTO>(gamesMap);
-    this->deserializer.deserialize_msg(message);
+    this->deserializer.deserialize_lobbyMsg(message);
 }
 
 void ReceiverThread::receiveLobbyDTO() {

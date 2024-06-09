@@ -3,7 +3,7 @@
 
 #include <QDialog>
 
-#include "../Protocol/Types/lobbyMessage.h"
+#include "../../Common/Types/lobbyMessage.h"
 #include "../client.h"
 
 namespace Ui {

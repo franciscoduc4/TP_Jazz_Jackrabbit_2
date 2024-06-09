@@ -4,7 +4,7 @@
 #include <QDialog>
 
 #include "../../Common/Config/ClientConfig.h"
-#include "../Protocol/Types/lobbyMessage.h"
+#include "../../Common/Types/lobbyMessage.h"
 #include "../client.h"
 #include "./SelectWidgets/characterselectionwidget.h"
 

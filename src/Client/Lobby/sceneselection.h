@@ -5,7 +5,7 @@
 #include <QVBoxLayout>
 
 #include "../../Common/Config/ClientConfig.h"
-#include "../Protocol/Types/lobbyMessage.h"
+#include "../../Common/Types/lobbyMessage.h"
 #include "../client.h"
 #include "SelectWidgets/scenespriteswidget.h"
 

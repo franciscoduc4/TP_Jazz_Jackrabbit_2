@@ -1,7 +1,7 @@
 #include "characterselection.h"
 
 #include "../../Common/Types/character.h"
-#include "../Common/Constants/lobbyCommands.h"
+#include "../../Common/Types/lobbyMessage.h"
 
 #include "gamelist.h"
 #include "ui_characterselection.h"
