@@ -9,13 +9,11 @@ class TileDTO: public GameElementDTO {
 private:
     uint16_t x;
     uint16_t y;
-    Sprite currentSprite;
-
+    
 public:
-    TileDTO(uint16_t x, uint16_t y, const Sprite& currentSprite);
+    TileDTO(uint16_t x, uint16_t y);
     uint16_t getX() const;
     uint16_t getY() const;
-    Sprite getSprite() const;
 
 };
 

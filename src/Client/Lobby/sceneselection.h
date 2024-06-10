@@ -4,7 +4,8 @@
 #include <QDialog>
 #include <QVBoxLayout>
 
-#include "../Protocol/Types/lobbyMessage.h"
+#include "../../Common/Config/ClientConfig.h"
+#include "../../Common/Types/lobbyMessage.h"
 #include "../client.h"
 #include "SelectWidgets/scenespriteswidget.h"
 
@@ -17,7 +18,7 @@ class SceneSelection: public QDialog {
 
 
 public:
-    explicit SceneSelection(QWidget* parent, Client& client, LobbyMessage& msg,
+    explicit SceneSelection(QWidget* parent, LobbyController& controller, LobbyMessage& msg,
                             bool& clientJoinedGame);
     ~SceneSelection();
 
@@ -28,7 +29,7 @@ private slots:
 
 private:
     Ui::SceneSelection* ui;
-    Client& client;
+    LobbyController& controller;
     LobbyMessage& msg;
     bool& clientJoinedGame;
     SceneSpritesWidget* sceneSpritesWidget;

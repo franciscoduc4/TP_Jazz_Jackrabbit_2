@@ -1,7 +1,5 @@
 #include "ClientConfig.h"
 
-#include <unistd.h>
-
 const static std::string YAML_FILE_PATH = "config/client.yaml";
 
 // Singleton Pattern so it can be accessed anywhere.

@@ -8,7 +8,6 @@
 
 #include "socket.h"
 // #include "../Server/Game/gameStatus.h"
-#include "Constants/lobbyCommands.h"
 
 Protocol::Protocol(Socket&& socket): socket(std::move(socket)), was_closed(false) {}
 

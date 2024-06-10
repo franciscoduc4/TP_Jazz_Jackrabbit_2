@@ -3,6 +3,7 @@
 
 #include <string>
 #include <vector>
+#include <unistd.h>
 
 #include "../logger.h"
 #include <yaml-cpp/yaml.h>
@@ -17,7 +18,7 @@ private:
 
 public:
     static ClientConfig* getInstance();
-    Logger& getLogger();
+    // Logger& getLogger();
     // Files
     static std::string getEpisodeFile();
     static std::string getCharacterSelectFile();
@@ -92,6 +93,8 @@ public:
     static std::vector<std::vector<std::pair<int, int>>> getLoriSelectSprites();
     // Delete Instance
     static void deleteInstance();
+
+
 };
 
 #endif  // __CLIENT_CONFIG_H__

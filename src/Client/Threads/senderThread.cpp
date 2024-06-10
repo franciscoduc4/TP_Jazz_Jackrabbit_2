@@ -6,13 +6,29 @@ SenderThread::SenderThread(std::shared_ptr<Queue<std::unique_ptr<DTO>>>& queue, 
     was_closed(was_closed),
     closed(false){}
 
+void SenderThread::sendCommandDTO(const CommandDTO& cmd) {
+    Command command = cmd.getCommand();
+    this->socket->sendall(&command, sizeof(char), &this->closed);
+    this->was_closed.store(this->closed);
+    if (this->was_closed.load()) { return; }
+    if (command != Command::GAMES_LIST) {
+        std::vector<char> data = cmd.getData();
+        this->socket->sendall(data.data(), data.size(), &this->closed);
+        this->was_closed.store(this->closed);
+    }
+}
+
 void SenderThread::run() {
     try {
         while (_keep_running) {
             std::unique_ptr<DTO> msg = queue->pop();
-            uint8_t msg_size = sizeof(msg);
-            socket->sendall(&msg_size, sizeof(uint8_t), &closed);
-            socket->sendall(&msg, msg_size, &closed);
+            DTOType type = msg->getType();
+            switch (type) {
+                case DTOType::COMMAND_DTO: {
+                    CommandDTO* cmd = dynamic_cast<CommandDTO*>(msg.get());
+                    this->sendCommandDTO(*cmd);
+                }
+            }
             if (was_closed) {
                 stop();
             }

@@ -3,8 +3,8 @@
 
 #include <QDialog>
 
+#include "../../Common/Types/lobbyMessage.h"
 #include "../client.h"
-#include "../Protocol/Types/lobbyMessage.h"
 
 namespace Ui {
 class WaitingRoom;
@@ -17,7 +17,7 @@ class WaitingRoom : public QDialog
 
 
 public:
-    explicit WaitingRoom(QWidget *parent, Client& client, LobbyMessage& msg, bool& clientJoinedGame);
+    explicit WaitingRoom(QWidget *parent, LobbyController& controller, LobbyMessage& msg, bool& clientJoinedGame);
     ~WaitingRoom();
 
 private slots:
@@ -25,7 +25,7 @@ private slots:
 
 private:
     Ui::WaitingRoom *ui;
-    Client& client;
+    LobbyController& controller;
     LobbyMessage& msg;
     bool& clientJoinedGame;
 };

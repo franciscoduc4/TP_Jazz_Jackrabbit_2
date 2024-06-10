@@ -1,15 +1,23 @@
 #include "gamelist.h"
 
+#include <QFile>
+
 #include "ui_gamelist.h"
 #include "waitingroom.h"
 
-GameList::GameList(QWidget* parent, Client& client, LobbyMessage& msg, bool& clientJoinedGame):
+GameList::GameList(QWidget* parent, LobbyController& controller, LobbyMessage& msg, bool& clientJoinedGame):
         QDialog(parent),
         ui(new Ui::GameList),
-        client(client),
+        controller(controller),
         msg(msg),
         clientJoinedGame(clientJoinedGame) {
     ui->setupUi(this);
+    QFile file(":/Lobby/Styles/gameslist.qss");
+    file.open(QFile::ReadOnly);
+    QString styleSheet = QLatin1String(file.readAll());
+
+    ui->centralwidget->setStyleSheet(styleSheet);
+    ui->labelTitle->setAttribute(Qt::WA_TranslucentBackground);
 }
 
 GameList::~GameList() { delete ui; }
@@ -32,13 +40,21 @@ void GameList::joinGame(const QString& gameName) {
     // this->msg.setGameName(gameName);
     // client.joinGame(this->msg);
 
-    // WaitingRoom* wr = new WaitingRoom(this, this->client, this->msg, this->clientJoinedGame);
-    // wr->show();
-    // this->close();
+    this->hide();
+
+    WaitingRoom wr(this, this->controller, this->msg, this->clientJoinedGame);
+    wr.setModal(true);
+    wr.exec();
+
+    this->close();
 }
 
 void GameList::on_btnJoin_clicked() {
-    // Do Something.
+    this->hide();
+    WaitingRoom wr(this, this->controller, this->msg, this->clientJoinedGame);
+    wr.setModal(true);
+    wr.exec();
+    this->close();
 }
 
 void GameList::on_btnBack_clicked() {

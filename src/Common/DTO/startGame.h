@@ -10,7 +10,8 @@ private:
     int32_t gameId;
 
 public:
-    explicit StartGameDTO(int32_t& playerId, int32_t& gameId);
+    explicit StartGameDTO(const int32_t& gameId);
+    StartGameDTO(int32_t& playerId, int32_t& gameId);
     int32_t getGameId() const;
 };
 

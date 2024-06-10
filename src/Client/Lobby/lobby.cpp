@@ -1,15 +1,13 @@
 #include "lobby.h"
 
-#include "../Common/Constants/lobbyCommands.h"
-
 #include "characterselection.h"
 #include "sceneselection.h"
 #include "ui_lobby.h"
 
-Lobby::Lobby(QWidget* parent, Client& client, LobbyMessage& msg, bool& clientJoinedGame):
+Lobby::Lobby(QWidget* parent, LobbyController& controller, LobbyMessage& msg, bool& clientJoinedGame):
         QDialog(parent),
         ui(new Ui::Lobby),
-        client(client),
+        controller(controller),
         msg(msg),
         clientJoinedGame(clientJoinedGame) {
     ui->setupUi(this);
@@ -31,7 +29,7 @@ void Lobby::on_btnCreateGame_clicked() {
 
     this->hide();
 
-    SceneSelection ss(this, this->client, this->msg, this->clientJoinedGame);
+    SceneSelection ss(this, this->controller, this->msg, this->clientJoinedGame);
     ss.setModal(true);
     ss.exec();
 
@@ -44,11 +42,11 @@ void Lobby::on_btnJoinGame_clicked() {
 
     this->hide();
 
-    CharacterSelection cs(this, this->client, this->msg, this->clientJoinedGame);
+    CharacterSelection cs(this, this->controller, this->msg, this->clientJoinedGame);
     cs.setModal(true);
     cs.exec();
 
-    this->close();
+    // this->close();
 }
 
 

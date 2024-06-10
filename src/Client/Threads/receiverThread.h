@@ -8,6 +8,7 @@
 
 #include <atomic>
 #include <memory>
+#include "../../Common/dtoValidator.h"
 
 class ReceiverThread : public Thread {
 private:
@@ -15,6 +16,13 @@ private:
     std::shared_ptr<Socket>& socket;
     std::atomic<bool>& was_closed;
     bool closed;
+
+    void receiveGameDTO();
+
+    void receiveLobbyDTO();
+    void receiveGamesList();
+    void receiveGameUpdate();
+    void receiveCommandDTO();
 
 public:
     ReceiverThread(Deserializer& deserializer, std::shared_ptr<Socket>& socket, std::atomic<bool>& was_closed);

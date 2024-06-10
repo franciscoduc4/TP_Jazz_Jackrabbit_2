@@ -1,5 +1,7 @@
 #include "./client.h"
-
+#include "./SDL/gamescreen.h"
+#include "../Common/Types/direction.h"
+#include "../Common/DTO/move.h"
 
 Client::Client(char* ip, char* port):
         ip(ip),
@@ -7,49 +9,92 @@ Client::Client(char* ip, char* port):
         skt(std::make_shared<Socket>(ip, port)),
         was_closed(false),
         senderQueue(std::make_shared<Queue<std::unique_ptr<DTO>>>()),
-        playerCmdsQueue(std::make_shared<Queue<std::unique_ptr<DTO>>>()),
-        receiverQueue(std::make_shared<Queue<std::unique_ptr<DTO>>>()),
+        lobbyQueue(std::make_shared<Queue<std::unique_ptr<DTO>>>()),
+        gameQueue(std::make_shared<Queue<std::unique_ptr<DTO>>>()),
         sender(this->senderQueue, this->skt, this->was_closed),
         serializer(this->senderQueue),
-        // cmdReader(this->serializer, this->playerCmdsQueue),
-        deserializer(this->receiverQueue),
-        receiver(this->deserializer, this->skt, this->was_closed) {
+        deserializer(this->lobbyQueue, this->gameQueue),
+        receiver(this->deserializer, this->skt, this->was_closed),
+        lobbyController(this->serializer, this->deserializer, this->lobbyQueue),
+        gameController(this->serializer, this->deserializer, this->gameQueue),
+        playerId(-1) {
     this->sender.start();
     this->receiver.start();
-    // this->cmdReader.start();
 }
 
 void Client::start() {
     bool clientJoinedGame = false;
     do {
         LobbyInit init;
-        clientJoinedGame = init.launchQT(*this, (bool&) clientJoinedGame);
+        clientJoinedGame = init.launchQT(this->lobbyController, (bool&) clientJoinedGame);
 
-        if (!clientJoinedGame) {
-            break;
-        }
+      if (!clientJoinedGame) {
+          return;
+      }
+      // TODO: Continue with SDL.
+      // START - TESTING SKIP QT
+      LobbyMessage msg;
+      msg.setCharacter(CharacterType::JAZZ);
+      msg.setEpisode(Episode::JAZZ_IN_TIME);
+      msg.setGameId(1);
+      msg.setGameName("Dummy");
+      msg.setLobbyCmd(Command::CREATE_GAME);
+      msg.setMaxPlayers(1);
+      msg.setPlayerName("Test");
 
-        // TODO: Continue with SDL.
-        
-        GameScreen game(0);
-        game.run();
+      this->lobbyController.sendRequest(msg);
+      this->lobbyController.startGame(msg);
+      // END - TESTING SKIP QT
 
+      GameScreen game(*this);
+      // GameScreen game(this->gameController);
+      game.run();
     } while (clientJoinedGame);
+
 }
 
-std::unique_ptr<DTO> Client::getServerMsg() { return receiverQueue->pop(); }
+std::unique_ptr<DTO> Client::getServerMsg() { 
+	std::unique_ptr<DTO> dto;
+	gameQueue->try_pop(dto);
+	return dto; 
+}
 
-/*
 void Client::sendMsg(Command& cmd, std::vector<uint8_t>& parameters) {
     switch (cmd) {
         case Command::MOVE:
             move_msg(parameters);
+       		break;
+       	case Command::SHOOT:
+       		shoot_msg();
+       		break;
     }
 }
 
 void Client::move_msg(std::vector<uint8_t>& parameters) {
-    Direction dir = static_cast<int32_t>(parameters[0]);
-    MoveDTO move(this->playerId, dir);
+    auto dir = static_cast<Direction>(parameters[0]);
+    std::unique_ptr<DTO> move = std::make_unique<MoveDTO>(this->playerId, dir);
     serializer.sendMsg(move);
 }
+
+/*
+std::map<int32_t, GameInfo> Client::requestGameList(const LobbyMessage& msg) {
+    std::map<int32_t, GameInfo> gameMap;
+    this->serializer.serializeLobbyMessage(msg);
+    try {
+        std::pair<int, std::map<int32_t, GameInfo>> result = this->deserializer.getGameList();
+        if (result.first > 0) {
+            gameMap = result.second;
+        }
+    } catch (const std::exception &e) {
+        std::cerr << "Unexpected Exception retrieving GameList" << e.what() << std::endl;
+    }
+
+    return gameMap;
+}
+
 */
+
+void Client::shoot_msg() {
+	std::unique_ptr<DTO> shoot = std::make_unique<CommandDTO>(this->playerId, Command::SHOOT);
+	serializer.sendMsg(shoot);
+}

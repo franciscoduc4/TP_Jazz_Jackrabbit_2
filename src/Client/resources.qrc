@@ -1,8 +1,21 @@
 <RCC>
     <qresource prefix="/">
+        <!-- Spritesheets -->
+        <file>../../assets/Miscellaneous/CharacterSelect.png</file>
+        <file>../../assets/Miscellaneous/EpisodeSelect.png</file>
+        <!-- Background Images -->
         <file>../../assets/LobbyImages/WelcomeBackground.png</file>
         <file>../../assets/LobbyImages/LobbyBackground.png</file>
+        <file>../../assets/LobbyImages/Background.png</file>
+        <file>../../assets/LobbyImages/Continue.png</file>
+        <file>../../assets/LobbyImages/Load.png</file>
+        <!-- Stylesheets -->
         <file>Lobby/Styles/welcome.qss</file>
         <file>Lobby/Styles/lobby.qss</file>
+        <file>Lobby/Styles/sceneselection.qss</file>
+        <file>Lobby/Styles/creategame.qss</file>
+        <file>Lobby/Styles/characterselection.qss</file>
+        <file>Lobby/Styles/gameslist.qss</file>
+        <file>Lobby/Styles/waitingroom.qss</file>
     </qresource>
 </RCC>
