@@ -57,7 +57,7 @@ std::unique_ptr<JoinGameDTO> Deserializer::deserializeJoinGame(bool& wasClosed, 
     socket->recvall(&gameId, sizeof(int32_t), &wasClosed);
     CharacterType characterType;
     socket->recvall(&characterType, sizeof(char), &wasClosed);
-    return std::make_unique<JoinGameDTO>(gameId, characterType);
+    return std::make_unique<JoinGameDTO>(playerId, gameId, characterType);
 }
 
 std::unique_ptr<CommandDTO> Deserializer::deserializeGamesList(bool& wasClosed, int32_t& playerId) {

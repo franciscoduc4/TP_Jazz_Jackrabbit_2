@@ -2,7 +2,10 @@
 
 #include <iostream>
 
-GameMap::GameMap(Vector<int16_t> size): size(size), entityFactory(*this) {}
+#define CONFIG ServerConfig::getInstance()
+
+GameMap::GameMap(Vector<int16_t> size):
+        size(size), entityFactory(*this), gravity(CONFIG->getGameGravity()) {}
 
 std::vector<std::shared_ptr<Entity>> GameMap::getObjectsInShootRange(Vector<int16_t> mapPosition,
                                                                      Direction dir) {
@@ -40,46 +43,18 @@ std::vector<std::shared_ptr<Entity>> GameMap::getObjectsInExplosionRange(
 }
 
 void GameMap::moveObject(Vector<int16_t>& position, Vector<int16_t> mapPosition, Direction dir) {
-    Vector<int16_t> delta;
-    if (dir == Direction::LEFT) {
-        if (position.x % movesPerCell != 0) {
-            position.x -= 1;
-            return;
-        }
-        delta = {-1, 0};
-    } else if (dir == Direction::RIGHT) {
-        if (position.x % movesPerCell != 0) {
-            position.x += 1;
-            return;
-        }
-        delta = {1, 0};
-    } else if (dir == Direction::UP) {
-        if (position.y % movesPerCell != 0) {
-            position.y += 1;
-            return;
-        }
-        delta = {0, -1};
-    } else if (dir == Direction::DOWN) {
-        if (position.y % movesPerCell != 0) {
-            position.y -= 1;
-            return;
-        }
-        delta = {0, 1};
-    }
+    Vector<int16_t> newPosition = calculateNewPosition(position, dir);
+    Vector<int16_t> newMapPosition = getMapPosition(newPosition, movesPerCell);
 
-    Vector<int16_t> newMapPosition = mapPosition + delta;
-    if (isValidPosition(newMapPosition)) {
-        if (isFreePosition(newMapPosition)) {
-            mapGrid[newMapPosition] = mapGrid[mapPosition];
-            mapGrid.erase(mapPosition);
-            position += delta;
-        } else {
-            auto character = std::dynamic_pointer_cast<Character>(mapGrid[mapPosition]);
+    if (!isValidPosition(newPosition)) return;
+
+    if (!handleMovement(position, mapPosition, newPosition, newMapPosition)) {
+        auto character = std::dynamic_pointer_cast<Character>(mapGrid[mapPosition]);
+        if (character && !isFreePosition(newMapPosition)) {
             character->interact(mapGrid[newMapPosition]);
         }
     }
 }
-
 
 bool GameMap::isFreePosition(Vector<int16_t> position) {
     return mapGrid.find(position) == mapGrid.end();
@@ -97,9 +72,17 @@ void GameMap::addEntityToMap(std::shared_ptr<Entity> entity, Vector<int16_t> pos
 }
 
 std::shared_ptr<Character> GameMap::addCharacter(int32_t playerId, CharacterType type,
-                                                 std::optional<Vector<int16_t>> position) {
+                                                 std::optional<Vector<int16_t>> position = std::nullopt) {
     Vector<int16_t> initPosition = position ? *position : getAvailablePosition();
+    if (!isValidMapPosition(initPosition)) {
+        return nullptr;
+    }
+
     auto character = entityFactory.createCharacter(entityCount, type, initPosition);
+    if (!character) {
+        return nullptr;
+    }
+
     characters[playerId] = character;
     addEntityToMap(character, initPosition);
     entityCount++;
@@ -113,9 +96,14 @@ void GameMap::addEnemy(EnemyType type, std::optional<Vector<int16_t>> position) 
     addEntityToMap(enemy, initPosition);
 }
 
-bool GameMap::isValidPosition(Vector<int16_t> mapPosition) {
+bool GameMap::isValidMapPosition(Vector<int16_t> mapPosition) {
     return mapPosition.x >= 0 && mapPosition.x <= size.x && mapPosition.y >= 0 &&
            mapPosition.y <= size.y;
+}
+
+bool GameMap::isValidPosition(Vector<int16_t> position) {
+    return position.x >= 0 && position.x <= size.x * movesPerCell && position.y >= 0 &&
+           position.y <= size.y * movesPerCell;
 }
 
 Vector<int16_t> GameMap::getAvailablePosition() {
@@ -153,3 +141,49 @@ std::unique_ptr<GameDTO> GameMap::getGameDTO() {
 }
 
 std::shared_ptr<Character> GameMap::getCharacter(int32_t playerId) { return characters[playerId]; }
+
+void GameMap::printMapGrid() const {
+    for (const auto& pair: mapGrid) {
+        std::cout << "Key: (" << pair.first.x << ", " << pair.first.y << "), "
+                  << "Value: " << pair.second->getMapPosition(movesPerCell)
+                  << " - ID: " << pair.second->getId() << std::endl;
+    }
+}
+
+Vector<int16_t> GameMap::getMapPosition(Vector<int16_t> position, int16_t movesPerCell) {
+    return {static_cast<int16_t>(position.x / movesPerCell),
+            static_cast<int16_t>(position.y / movesPerCell)};
+}
+
+Vector<int16_t> GameMap::calculateNewPosition(const Vector<int16_t>& position,
+                                              Direction dir) const {
+    switch (dir) {
+        case Direction::LEFT:
+            return position - Vector<int16_t>{1, 0};
+        case Direction::RIGHT:
+            return position + Vector<int16_t>{1, 0};
+        case Direction::UP:
+            return position + Vector<int16_t>{0, 1};
+        case Direction::DOWN:
+            return position - Vector<int16_t>{0, 1};
+        default:
+            return position;
+    }
+}
+
+bool GameMap::handleMovement(Vector<int16_t>& position, Vector<int16_t> mapPosition,
+                             const Vector<int16_t>& newPosition,
+                             const Vector<int16_t>& newMapPosition) {
+    if (newMapPosition == mapPosition) {
+        if (isValidPosition(newPosition)) {
+            position = newPosition;
+            return true;
+        }
+    } else if (isValidMapPosition(newMapPosition) && isFreePosition(newMapPosition)) {
+        mapGrid[newMapPosition] = mapGrid[mapPosition];
+        mapGrid.erase(mapPosition);
+        position = newPosition;
+        return true;
+    }
+    return false;
+}

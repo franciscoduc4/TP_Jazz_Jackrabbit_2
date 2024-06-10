@@ -15,6 +15,7 @@ private:
 public:
     static ServerConfig* getInstance();
     static std::string getLogFile();
+    static float getGameGravity();
     static int getGameMaxMoves();
     static int getGameMaxRevived();
 
@@ -29,18 +30,21 @@ public:
     static int getCharacterIntoxicatedTime();
 
     static int getJazzShootCooldownTime();
-    static int getJazzSpeed();
-    static int getJazzSprintSpeed();
+    static float getJazzHorizontalSpeed();
+    static float getJazzVerticalSpeed();
+    static float getJazzSprintSpeed();
     static int getJazzJumpHeight();
 
     static int getLoriShootCooldownTime();
-    static int getLoriSpeed();
-    static int getLoriSprintSpeed();
+    static float getLoriHorizontalSpeed();
+    static float getLoriVerticalSpeed();
+    static float getLoriSprintSpeed();
     static int getLoriJumpHeight();
 
     static int getSpazShootCooldownTime();
-    static int getSpazSpeed();
-    static int getSpazSprintSpeed();
+    static float getSpazHorizontalSpeed();
+    static float getSpazVerticalSpeed();
+    static float getSpazSprintSpeed();
     static int getSpazJumpHeight();
 
     static int getWeaponBlasterBullets();

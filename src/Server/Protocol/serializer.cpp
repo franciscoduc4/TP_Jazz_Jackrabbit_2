@@ -92,9 +92,6 @@ std::vector<char> Serializer::serializeCreateGame(const std::unique_ptr<CreateGa
 std::vector<char> Serializer::serializeJoinGame(const std::unique_ptr<JoinGameDTO>& dto) {
     std::vector<char> buffer;
     buffer.push_back(static_cast<char>(Command::JOIN_GAME));
-    int32_t playerId = htonl(dto->getPlayerId());
-    const unsigned char* p = reinterpret_cast<const unsigned char*>(&playerId);
-    buffer.insert(buffer.end(), p, p + sizeof(int32_t));
     int32_t gameId = htonl(dto->getGameId());
     const unsigned char* p1 = reinterpret_cast<const unsigned char*>(&gameId);
     buffer.insert(buffer.end(), p1, p1 + sizeof(int32_t));

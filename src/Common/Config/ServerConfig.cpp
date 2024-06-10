@@ -1,6 +1,6 @@
 #include "ServerConfig.h"
 
-const static std::string YAML_FILE_PATH = "../../config/server.yaml";
+const static std::string YAML_FILE_PATH = "config/server.yaml";
 
 ServerConfig* ServerConfig::instance = nullptr;
 
@@ -14,6 +14,8 @@ ServerConfig* ServerConfig::getInstance() {
 }
 
 std::string ServerConfig::getLogFile() { return getInstance()->root["LOG_FILE"].as<std::string>(); }
+
+float ServerConfig::getGameGravity() { return getInstance()->root["GAME"]["GRAVITY"].as<float>(); }
 
 int ServerConfig::getGameMaxMoves() { return getInstance()->root["GAME"]["MAX_MOVES"].as<int>(); }
 
@@ -61,11 +63,15 @@ int ServerConfig::getJazzShootCooldownTime() {
     return getInstance()->root["CHARACTER"]["JAZZ"]["SHOOT_COOLDOWN_TIME"].as<int>();
 }
 
-int ServerConfig::getJazzSpeed() {
-    return getInstance()->root["CHARACTER"]["JAZZ"]["SPEED"].as<int>();
+float ServerConfig::getJazzHorizontalSpeed() {
+    return getInstance()->root["CHARACTER"]["JAZZ"]["HORIZONTAL_SPEED"].as<int>();
 }
 
-int ServerConfig::getJazzSprintSpeed() {
+float ServerConfig::getJazzVerticalSpeed() {
+    return getInstance()->root["CHARACTER"]["JAZZ"]["VERTICAL_SPEED"].as<int>();
+}
+
+float ServerConfig::getJazzSprintSpeed() {
     return getInstance()->root["CHARACTER"]["JAZZ"]["SPRINT_SPEED"].as<int>();
 }
 
@@ -77,11 +83,15 @@ int ServerConfig::getLoriShootCooldownTime() {
     return getInstance()->root["CHARACTER"]["LORI"]["SHOOT_COOLDOWN_TIME"].as<int>();
 }
 
-int ServerConfig::getLoriSpeed() {
-    return getInstance()->root["CHARACTER"]["LORI"]["SPEED"].as<int>();
+float ServerConfig::getLoriHorizontalSpeed() {
+    return getInstance()->root["CHARACTER"]["LORI"]["HORIZONTAL_SPEED"].as<int>();
 }
 
-int ServerConfig::getLoriSprintSpeed() {
+float ServerConfig::getLoriVerticalSpeed() {
+    return getInstance()->root["CHARACTER"]["LORI"]["VERTICAL_SPEED"].as<int>();
+}
+
+float ServerConfig::getLoriSprintSpeed() {
     return getInstance()->root["CHARACTER"]["LORI"]["SPRINT_SPEED"].as<int>();
 }
 
@@ -93,11 +103,15 @@ int ServerConfig::getSpazShootCooldownTime() {
     return getInstance()->root["CHARACTER"]["SPAZ"]["SHOOT_COOLDOWN_TIME"].as<int>();
 }
 
-int ServerConfig::getSpazSpeed() {
-    return getInstance()->root["CHARACTER"]["SPAZ"]["SPEED"].as<int>();
+float ServerConfig::getSpazHorizontalSpeed() {
+    return getInstance()->root["CHARACTER"]["SPAZ"]["HORIZONTAL_SPEED"].as<int>();
 }
 
-int ServerConfig::getSpazSprintSpeed() {
+float ServerConfig::getSpazVerticalSpeed() {
+    return getInstance()->root["CHARACTER"]["SPAZ"]["VERTICAL_SPEED"].as<int>();
+}
+
+float ServerConfig::getSpazSprintSpeed() {
     return getInstance()->root["CHARACTER"]["SPAZ"]["SPRINT_SPEED"].as<int>();
 }
 

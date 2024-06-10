@@ -26,6 +26,7 @@ public:
     CreateGameDTO(Episode episodeName, uint8_t maxPlayers,
                   CharacterType character, std::string gameName, int32_t gameId);
 
+
     CreateGameDTO(const int32_t& playerId, Episode episodeName, uint8_t maxPlayers,
                   CharacterType character, std::string gameName, int32_t gameId);
 

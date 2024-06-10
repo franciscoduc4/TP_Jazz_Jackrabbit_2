@@ -30,28 +30,36 @@ protected:
     GameMap& gameMap;
 
     int16_t maxHealth;
-    int16_t reviveTime;
+    float reviveTime;
     int16_t maxRevived;
     int16_t movesPerCell;
     int16_t timesRevived;
-    int16_t respawnTime;
-    int16_t damageTime;
-    int16_t intoxicatedTime;
 
-    float speed;
-    float sprintSpeed;
-    float jumpHeight;
+    float respawnTime;
+    float damageTime;
+    float intoxicatedTime;
     float shootCooldownTime;
 
-    std::shared_ptr<Weapon> currentWeapon;
+    Vector<float> currentSpeed;
+    Vector<float> currentAcceleration;
+
+    float verticalSpeed;
+    float sprintSpeed;
+    float horizontalSpeed;
+    float jumpHeight;
+
+    std::unique_ptr<Weapon> currentWeapon;
     std::unique_ptr<State> state;
+
+    bool jumping = false;
 
     bool isIntoxicated = false;
     float shootCooldown = 0.0f;
 
 public:
     Character(GameMap& gameMap, Vector<int16_t> pos, int16_t characterId, CharacterType type,
-              float speed, float sprintSpeed, float jumpHeight, float shootCooldownTime);
+              float horizontalSpeed, float sprintSpeed, float verticalSpeed, float jumpHeight,
+              float shootCooldownTime);
 
     void recvDamage(uint16_t damage, float time) override;
     void update(float time);
@@ -84,7 +92,11 @@ public:
     bool characIsIntoxicated() const;
     float getIntoxicatedTime() const;
 
+    WeaponType getCurrentWeaponType();
+
     CharacterType getCharacterType();
+
+    void heal(int32_t healQnt);
 };
 
 #endif  // PLAYER_CHARACTER_H

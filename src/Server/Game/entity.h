@@ -6,6 +6,7 @@
 #include <utility>
 #include <vector>
 
+#include "../../Common/Config/ServerConfig.h"
 #include "../../Common/Types/direction.h"
 #include "../../Common/vector.h"
 
@@ -44,6 +45,8 @@ public:
     bool isAlive() const;
 
     int16_t getDistanceTo(std::shared_ptr<Entity> other) const;
+
+    void heal(int32_t healQnt);
 };
 
 #endif  // ENTITY_H

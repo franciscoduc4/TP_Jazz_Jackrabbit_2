@@ -1,7 +1,8 @@
 #ifndef VECTOR_H
 #define VECTOR_H
 
-#include <math.h>
+#include <cmath>
+#include <iostream>
 
 template <typename T>
 struct Vector {
@@ -46,6 +47,11 @@ struct Vector {
         T dx = x - other.x;
         T dy = y - other.y;
         return std::sqrt(dx * dx + dy * dy);
+    }
+
+    friend std::ostream& operator<<(std::ostream& os, const Vector& vec) {
+        os << "(" << vec.x << ", " << vec.y << ")";
+        return os;
     }
 };
 

@@ -42,22 +42,22 @@ TEST(lobbyServerProtocolTest, testSerializeCreateGame) {
 TEST(lobbyServerProtocolTest, testSerializeJoinGame) {
     Serializer serializer;
     int32_t gameId = 1;
-    int32_t playerId = 2;
     uint8_t currentPlayers = 3;
-    auto dto = std::make_unique<JoinGameDTO>(playerId, gameId, currentPlayers);
+    auto dto = std::make_unique<JoinGameDTO>(gameId, currentPlayers);
 
     std::vector<char> buffer = serializer.serializeJoinGame(dto);
 
-    ASSERT_EQ(buffer.size(), 5);
+    ASSERT_EQ(buffer.size(), 6);
     ASSERT_EQ(buffer[0], static_cast<char>(Command::JOIN_GAME));
 
     int32_t expectedGameId = htonl(gameId);
-    const unsigned char* p1 = reinterpret_cast<const unsigned char*>(&expectedGameId);
+    const unsigned char* p2 = reinterpret_cast<const unsigned char*>(&expectedGameId);
+    ASSERT_EQ(buffer[1], p2[0]);
+    ASSERT_EQ(buffer[2], p2[1]);
+    ASSERT_EQ(buffer[3], p2[2]);
+    ASSERT_EQ(buffer[4], p2[3]);
 
-    ASSERT_EQ(buffer[1], p1[0]);
-    ASSERT_EQ(buffer[2], p1[1]);
-    ASSERT_EQ(buffer[3], p1[2]);
-    ASSERT_EQ(buffer[4], p1[3]);
+    ASSERT_EQ(buffer[5], static_cast<char>(currentPlayers));
 }
 
 
@@ -72,64 +72,83 @@ TEST(lobbyServerProtocolTest, testSerializeGamesList) {
 
     ASSERT_EQ(buffer[0], static_cast<char>(Command::GAMES_LIST));
 
-    // Verificación del primer juego
+    int32_t expectedSize = htonl(gamesList.size());
+    const unsigned char* sizePtr = reinterpret_cast<const unsigned char*>(&expectedSize);
+    ASSERT_EQ(buffer[1], sizePtr[0]);
+    ASSERT_EQ(buffer[2], sizePtr[1]);
+    ASSERT_EQ(buffer[3], sizePtr[2]);
+    ASSERT_EQ(buffer[4], sizePtr[3]);
+
     int32_t expectedGameId1 = htonl(1);
     const unsigned char* p1 = reinterpret_cast<const unsigned char*>(&expectedGameId1);
-    ASSERT_EQ(buffer[1], p1[0]);
-    ASSERT_EQ(buffer[2], p1[1]);
-    ASSERT_EQ(buffer[3], p1[2]);
-    ASSERT_EQ(buffer[4], p1[3]);
+    ASSERT_EQ(buffer[5], p1[0]);
+    ASSERT_EQ(buffer[6], p1[1]);
+    ASSERT_EQ(buffer[7], p1[2]);
+    ASSERT_EQ(buffer[8], p1[3]);
 
-    ASSERT_EQ(buffer[5], 5);  // longitud de "game1"
-    ASSERT_EQ(buffer[6], 'g');
-    ASSERT_EQ(buffer[7], 'a');
-    ASSERT_EQ(buffer[8], 'm');
-    ASSERT_EQ(buffer[9], 'e');
-    ASSERT_EQ(buffer[10], '1');
+    int32_t nameLength1 = htonl(5);
+    const unsigned char* nameLenPtr1 = reinterpret_cast<const unsigned char*>(&nameLength1);
+    ASSERT_EQ(buffer[9], nameLenPtr1[0]);
+    ASSERT_EQ(buffer[10], nameLenPtr1[1]);
+    ASSERT_EQ(buffer[11], nameLenPtr1[2]);
+    ASSERT_EQ(buffer[12], nameLenPtr1[3]);
+
+    ASSERT_EQ(buffer[13], 'g');
+    ASSERT_EQ(buffer[14], 'a');
+    ASSERT_EQ(buffer[15], 'm');
+    ASSERT_EQ(buffer[16], 'e');
+    ASSERT_EQ(buffer[17], '1');
 
     int32_t expectedMaxPlayers1 = htonl(4);
     const unsigned char* mp1 = reinterpret_cast<const unsigned char*>(&expectedMaxPlayers1);
-    ASSERT_EQ(buffer[11], mp1[0]);
-    ASSERT_EQ(buffer[12], mp1[1]);
-    ASSERT_EQ(buffer[13], mp1[2]);
-    ASSERT_EQ(buffer[14], mp1[3]);
+    ASSERT_EQ(buffer[18], mp1[0]);
+    ASSERT_EQ(buffer[19], mp1[1]);
+    ASSERT_EQ(buffer[20], mp1[2]);
+    ASSERT_EQ(buffer[21], mp1[3]);
 
     int32_t expectedCurrentPlayers1 = htonl(2);
     const unsigned char* cp1 = reinterpret_cast<const unsigned char*>(&expectedCurrentPlayers1);
-    ASSERT_EQ(buffer[15], cp1[0]);
-    ASSERT_EQ(buffer[16], cp1[1]);
-    ASSERT_EQ(buffer[17], cp1[2]);
-    ASSERT_EQ(buffer[18], cp1[3]);
+    ASSERT_EQ(buffer[22], cp1[0]);
+    ASSERT_EQ(buffer[23], cp1[1]);
+    ASSERT_EQ(buffer[24], cp1[2]);
+    ASSERT_EQ(buffer[25], cp1[3]);
 
     // Verificación del segundo juego
     int32_t expectedGameId2 = htonl(2);
     const unsigned char* p2 = reinterpret_cast<const unsigned char*>(&expectedGameId2);
-    ASSERT_EQ(buffer[19], p2[0]);
-    ASSERT_EQ(buffer[20], p2[1]);
-    ASSERT_EQ(buffer[21], p2[2]);
-    ASSERT_EQ(buffer[22], p2[3]);
+    ASSERT_EQ(buffer[26], p2[0]);
+    ASSERT_EQ(buffer[27], p2[1]);
+    ASSERT_EQ(buffer[28], p2[2]);
+    ASSERT_EQ(buffer[29], p2[3]);
 
-    ASSERT_EQ(buffer[23], 5);  // longitud de "game2"
-    ASSERT_EQ(buffer[24], 'g');
-    ASSERT_EQ(buffer[25], 'a');
-    ASSERT_EQ(buffer[26], 'm');
-    ASSERT_EQ(buffer[27], 'e');
-    ASSERT_EQ(buffer[28], '2');
+    int32_t nameLength2 = htonl(5);
+    const unsigned char* nameLenPtr2 = reinterpret_cast<const unsigned char*>(&nameLength2);
+    ASSERT_EQ(buffer[30], nameLenPtr2[0]);
+    ASSERT_EQ(buffer[31], nameLenPtr2[1]);
+    ASSERT_EQ(buffer[32], nameLenPtr2[2]);
+    ASSERT_EQ(buffer[33], nameLenPtr2[3]);
+
+    ASSERT_EQ(buffer[34], 'g');
+    ASSERT_EQ(buffer[35], 'a');
+    ASSERT_EQ(buffer[36], 'm');
+    ASSERT_EQ(buffer[37], 'e');
+    ASSERT_EQ(buffer[38], '2');
 
     int32_t expectedMaxPlayers2 = htonl(8);
     const unsigned char* mp2 = reinterpret_cast<const unsigned char*>(&expectedMaxPlayers2);
-    ASSERT_EQ(buffer[29], mp2[0]);
-    ASSERT_EQ(buffer[30], mp2[1]);
-    ASSERT_EQ(buffer[31], mp2[2]);
-    ASSERT_EQ(buffer[32], mp2[3]);
+    ASSERT_EQ(buffer[39], mp2[0]);
+    ASSERT_EQ(buffer[40], mp2[1]);
+    ASSERT_EQ(buffer[41], mp2[2]);
+    ASSERT_EQ(buffer[42], mp2[3]);
 
     int32_t expectedCurrentPlayers2 = htonl(6);
     const unsigned char* cp2 = reinterpret_cast<const unsigned char*>(&expectedCurrentPlayers2);
-    ASSERT_EQ(buffer[33], cp2[0]);
-    ASSERT_EQ(buffer[34], cp2[1]);
-    ASSERT_EQ(buffer[35], cp2[2]);
-    ASSERT_EQ(buffer[36], cp2[3]);
+    ASSERT_EQ(buffer[43], cp2[0]);
+    ASSERT_EQ(buffer[44], cp2[1]);
+    ASSERT_EQ(buffer[45], cp2[2]);
+    ASSERT_EQ(buffer[46], cp2[3]);
 }
+
 
 TEST(lobbyServerProtocolTest, testSerializeStart) {
     Serializer serializer;
