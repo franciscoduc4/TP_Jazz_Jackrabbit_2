@@ -1,5 +1,7 @@
 #include "gamelist.h"
 
+#include <QFile>
+
 #include "ui_gamelist.h"
 #include "waitingroom.h"
 
@@ -10,6 +12,12 @@ GameList::GameList(QWidget* parent, LobbyController& controller, LobbyMessage& m
         msg(msg),
         clientJoinedGame(clientJoinedGame) {
     ui->setupUi(this);
+    QFile file(":/Lobby/Styles/gameslist.qss");
+    file.open(QFile::ReadOnly);
+    QString styleSheet = QLatin1String(file.readAll());
+
+    ui->centralwidget->setStyleSheet(styleSheet);
+    ui->labelTitle->setAttribute(Qt::WA_TranslucentBackground);
 }
 
 GameList::~GameList() { delete ui; }

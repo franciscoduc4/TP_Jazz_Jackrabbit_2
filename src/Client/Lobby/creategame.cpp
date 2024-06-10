@@ -12,6 +12,14 @@ CreateGame::CreateGame(QWidget* parent, LobbyController& controller, LobbyMessag
         msg(msg),
         clientJoinedGame(clientJoinedGame) {
     ui->setupUi(this);
+    QFile file(":/Lobby/Styles/creategame.qss");
+    file.open(QFile::ReadOnly);
+    QString styleSheet = QLatin1String(file.readAll());
+
+    ui->centralwidget->setStyleSheet(styleSheet);
+    ui->labelTitle->setAttribute(Qt::WA_TranslucentBackground);
+    ui->labelName->setAttribute(Qt::WA_TranslucentBackground);
+    ui->labelNumPlayers->setAttribute(Qt::WA_TranslucentBackground);
 }
 
 CreateGame::~CreateGame() { delete ui; }

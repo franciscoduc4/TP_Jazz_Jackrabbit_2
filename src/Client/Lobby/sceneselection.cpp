@@ -18,9 +18,19 @@ SceneSelection::SceneSelection(QWidget* parent, LobbyController& controller, Lob
     QVBoxLayout* layout = new QVBoxLayout(ui->widgetScenes);
     layout->addWidget(sceneSpritesWidget);
     sceneSpritesWidget->show();
+
+    QFile file(":/Lobby/Styles/sceneselection.qss");
+    file.open(QFile::ReadOnly);
+    QString styleSheet = QLatin1String(file.readAll());
+
+    ui->centralwidget->setStyleSheet(styleSheet);
+    ui->labelTitle->setAttribute(Qt::WA_TranslucentBackground);
 }
 
-SceneSelection::~SceneSelection() { delete ui; }
+SceneSelection::~SceneSelection() {
+    delete sceneSpritesWidget;
+    delete ui;
+}
 
 void SceneSelection::on_btnChoose_clicked() {
     // size_t selection = sceneSpritesWidget->getCurrentSpriteIndex();

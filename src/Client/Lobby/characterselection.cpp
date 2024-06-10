@@ -21,9 +21,19 @@ CharacterSelection::CharacterSelection(QWidget* parent, LobbyController& control
     ui->setupUi(this);
     QVBoxLayout* layout = new QVBoxLayout(ui->widgetCharacters);
     layout->addWidget(characterSelectionWidget);
+
+    QFile file(":/Lobby/Styles/characterselection.qss");
+    file.open(QFile::ReadOnly);
+    QString styleSheet = QLatin1String(file.readAll());
+
+    ui->centralwidget->setStyleSheet(styleSheet);
+    ui->labelTitle->setAttribute(Qt::WA_TranslucentBackground);
 }
 
-CharacterSelection::~CharacterSelection() { delete ui; }
+CharacterSelection::~CharacterSelection() {
+    delete characterSelectionWidget;
+    delete ui;
+}
 
 void CharacterSelection::on_btnChoose_clicked() {
     // this->msg.setCharacter(characterSelectionWidget->getCurrentCharacter());
