@@ -14,6 +14,14 @@
    <string>Join Game</string>
   </property>
   <widget class="QWidget" name="centralwidget">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>800</width>
+     <height>600</height>
+    </rect>
+   </property>
    <widget class="QListWidget" name="listGames">
     <property name="geometry">
      <rect>
