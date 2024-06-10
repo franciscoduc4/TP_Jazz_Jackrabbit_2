@@ -22,7 +22,7 @@ std::unique_ptr<CommandDTO> JoinGameHandler::execute(
     CharacterType characterType = command->getCharacterType();
     uint8_t currentPlayers = gameMonitor.getCurrentPlayers(gameId);
     if (gameMonitor.joinGame(playerId, gameId, characterType)) {
-        return std::make_unique<JoinGameDTO>(gameId, currentPlayers);
+        return std::make_unique<JoinGameDTO>(playerId, gameId, currentPlayers);
     } else {
         return nullptr;
     }
