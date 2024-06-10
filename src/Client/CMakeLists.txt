@@ -1,3 +1,8 @@
+# Copy YAML files to the build directory
+file(COPY ${CMAKE_SOURCE_DIR}/../config DESTINATION ${CMAKE_BINARY_DIR})
+
+find_package(yaml-cpp REQUIRED)
+
 set(SDL2PP_WITH_IMAGE ON)
 set(SDL2PP_WITH_MIXER ON)
 set(SDL2PP_WITH_TTF ON)
@@ -77,5 +82,6 @@ file(GLOB_RECURSE CLIENT_SOURCES
 add_executable(jazzclient ${CLIENT_SOURCES} ${UIS_HEADERS} ${CLIENT_RESOURCES_RCC})
 target_link_libraries(jazzclient PUBLIC Qt5::Widgets Qt5::Core gameview)
 target_link_libraries(jazzclient PUBLIC SDL2 SDL2_image)
+target_link_libraries(jazzclient PUBLIC yaml-cpp)
 target_include_directories(jazzclient PRIVATE ${PROJECT_INCLUDE_DIRS})
 set_target_properties(jazzclient PROPERTIES LINK_FLAGS "-lSDL2_image")

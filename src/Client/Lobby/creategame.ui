@@ -14,6 +14,14 @@
    <string>Create Game</string>
   </property>
   <widget class="QWidget" name="centralwidget">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>800</width>
+     <height>600</height>
+    </rect>
+   </property>
    <widget class="QLabel" name="labelTitle">
     <property name="geometry">
      <rect>
@@ -71,25 +79,6 @@
      <string>Cantidad de jugadores</string>
     </property>
    </widget>
-   <widget class="QLabel" name="labelWaitTime">
-    <property name="geometry">
-     <rect>
-      <x>40</x>
-      <y>400</y>
-      <width>541</width>
-      <height>41</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <family>Jazz Jackrabbit 2</family>
-      <pointsize>24</pointsize>
-     </font>
-    </property>
-    <property name="text">
-     <string>Tiempo máximo de espera (min)</string>
-    </property>
-   </widget>
    <widget class="QSpinBox" name="numPlayers">
     <property name="geometry">
      <rect>
@@ -110,28 +99,6 @@
     </property>
     <property name="maximum">
      <number>5</number>
-    </property>
-   </widget>
-   <widget class="QSpinBox" name="waitTime">
-    <property name="geometry">
-     <rect>
-      <x>600</x>
-      <y>400</y>
-      <width>71</width>
-      <height>51</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <family>Jazz Jackrabbit 2</family>
-      <pointsize>24</pointsize>
-     </font>
-    </property>
-    <property name="minimum">
-     <number>1</number>
-    </property>
-    <property name="maximum">
-     <number>3</number>
     </property>
    </widget>
    <widget class="QLineEdit" name="gameName">
@@ -198,7 +165,7 @@
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>23</height>
+     <height>0</height>
     </rect>
    </property>
   </widget>

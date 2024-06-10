@@ -6,10 +6,10 @@
 #include "lobby.h"
 #include "ui_welcome.h"
 
-Welcome::Welcome(QWidget* parent, Client& client, LobbyMessage& msg, bool& clientJoinedGame):
+Welcome::Welcome(QWidget* parent, LobbyController& controller, LobbyMessage& msg, bool& clientJoinedGame):
         QMainWindow(parent),
         ui(new Ui::Welcome),
-        client(client),
+        controller(controller),
         msg(msg),
         clientJoinedGame(clientJoinedGame) {
     ui->setupUi(this);
@@ -36,7 +36,7 @@ void Welcome::on_btnIngresar_clicked() {
 
     this->hide();
 
-    Lobby lobby(this, this->client, this->msg, this->clientJoinedGame);
+    Lobby lobby(this, this->controller, this->msg, this->clientJoinedGame);
     lobby.setModal(true);
     lobby.exec();
 }

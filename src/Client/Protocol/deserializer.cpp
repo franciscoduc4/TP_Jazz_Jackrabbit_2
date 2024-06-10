@@ -4,6 +4,7 @@
 #include <map>
 #include <memory>
 #include <vector>
+#include <iostream>
 
 #include "../Common/DTO/dto.h"
 #include "../Common/Types/episode.h"
@@ -18,10 +19,28 @@
 #include "../../Common/DTO/tile.h"
 #include "../../Common/Types/entity.h"
 
-#include <iostream>
+Deserializer::Deserializer(std::shared_ptr<Queue<std::unique_ptr<DTO>>>& lobbyQueue, std::shared_ptr<Queue<std::unique_ptr<DTO>>>& gameQueue) :
+        lobbyQueue(lobbyQueue), gameQueue(gameQueue) {}
 
+void Deserializer::deserialize_lobbyMsg(std::unique_ptr<DTO>& dto) {
+    lobbyQueue->push(std::move(dto));
+}
 
-Deserializer::Deserializer(std::shared_ptr<Queue<std::unique_ptr<DTO>>>& queue): queue(queue) {}
+void Deserializer::deserialize_gameMsg(std::unique_ptr<DTO>& dto) {
+    gameQueue->push(std::move(dto));
+}
+
+/*
+std::map<int32_t, std::vector<GameInfo>> Deserializer::getGamesList(std::unique_ptr<DTO>& dto) {
+    std::map<int32_t, std::vector<GameInfo>> gamesList;
+    auto* gamesListDTO = dynamic_cast<GamesListDTO*>(dto.get());
+    for (auto& game : gamesListDTO->getGamesList()) {
+        gamesList[game.getGameId()] = GameListInfo(game.getGameName(), game.getEpisode(), game.getMaxPlayers(),
+                                                   game.getPlayers(), game.getGameMode());
+    }
+    return gamesList;
+}
+*/
 
 void Deserializer::deserialize_msg(Command cmd, std::vector<char>& buffer) { 
     switch (cmd) {
@@ -184,6 +203,6 @@ void Deserializer::receiveSnapshot(std::vector<char>& buffer) {
         tiles.push_back(tile);
     }
     //std::unique_ptr<DTO> game = std::make_unique<GameDTO>(players, enemies, bullets, items, weapons, tiles);
-    queue->push(std::make_unique<GameDTO>(players, enemies, bullets, items, weapons, tiles));
+    gameQueue->push(std::make_unique<GameDTO>(players, enemies, bullets, items, weapons, tiles));
     
 } 

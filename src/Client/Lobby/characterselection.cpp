@@ -1,17 +1,19 @@
 #include "characterselection.h"
 
 #include "../../Common/Types/character.h"
-#include "../Common/Constants/lobbyCommands.h"
+#include "../../Common/Types/lobbyMessage.h"
 
 #include "gamelist.h"
 #include "ui_characterselection.h"
 #include "waitingroom.h"
 
-CharacterSelection::CharacterSelection(QWidget* parent, Client& client, LobbyMessage& msg,
+#include <QMessageBox>
+
+CharacterSelection::CharacterSelection(QWidget* parent, LobbyController& controller, LobbyMessage& msg,
                                        bool& clientJoinedGame):
         QDialog(parent),
         ui(new Ui::CharacterSelection),
-        client(client),
+        controller(controller),
         msg(msg),
         clientJoinedGame(clientJoinedGame),
         characterSelectionWidget(
@@ -19,28 +21,39 @@ CharacterSelection::CharacterSelection(QWidget* parent, Client& client, LobbyMes
     ui->setupUi(this);
     QVBoxLayout* layout = new QVBoxLayout(ui->widgetCharacters);
     layout->addWidget(characterSelectionWidget);
+
+    QFile file(":/Lobby/Styles/characterselection.qss");
+    file.open(QFile::ReadOnly);
+    QString styleSheet = QLatin1String(file.readAll());
+
+    ui->centralwidget->setStyleSheet(styleSheet);
+    ui->labelTitle->setAttribute(Qt::WA_TranslucentBackground);
 }
 
-CharacterSelection::~CharacterSelection() { delete ui; }
+CharacterSelection::~CharacterSelection() {
+    delete characterSelectionWidget;
+    delete ui;
+}
 
 void CharacterSelection::on_btnChoose_clicked() {
-    /*
-    this->msg.setCharacter(characterSelectionWidget->getCurrentCharacter());
-    this->client.sendCharacterSelection(this->msg);
-    if (this->msg.isCreateGame()) {
-        WaitingRoom* wr = new WaitingRoom(this, this->client, this->msg, this->clientJoinedGame);
-        wr->show();
+    // this->msg.setCharacter(characterSelectionWidget->getCurrentCharacter());
+    // this->controller.sendCharacterSelection(this->msg);
+    this->hide();
+    if (this->msg.getLobbyCmd() == Command::CREATE_GAME) {
+        WaitingRoom wr(this, this->controller, this->msg, this->clientJoinedGame);
+        wr.setModal(true);
+        wr.exec();
         this->close();
-    } else if (this->msg.isJoinGame()) {
-        GameList* gl = new GameList(this, this->client, this->msg, this->clientJoinedGame);
-        gl->show();
+    } else if (this->msg.getLobbyCmd() == Command::JOIN_GAME) {
+        GameList gl(this, this->controller, this->msg, this->clientJoinedGame);
+        gl.setModal(true);
+        gl.exec();
         this->close();
     } else {
         // Este caso no debería suceder.
-        QMessageBox::warning(this, "Ocurrió un error inesperado.", "Error");
+        QMessageBox::warning(this, "Error", "Ocurrió un error inesperado.");
         return;
     }
-    */
 }
 
 

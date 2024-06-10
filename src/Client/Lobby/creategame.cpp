@@ -5,33 +5,42 @@
 #include "characterselection.h"
 #include "ui_creategame.h"
 
-CreateGame::CreateGame(QWidget* parent, Client& client, LobbyMessage& msg, bool& clientJoinedGame):
+CreateGame::CreateGame(QWidget* parent, LobbyController& controller, LobbyMessage& msg, bool& clientJoinedGame):
         QDialog(parent),
         ui(new Ui::CreateGame),
-        client(client),
+        controller(controller),
         msg(msg),
         clientJoinedGame(clientJoinedGame) {
     ui->setupUi(this);
+    QFile file(":/Lobby/Styles/creategame.qss");
+    file.open(QFile::ReadOnly);
+    QString styleSheet = QLatin1String(file.readAll());
+
+    ui->centralwidget->setStyleSheet(styleSheet);
+    ui->labelTitle->setAttribute(Qt::WA_TranslucentBackground);
+    ui->labelName->setAttribute(Qt::WA_TranslucentBackground);
+    ui->labelNumPlayers->setAttribute(Qt::WA_TranslucentBackground);
 }
 
 CreateGame::~CreateGame() { delete ui; }
 
 void CreateGame::on_btnCreate_clicked() {
+
     QString gameName = ui->gameName->text();
     int numPlayers = ui->numPlayers->value();
-    int waitTime = ui->waitTime->value();
 
     if (gameName.isEmpty()) {
-        QMessageBox::warning(this, "Ingrese un nombre para la partida", "Error");
+        QMessageBox::warning(this, "Error", "Ingrese un nombre para la partida");
         return;
     }
     this->msg.setGameName(gameName.toStdString());
     this->msg.setMaxPlayers(numPlayers);
-    this->msg.setWaitTime(waitTime);
 
-    CharacterSelection* cs =
-            new CharacterSelection(this, this->client, this->msg, this->clientJoinedGame);
-    cs->show();
+    this->hide();
+
+    CharacterSelection cs(this, this->controller, this->msg, this->clientJoinedGame);
+    cs.setModal(true);
+    cs.exec();
     this->close();
 }
 
@@ -39,7 +48,6 @@ void CreateGame::on_btnCreate_clicked() {
 void CreateGame::on_btnBack_clicked() {
     this->msg.setGameName("");
     this->msg.setMaxPlayers(0);
-    this->msg.setWaitTime(0);
 
     this->hide();
 

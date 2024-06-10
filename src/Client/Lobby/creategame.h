@@ -3,8 +3,8 @@
 
 #include <QDialog>
 
+#include "../../Common/Types/lobbyMessage.h"
 #include "../client.h"
-#include "../Protocol/Types/lobbyMessage.h"
 
 namespace Ui {
 class CreateGame;
@@ -16,7 +16,7 @@ class CreateGame : public QDialog
     
 
 public:
-    explicit CreateGame(QWidget *parent, Client& client, LobbyMessage& msg, bool& clientJoinedGame);
+    explicit CreateGame(QWidget *parent, LobbyController& controller, LobbyMessage& msg, bool& clientJoinedGame);
     ~CreateGame();
 
 private slots:
@@ -26,7 +26,7 @@ private slots:
 
 private:
     Ui::CreateGame *ui;
-    Client& client;
+    LobbyController& controller;
     LobbyMessage& msg;
     bool& clientJoinedGame;
 };

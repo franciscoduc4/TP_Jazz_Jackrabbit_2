@@ -12,25 +12,24 @@
 
 class CreateGameDTO: public CommandDTO {
 private:
-    int32_t playerId;
     Episode episodeName;
     GameMode gameMode;
     uint8_t maxPlayers;
     CharacterType characterType;
     std::string gameName;
     int32_t gameId;
+    GameMode mode;
 
 public:
-    explicit CreateGameDTO(int32_t gameId);
+    explicit CreateGameDTO(const int32_t& gameId);
 
-    CreateGameDTO(Episode episodeName, GameMode gameMode, uint8_t maxPlayers,
-                  CharacterType character, std::string gameName);
+    CreateGameDTO(Episode episodeName, uint8_t maxPlayers,
+                  CharacterType character, std::string gameName, int32_t gameId);
 
-    int32_t getPlayerId() const;
+    CreateGameDTO(const int32_t& playerId, Episode episodeName, uint8_t maxPlayers,
+                  CharacterType character, std::string gameName, int32_t gameId);
 
     Episode getEpisodeName() const;
-
-    GameMode getGameMode() const;
 
     int32_t getGameId() const;
 
@@ -39,6 +38,10 @@ public:
     CharacterType getCharacterType() const;
 
     std::string getGameName() const;
+
+    std::vector<char> getData() const;
+
+    GameMode getGameMode() const;
 
     virtual ~CreateGameDTO() {}
 };

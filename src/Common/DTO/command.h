@@ -23,13 +23,15 @@ public:
 
     explicit CommandDTO(Command command);
 
-    CommandDTO(int32_t& playerId, Command command);
+    CommandDTO(const int32_t& playerId, Command command);
+
+    int32_t getPlayerId() const;
 
     Command getCommand() const;
 
-    int getPlayerId() const;
-
     DTOType getType() const;
+
+    virtual std::vector<char> getData() const;
 
     virtual ~CommandDTO() {}
 };

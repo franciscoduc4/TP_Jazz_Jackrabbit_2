@@ -3,8 +3,9 @@
 
 #include <QDialog>
 
+#include "../../Common/Config/ClientConfig.h"
+#include "../../Common/Types/lobbyMessage.h"
 #include "../client.h"
-#include "../Protocol/Types/lobbyMessage.h"
 #include "./SelectWidgets/characterselectionwidget.h"
 
 namespace Ui {
@@ -17,7 +18,7 @@ class CharacterSelection : public QDialog
     
 
 public:
-    explicit CharacterSelection(QWidget *parent, Client& client, LobbyMessage& msg, bool& clientJoinedGame);
+    explicit CharacterSelection(QWidget *parent, LobbyController& controller, LobbyMessage& msg, bool& clientJoinedGame);
     ~CharacterSelection();
 
 private slots:
@@ -27,7 +28,7 @@ private slots:
 
 private:
     Ui::CharacterSelection *ui;
-    Client& client;
+    LobbyController& controller;
     LobbyMessage& msg;
     bool& clientJoinedGame;
     CharacterSelectionWidget* characterSelectionWidget;

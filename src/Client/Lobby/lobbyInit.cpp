@@ -1,13 +1,13 @@
 #include <QApplication>
 
-#include "../Protocol/Types/lobbyMessage.h"
+#include "../../Common/Types/lobbyMessage.h"
 #include "../client.h"
 
 #include "welcome.h"
 
 LobbyInit::LobbyInit() {}
 
-bool LobbyInit::launchQT(Client& client, bool& clientJoinedGame) {
+bool LobbyInit::launchQT(LobbyController& controller, bool& clientJoinedGame) {
     LobbyMessage msg;
 
     int argc = 0;
@@ -16,7 +16,7 @@ bool LobbyInit::launchQT(Client& client, bool& clientJoinedGame) {
 
     QApplication a(argc, argv);
 
-    Welcome w(nullptr, client, msg, clientJoinedGame);
+    Welcome w(nullptr, controller, msg, clientJoinedGame);
     w.show();
     a.exec();
 
