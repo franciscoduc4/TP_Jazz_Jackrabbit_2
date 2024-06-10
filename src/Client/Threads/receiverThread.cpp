@@ -1,4 +1,5 @@
 #include "./receiverThread.h"
+#include "../../Common/Types/command.h"
 
 #include <netinet/in.h>
 
@@ -116,4 +117,4 @@ void ReceiverThread::run() {
             }
         }
     }
-}
+}   

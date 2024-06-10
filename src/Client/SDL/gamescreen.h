@@ -7,26 +7,33 @@
 #include "../../Common/DTO/game.h"
 #include "../../Common/queue.h"
 
+#include "../../Common/Config/ClientConfig.h"
+
 #include "enemy.h"
 #include "player.h"
 #include "points.h"
+#include "level.h"
+#include "interface.h"
 
 class GameScreen {
     Player pj;
+    /*
     Enemy turtle;
     Enemy schartz_guard;
     Enemy yellowM;
-    Points points;
-
-
-    /*
-    Client& client;
-    bool state;
     */
-public:
-    GameScreen(int character);
+    Enemy enemies;
+    Points points;
+    Level level;
+    Interface stats;
 
-    // explicit GameScreen(Client& player);
+	//ClientConfig* config;
+    Client& client;
+
+public:
+    //GameScreen(int character);
+
+    explicit GameScreen(Client& player);
 
     void run();
 };

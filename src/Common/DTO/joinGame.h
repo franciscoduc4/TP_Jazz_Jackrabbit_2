@@ -11,6 +11,7 @@ class JoinGameDTO: public CommandDTO {
 private:
     int32_t gameId;
     CharacterType characterType;
+    uint8_t currentPlayers;
     bool joined;
 
 public:

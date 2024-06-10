@@ -2,7 +2,6 @@
 #define DESERIALIZER_H
 
 #include <cstdint>
-#include <map>
 #include <memory>
 #include <vector>
 
@@ -25,6 +24,10 @@ public:
     void deserialize_gameMsg(std::unique_ptr<DTO>& dto);
 
     std::map<int32_t, std::vector<GameInfo>> getGamesList(std::unique_ptr<DTO>& dto);
+  
+    void deserialize_msg(Command cmd, std::vector<char>& buffer);
+
+    void receiveSnapshot(std::vector<char>& buffer);
 };
 
 #endif

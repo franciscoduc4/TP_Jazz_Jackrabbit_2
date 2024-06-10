@@ -145,7 +145,6 @@ void Character::switchWeapon(WeaponType type) {
 
 
 void Character::moveRight() {
-    auto position = getPosition();
     auto mapPosition = getMapPosition(movesPerCell);
     gameMap.moveObject(pos, mapPosition, Direction::RIGHT);
 }

@@ -3,6 +3,7 @@
 
 #include <SDL2pp/SDL2pp.hh>
 #include "../../Common/sprite.h"
+#include "../../Common/DTO/bullet.h"
 
 #include <map>
 #include <list>
@@ -19,7 +20,7 @@ class Projectile {
 	int width_fire;
 	int height_fire;
 	
-	std::list<RectangularSprite> sprites;
+	std::map<int, std::list<RectangularSprite>> sprites;
 			
 	
 	
@@ -28,6 +29,6 @@ public:
 
 	std::list<RectangularSprite>::iterator img_coords();
 	
-	bool draw_projectile(SDL2pp::Window& window, SDL2pp::Renderer& renderer, SDL2pp::Texture& projectile);
+	bool draw_projectile(SDL2pp::Window& window, SDL2pp::Renderer& renderer, SDL2pp::Texture& projectile, std::vector<BulletDTO>& bullets);
 };
 #endif

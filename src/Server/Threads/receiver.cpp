@@ -2,6 +2,7 @@
 
 #include <memory>
 #include <utility>
+
 #include "../../Common/DTO/lobby.h"
 #include "../CommandHandlers/Game/gameCommand.h"
 
@@ -21,9 +22,9 @@ ReceiverThread::ReceiverThread(std::shared_ptr<Socket> socket, std::atomic<bool>
 void ReceiverThread::run() {
     while (inGame) {
         try {
-            
-            std::unique_ptr<CommandDTO> command = deserializer.getCommand(wasClosed, playerId);
-            recvQueue->push(std::move(command));
+
+            std::unique_ptr<CommandDTO> commandDTO = deserializer.getCommand(wasClosed, playerId);
+            recvQueue->push(std::move(commandDTO));
         } catch (const std::exception& e) {
             if (wasClosed) {
                 return;
@@ -31,5 +32,3 @@ void ReceiverThread::run() {
         }
     }
 }
-
-

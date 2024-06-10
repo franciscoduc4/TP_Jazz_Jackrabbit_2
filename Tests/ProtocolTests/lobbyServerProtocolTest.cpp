@@ -1,15 +1,15 @@
 #include <cstdint>
+#include <cstring>
 #include <memory>
 
 #include <arpa/inet.h>
 #include <gtest/gtest.h>
-#include <cstring>
 
+#include "../../src//Common/Types/character.h"
 #include "../../src/Common/DTO/command.h"
 #include "../../src/Common/DTO/createGame.h"
 #include "../../src/Common/DTO/gamesList.h"
 #include "../../src/Common/DTO/joinGame.h"
-#include "../../src//Common/Types/character.h"
 #include "../../src/Common/Types/command.h"
 #include "../../src/Common/Types/episode.h"
 #include "../../src/Common/Types/gameMode.h"
@@ -20,7 +20,6 @@
 #include "../../src/Server/Threads/receiver.h"
 
 
-
 TEST(lobbyServerProtocolTest, testSerializeCreateGame) {
     Serializer serializer;
     int32_t gameId = 1;
@@ -28,10 +27,9 @@ TEST(lobbyServerProtocolTest, testSerializeCreateGame) {
 
     std::vector<char> buffer = serializer.serializeCreateGame(dto);
 
-
     ASSERT_EQ(buffer.size(), 5);
     ASSERT_EQ(buffer[0], static_cast<char>(Command::CREATE_GAME));
-    
+
     int32_t expectedGameId = htonl(gameId);
     const unsigned char* p = reinterpret_cast<const unsigned char*>(&expectedGameId);
 
@@ -45,8 +43,8 @@ TEST(lobbyServerProtocolTest, testSerializeJoinGame) {
     Serializer serializer;
     int32_t gameId = 1;
     int32_t playerId = 2;
-    CharacterType characterType = CharacterType::JAZZ;
-    auto dto = std::make_unique<JoinGameDTO>(playerId, gameId, characterType);
+    uint8_t currentPlayers = 3;
+    auto dto = std::make_unique<JoinGameDTO>(playerId, gameId, currentPlayers);
 
     std::vector<char> buffer = serializer.serializeJoinGame(dto);
 
@@ -61,7 +59,6 @@ TEST(lobbyServerProtocolTest, testSerializeJoinGame) {
     ASSERT_EQ(buffer[3], p1[2]);
     ASSERT_EQ(buffer[4], p1[3]);
 }
-
 
 
 TEST(lobbyServerProtocolTest, testSerializeGamesList) {
@@ -147,7 +144,6 @@ TEST(lobbyServerProtocolTest, testSerializeStart) {
 }
 
 
-
 // class MockDeserializer : public Deserializer {
 // public:
 //     MockDeserializer(const std::vector<char>& inputData)
@@ -190,7 +186,8 @@ TEST(lobbyServerProtocolTest, testSerializeStart) {
 //     int32_t playerId = 1;
 
 //     MockDeserializer deserializer(inputData);
-//     std::unique_ptr<CommandDTO> deserializedCommand = deserializer.getCommand(wasClosed, playerId);
+//     std::unique_ptr<CommandDTO> deserializedCommand = deserializer.getCommand(wasClosed,
+//     playerId);
 
 //     auto deserializedCreateGameDTO = dynamic_cast<CreateGameDTO*>(deserializedCommand.get());
 //     ASSERT_NE(deserializedCreateGameDTO, nullptr);
@@ -202,8 +199,6 @@ TEST(lobbyServerProtocolTest, testSerializeStart) {
 //     EXPECT_EQ(deserializedCreateGameDTO->getGameName(), gameName);
 //     EXPECT_EQ(deserializedCreateGameDTO->getGameId(), ntohl(gameId));
 // }
-
-
 
 
 // TEST(lobbyServerProtocolTest, testDeserializeJoinGame) {
@@ -220,7 +215,8 @@ TEST(lobbyServerProtocolTest, testSerializeStart) {
 
 //     MockDeserializer deserializer(inputData);
 
-//     std::unique_ptr<CommandDTO> deserializedCommand = deserializer.getCommand(wasClosed, playerId);
+//     std::unique_ptr<CommandDTO> deserializedCommand = deserializer.getCommand(wasClosed,
+//     playerId);
 
 //     auto deserializedJoinGameDTO = dynamic_cast<JoinGameDTO*>(deserializedCommand.get());
 //     ASSERT_NE(deserializedJoinGameDTO, nullptr);
@@ -228,7 +224,6 @@ TEST(lobbyServerProtocolTest, testSerializeStart) {
 //     EXPECT_EQ(deserializedJoinGameDTO->getGameId(), ntohl(gameId));
 //     EXPECT_EQ(deserializedJoinGameDTO->getCharacterType(), CharacterType::JAZZ);
 // }
-
 
 
 // TEST(lobbyServerProtocolTest, testDeserializeGamesList) {
@@ -241,7 +236,8 @@ TEST(lobbyServerProtocolTest, testSerializeStart) {
 
 //     MockDeserializer deserializer(inputData);
 
-//     std::unique_ptr<CommandDTO> deserializedCommand = deserializer.getCommand(wasClosed, playerId);
+//     std::unique_ptr<CommandDTO> deserializedCommand = deserializer.getCommand(wasClosed,
+//     playerId);
 
 //     auto deserializedGamesListDTO = dynamic_cast<CommandDTO*>(deserializedCommand.get());
 //     ASSERT_NE(deserializedGamesListDTO, nullptr);
@@ -262,12 +258,11 @@ TEST(lobbyServerProtocolTest, testSerializeStart) {
 
 //     MockDeserializer deserializer(inputData);
 
-//     std::unique_ptr<CommandDTO> deserializedCommand = deserializer.getCommand(wasClosed, playerId);
+//     std::unique_ptr<CommandDTO> deserializedCommand = deserializer.getCommand(wasClosed,
+//     playerId);
 
 //     auto deserializedStartGameDTO = dynamic_cast<StartGameDTO*>(deserializedCommand.get());
 //     ASSERT_NE(deserializedStartGameDTO, nullptr);
 
 //     EXPECT_EQ(deserializedStartGameDTO->getGameId(), ntohl(gameId));
 // }
-
-

@@ -1,6 +1,7 @@
 #include "player.h"
 
-PlayerDTO::PlayerDTO(uint16_t x, uint16_t y, uint32_t playerId, int health, int damage, int speed, WeaponDTO currentWeapon, CharacterType type):
+PlayerDTO::PlayerDTO(uint16_t x, uint16_t y, uint32_t playerId, int health, int damage, int speed,
+                     WeaponDTO currentWeapon, CharacterType type, CharacterStateEntity state):
         x(x),
         y(y),
         player_id(playerId),
@@ -11,7 +12,8 @@ PlayerDTO::PlayerDTO(uint16_t x, uint16_t y, uint32_t playerId, int health, int 
         respawnTime(0),
         weapons(),
         currentWeapon(currentWeapon),
-        type(type) {}
+        type(type),
+        state(state) {}
 
 
 uint32_t PlayerDTO::getPlayerId() const { return player_id; }
@@ -35,3 +37,5 @@ void PlayerDTO::setRespawnTime(int time) { respawnTime = time; }
 int PlayerDTO::getRespawnTime() const { return respawnTime; }
 
 CharacterType PlayerDTO::getType() const { return type; }
+
+CharacterStateEntity PlayerDTO::getState() const { return state; }

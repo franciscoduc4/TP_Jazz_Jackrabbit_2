@@ -13,7 +13,9 @@ Game::Game(int32_t gameId, std::string gameName, int32_t playerId, Episode episo
         maxPlayers(maxPlayers),
         gameMap({100, 100}),
         currentPlayers(1),
-        gameLoop(recvQueue, queueMonitor, gameMap) {}
+        gameLoop(recvQueue, queueMonitor, gameMap) {
+    gameMap.addCharacter(playerId, characterType, {});
+}
 
 std::string Game::getGameName() const { return gameName; }
 

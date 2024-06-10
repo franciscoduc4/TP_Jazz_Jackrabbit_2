@@ -1,4 +1,7 @@
 #include "./client.h"
+#include "./SDL/gamescreen.h"
+#include "../Common/Types/direction.h"
+#include "../Common/DTO/move.h"
 
 Client::Client(char* ip, char* port):
         ip(ip),
@@ -13,7 +16,8 @@ Client::Client(char* ip, char* port):
         deserializer(this->lobbyQueue, this->gameQueue),
         receiver(this->deserializer, this->skt, this->was_closed),
         lobbyController(this->serializer, this->deserializer, this->lobbyQueue),
-        gameController(this->serializer, this->deserializer, this->gameQueue) {
+        gameController(this->serializer, this->deserializer, this->gameQueue),
+        playerId(-1) {
     this->sender.start();
     this->receiver.start();
 }
@@ -24,36 +28,42 @@ void Client::start() {
         LobbyInit init;
         clientJoinedGame = init.launchQT(this->lobbyController, (bool&) clientJoinedGame);
 
-        if (!clientJoinedGame) {
-            break;
-        }
+      if (!clientJoinedGame) {
+          return;
+      }
+      // TODO: Continue with SDL.
 
-        // TODO: Continue with SDL.
-        
-        GameScreen game(0);
-        game.run();
-
+      GameScreen game(*this);
+      // GameScreen game(this->gameController);
+      game.run();
     } while (clientJoinedGame);
+
 }
 
-// std::unique_ptr<DTO> Client::getServerMsg() { return receiverQueue->pop(); }
+std::unique_ptr<DTO> Client::getServerMsg() { 
+	std::unique_ptr<DTO> dto;
+	receiverQueue->try_pop(dto);
+	return dto; 
+}
 
-/*
 void Client::sendMsg(Command& cmd, std::vector<uint8_t>& parameters) {
     switch (cmd) {
         case Command::MOVE:
             move_msg(parameters);
+       		break;
+       	case Command::SHOOT:
+       		shoot_msg();
+       		break;
     }
 }
 
 void Client::move_msg(std::vector<uint8_t>& parameters) {
-    Direction dir = static_cast<int32_t>(parameters[0]);
-    MoveDTO move(this->playerId, dir);
+    Direction dir = static_cast<Direction>(parameters[0]);
+    std::unique_ptr<DTO> move = std::make_unique<MoveDTO>(this->playerId, dir);
     serializer.sendMsg(move);
 }
 
-
-
+/*
 std::map<int32_t, GameInfo> Client::requestGameList(const LobbyMessage& msg) {
     std::map<int32_t, GameInfo> gameMap;
     this->serializer.serializeLobbyMessage(msg);
@@ -70,3 +80,8 @@ std::map<int32_t, GameInfo> Client::requestGameList(const LobbyMessage& msg) {
 }
 
 */
+
+void Client::shoot_msg() {
+	std::unique_ptr<DTO> shoot = std::make_unique<CommandDTO>(this->playerId, Command::SHOOT);
+	serializer.sendMsg(shoot);
+}

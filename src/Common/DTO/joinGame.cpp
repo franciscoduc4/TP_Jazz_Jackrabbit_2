@@ -8,6 +8,7 @@ JoinGameDTO::JoinGameDTO(const int32_t& playerId, const int32_t& gameId, Charact
 
 JoinGameDTO::JoinGameDTO(bool status): CommandDTO(-1, Command::JOIN_GAME), gameId(-1), characterType(CharacterType::INVALID), joined(status) {}
 
+
 int32_t JoinGameDTO::getGameId() const { return gameId; }
 
 CharacterType JoinGameDTO::getCharacterType() const { return characterType; }
