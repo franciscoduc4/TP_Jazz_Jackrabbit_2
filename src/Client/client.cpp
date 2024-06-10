@@ -32,6 +32,19 @@ void Client::start() {
           return;
       }
       // TODO: Continue with SDL.
+      // START - TESTING SKIP QT
+      LobbyMessage msg;
+      msg.setCharacter(CharacterType::JAZZ);
+      msg.setEpisode(Episode::JAZZ_IN_TIME);
+      msg.setGameId(1);
+      msg.setGameName("Dummy");
+      msg.setLobbyCmd(Command::CREATE_GAME);
+      msg.setMaxPlayers(1);
+      msg.setPlayerName("Test");
+
+      this->lobbyController.sendRequest(msg);
+      this->lobbyController.startGame(msg);
+      // END - TESTING SKIP QT
 
       GameScreen game(*this);
       // GameScreen game(this->gameController);
@@ -58,7 +71,7 @@ void Client::sendMsg(Command& cmd, std::vector<uint8_t>& parameters) {
 }
 
 void Client::move_msg(std::vector<uint8_t>& parameters) {
-    Direction dir = static_cast<Direction>(parameters[0]);
+    auto dir = static_cast<Direction>(parameters[0]);
     std::unique_ptr<DTO> move = std::make_unique<MoveDTO>(this->playerId, dir);
     serializer.sendMsg(move);
 }
