@@ -42,7 +42,7 @@ void Client::start() {
 
 std::unique_ptr<DTO> Client::getServerMsg() { 
 	std::unique_ptr<DTO> dto;
-	receiverQueue->try_pop(dto);
+	gameQueue->try_pop(dto);
 	return dto; 
 }
 

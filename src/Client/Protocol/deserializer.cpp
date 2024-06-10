@@ -42,8 +42,6 @@ std::map<int32_t, std::vector<GameInfo>> Deserializer::getGamesList(std::unique_
 }
 */
 
-Deserializer::Deserializer(std::shared_ptr<Queue<std::unique_ptr<DTO>>>& queue): queue(queue) {}
-
 void Deserializer::deserialize_msg(Command cmd, std::vector<char>& buffer) { 
     switch (cmd) {
         case Command::CREATE_GAME:
@@ -205,6 +203,6 @@ void Deserializer::receiveSnapshot(std::vector<char>& buffer) {
         tiles.push_back(tile);
     }
     //std::unique_ptr<DTO> game = std::make_unique<GameDTO>(players, enemies, bullets, items, weapons, tiles);
-    queue->push(std::make_unique<GameDTO>(players, enemies, bullets, items, weapons, tiles));
+    gameQueue->push(std::make_unique<GameDTO>(players, enemies, bullets, items, weapons, tiles));
     
 } 

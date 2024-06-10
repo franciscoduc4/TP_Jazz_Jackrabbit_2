@@ -1,12 +1,16 @@
 #include "joinGame.h"
 
 JoinGameDTO::JoinGameDTO(const int32_t& gameId, CharacterType characterType):
-        CommandDTO(-1, Command::JOIN_GAME), gameId(gameId), characterType(characterType), joined(false) {}
+        CommandDTO(-1, Command::JOIN_GAME), gameId(gameId), characterType(characterType), currentPlayers(0), joined(false) {}
 
 JoinGameDTO::JoinGameDTO(const int32_t& playerId, const int32_t& gameId, CharacterType characterType):
-        CommandDTO(playerId, Command::JOIN_GAME), gameId(gameId), characterType(characterType), joined(false) {}
+        CommandDTO(playerId, Command::JOIN_GAME), gameId(gameId), characterType(characterType), currentPlayers(0), joined(false) {}
 
-JoinGameDTO::JoinGameDTO(bool status): CommandDTO(-1, Command::JOIN_GAME), gameId(-1), characterType(CharacterType::INVALID), joined(status) {}
+JoinGameDTO::JoinGameDTO(const int32_t& playerId, const int32_t& gameId, const uint8_t& currentPlayers) : CommandDTO(playerId, Command::JOIN_GAME), gameId(gameId), characterType(CharacterType::INVALID), currentPlayers(currentPlayers), joined(false) {}
+
+JoinGameDTO::JoinGameDTO(const int32_t& playerId, const int32_t& gameId, const uint8_t& currentPlayers, CharacterType characterType) : CommandDTO(playerId, Command::JOIN_GAME), gameId(gameId), characterType(characterType), currentPlayers(currentPlayers), joined(false) {}
+
+JoinGameDTO::JoinGameDTO(bool status): CommandDTO(-1, Command::JOIN_GAME), gameId(-1), characterType(CharacterType::INVALID), currentPlayers(0), joined(status) {}
 
 
 int32_t JoinGameDTO::getGameId() const { return gameId; }
@@ -14,6 +18,10 @@ int32_t JoinGameDTO::getGameId() const { return gameId; }
 CharacterType JoinGameDTO::getCharacterType() const { return characterType; }
 
 bool JoinGameDTO::getJoined() const { return joined; }
+
+uint8_t JoinGameDTO::getCurrentPlayers() const {
+    return currentPlayers;
+}
 
 std::vector<char> JoinGameDTO::getData() const {
     std::vector<char> data;

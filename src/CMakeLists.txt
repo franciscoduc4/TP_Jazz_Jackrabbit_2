@@ -59,7 +59,8 @@ if(CLIENT)
             Client/Controllers/LobbyController.h
             Client/Controllers/LobbyController.cpp
             Client/Controllers/GameController.cpp
-            Client/Controllers/GameController.h)
+            Client/Controllers/GameController.h
+            Client/SDL/level.cpp)
     target_link_libraries(jazzclient common Qt5::Widgets Qt5::Core SDL2 SDL2pp SDL2_image yaml-cpp fmt::fmt -pthread)
     target_include_directories(jazzclient PUBLIC ${PROJECT_SOURCE_DIR}/src/Common)
 

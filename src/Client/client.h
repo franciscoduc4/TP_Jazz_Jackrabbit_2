@@ -4,7 +4,7 @@
 #include <atomic>
 #include <memory>
 
-#include "../Client/SDL/gamescreen.h"
+// #include "../Client/SDL/gamescreen.h"
 #include "../Common/Config/ClientConfig.h"
 #include "../Common/DTO/game.h"
 #include "../Common/Types/command.h"

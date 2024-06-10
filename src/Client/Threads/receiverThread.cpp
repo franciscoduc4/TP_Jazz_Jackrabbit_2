@@ -79,7 +79,7 @@ void ReceiverThread::receiveLobbyDTO() {
     if (!DTOValidator::validateLobbyState(lobbyTypeChar)) {
         return;
     }
-    LobbyState lobbyState = static_cast<LobbyState>(lobbyTypeChar);
+    auto lobbyState = static_cast<LobbyState>(lobbyTypeChar);
     if (lobbyState == LobbyState::GAMES_LIST) {
         this->receiveGamesList();
     }
@@ -97,7 +97,7 @@ void ReceiverThread::run() {
             if (!DTOValidator::validateDTOType(dtoTypeChar)) {
                 continue;
             }
-            DTOType dtoType = static_cast<DTOType>(dtoTypeChar);
+            auto dtoType = static_cast<DTOType>(dtoTypeChar);
             switch (dtoType) {
                 case DTOType::GAME_DTO:
                     this->receiveGameDTO();
