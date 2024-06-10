@@ -29,6 +29,8 @@ set(GAMEVIEW_SOURCES
     SDL/points.h
     SDL/projectile.cpp
     SDL/projectile.h
+    SDL/interface.cpp
+    SDL/interface.h
 )
 
 add_library(gameview ${GAMEVIEW_SOURCES})

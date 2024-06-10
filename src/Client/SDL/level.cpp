@@ -13,7 +13,7 @@ enum tile_type { Background, Floor, LongPlatform, SmallPlatform, Column, LeftDia
 
 
 Level::Level(int level) {
-    std::vector<int> backVector{0, 0, 200, 200};
+    std::vector<int> backVector{0, 0, 200, 160};
     std::vector<int> floorVector{0, 0, 485, 118};
     std::vector<int> longPlatformVector{0, 0, 160, 17};
     std::vector<int> smallPlatformVector{0, 0, 88, 17};
@@ -50,8 +50,8 @@ Level::Level(int level) {
 
             this->max_pixel_x_floor = 2491;
             this->floor_height = 70;
-            this->background_width = 256;
-            this->background_height = 160;
+            this->background_width = 715;
+            this->background_height = 153;
             break;
     }
 }
@@ -103,8 +103,8 @@ std::vector<int> Level::draw_background(SDL2pp::Window& window, SDL2pp::Renderer
     renderer.Copy(background,
                       SDL2pp::Rect(this->pixels_pos[TileType::BACKGROUND][index_x], this->pixels_pos[TileType::BACKGROUND][index_y], this->pixels_pos[TileType::BACKGROUND][index_width], this->pixels_pos[TileType::BACKGROUND][index_height]),
                       SDL2pp::Rect(0, 0, window_width, window_height));
-    uint16_t get_pos_x = player.getX();
-    uint16_t get_pos_y = player.getY();
+    uint16_t get_pos_x = player.getX() * window_width / 255;
+    uint16_t get_pos_y = player.getY() * window_height / 255;
     int get_speed = player.getSpeed();
         
     if (get_pos_x > window_width / 4 * 2 ||

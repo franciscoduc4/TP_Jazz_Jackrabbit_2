@@ -17,7 +17,7 @@
 
 class Enemy {
     std::map<EnemyType, std::string> enemies_path;
-    std::map<EnemyType, std::map<int, std::list<RectangularSprite>>> sprites;
+    std::map<EnemyType, std::map<EnemyStateEntity, std::list<RectangularSprite>>> sprites;
     std::map<EnemyType, std::vector<int>> width_height;
     std::map<int, std::map<EnemyStateEntity, int>> counts;
     std::map<int, EnemyStateEntity> last_move;

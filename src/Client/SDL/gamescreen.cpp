@@ -27,7 +27,7 @@
 //GameScreen::GameScreen(int character):
 //        pj(character), turtle(0, 0, 200), schartz_guard(1, 0, 400), yellowM(2, 0, 100), points(0) {}
 
-GameScreen::GameScreen(Client& player): client(player), pj(1), points(0), level(0)/*, config(ClientConfig::getInstance())*/ {
+GameScreen::GameScreen(Client& player): client(player), pj(1), points(0), level(0), stats(CharacterType::JAZZ)/*, config(ClientConfig::getInstance())*/ {
 
 }
 
@@ -110,6 +110,12 @@ void GameScreen::run() {
     SDL2pp::Surface itemsSurface(items_surf);
     itemsSurface.SetColorKey(true, SDL_MapRGB(itemsSurface.Get()->format, 0, 128, 255));
     SDL2pp::Texture items(renderer, itemsSurface);
+
+    //TEXTURAS FONT
+    SDL_Surface* font_surf = IMG_Load(this->stats.getFontPath().c_str());
+    SDL2pp::Surface fontSurface(font_surf);
+    fontSurface.SetColorKey(true, SDL_MapRGB(fontSurface.Get()->format, 0, 128, 255));
+    SDL2pp::Texture font(renderer, fontSurface);
 
     int walk_mov = 0;
     int count_walk = 0;
@@ -244,6 +250,8 @@ void GameScreen::run() {
         
         std::vector<TileDTO> tiles = snapshot->getTiles(); 
         this->level.draw_tiles(window, renderer, tiles_textures, tiles);
+
+        this->stats.draw_interface(window, renderer, *pjs_textures[players[0].getType()], font, 1000/*getPoints()*/, 3/*getLives()*/);
         
         x_screen = 0;
         y_screen = 0;

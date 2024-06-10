@@ -2,6 +2,7 @@
 #include "../../Common/sprite.h"
 #include "../../Common/DTO/enemy.h"
 
+#include <iostream>
 
 
 #include "enemyweapon.h"
@@ -197,7 +198,7 @@ void Enemy::draw_enemy(SDL2pp::Window& window, SDL2pp::Renderer& renderer, SDL2p
             distance_main_enemy_y = y - player.getX();
             y = dir_y_screen + distance_main_enemy_y;
         }
-		renderer.Copy(enemy, SDL2pp::Rect(it->getX(), it->getY(), it->getWidth(), it->getHeight()),
+        renderer.Copy(enemy, SDL2pp::Rect(it->getX(), it->getY(), it->getWidth(), it->getHeight()),
                   SDL2pp::Rect(x, y, this->width_height[e.getType()][index_width], this->width_height[e.getType()][index_height]), 0.0,
                   SDL2pp::NullOpt, this->flip);
 

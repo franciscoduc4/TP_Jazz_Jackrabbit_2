@@ -452,7 +452,7 @@ void Player::draw_players(SDL2pp::Window& window, SDL2pp::Renderer& renderer, st
 
 		}	
 		std::list<RectangularSprite>::iterator it = img_coords(p.getType(), mov_type, pjId);
-		int x = static_cast<int>(p.getX());
+		int x = p.getX() * window.GetWidth() / 255;
 		int y = static_cast<int>(p.getY());
 		if (i == 0) { //i == 0 es el player que ejecuto el codigo, cambiar por playerId
 			if (dir_x_screen != 0) {
