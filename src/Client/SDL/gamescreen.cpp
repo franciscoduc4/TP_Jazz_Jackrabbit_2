@@ -181,7 +181,7 @@ void GameScreen::run() {
 
     std::cout << "Textures created" << std::endl;
 
-    int32_t playerId = 0;
+    uint32_t playerId = 0;
     while (true) {
         SDL_Event event;
         std::cout << "Waiting for event" << std::endl;

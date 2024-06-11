@@ -287,11 +287,12 @@ void ReceiverThread::run() {
             
             char dtoTypeChar;
             socket->recvall(&dtoTypeChar, sizeof(char), &closed);
-            std::cout << "Received DTO type: " << dtoTypeChar << std::endl;
+            //std::cout << "Received DTO type: " << dtoTypeChar << std::endl;
             this->was_closed.store(closed);
             if (this->was_closed.load()) {
                 return;
             }
+            /*
             if (!DTOValidator::validateDTOType(dtoTypeChar)) {
                 continue;
             }
@@ -310,8 +311,8 @@ void ReceiverThread::run() {
                 default:
                     break;
             }
-            
-           //this->receiveGameDTO();
+            */
+            this->receiveGameDTO();
         } catch (const std::exception& e) {
             if (!this->was_closed.load() || _keep_running) {
                 std::cerr << "ReceiverThread error: " << e.what() << std::endl;

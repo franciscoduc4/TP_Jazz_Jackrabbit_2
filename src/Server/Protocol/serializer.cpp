@@ -158,7 +158,9 @@ std::vector<char> Serializer::serializePlayerDTO(const std::unique_ptr<PlayerDTO
     buffer.push_back(static_cast<char>(dto->getRespawnTime()));
     buffer.push_back(static_cast<char>(dto->getX()));
     buffer.push_back(static_cast<char>(dto->getY()));
-    // buffer.push_back(static_cast<char>(dto->getCurrentWeapon()));
+    //buffer.push_back(static_cast<char>(dto->getCurrentWeapon()));
+    buffer.push_back(static_cast<char>(dto->getType()));
+    buffer.push_back(static_cast<char>(dto->getState()));
     return buffer;
 }
 
@@ -170,6 +172,8 @@ std::vector<char> Serializer::serializeEnemyDTO(const std::unique_ptr<EnemyDTO> 
     buffer.push_back(static_cast<char>(dto->getSpeed()));
     buffer.push_back(static_cast<char>(dto->getX()));
     buffer.push_back(static_cast<char>(dto->getY()));
+    buffer.push_back(static_cast<char>(dto->getType()));;
+    buffer.push_back(static_cast<char>(dto->getState()));
     return buffer;
 }
 
@@ -187,6 +191,7 @@ std::vector<char> Serializer::serializeItemDTO(const std::unique_ptr<ItemDTO> dt
     std::vector<char> buffer;
     buffer.push_back(static_cast<char>(dto->getX()));
     buffer.push_back(static_cast<char>(dto->getY()));
+    buffer.push_back(static_cast<char>(ItemType::GEM));
     return buffer;
 }
 
@@ -213,40 +218,49 @@ std::vector<char> Serializer::serializeWeaponDTO(const std::unique_ptr<WeaponDTO
 }
 
 void Serializer::sendGameDTO(const std::unique_ptr<GameDTO> dto, bool& wasClosed) {
+    char gamedto = static_cast<char>(DTOType::GAME_DTO);
+    socket->sendall(&gamedto, sizeof(char), &wasClosed);
+
     std::vector<char> buffer;
 
 
     std::vector<PlayerDTO> players = dto->getPlayers();
+    buffer.push_back(static_cast<char>(players.size()));
     for (const auto& player: players) {
         std::vector<char> playerBuffer = serializePlayerDTO(std::make_unique<PlayerDTO>(player));
         buffer.insert(buffer.end(), playerBuffer.begin(), playerBuffer.end());
     }
 
     std::vector<EnemyDTO> enemies = dto->getEnemies();
+    buffer.push_back(static_cast<char>(enemies.size()));
     for (const auto& enemy: enemies) {
         std::vector<char> enemyBuffer = serializeEnemyDTO(std::make_unique<EnemyDTO>(enemy));
         buffer.insert(buffer.end(), enemyBuffer.begin(), enemyBuffer.end());
     }
 
     std::vector<BulletDTO> bullets = dto->getBullets();
+    buffer.push_back(static_cast<char>(bullets.size()));
     for (const auto& bullet: bullets) {
         std::vector<char> bulletBuffer = serializeBulletDTO(std::make_unique<BulletDTO>(bullet));
         buffer.insert(buffer.end(), bulletBuffer.begin(), bulletBuffer.end());
     }
 
     std::vector<ItemDTO> items = dto->getItems();
+    buffer.push_back(static_cast<char>(items.size()));
     for (const auto& item: items) {
         std::vector<char> itemBuffer = serializeItemDTO(std::make_unique<ItemDTO>(item));
         buffer.insert(buffer.end(), itemBuffer.begin(), itemBuffer.end());
     }
 
     std::vector<WeaponDTO> weapons = dto->getWeapons();
+    buffer.push_back(static_cast<char>(weapons.size()));
     for (const auto& weapon: weapons) {
         std::vector<char> weaponBuffer = serializeWeaponDTO(std::make_unique<WeaponDTO>(weapon));
         buffer.insert(buffer.end(), weaponBuffer.begin(), weaponBuffer.end());
     }
 
     std::vector<TileDTO> tiles = dto->getTiles();
+    buffer.push_back(static_cast<char>(tiles.size()));
     for (const auto& tile: tiles) {
         std::vector<char> tileBuffer = serializeTileDTO(std::make_unique<TileDTO>(tile));
         buffer.insert(buffer.end(), tileBuffer.begin(), tileBuffer.end());
