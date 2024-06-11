@@ -17,7 +17,7 @@ void ReceiverThread::receiveCommandDTO() {
 std::vector<PlayerDTO> ReceiverThread::receivePlayers() {
     std::vector<PlayerDTO> players;
     uint8_t cant_jugadores;
-    /*
+    
     this->socket->recvall(&cant_jugadores, sizeof(uint8_t), &closed);
     uint8_t aux;
     for (uint8_t i = 0; i < cant_jugadores; i++) {
@@ -43,19 +43,19 @@ std::vector<PlayerDTO> ReceiverThread::receivePlayers() {
         PlayerDTO player(x, y, playerId, health, damage, speed, weapon, pj_type, state);
         players.push_back(player);
     }
-    */
-    WeaponDTO weapon(0, 0, 0, 0, 0);
-    PlayerDTO player(0, 0, 0, 100, 50, 2, weapon, CharacterType::JAZZ, CharacterStateEntity::MOVING);
-    players.push_back(player);
-    PlayerDTO player2(50, 50, 1, 100, 50, 2, weapon, CharacterType::LORI, CharacterStateEntity::MOVING);
-    players.push_back(player2);
+    
+    // WeaponDTO weapon(0, 0, 0, 0, 0);
+    // PlayerDTO player(0, 0, 0, 100, 50, 2, weapon, CharacterType::JAZZ, CharacterStateEntity::MOVING);
+    // players.push_back(player);
+    // PlayerDTO player2(50, 50, 1, 100, 50, 2, weapon, CharacterType::LORI, CharacterStateEntity::MOVING);
+    // players.push_back(player2);
     return players;
 }
 
 std::vector<EnemyDTO> ReceiverThread::receiveEnemies() {
     std::vector<EnemyDTO> enemies;
     uint8_t cant_enemies;
-    /*
+
     this->socket->recvall(&cant_enemies, sizeof(uint8_t), &closed);
     uint8_t aux;
     for (uint8_t i = 0; i < cant_enemies; i++) {
@@ -78,9 +78,9 @@ std::vector<EnemyDTO> ReceiverThread::receiveEnemies() {
         EnemyDTO enemy(enemy_x, enemy_y, enemyId, enemy_health, enemy_damage, enemy_speed, enemy_type, enemy_state);
         enemies.push_back(enemy);
     }
-    */
-    EnemyDTO enemy(50, 30, 0, 100, 20, 1, EnemyType::WALKING_ENEMY, EnemyStateEntity::ENEMY_WALKING);
-    enemies.push_back(enemy);
+ 
+    // EnemyDTO enemy(50, 30, 0, 100, 20, 1, EnemyType::WALKING_ENEMY, EnemyStateEntity::ENEMY_WALKING);
+    // enemies.push_back(enemy);
     return enemies;
 
 }
@@ -88,7 +88,7 @@ std::vector<EnemyDTO> ReceiverThread::receiveEnemies() {
 std::vector<BulletDTO> ReceiverThread::receiveBullets() {
     std::vector<BulletDTO> bullets;
     uint8_t cant_bullets;
-    /*
+    
     this->socket->recvall(&cant_bullets, sizeof(uint8_t), &closed);
     uint8_t aux;
     for (uint8_t i = 0; i < cant_bullets; i++) {
@@ -107,16 +107,15 @@ std::vector<BulletDTO> ReceiverThread::receiveBullets() {
         BulletDTO bullet(bullet_x, bullet_y, bulletId, bullet_damage, bullet_speed, shooterId);
         bullets.push_back(bullet);
     }
-    */
-    BulletDTO bullet(150, 60, 0, 10, 5, 3);
-    bullets.push_back(bullet);
+    
+    //BulletDTO bullet(150, 60, 0, 10, 5, 3);
+    //bullets.push_back(bullet);
     return bullets;
 }
 
 std::vector<ItemDTO> ReceiverThread::receiveItems() {
     std::vector<ItemDTO> items;
     uint8_t cant_items;
-    /*
     this->socket->recvall(&cant_items, sizeof(uint8_t), &closed);
     uint8_t aux;
     for (uint8_t i = 0; i < cant_items; i++) {
@@ -129,16 +128,15 @@ std::vector<ItemDTO> ReceiverThread::receiveItems() {
         ItemDTO item(item_x, item_y, item_type);
         items.push_back(item);
     } 
-    */ 
-    ItemDTO item(80, 80, ItemType::GEM);
-    items.push_back(item);
+    // ItemDTO item(80, 80, ItemType::GEM);
+    // items.push_back(item);
     return items;
 }
 
 std::vector<WeaponDTO> ReceiverThread::receiveWeapons() {
     std::vector<WeaponDTO> weapons;
     uint8_t cant_weapons;
-    /*
+    
     this->socket->recvall(&cant_weapons, sizeof(uint8_t), &closed);
     uint8_t aux;
     for (uint8_t i = 0; i < cant_weapons; i++) { 
@@ -171,7 +169,7 @@ std::vector<WeaponDTO> ReceiverThread::receiveWeapons() {
         WeaponDTO weapon(weaponId, weapon_x, weapon_y, weapon_damage, weapon_ammo);
         weapons.push_back(weapon);
     }
-    */
+    
     return weapons;
 
 }
@@ -179,7 +177,7 @@ std::vector<WeaponDTO> ReceiverThread::receiveWeapons() {
 std::vector<TileDTO> ReceiverThread::receiveTiles() {
     std::vector<TileDTO> tiles;
     uint8_t cant_tiles;
-    /*
+    
     this->socket->recvall(&cant_tiles, sizeof(uint8_t), &closed);
     uint8_t aux;
     for (uint8_t i = 0; i < cant_tiles; i++) {
@@ -191,9 +189,9 @@ std::vector<TileDTO> ReceiverThread::receiveTiles() {
         TileDTO tile(tile_x, tile_y);
         tiles.push_back(tile);
     }
-    */
-    TileDTO tile(6, 80);
-    tiles.push_back(tile);
+    
+    // TileDTO tile(6, 80);
+    // tiles.push_back(tile);
     return tiles;
 }
 
@@ -286,7 +284,7 @@ void ReceiverThread::run() {
     
     while (!this->was_closed.load() && _keep_running) {
         try {
-            /*
+            
             char dtoTypeChar;
             socket->recvall(&dtoTypeChar, sizeof(char), &closed);
             std::cout << "Received DTO type: " << dtoTypeChar << std::endl;
@@ -312,8 +310,8 @@ void ReceiverThread::run() {
                 default:
                     break;
             }
-            */
-           this->receiveGameDTO();
+            
+           //this->receiveGameDTO();
         } catch (const std::exception& e) {
             if (!this->was_closed.load() || _keep_running) {
                 std::cerr << "ReceiverThread error: " << e.what() << std::endl;
