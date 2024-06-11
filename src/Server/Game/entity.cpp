@@ -1,5 +1,6 @@
 #include "entity.h"
 
+
 Entity::Entity(Vector<int16_t> pos, int16_t id, int16_t health, Direction dir):
         pos(pos), id(id), health(health), initialHealth(health), dir(dir), isDead(false) {}
 
@@ -34,4 +35,11 @@ bool Entity::isAlive() const { return !isDead; }
 
 int16_t Entity::getDistanceTo(std::shared_ptr<Entity> other) const {
     return static_cast<int16_t>(pos.distance(other->getPosition()));
+}
+
+void Entity::heal(uint32_t healQnt) {
+    health += healQnt;
+    if (health > initialHealth) {
+        health = initialHealth;
+    }
 }

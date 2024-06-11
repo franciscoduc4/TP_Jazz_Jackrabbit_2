@@ -10,7 +10,7 @@ private:
     WeaponType type;
 
 public:
-    SwitchWeaponDTO(int32_t& playerId, WeaponType type);
+    SwitchWeaponDTO(uint32_t& playerId, WeaponType type);
     WeaponType getWeaponType() const;
 };
 

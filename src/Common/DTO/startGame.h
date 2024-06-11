@@ -7,12 +7,12 @@
 
 class StartGameDTO: public CommandDTO {
 private:
-    int32_t gameId;
+    uint32_t gameId;
 
 public:
-    explicit StartGameDTO(const int32_t& gameId);
-    StartGameDTO(int32_t& playerId, int32_t& gameId);
-    int32_t getGameId() const;
+    explicit StartGameDTO(const uint32_t& gameId);
+    StartGameDTO(uint32_t& playerId, uint32_t& gameId);
+    uint32_t getGameId() const;
 };
 
 #endif  // START_GAME_DTO_H_

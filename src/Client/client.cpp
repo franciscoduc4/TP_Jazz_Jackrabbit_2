@@ -16,23 +16,38 @@ Client::Client(char* ip, char* port):
         deserializer(this->lobbyQueue, this->gameQueue),
         receiver(this->deserializer, this->skt, this->was_closed),
         lobbyController(this->serializer, this->deserializer, this->lobbyQueue),
-        gameController(this->serializer, this->deserializer, this->gameQueue),
-        playerId(-1) {
+        gameController(this->serializer, this->deserializer, this->gameQueue) {
     this->sender.start();
     this->receiver.start();
+    std::unique_ptr<DTO> dto = this->gameQueue->pop();
+    CommandDTO* commandDTO = dynamic_cast<CommandDTO*>(dto.get());
+    this->playerId = commandDTO->getPlayerId();
 }
 
 void Client::start() {
     /*
     bool clientJoinedGame = false;
     do {
-        LobbyInit init;
-        clientJoinedGame = init.launchQT(this->lobbyController, (bool&) clientJoinedGame);
+    //     LobbyInit init;
+    //     clientJoinedGame = init.launchQT(this->lobbyController, (bool&) clientJoinedGame);
 
-      if (!clientJoinedGame) {
-          return;
-      }
+    //   if (!clientJoinedGame) {
+    //       return;
+    //   }
       // TODO: Continue with SDL.
+      // START - TESTING SKIP QT
+      LobbyMessage msg;
+      msg.setCharacter(CharacterType::JAZZ);
+      msg.setEpisode(Episode::JAZZ_IN_TIME);
+      msg.setGameId(1);
+      msg.setGameName("Dummy");
+      msg.setLobbyCmd(Command::CREATE_GAME);
+      msg.setMaxPlayers(1);
+      msg.setPlayerName("Test");
+
+      this->lobbyController.sendRequest(msg);
+      this->lobbyController.startGame(msg);
+      // END - TESTING SKIP QT
 
       GameScreen game(*this);
       // GameScreen game(this->gameController);
@@ -41,4 +56,9 @@ void Client::start() {
     */
     GameScreen game(this->gameController);
     game.run();
+}
+
+
+
+
 }

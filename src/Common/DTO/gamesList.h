@@ -4,22 +4,23 @@
 #include <map>
 #include <string>
 
-#include "command.h"
 #include "../Types/gameInfo.h"
+
+#include "command.h"
 
 class GamesListDTO: public CommandDTO {
 private:
-    std::map<int32_t, GameInfo> games;
+    std::map<uint32_t, GameInfo> games;
 
 public:
-    GamesListDTO() {}
-    explicit GamesListDTO(std::map<int32_t, GameInfo> games);
-    
-    std::map<int32_t, GameInfo> getGames() const;
-    
-    int32_t getMaxPlayers() const;
-    
-    int32_t getCurrentPlayers() const;
+    GamesListDTO();
+    GamesListDTO(std::map<uint32_t, GameInfo> games);
+
+    std::map<uint32_t, GameInfo> getGames() const;
+
+    uint32_t getMaxPlayers() const;
+
+    uint32_t getCurrentPlayers() const;
     ~GamesListDTO() {}
 };
 

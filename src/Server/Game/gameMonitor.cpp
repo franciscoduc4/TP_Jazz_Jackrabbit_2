@@ -6,10 +6,10 @@
 GameMonitor::GameMonitor(QueueMonitor<std::unique_ptr<GameDTO>>& queueMonitor):
         queueMonitor(queueMonitor) {}
 
-bool GameMonitor::createGame(int32_t playerId, Episode episode, GameMode gameMode,
+bool GameMonitor::createGame(uint32_t playerId, Episode episode, GameMode gameMode,
                              uint8_t maxPlayers, CharacterType characterType, std::string gameName,
                              std::shared_ptr<Queue<std::unique_ptr<CommandDTO>>> recvQueue,
-                             int32_t gameId) {
+                             uint32_t gameId) {
     std::lock_guard<std::mutex> lock(mtx);
     for (auto& [id, game]: games) {
         if (game->getGameName() == gameName) {
@@ -22,7 +22,7 @@ bool GameMonitor::createGame(int32_t playerId, Episode episode, GameMode gameMod
     return true;
 }
 
-bool GameMonitor::joinGame(int32_t playerId, int32_t gameId, CharacterType characterType) {
+bool GameMonitor::joinGame(uint32_t playerId, uint32_t gameId, CharacterType characterType) {
     std::lock_guard<std::mutex> lock(mtx);
     auto it = games.find(gameId);
     if (it != games.end()) {
@@ -35,7 +35,7 @@ bool GameMonitor::joinGame(int32_t playerId, int32_t gameId, CharacterType chara
     return false;
 }
 
-bool GameMonitor::startGame(int32_t playerId, int32_t gameId) {
+bool GameMonitor::startGame(uint32_t playerId, uint32_t gameId) {
     std::lock_guard<std::mutex> lock(mtx);
     auto it = games.find(gameId);
     if (it != games.end()) {
@@ -48,9 +48,9 @@ bool GameMonitor::startGame(int32_t playerId, int32_t gameId) {
     return false;
 }
 
-std::map<int32_t, GameInfo> GameMonitor::getGamesList() {
+std::map<uint32_t, GameInfo> GameMonitor::getGamesList() {
     std::lock_guard<std::mutex> lock(mtx);
-    std::map<int32_t, GameInfo> list;
+    std::map<uint32_t, GameInfo> list;
     for (auto& [id, game]: games) {
         GameInfo gameInfo = game->getGameInfo();
         list[id] = gameInfo;
@@ -58,7 +58,7 @@ std::map<int32_t, GameInfo> GameMonitor::getGamesList() {
     return list;
 }
 
-uint8_t GameMonitor::getCurrentPlayers(int32_t gameId) {
+uint8_t GameMonitor::getCurrentPlayers(uint32_t gameId) {
     std::lock_guard<std::mutex> lock(mtx);
     auto it = games.find(gameId);
     if (it != games.end()) {
@@ -68,7 +68,7 @@ uint8_t GameMonitor::getCurrentPlayers(int32_t gameId) {
     return 0;
 }
 
-// void GameMonitor::broadcastToGame(int32_t gameId, std::unique_ptr<CommandDTO> command) {
+// void GameMonitor::broadcastToGame(uint32_t gameId, std::unique_ptr<CommandDTO> command) {
 //     std::lock_guard<std::mutex> lock(mtx);
 //     auto it = games.find(gameId);
 //     if (it != games.end()) {

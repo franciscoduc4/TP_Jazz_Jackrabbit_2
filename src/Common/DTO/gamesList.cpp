@@ -1,9 +1,11 @@
 #include "gamesList.h"
-#include <utility>
+
 #include <map>
+#include <utility>
 
-GamesListDTO::GamesListDTO(std::map<int32_t, GameInfo> games): 
-    CommandDTO(Command::GAMES_LIST), games(std::move(games)) {}
+GamesListDTO::GamesListDTO(): CommandDTO(Command::GAMES_LIST) {}
 
-std::map<int32_t, GameInfo> GamesListDTO::getGames() const { return games; }
+GamesListDTO::GamesListDTO(std::map<uint32_t, GameInfo> games):
+        CommandDTO(Command::GAMES_LIST), games(std::move(games)) {}
 
+std::map<uint32_t, GameInfo> GamesListDTO::getGames() const { return games; }

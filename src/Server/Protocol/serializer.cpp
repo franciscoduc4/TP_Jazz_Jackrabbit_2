@@ -11,9 +11,12 @@
 Serializer::Serializer(std::shared_ptr<Socket> socket): socket(socket) {}
 
 void Serializer::sendCommand(const std::unique_ptr<CommandDTO> dto, bool& wasClosed) {
-    std::cout << "Sending command" << std::endl;
+
+    DTOType type = dto->getType();
+    socket->sendall(&type, sizeof(char), &wasClosed);
+
     Command command = dto->getCommand();
-    socket->sendall(&command, 1, &wasClosed);
+    socket->sendall(&command, sizeof(char), &wasClosed);
     std::vector<char> buffer;
 
     switch (command) {
@@ -83,21 +86,18 @@ std::vector<char> Serializer::serializeGameDTO(const std::unique_ptr<GameDTO> dt
 std::vector<char> Serializer::serializeCreateGame(const std::unique_ptr<CreateGameDTO>& dto) {
     std::vector<char> buffer;
     buffer.push_back(static_cast<char>(Command::CREATE_GAME));
-    int32_t gameId = htonl(dto->getGameId());
+    uint32_t gameId = htonl(dto->getGameId());
     unsigned char const* p = reinterpret_cast<unsigned char const*>(&gameId);
-    buffer.insert(buffer.end(), p, p + sizeof(int32_t));
+    buffer.insert(buffer.end(), p, p + sizeof(uint32_t));
     return buffer;
 }
 
 std::vector<char> Serializer::serializeJoinGame(const std::unique_ptr<JoinGameDTO>& dto) {
     std::vector<char> buffer;
     buffer.push_back(static_cast<char>(Command::JOIN_GAME));
-    int32_t playerId = htonl(dto->getPlayerId());
-    const unsigned char* p = reinterpret_cast<const unsigned char*>(&playerId);
-    buffer.insert(buffer.end(), p, p + sizeof(int32_t));
-    int32_t gameId = htonl(dto->getGameId());
+    uint32_t gameId = htonl(dto->getGameId());
     const unsigned char* p1 = reinterpret_cast<const unsigned char*>(&gameId);
-    buffer.insert(buffer.end(), p1, p1 + sizeof(int32_t));
+    buffer.insert(buffer.end(), p1, p1 + sizeof(uint32_t));
     uint8_t currentPlayers = dto->getCurrentPlayers();
     buffer.push_back(static_cast<char>(currentPlayers));
 
@@ -109,27 +109,27 @@ std::vector<char> Serializer::serializeGamesList(const std::unique_ptr<GamesList
     std::vector<char> buffer;
     buffer.push_back(static_cast<char>(Command::GAMES_LIST));
     auto games = dto->getGames();
-    int32_t gamesSize = htonl(games.size());
+    uint32_t gamesSize = htonl(games.size());
     const unsigned char* p = reinterpret_cast<const unsigned char*>(&gamesSize);
-    buffer.insert(buffer.end(), p, p + sizeof(int32_t));
+    buffer.insert(buffer.end(), p, p + sizeof(uint32_t));
     for (const auto& [id, gameInfo]: games) {
-        int32_t gameId = htonl(id);
+        uint32_t gameId = htonl(id);
         const unsigned char* p = reinterpret_cast<const unsigned char*>(&gameId);
-        buffer.insert(buffer.end(), p, p + sizeof(int32_t));
+        buffer.insert(buffer.end(), p, p + sizeof(uint32_t));
 
-        int32_t nameLength = htonl(gameInfo.name.length());
+        uint32_t nameLength = htonl(gameInfo.name.length());
         const unsigned char* np = reinterpret_cast<const unsigned char*>(&nameLength);
-        buffer.insert(buffer.end(), np, np + sizeof(int32_t));
+        buffer.insert(buffer.end(), np, np + sizeof(uint32_t));
 
         buffer.insert(buffer.end(), gameInfo.name.begin(), gameInfo.name.end());
 
-        int32_t maxPlayers = htonl(gameInfo.maxPlayers);
+        uint32_t maxPlayers = htonl(gameInfo.maxPlayers);
         const unsigned char* mp = reinterpret_cast<const unsigned char*>(&maxPlayers);
-        buffer.insert(buffer.end(), mp, mp + sizeof(int32_t));
+        buffer.insert(buffer.end(), mp, mp + sizeof(uint32_t));
 
-        int32_t currentPlayers = htonl(gameInfo.currentPlayers);
+        uint32_t currentPlayers = htonl(gameInfo.currentPlayers);
         const unsigned char* cp = reinterpret_cast<const unsigned char*>(&currentPlayers);
-        buffer.insert(buffer.end(), cp, cp + sizeof(int32_t));
+        buffer.insert(buffer.end(), cp, cp + sizeof(uint32_t));
     }
     return buffer;
 }
@@ -141,12 +141,12 @@ std::vector<char> Serializer::serializeStartGame(const std::unique_ptr<StartGame
     return buffer;
 }
 
-void Serializer::sendId(int32_t id, bool& wasClosed) {
+void Serializer::sendId(uint32_t id, bool& wasClosed) {
     std::cout << "Sending id" << std::endl;
-    int32_t idToSend = htonl(id);
+    uint32_t idToSend = htonl(id);
     std::cout << "Id to send: " << idToSend << std::endl;
     unsigned char const* p = reinterpret_cast<unsigned char const*>(&idToSend);
-    socket->sendall(p, sizeof(int32_t), &wasClosed);
+    socket->sendall(p, sizeof(uint32_t), &wasClosed);
 }
 
 std::vector<char> Serializer::serializePlayerDTO(const std::unique_ptr<PlayerDTO> dto) {

@@ -1,19 +1,19 @@
 #include "joinGame.h"
 
-JoinGameDTO::JoinGameDTO(const int32_t& gameId, CharacterType characterType):
+JoinGameDTO::JoinGameDTO(const uint32_t& gameId, CharacterType characterType):
         CommandDTO(-1, Command::JOIN_GAME), gameId(gameId), characterType(characterType), currentPlayers(0), joined(false) {}
 
-JoinGameDTO::JoinGameDTO(const int32_t& playerId, const int32_t& gameId, CharacterType characterType):
+JoinGameDTO::JoinGameDTO(const uint32_t& playerId, const uint32_t& gameId, CharacterType characterType):
         CommandDTO(playerId, Command::JOIN_GAME), gameId(gameId), characterType(characterType), currentPlayers(0), joined(false) {}
 
-JoinGameDTO::JoinGameDTO(const int32_t& playerId, const int32_t& gameId, const uint8_t& currentPlayers) : CommandDTO(playerId, Command::JOIN_GAME), gameId(gameId), characterType(CharacterType::INVALID), currentPlayers(currentPlayers), joined(false) {}
+JoinGameDTO::JoinGameDTO(const uint32_t& playerId, const uint32_t& gameId, const uint8_t& currentPlayers) : CommandDTO(playerId, Command::JOIN_GAME), gameId(gameId), characterType(CharacterType::INVALID), currentPlayers(currentPlayers), joined(false) {}
 
-JoinGameDTO::JoinGameDTO(const int32_t& playerId, const int32_t& gameId, const uint8_t& currentPlayers, CharacterType characterType) : CommandDTO(playerId, Command::JOIN_GAME), gameId(gameId), characterType(characterType), currentPlayers(currentPlayers), joined(false) {}
+JoinGameDTO::JoinGameDTO(const uint32_t& playerId, const uint32_t& gameId, const uint8_t& currentPlayers, CharacterType characterType) : CommandDTO(playerId, Command::JOIN_GAME), gameId(gameId), characterType(characterType), currentPlayers(currentPlayers), joined(false) {}
 
 JoinGameDTO::JoinGameDTO(bool status): CommandDTO(-1, Command::JOIN_GAME), gameId(-1), characterType(CharacterType::INVALID), currentPlayers(0), joined(status) {}
 
 
-int32_t JoinGameDTO::getGameId() const { return gameId; }
+uint32_t JoinGameDTO::getGameId() const { return gameId; }
 
 CharacterType JoinGameDTO::getCharacterType() const { return characterType; }
 

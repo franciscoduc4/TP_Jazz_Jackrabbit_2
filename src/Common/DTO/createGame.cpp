@@ -2,11 +2,11 @@
 
 #include <utility>
 
-CreateGameDTO::CreateGameDTO(const int32_t& gameId): gameId(gameId) {}
+CreateGameDTO::CreateGameDTO(const uint32_t& gameId): gameId(gameId) {}
 
 CreateGameDTO::CreateGameDTO(Episode episodeName,
                              uint8_t maxPlayers, CharacterType characterType, std::string gameName,
-                             int32_t gameId):
+                             uint32_t gameId):
         CommandDTO(-1,Command::CREATE_GAME),
         episodeName(episodeName),
         maxPlayers(maxPlayers),
@@ -16,9 +16,9 @@ CreateGameDTO::CreateGameDTO(Episode episodeName,
     this->mode = (maxPlayers == 1) ? GameMode::SINGLE_PLAYER : GameMode::PARTY_MODE;
 }
 
-CreateGameDTO::CreateGameDTO(const int32_t& playerId, Episode episodeName,
+CreateGameDTO::CreateGameDTO(const uint32_t& playerId, Episode episodeName,
                              uint8_t maxPlayers, CharacterType characterType, std::string gameName,
-                             int32_t gameId):
+                             uint32_t gameId):
         CommandDTO(playerId,Command::CREATE_GAME),
         episodeName(episodeName),
         maxPlayers(maxPlayers),
@@ -30,7 +30,7 @@ CreateGameDTO::CreateGameDTO(const int32_t& playerId, Episode episodeName,
 
 Episode CreateGameDTO::getEpisodeName() const { return episodeName; }
 
-int32_t CreateGameDTO::getGameId() const { return gameId; }
+uint32_t CreateGameDTO::getGameId() const { return gameId; }
 
 uint8_t CreateGameDTO::getMaxPlayers() const { return maxPlayers; }
 

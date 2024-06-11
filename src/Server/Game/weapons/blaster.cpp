@@ -38,7 +38,7 @@ bool Blaster::isLoaded() { return bullets == maxBullets; }
 
 int16_t Blaster::getBullets() { return bullets; }
 
-int32_t Blaster::getBulletsShot() { return bulletsShot; }
+uint32_t Blaster::getBulletsShot() { return bulletsShot; }
 
 bool Blaster::shootTime(float time) {
     return lastTimeShot != -1 && time - lastTimeShot >= fireRate;

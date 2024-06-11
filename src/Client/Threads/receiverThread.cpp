@@ -208,22 +208,22 @@ void ReceiverThread::receiveGameDTO() {
 }
 
 void ReceiverThread::receiveGamesList() {
-    int32_t gamesAmount;
-    socket->recvall(&gamesAmount, sizeof(int32_t), &closed);
+    uint32_t gamesAmount;
+    socket->recvall(&gamesAmount, sizeof(uint32_t), &closed);
     this->was_closed.store(closed);
     if (this->was_closed.load()) {
         return;
     }
-    int32_t games = ntohl(gamesAmount);
-    std::map<int32_t, GameInfo> gamesMap;
+    uint32_t games = ntohl(gamesAmount);
+    std::map<uint32_t, GameInfo> gamesMap;
     for (int i = 0; i < games; i++) {
-        int32_t gameId;
-        socket->recvall(&gameId, sizeof(int32_t), &closed);
+        uint32_t gameId;
+        socket->recvall(&gameId, sizeof(uint32_t), &closed);
         this->was_closed.store(closed);
         if (this->was_closed.load()) {
             return;
         }
-        int32_t id = ntohl(gameId);
+        uint32_t id = ntohl(gameId);
         char nameLength;
         socket->recvall(&nameLength, sizeof(char), &closed);
         this->was_closed.store(closed);
@@ -237,20 +237,20 @@ void ReceiverThread::receiveGamesList() {
         if (this->was_closed.load()) {
             return;
         }
-        int32_t maxPlayers;
-        socket->recvall(&maxPlayers, sizeof(int32_t), &closed);
+        uint32_t maxPlayers;
+        socket->recvall(&maxPlayers, sizeof(uint32_t), &closed);
         this->was_closed.store(closed);
         if (this->was_closed.load()) {
             return;
         }
-        int32_t max = ntohl(maxPlayers);
-        int32_t currentPlayers;
-        socket->recvall(&currentPlayers, sizeof(int32_t), &closed);
+        uint32_t max = ntohl(maxPlayers);
+        uint32_t currentPlayers;
+        socket->recvall(&currentPlayers, sizeof(uint32_t), &closed);
         this->was_closed.store(closed);
         if (this->was_closed.load()) {
             return;
         }
-        int32_t current = ntohl(currentPlayers);
+        uint32_t current = ntohl(currentPlayers);
 
         GameInfo gameInfo = GameInfo(id, name, max, current);
         gamesMap[id] = gameInfo;
@@ -276,11 +276,18 @@ void ReceiverThread::receiveLobbyDTO() {
 }
 
 void ReceiverThread::run() {
+    uint32_t playerId;
+    socket->recvall(&playerId, sizeof(uint32_t), &closed);
+    playerId = ntohl(playerId);
+    std::cout << "Player ID: " << playerId << std::endl;
+    this->deserializer.setPlayerId(playerId);
+    
     while (!this->was_closed.load() && _keep_running) {
         try {
             /*
             char dtoTypeChar;
             socket->recvall(&dtoTypeChar, sizeof(char), &closed);
+            std::cout << "Received DTO type: " << dtoTypeChar << std::endl;
             this->was_closed.store(closed);
             if (this->was_closed.load()) {
                 return;
@@ -289,6 +296,7 @@ void ReceiverThread::run() {
                 continue;
             }
             auto dtoType = static_cast<DTOType>(dtoTypeChar);
+            std::cout << "DTO type post cast: " << static_cast<char>(dtoType) << std::endl;
             switch (dtoType) {
                 case DTOType::GAME_DTO:
                     this->receiveGameDTO();

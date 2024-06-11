@@ -23,7 +23,6 @@ std::unique_ptr<State> MovingState::exec(Character& character, float time) {
 
 std::unique_ptr<State> MovingState::shoot(Character& character, std::shared_ptr<Weapon> weapon,
                                           float time) {
-    // Cambia al estado de disparo
     if (weapon->isEmpty()) {
         return std::unique_ptr<IdleState>();
     }
@@ -31,7 +30,6 @@ std::unique_ptr<State> MovingState::shoot(Character& character, std::shared_ptr<
 }
 
 std::unique_ptr<State> MovingState::move(Character& character, Direction direction, float time) {
-    // Actualiza la dirección del movimiento
     switch (direction) {
         case Direction::UP:
             character.moveUp();
