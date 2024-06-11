@@ -1,4 +1,4 @@
-QWidget {
+QWidget#centralwidget {
     border-image: url(:/assets/LobbyImages/Continue.png) 0 0 0 0 stretch stretch;
 }
 
@@ -24,11 +24,6 @@ QLineEdit {
 }
 
 QLabel {
-    background-color: white;
-    border-image: none;
-}
-
-QWidget#widgetCharacters > * {
     background-color: white;
     border-image: none;
 }

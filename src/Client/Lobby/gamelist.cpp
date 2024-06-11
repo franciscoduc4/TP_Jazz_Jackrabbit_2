@@ -40,6 +40,8 @@ void GameList::joinGame(const QString& gameName) {
     // this->msg.setGameName(gameName);
     // client.joinGame(this->msg);
 
+    this->msg.setLobbyCmd(Command::JOIN_GAME);
+
     this->hide();
 
     WaitingRoom wr(this, this->controller, this->msg, this->clientJoinedGame);

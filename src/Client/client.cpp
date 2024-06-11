@@ -25,11 +25,11 @@ Client::Client(char* ip, char* port):
 }
 
 void Client::start() {
-    /*
     bool clientJoinedGame = false;
     do {
         LobbyInit init;
         clientJoinedGame = init.launchQT(this->lobbyController, (bool&) clientJoinedGame);
+
         if (!clientJoinedGame) {
             return;
         }
@@ -43,26 +43,14 @@ void Client::start() {
         msg.setLobbyCmd(Command::CREATE_GAME);
         msg.setMaxPlayers(1);
         msg.setPlayerName("Test");
-      // TODO: Continue with SDL.
-      // START - TESTING SKIP QT
-      LobbyMessage msg;
-      msg.setCharacter(CharacterType::JAZZ);
-      msg.setEpisode(Episode::JAZZ_IN_TIME);
-      msg.setGameId(1);
-      msg.setGameName("Dummy");
-      msg.setLobbyCmd(Command::CREATE_GAME);
-      msg.setMaxPlayers(1);
-      msg.setPlayerName("Test");
 
         this->lobbyController.sendRequest(msg);
         this->lobbyController.startGame(msg);
         // END - TESTING SKIP QT
 
-        GameScreen game(*this);
-        // GameScreen game(this->gameController);
+        GameScreen game(this->gameController);
         game.run();
     } while (clientJoinedGame);
-    */
-    GameScreen game(this->gameController);
-    game.run();
+
+
 }

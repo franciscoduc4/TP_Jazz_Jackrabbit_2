@@ -37,7 +37,7 @@ CharacterSelection::~CharacterSelection() {
 
 void CharacterSelection::on_btnChoose_clicked() {
     // this->msg.setCharacter(characterSelectionWidget->getCurrentCharacter());
-    // this->controller.sendCharacterSelection(this->msg);
+    this->controller.sendRequest(this->msg);
     this->hide();
     if (this->msg.getLobbyCmd() == Command::CREATE_GAME) {
         WaitingRoom wr(this, this->controller, this->msg, this->clientJoinedGame);
@@ -45,6 +45,8 @@ void CharacterSelection::on_btnChoose_clicked() {
         wr.exec();
         this->close();
     } else if (this->msg.getLobbyCmd() == Command::JOIN_GAME) {
+        this->msg.setLobbyCmd(Command::GAMES_LIST);
+        this->controller.sendRequest(this->msg);
         GameList gl(this, this->controller, this->msg, this->clientJoinedGame);
         gl.setModal(true);
         gl.exec();
