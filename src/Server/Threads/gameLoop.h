@@ -26,10 +26,11 @@ private:
     std::shared_ptr<Queue<std::unique_ptr<CommandDTO>>> recvQueue;
     QueueMonitor<std::unique_ptr<GameDTO>> queueMonitor;
     GameMap& gameMap;
+    uint32_t gameId;
 
 public:
     GameLoopThread(std::shared_ptr<Queue<std::unique_ptr<CommandDTO>>> recvQueue,
-                   QueueMonitor<std::unique_ptr<GameDTO>>& queueMonitor, GameMap& gameMap);
+                   QueueMonitor<std::unique_ptr<GameDTO>>& queueMonitor, GameMap& gameMap, uint32_t gameId);
 
     void run() override;
     void stop();

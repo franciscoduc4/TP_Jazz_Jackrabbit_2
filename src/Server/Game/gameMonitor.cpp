@@ -9,25 +9,27 @@ GameMonitor::GameMonitor(QueueMonitor<std::unique_ptr<GameDTO>>& queueMonitor):
 bool GameMonitor::createGame(uint32_t playerId, Episode episode, GameMode gameMode,
                              uint8_t maxPlayers, CharacterType characterType, std::string gameName,
                              std::shared_ptr<Queue<std::unique_ptr<CommandDTO>>> recvQueue,
-                             uint32_t gameId) {
+                             uint32_t gameId, std::shared_ptr<Queue<std::unique_ptr<GameDTO>>>& sendQueue) {
     std::lock_guard<std::mutex> lock(mtx);
     for (auto& [id, game]: games) {
         if (game->getGameName() == gameName) {
             return false;
         }
     }
+    queueMonitor.assignGameIdToQueues(gameId, sendQueue);
     games[gameId] = std::make_unique<Game>(gameId, gameName, playerId, episode, gameMode,
                                            maxPlayers, characterType, recvQueue, queueMonitor);
 
     return true;
 }
 
-bool GameMonitor::joinGame(uint32_t playerId, uint32_t gameId, CharacterType characterType) {
+bool GameMonitor::joinGame(uint32_t playerId, uint32_t gameId, CharacterType characterType, std::shared_ptr<Queue<std::unique_ptr<GameDTO>>>& sendQueue) {
     std::lock_guard<std::mutex> lock(mtx);
     auto it = games.find(gameId);
     if (it != games.end()) {
         auto& [id, game] = *it;
         if (!game->isFull()) {
+            queueMonitor.assignGameIdToQueues(gameId, sendQueue);
             game->addPlayer(playerId, characterType);
             return true;
         }

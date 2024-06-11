@@ -50,6 +50,8 @@ public:
     void launch();
 
     void endGame();
+
+    std::unique_ptr<GameDTO> getGameDTO();
 };
 
 #endif  // GAME_H_

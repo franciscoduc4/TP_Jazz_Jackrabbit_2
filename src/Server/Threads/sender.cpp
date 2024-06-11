@@ -144,7 +144,7 @@ void SenderThread::runLobby(bool& wasClosed) {
                 continue;
             }
             auto handler = LobbyCommandHandler::createHandler(std::move(command));
-            auto commandDTO = handler->execute(gameMonitor, std::ref(inGame), recvQueue);
+            auto commandDTO = handler->execute(gameMonitor, std::ref(inGame), recvQueue, sendQueue);
             serializer.sendCommand(std::move(commandDTO), wasClosed);
         } catch (const std::exception& e) {
             if (wasClosed) {

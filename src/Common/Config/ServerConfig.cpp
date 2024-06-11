@@ -357,3 +357,40 @@ std::vector<int16_t> ServerConfig::getJumpingEnemyJumpProb() {
     }
     return jumpProb;
 }
+
+int ServerConfig::getGameMapSizeX(const std::string& mapName) {
+    return getInstance()->root["GAMEMAP"][mapName]["SIZE_X"].as<int>();
+}
+
+int ServerConfig::getGameMapSizeY(const std::string& mapName) {
+    return getInstance()->root["GAMEMAP"][mapName]["SIZE_Y"].as<int>();
+}
+
+int ServerConfig::getGameMapObstacles(const std::string& mapName) {
+    return getInstance()->root["GAMEMAP"][mapName]["OBSTACLES"].as<int>();
+}
+
+int ServerConfig::getGameMapEnemies(const std::string& mapName) {
+    return getInstance()->root["GAMEMAP"][mapName]["ENEMIES"].as<int>();
+}
+
+int ServerConfig::getGameMapGems(const std::string& mapName) {
+    return getInstance()->root["GAMEMAP"][mapName]["GEMS"].as<int>();
+}
+
+int ServerConfig::getGameMapSilverCoins(const std::string& mapName) {
+    return getInstance()->root["GAMEMAP"][mapName]["SILVER_COINS"].as<int>();
+}
+
+int ServerConfig::getGameMapGoldCoins(const std::string& mapName) {
+    return getInstance()->root["GAMEMAP"][mapName]["GOLD_COINS"].as<int>();
+}
+
+
+
+
+
+
+
+
+

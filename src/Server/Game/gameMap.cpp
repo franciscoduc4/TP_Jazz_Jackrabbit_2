@@ -4,8 +4,30 @@
 
 #define CONFIG ServerConfig::getInstance()
 
-GameMap::GameMap(Vector<int16_t> size):
-        size(size), entityFactory(*this), gravity(CONFIG->getGameGravity()) {}
+    // Vector<int16_t> size;
+    // std::map<Vector<int16_t>, std::shared_ptr<Entity>> mapGrid;
+    // std::map<int16_t, std::shared_ptr<Character>> characters;
+    // EntityFactory entityFactory;
+    // int16_t movesPerCell; 
+    // float gravity;
+    // Episode episode;
+
+GameMap::GameMap(Vector<int16_t> size, Episode episode):
+        size(size), entityFactory(*this), gravity(CONFIG->getGameGravity()), episode(episode) {
+
+            switch (episode) {
+                case Episode::FORMERLY_PRINCE:
+                    movesPerCell = CONFIG->getGameMaxMoves();
+                    break;
+                case Episode::JAZZ_IN_TIME:
+                    break;
+                case Episode::FUNKY_MONEYS:
+                    break;
+                default:
+                    break;
+            }
+        }
+
 
 std::vector<std::shared_ptr<Entity>> GameMap::getObjectsInShootRange(Vector<int16_t> mapPosition,
                                                                      Direction dir) {
@@ -138,6 +160,7 @@ std::shared_ptr<Entity> GameMap::getEntityAt(Vector<int16_t> mapPosition) {
 std::unique_ptr<GameDTO> GameMap::getGameDTO() {
     GameDTO gameDTO;
     return std::make_unique<GameDTO>(gameDTO);
+    //COMPLETAR
 }
 
 std::shared_ptr<Character> GameMap::getCharacter(uint32_t playerId) { return characters[playerId]; }

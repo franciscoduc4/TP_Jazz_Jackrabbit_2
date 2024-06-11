@@ -9,6 +9,8 @@
 #include "../../Common/Config/ServerConfig.h"
 #include "../../Common/DTO/game.h"
 #include "../../Common/Types/character.h"
+#include "../../Common/Types/episode.h"
+
 #include "../../Common/Types/direction.h"
 #include "../../Common/Types/enemy.h"
 #include "../../Common/vector.h"
@@ -24,9 +26,11 @@ private:
     std::map<Vector<int16_t>, std::shared_ptr<Entity>> mapGrid;
     std::map<int16_t, std::shared_ptr<Character>> characters;
     EntityFactory entityFactory;
-    int16_t movesPerCell = 2;
-    int16_t entityCount = 0;
+    int16_t entityCount;
+    int16_t movesPerCell; 
     float gravity;
+    Episode episode;
+
 
     Vector<int16_t> calculateNewPosition(const Vector<int16_t>& position, Direction dir) const;
 
@@ -36,7 +40,7 @@ private:
 
 
 public:
-    explicit GameMap(Vector<int16_t> size);
+    explicit GameMap(Vector<int16_t> size, Episode episode);
 
     std::vector<std::shared_ptr<Entity>> getObjectsInShootRange(Vector<int16_t> mapPosition,
                                                                 Direction dir);

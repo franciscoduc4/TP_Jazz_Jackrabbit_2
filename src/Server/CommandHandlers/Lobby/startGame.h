@@ -4,6 +4,7 @@
 #include <memory>
 
 #include "../../../Common/DTO/startGame.h"
+#include "../../../Common/DTO/dto.h"
 #include "../../../Common/queue.h"
 
 #include "lobbyCommand.h"
@@ -17,7 +18,8 @@ public:
 
     virtual std::unique_ptr<CommandDTO> execute(
             GameMonitor& gameMonitor, std::atomic<bool>& inGame,
-            std::shared_ptr<Queue<std::unique_ptr<CommandDTO>>> recvQueue);
+            std::shared_ptr<Queue<std::unique_ptr<CommandDTO>>> recvQueue,
+            std::shared_ptr<Queue<std::unique_ptr<GameDTO>>> sendQueue);
 };
 
 #endif  // START_GAME_HANDLER_H_

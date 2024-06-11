@@ -11,9 +11,9 @@ Game::Game(uint32_t gameId, std::string gameName, uint32_t playerId, Episode epi
         episode(episode),
         gameMode(gameMode),
         maxPlayers(maxPlayers),
-        gameMap({100, 100}),
+        gameMap({255, 255}, episode),
         currentPlayers(1),
-        gameLoop(recvQueue, queueMonitor, gameMap) {
+        gameLoop(recvQueue, queueMonitor, gameMap, gameId) {
     gameMap.addCharacter(playerId, characterType, {});
 }
 
@@ -42,4 +42,8 @@ void Game::launch() { gameLoop.start(); }
 void Game::endGame() {
     gameLoop.stop();
     gameLoop.join();
+}
+
+std::unique_ptr<GameDTO> Game::getGameDTO() {
+    return gameMap.getGameDTO();
 }
