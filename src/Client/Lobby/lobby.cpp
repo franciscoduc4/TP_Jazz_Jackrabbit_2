@@ -32,11 +32,9 @@ void Lobby::on_btnCreateGame_clicked() {
 
     this->hide();
 
-    SceneSelection ss(this, this->controller, this->msg, this->clientJoinedGame);
-    ss.setModal(true);
-    ss.exec();
+    auto ss = new SceneSelection(this, this->controller, this->msg, this->clientJoinedGame);
+    ss->show();
 
-    this->close();
 }
 
 
@@ -45,11 +43,9 @@ void Lobby::on_btnJoinGame_clicked() {
 
     this->hide();
 
-    CharacterSelection cs(this, this->controller, this->msg, this->clientJoinedGame);
-    cs.setModal(true);
-    cs.exec();
+    auto cs = new CharacterSelection(this, this->controller, this->msg, this->clientJoinedGame);
+    cs->show();
 
-    // this->close();
 }
 
 
@@ -62,5 +58,5 @@ void Lobby::on_btnBack_clicked() {
         parent->show();
     }
 
-    this->close();
+    this->deleteLater();
 }

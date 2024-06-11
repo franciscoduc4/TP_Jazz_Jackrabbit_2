@@ -37,10 +37,8 @@ void SceneSelection::on_btnChoose_clicked() {
     // Episode episode = static_cast<Episode>(selection + 1);
     // this->msg.setEpisode(episode);
     this->hide();
-    CreateGame cg(this, this->controller, this->msg, this->clientJoinedGame);
-    cg.setModal(true);
-    cg.exec();
-    this->close();
+    auto cg = new CreateGame(this, this->controller, this->msg, this->clientJoinedGame);
+    cg->show();
 }
 
 
@@ -54,5 +52,5 @@ void SceneSelection::on_btnBack_clicked() {
         parent->show();
     }
 
-    this->close();
+    this->deleteLater();
 }

@@ -44,19 +44,14 @@ void GameList::joinGame(const QString& gameName) {
 
     this->hide();
 
-    WaitingRoom wr(this, this->controller, this->msg, this->clientJoinedGame);
-    wr.setModal(true);
-    wr.exec();
-
-    this->close();
+    auto wr = new WaitingRoom(this, this->controller, this->msg, this->clientJoinedGame);
+    wr->show();
 }
 
 void GameList::on_btnJoin_clicked() {
     this->hide();
-    WaitingRoom wr(this, this->controller, this->msg, this->clientJoinedGame);
-    wr.setModal(true);
-    wr.exec();
-    this->close();
+    auto wr = new WaitingRoom(this, this->controller, this->msg, this->clientJoinedGame);
+    wr->show();
 }
 
 void GameList::on_btnBack_clicked() {
@@ -69,5 +64,5 @@ void GameList::on_btnBack_clicked() {
         parent->show();
     }
 
-    this->close();
+    this->deleteLater();
 }

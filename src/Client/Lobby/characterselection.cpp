@@ -40,17 +40,13 @@ void CharacterSelection::on_btnChoose_clicked() {
     this->controller.sendRequest(this->msg);
     this->hide();
     if (this->msg.getLobbyCmd() == Command::CREATE_GAME) {
-        WaitingRoom wr(this, this->controller, this->msg, this->clientJoinedGame);
-        wr.setModal(true);
-        wr.exec();
-        this->close();
+        auto wr = new WaitingRoom(this, this->controller, this->msg, this->clientJoinedGame);
+        wr->show();
     } else if (this->msg.getLobbyCmd() == Command::JOIN_GAME) {
         this->msg.setLobbyCmd(Command::GAMES_LIST);
         this->controller.sendRequest(this->msg);
-        GameList gl(this, this->controller, this->msg, this->clientJoinedGame);
-        gl.setModal(true);
-        gl.exec();
-        this->close();
+        auto gl = new GameList(this, this->controller, this->msg, this->clientJoinedGame);
+        gl->show();
     } else {
         // Este caso no debería suceder.
         QMessageBox::warning(this, "Error", "Ocurrió un error inesperado.");
@@ -69,5 +65,5 @@ void CharacterSelection::on_btnBack_clicked() {
         parent->show();
     }
 
-    this->close();
+    this->deleteLater();
 }
