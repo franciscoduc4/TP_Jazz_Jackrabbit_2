@@ -26,8 +26,6 @@ public:
 private slots:
     void on_btnBack_clicked();
 
-    void on_btnJoin_clicked();
-
 private:
     Ui::GameList* ui;
     LobbyController& controller;
