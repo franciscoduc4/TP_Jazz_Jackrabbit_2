@@ -14,6 +14,7 @@
 #include "player.h"
 #include "points.h"
 #include "level.h"
+#include "projectile.h"
 #include "interface.h"
 
 class GameScreen {
@@ -26,6 +27,7 @@ class GameScreen {
     Enemy enemies;
     Points points;
     Level level;
+    Projectile proj;
     Interface stats;
 
 	//ClientConfig* config;

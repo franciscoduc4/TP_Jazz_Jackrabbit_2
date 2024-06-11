@@ -6,14 +6,16 @@
 
 enum projectile_type { Normal, BlueBullet, VioletBullet, RedBomb, VioletBomb };
 
-Projectile::Projectile(int p_type, int pos_x, int pos_y, int flip): x(pos_x), y(pos_y), flip(flip) {
+Projectile::Projectile(int p_type) {
 	this->type = p_type;
-	this->count = 0;
 	
 	this->y_fire = 45;
 	this->x_fire = 48;
 	this->width_fire = 15;
 	this->height_fire = 12;	
+	
+	this->draw_width = 20;
+	this->draw_height = 10;
 
 	this->sprites[Normal].push_back(RectangularSprite(44, 36, 13, 7));
 	this->sprites[Normal].push_back(RectangularSprite(58, 36, 13, 7));		
@@ -72,21 +74,52 @@ Projectile::Projectile(int p_type, int pos_x, int pos_y, int flip): x(pos_x), y(
 	this->sprites[VioletBomb].push_back(RectangularSprite(333, 137, 24, 8));			
 }
 
-std::list<RectangularSprite>::iterator Projectile::img_coords() {
+std::list<RectangularSprite>::iterator Projectile::img_coords(uint32_t bulletId) {
 	//Modificar que se pueda cambiar de bala
 	std::list<RectangularSprite>::iterator it = this->sprites[Normal].begin();
-	for (int i = 0; i != this->count; i++) {
+	for (int i = 0; i != this->counts[bulletId]; i++) {
 		++it;
 		if (it == this->sprites[Normal].end()) {
 			it = this->sprites[Normal].begin();
 		}
 		
 	}
-	this->count++;
+	this->counts[bulletId]++;
 	return it;
 
 }
-bool Projectile::draw_projectile(SDL2pp::Window& window, SDL2pp::Renderer& renderer, SDL2pp::Texture& projectile, std::vector<BulletDTO>& bullets) {
+void Projectile::draw_projectile(SDL2pp::Window& window, SDL2pp::Renderer& renderer, SDL2pp::Texture& projectile, std::vector<BulletDTO>& bullets) {
+	int proj_pixel_x;
+	int proj_pixel_w;
+	int proj_pixel_y;
+	int proj_pixel_h;		
+
+	for (auto b : bullets) {
+		if (!this->init) {
+			this->counts[b.getBulletId()] = 0;
+		}
+		if (this->counts[b.getBulletId()] == 0) {
+			proj_pixel_x = this->x_fire;
+			proj_pixel_w = this->width_fire;
+			proj_pixel_y = this->y_fire;
+			proj_pixel_h = this->height_fire;
+			this->counts[b.getBulletId()]++;
+		} else {
+			std::list<RectangularSprite>::iterator it2 = img_coords(b.getBulletId()); 
+			proj_pixel_x = it2->getX();
+			proj_pixel_w = it2->getWidth();	
+			proj_pixel_y = it2->getY();
+			proj_pixel_h = it2->getHeight();	
+		}	
+		double angle = 180.0;
+		if (this->type == RedBomb || this->type == VioletBomb) {
+			angle = 0.0;
+		}
+		renderer.Copy(projectile, SDL2pp::Rect(proj_pixel_x, proj_pixel_y, proj_pixel_w, proj_pixel_h), SDL2pp::Rect(b.getX(), b.getY(), this->draw_width, this->draw_height), angle, SDL2pp::NullOpt);
+	
+	}
+	this->init = true;
+	/*
 	int proj_pixel_x;
 	int proj_pixel_w;
 	int proj_pixel_y;
@@ -120,6 +153,7 @@ bool Projectile::draw_projectile(SDL2pp::Window& window, SDL2pp::Renderer& rende
 		return false;
 	}
 	return true;
+	*/
 }
 
 

@@ -11,24 +11,24 @@
 
 class Projectile {
 	int type;
-	int x;
-	int y;
-	int flip;
-	int count;
 	int y_fire;
 	int x_fire;
 	int width_fire;
 	int height_fire;
-	
+	int draw_width;
+	int draw_height;
+
 	std::map<int, std::list<RectangularSprite>> sprites;
+	std::map<uint32_t, int> counts;
+	bool init;
 			
 	
 	
 public:
-	Projectile(int p_type, int pos_x, int pos_y, int flip);
+	explicit Projectile(int p_type);
 
-	std::list<RectangularSprite>::iterator img_coords();
+	std::list<RectangularSprite>::iterator img_coords(uint32_t bulletId);
 	
-	bool draw_projectile(SDL2pp::Window& window, SDL2pp::Renderer& renderer, SDL2pp::Texture& projectile, std::vector<BulletDTO>& bullets);
+	void draw_projectile(SDL2pp::Window& window, SDL2pp::Renderer& renderer, SDL2pp::Texture& projectile, std::vector<BulletDTO>& bullets);
 };
 #endif

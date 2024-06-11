@@ -28,7 +28,7 @@
 //GameScreen::GameScreen(Client& player): client(player), pj(1), points(0), level(0), stats(CharacterType::JAZZ)/*, config(ClientConfig::getInstance())*/ {
 //}
 
-GameScreen::GameScreen(GameController& controller): controller(controller), pj(1), points(0), level(0), stats(CharacterType::JAZZ)/*, config(ClientConfig::getInstance())*/ {
+GameScreen::GameScreen(GameController& controller): controller(controller), pj(1), points(0), level(0), stats(CharacterType::JAZZ), proj(0)/*, config(ClientConfig::getInstance())*/ {
 }
 
 
@@ -296,6 +296,7 @@ void GameScreen::run() {
         this->enemies.draw_enemy(window, renderer, enemy, enemiesSnapshot, players[0], x_screen, y_screen);
 
         std::vector<BulletDTO> bullets = snapshot->getBullets();
+        this->proj.draw_projectile(window, renderer, projectile, bullets);
 
         std::vector<ItemDTO> itemsSnapshot = snapshot->getItems();
         this->points.draw_points(renderer, items, itemsSnapshot, players[0], x_screen, y_screen); 

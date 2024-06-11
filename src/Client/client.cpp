@@ -56,3 +56,4 @@ void Client::start() {
     */
     GameScreen game(this->gameController);
     game.run();
+}

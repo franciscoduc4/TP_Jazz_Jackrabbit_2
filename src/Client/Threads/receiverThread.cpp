@@ -108,6 +108,8 @@ std::vector<BulletDTO> ReceiverThread::receiveBullets() {
         bullets.push_back(bullet);
     }
     */
+    BulletDTO bullet(150, 60, 0, 10, 5, 3);
+    bullets.push_back(bullet);
     return bullets;
 }
 
