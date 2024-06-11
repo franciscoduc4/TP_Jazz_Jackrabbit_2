@@ -11,14 +11,17 @@ Lobby::Lobby(QWidget* parent, LobbyController& controller, LobbyMessage& msg, bo
         msg(msg),
         clientJoinedGame(clientJoinedGame) {
     ui->setupUi(this);
+
     QString playerName = QString::fromStdString(this->msg.getPlayerName());
     QString welcomeText = ui->labelTitle->text();
     welcomeText.append(playerName);
     ui->labelTitle->setText(welcomeText);
+
     QFile file(":/Lobby/Styles/lobby.qss");
     file.open(QFile::ReadOnly);
     QString styleSheet = QLatin1String(file.readAll());
     ui->centralwidget->setStyleSheet(styleSheet);
+
     ui->labelTitle->setAttribute(Qt::WA_TranslucentBackground);
 }
 

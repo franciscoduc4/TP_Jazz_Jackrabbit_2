@@ -21,6 +21,22 @@ WaitingRoom::WaitingRoom(QWidget *parent, LobbyController& controller, LobbyMess
         ui->maxPlayers->setText(maxPlayers);
     }
 
+    QFont font = ui->labelGameName->font();
+    QFontMetrics fm(font);
+    int pointSize = font.pointSize();
+
+    int minSize = 12;
+    for (int i = pointSize; i >= minSize; --i) {
+        font.setPointSize(i);
+        int textWidth = fm.horizontalAdvance(ui->labelGameName->text());
+
+        if (textWidth <= ui->labelGameName->width()) {
+            break;
+        }
+    }
+
+    ui->labelGameName->setFont(font);
+
     QFile file(":/Lobby/Styles/waitingroom.qss");
     file.open(QFile::ReadOnly);
     QString styleSheet = QLatin1String(file.readAll());
