@@ -6,6 +6,7 @@
 #include "../../Client/client.h"
 #include "../../Common/DTO/game.h"
 #include "../../Common/queue.h"
+#include "../../Client/Controllers/GameController.h"
 
 #include "../../Common/Config/ClientConfig.h"
 
@@ -28,12 +29,14 @@ class GameScreen {
     Interface stats;
 
 	//ClientConfig* config;
-    Client& client;
+    //Client& client;
+    GameController& controller;
 
 public:
     //GameScreen(int character);
 
-    explicit GameScreen(Client& player);
+    //explicit GameScreen(Client& player);
+    explicit GameScreen(GameController& controller);
 
     void run();
 };

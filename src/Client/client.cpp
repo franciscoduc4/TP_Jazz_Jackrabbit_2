@@ -23,6 +23,7 @@ Client::Client(char* ip, char* port):
 }
 
 void Client::start() {
+    /*
     bool clientJoinedGame = false;
     do {
         LobbyInit init;
@@ -37,51 +38,7 @@ void Client::start() {
       // GameScreen game(this->gameController);
       game.run();
     } while (clientJoinedGame);
-
-}
-
-std::unique_ptr<DTO> Client::getServerMsg() { 
-	std::unique_ptr<DTO> dto;
-	gameQueue->try_pop(dto);
-	return dto; 
-}
-
-void Client::sendMsg(Command& cmd, std::vector<uint8_t>& parameters) {
-    switch (cmd) {
-        case Command::MOVE:
-            move_msg(parameters);
-       		break;
-       	case Command::SHOOT:
-       		shoot_msg();
-       		break;
-    }
-}
-
-void Client::move_msg(std::vector<uint8_t>& parameters) {
-    Direction dir = static_cast<Direction>(parameters[0]);
-    std::unique_ptr<DTO> move = std::make_unique<MoveDTO>(this->playerId, dir);
-    serializer.sendMsg(move);
-}
-
-/*
-std::map<int32_t, GameInfo> Client::requestGameList(const LobbyMessage& msg) {
-    std::map<int32_t, GameInfo> gameMap;
-    this->serializer.serializeLobbyMessage(msg);
-    try {
-        std::pair<int, std::map<int32_t, GameInfo>> result = this->deserializer.getGameList();
-        if (result.first > 0) {
-            gameMap = result.second;
-        }
-    } catch (const std::exception &e) {
-        std::cerr << "Unexpected Exception retrieving GameList" << e.what() << std::endl;
-    }
-
-    return gameMap;
-}
-
-*/
-
-void Client::shoot_msg() {
-	std::unique_ptr<DTO> shoot = std::make_unique<CommandDTO>(this->playerId, Command::SHOOT);
-	serializer.sendMsg(shoot);
+    */
+    GameScreen game(this->gameController);
+    game.run();
 }
