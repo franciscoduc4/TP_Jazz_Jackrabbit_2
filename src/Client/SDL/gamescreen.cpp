@@ -71,13 +71,14 @@ void GameScreen::run() {
     std::map<TileType, std::unique_ptr<SDL2pp::Texture>> tiles_textures = this->level.getTilesTextures(renderer);
 
     // TEXTURAS PERSONAJES
+    std::tuple<int, int, int> pjsColorKey = ClientConfig::getJazzColourKey();
     SDL_Surface* jazz_surf = IMG_Load(this->pj.getPath(CharacterType::JAZZ).c_str());
     if (!jazz_surf) {
         std::cerr << "Error loading Jazz surface: " << IMG_GetError() << std::endl;
         return;
     }
     SDL2pp::Surface jazzSurface(jazz_surf);
-    jazzSurface.SetColorKey(true, SDL_MapRGB(jazzSurface.Get()->format, 44, 102, 150));
+    jazzSurface.SetColorKey(true, SDL_MapRGB(jazzSurface.Get()->format, std::get<0>(pjsColorKey), std::get<1>(pjsColorKey), std::get<2>(pjsColorKey)));
     SDL2pp::Texture jazz_sprite(renderer, jazzSurface);
 
     SDL_Surface* lori_surf = IMG_Load(this->pj.getPath(CharacterType::LORI).c_str());
@@ -86,7 +87,7 @@ void GameScreen::run() {
         return;
     }
     SDL2pp::Surface loriSurface(lori_surf);
-    loriSurface.SetColorKey(true, SDL_MapRGB(loriSurface.Get()->format, 44, 102, 150));
+    loriSurface.SetColorKey(true, SDL_MapRGB(loriSurface.Get()->format, std::get<0>(pjsColorKey), std::get<1>(pjsColorKey), std::get<2>(pjsColorKey)));
     SDL2pp::Texture lori_sprite(renderer, loriSurface);
 
     SDL_Surface* spaz_surf = IMG_Load(this->pj.getPath(CharacterType::SPAZ).c_str());
@@ -95,7 +96,7 @@ void GameScreen::run() {
         return;
     }
     SDL2pp::Surface spazSurface(spaz_surf);
-    spazSurface.SetColorKey(true, SDL_MapRGB(spazSurface.Get()->format, 44, 102, 150));
+    spazSurface.SetColorKey(true, SDL_MapRGB(spazSurface.Get()->format, std::get<0>(pjsColorKey), std::get<1>(pjsColorKey), std::get<2>(pjsColorKey)));
     SDL2pp::Texture spaz_sprite(renderer, spazSurface);
 
     std::map<CharacterType, SDL2pp::Texture*> pjs_textures;

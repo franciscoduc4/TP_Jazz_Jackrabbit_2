@@ -1,6 +1,7 @@
 #include "enemy.h"
 #include "../../Common/sprite.h"
 #include "../../Common/DTO/enemy.h"
+#include "../Common/Config/ClientConfig.h"
 
 #include <iostream>
 
@@ -26,42 +27,26 @@ Enemy::Enemy() {
     this->init = false;
 
 	//WALKING ENEMY
-    this->enemies_path[EnemyType::WALKING_ENEMY] = "../assets/Enemies/TurtleEnemies.png";
+    this->enemies_path[EnemyType::WALKING_ENEMY] = ClientConfig::getTurtleFile();// "../assets/Enemies/TurtleEnemies.png";
 
 	std::vector<int> walking_enemy_w_h{50, 50};
 	this->width_height[EnemyType::WALKING_ENEMY] = walking_enemy_w_h;
 	
-    this->sprites[EnemyType::WALKING_ENEMY][EnemyStateEntity::ENEMY_WALKING].push_back(RectangularSprite(12, 56, 67, 56));
-    this->sprites[EnemyType::WALKING_ENEMY][EnemyStateEntity::ENEMY_WALKING].push_back(RectangularSprite(80, 56, 69, 56));
-    this->sprites[EnemyType::WALKING_ENEMY][EnemyStateEntity::ENEMY_WALKING].push_back(RectangularSprite(150, 56, 68, 56));
-    this->sprites[EnemyType::WALKING_ENEMY][EnemyStateEntity::ENEMY_WALKING].push_back(RectangularSprite(220, 56, 66, 56));
-    this->sprites[EnemyType::WALKING_ENEMY][EnemyStateEntity::ENEMY_WALKING].push_back(RectangularSprite(290, 56, 68, 56));
-    this->sprites[EnemyType::WALKING_ENEMY][EnemyStateEntity::ENEMY_WALKING].push_back(RectangularSprite(360, 56, 61, 56));
-    this->sprites[EnemyType::WALKING_ENEMY][EnemyStateEntity::ENEMY_WALKING].push_back(RectangularSprite(422, 56, 65, 56));
-    this->sprites[EnemyType::WALKING_ENEMY][EnemyStateEntity::ENEMY_WALKING].push_back(RectangularSprite(487, 56, 65, 56));
-    this->sprites[EnemyType::WALKING_ENEMY][EnemyStateEntity::ENEMY_WALKING].push_back(RectangularSprite(555, 56, 61, 56));
-    this->sprites[EnemyType::WALKING_ENEMY][EnemyStateEntity::ENEMY_WALKING].push_back(RectangularSprite(616, 56, 63, 56));
-    this->sprites[EnemyType::WALKING_ENEMY][EnemyStateEntity::ENEMY_WALKING].push_back(RectangularSprite(680, 56, 66, 56));
-    this->sprites[EnemyType::WALKING_ENEMY][EnemyStateEntity::ENEMY_WALKING].push_back(RectangularSprite(746, 56, 68, 56));
+    std::vector<std::vector<int>> turtle_walking_sprites = ClientConfig::getTurtleWalkingSprites();
+    for (int i = 0; i < turtle_walking_sprites.size(); i++) {
+        this->sprites[EnemyType::WALKING_ENEMY][EnemyStateEntity::ENEMY_WALKING].push_back(RectangularSprite(turtle_walking_sprites[i]));
+    }
 
-    this->sprites[EnemyType::WALKING_ENEMY][EnemyStateEntity::ENEMY_ATTACKING].push_back(RectangularSprite(5, 120, 58, 50));
-    this->sprites[EnemyType::WALKING_ENEMY][EnemyStateEntity::ENEMY_ATTACKING].push_back(RectangularSprite(63, 120, 60, 50));
-    this->sprites[EnemyType::WALKING_ENEMY][EnemyStateEntity::ENEMY_ATTACKING].push_back(RectangularSprite(123, 120, 60, 50));
-    this->sprites[EnemyType::WALKING_ENEMY][EnemyStateEntity::ENEMY_ATTACKING].push_back(RectangularSprite(183, 120, 77, 50));
-    this->sprites[EnemyType::WALKING_ENEMY][EnemyStateEntity::ENEMY_ATTACKING].push_back(RectangularSprite(260, 120, 95, 50));
-    this->sprites[EnemyType::WALKING_ENEMY][EnemyStateEntity::ENEMY_ATTACKING].push_back(RectangularSprite(357, 120, 99, 50));
-    this->sprites[EnemyType::WALKING_ENEMY][EnemyStateEntity::ENEMY_ATTACKING].push_back(RectangularSprite(458, 120, 114, 50));
-    this->sprites[EnemyType::WALKING_ENEMY][EnemyStateEntity::ENEMY_ATTACKING].push_back(RectangularSprite(572, 120, 120, 50));
-    this->sprites[EnemyType::WALKING_ENEMY][EnemyStateEntity::ENEMY_ATTACKING].push_back(RectangularSprite(692, 120, 114, 50));
-    this->sprites[EnemyType::WALKING_ENEMY][EnemyStateEntity::ENEMY_ATTACKING].push_back(RectangularSprite(809, 120, 84, 50));
-    this->sprites[EnemyType::WALKING_ENEMY][EnemyStateEntity::ENEMY_ATTACKING].push_back(RectangularSprite(893, 120, 60, 50));
+    std::vector<std::vector<int>> turtle_attacking_sprites = ClientConfig::getTurtleAttackingSprites();
+    for (int i = 0; i < turtle_attacking_sprites.size(); i++) {
+        this->sprites[EnemyType::WALKING_ENEMY][EnemyStateEntity::ENEMY_ATTACKING].push_back(RectangularSprite(turtle_attacking_sprites[i]));
+    }                
 
-    this->sprites[EnemyType::WALKING_ENEMY][EnemyStateEntity::ENEMY_DEAD].push_back(RectangularSprite(384, 9, 75, 42));
-    this->sprites[EnemyType::WALKING_ENEMY][EnemyStateEntity::ENEMY_DEAD].push_back(RectangularSprite(460, 9, 70, 42));
-    this->sprites[EnemyType::WALKING_ENEMY][EnemyStateEntity::ENEMY_DEAD].push_back(RectangularSprite(530, 9, 62, 42));
-    this->sprites[EnemyType::WALKING_ENEMY][EnemyStateEntity::ENEMY_DEAD].push_back(RectangularSprite(592, 9, 52, 42));
-    this->sprites[EnemyType::WALKING_ENEMY][EnemyStateEntity::ENEMY_DEAD].push_back(RectangularSprite(644, 9, 47, 42));
-    this->sprites[EnemyType::WALKING_ENEMY][EnemyStateEntity::ENEMY_DEAD].push_back(RectangularSprite(691, 9, 42, 42));
+    std::vector<std::vector<int>> turtle_dying_sprites = ClientConfig::getTurtleDyingSprites();
+    for (int i = 0; i < turtle_dying_sprites.size(); i++) {
+        this->sprites[EnemyType::WALKING_ENEMY][EnemyStateEntity::ENEMY_DEAD].push_back(RectangularSprite(turtle_dying_sprites[i]));
+    }
+
 
 	/*
     this->path = "../assets/Enemies/Schwartzenguard.png";

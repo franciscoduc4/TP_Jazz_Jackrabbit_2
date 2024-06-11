@@ -16,7 +16,7 @@
 #include "projectile.h"
 
 class Player {
-    std::map<CharacterType,std::string> image_path;
+    std::map<CharacterType, std::string> image_path;
     std::map<CharacterType, std::map<int, std::list<RectangularSprite>>> sprites;
     std::list<Projectile> projectiles;
 	std::map<int, std::map<CharacterStateEntity, int>> counts;

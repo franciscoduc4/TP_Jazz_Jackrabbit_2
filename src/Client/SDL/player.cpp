@@ -13,90 +13,39 @@
 #include <iostream>
 
 Player::Player(int character) {
-	/*
-	int index_x = 0;
-	int index_y = 1;
-	int index_width = 3;
-	int index_height = 4;
-	*/
 	this->width = 50;
 	this->height = 80;
 	this->flip = 0;
 	this->init = false;
 	
-	this->image_path[CharacterType::JAZZ] = "../assets/Characters/Jazz.png";
-	/*
-	std::vector<std::vector<int>> CharacterStateEntity::MOVING_sprites = ClientConfig::getJazzCharacterStateEntity::MOVINGingSprites();
-	for (int i = 0; i < CharacterStateEntity::MOVING_sprites.size(); i++) {
-		this->sprites[aCharacterStateEntity::MOVING].push_back(RectangularSprite(CharacterStateEntity::MOVING_sprites[CharacterType::LORI][i][index_x], CharacterStateEntity::MOVING_sprites[CharacterType::LORI][i][index_y], CharacterStateEntity::MOVING_sprites[CharacterType::LORI][i][index_width], CharacterStateEntity::MOVING_sprites[CharacterType::LORI][i][index_height]));
+	this->image_path[CharacterType::JAZZ] = ClientConfig::getJazzFile();//"../assets/Characters/Jazz.png";
+	
+	std::vector<std::vector<int>> walking_sprites = ClientConfig::getJazzWalkingSprites();
+	for (int i = 0; i < walking_sprites.size(); i++) {
+		this->sprites[CharacterType::JAZZ][CharacterStateEntity::MOVING].push_back(RectangularSprite(walking_sprites[i]));
 	}
-
 				
-	std::vector<std::vector<int>> CharacterStateEntity::SPRINTINGning_sprites = ClientConfig::getJazzCharacterStateEntity::SPRINTINGningSprites();
-	for (int i = 0; i < CharacterStateEntity::SPRINTINGning_sprites.size(); i++) {
-		this->sprites[aCharacterStateEntity::SPRINTING].push_back(RectangularSprite(CharacterStateEntity::SPRINTINGning_sprites[CharacterType::LORI][i][index_x], CharacterStateEntity::SPRINTINGning_sprites[CharacterType::LORI][i][index_y], CharacterStateEntity::SPRINTINGning_sprites[CharacterType::LORI][i][index_width], CharacterStateEntity::SPRINTINGning_sprites[CharacterType::LORI][i][index_height]));
+	std::vector<std::vector<int>> running_sprites = ClientConfig::getJazzRunningSprites();
+	for (int i = 0; i < running_sprites.size(); i++) {
+		this->sprites[CharacterType::JAZZ][CharacterStateEntity::SPRINTING].push_back(RectangularSprite(running_sprites[i]));
 	}
 	
-	std::vector<std::vector<int>> CharacterStateEntity::SHOOTING_sprites = ClientConfig::getJazzCharacterStateEntity::SHOOTINGingSprites();
-	for (int i = 0; i < CharacterStateEntity::SHOOTING_sprites.size(); i++) {
-		this->sprites[CharacterType::SPAZ][CharacterStateEntity::SHOOTING].push_back(RectangularSprite(CharacterStateEntity::SHOOTING_sprites[CharacterType::LORI][i][index_x], CharacterStateEntity::SHOOTING_sprites[CharacterType::LORI][i][index_y], CharacterStateEntity::SHOOTING_sprites[CharacterType::LORI][i][index_width], CharacterStateEntity::SHOOTING_sprites[CharacterType::LORI][i][index_height]));
+	std::vector<std::vector<int>> shooting_sprites = ClientConfig::getJazzShootingSprites();
+	for (int i = 0; i < shooting_sprites.size(); i++) {
+		this->sprites[CharacterType::JAZZ][CharacterStateEntity::SHOOTING].push_back(RectangularSprite(shooting_sprites[i]));
 	}
 	
-	std::vector<std::vector<int>> CharacterStateEntity::JUMPING_sprites = ClientConfig::getJazzCharacterStateEntity::JUMPINGingSprites();
-	for (int i = 0; i < CharacterStateEntity::JUMPING_sprites.size(); i++) {
-		this->sprites[aCharacterStateEntity::JUMPING].push_back(RectangularSprite(CharacterStateEntity::JUMPING_sprites[CharacterType::LORI][i][index_x], CharacterStateEntity::JUMPING_sprites[CharacterType::LORI][i][index_y], CharacterStateEntity::JUMPING_sprites[CharacterType::LORI][i][index_width], CharacterStateEntity::JUMPING_sprites[CharacterType::LORI][i][index_height]));
+	std::vector<std::vector<int>> jumping_sprites = ClientConfig::getJazzJumpingSprites();
+	for (int i = 0; i < jumping_sprites.size(); i++) {
+		this->sprites[CharacterType::JAZZ][CharacterStateEntity::JUMPING].push_back(RectangularSprite(jumping_sprites[i]));
 	}
-	
+	/*
 	std::vector<std::vector<int>> dash_sprites = ClientConfig::getJazzDashingSprites();
 	for (int i = 0; i < dash_sprites.size(); i++) {
-		this->sprites[aDash].push_back(RectangularSprite(dash_sprites[CharacterType::LORI][i][index_x], dash_sprites[CharacterType::LORI][i][index_y], dash_sprites[CharacterType::LORI][i][index_width], dash_sprites[CharacterType::LORI][i][index_height]));
+		this->sprites[CharacterType::JAZZ][CharacterEntityType::DASH].push_back(RectangularSprite(dash_sprites[i]));
 	}
 	*/
-	
-	for (int i = 0; i < 8; i++) {
-		this->sprites[CharacterType::JAZZ][CharacterStateEntity::MOVING].push_back(RectangularSprite(57 * i, 790, 57, 46));
-		this->sprites[CharacterType::JAZZ][CharacterStateEntity::SPRINTING].push_back(RectangularSprite(67 * i, 853, 67, 39));
-	}
-	
-	this->sprites[CharacterType::JAZZ][CharacterStateEntity::SHOOTING].push_back(RectangularSprite(0, 557, 47, 57));
-	this->sprites[CharacterType::JAZZ][CharacterStateEntity::SHOOTING].push_back(RectangularSprite(51, 557, 45, 57));
-	this->sprites[CharacterType::JAZZ][CharacterStateEntity::SHOOTING].push_back(RectangularSprite(101, 557, 36, 57));
-	this->sprites[CharacterType::JAZZ][CharacterStateEntity::SHOOTING].push_back(RectangularSprite(143, 557, 37, 57));
-	this->sprites[CharacterType::JAZZ][CharacterStateEntity::SHOOTING].push_back(RectangularSprite(185, 557, 36, 57));
-	this->sprites[CharacterType::JAZZ][CharacterStateEntity::SHOOTING].push_back(RectangularSprite(226, 557, 39, 57));
-	this->sprites[CharacterType::JAZZ][CharacterStateEntity::SHOOTING].push_back(RectangularSprite(265, 557, 54, 57));			
-
-	this->sprites[CharacterType::JAZZ][CharacterStateEntity::JUMPING].push_back(RectangularSprite(0, 1197, 50, 60));	
-	this->sprites[CharacterType::JAZZ][CharacterStateEntity::JUMPING].push_back(RectangularSprite(53, 1197, 36, 60));	
-	this->sprites[CharacterType::JAZZ][CharacterStateEntity::JUMPING].push_back(RectangularSprite(89, 1197, 43, 60));	
-	this->sprites[CharacterType::JAZZ][CharacterStateEntity::JUMPING].push_back(RectangularSprite(132, 1197, 46, 60));	
-	this->sprites[CharacterType::JAZZ][CharacterStateEntity::JUMPING].push_back(RectangularSprite(178, 1197, 48, 60));	
-	this->sprites[CharacterType::JAZZ][CharacterStateEntity::JUMPING].push_back(RectangularSprite(226, 1197, 52, 60));	
-	this->sprites[CharacterType::JAZZ][CharacterStateEntity::JUMPING].push_back(RectangularSprite(278, 1197, 51, 60));	
-	this->sprites[CharacterType::JAZZ][CharacterStateEntity::JUMPING].push_back(RectangularSprite(329, 1197, 53, 60));	
-	this->sprites[CharacterType::JAZZ][CharacterStateEntity::JUMPING].push_back(RectangularSprite(383, 1197, 45, 60));	
-	this->sprites[CharacterType::JAZZ][CharacterStateEntity::JUMPING].push_back(RectangularSprite(429, 1197, 36, 60));	
-	this->sprites[CharacterType::JAZZ][CharacterStateEntity::JUMPING].push_back(RectangularSprite(465, 1197, 35, 60));	
-	this->sprites[CharacterType::JAZZ][CharacterStateEntity::JUMPING].push_back(RectangularSprite(500, 1197, 37, 60));	
-	/* 
-	this->sprites[CharacterType::JAZZ][Dash].push_back(RectangularSprite(0, 909, 45, 65));
-	this->sprites[CharacterType::JAZZ][Dash].push_back(RectangularSprite(45, 909, 43, 65));
-	this->sprites[CharacterType::JAZZ][Dash].push_back(RectangularSprite(90, 909, 45, 65));
-	this->sprites[CharacterType::JAZZ][Dash].push_back(RectangularSprite(135, 909, 52, 65));
-	this->sprites[CharacterType::JAZZ][Dash].push_back(RectangularSprite(188, 909, 55, 65));
-	this->sprites[CharacterType::JAZZ][Dash].push_back(RectangularSprite(243, 909, 53, 65));
-	this->sprites[CharacterType::JAZZ][Dash].push_back(RectangularSprite(295, 909, 65, 65));
-	this->sprites[CharacterType::JAZZ][Dash].push_back(RectangularSprite(360, 909, 66, 65));
-	this->sprites[CharacterType::JAZZ][Dash].push_back(RectangularSprite(426, 909, 68, 65));
-	this->sprites[CharacterType::JAZZ][Dash].push_back(RectangularSprite(495, 909, 67, 65));
-	this->sprites[CharacterType::JAZZ][Dash].push_back(RectangularSprite(562, 909, 67, 65));
-	this->sprites[CharacterType::JAZZ][Dash].push_back(RectangularSprite(629, 909, 61, 65));
-	this->sprites[CharacterType::JAZZ][Dash].push_back(RectangularSprite(690, 909, 58, 65));
-	this->sprites[CharacterType::JAZZ][Dash].push_back(RectangularSprite(0, 993, 70, 41));
-	this->sprites[CharacterType::JAZZ][Dash].push_back(RectangularSprite(72, 993, 64, 41));
-	this->sprites[CharacterType::JAZZ][Dash].push_back(RectangularSprite(137, 993, 69, 41));			
-	this->sprites[CharacterType::JAZZ][Dash].push_back(RectangularSprite(207, 993, 69, 41));
-	*/
+	/*
 	this->sprites[CharacterType::JAZZ][CharacterStateEntity::SPECIAL_ATTACK].push_back(RectangularSprite(0, 715, 56, 58));
 	this->sprites[CharacterType::JAZZ][CharacterStateEntity::SPECIAL_ATTACK].push_back(RectangularSprite(57, 715, 54, 58));
 	this->sprites[CharacterType::JAZZ][CharacterStateEntity::SPECIAL_ATTACK].push_back(RectangularSprite(112, 715, 46, 58));
@@ -153,42 +102,29 @@ Player::Player(int character) {
 	this->sprites[CharacterType::JAZZ][CharacterStateEntity::DEAD].push_back(RectangularSprite(450, 3166, 84, 64));
 	this->sprites[CharacterType::JAZZ][CharacterStateEntity::DEAD].push_back(RectangularSprite(540, 3166, 80, 64));
 	this->sprites[CharacterType::JAZZ][CharacterStateEntity::DEAD].push_back(RectangularSprite(625, 3166, 65, 64));
-	/* 
-	this->sprites[CharacterType::JAZZ][Liveicon].push_back(RectangularSprite(0, 3246, 40, 43));
-	this->sprites[CharacterType::JAZZ][Liveicon].push_back(RectangularSprite(50, 3246, 42, 43));
-	this->sprites[CharacterType::JAZZ][Liveicon].push_back(RectangularSprite(92, 3246, 40, 43));
-	this->sprites[CharacterType::JAZZ][Liveicon].push_back(RectangularSprite(132, 3246, 40, 43));
-	this->sprites[CharacterType::JAZZ][Liveicon].push_back(RectangularSprite(172, 3246, 40, 43));
-	*/	
-			
-		
-	this->image_path[CharacterType::LORI] = "../assets/Characters/Lori.png";
+	*/		
+
+	this->image_path[CharacterType::LORI] = ClientConfig::getLoriFile();//"../assets/Characters/Lori.png";
+
+	std::vector<std::vector<int>> lori_walking_sprites = ClientConfig::getLoriWalkingSprites();
+	for (int i = 0; i < lori_walking_sprites.size(); i++) {
+		this->sprites[CharacterType::LORI][CharacterStateEntity::MOVING].push_back(RectangularSprite(lori_walking_sprites[i]));
+	}
 				
-	for (int i = 0; i < 8; i++) {
-		this->sprites[CharacterType::LORI][CharacterStateEntity::MOVING].push_back(RectangularSprite(51 * i, 556, 51, 51));
-		this->sprites[CharacterType::LORI][CharacterStateEntity::SPRINTING].push_back(RectangularSprite(55 * i, 626, 55, 42));
+	std::vector<std::vector<int>> lori_running_sprites = ClientConfig::getLoriRunningSprites();
+	for (int i = 0; i < lori_running_sprites.size(); i++) {
+		this->sprites[CharacterType::LORI][CharacterStateEntity::SPRINTING].push_back(RectangularSprite(lori_running_sprites[i]));
 	}
 	
-	this->sprites[CharacterType::LORI][CharacterStateEntity::SHOOTING].push_back(RectangularSprite(0, 341, 48, 56));
-	this->sprites[CharacterType::LORI][CharacterStateEntity::SHOOTING].push_back(RectangularSprite(50, 341, 43, 56));
-	this->sprites[CharacterType::LORI][CharacterStateEntity::SHOOTING].push_back(RectangularSprite(100, 341, 38, 56));
-	this->sprites[CharacterType::LORI][CharacterStateEntity::SHOOTING].push_back(RectangularSprite(140, 341, 37, 56));
-	this->sprites[CharacterType::LORI][CharacterStateEntity::SHOOTING].push_back(RectangularSprite(180, 341, 40, 56));
-	this->sprites[CharacterType::LORI][CharacterStateEntity::SHOOTING].push_back(RectangularSprite(220, 341, 40, 56));
-
-	this->sprites[CharacterType::LORI][CharacterStateEntity::JUMPING].push_back(RectangularSprite(0, 963, 48, 70));	
-	this->sprites[CharacterType::LORI][CharacterStateEntity::JUMPING].push_back(RectangularSprite(50, 963, 45, 70));	
-	this->sprites[CharacterType::LORI][CharacterStateEntity::JUMPING].push_back(RectangularSprite(98, 963, 44, 70));	
-	this->sprites[CharacterType::LORI][CharacterStateEntity::JUMPING].push_back(RectangularSprite(145, 963, 45, 70));	
-	this->sprites[CharacterType::LORI][CharacterStateEntity::JUMPING].push_back(RectangularSprite(190, 963, 45, 70));	
-	this->sprites[CharacterType::LORI][CharacterStateEntity::JUMPING].push_back(RectangularSprite(235, 963, 52, 70));	
-	this->sprites[CharacterType::LORI][CharacterStateEntity::JUMPING].push_back(RectangularSprite(288, 963, 52, 70));	
-	this->sprites[CharacterType::LORI][CharacterStateEntity::JUMPING].push_back(RectangularSprite(340, 963, 52, 70));	
-	this->sprites[CharacterType::LORI][CharacterStateEntity::JUMPING].push_back(RectangularSprite(392, 963, 53, 70));	
-	this->sprites[CharacterType::LORI][CharacterStateEntity::JUMPING].push_back(RectangularSprite(445, 963, 37, 70));	
-	this->sprites[CharacterType::LORI][CharacterStateEntity::JUMPING].push_back(RectangularSprite(485, 963, 40, 70));	
-	this->sprites[CharacterType::LORI][CharacterStateEntity::JUMPING].push_back(RectangularSprite(525, 963, 40, 70));	
-	this->sprites[CharacterType::LORI][CharacterStateEntity::JUMPING].push_back(RectangularSprite(565, 963, 40, 70));	
+	std::vector<std::vector<int>> lori_shooting_sprites = ClientConfig::getLoriShootingSprites();
+	for (int i = 0; i < lori_shooting_sprites.size(); i++) {
+		this->sprites[CharacterType::LORI][CharacterStateEntity::SHOOTING].push_back(RectangularSprite(lori_shooting_sprites[i]));
+	}
+	
+	std::vector<std::vector<int>> lori_jumping_sprites = ClientConfig::getLoriJumpingSprites();
+	for (int i = 0; i < lori_jumping_sprites.size(); i++) {
+		this->sprites[CharacterType::LORI][CharacterStateEntity::JUMPING].push_back(RectangularSprite(lori_jumping_sprites[i]));
+	}
 
 	/* 
 	this->sprites[CharacterType::LORI][Dash].push_back(RectangularSprite(0, 684, 45, 57));
@@ -212,7 +148,6 @@ Player::Player(int character) {
 	this->sprites[CharacterType::LORI][Dash].push_back(RectangularSprite(324, 760, 65, 45));
 	this->sprites[CharacterType::LORI][Dash].push_back(RectangularSprite(391, 760, 65, 45));
 	this->sprites[CharacterType::LORI][Dash].push_back(RectangularSprite(456, 760, 65, 45));
- 	*/	
 	
 	this->sprites[CharacterType::LORI][CharacterStateEntity::SPECIAL_ATTACK].push_back(RectangularSprite(0, 485, 50, 60));
 	this->sprites[CharacterType::LORI][CharacterStateEntity::SPECIAL_ATTACK].push_back(RectangularSprite(50, 485, 50, 60));
@@ -274,49 +209,30 @@ Player::Player(int character) {
 	this->sprites[CharacterType::LORI][CharacterStateEntity::DEAD].push_back(RectangularSprite(750, 2826, 46, 65));
 	this->sprites[CharacterType::LORI][CharacterStateEntity::DEAD].push_back(RectangularSprite(796, 2826, 49, 65));
 	this->sprites[CharacterType::LORI][CharacterStateEntity::DEAD].push_back(RectangularSprite(845, 2826, 49, 65));
-	
-	/* this->sprites[CharacterType::LORI][Liveicon].push_back(RectangularSprite(0, 2906, 43, 49));
-	this->sprites[CharacterType::LORI][Liveicon].push_back(RectangularSprite(43, 2906, 45, 49));
-	this->sprites[CharacterType::LORI][Liveicon].push_back(RectangularSprite(88, 2906, 46, 49));
-	this->sprites[CharacterType::LORI][Liveicon].push_back(RectangularSprite(134, 2906, 46, 49));
-	this->sprites[CharacterType::LORI][Liveicon].push_back(RectangularSprite(180, 2906, 45, 49));
-	this->sprites[CharacterType::LORI][Liveicon].push_back(RectangularSprite(225, 2906, 45, 49));
-	 */		
-	this->image_path[CharacterType::SPAZ] = "../assets/Characters/Spaz.png";
+	*/	
 
-	for (int i = 0; i < 8; i++) {
-		this->sprites[CharacterType::SPAZ][CharacterStateEntity::MOVING].push_back(RectangularSprite(50 * i, 747, 50, 45));
+	this->image_path[CharacterType::SPAZ] = ClientConfig::getSpazFile();//"../assets/Characters/Spaz.png";
+
+	std::vector<std::vector<int>> spaz_walking_sprites = ClientConfig::getSpazWalkingSprites();
+	for (int i = 0; i < spaz_walking_sprites.size(); i++) {
+		this->sprites[CharacterType::SPAZ][CharacterStateEntity::MOVING].push_back(RectangularSprite(spaz_walking_sprites[i]));
+	}
+				
+	std::vector<std::vector<int>> spaz_running_sprites = ClientConfig::getSpazRunningSprites();
+	for (int i = 0; i < spaz_running_sprites.size(); i++) {
+		this->sprites[CharacterType::LORI][CharacterStateEntity::SPRINTING].push_back(RectangularSprite(spaz_running_sprites[i]));
 	}
 	
-	this->sprites[CharacterType::SPAZ][CharacterStateEntity::SPRINTING].push_back(RectangularSprite(0, 807, 48, 40));
-	this->sprites[CharacterType::SPAZ][CharacterStateEntity::SPRINTING].push_back(RectangularSprite(48, 807, 58, 40));
-	this->sprites[CharacterType::SPAZ][CharacterStateEntity::SPRINTING].push_back(RectangularSprite(106, 807, 52, 40));
-	this->sprites[CharacterType::SPAZ][CharacterStateEntity::SPRINTING].push_back(RectangularSprite(160, 807, 48, 40));
-	this->sprites[CharacterType::SPAZ][CharacterStateEntity::SPRINTING].push_back(RectangularSprite(210, 807, 48, 40));
-	this->sprites[CharacterType::SPAZ][CharacterStateEntity::SPRINTING].push_back(RectangularSprite(260, 807, 54, 40));
-	this->sprites[CharacterType::SPAZ][CharacterStateEntity::SPRINTING].push_back(RectangularSprite(315, 807, 50, 40));
-	this->sprites[CharacterType::SPAZ][CharacterStateEntity::SPRINTING].push_back(RectangularSprite(366, 807, 50, 40));
-
-	this->sprites[CharacterType::SPAZ][CharacterStateEntity::SHOOTING].push_back(RectangularSprite(0, 539, 52, 48));		
-	this->sprites[CharacterType::SPAZ][CharacterStateEntity::SHOOTING].push_back(RectangularSprite(53, 539, 50, 48));		
-	this->sprites[CharacterType::SPAZ][CharacterStateEntity::SHOOTING].push_back(RectangularSprite(105, 539, 48, 48));		
-	this->sprites[CharacterType::SPAZ][CharacterStateEntity::SHOOTING].push_back(RectangularSprite(153, 539, 36, 48));		
-	this->sprites[CharacterType::SPAZ][CharacterStateEntity::SHOOTING].push_back(RectangularSprite(190, 539, 42, 48));		
-	this->sprites[CharacterType::SPAZ][CharacterStateEntity::SHOOTING].push_back(RectangularSprite(232, 539, 47, 48));		
-
-	this->sprites[CharacterType::SPAZ][CharacterStateEntity::JUMPING].push_back(RectangularSprite(0, 1139, 44, 55));
-	this->sprites[CharacterType::SPAZ][CharacterStateEntity::JUMPING].push_back(RectangularSprite(44, 1139, 36, 55));
-	this->sprites[CharacterType::SPAZ][CharacterStateEntity::JUMPING].push_back(RectangularSprite(81, 1139, 40, 55));
-	this->sprites[CharacterType::SPAZ][CharacterStateEntity::JUMPING].push_back(RectangularSprite(122, 1139, 42, 55));
-	this->sprites[CharacterType::SPAZ][CharacterStateEntity::JUMPING].push_back(RectangularSprite(165, 1139, 38, 55));
-	this->sprites[CharacterType::SPAZ][CharacterStateEntity::JUMPING].push_back(RectangularSprite(205, 1139, 40, 55));
-	this->sprites[CharacterType::SPAZ][CharacterStateEntity::JUMPING].push_back(RectangularSprite(245, 1139, 40, 55));
-	this->sprites[CharacterType::SPAZ][CharacterStateEntity::JUMPING].push_back(RectangularSprite(287, 1139, 43, 55));
-	this->sprites[CharacterType::SPAZ][CharacterStateEntity::JUMPING].push_back(RectangularSprite(330, 1139, 45, 55));
-	this->sprites[CharacterType::SPAZ][CharacterStateEntity::JUMPING].push_back(RectangularSprite(378, 1139, 34, 55));
-	this->sprites[CharacterType::SPAZ][CharacterStateEntity::JUMPING].push_back(RectangularSprite(415, 1139, 33, 55));
-	this->sprites[CharacterType::SPAZ][CharacterStateEntity::JUMPING].push_back(RectangularSprite(450, 1139, 34, 55));
+	std::vector<std::vector<int>> spaz_shooting_sprites = ClientConfig::getSpazShootingSprites();
+	for (int i = 0; i < spaz_shooting_sprites.size(); i++) {
+		this->sprites[CharacterType::SPAZ][CharacterStateEntity::SHOOTING].push_back(RectangularSprite(spaz_shooting_sprites[i]));
+	}
 	
+	std::vector<std::vector<int>> spaz_jumping_sprites = ClientConfig::getSpazJumpingSprites();
+	for (int i = 0; i < spaz_jumping_sprites.size(); i++) {
+		this->sprites[CharacterType::SPAZ][CharacterStateEntity::JUMPING].push_back(RectangularSprite(spaz_jumping_sprites[i]));
+	}
+
 	/*
 	this->sprites[CharacterType::SPAZ][Dash].push_back(RectangularSprite(0, 861, 40, 60));
 	this->sprites[CharacterType::SPAZ][Dash].push_back(RectangularSprite(40, 861, 50, 60));
@@ -335,7 +251,6 @@ Player::Player(int character) {
 	this->sprites[CharacterType::SPAZ][Dash].push_back(RectangularSprite(58, 936, 53, 44));
 	this->sprites[CharacterType::SPAZ][Dash].push_back(RectangularSprite(111, 936, 54, 44));
 	this->sprites[CharacterType::SPAZ][Dash].push_back(RectangularSprite(165, 936, 55, 44));
-	*/
 
 	this->sprites[CharacterType::SPAZ][CharacterStateEntity::SPECIAL_ATTACK].push_back(RectangularSprite(0, 681, 50, 48));
 	this->sprites[CharacterType::SPAZ][CharacterStateEntity::SPECIAL_ATTACK].push_back(RectangularSprite(50, 681, 51, 48));
@@ -392,18 +307,6 @@ Player::Player(int character) {
 	this->sprites[CharacterType::SPAZ][CharacterStateEntity::DEAD].push_back(RectangularSprite(212, 3105, 70, 69));
 	this->sprites[CharacterType::SPAZ][CharacterStateEntity::DEAD].push_back(RectangularSprite(287, 3105, 69, 69));
 	this->sprites[CharacterType::SPAZ][CharacterStateEntity::DEAD].push_back(RectangularSprite(361, 3105, 48, 69));
-	
-	/*
-	this->sprites[CharacterType::SPAZ][Liveicon].push_back(RectangularSprite(0, 3202, 40, 42));
-	this->sprites[CharacterType::SPAZ][Liveicon].push_back(RectangularSprite(40, 3202, 37, 42));
-	this->sprites[CharacterType::SPAZ][Liveicon].push_back(RectangularSprite(77, 3202, 38, 42));
-	this->sprites[CharacterType::SPAZ][Liveicon].push_back(RectangularSprite(115, 3202, 38, 42));
-	this->sprites[CharacterType::SPAZ][Liveicon].push_back(RectangularSprite(153, 3202, 39, 42));
-	this->sprites[CharacterType::SPAZ][Liveicon].push_back(RectangularSprite(192, 3202, 38, 42));
-	this->sprites[CharacterType::SPAZ][Liveicon].push_back(RectangularSprite(230, 3202, 40, 42));
-	this->sprites[CharacterType::SPAZ][Liveicon].push_back(RectangularSprite(270, 3202, 37, 42));
-	this->sprites[CharacterType::SPAZ][Liveicon].push_back(RectangularSprite(307, 3202, 37, 42));
-	this->sprites[CharacterType::SPAZ][Liveicon].push_back(RectangularSprite(344, 3202, 40, 42));
 	*/
 }
 
