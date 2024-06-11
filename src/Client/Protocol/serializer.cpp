@@ -15,7 +15,7 @@
 
 Serializer::Serializer(std::shared_ptr<Queue<std::unique_ptr<DTO>>>& queue): queue(queue) {}
 
-void Serializer::sendMsg(std::unique_ptr<DTO>& dto) { queue->push(std::move(dto)); }
+void Serializer::sendMsg(std::unique_ptr<DTO>& dto) { this->queue->push(std::move(dto)); }
 
 void Serializer::serializeLobbyMessage(const LobbyMessage& msg) {
     switch(msg.getLobbyCmd()) {

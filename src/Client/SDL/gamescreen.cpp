@@ -16,11 +16,22 @@
 #include "../../Common/DTO/item.h"
 #include "../../Common/DTO/weapon.h"
 #include "../../Common/DTO/tile.h"
+#include "../../Common/Types/command.h"
+#include "../../Common/Types/direction.h"
+#include "../../Common/Types/character.h"
+#include "../../Common/Types/tile.h"
 
-// Constructor de GameScreen
-GameScreen::GameScreen(Client& player): client(player), pj(1), points(0), level(0), stats(CharacterType::JAZZ) {}
 
-// Método run de GameScreen
+//GameScreen::GameScreen(int character):
+//        pj(character), turtle(0, 0, 200), schartz_guard(1, 0, 400), yellowM(2, 0, 100), points(0) {}
+
+//GameScreen::GameScreen(Client& player): client(player), pj(1), points(0), level(0), stats(CharacterType::JAZZ)/*, config(ClientConfig::getInstance())*/ {
+//}
+
+GameScreen::GameScreen(GameController& controller): controller(controller), pj(1), points(0), level(0), stats(CharacterType::JAZZ)/*, config(ClientConfig::getInstance())*/ {
+}
+
+
 void GameScreen::run() {
     SDL2pp::SDL sdl(SDL_INIT_VIDEO);
     
@@ -170,6 +181,7 @@ void GameScreen::run() {
 
     std::cout << "Textures created" << std::endl;
 
+    int32_t playerId = 0;
     while (true) {
         SDL_Event event;
         std::cout << "Waiting for event" << std::endl;
@@ -181,22 +193,21 @@ void GameScreen::run() {
                 switch (event.key.keysym.sym) {
                     case SDLK_RIGHT:
                         {
-                            Command move = Command::MOVE;
-                            std::vector<uint8_t> par{static_cast<uint8_t>(Direction::RIGHT)};
-                            std::cout << "Sending move right" << std::endl;
-                            this->client.sendMsg(move, par);
-                            break;
-                        }
+		                    Command move = Command::MOVE;
+		                    std::vector<uint8_t> par{static_cast<uint8_t>(Direction::RIGHT)};
+		                    this->controller.sendMsg(playerId, move, par); //playerId hardcodeado, pedir qque pasen playerID
+		                    break;
+                    	}
                     case SDLK_LEFT:
-                        {    
-                            Command move = Command::MOVE;
-                            std::cout << "Sending move left" << std::endl;
-                            std::vector<uint8_t> elements{static_cast<uint8_t>(Direction::LEFT)};
-                            this->client.sendMsg(move, elements);
-                            break;
-                        }
+		                {    
+		             		Command move = Command::MOVE;
+		                    std::vector<uint8_t> elements{static_cast<uint8_t>(Direction::LEFT)};
+		                    this->controller.sendMsg(playerId, move, elements);
+		                    break;
+                    	}
 
-                    case SDLK_LSHIFT:
+                  	case SDLK_LSHIFT:
+
                         if (is_walking) {
                             speed_run = 3;
                             is_running = true;
@@ -209,12 +220,14 @@ void GameScreen::run() {
                         dir_y = 10;
                         break;
                     case SDLK_m:
-                        {
-                            Command shoot = Command::SHOOT;
-                            std::vector<uint8_t> elements;
-                            this->client.sendMsg(shoot, elements);
-                            break;
-                        }
+                    	{
+		                    //is_shooting = true;
+		                    Command shoot = Command::SHOOT;
+		                    std::vector<uint8_t> elements;
+		                    this->controller.sendMsg(playerId, shoot, elements);
+		                    break;
+		               	}
+
                     case SDLK_SPACE:
                         is_jumping = true;
                         break;
@@ -246,7 +259,9 @@ void GameScreen::run() {
         std::cout << "Event handled" << std::endl;
         renderer.Clear();
 
-        std::unique_ptr<DTO> serverMsg = this->client.getServerMsg();
+        std::unique_ptr<DTO> serverMsg = this->controller.getServerMsg();
+
+        //std::unique_ptr<DTO> serverMsg = this->client.getServerMsg();
         if (!serverMsg) {
             std::cerr << "No message received from server." << std::endl;
             SDL_Delay(100);
