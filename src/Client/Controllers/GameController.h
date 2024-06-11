@@ -14,11 +14,11 @@ private:
 public:
     GameController(Serializer& serializer, Deserializer& deserializer, std::shared_ptr<Queue<std::unique_ptr<DTO>>>& gameQueue);
 
-    void sendMsg(int32_t playerId, Command& cmd, std::vector<uint8_t>& parameters);
+    void sendMsg(uint32_t playerId, Command& cmd, std::vector<uint8_t>& parameters);
 
-    void move_msg(int32_t playerId, std::vector<uint8_t>& parameters);
+    void move_msg(uint32_t playerId, std::vector<uint8_t>& parameters);
 
-    void shoot_msg(int32_t playerId);
+    void shoot_msg(uint32_t playerId);
 
     std::unique_ptr<DTO> getServerMsg();
 	
