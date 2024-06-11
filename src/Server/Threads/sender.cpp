@@ -48,10 +48,10 @@ void SenderThread::run() {
     std::cout << "Sender started" << std::endl;
     serializer.sendId(playerId, wasClosed);
 
-    //Game dto test para sdl
+    // Game dto test para sdl
 
     while (keepPlaying) {
-        //runLobby(wasClosed);
+        // runLobby(wasClosed);
         inGame = true;
         std::vector<PlayerDTO> players;
         uint16_t x = 0;
@@ -70,57 +70,61 @@ void SenderThread::run() {
         CharacterStateEntity state = CharacterStateEntity::MOVING;
         PlayerDTO player(x, y, playerId, health, damage, speed, currentWeapon, pj_type, state);
         players.push_back(player);
-        
+
         uint16_t x_lori = 0;
         uint16_t y_lori = 20;
         uint32_t loriId = 2;
         CharacterType lori_type = CharacterType::SPAZ;
-        PlayerDTO lori(x_lori, y_lori, loriId, health, damage, speed, currentWeapon, lori_type, state);
+        PlayerDTO lori(x_lori, y_lori, loriId, health, damage, speed, currentWeapon, lori_type,
+                       state);
         players.push_back(lori);
-        
+
         std::vector<EnemyDTO> enemies;
         uint16_t x_enemy = 50;
         uint16_t y_enemy = 100;
         int health_enemy = 100;
         int damage_enemy = 40;
         int speed_enemy = 30;
-        EnemyType enemy_type = EnemyType::WALKING_ENEMY; 
+        EnemyType enemy_type = EnemyType::WALKING_ENEMY;
         EnemyStateEntity enemy_state = EnemyStateEntity::ENEMY_WALKING;
-        
+
         for (uint32_t i = 0; i < 1; i++) {
-            EnemyDTO enemy(x_enemy, y_enemy, i, health_enemy, damage_enemy, speed_enemy, enemy_type, enemy_state);
+            EnemyDTO enemy(x_enemy, y_enemy, i, health_enemy, damage_enemy, speed_enemy, enemy_type,
+                           enemy_state);
             enemies.push_back(enemy);
             x_enemy += 50;
-            y_enemy += 5;	
+            y_enemy += 5;
         }
-        
+
         std::vector<BulletDTO> bullets;
 
         std::vector<ItemDTO> items;
         uint16_t x_item = 50;
         uint16_t y_item = 50;
         ItemType gem = ItemType::GEM;
-        
+
         for (int i = 1; i > 0; i--) {
             ItemDTO item(x_item, y_item, gem);
             items.push_back(item);
             x_item += 20;
-            y_item += 5;	
+            y_item += 5;
         }
-        
-        
+
+
         std::vector<WeaponDTO> weapons;
-        
+
         std::vector<TileDTO> tiles;
         uint16_t tile_x = 100;
         uint16_t tile_y = 100;
         TileDTO tile(tile_x, tile_y);
         tiles.push_back(tile);
-        
+
+        inGame = true;
         while (inGame) {
             try {
-                //std::unique_ptr<GameDTO> gameDTO = sendQueue->pop();
-                std::unique_ptr<GameDTO> gameDTO = std::make_unique<GameDTO>(players, enemies, bullets, items, weapons, tiles);
+                // std::unique_ptr<GameDTO> gameDTO = sendQueue->pop();
+                std::unique_ptr<GameDTO> gameDTO =
+                        std::make_unique<GameDTO>(players, enemies, bullets, items, weapons, tiles);
                 serializer.sendGameDTO(std::move(gameDTO), wasClosed);
             } catch (const std::exception& e) {
                 if (wasClosed) {
