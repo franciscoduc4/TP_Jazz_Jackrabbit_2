@@ -20,7 +20,7 @@ void LobbyController::startGame(const LobbyMessage& msg) {
     this->serializer.sendMsg(startGameDTO);
 }
 
-std::map<int32_t, GameInfo>& LobbyController::getGamesList() {
+std::map<uint32_t, GameInfo>& LobbyController::getGamesList() {
     std::unique_ptr<DTO> dto;
     GamesListDTO* games;
     try {

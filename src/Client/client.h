@@ -33,15 +33,15 @@ private:
     ReceiverThread receiver;
     LobbyController lobbyController;
     GameController gameController;
-    int32_t playerId;
+    uint32_t playerId;
 
 public:
     Client(char* ip, char* port);
     void start();
     std::unique_ptr<DTO> getServerMsg();
     void sendMsg(Command& cmd, std::vector<uint8_t>& parameters);
-	  void move_msg(std::vector<uint8_t>& parameters);
-	  void shoot_msg();
+	void move_msg(std::vector<uint8_t>& parameters);
+	void shoot_msg();
 };
 
 #endif  // CLIENT_H

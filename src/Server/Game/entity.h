@@ -46,7 +46,7 @@ public:
 
     int16_t getDistanceTo(std::shared_ptr<Entity> other) const;
 
-    void heal(int32_t healQnt);
+    void heal(uint32_t healQnt);
 };
 
 #endif  // ENTITY_H

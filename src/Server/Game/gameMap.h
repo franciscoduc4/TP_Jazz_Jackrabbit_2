@@ -50,14 +50,14 @@ public:
 
     void addEntityToMap(std::shared_ptr<Entity> entity, Vector<int16_t> position);
 
-    std::shared_ptr<Character> addCharacter(int32_t playerId, CharacterType type,
+    std::shared_ptr<Character> addCharacter(uint32_t playerId, CharacterType type,
                                             std::optional<Vector<int16_t>> position);
 
     void addEnemy(EnemyType type, std::optional<Vector<int16_t>> position);
 
     void update(float time);
 
-    void removeCharacter(int32_t playerId);
+    void removeCharacter(uint32_t playerId);
 
     void removeEnemy(Vector<int16_t> position);
 
@@ -65,7 +65,7 @@ public:
 
     std::unique_ptr<GameDTO> getGameDTO();
 
-    std::shared_ptr<Character> getCharacter(int32_t playerId);
+    std::shared_ptr<Character> getCharacter(uint32_t playerId);
 
     bool isFreePosition(Vector<int16_t> position);
 

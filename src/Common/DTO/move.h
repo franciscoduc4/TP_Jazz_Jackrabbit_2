@@ -10,7 +10,7 @@ private:
     Direction moveType;
 
 public:
-    MoveDTO(int32_t& player_id, Direction moveType);
+    MoveDTO(uint32_t& player_id, Direction moveType);
 
     Direction getMoveType() const;
 };

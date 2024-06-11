@@ -4,15 +4,15 @@
 #include <string>
 
 struct GameInfo {
-    int32_t id;
+    uint32_t id;
     std::string name;
-    int32_t maxPlayers;
-    int32_t currentPlayers;
+    uint32_t maxPlayers;
+    uint32_t currentPlayers;
     bool ableToJoin;
 
     GameInfo() : id(-1), maxPlayers(-1), currentPlayers(-1), ableToJoin(false){}
 
-    GameInfo(const int32_t& gameId, std::string name, const int32_t& maxPlayers, const int32_t& currentPlayers):
+    GameInfo(const uint32_t& gameId, std::string name, const uint32_t& maxPlayers, const uint32_t& currentPlayers):
             id(gameId),
             name(std::move(name)),
             maxPlayers(maxPlayers),
@@ -20,13 +20,13 @@ struct GameInfo {
         this->ableToJoin = (maxPlayers > currentPlayers);
     }
 
-    int32_t getGameId() const { return id; }
+    uint32_t getGameId() const { return id; }
     std::string getGameName() const { return name; }
-    int32_t getMaxPlayers() const { return maxPlayers; }
-    int32_t getCurrentPlayers() const { return currentPlayers; }
+    uint32_t getMaxPlayers() const { return maxPlayers; }
+    uint32_t getCurrentPlayers() const { return currentPlayers; }
     bool isAbleToJoin() const { return ableToJoin; }
 
-    void updateCurrentPlayers(const int32_t& players) {
+    void updateCurrentPlayers(const uint32_t& players) {
         currentPlayers = players;
         this->ableToJoin = (maxPlayers > currentPlayers);
     }

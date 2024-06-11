@@ -23,7 +23,7 @@ public:
     virtual bool isEmpty() = 0;
     virtual bool isLoaded() = 0;
     virtual int16_t getBullets() = 0;
-    virtual int32_t getBulletsShot() = 0;
+    virtual uint32_t getBulletsShot() = 0;
     virtual bool shootTime(float time) = 0;
     virtual float getFireRate() = 0;
     virtual WeaponType getWeaponType() = 0;

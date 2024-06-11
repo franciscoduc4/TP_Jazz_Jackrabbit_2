@@ -71,7 +71,7 @@ void GameMap::addEntityToMap(std::shared_ptr<Entity> entity, Vector<int16_t> pos
     }
 }
 
-std::shared_ptr<Character> GameMap::addCharacter(int32_t playerId, CharacterType type,
+std::shared_ptr<Character> GameMap::addCharacter(uint32_t playerId, CharacterType type,
                                                  std::optional<Vector<int16_t>> position = std::nullopt) {
     Vector<int16_t> initPosition = position ? *position : getAvailablePosition();
     if (!isValidMapPosition(initPosition)) {
@@ -121,7 +121,7 @@ void GameMap::update(float time) {
     }
 }
 
-void GameMap::removeCharacter(int32_t playerId) {
+void GameMap::removeCharacter(uint32_t playerId) {
     auto character = characters[playerId];
     mapGrid.erase(character->getPosition());
 }
@@ -140,7 +140,7 @@ std::unique_ptr<GameDTO> GameMap::getGameDTO() {
     return std::make_unique<GameDTO>(gameDTO);
 }
 
-std::shared_ptr<Character> GameMap::getCharacter(int32_t playerId) { return characters[playerId]; }
+std::shared_ptr<Character> GameMap::getCharacter(uint32_t playerId) { return characters[playerId]; }
 
 void GameMap::printMapGrid() const {
     for (const auto& pair: mapGrid) {

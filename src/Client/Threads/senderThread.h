@@ -18,6 +18,7 @@ private:
     bool closed;
 
     void sendCommandDTO(const CommandDTO& cmd);
+    void sendMovement(const CommandDTO& cmd);
 public:
     SenderThread(std::shared_ptr<Queue<std::unique_ptr<DTO>>>& queue, std::shared_ptr<Socket>& socket, std::atomic<bool>& was_closed);
     void run() override;

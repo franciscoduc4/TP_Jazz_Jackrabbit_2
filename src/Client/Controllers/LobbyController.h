@@ -10,14 +10,14 @@ private:
     Serializer& serializer;
     Deserializer& deserializer;
     std::shared_ptr<Queue<std::unique_ptr<DTO>>>& lobbyQueue;
-    std::map<int32_t, GameInfo> games;
+    std::map<uint32_t, GameInfo> games;
     GameInfo selected;
 
 public:
     LobbyController(Serializer& serializer, Deserializer& deserializer, std::shared_ptr<Queue<std::unique_ptr<DTO>>>& lobbyQueue);
     void sendRequest(const LobbyMessage& msg);
     void startGame(const LobbyMessage& msg);
-    std::map<int32_t, GameInfo>& getGamesList();
+    std::map<uint32_t, GameInfo>& getGamesList();
 
 };
 

@@ -9,18 +9,18 @@
 
 class JoinGameDTO: public CommandDTO {
 private:
-    int32_t gameId;
+    uint32_t gameId;
     CharacterType characterType;
     uint8_t currentPlayers;
     bool joined;
 
 public:
-    JoinGameDTO(const int32_t& gameId, CharacterType characterType);
-    JoinGameDTO(const int32_t& playerId, const int32_t& gameId, CharacterType characterType);
-    JoinGameDTO(const int32_t& playerId, const int32_t& gameId, const uint8_t& currentPlayers);
-    JoinGameDTO(const int32_t& playerId, const int32_t& gameId, const uint8_t& currentPlayers, CharacterType characterType);
+    JoinGameDTO(const uint32_t& gameId, CharacterType characterType);
+    JoinGameDTO(const uint32_t& playerId, const uint32_t& gameId, CharacterType characterType);
+    JoinGameDTO(const uint32_t& playerId, const uint32_t& gameId, const uint8_t& currentPlayers);
+    JoinGameDTO(const uint32_t& playerId, const uint32_t& gameId, const uint8_t& currentPlayers, CharacterType characterType);
     explicit JoinGameDTO(bool joined);
-    int32_t getGameId() const;
+    uint32_t getGameId() const;
     CharacterType getCharacterType() const;
     uint8_t getCurrentPlayers() const;
     bool getJoined() const;

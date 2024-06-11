@@ -115,7 +115,7 @@ void Character::die(float respawnTime) {
     }
 }
 
-void Character::heal(int32_t healQnt) {
+void Character::heal(uint32_t healQnt) {
     Entity::heal(healQnt);
 }
 
