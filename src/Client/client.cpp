@@ -25,7 +25,7 @@ Client::Client(char* ip, char* port):
 }
 
 void Client::start() {
-    /*
+    
     bool clientJoinedGame = false;
     do {
     //     LobbyInit init;
@@ -49,11 +49,11 @@ void Client::start() {
       this->lobbyController.startGame(msg);
       // END - TESTING SKIP QT
 
-      GameScreen game(*this);
-      // GameScreen game(this->gameController);
+      //GameScreen game(*this);
+      GameScreen game(this->gameController);
       game.run();
     } while (clientJoinedGame);
-    */
-    GameScreen game(this->gameController);
-    game.run();
+    
+    // GameScreen game(this->gameController);
+    // game.run();
 }

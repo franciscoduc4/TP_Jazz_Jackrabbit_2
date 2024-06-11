@@ -108,6 +108,8 @@ std::vector<BulletDTO> ReceiverThread::receiveBullets() {
         bullets.push_back(bullet);
     }
     
+    //BulletDTO bullet(150, 60, 0, 10, 5, 3);
+    //bullets.push_back(bullet);
     return bullets;
 }
 
@@ -290,6 +292,7 @@ void ReceiverThread::run() {
             if (this->was_closed.load()) {
                 return;
             }
+            /*
             if (!DTOValidator::validateDTOType(dtoTypeChar)) {
                 continue;
             }
@@ -308,8 +311,8 @@ void ReceiverThread::run() {
                 default:
                     break;
             }
-            
-           //this->receiveGameDTO();
+            */
+            this->receiveGameDTO();
         } catch (const std::exception& e) {
             if (!this->was_closed.load() || _keep_running) {
                 std::cerr << "ReceiverThread error: " << e.what() << std::endl;

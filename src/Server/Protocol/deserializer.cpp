@@ -1,16 +1,19 @@
 #include "deserializer.h"
-
 #include "../../Common/Types/character.h"
 #include "../../Common/Types/direction.h"
 #include "../../Common/Types/episode.h"
 #include "../../Common/Types/gameMode.h"
 #include "../../Common/Types/weapon.h"
+#include <iostream>
+
 
 Deserializer::Deserializer(std::shared_ptr<Socket> socket): socket(socket) {}
+
 
 std::unique_ptr<CommandDTO> Deserializer::getCommand(bool& wasClosed, uint32_t& playerId) {
     char cmd = 0;
     socket->recvall(&cmd, 1, &wasClosed);
+    std::cout << "Received command: " << (int) cmd << std::endl;
     Command command = static_cast<Command>(cmd);
     switch (command) {
         case Command::CREATE_GAME:

@@ -3,7 +3,7 @@
 #include <cstdint>
 #include <memory>
 #include <vector>
-
+#include <iostream>
 #include "../../Common/DTO/dto.h"
 #include "../../Common/Types/command.h"
 #include "../../Common/Types/direction.h"
@@ -26,6 +26,7 @@ void Serializer::serializeLobbyMessage(const LobbyMessage& msg) {
             this->queue->push(std::make_unique<JoinGameDTO>(msg.getGameId(), msg.getCharacter()));
             break;
         case Command::CREATE_GAME:
+            std::cout << "Creating game" << std::endl;
             this->queue->push(std::make_unique<CreateGameDTO>(msg.getEpisode(), msg.getMaxPlayers(),
                                                               msg.getCharacter(), msg.getGameName(), msg.getGameId()));
             break;

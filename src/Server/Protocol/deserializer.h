@@ -39,5 +39,6 @@ public:
     explicit Deserializer(std::shared_ptr<Socket> socket);
 
     std::unique_ptr<CommandDTO> getCommand(bool& wasClosed, uint32_t& playerId);
+
 };
 #endif  // SERVER_DESERIALIZER_H_
