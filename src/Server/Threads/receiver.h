@@ -12,7 +12,7 @@
 
 class ReceiverThread: public Thread {
 private:
-    int32_t playerId;
+    uint32_t playerId;
     Serializer serializer;
     Deserializer deserializer;
     std::atomic<bool>& keepPlaying;
@@ -23,7 +23,7 @@ private:
 
 public:
     ReceiverThread(std::shared_ptr<Socket> socket, std::atomic<bool>& keepPlaying,
-                   std::atomic<bool>& inGame, GameMonitor& gameMonitor, int32_t playerId,
+                   std::atomic<bool>& inGame, GameMonitor& gameMonitor, uint32_t playerId,
                    std::shared_ptr<Queue<std::unique_ptr<CommandDTO>>> recvQueue);
     void run() override;
 };

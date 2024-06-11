@@ -38,7 +38,7 @@ bool Freezer::isLoaded() { return bullets == maxBullets; }
 
 int16_t Freezer::getBullets() { return bullets; }
 
-int32_t Freezer::getBulletsShot() { return bulletsShot; }
+uint32_t Freezer::getBulletsShot() { return bulletsShot; }
 
 bool Freezer::shootTime(float time) {
     return lastTimeShot != -1 && time - lastTimeShot >= fireRate;

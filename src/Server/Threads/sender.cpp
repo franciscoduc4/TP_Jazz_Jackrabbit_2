@@ -6,7 +6,7 @@
 #include "../CommandHandlers/Lobby/lobbyCommand.h"
 
 SenderThread::SenderThread(std::shared_ptr<Socket> socket, std::atomic<bool>& keepPlaying,
-                           std::atomic<bool>& inGame, GameMonitor& gameMonitor, int32_t playerId,
+                           std::atomic<bool>& inGame, GameMonitor& gameMonitor, uint32_t playerId,
                            std::shared_ptr<Queue<std::unique_ptr<GameDTO>>> sendQueue):
         playerId(playerId),
         serializer(socket),
@@ -23,9 +23,12 @@ void SenderThread::run() {
     bool wasClosed = false;
     std::cout << "Sender started" << std::endl;
     serializer.sendId(playerId, wasClosed);
+
+    //Game dto test para sdl
+
     while (keepPlaying) {
         runLobby(wasClosed);
-
+        inGame = true;
         while (inGame) {
             try {
                 std::unique_ptr<GameDTO> gameDTO = sendQueue->pop();

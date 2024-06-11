@@ -37,7 +37,7 @@ bool Bouncer::isLoaded() { return bullets == maxBullets; }
 
 int16_t Bouncer::getBullets() { return bullets; }
 
-int32_t Bouncer::getBulletsShot() { return bulletsShot; }
+uint32_t Bouncer::getBulletsShot() { return bulletsShot; }
 
 bool Bouncer::shootTime(float time) {
     return lastTimeShot != -1 && time - lastTimeShot >= fireRate;

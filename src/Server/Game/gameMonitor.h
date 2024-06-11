@@ -14,20 +14,20 @@
 
 class GameMonitor {
 private:
-    std::map<int32_t, std::unique_ptr<Game>> games;
+    std::map<uint32_t, std::unique_ptr<Game>> games;
     std::mutex mtx;
     QueueMonitor<std::unique_ptr<GameDTO>>& queueMonitor;
 
 public:
     explicit GameMonitor(QueueMonitor<std::unique_ptr<GameDTO>>& queueMonitor);
-    bool createGame(int32_t playerId, Episode episode, GameMode gameMode, uint8_t maxPlayers,
+    bool createGame(uint32_t playerId, Episode episode, GameMode gameMode, uint8_t maxPlayers,
                     CharacterType characterType, std::string gameName,
-                    std::shared_ptr<Queue<std::unique_ptr<CommandDTO>>> recvQueue, int32_t gameId);
-    std::map<int32_t, GameInfo> getGamesList();
-    bool joinGame(int32_t playerId, int32_t gameId, CharacterType characterType);
-    bool startGame(int32_t playerId, int32_t gameId);
-    // void broadcastToGame(int32_t gameId, std::unique_ptr<CommandDTO> command);
-    uint8_t getCurrentPlayers(int32_t gameId);
+                    std::shared_ptr<Queue<std::unique_ptr<CommandDTO>>> recvQueue, uint32_t gameId);
+    std::map<uint32_t, GameInfo> getGamesList();
+    bool joinGame(uint32_t playerId, uint32_t gameId, CharacterType characterType);
+    bool startGame(uint32_t playerId, uint32_t gameId);
+    // void broadcastToGame(uint32_t gameId, std::unique_ptr<CommandDTO> command);
+    uint8_t getCurrentPlayers(uint32_t gameId);
     void endGame(const std::string& gameName);
     void endAllGames();
 };

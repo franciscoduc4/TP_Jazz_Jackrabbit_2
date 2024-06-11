@@ -15,7 +15,7 @@ private:
     const uint16_t maxBullets;
     const uint16_t damage;
     const float fireRate;
-    int32_t bulletsShot = 0;
+    uint32_t bulletsShot = 0;
     int16_t lastTimeShot;
 
 public:
@@ -34,7 +34,7 @@ public:
 
     int16_t getBullets() override;
 
-    int32_t getBulletsShot() override;
+    uint32_t getBulletsShot() override;
 
     bool shootTime(float time) override;
 

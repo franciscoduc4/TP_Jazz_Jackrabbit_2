@@ -31,8 +31,8 @@ void Deserializer::deserialize_gameMsg(std::unique_ptr<DTO>& dto) {
 }
 
 /*
-std::map<int32_t, std::vector<GameInfo>> Deserializer::getGamesList(std::unique_ptr<DTO>& dto) {
-    std::map<int32_t, std::vector<GameInfo>> gamesList;
+std::map<uint32_t, std::vector<GameInfo>> Deserializer::getGamesList(std::unique_ptr<DTO>& dto) {
+    std::map<uint32_t, std::vector<GameInfo>> gamesList;
     auto* gamesListDTO = dynamic_cast<GamesListDTO*>(dto.get());
     for (auto& game : gamesListDTO->getGamesList()) {
         gamesList[game.getGameId()] = GameListInfo(game.getGameName(), game.getEpisode(), game.getMaxPlayers(),
@@ -204,5 +204,11 @@ void Deserializer::receiveSnapshot(std::vector<char>& buffer) {
     }
     //std::unique_ptr<DTO> game = std::make_unique<GameDTO>(players, enemies, bullets, items, weapons, tiles);
     gameQueue->push(std::make_unique<GameDTO>(players, enemies, bullets, items, weapons, tiles));
-    
 } 
+
+
+
+void Deserializer::setPlayerId(uint32_t playerId) {
+    std::unique_ptr<DTO> player = std::make_unique<CommandDTO>(playerId, Command::IDLE);
+    this->gameQueue->push(std::move(player));
+}

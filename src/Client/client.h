@@ -33,7 +33,7 @@ private:
     ReceiverThread receiver;
     LobbyController lobbyController;
     GameController gameController;
-    int32_t playerId;
+    uint32_t playerId;
 
 public:
     Client(char* ip, char* port);

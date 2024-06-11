@@ -1,5 +1,19 @@
 #include "player.h"
 
+PlayerDTO::PlayerDTO(uint32_t playerId):   
+        x(0),
+        y(0),
+        player_id(playerId),
+        health(0),
+        damage(0),
+        speed(0),
+        playerIsAlive(true),
+        respawnTime(0),
+        weapons(),
+        currentWeapon(WeaponDTO(0, 0, 0, 0, 0)),
+        type(CharacterType::INVALID),
+        state(CharacterStateEntity::IDLE) {}
+
 PlayerDTO::PlayerDTO(uint16_t x, uint16_t y, uint32_t playerId, int health, int damage, int speed,
                      WeaponDTO currentWeapon, CharacterType type, CharacterStateEntity state):
         x(x),

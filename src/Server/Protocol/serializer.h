@@ -36,7 +36,7 @@ public:
 
     Serializer() {}
     explicit Serializer(std::shared_ptr<Socket> socket);
-    void sendId(int32_t id, bool& wasClosed);
+    void sendId(uint32_t id, bool& wasClosed);
     void sendCommand(const std::unique_ptr<CommandDTO> dto, bool& wasClosed);
     void sendGameDTO(const std::unique_ptr<GameDTO> dto, bool& wasClosed);
 };

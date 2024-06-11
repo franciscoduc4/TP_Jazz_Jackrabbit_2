@@ -37,7 +37,7 @@ int16_t Entity::getDistanceTo(std::shared_ptr<Entity> other) const {
     return static_cast<int16_t>(pos.distance(other->getPosition()));
 }
 
-void Entity::heal(int32_t healQnt) {
+void Entity::heal(uint32_t healQnt) {
     health += healQnt;
     if (health > initialHealth) {
         health = initialHealth;

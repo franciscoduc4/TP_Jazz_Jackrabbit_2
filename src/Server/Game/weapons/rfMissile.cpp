@@ -38,7 +38,7 @@ bool RFMissile::isLoaded() { return bullets == maxBullets; }
 
 int16_t RFMissile::getBullets() { return bullets; }
 
-int32_t RFMissile::getBulletsShot() { return bulletsShot; }
+uint32_t RFMissile::getBulletsShot() { return bulletsShot; }
 
 bool RFMissile::shootTime(float time) {
     return lastTimeShot != -1 && time - lastTimeShot >= fireRate;

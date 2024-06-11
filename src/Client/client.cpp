@@ -16,21 +16,23 @@ Client::Client(char* ip, char* port):
         deserializer(this->lobbyQueue, this->gameQueue),
         receiver(this->deserializer, this->skt, this->was_closed),
         lobbyController(this->serializer, this->deserializer, this->lobbyQueue),
-        gameController(this->serializer, this->deserializer, this->gameQueue),
-        playerId(-1) {
+        gameController(this->serializer, this->deserializer, this->gameQueue) {
     this->sender.start();
     this->receiver.start();
+    std::unique_ptr<DTO> dto = this->gameQueue->pop();
+    CommandDTO* commandDTO = dynamic_cast<CommandDTO*>(dto.get());
+    this->playerId = commandDTO->getPlayerId();
 }
 
 void Client::start() {
     bool clientJoinedGame = false;
     do {
-        LobbyInit init;
-        clientJoinedGame = init.launchQT(this->lobbyController, (bool&) clientJoinedGame);
+    //     LobbyInit init;
+    //     clientJoinedGame = init.launchQT(this->lobbyController, (bool&) clientJoinedGame);
 
-      if (!clientJoinedGame) {
-          return;
-      }
+    //   if (!clientJoinedGame) {
+    //       return;
+    //   }
       // TODO: Continue with SDL.
       // START - TESTING SKIP QT
       LobbyMessage msg;
@@ -77,11 +79,11 @@ void Client::move_msg(std::vector<uint8_t>& parameters) {
 }
 
 /*
-std::map<int32_t, GameInfo> Client::requestGameList(const LobbyMessage& msg) {
-    std::map<int32_t, GameInfo> gameMap;
+std::map<uint32_t, GameInfo> Client::requestGameList(const LobbyMessage& msg) {
+    std::map<uint32_t, GameInfo> gameMap;
     this->serializer.serializeLobbyMessage(msg);
     try {
-        std::pair<int, std::map<int32_t, GameInfo>> result = this->deserializer.getGameList();
+        std::pair<int, std::map<uint32_t, GameInfo>> result = this->deserializer.getGameList();
         if (result.first > 0) {
             gameMap = result.second;
         }

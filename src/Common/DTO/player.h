@@ -26,6 +26,8 @@ private:
     CharacterStateEntity state;
 
 public:
+    explicit PlayerDTO(uint32_t playerId);
+
     PlayerDTO(uint16_t x, uint16_t y, uint32_t player_id, int health, int damage, int speed,
               WeaponDTO currentWeapon, CharacterType type, CharacterStateEntity state);
     uint32_t getPlayerId() const;
