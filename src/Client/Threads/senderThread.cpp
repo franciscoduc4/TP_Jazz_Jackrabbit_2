@@ -11,7 +11,7 @@ void SenderThread::sendCommandDTO(const CommandDTO& cmd) {
     this->socket->sendall(&command, sizeof(char), &this->closed);
     this->was_closed.store(this->closed);
     if (this->was_closed.load()) { return; }
-    if (command != Command::GAMES_LIST) {
+    if (command != Command::GAMES_LIST && command != Command::START_GAME) {
         std::vector<char> data = cmd.getData();
         this->socket->sendall(data.data(), data.size(), &this->closed);
         this->was_closed.store(this->closed);
