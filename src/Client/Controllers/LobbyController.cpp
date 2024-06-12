@@ -21,6 +21,17 @@ void LobbyController::startGame(const LobbyMessage& msg) {
     this->serializer.sendMsg(startGameDTO);
 }
 
+bool LobbyController::recvStartGame() {
+    std::unique_ptr<DTO> dto;
+    try {
+        dto = this->lobbyQueue->pop();
+    } catch (std::exception &e) {
+        return false;
+    }
+    auto* sgDTO = dynamic_cast<StartGameDTO*>(dto.get());
+    return sgDTO->getCommand() == Command::START_GAME;
+}
+
 std::map<uint32_t, GameInfo>& LobbyController::getGamesList() {
     std::unique_ptr<DTO> dto;
     GamesListDTO* gamesList;

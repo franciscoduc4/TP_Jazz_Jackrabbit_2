@@ -17,6 +17,7 @@ public:
     LobbyController(Serializer& serializer, Deserializer& deserializer, std::shared_ptr<Queue<std::unique_ptr<DTO>>>& lobbyQueue);
     void sendRequest(const LobbyMessage& msg);
     void startGame(const LobbyMessage& msg);
+    bool recvStartGame();
     std::map<uint32_t, GameInfo>& getGamesList();
 
 };

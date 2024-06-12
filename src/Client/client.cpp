@@ -45,10 +45,13 @@ void Client::start() {
         msg.setLobbyCmd(Command::CREATE_GAME);
         msg.setMaxPlayers(1);
         msg.setPlayerName("Test");
+        clientJoinedGame = true;
 
         this->lobbyController.sendRequest(msg);
         this->lobbyController.startGame(msg);
+        bool gameStartAck = this->lobbyController.recvStartGame();
         // END - TESTING SKIP QT
+
 
         // GameScreen game(*this);
         GameScreen game(this->gameController);

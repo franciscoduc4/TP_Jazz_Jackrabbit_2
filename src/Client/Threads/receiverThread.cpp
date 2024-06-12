@@ -4,6 +4,7 @@
 
 #include "../../Common/Types/command.h"
 #include "../../Common/Types/entity.h"
+#include "DTO/startGame.h"
 
 ReceiverThread::ReceiverThread(Deserializer& deserializer, std::shared_ptr<Socket>& socket,
                                std::atomic<bool>& was_closed):
@@ -15,6 +16,10 @@ void ReceiverThread::receiveCommandDTO() {
     this->was_closed.store(closed);
     if (this->was_closed.load()) {
         return;
+    }
+    if (lobbyTypeChar == static_cast<char>(Command::START_GAME)) {
+        std::unique_ptr<DTO> dto = std::make_unique<StartGameDTO>();
+        this->deserializer.deserialize_lobbyMsg(dto);
     }
     /*if (!DTOValidator::validateLobbyState(lobbyTypeChar)) {
         return;
@@ -305,22 +310,22 @@ void ReceiverThread::run() {
             if (!DTOValidator::validateDTOType(dtoTypeChar)) {
                 continue;
             }
-            // auto dtoType = static_cast<DTOType>(dtoTypeChar);
-            // std::cout << "DTO type post cast: " << static_cast<int>(dtoType) << std::endl;
-            // switch (dtoType) {
-            //     case DTOType::GAME_DTO:
-            //         this->receiveGameDTO();
-            //         break;
-            //     case DTOType::LOBBY_DTO:
-            //         this->receiveLobbyDTO();
-            //         break;
-            //     case DTOType::COMMAND_DTO:
-            //         this->receiveCommandDTO();
-            //         break;
-            //     default:
-            //         break;
-            // }
-            this->receiveGameDTO();
+            auto dtoType = static_cast<DTOType>(dtoTypeChar);
+            std::cout << "DTO type post cast: " << static_cast<int>(dtoType) << std::endl;
+            switch (dtoType) {
+                case DTOType::GAME_DTO:
+                    this->receiveGameDTO();
+                    break;
+                // case DTOType::LOBBY_DTO:
+                //     this->receiveLobbyDTO();
+                //     break;
+                case DTOType::COMMAND_DTO:
+                    this->receiveCommandDTO();
+                    break;
+                default:
+                    break;
+            }
+            // this->receiveGameDTO();
         } catch (const std::exception& e) {
             if (!this->was_closed.load() || _keep_running) {
                 std::cerr << "ReceiverThread error: " << e.what() << std::endl;
