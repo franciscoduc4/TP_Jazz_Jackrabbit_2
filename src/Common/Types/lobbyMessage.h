@@ -7,7 +7,6 @@
 
 #include "Types/character.h"
 #include "Types/command.h"
-#include "Types/episode.h"
 
 struct LobbyMessage {
     std::string playerName;
@@ -25,18 +24,18 @@ struct LobbyMessage {
             gameName(""),
             gameId(-1),
             character(CharacterType::INVALID),
-            episode(Episode::INVALID) {}
+            episodeName("") {}
 
     LobbyMessage(std::string playerName, const Command& cmd, const int8_t& maxPlayers,
                  std::string gameName, const uint32_t& gameId, const CharacterType& character,
-                 const Episode& episode):
+                 const std::string& episodeName):
             playerName(std::move(playerName)),
             cmd(cmd),
             maxPlayers(maxPlayers),
             gameName(std::move(gameName)),
             gameId(gameId),
             character(character),
-            episode(episode) {}
+            episodeName(episodeName) {}
 
     void setPlayerName(const std::string& name) { playerName = name; }
 
@@ -50,7 +49,7 @@ struct LobbyMessage {
 
     void setCharacter(CharacterType selectedCharacter) { character = selectedCharacter; }
 
-    void setEpisode(Episode ep) { episode = ep; }
+    void setEpisode(std::string ep) { episodeName = ep; }
 
     std::string getPlayerName() const { return playerName; }
 
@@ -64,18 +63,18 @@ struct LobbyMessage {
 
     CharacterType getCharacter() const { return character; }
 
-    Episode getEpisode() const { return episode; }
+    std::string getEpisode() const { return episodeName; }
 
     LobbyMessage& build(const std::string& namePlayer, Command lobbyCmd, int8_t maxPlayerNumber,
                         const std::string& nameGame, uint32_t idGame, CharacterType characterType,
-                        Episode ep) {
+                        std::string ep) {
         this->playerName = namePlayer;
         this->cmd = lobbyCmd;
         this->maxPlayers = maxPlayerNumber;
         this->gameName = nameGame;
         this->gameId = idGame;
         this->character = characterType;
-        this->episode = ep;
+        this->episodeName = ep;
         return *this;
     }
 };

@@ -16,6 +16,7 @@ private:
     std::map<uint32_t, std::unique_ptr<Game>> games;
     std::mutex mtx;
     QueueMonitor<std::unique_ptr<DTO>>& queueMonitor;
+    uint32_t gamesListSize;
 
 public:
     explicit GameMonitor(QueueMonitor<std::unique_ptr<DTO>>& queueMonitor);
@@ -32,6 +33,7 @@ public:
     uint8_t getCurrentPlayers(uint32_t gameId);
     void endGame(const std::string& gameName);
     void endAllGames();
+    uint32_t getGamesListSize();
 };
 
 #endif  // GAME_MONITOR_H_

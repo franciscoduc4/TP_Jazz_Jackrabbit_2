@@ -25,7 +25,7 @@ void CreateGameHandler::execute(GameMonitor& gameMonitor, std::atomic<bool>& inG
     GameMode gameMode = (maxPlayers == 1) ? GameMode::SINGLE_PLAYER : GameMode::PARTY_MODE;
     CharacterType characterType = command->getCharacterType();
     std::string gameName = command->getGameName();
-    uint32_t gameId = gameMonitor.getGamesList().size();
+    uint32_t gameId = gameMonitor.getGamesListSize();
 
     gameMonitor.createGame(playerId, episodeId, episodeName, gameMode, maxPlayers, characterType,
                            gameName, recvQueue, gameId, sendQueue);

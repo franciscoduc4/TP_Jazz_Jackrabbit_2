@@ -23,6 +23,9 @@ private:
 public:
     explicit CreateGameDTO(const uint32_t& gameId);
 
+    CreateGameDTO(std::string episodeName, uint8_t maxPlayers,
+            CharacterType character, std::string gameName, uint32_t gameId);
+
     CreateGameDTO(const uint32_t& playerId, std::string episodeName, uint8_t maxPlayers,
                   CharacterType character, std::string gameName, uint32_t gameId);
 

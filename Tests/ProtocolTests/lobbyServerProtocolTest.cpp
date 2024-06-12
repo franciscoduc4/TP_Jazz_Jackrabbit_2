@@ -11,7 +11,6 @@
 #include "../../src/Common/DTO/gamesList.h"
 #include "../../src/Common/DTO/joinGame.h"
 #include "../../src/Common/Types/command.h"
-#include "../../src/Common/Types/episode.h"
 #include "../../src/Common/Types/gameMode.h"
 #include "../../src/Common/Types/lobbyState.h"
 #include "../../src/Common/socket.h"

@@ -61,7 +61,8 @@ void GameMonitor::gamesList(std::shared_ptr<Queue<std::unique_ptr<DTO>>>& sendQu
     for (auto& [id, game]: games) {
         GameInfo gameInfo = game->getGameInfo();
         list[id] = gameInfo;
-    }
+    } 
+    gamesListSize = list.size();
     auto dto = std::make_unique<GamesListDTO>(list);
     sendQueue->push(std::move(dto));
 }
@@ -73,6 +74,10 @@ uint8_t GameMonitor::getCurrentPlayers(uint32_t gameId) {
         auto& [id, game] = *it;
     }
     return 0;
+}
+
+uint32_t GameMonitor::getGamesListSize() {
+    return gamesListSize;
 }
 
 // void GameMonitor::broadcastToGame(uint32_t gameId, std::unique_ptr<CommandDTO> command) {

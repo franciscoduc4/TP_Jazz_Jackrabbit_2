@@ -10,7 +10,6 @@
 #include "Types/elements.h"
 #include "Types/enemy.h"
 #include "Types/entity.h"
-#include "Types/episode.h"
 #include "Types/gameMode.h"
 #include "Types/item.h"
 #include "Types/lobbyState.h"
@@ -52,7 +51,7 @@ public:
                type < static_cast<char>(EnemyStateEntity::ENEMY_RESPAWNING);
     }
     static bool validateEpisodeType(const char& type) {
-        return type >= static_cast<char>(Episode::INVALID) && type < static_cast<char>(Episode::BEACH);
+        //return type >= static_cast<char>(Episode::INVALID) && type < static_cast<char>(Episode::BEACH);
     }
     static bool validateGameMode(const char& type) {
         return type >= static_cast<char>(GameMode::SINGLE_PLAYER) &&

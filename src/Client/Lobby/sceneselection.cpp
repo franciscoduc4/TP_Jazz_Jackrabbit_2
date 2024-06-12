@@ -1,7 +1,6 @@
 #include "sceneselection.h"
 
 #include "../Common/Config/ClientConfig.h"
-#include "../Common/Types/episode.h"
 
 #include "creategame.h"
 #include "ui_sceneselection.h"
@@ -45,7 +44,7 @@ void SceneSelection::on_btnChoose_clicked() {
 
 
 void SceneSelection::on_btnBack_clicked() {
-    this->msg.setEpisode(Episode::INVALID);
+    this->msg.setEpisode(" ");
 
     this->hide();
 

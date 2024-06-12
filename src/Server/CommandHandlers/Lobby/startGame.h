@@ -16,7 +16,7 @@ private:
 public:
     explicit StartGameHandler(std::unique_ptr<StartGameDTO> command);
 
-    virtual std::unique_ptr<CommandDTO> execute(
+    virtual void execute(
             GameMonitor& gameMonitor, std::atomic<bool>& inGame,
             std::shared_ptr<Queue<std::unique_ptr<CommandDTO>>> recvQueue,
             std::shared_ptr<Queue<std::unique_ptr<DTO>>> sendQueue);

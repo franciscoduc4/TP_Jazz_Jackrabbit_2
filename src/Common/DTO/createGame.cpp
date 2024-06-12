@@ -4,6 +4,17 @@
 
 CreateGameDTO::CreateGameDTO(const uint32_t& gameId): gameId(gameId) {}
 
+CreateGameDTO::CreateGameDTO(std::string episodeName, uint8_t maxPlayers,
+        CharacterType characterType, std::string gameName, uint32_t gameId):
+        CommandDTO(Command::CREATE_GAME),
+        episodeName(std::move(episodeName)),
+        maxPlayers(maxPlayers),
+        characterType(characterType),
+        gameName(std::move(gameName)),
+        gameId(gameId) {
+    this->mode = (maxPlayers == 1) ? GameMode::SINGLE_PLAYER : GameMode::PARTY_MODE;
+}
+
 CreateGameDTO::CreateGameDTO(const uint32_t& playerId, std::string episodeName, uint8_t maxPlayers,
                              CharacterType characterType, std::string gameName, uint32_t gameId):
         CommandDTO(playerId, Command::CREATE_GAME),
