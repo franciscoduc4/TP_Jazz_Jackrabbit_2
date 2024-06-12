@@ -20,5 +20,4 @@ void JoinGameHandler::execute(GameMonitor& gameMonitor, std::atomic<bool>& inGam
     uint32_t gameId = command->getGameId();
     CharacterType characterType = command->getCharacterType();
     gameMonitor.joinGame(playerId, gameId, characterType, sendQueue);
-    inGame = true;
 }

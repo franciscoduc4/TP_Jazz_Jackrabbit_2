@@ -3,11 +3,12 @@
 #include <sstream>
 #include <utility>
 
+#include "../../Common/DTO/episodesList.h"
 #include "../../Common/DTO/gamesList.h"
 #include "../../Common/DTO/joinGame.h"
 
 GameMonitor::GameMonitor(QueueMonitor<std::unique_ptr<DTO>>& queueMonitor):
-        queueMonitor(queueMonitor) {}
+        queueMonitor(queueMonitor), mapsManager() {}
 
 bool GameMonitor::createGame(uint32_t playerId, uint32_t episodeId, std::string episodeName,
                              GameMode gameMode, uint8_t maxPlayers, CharacterType characterType,
@@ -61,9 +62,16 @@ void GameMonitor::gamesList(std::shared_ptr<Queue<std::unique_ptr<DTO>>>& sendQu
     for (auto& [id, game]: games) {
         GameInfo gameInfo = game->getGameInfo();
         list[id] = gameInfo;
-    } 
+    }
     gamesListSize = list.size();
     auto dto = std::make_unique<GamesListDTO>(list);
+    sendQueue->push(std::move(dto));
+}
+
+void GameMonitor::episodesList(std::shared_ptr<Queue<std::unique_ptr<DTO>>>& sendQueue) {
+    std::lock_guard<std::mutex> lock(mtx);
+    auto episodes = mapsManager.getEpisodes();
+    auto dto = std::make_unique<EpisodesListDTO>(episodes);
     sendQueue->push(std::move(dto));
 }
 
@@ -76,9 +84,7 @@ uint8_t GameMonitor::getCurrentPlayers(uint32_t gameId) {
     return 0;
 }
 
-uint32_t GameMonitor::getGamesListSize() {
-    return gamesListSize;
-}
+uint32_t GameMonitor::getGamesListSize() { return gamesListSize; }
 
 // void GameMonitor::broadcastToGame(uint32_t gameId, std::unique_ptr<CommandDTO> command) {
 //     std::lock_guard<std::mutex> lock(mtx);

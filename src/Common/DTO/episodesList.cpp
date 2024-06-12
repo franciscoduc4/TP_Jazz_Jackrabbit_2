@@ -1,21 +1,20 @@
 #include "episodesList.h"
 
-EpisodesListDTO::EpisodesListDTO() : CommandDTO(Command::EPISODES_LIST) {}
+EpisodesListDTO::EpisodesListDTO(): CommandDTO(Command::EPISODES_LIST) {}
 
-EpisodesListDTO::EpisodesListDTO(std::vector<std::string> episodes) : CommandDTO(Command::EPISODES_LIST) {
-    for (uint32_t i = 0; i < episodes.size(); i++) {
-        this->episodesMap[i] = episodes[i];
+EpisodesListDTO::EpisodesListDTO(std::map<int, std::string> episodes):
+        CommandDTO(Command::EPISODES_LIST) {
+    for (const auto& [id, mapName]: episodes) {
+        episodesMap[id] = mapName;
     }
 }
 
-std::map<uint32_t, std::string> EpisodesListDTO::getEpisodesMap() const {
-    return episodesMap;
-}
+std::map<uint32_t, std::string> EpisodesListDTO::getEpisodesMap() const { return episodesMap; }
 
-std::vector<std::string> EpisodesListDTO::getEpisodes() const {
-    std::vector<std::string> episodes;
-    for (const auto& episode : episodesMap) {
-        episodes.push_back(episode.second);
+std::map<int, std::string> EpisodesListDTO::getEpisodes() const {
+    std::map<int, std::string> episodes;
+    for (const auto& [id, mapName]: episodesMap) {
+        episodes[id] = mapName;
     }
     return episodes;
 }

@@ -9,7 +9,9 @@
 #include "../../Common/Types/gameInfo.h"
 #include "../../Common/Types/gameMode.h"
 #include "../../Common/queueMonitor.h"
-#include "../Game/game.h"
+
+#include "game.h"
+#include "mapsManager.h"
 
 class GameMonitor {
 private:
@@ -17,6 +19,7 @@ private:
     std::mutex mtx;
     QueueMonitor<std::unique_ptr<DTO>>& queueMonitor;
     uint32_t gamesListSize;
+    MapsManager mapsManager;
 
 public:
     explicit GameMonitor(QueueMonitor<std::unique_ptr<DTO>>& queueMonitor);
@@ -30,6 +33,7 @@ public:
                   std::shared_ptr<Queue<std::unique_ptr<DTO>>>& sendQueue);
     void startGame(uint32_t playerId, uint32_t gameId);
     void gamesList(std::shared_ptr<Queue<std::unique_ptr<DTO>>>& sendQueue);
+    void episodesList(std::shared_ptr<Queue<std::unique_ptr<DTO>>>& sendQueue);
     uint8_t getCurrentPlayers(uint32_t gameId);
     void endGame(const std::string& gameName);
     void endAllGames();

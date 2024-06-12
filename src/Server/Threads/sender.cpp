@@ -26,10 +26,11 @@ void SenderThread::run() {
 
     while (keepPlaying) {
         runLobby(wasClosed);
-        inGame = true;
         while (inGame) {
+            std::cout << "ingame" << std::endl;
             try {
                 std::unique_ptr<DTO> dto = sendQueue->pop();
+                std::cout << "TEST - DTO POPPED" << std::endl;
                 auto gameDTO = dynamic_cast<GameDTO*>(dto.get());
                 dto.release();
                 serializer.sendGameDTO(std::unique_ptr<GameDTO>(gameDTO), wasClosed);
@@ -147,6 +148,11 @@ void SenderThread::runLobby(bool& wasClosed) {
             }
             auto handler = LobbyCommandHandler::createHandler(std::move(command));
             handler->execute(gameMonitor, std::ref(inGame), recvQueue, sendQueue);
+
+            auto dto = sendQueue->pop();
+            auto commandDTO = dynamic_cast<CommandDTO*>(dto.get());
+            dto.release();
+            serializer.sendCommand(std::unique_ptr<CommandDTO>(commandDTO), wasClosed);
         } catch (const std::exception& e) {
             if (wasClosed) {
                 return;

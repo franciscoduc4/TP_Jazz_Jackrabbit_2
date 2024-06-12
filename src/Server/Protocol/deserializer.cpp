@@ -19,6 +19,8 @@ std::unique_ptr<CommandDTO> Deserializer::getCommand(bool& wasClosed, uint32_t& 
     switch (command) {
         case Command::CREATE_GAME:
             return deserializeCreateGame(wasClosed, playerId);
+        case Command::EPISODES_LIST:
+            return deserializeEpisodesList(wasClosed, playerId);
         case Command::JOIN_GAME:
             return deserializeJoinGame(wasClosed, playerId);
         case Command::GAMES_LIST:
@@ -56,6 +58,11 @@ std::unique_ptr<CreateGameDTO> Deserializer::deserializeCreateGame(bool& wasClos
                                            gameId);
 }
 
+std::unique_ptr<EpisodesListDTO> Deserializer::deserializeEpisodesList(bool& wasClosed,
+                                                                       uint32_t& playerId) {
+    return std::make_unique<EpisodesListDTO>();
+}
+
 std::unique_ptr<JoinGameDTO> Deserializer::deserializeJoinGame(bool& wasClosed,
                                                                uint32_t& playerId) {
     uint32_t gameId;
@@ -67,7 +74,7 @@ std::unique_ptr<JoinGameDTO> Deserializer::deserializeJoinGame(bool& wasClosed,
 
 std::unique_ptr<CommandDTO> Deserializer::deserializeGamesList(bool& wasClosed,
                                                                uint32_t& playerId) {
-    return std::make_unique<CommandDTO>(playerId, Command::GAMES_LIST);
+    return std::make_unique<GamesListDTO>();
 }
 
 
