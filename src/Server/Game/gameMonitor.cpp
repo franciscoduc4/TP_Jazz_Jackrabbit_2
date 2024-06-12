@@ -3,59 +3,76 @@
 #include <sstream>
 #include <utility>
 
-GameMonitor::GameMonitor(QueueMonitor<std::unique_ptr<GameDTO>>& queueMonitor):
-        queueMonitor(queueMonitor) {}
+#include "../../Common/DTO/episodesList.h"
+#include "../../Common/DTO/gamesList.h"
+#include "../../Common/DTO/joinGame.h"
 
-bool GameMonitor::createGame(uint32_t playerId, Episode episode, GameMode gameMode,
-                             uint8_t maxPlayers, CharacterType characterType, std::string gameName,
+GameMonitor::GameMonitor(QueueMonitor<std::unique_ptr<DTO>>& queueMonitor):
+        queueMonitor(queueMonitor), mapsManager() {}
+
+bool GameMonitor::createGame(uint32_t playerId, uint32_t episodeId, std::string episodeName,
+                             GameMode gameMode, uint8_t maxPlayers, CharacterType characterType,
+                             std::string gameName,
                              std::shared_ptr<Queue<std::unique_ptr<CommandDTO>>> recvQueue,
-                             uint32_t gameId) {
+                             uint32_t gameId,
+                             std::shared_ptr<Queue<std::unique_ptr<DTO>>>& sendQueue) {
     std::lock_guard<std::mutex> lock(mtx);
     for (auto& [id, game]: games) {
         if (game->getGameName() == gameName) {
             return false;
         }
     }
-    games[gameId] = std::make_unique<Game>(gameId, gameName, playerId, episode, gameMode,
+    queueMonitor.assignGameIdToQueues(gameId, sendQueue);
+    games[gameId] = std::make_unique<Game>(gameId, gameName, playerId, episodeName, gameMode,
                                            maxPlayers, characterType, recvQueue, queueMonitor);
 
     return true;
 }
 
-bool GameMonitor::joinGame(uint32_t playerId, uint32_t gameId, CharacterType characterType) {
+void GameMonitor::joinGame(uint32_t playerId, uint32_t gameId, CharacterType characterType,
+                           std::shared_ptr<Queue<std::unique_ptr<DTO>>>& sendQueue) {
     std::lock_guard<std::mutex> lock(mtx);
     auto it = games.find(gameId);
     if (it != games.end()) {
         auto& [id, game] = *it;
         if (!game->isFull()) {
+            queueMonitor.assignGameIdToQueues(gameId, sendQueue);
             game->addPlayer(playerId, characterType);
-            return true;
+            auto currentPlayers = game->getGameInfo().currentPlayers;
+            auto dto = std::make_unique<JoinGameDTO>(playerId, gameId, currentPlayers);
+            queueMonitor.broadcast(gameId, std::move(dto));
         }
     }
-    return false;
 }
 
-bool GameMonitor::startGame(uint32_t playerId, uint32_t gameId) {
+void GameMonitor::startGame(uint32_t playerId, uint32_t gameId) {
     std::lock_guard<std::mutex> lock(mtx);
     auto it = games.find(gameId);
     if (it != games.end()) {
         auto& [id, game] = *it;
-        if (game->isFull()) {
+        if (game->isFull() && !game->isRunning()) {
             game->launch();
-            return true;
         }
     }
-    return false;
 }
 
-std::map<uint32_t, GameInfo> GameMonitor::getGamesList() {
+void GameMonitor::gamesList(std::shared_ptr<Queue<std::unique_ptr<DTO>>>& sendQueue) {
     std::lock_guard<std::mutex> lock(mtx);
     std::map<uint32_t, GameInfo> list;
     for (auto& [id, game]: games) {
         GameInfo gameInfo = game->getGameInfo();
         list[id] = gameInfo;
     }
-    return list;
+    gamesListSize = list.size();
+    auto dto = std::make_unique<GamesListDTO>(list);
+    sendQueue->push(std::move(dto));
+}
+
+void GameMonitor::episodesList(std::shared_ptr<Queue<std::unique_ptr<DTO>>>& sendQueue) {
+    std::lock_guard<std::mutex> lock(mtx);
+    auto episodes = mapsManager.getEpisodes();
+    auto dto = std::make_unique<EpisodesListDTO>(episodes);
+    sendQueue->push(std::move(dto));
 }
 
 uint8_t GameMonitor::getCurrentPlayers(uint32_t gameId) {
@@ -63,10 +80,11 @@ uint8_t GameMonitor::getCurrentPlayers(uint32_t gameId) {
     auto it = games.find(gameId);
     if (it != games.end()) {
         auto& [id, game] = *it;
-        return game->getGameInfo().currentPlayers;
     }
     return 0;
 }
+
+uint32_t GameMonitor::getGamesListSize() { return gamesListSize; }
 
 // void GameMonitor::broadcastToGame(uint32_t gameId, std::unique_ptr<CommandDTO> command) {
 //     std::lock_guard<std::mutex> lock(mtx);

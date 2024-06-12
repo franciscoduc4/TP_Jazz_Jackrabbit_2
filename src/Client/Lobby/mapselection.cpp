@@ -6,7 +6,7 @@
 #include "creategame.h"
 #include "ui_mapselection.h"
 
-MapSelection::MapSelection(QWidget* parent, LobbyController& controller, LobbyMessage& msg,
+SceneSelection::SceneSelection(QWidget* parent, LobbyController& controller, LobbyMessage& msg,
                                bool& clientJoinedGame):
         QDialog(parent),
         ui(new Ui::MapSelection),
@@ -43,7 +43,7 @@ void MapSelection::on_btnChoose_clicked() {
 
 
 void MapSelection::on_btnBack_clicked() {
-    this->msg.setEpisode(Episode::INVALID);
+    // this->msg.setEpisode(Episode::INVALID);
 
     this->hide();
 

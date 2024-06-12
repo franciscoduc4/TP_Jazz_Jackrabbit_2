@@ -23,7 +23,7 @@ private:
     std::atomic<bool>& keepPlaying;
     std::atomic<bool>& inGame;
     bool wasClosed;
-    std::shared_ptr<Queue<std::unique_ptr<GameDTO>>> sendQueue;
+    std::shared_ptr<Queue<std::unique_ptr<DTO>>> sendQueue;
     std::shared_ptr<Queue<std::unique_ptr<CommandDTO>>> recvQueue;
     ReceiverThread receiver;
     GameMonitor& gameMonitor;
@@ -33,7 +33,7 @@ private:
 public:
     SenderThread(std::shared_ptr<Socket> socket, std::atomic<bool>& keepPlaying,
                  std::atomic<bool>& inGame, GameMonitor& gameMonitor, uint32_t playerId,
-                 std::shared_ptr<Queue<std::unique_ptr<GameDTO>>> sendQueue);
+                 std::shared_ptr<Queue<std::unique_ptr<DTO>>> sendQueue);
 
     void run() override;
 

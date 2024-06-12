@@ -4,10 +4,20 @@
 
 CreateGameDTO::CreateGameDTO(const uint32_t& gameId): gameId(gameId) {}
 
-CreateGameDTO::CreateGameDTO(Episode episodeName,
-                             uint8_t maxPlayers, CharacterType characterType, std::string gameName,
-                             uint32_t gameId):
-        CommandDTO(-1,Command::CREATE_GAME),
+CreateGameDTO::CreateGameDTO(std::string episodeName, uint8_t maxPlayers,
+        CharacterType characterType, std::string gameName, uint32_t gameId):
+        CommandDTO(Command::CREATE_GAME),
+        episodeName(std::move(episodeName)),
+        maxPlayers(maxPlayers),
+        characterType(characterType),
+        gameName(std::move(gameName)),
+        gameId(gameId) {
+    this->mode = (maxPlayers == 1) ? GameMode::SINGLE_PLAYER : GameMode::PARTY_MODE;
+}
+
+CreateGameDTO::CreateGameDTO(const uint32_t& playerId, std::string episodeName, uint8_t maxPlayers,
+                             CharacterType characterType, std::string gameName, uint32_t gameId):
+        CommandDTO(playerId, Command::CREATE_GAME),
         episodeName(episodeName),
         maxPlayers(maxPlayers),
         characterType(characterType),
@@ -16,19 +26,9 @@ CreateGameDTO::CreateGameDTO(Episode episodeName,
     this->mode = (maxPlayers == 1) ? GameMode::SINGLE_PLAYER : GameMode::PARTY_MODE;
 }
 
-CreateGameDTO::CreateGameDTO(const uint32_t& playerId, Episode episodeName,
-                             uint8_t maxPlayers, CharacterType characterType, std::string gameName,
-                             uint32_t gameId):
-        CommandDTO(playerId,Command::CREATE_GAME),
-        episodeName(episodeName),
-        maxPlayers(maxPlayers),
-        characterType(characterType),
-        gameName(std::move(gameName)),
-        gameId(gameId) {
-    this->mode = (maxPlayers == 1) ? GameMode::SINGLE_PLAYER : GameMode::PARTY_MODE;
-}
+std::string CreateGameDTO::getEpisodeName() const { return episodeName; }
 
-Episode CreateGameDTO::getEpisodeName() const { return episodeName; }
+uint32_t CreateGameDTO::getEpisodeId() const { return episodeId; }
 
 uint32_t CreateGameDTO::getGameId() const { return gameId; }
 
@@ -42,7 +42,8 @@ GameMode CreateGameDTO::getGameMode() const { return mode; }
 
 std::vector<char> CreateGameDTO::getData() const {
     std::vector<char> data;
-    data.push_back(static_cast<char>(episodeName));
+    data.push_back(static_cast<char>(episodeName.size()));
+    data.insert(data.end(), episodeName.begin(), episodeName.end());
     data.push_back(static_cast<char>(maxPlayers));
     data.push_back(static_cast<char>(characterType));
     data.push_back(static_cast<char>(gameName.size()));

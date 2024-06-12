@@ -1,7 +1,8 @@
 #include "./client.h"
-#include "./SDL/gamescreen.h"
-#include "../Common/Types/direction.h"
+
 #include "../Common/DTO/move.h"
+#include "../Common/Types/direction.h"
+#include "./SDL/gamescreen.h"
 
 Client::Client(char* ip, char* port):
         ip(ip),
@@ -25,19 +26,20 @@ Client::Client(char* ip, char* port):
 }
 
 void Client::start() {
+
     bool clientJoinedGame = false;
     do {
         LobbyInit init;
-        clientJoinedGame = init.launchQT(this->lobbyController, (bool&) clientJoinedGame);
+        clientJoinedGame = init.launchQT(this->lobbyController, (bool&)clientJoinedGame);
 
-        if (!clientJoinedGame) {
-            return;
-        }
+        //   if (!clientJoinedGame) {
+        //       return;
+        //   }
         // TODO: Continue with SDL.
         // START - TESTING SKIP QT
         LobbyMessage msg;
         msg.setCharacter(CharacterType::JAZZ);
-        msg.setEpisode(Episode::JAZZ_IN_TIME);
+        msg.setEpisode("BEACH");
         msg.setGameId(1);
         msg.setGameName("Dummy");
         msg.setLobbyCmd(Command::CREATE_GAME);
@@ -48,9 +50,11 @@ void Client::start() {
         this->lobbyController.startGame(msg);
         // END - TESTING SKIP QT
 
+        // GameScreen game(*this);
         GameScreen game(this->gameController);
         game.run();
     } while (clientJoinedGame);
 
-
+    // GameScreen game(this->gameController);
+    // game.run();
 }
