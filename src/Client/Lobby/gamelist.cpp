@@ -21,7 +21,7 @@ GameList::GameList(QWidget* parent, LobbyController& controller, LobbyMessage& m
     ui->centralwidget->setStyleSheet(styleSheet);
     ui->labelTitle->setAttribute(Qt::WA_TranslucentBackground);
 
-    auto *timer = new QTimer(this);
+    this->timer = new QTimer(this);
     connect(timer, &QTimer::timeout, this, &GameList::updateGameList);
     timer->start(ClientConfig::getGamesListRefreshInterval());
 }
@@ -35,24 +35,24 @@ void GameList::updateGameList() {
     // Clear the QListWidget
     ui->listGames->clear();
 
+    std::cout << "Games List size: " << gamesList.size() << std::endl;
+
     if (gamesList.empty()) {
         // If there are no games, display a message
         QListWidgetItem* item = new QListWidgetItem("No hay juegos disponibles para unirse");
         item->setForeground(Qt::red);
         ui->listGames->addItem(item);
     } else {
-        // If there are games, create a QListWidgetItem for each game
         for (const auto& game : gamesList) {
             QListWidgetItem* item = new QListWidgetItem;
             QWidget* widget = new QWidget;
             QHBoxLayout* layout = new QHBoxLayout;
-            QLabel* gameNameLabel = new QLabel(QString::fromStdString(game.second.name));
-            QLabel* playersLabel = new QLabel(QString::number(game.second.currentPlayers) + "/" + QString::number(game.second.maxPlayers));
-            QPushButton* joinButton = new QPushButton("Join");
+            QLabel* gameNameLabel = new QLabel(QString::fromStdString(game.second.getGameName()));
+            QLabel* playersLabel = new QLabel(QString::number(game.second.getCurrentPlayers()) + "/" + QString::number(game.second.getMaxPlayers()));
+            QPushButton* joinButton = new QPushButton("Unirme");
 
-            // Connect the join button to the joinGame slot
             connect(joinButton, &QPushButton::clicked, this, [this, game]() {
-                this->joinGame(QString::fromStdString(game.second.name));
+                this->joinGame(QString::fromStdString(game.second.getGameName()));
             });
 
             layout->addWidget(gameNameLabel, 3);
@@ -70,6 +70,7 @@ void GameList::updateGameList() {
 void GameList::joinGame(const QString& gameName) {
     // this->msg.setGameName(gameName);
     // client.joinGame(this->msg);
+    this->timer->stop();
 
     this->msg.setLobbyCmd(Command::JOIN_GAME);
 
@@ -80,7 +81,7 @@ void GameList::joinGame(const QString& gameName) {
 }
 
 void GameList::on_btnBack_clicked() {
-    this->msg.setGameName("");
+    // this->msg.setGameName("");
 
     this->hide();
 

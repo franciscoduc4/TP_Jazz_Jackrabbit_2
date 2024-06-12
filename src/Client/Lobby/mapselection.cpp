@@ -1,15 +1,15 @@
-#include "sceneselection.h"
+#include "mapselection.h"
 
 #include "../Common/Config/ClientConfig.h"
 #include "../Common/Types/episode.h"
 
 #include "creategame.h"
-#include "ui_sceneselection.h"
+#include "ui_mapselection.h"
 
-SceneSelection::SceneSelection(QWidget* parent, LobbyController& controller, LobbyMessage& msg,
+MapSelection::MapSelection(QWidget* parent, LobbyController& controller, LobbyMessage& msg,
                                bool& clientJoinedGame):
         QDialog(parent),
-        ui(new Ui::SceneSelection),
+        ui(new Ui::MapSelection),
         controller(controller),
         msg(msg),
         clientJoinedGame(clientJoinedGame),
@@ -27,12 +27,12 @@ SceneSelection::SceneSelection(QWidget* parent, LobbyController& controller, Lob
     ui->labelTitle->setAttribute(Qt::WA_TranslucentBackground);
 }
 
-SceneSelection::~SceneSelection() {
+MapSelection::~MapSelection() {
     delete sceneSpritesWidget;
     delete ui;
 }
 
-void SceneSelection::on_btnChoose_clicked() {
+void MapSelection::on_btnChoose_clicked() {
     // size_t selection = sceneSpritesWidget->getCurrentSpriteIndex();
     // Episode episode = static_cast<Episode>(selection + 1);
     // this->msg.setEpisode(episode);
@@ -42,7 +42,7 @@ void SceneSelection::on_btnChoose_clicked() {
 }
 
 
-void SceneSelection::on_btnBack_clicked() {
+void MapSelection::on_btnBack_clicked() {
     this->msg.setEpisode(Episode::INVALID);
 
     this->hide();

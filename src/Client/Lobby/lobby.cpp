@@ -1,7 +1,7 @@
 #include "lobby.h"
 
 #include "characterselection.h"
-#include "sceneselection.h"
+#include "mapselection.h"
 #include "ui_lobby.h"
 
 Lobby::Lobby(QWidget* parent, LobbyController& controller, LobbyMessage& msg, bool& clientJoinedGame):
@@ -32,8 +32,8 @@ void Lobby::on_btnCreateGame_clicked() {
 
     this->hide();
 
-    auto ss = new SceneSelection(this, this->controller, this->msg, this->clientJoinedGame);
-    ss->show();
+    auto ms = new MapSelection(this, this->controller, this->msg, this->clientJoinedGame);
+    ms->show();
 
 }
 

@@ -46,7 +46,7 @@ if(CLIENT)
             ${PROJECT_SOURCE_DIR}/src/Client/creategame.ui
             ${PROJECT_SOURCE_DIR}/src/Client/gamelist.ui
             ${PROJECT_SOURCE_DIR}/src/Client/lobby.ui
-            ${PROJECT_SOURCE_DIR}/src/Client/sceneselection.ui
+            ${PROJECT_SOURCE_DIR}/src/Client/mapselection.ui
             ${PROJECT_SOURCE_DIR}/src/Client/waitingroom.ui
             ${PROJECT_SOURCE_DIR}/src/Client/welcomes.ui
     )

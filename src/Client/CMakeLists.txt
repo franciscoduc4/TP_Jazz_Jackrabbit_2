@@ -52,9 +52,7 @@ qt5_wrap_ui(UIS_HEADERS
     ${PROJECT_SOURCE_DIR}/src/Client/Lobby/creategame.ui
     ${PROJECT_SOURCE_DIR}/src/Client/Lobby/gamelist.ui
     ${PROJECT_SOURCE_DIR}/src/Client/Lobby/lobby.ui
-    ${PROJECT_SOURCE_DIR}/src/Client/Lobby/name_screen.ui
-    ${PROJECT_SOURCE_DIR}/src/Client/Lobby/sceneselection.ui
-    ${PROJECT_SOURCE_DIR}/src/Client/Lobby/scenespriteswidget.ui
+    ${PROJECT_SOURCE_DIR}/src/Client/Lobby/mapselection.ui
     ${PROJECT_SOURCE_DIR}/src/Client/Lobby/waitingroom.ui
     ${PROJECT_SOURCE_DIR}/src/Client/Lobby/welcome.ui
 )
