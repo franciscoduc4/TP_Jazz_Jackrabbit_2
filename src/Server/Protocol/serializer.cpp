@@ -130,6 +130,13 @@ std::vector<char> Serializer::serializeGamesList(const std::unique_ptr<GamesList
         uint32_t currentPlayers = htonl(gameInfo.currentPlayers);
         const unsigned char* cp = reinterpret_cast<const unsigned char*>(&currentPlayers);
         buffer.insert(buffer.end(), cp, cp + sizeof(uint32_t));
+
+        std::string episodeName = gameInfo.episodeName;
+        uint32_t episodeLength = htonl(episodeName.length());
+        buffer.insert(buffer.end(), reinterpret_cast<const unsigned char*>(&episodeLength),
+                      reinterpret_cast<const unsigned char*>(&episodeLength) + sizeof(uint32_t));
+        const unsigned char* ep = reinterpret_cast<const unsigned char*>(&episodeName);
+        buffer.insert(buffer.end(), ep, ep + sizeof(uint32_t));
     }
     return buffer;
 }
@@ -275,3 +282,30 @@ void Serializer::sendGameDTO(const std::unique_ptr<GameDTO> dto, bool& wasClosed
 
     socket->sendall(buffer.data(), buffer.size(), &wasClosed);
 }
+
+std::vector<char> Serializer::serializeEpisodesList(const std::unique_ptr<EpisodesListDTO> dto) {
+    std::vector<char> buffer;
+    buffer.push_back(static_cast<char>(Command::EPISODES_LIST));
+    auto episodes = dto->getEpisodesMap();
+    uint32_t episodesSize = htonl(episodes.size());
+    const unsigned char* p = reinterpret_cast<const unsigned char*>(&episodesSize);
+    buffer.insert(buffer.end(), p, p + sizeof(uint32_t));
+
+    for (const auto& episodePair : episodes) {
+        uint32_t id = episodePair.first;
+        const std::string& episode = episodePair.second;
+
+        uint32_t episodeId = htonl(id);
+        const unsigned char* p = reinterpret_cast<const unsigned char*>(&episodeId);
+        buffer.insert(buffer.end(), p, p + sizeof(uint32_t));
+
+        uint32_t nameLength = htonl(episode.length());
+        const unsigned char* np = reinterpret_cast<const unsigned char*>(&nameLength);
+        buffer.insert(buffer.end(), np, np + sizeof(uint32_t));
+
+        buffer.insert(buffer.end(), episode.begin(), episode.end());
+    }
+
+    return buffer;
+}
+

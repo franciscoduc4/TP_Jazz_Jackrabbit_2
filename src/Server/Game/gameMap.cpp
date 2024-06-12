@@ -14,20 +14,20 @@
 
 GameMap::GameMap(Vector<int16_t> size, Episode episode):
         size(size), entityFactory(*this), gravity(CONFIG->getGameGravity()), episode(episode) {
-
             switch (episode) {
-                case Episode::FORMERLY_PRINCE:
-                    movesPerCell = CONFIG->getGameMaxMoves();
+                case Episode::BEACH:
+                    //initializeBeachMap();
                     break;
-                case Episode::JAZZ_IN_TIME:
+                case Episode::COLONIUS:
+                    //initializeColoniusMap();
                     break;
-                case Episode::FUNKY_MONEYS:
+                case Episode::HOLIDAIUS:
+                    //initializeHolidaiusMap();
                     break;
                 default:
                     break;
             }
         }
-
 
 std::vector<std::shared_ptr<Entity>> GameMap::getObjectsInShootRange(Vector<int16_t> mapPosition,
                                                                      Direction dir) {

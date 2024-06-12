@@ -13,6 +13,7 @@
 #include "../../Common/DTO/lobby.h"
 #include "../../Common/DTO/move.h"
 #include "../../Common/DTO/startGame.h"
+#include "../../Common/DTO/episodesList.h"
 #include "../../Common/Types/command.h"
 #include "../../Common/socket.h"
 
@@ -33,6 +34,7 @@ public:
     std::vector<char> serializeItemDTO(const std::unique_ptr<ItemDTO> dto);
     std::vector<char> serializeWeaponDTO(const std::unique_ptr<WeaponDTO> dto);
     std::vector<char> serializeTileDTO(const std::unique_ptr<TileDTO> dto);
+    std::vector<char> serializeEpisodesList(const std::unique_ptr<EpisodesListDTO> dto);
 
     Serializer() {}
     explicit Serializer(std::shared_ptr<Socket> socket);

@@ -52,8 +52,7 @@ public:
                type < static_cast<char>(EnemyStateEntity::ENEMY_RESPAWNING);
     }
     static bool validateEpisodeType(const char& type) {
-        return type >= static_cast<char>(Episode::INVALID) &&
-               type < static_cast<char>(Episode::THE_SECRET_FILES);
+        return type >= static_cast<char>(Episode::INVALID) && type < static_cast<char>(Episode::BEACH);
     }
     static bool validateGameMode(const char& type) {
         return type >= static_cast<char>(GameMode::SINGLE_PLAYER) &&

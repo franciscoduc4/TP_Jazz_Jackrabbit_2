@@ -169,9 +169,6 @@ float ServerConfig::getWeaponRFMissileFireRate() {
 
 int ServerConfig::getObstacleMoves() { return getInstance()->root["OBSTACLE"]["MOVES"].as<int>(); }
 
-int ServerConfig::getGameMapSizeX() { return getInstance()->root["GAME_MAP"]["SIZE_X"].as<int>(); }
-
-int ServerConfig::getGameMapSizeY() { return getInstance()->root["GAME_MAP"]["SIZE_Y"].as<int>(); }
 
 void ServerConfig::deleteInstance() {
     if (instance != nullptr) {
