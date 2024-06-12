@@ -1,12 +1,12 @@
 #include "mapselection.h"
 
 #include "../Common/Config/ClientConfig.h"
-#include "../Common/Types/episode.h"
+// #include "../Common/Types/episode.h"
 
 #include "creategame.h"
 #include "ui_mapselection.h"
 
-SceneSelection::SceneSelection(QWidget* parent, LobbyController& controller, LobbyMessage& msg,
+MapSelection::MapSelection(QWidget* parent, LobbyController& controller, LobbyMessage& msg,
                                bool& clientJoinedGame):
         QDialog(parent),
         ui(new Ui::MapSelection),

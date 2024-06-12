@@ -1,16 +1,13 @@
 #include "./receiverThread.h"
-#include "../../Common/Types/command.h"
 
 #include <netinet/in.h>
 
 #include "../../Common/Types/command.h"
 #include "../../Common/Types/entity.h"
 
-ReceiverThread::ReceiverThread(Deserializer& deserializer, std::shared_ptr<Socket>& socket, std::atomic<bool>& was_closed) :
-        deserializer(deserializer),
-        socket(socket),
-        was_closed(was_closed),
-        closed(false) {}
+ReceiverThread::ReceiverThread(Deserializer& deserializer, std::shared_ptr<Socket>& socket,
+                               std::atomic<bool>& was_closed):
+        deserializer(deserializer), socket(socket), was_closed(was_closed), closed(false) {}
 
 void ReceiverThread::receiveCommandDTO() {
     char lobbyTypeChar;
@@ -31,7 +28,7 @@ void ReceiverThread::receiveCommandDTO() {
 std::vector<PlayerDTO> ReceiverThread::receivePlayers() {
     std::vector<PlayerDTO> players;
     uint8_t cant_jugadores;
-    
+
     this->socket->recvall(&cant_jugadores, sizeof(uint8_t), &closed);
     uint8_t aux;
     for (uint8_t i = 0; i < cant_jugadores; i++) {
@@ -57,7 +54,7 @@ std::vector<PlayerDTO> ReceiverThread::receivePlayers() {
         PlayerDTO player(x, y, playerId, health, damage, speed, weapon, pj_type, state);
         players.push_back(player);
     }
-    
+
     // WeaponDTO weapon(0, 0, 0, 0, 0);
     // PlayerDTO player(0, 0, 0, 100, 50, 2, weapon, CharacterType::JAZZ,
     // CharacterStateEntity::MOVING); players.push_back(player); PlayerDTO player2(50, 50, 1, 100,
@@ -89,20 +86,20 @@ std::vector<EnemyDTO> ReceiverThread::receiveEnemies() {
         EnemyType enemy_type = static_cast<EnemyType>(aux);
         this->socket->recvall(&aux, sizeof(uint8_t), &closed);
         EnemyStateEntity enemy_state = static_cast<EnemyStateEntity>(aux);
-        EnemyDTO enemy(enemy_x, enemy_y, enemyId, enemy_health, enemy_damage, enemy_speed, enemy_type, enemy_state);
+        EnemyDTO enemy(enemy_x, enemy_y, enemyId, enemy_health, enemy_damage, enemy_speed,
+                       enemy_type, enemy_state);
         enemies.push_back(enemy);
     }
- 
-    // EnemyDTO enemy(50, 30, 0, 100, 20, 1, EnemyType::WALKING_ENEMY, EnemyStateEntity::ENEMY_WALKING);
-    // enemies.push_back(enemy);
-    return enemies;
 
+    // EnemyDTO enemy(50, 30, 0, 100, 20, 1, EnemyType::WALKING_ENEMY,
+    // EnemyStateEntity::ENEMY_WALKING); enemies.push_back(enemy);
+    return enemies;
 }
 
 std::vector<BulletDTO> ReceiverThread::receiveBullets() {
     std::vector<BulletDTO> bullets;
     uint8_t cant_bullets;
-    
+
     this->socket->recvall(&cant_bullets, sizeof(uint8_t), &closed);
     uint8_t aux;
     for (uint8_t i = 0; i < cant_bullets; i++) {
@@ -141,7 +138,7 @@ std::vector<ItemDTO> ReceiverThread::receiveItems() {
         ItemType item_type = static_cast<ItemType>(aux);
         ItemDTO item(item_x, item_y, item_type);
         items.push_back(item);
-    } 
+    }
     // ItemDTO item(80, 80, ItemType::GEM);
     // items.push_back(item);
     return items;
@@ -150,7 +147,7 @@ std::vector<ItemDTO> ReceiverThread::receiveItems() {
 std::vector<WeaponDTO> ReceiverThread::receiveWeapons() {
     std::vector<WeaponDTO> weapons;
     uint8_t cant_weapons;
-    
+
     this->socket->recvall(&cant_weapons, sizeof(uint8_t), &closed);
     uint8_t aux;
     for (uint8_t i = 0; i < cant_weapons; i++) {
