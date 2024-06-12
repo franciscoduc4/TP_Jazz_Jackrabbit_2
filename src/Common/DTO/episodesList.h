@@ -13,7 +13,7 @@ private:
 
 public:
     EpisodesListDTO();
-    EpisodesListDTO(std::map<int, std::string> episodes);
+    explicit EpisodesListDTO(std::map<int, std::string> episodes);
 
     std::map<uint32_t, std::string> getEpisodesMap() const;
     std::map<int, std::string> getEpisodes() const;

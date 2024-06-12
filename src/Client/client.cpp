@@ -39,7 +39,7 @@ void Client::start() {
         // START - TESTING SKIP QT
         LobbyMessage msg;
         msg.setCharacter(CharacterType::JAZZ);
-        msg.setEpisode("beach");
+        msg.setEpisode("BEACH");
         msg.setGameId(1);
         msg.setGameName("Dummy");
         msg.setLobbyCmd(Command::CREATE_GAME);
