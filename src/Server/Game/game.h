@@ -7,7 +7,6 @@
 
 #include "../../Common/DTO/game.h"
 #include "../../Common/Types/character.h"
-#include "../../Common/Types/episode.h"
 #include "../../Common/Types/gameInfo.h"
 #include "../../Common/Types/gameMode.h"
 #include "../../Common/queueMonitor.h"
@@ -21,7 +20,8 @@ class Game {
 private:
     uint32_t gameId;
     std::string gameName;
-    Episode episode;
+    uint32_t episodeId;
+    std::string episodeName;
     GameMode gameMode;
     uint8_t maxPlayers;
     uint8_t currentPlayers;
@@ -29,10 +29,10 @@ private:
     GameMap gameMap;
 
 public:
-    explicit Game(uint32_t gameId, std::string gameName, uint32_t playerId, Episode episode,
+    explicit Game(uint32_t gameId, std::string gameName, uint32_t playerId, std::string episodeName,
                   GameMode gameMode, uint8_t maxPlayers, CharacterType characterType,
                   std::shared_ptr<Queue<std::unique_ptr<CommandDTO>>> recvQueue,
-                  QueueMonitor<std::unique_ptr<GameDTO>>& queueMonitor);
+                  QueueMonitor<std::unique_ptr<DTO>>& queueMonitor);
 
 
     uint32_t getGameId() const;
@@ -48,6 +48,8 @@ public:
     GameInfo getGameInfo();
 
     void launch();
+
+    bool isRunning();
 
     void endGame();
 

@@ -4,30 +4,19 @@
 
 #define CONFIG ServerConfig::getInstance()
 
-    // Vector<int16_t> size;
-    // std::map<Vector<int16_t>, std::shared_ptr<Entity>> mapGrid;
-    // std::map<int16_t, std::shared_ptr<Character>> characters;
-    // EntityFactory entityFactory;
-    // int16_t movesPerCell; 
-    // float gravity;
-    // Episode episode;
+// Vector<int16_t> size;
+// std::map<Vector<int16_t>, std::shared_ptr<Entity>> mapGrid;
+// std::map<int16_t, std::shared_ptr<Character>> characters;
+// EntityFactory entityFactory;
+// int16_t movesPerCell;
+// float gravity;
+// std::string episodeName;
 
-GameMap::GameMap(Vector<int16_t> size, Episode episode):
-        size(size), entityFactory(*this), gravity(CONFIG->getGameGravity()), episode(episode) {
-            switch (episode) {
-                case Episode::BEACH:
-                    //initializeBeachMap();
-                    break;
-                case Episode::COLONIUS:
-                    //initializeColoniusMap();
-                    break;
-                case Episode::HOLIDAIUS:
-                    //initializeHolidaiusMap();
-                    break;
-                default:
-                    break;
-            }
-        }
+GameMap::GameMap(Vector<int16_t> size, std::string episodeName):
+        size(size),
+        entityFactory(*this),
+        gravity(CONFIG->getGameGravity()),
+        episodeName(episodeName) {}
 
 std::vector<std::shared_ptr<Entity>> GameMap::getObjectsInShootRange(Vector<int16_t> mapPosition,
                                                                      Direction dir) {
@@ -68,7 +57,8 @@ void GameMap::moveObject(Vector<int16_t>& position, Vector<int16_t> mapPosition,
     Vector<int16_t> newPosition = calculateNewPosition(position, dir);
     Vector<int16_t> newMapPosition = getMapPosition(newPosition, movesPerCell);
 
-    if (!isValidPosition(newPosition)) return;
+    if (!isValidPosition(newPosition))
+        return;
 
     if (!handleMovement(position, mapPosition, newPosition, newMapPosition)) {
         auto character = std::dynamic_pointer_cast<Character>(mapGrid[mapPosition]);
@@ -93,8 +83,9 @@ void GameMap::addEntityToMap(std::shared_ptr<Entity> entity, Vector<int16_t> pos
     }
 }
 
-std::shared_ptr<Character> GameMap::addCharacter(uint32_t playerId, CharacterType type,
-                                                 std::optional<Vector<int16_t>> position = std::nullopt) {
+std::shared_ptr<Character> GameMap::addCharacter(
+        uint32_t playerId, CharacterType type,
+        std::optional<Vector<int16_t>> position = std::nullopt) {
     Vector<int16_t> initPosition = position ? *position : getAvailablePosition();
     if (!isValidMapPosition(initPosition)) {
         return nullptr;
@@ -160,7 +151,7 @@ std::shared_ptr<Entity> GameMap::getEntityAt(Vector<int16_t> mapPosition) {
 std::unique_ptr<GameDTO> GameMap::getGameDTO() {
     GameDTO gameDTO;
     return std::make_unique<GameDTO>(gameDTO);
-    //COMPLETAR
+    // COMPLETAR
 }
 
 std::shared_ptr<Character> GameMap::getCharacter(uint32_t playerId) { return characters[playerId]; }

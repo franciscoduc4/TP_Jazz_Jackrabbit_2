@@ -7,7 +7,7 @@
 
 SenderThread::SenderThread(std::shared_ptr<Socket> socket, std::atomic<bool>& keepPlaying,
                            std::atomic<bool>& inGame, GameMonitor& gameMonitor, uint32_t playerId,
-                           std::shared_ptr<Queue<std::unique_ptr<GameDTO>>> sendQueue):
+                           std::shared_ptr<Queue<std::unique_ptr<DTO>>> sendQueue):
         playerId(playerId),
         serializer(socket),
         deserializer(socket),
@@ -19,29 +19,30 @@ SenderThread::SenderThread(std::shared_ptr<Socket> socket, std::atomic<bool>& ke
         receiver(socket, keepPlaying, inGame, gameMonitor, playerId, recvQueue),
         gameMonitor(gameMonitor) {}
 
-// void SenderThread::run() {
-//     bool wasClosed = false;
-//     std::cout << "Sender started" << std::endl;
-//     serializer.sendId(playerId, wasClosed);
+void SenderThread::run() {
+    bool wasClosed = false;
+    std::cout << "Sender started" << std::endl;
+    serializer.sendId(playerId, wasClosed);
 
-//     //Game dto test para sdl
+    while (keepPlaying) {
+        runLobby(wasClosed);
+        inGame = true;
+        while (inGame) {
+            try {
+                std::unique_ptr<DTO> dto = sendQueue->pop();
+                auto gameDTO = dynamic_cast<GameDTO*>(dto.get());
+                dto.release();
+                serializer.sendGameDTO(std::unique_ptr<GameDTO>(gameDTO), wasClosed);
+            } catch (const std::exception& e) {
+                if (wasClosed) {
+                    return;
+                }
+            }
+        }
+    }
+}
 
-//     while (keepPlaying) {
-//         //runLobby(wasClosed);
-//         inGame = true;
-//         while (inGame) {
-//             try {
-//                 std::unique_ptr<GameDTO> gameDTO = sendQueue->pop();
-//                 serializer.sendGameDTO(std::move(gameDTO), wasClosed);
-//             } catch (const std::exception& e) {
-//                 if (wasClosed) {
-//                     return;
-//                 }
-//             }
-//         }
-//     }
-// }
-
+/**
 // SDL TEST
 void SenderThread::run() {
     bool wasClosed = false;
@@ -134,6 +135,7 @@ void SenderThread::run() {
         }
     }
 }
+ */
 
 void SenderThread::runLobby(bool& wasClosed) {
     while (keepPlaying && !inGame) {
@@ -144,8 +146,7 @@ void SenderThread::runLobby(bool& wasClosed) {
                 continue;
             }
             auto handler = LobbyCommandHandler::createHandler(std::move(command));
-            auto commandDTO = handler->execute(gameMonitor, std::ref(inGame), recvQueue, sendQueue);
-            serializer.sendCommand(std::move(commandDTO), wasClosed);
+            handler->execute(gameMonitor, std::ref(inGame), recvQueue, sendQueue);
         } catch (const std::exception& e) {
             if (wasClosed) {
                 return;

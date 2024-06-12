@@ -2,16 +2,17 @@
 
 #include <utility>
 
-Game::Game(uint32_t gameId, std::string gameName, uint32_t playerId, Episode episode,
+Game::Game(uint32_t gameId, std::string gameName, uint32_t playerId, std::string episodeName,
            GameMode gameMode, uint8_t maxPlayers, CharacterType characterType,
            std::shared_ptr<Queue<std::unique_ptr<CommandDTO>>> recvQueue,
-           QueueMonitor<std::unique_ptr<GameDTO>>& queueMonitor):
+           QueueMonitor<std::unique_ptr<DTO>>& queueMonitor):
         gameId(gameId),
         gameName(std::move(gameName)),
-        episode(episode),
+        episodeId(episodeId),
+        episodeName(episodeName),
         gameMode(gameMode),
         maxPlayers(maxPlayers),
-        gameMap({255, 255}, episode),
+        gameMap({255, 255}, episodeName),
         currentPlayers(1),
         gameLoop(recvQueue, queueMonitor, gameMap, gameId) {
     gameMap.addCharacter(playerId, characterType, {});
@@ -33,17 +34,15 @@ void Game::removePlayer(uint32_t playerId) {
 
 uint32_t Game::getGameId() const { return gameId; }
 
-GameInfo Game::getGameInfo() {
-    return {gameId, gameName, maxPlayers, currentPlayers};
-}
+GameInfo Game::getGameInfo() { return {gameId, gameName, maxPlayers, currentPlayers}; }
 
 void Game::launch() { gameLoop.start(); }
+
+bool Game::isRunning() { return gameLoop.isRunning(); }
 
 void Game::endGame() {
     gameLoop.stop();
     gameLoop.join();
 }
 
-std::unique_ptr<GameDTO> Game::getGameDTO() {
-    return gameMap.getGameDTO();
-}
+std::unique_ptr<GameDTO> Game::getGameDTO() { return gameMap.getGameDTO(); }

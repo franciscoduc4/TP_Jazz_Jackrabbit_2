@@ -8,12 +8,12 @@
 
 #include "../../Common/DTO/command.h"
 #include "../../Common/DTO/createGame.h"
+#include "../../Common/DTO/episodesList.h"
 #include "../../Common/DTO/game.h"
 #include "../../Common/DTO/joinGame.h"
 #include "../../Common/DTO/lobby.h"
 #include "../../Common/DTO/move.h"
 #include "../../Common/DTO/startGame.h"
-#include "../../Common/DTO/episodesList.h"
 #include "../../Common/Types/command.h"
 #include "../../Common/socket.h"
 
@@ -25,7 +25,6 @@ public:
     std::vector<char> serializeCreateGame(const std::unique_ptr<CreateGameDTO>& dto);
     std::vector<char> serializeJoinGame(const std::unique_ptr<JoinGameDTO>& dto);
     std::vector<char> serializeGamesList(const std::unique_ptr<CommandDTO>& dto);
-    std::vector<char> serializeStartGame(const std::unique_ptr<StartGameDTO>& dto);
     std::vector<char> serializeGamesList(const std::unique_ptr<GamesListDTO>& dto);
     std::vector<char> serializeGameDTO(const std::unique_ptr<GameDTO> dto);
     std::vector<char> serializePlayerDTO(const std::unique_ptr<PlayerDTO> dto);

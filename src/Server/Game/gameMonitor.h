@@ -6,7 +6,6 @@
 #include <mutex>
 #include <string>
 
-#include "../../Common/Types/episode.h"
 #include "../../Common/Types/gameInfo.h"
 #include "../../Common/Types/gameMode.h"
 #include "../../Common/queueMonitor.h"
@@ -16,17 +15,20 @@ class GameMonitor {
 private:
     std::map<uint32_t, std::unique_ptr<Game>> games;
     std::mutex mtx;
-    QueueMonitor<std::unique_ptr<GameDTO>>& queueMonitor;
+    QueueMonitor<std::unique_ptr<DTO>>& queueMonitor;
 
 public:
-    explicit GameMonitor(QueueMonitor<std::unique_ptr<GameDTO>>& queueMonitor);
-    bool createGame(uint32_t playerId, Episode episode, GameMode gameMode, uint8_t maxPlayers,
-                    CharacterType characterType, std::string gameName,
-                    std::shared_ptr<Queue<std::unique_ptr<CommandDTO>>> recvQueue, uint32_t gameId, std::shared_ptr<Queue<std::unique_ptr<GameDTO>>>& sendQueue);
+    explicit GameMonitor(QueueMonitor<std::unique_ptr<DTO>>& queueMonitor);
+    bool createGame(uint32_t playerId, uint32_t episodeId, std::string episodeName,
+                    GameMode gameMode, uint8_t maxPlayers, CharacterType characterType,
+                    std::string gameName,
+                    std::shared_ptr<Queue<std::unique_ptr<CommandDTO>>> recvQueue, uint32_t gameId,
+                    std::shared_ptr<Queue<std::unique_ptr<DTO>>>& sendQueue);
     std::map<uint32_t, GameInfo> getGamesList();
-    bool joinGame(uint32_t playerId, uint32_t gameId, CharacterType characterType, std::shared_ptr<Queue<std::unique_ptr<GameDTO>>>& sendQueue);
-    bool startGame(uint32_t playerId, uint32_t gameId);
-    // void broadcastToGame(uint32_t gameId, std::unique_ptr<CommandDTO> command);
+    void joinGame(uint32_t playerId, uint32_t gameId, CharacterType characterType,
+                  std::shared_ptr<Queue<std::unique_ptr<DTO>>>& sendQueue);
+    void startGame(uint32_t playerId, uint32_t gameId);
+    void gamesList(std::shared_ptr<Queue<std::unique_ptr<DTO>>>& sendQueue);
     uint8_t getCurrentPlayers(uint32_t gameId);
     void endGame(const std::string& gameName);
     void endAllGames();

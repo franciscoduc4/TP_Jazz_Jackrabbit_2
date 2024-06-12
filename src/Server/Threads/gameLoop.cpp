@@ -1,12 +1,12 @@
 #include "gameLoop.h"
 
+#include <algorithm>
 #include <chrono>
 #include <utility>
-#include <algorithm>
 
 GameLoopThread::GameLoopThread(std::shared_ptr<Queue<std::unique_ptr<CommandDTO>>> recvQueue,
-                               QueueMonitor<std::unique_ptr<GameDTO>>& queueMonitor,
-                               GameMap& gameMap, uint32_t gameId):
+                               QueueMonitor<std::unique_ptr<DTO>>& queueMonitor, GameMap& gameMap,
+                               uint32_t gameId):
         frameRate(0.016),  // 1 frame per 16 ms === 60 fps
         keepRunning(true),
         commandsToProcess(1),
@@ -84,3 +84,5 @@ void GameLoopThread::adjustCommandsToProcess(std::chrono::duration<double> proce
 
 
 void GameLoopThread::stop() { keepRunning = false; }
+
+bool GameLoopThread::isRunning() const { return keepRunning; }

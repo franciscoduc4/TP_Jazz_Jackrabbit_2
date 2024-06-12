@@ -4,11 +4,11 @@
 
 
 Player::Player(std::shared_ptr<Socket> socket, GameMonitor& gameMonitor,
-               QueueMonitor<std::unique_ptr<GameDTO>>& queueMonitor, uint32_t playerId):
+               QueueMonitor<std::unique_ptr<DTO>>& queueMonitor, uint32_t playerId):
         playerId(playerId),
         socket(socket),
         sender(socket, std::ref(keepPlaying), std::ref(inGame), gameMonitor, playerId,
-               std::shared_ptr<Queue<std::unique_ptr<GameDTO>>>()) {
+               std::shared_ptr<Queue<std::unique_ptr<DTO>>>()) {
     sender.start();
 }
 

@@ -16,7 +16,7 @@ struct LobbyMessage {
     std::string gameName;
     uint32_t gameId;
     CharacterType character;
-    Episode episode;
+    std::string episodeName;
 
     LobbyMessage():
             playerName(""),
@@ -27,10 +27,9 @@ struct LobbyMessage {
             character(CharacterType::INVALID),
             episode(Episode::INVALID) {}
 
-    LobbyMessage(std::string  playerName,
-                 const Command& cmd,
-                 const int8_t& maxPlayers, std::string  gameName, const uint32_t& gameId,
-                 const CharacterType& character, const Episode& episode):
+    LobbyMessage(std::string playerName, const Command& cmd, const int8_t& maxPlayers,
+                 std::string gameName, const uint32_t& gameId, const CharacterType& character,
+                 const Episode& episode):
             playerName(std::move(playerName)),
             cmd(cmd),
             maxPlayers(maxPlayers),
@@ -41,9 +40,7 @@ struct LobbyMessage {
 
     void setPlayerName(const std::string& name) { playerName = name; }
 
-    void setLobbyCmd(const Command& command) {
-        cmd = command;
-    }
+    void setLobbyCmd(const Command& command) { cmd = command; }
 
     void setMaxPlayers(const int8_t& players) { maxPlayers = players; }
 
@@ -69,10 +66,9 @@ struct LobbyMessage {
 
     Episode getEpisode() const { return episode; }
 
-    LobbyMessage& build(const std::string& namePlayer,
-                        Command lobbyCmd,
-                        int8_t maxPlayerNumber, const std::string& nameGame, uint32_t idGame,
-                        CharacterType characterType, Episode ep) {
+    LobbyMessage& build(const std::string& namePlayer, Command lobbyCmd, int8_t maxPlayerNumber,
+                        const std::string& nameGame, uint32_t idGame, CharacterType characterType,
+                        Episode ep) {
         this->playerName = namePlayer;
         this->cmd = lobbyCmd;
         this->maxPlayers = maxPlayerNumber;

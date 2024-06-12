@@ -33,8 +33,6 @@ void Serializer::sendCommand(const std::unique_ptr<CommandDTO> dto, bool& wasClo
                     std::make_unique<GamesListDTO>(static_cast<const GamesListDTO&>(*dto)));
             break;
         case Command::START_GAME:
-            buffer = serializeStartGame(
-                    std::make_unique<StartGameDTO>(static_cast<const StartGameDTO&>(*dto)));
             break;
         default:
             return;
@@ -85,7 +83,6 @@ std::vector<char> Serializer::serializeGameDTO(const std::unique_ptr<GameDTO> dt
 
 std::vector<char> Serializer::serializeCreateGame(const std::unique_ptr<CreateGameDTO>& dto) {
     std::vector<char> buffer;
-    buffer.push_back(static_cast<char>(Command::CREATE_GAME));
     uint32_t gameId = htonl(dto->getGameId());
     unsigned char const* p = reinterpret_cast<unsigned char const*>(&gameId);
     buffer.insert(buffer.end(), p, p + sizeof(uint32_t));
@@ -94,7 +91,6 @@ std::vector<char> Serializer::serializeCreateGame(const std::unique_ptr<CreateGa
 
 std::vector<char> Serializer::serializeJoinGame(const std::unique_ptr<JoinGameDTO>& dto) {
     std::vector<char> buffer;
-    buffer.push_back(static_cast<char>(Command::JOIN_GAME));
     uint32_t gameId = htonl(dto->getGameId());
     const unsigned char* p1 = reinterpret_cast<const unsigned char*>(&gameId);
     buffer.insert(buffer.end(), p1, p1 + sizeof(uint32_t));
@@ -107,7 +103,6 @@ std::vector<char> Serializer::serializeJoinGame(const std::unique_ptr<JoinGameDT
 
 std::vector<char> Serializer::serializeGamesList(const std::unique_ptr<GamesListDTO>& dto) {
     std::vector<char> buffer;
-    buffer.push_back(static_cast<char>(Command::GAMES_LIST));
     auto games = dto->getGames();
     uint32_t gamesSize = htonl(games.size());
     const unsigned char* p = reinterpret_cast<const unsigned char*>(&gamesSize);
@@ -138,13 +133,6 @@ std::vector<char> Serializer::serializeGamesList(const std::unique_ptr<GamesList
         const unsigned char* ep = reinterpret_cast<const unsigned char*>(&episodeName);
         buffer.insert(buffer.end(), ep, ep + sizeof(uint32_t));
     }
-    return buffer;
-}
-
-
-std::vector<char> Serializer::serializeStartGame(const std::unique_ptr<StartGameDTO>& dto) {
-    std::vector<char> buffer;
-    buffer.push_back(static_cast<char>(Command::START_GAME));
     return buffer;
 }
 
@@ -291,7 +279,7 @@ std::vector<char> Serializer::serializeEpisodesList(const std::unique_ptr<Episod
     const unsigned char* p = reinterpret_cast<const unsigned char*>(&episodesSize);
     buffer.insert(buffer.end(), p, p + sizeof(uint32_t));
 
-    for (const auto& episodePair : episodes) {
+    for (const auto& episodePair: episodes) {
         uint32_t id = episodePair.first;
         const std::string& episode = episodePair.second;
 
@@ -308,4 +296,3 @@ std::vector<char> Serializer::serializeEpisodesList(const std::unique_ptr<Episod
 
     return buffer;
 }
-

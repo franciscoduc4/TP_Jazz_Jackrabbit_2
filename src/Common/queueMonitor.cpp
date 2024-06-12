@@ -69,4 +69,4 @@ void QueueMonitor<T>::assignGameIdToQueues(uint32_t gameId, std::shared_ptr<Queu
 
 // Especificaciones de instanciación para los tipos utilizados
 template class QueueMonitor<std::string>;
-template class QueueMonitor<std::unique_ptr<GameDTO>>;
+template class QueueMonitor<std::unique_ptr<DTO>>;

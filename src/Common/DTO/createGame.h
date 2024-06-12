@@ -5,14 +5,14 @@
 #include <string>
 
 #include "../Types/character.h"
-#include "../Types/episode.h"
 #include "../Types/gameMode.h"
 
 #include "command.h"
 
 class CreateGameDTO: public CommandDTO {
 private:
-    Episode episodeName;
+    std::string episodeName;
+    uint32_t episodeId;
     GameMode gameMode;
     uint8_t maxPlayers;
     CharacterType characterType;
@@ -23,14 +23,12 @@ private:
 public:
     explicit CreateGameDTO(const uint32_t& gameId);
 
-    CreateGameDTO(Episode episodeName, uint8_t maxPlayers,
+    CreateGameDTO(const uint32_t& playerId, std::string episodeName, uint8_t maxPlayers,
                   CharacterType character, std::string gameName, uint32_t gameId);
 
+    std::string getEpisodeName() const;
 
-    CreateGameDTO(const uint32_t& playerId, Episode episodeName, uint8_t maxPlayers,
-                  CharacterType character, std::string gameName, uint32_t gameId);
-
-    Episode getEpisodeName() const;
+    uint32_t getEpisodeId() const;
 
     uint32_t getGameId() const;
 
