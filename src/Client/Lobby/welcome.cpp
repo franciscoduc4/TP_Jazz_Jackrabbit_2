@@ -34,11 +34,15 @@ void Welcome::on_btnIngresar_clicked() {
 
     this->msg.setPlayerName(playerName.toStdString());
 
-    this->hide();
+    /*this->hide();
 
     Lobby lobby(this, this->controller, this->msg, this->clientJoinedGame);
     lobby.setModal(true);
-    lobby.exec();
+    lobby.exec();*/
+
+    auto lobby = new Lobby(this, this->controller, this->msg, this->clientJoinedGame);
+    this->hide();
+    lobby->show();
 }
 
 void Welcome::keyPressEvent(QKeyEvent* event) {

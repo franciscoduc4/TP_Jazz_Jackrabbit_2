@@ -1,5 +1,4 @@
 # src/CMakeLists.txt
-
 # Include directories
 include_directories(${PROJECT_SOURCE_DIR}/src/Common)
 
@@ -43,13 +42,13 @@ if(CLIENT)
     )
 
     set(UI_FILES
-        ${PROJECT_SOURCE_DIR}/src/Client/charactereselection.ui
-        ${PROJECT_SOURCE_DIR}/src/Client/creategame.ui
-        ${PROJECT_SOURCE_DIR}/src/Client/gamelist.ui
-        ${PROJECT_SOURCE_DIR}/src/Client/lobby.ui
-        ${PROJECT_SOURCE_DIR}/src/Client/sceneselection.ui
-        ${PROJECT_SOURCE_DIR}/src/Client/waitingroom.ui
-        ${PROJECT_SOURCE_DIR}/src/Client/welcomes.ui
+            ${PROJECT_SOURCE_DIR}/src/Client/charactereselection.ui
+            ${PROJECT_SOURCE_DIR}/src/Client/creategame.ui
+            ${PROJECT_SOURCE_DIR}/src/Client/gamelist.ui
+            ${PROJECT_SOURCE_DIR}/src/Client/lobby.ui
+            ${PROJECT_SOURCE_DIR}/src/Client/mapselection.ui
+            ${PROJECT_SOURCE_DIR}/src/Client/waitingroom.ui
+            ${PROJECT_SOURCE_DIR}/src/Client/welcomes.ui
     )
 
     qt5_wrap_ui(UIS_HEADERS ${UI_FILES})

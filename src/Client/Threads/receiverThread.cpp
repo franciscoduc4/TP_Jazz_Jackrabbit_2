@@ -10,7 +10,19 @@ ReceiverThread::ReceiverThread(Deserializer& deserializer, std::shared_ptr<Socke
         deserializer(deserializer), socket(socket), was_closed(was_closed), closed(false) {}
 
 void ReceiverThread::receiveCommandDTO() {
-    // Do Something
+    char lobbyTypeChar;
+    socket->recvall(&lobbyTypeChar, sizeof(char), &closed);
+    this->was_closed.store(closed);
+    if (this->was_closed.load()) {
+        return;
+    }
+    /*if (!DTOValidator::validateLobbyState(lobbyTypeChar)) {
+        return;
+    }*/
+    auto lobbyState = static_cast<LobbyState>(lobbyTypeChar);
+    if (lobbyState == LobbyState::GAMES_LIST) {
+        this->receiveGamesList();
+    }
 }
 
 std::vector<PlayerDTO> ReceiverThread::receivePlayers() {

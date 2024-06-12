@@ -26,7 +26,7 @@
     <property name="geometry">
      <rect>
       <x>30</x>
-      <y>20</y>
+      <y>120</y>
       <width>741</width>
       <height>151</height>
      </rect>
@@ -38,22 +38,41 @@
      </font>
     </property>
     <property name="text">
-     <string>Conectado a </string>
+     <string>Conectando...</string>
     </property>
    </widget>
-   <widget class="QLabel" name="labelPlayers">
+   <widget class="QLabel" name="labelGameName">
     <property name="geometry">
      <rect>
-      <x>120</x>
-      <y>230</y>
-      <width>251</width>
-      <height>121</height>
+      <x>615</x>
+      <y>240</y>
+      <width>175</width>
+      <height>50</height>
      </rect>
     </property>
     <property name="font">
      <font>
       <family>Jazz Jackrabbit 2</family>
-      <pointsize>24</pointsize>
+      <pointsize>20</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string></string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="labelPlayers">
+    <property name="geometry">
+     <rect>
+      <x>640</x>
+      <y>360</y>
+      <width>175</width>
+      <height>50</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Jazz Jackrabbit 2</family>
+      <pointsize>20</pointsize>
      </font>
     </property>
     <property name="text">
@@ -63,58 +82,52 @@
    <widget class="QLabel" name="labelSlash">
     <property name="geometry">
      <rect>
-      <x>480</x>
-      <y>280</y>
-      <width>21</width>
-      <height>21</height>
+      <x>700</x>
+      <y>420</y>
+      <width>20</width>
+      <height>20</height>
      </rect>
     </property>
     <property name="font">
      <font>
       <family>Jazz Jackrabbit 2</family>
-      <pointsize>24</pointsize>
+      <pointsize>20</pointsize>
      </font>
     </property>
     <property name="text">
      <string>/</string>
     </property>
    </widget>
-   <widget class="QLineEdit" name="numPlayers">
+   <widget class="QLabel" name="numPlayers">
     <property name="geometry">
      <rect>
-      <x>382</x>
-      <y>270</y>
-      <width>81</width>
-      <height>26</height>
+      <x>660</x>
+      <y>420</y>
+      <width>40</width>
+      <height>25</height>
      </rect>
     </property>
     <property name="font">
      <font>
       <family>Jazz Jackrabbit 2</family>
-      <pointsize>24</pointsize>
+      <pointsize>20</pointsize>
      </font>
-    </property>
-    <property name="readOnly">
-     <bool>true</bool>
     </property>
    </widget>
-   <widget class="QLineEdit" name="maxPlayers">
+   <widget class="QLabel" name="maxPlayers">
     <property name="geometry">
      <rect>
-      <x>520</x>
-      <y>270</y>
-      <width>81</width>
-      <height>26</height>
+      <x>720</x>
+      <y>420</y>
+      <width>40</width>
+      <height>25</height>
      </rect>
     </property>
     <property name="font">
      <font>
       <family>Jazz Jackrabbit 2</family>
-      <pointsize>24</pointsize>
+      <pointsize>20</pointsize>
      </font>
-    </property>
-    <property name="readOnly">
-     <bool>true</bool>
     </property>
    </widget>
   </widget>

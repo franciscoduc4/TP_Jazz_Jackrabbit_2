@@ -18,7 +18,7 @@ set(PROJECT_SOURCES
         lobbyInit.cpp lobbyInit.h
         welcome.cpp welcome.h welcome.ui
         lobby.cpp lobby.h lobby.ui
-        sceneselection.cpp sceneselection.h sceneselection.ui
+        mapselection.cpp mapselection.h mapselection.ui
         gamelist.cpp gamelist.h gamelist.ui
         creategame.cpp creategame.h creategame.ui
         characterselection.cpp characterselection.h characterselection.ui

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>SceneSelection</class>
- <widget class="QDialog" name="SceneSelection">
+ <class>MapSelection</class>
+ <widget class="QDialog" name="MapSelection">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -60,10 +60,10 @@
    <widget class="QPushButton" name="btnChoose">
     <property name="geometry">
      <rect>
-      <x>340</x>
-      <y>480</y>
-      <width>111</width>
-      <height>41</height>
+      <x>600</x>
+      <y>490</y>
+      <width>110</width>
+      <height>40</height>
      </rect>
     </property>
     <property name="font">
@@ -79,10 +79,10 @@
    <widget class="QPushButton" name="btnBack">
     <property name="geometry">
      <rect>
-      <x>40</x>
-      <y>480</y>
-      <width>131</width>
-      <height>41</height>
+      <x>90</x>
+      <y>490</y>
+      <width>110</width>
+      <height>40</height>
      </rect>
     </property>
     <property name="font">

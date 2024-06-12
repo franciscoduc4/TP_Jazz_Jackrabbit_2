@@ -6,6 +6,7 @@ LobbyController::LobbyController(Serializer& serializer, Deserializer& deseriali
         serializer(serializer),
         deserializer(deserializer),
         lobbyQueue(lobbyQueue),
+        games(std::map<uint32_t, GameInfo>()),
         selected(){}
 
 void LobbyController::sendRequest(const LobbyMessage& msg) {
@@ -22,15 +23,15 @@ void LobbyController::startGame(const LobbyMessage& msg) {
 
 std::map<uint32_t, GameInfo>& LobbyController::getGamesList() {
     std::unique_ptr<DTO> dto;
-    GamesListDTO* games;
+    GamesListDTO* gamesList;
     try {
         dto = this->lobbyQueue->pop();
-        games = dynamic_cast<GamesListDTO*>(dto.get());
+        gamesList = dynamic_cast<GamesListDTO*>(dto.get());
     } catch (std::exception &e) {
         return this->games;
     }
 
-    this->games = std::move(games->getGames());
+    this->games = std::move(gamesList->getGames());
 
     return this->games;
 }
