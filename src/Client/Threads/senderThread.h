@@ -3,8 +3,10 @@
 
 #include <atomic>
 #include <memory>
+#include <arpa/inet.h>
 
 #include "../../Common/DTO/dto.h"
+#include "../../Common/DTO/createGame.h"
 #include "../../Common/queue.h"
 #include "../../Common/socket.h"
 #include "../../Common/thread.h"
@@ -22,6 +24,7 @@ private:
 public:
     SenderThread(std::shared_ptr<Queue<std::unique_ptr<DTO>>>& queue, std::shared_ptr<Socket>& socket, std::atomic<bool>& was_closed);
     void run() override;
+    void sendCreateGame(const CommandDTO& cmd);
     ~SenderThread();
 };
 

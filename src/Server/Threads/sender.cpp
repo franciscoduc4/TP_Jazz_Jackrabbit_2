@@ -44,11 +44,12 @@ void SenderThread::run() {
 void SenderThread::runLobby(bool& wasClosed) {
     while (keepPlaying && !inGame) {
         try {
-            std::cout << "Waiting for command" << std::endl;
+            std::cout << "[SENDER LOBBY] Waiting for command" << std::endl;
             std::unique_ptr<CommandDTO> command = deserializer.getCommand(wasClosed, playerId);
             if (command == nullptr) {
                 continue;
             }
+            std::cout << "[SENDER LOBBY] Command received" << std::endl;
             auto handler = LobbyCommandHandler::createHandler(std::move(command));
             handler->execute(gameMonitor, std::ref(inGame), recvQueue, sendQueue);
 

@@ -40,7 +40,7 @@ void Client::start() {
         LobbyMessage msg;
         msg.setCharacter(CharacterType::JAZZ);
         msg.setMap(0);
-        msg.setGameId(1);
+        //msg.setGameId(1);
         msg.setGameName("Dummy");
         msg.setLobbyCmd(Command::CREATE_GAME);
         msg.setMaxPlayers(1);

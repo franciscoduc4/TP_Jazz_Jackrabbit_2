@@ -2,20 +2,23 @@
 
 #include <utility>
 
-Game::Game(uint32_t gameId, std::string gameName, uint32_t playerId, std::string mapName,
+Game::Game(uint32_t gameId, std::string gameName, uint32_t mapId, uint32_t playerId,
            GameMode gameMode, uint8_t maxPlayers, CharacterType characterType,
            std::shared_ptr<Queue<std::unique_ptr<CommandDTO>>> recvQueue,
            QueueMonitor<std::unique_ptr<DTO>>& queueMonitor):
         gameId(gameId),
         gameName(std::move(gameName)),
         mapId(mapId),
-        mapName(mapName),
         gameMode(gameMode),
         maxPlayers(maxPlayers),
-        gameMap({255, 255}, mapName),
+        gameMap({255, 255}, mapId),
         currentPlayers(1),
         gameLoop(recvQueue, queueMonitor, gameMap, gameId) {
-    gameMap.addCharacter(playerId, characterType, {});
+    std::cout << "[GAME] Game created" << std::endl;
+    gameMap.loadMap(mapId);
+    std::cout << "[GAME] Map loaded" << std::endl;
+    gameMap.addCharacter(playerId, characterType);
+    std::cout << "[GAME] Character added" << std::endl;
 }
 
 std::string Game::getGameName() const { return gameName; }
@@ -24,7 +27,7 @@ bool Game::isFull() const { return currentPlayers == maxPlayers; }
 
 
 void Game::addPlayer(uint32_t playerId, CharacterType characterType) {
-    gameMap.addCharacter(playerId, characterType, {});
+    gameMap.addCharacter(playerId, characterType);
     currentPlayers++;
 }
 void Game::removePlayer(uint32_t playerId) {

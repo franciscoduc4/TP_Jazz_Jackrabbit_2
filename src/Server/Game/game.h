@@ -21,7 +21,6 @@ private:
     uint32_t gameId;
     std::string gameName;
     uint32_t mapId;
-    std::string mapName;
     GameMode gameMode;
     uint8_t maxPlayers;
     uint8_t currentPlayers;
@@ -29,7 +28,7 @@ private:
     GameMap gameMap;
 
 public:
-    explicit Game(uint32_t gameId, std::string gameName, uint32_t playerId, std::string mapName,
+    explicit Game(uint32_t gameId, std::string gameName, uint32_t mapId, uint32_t playerId,
                   GameMode gameMode, uint8_t maxPlayers, CharacterType characterType,
                   std::shared_ptr<Queue<std::unique_ptr<CommandDTO>>> recvQueue,
                   QueueMonitor<std::unique_ptr<DTO>>& queueMonitor);

@@ -10,4 +10,4 @@ WalkingEnemy::WalkingEnemy(GameMap& map, Vector<int16_t> pos, int16_t id):
               CONFIG->getWalkingEnemyWalkProb(), {}, {}) {}
 
 
-EnemyType WalkingEnemy::getEnemyType() { return EnemyType::WALKING_ENEMY; }
+EnemyType WalkingEnemy::getEnemyType() { return EnemyType::TURTLE; }

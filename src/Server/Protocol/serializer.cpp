@@ -14,9 +14,11 @@ void Serializer::sendCommand(const std::unique_ptr<CommandDTO> dto, bool& wasClo
 
     DTOType type = dto->getType();
     socket->sendall(&type, sizeof(char), &wasClosed);
+    std::cout << "[SERVER SERIALIZER] Sent dto type: " << (int)type << std::endl;
 
     Command command = dto->getCommand();
     socket->sendall(&command, sizeof(char), &wasClosed);
+    std::cout << "[SERVER SERIALIZER] Sent command: " << (int)command << std::endl;
     std::vector<char> buffer;
 
     switch (command) {
@@ -34,10 +36,15 @@ void Serializer::sendCommand(const std::unique_ptr<CommandDTO> dto, bool& wasClo
             break;
         case Command::START_GAME:
             break;
+        case Command::MAPS_LIST:
+            buffer = serializeMapsList(
+                    std::make_unique<MapsListDTO>(static_cast<const MapsListDTO&>(*dto)));
+            break;
         default:
             return;
     }
     socket->sendall(buffer.data(), buffer.size(), &wasClosed);
+    std::cout << "[SERVER SERIALIZER] Sent buffer" << std::endl;
 }
 
 std::vector<char> Serializer::serializeGameDTO(const std::unique_ptr<GameDTO> dto) {
@@ -85,6 +92,7 @@ std::vector<char> Serializer::serializeCreateGame(const std::unique_ptr<CreateGa
     std::vector<char> buffer;
     uint32_t gameId = htonl(dto->getGameId());
     unsigned char const* p = reinterpret_cast<unsigned char const*>(&gameId);
+    std::cout << "[SERVER SERIALIZE CG] Game id: " << gameId << std::endl;
     buffer.insert(buffer.end(), p, p + sizeof(uint32_t));
     return buffer;
 }

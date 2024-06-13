@@ -4,7 +4,7 @@
 #include <iostream>
 #include <memory>
 #include <vector>
-
+#include <arpa/inet.h>
 #include "../../Common/DTO/dto.h"
 #include "../../Common/Types/command.h"
 #include "../../Common/Types/direction.h"
@@ -30,9 +30,14 @@ void Serializer::serializeLobbyMessage(const LobbyMessage& msg) {
                 this->queue->push(std::make_unique<JoinGameDTO>(msg.getGameId(), msg.getCharacter()));
                 break;
             case Command::CREATE_GAME: {
+                std::cout << "mapId" << msg.getMap() << std::endl;
+                uint32_t mapId = htonl(msg.getMap());
+                std::cout << "mapId post ton" << mapId << std::endl;
+
                 std::cout << "Creating game" << std::endl;
-                this->queue->push(std::make_unique<CreateGameDTO>(msg.getMap(), msg.getMaxPlayers(),
-                                                                  msg.getCharacter(), msg.getGameName(), msg.getGameId()));
+                this->queue->push(std::make_unique<CreateGameDTO>(mapId, msg.getMaxPlayers(),
+                                                                  msg.getCharacter(), msg.getGameName()));
+                std::cout << "Game pushed" << std::endl;
                 break;
             }
             default:

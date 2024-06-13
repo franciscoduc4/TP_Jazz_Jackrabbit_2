@@ -14,6 +14,7 @@ ReceiverThread::ReceiverThread(Deserializer& deserializer, std::shared_ptr<Socke
 void ReceiverThread::receiveCommandDTO() {
     char lobbyTypeChar;
     socket->recvall(&lobbyTypeChar, sizeof(char), &closed);
+    std::cout << "[RECEIVER] Received command: " << lobbyTypeChar << std::endl;
     this->was_closed.store(closed);
     if (this->was_closed.load()) {
         return;
@@ -31,6 +32,7 @@ void ReceiverThread::receiveCommandDTO() {
     } else if (lobbyTypeChar == static_cast<char>(Command::CREATE_GAME)) {
         uint32_t gameId;
         this->socket->recvall(&gameId, sizeof(uint32_t), &closed);
+        std::cout << "[RECEIVER] Received game id: " << gameId << std::endl;
         this->was_closed.store(closed);
         if (this->was_closed.load()) {
             return;
@@ -114,7 +116,7 @@ std::vector<EnemyDTO> ReceiverThread::receiveEnemies() {
         enemies.push_back(enemy);
     }
 
-    // EnemyDTO enemy(50, 30, 0, 100, 20, 1, EnemyType::WALKING_ENEMY,
+    // EnemyDTO enemy(50, 30, 0, 100, 20, 1, EnemyType::TURTLE,
     // EnemyStateEntity::ENEMY_WALKING); enemies.push_back(enemy);
     return enemies;
 }

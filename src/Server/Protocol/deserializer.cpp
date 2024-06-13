@@ -19,7 +19,7 @@ Deserializer::Deserializer(std::shared_ptr<Socket> socket): socket(socket) {}
 std::unique_ptr<CommandDTO> Deserializer::getCommand(bool& wasClosed, uint32_t& playerId) {
     char cmd = 0;
     socket->recvall(&cmd, 1, &wasClosed);
-    std::cout << "Received command: " << (int)cmd << std::endl;
+    std::cout << "[SERVER RECEIVER] Received command: " << (int)cmd << std::endl;
     Command command = static_cast<Command>(cmd);
     switch (command) {
         case Command::CREATE_GAME:
@@ -45,27 +45,30 @@ std::unique_ptr<CommandDTO> Deserializer::getCommand(bool& wasClosed, uint32_t& 
 
 std::unique_ptr<CreateGameDTO> Deserializer::deserializeCreateGame(bool& wasClosed,
                                                                    uint32_t& playerId) {
-    // TODO: se envía solamente mapId, el nombre del episodio se obtiene del servidor.
-    // std::string mapName;
-    // socket->recvall(&mapName, sizeof(char), &wasClosed);
+
     uint32_t mapIdNetwork;
     socket->recvall(&mapIdNetwork, sizeof(uint32_t), &wasClosed);
+    std::cout << "[SERVER RECEIVER] Map id network: " << mapIdNetwork << std::endl;
     uint32_t mapId = ntohl(mapIdNetwork);
+
+    std::cout << "[SERVER RECEIVER] Map id: " << mapId << std::endl;
+   
     uint8_t maxPlayers;
     socket->recvall(&maxPlayers, sizeof(char), &wasClosed);
-    GameMode gameMode = (maxPlayers == 1) ? GameMode::SINGLE_PLAYER : GameMode::PARTY_MODE;
+    std::cout << "[SERVER RECEIVER] Max players: " << (int)maxPlayers << std::endl;
+    
     CharacterType characterType;
     socket->recvall(&characterType, sizeof(char), &wasClosed);
+    std::cout << "[SERVER RECEIVER] Character type: " << (int)characterType << std::endl;
+    
     uint8_t lengthName = 0;
     socket->recvall(&lengthName, sizeof(char), &wasClosed);
     std::vector<char> nameBuffer(lengthName);
     socket->recvall(nameBuffer.data(), lengthName, &wasClosed);
-    // TODO: GameId se tiene que asignar acá.
-    // uint32_t gameId;
-    // socket->recvall(&gameId, sizeof(uint32_t), &wasClosed);
-    std::string mapName = MapsManager::getMapNameById(mapId);
-    return std::make_unique<CreateGameDTO>(playerId, mapId, mapName, maxPlayers, characterType,
-                                           std::string(nameBuffer.begin(), nameBuffer.end()), -1);
+    std::cout << "[SERVER RECEIVER] Game name: " << std::string(nameBuffer.begin(), nameBuffer.end()) << std::endl;
+
+    return std::make_unique<CreateGameDTO>(playerId, mapId, maxPlayers, characterType,
+                                           std::string(nameBuffer.begin(), nameBuffer.end()));
 }
 
 std::unique_ptr<MapsListDTO> Deserializer::deserializeMapsList(bool& wasClosed,

@@ -1,22 +1,66 @@
 #include "gameMap.h"
-
+#include "../../Common/maps/mapsManager.h"
 #include <iostream>
+#include <optional> 
 
 #define CONFIG ServerConfig::getInstance()
 
-// Vector<int16_t> size;
-// std::map<Vector<int16_t>, std::shared_ptr<Entity>> mapGrid;
-// std::map<int16_t, std::shared_ptr<Character>> characters;
-// EntityFactory entityFactory;
-// int16_t movesPerCell;
-// float gravity;
-// std::string mapName;
-
-GameMap::GameMap(Vector<int16_t> size, std::string mapName):
+GameMap::GameMap(Vector<int16_t> size, uint32_t mapId):
         size(size),
         entityFactory(*this),
         gravity(CONFIG->getGameGravity()),
-        mapName(mapName) {}
+        movesPerCell(CONFIG->getGameMaxMoves()),
+        mapId(mapId)
+         {}
+
+void GameMap::loadMap(uint32_t mapId) {
+    std::string filePath = MapsManager::getMapFileNameById(mapId);
+    std::cout << "[GAMEMAP] Loading map from file: " << filePath << std::endl;
+
+    YAML::Node config = YAML::LoadFile(filePath);
+    std::cout << "[GAMEMAP] YAML file loaded" << std::endl;
+
+    // Cargar el tamaño del mapa
+    if (!config["SIZE"] || !config["SIZE"]["WIDTH"] || !config["SIZE"]["HEIGHT"]) {
+        throw std::runtime_error("Invalid map size configuration in YAML file");
+    }
+    size.x = config["SIZE"]["WIDTH"].as<int16_t>();
+    std::cout << "[GAMEMAP] Width: " << size.x << std::endl;
+    size.y = config["SIZE"]["HEIGHT"].as<int16_t>();
+    std::cout << "[GAMEMAP] Height: " << size.y << std::endl;
+
+    // Verificación adicional para el tamaño del mapa
+    if (size.x <= 0 || size.y <= 0) {
+        throw std::runtime_error("Map size must be positive non-zero values");
+    }
+
+    // Cargar enemigos
+    if (config["ENEMIES"]) {
+        for (const auto& enemy : config["ENEMIES"]) {
+            auto enemyType = enemy.first.as<std::string>();
+            std::cout << "[GAMEMAP] Enemy type: " << enemyType << std::endl;
+            for (const auto& pos : enemy.second) {
+                if (pos.size() != 2) {
+                    throw std::runtime_error("Invalid enemy position configuration in YAML file");
+                }
+                Vector<int16_t> position = {pos[0].as<int16_t>(), pos[1].as<int16_t>()};
+                std::cout << "[GAMEMAP] Enemy position: (" << position.x << ", " << position.y << ")" << std::endl;
+                EnemyType type = getEnemyType(enemyType);
+                addEnemy(type, position);
+            }
+        }
+    }
+
+    // Cargar obstáculos y otros elementos según sea necesario
+}
+
+
+EnemyType GameMap::getEnemyType(const std::string& type) {
+    if (type == "TURTLES") return EnemyType::TURTLE;
+    if (type == "SCHWARZENGUARDS") return EnemyType::SCHWARZENGUARD;
+    if (type == "YELLOWMONS") return EnemyType::YELLOWMON;
+    throw std::runtime_error("Unknown enemy type");
+}
 
 std::vector<std::shared_ptr<Entity>> GameMap::getObjectsInShootRange(Vector<int16_t> mapPosition,
                                                                      Direction dir) {
@@ -38,6 +82,7 @@ std::vector<std::shared_ptr<Entity>> GameMap::getObjectsInShootRange(Vector<int1
     }
     return entities;
 }
+
 
 std::vector<std::shared_ptr<Entity>> GameMap::getObjectsInExplosionRange(
         Vector<int16_t> mapPosition, int16_t radius) {
@@ -75,6 +120,7 @@ bool GameMap::isFreePosition(Vector<int16_t> position) {
 
 void GameMap::addEntityToMap(std::shared_ptr<Entity> entity, Vector<int16_t> position) {
     Vector<int16_t> mapPosition = entity->getMapPosition(movesPerCell);
+    std::cout << "[GAMEMAP] Adding entity at position: (" << mapPosition.x << ", " << mapPosition.y << ")" << std::endl;
     if (isFreePosition(mapPosition)) {
         mapGrid[mapPosition] = entity;
     } else {
@@ -83,16 +129,47 @@ void GameMap::addEntityToMap(std::shared_ptr<Entity> entity, Vector<int16_t> pos
     }
 }
 
-std::shared_ptr<Character> GameMap::addCharacter(
-        uint32_t playerId, CharacterType type,
-        std::optional<Vector<int16_t>> position = std::nullopt) {
-    Vector<int16_t> initPosition = position ? *position : getAvailablePosition();
+
+Vector<int16_t> GameMap::getInitialPositionForCharacterType(CharacterType type) {
+    std::string filePath = MapsManager::getMapFileNameById(mapId);
+    YAML::Node config = YAML::LoadFile(filePath);
+
+    std::string characterTypeStr;
+    switch (type) {
+        case CharacterType::JAZZ:
+            characterTypeStr = "JAZZ";
+            break;
+        case CharacterType::LORI:
+            characterTypeStr = "LORI";
+            break;
+        case CharacterType::SPAZ:
+            characterTypeStr = "SPAZ";
+            break;
+        default:
+            throw std::runtime_error("Unknown character type");
+    }
+
+    for (const auto& pos : config["PLAYERS"][characterTypeStr]) {
+        if (pos.size() != 2) {
+            throw std::runtime_error("Invalid player position configuration in YAML file for " + characterTypeStr);
+        }
+        return {pos[0].as<int16_t>(), pos[1].as<int16_t>()};
+    }
+
+    throw std::runtime_error("Initial position for character type not found in YAML for " + characterTypeStr);
+}
+
+std::shared_ptr<Character> GameMap::addCharacter(uint32_t playerId, CharacterType type) {
+    Vector<int16_t> initPosition = getInitialPositionForCharacterType(type);
+
     if (!isValidMapPosition(initPosition)) {
+        std::cerr << "[GAMEMAP] Invalid initial position for character" << std::endl;
         return nullptr;
     }
 
     auto character = entityFactory.createCharacter(entityCount, type, initPosition);
     if (!character) {
+        std::cerr << "[GAMEMAP] Failed to create character" << std::endl;
         return nullptr;
     }
 
@@ -102,13 +179,15 @@ std::shared_ptr<Character> GameMap::addCharacter(
     return character;
 }
 
-void GameMap::addEnemy(EnemyType type, std::optional<Vector<int16_t>> position) {
-    Vector<int16_t> initPosition = position ? *position : getAvailablePosition();
-    auto enemy = entityFactory.createEnemy(entityCount, type, initPosition);
+void GameMap::addEnemy(EnemyType type, Vector<int16_t> position) {
+    if (!isValidMapPosition(position)) {
+        throw std::runtime_error("Invalid position for enemy");
+    }
+    auto enemy = entityFactory.createEnemy(entityCount, type, position);
+    std::cout << "[GAMEMAP] Adding enemy at position: (" << position.x << ", " << position.y << ")" << std::endl;
     entityCount++;
-    addEntityToMap(enemy, initPosition);
+    addEntityToMap(enemy, position);
 }
-
 bool GameMap::isValidMapPosition(Vector<int16_t> mapPosition) {
     return mapPosition.x >= 0 && mapPosition.x <= size.x && mapPosition.y >= 0 &&
            mapPosition.y <= size.y;

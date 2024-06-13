@@ -5,6 +5,7 @@
 #include <condition_variable>
 #include <deque>
 #include <mutex>
+#include <iostream>
 #include <queue>
 #include <stdexcept>
 
@@ -116,12 +117,14 @@ public:
     }
 
     void push(T&& val) {
+        std::cout << "pushinggg" << std::endl;
         std::unique_lock<std::mutex> lck(mtx);
 
+        std::cout << "pushing" << std::endl;
         if (closed) {
             throw ClosedQueue();
         }
-
+        std::cout << "pushing" << std::endl;
         while (q.size() == this->max_size) {
             is_not_full.wait(lck);
         }
@@ -129,8 +132,10 @@ public:
         if (q.empty()) {
             is_not_empty.notify_all();
         }
+        std::cout << "pushing" << std::endl;
 
         q.push(std::move(val));
+        std::cout << "pushed" << std::endl;
     }
 
     T pop() {
