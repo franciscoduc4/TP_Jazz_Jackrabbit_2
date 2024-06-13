@@ -29,15 +29,15 @@ void Client::start() {
 
     bool clientJoinedGame = false;
     do {
-        LobbyInit init;
-        clientJoinedGame = init.launchQT(this->lobbyController, (bool&)clientJoinedGame);
+        // LobbyInit init;
+        // clientJoinedGame = init.launchQT(this->lobbyController, (bool&)clientJoinedGame);
 
         //   if (!clientJoinedGame) {
         //       return;
         //   }
         // TODO: Continue with SDL.
         // START - TESTING SKIP QT
-        LobbyMessage msg;
+ LobbyMessage msg;
         msg.setCharacter(CharacterType::JAZZ);
         msg.setMap(0);
         msg.setGameId(1);
@@ -51,6 +51,10 @@ void Client::start() {
         this->lobbyController.recvResponse();
         this->lobbyController.startGame(msg);
         bool gameStartAck = this->lobbyController.recvStartGame();
+        if (!gameStartAck) {
+            std::cerr << "Failed to start game." << std::endl;
+            return;
+        }
         // END - TESTING SKIP QT
 
 
