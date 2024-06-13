@@ -37,7 +37,7 @@ void Client::start() {
         //   }
         // TODO: Continue with SDL.
         // START - TESTING SKIP QT
- LobbyMessage msg;
+        LobbyMessage msg;
         msg.setCharacter(CharacterType::JAZZ);
         msg.setMap(0);
         msg.setGameId(1);
@@ -48,11 +48,19 @@ void Client::start() {
         clientJoinedGame = true;
 
         this->lobbyController.sendRequest(msg);
-        this->lobbyController.recvResponse();
-        this->lobbyController.startGame(msg);
-        bool gameStartAck = this->lobbyController.recvStartGame();
-        if (!gameStartAck) {
-            std::cerr << "Failed to start game." << std::endl;
+        std::cout << "Request sent." << std::endl;
+        bool responseReceived = this->lobbyController.recvResponse();
+        std::cout << "Response received: " << responseReceived << std::endl;
+        if (responseReceived) {
+            this->lobbyController.startGame(msg);
+            bool gameStartAck = this->lobbyController.recvStartGame();
+            std::cout << "Game start ack: " << gameStartAck << std::endl;
+            if (!gameStartAck) {
+                std::cerr << "Failed to start game." << std::endl;
+                return;
+            }
+        } else {
+            std::cerr << "Failed to receive response for create game." << std::endl;
             return;
         }
         // END - TESTING SKIP QT
