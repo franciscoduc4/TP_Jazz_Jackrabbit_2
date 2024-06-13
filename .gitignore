@@ -64,3 +64,7 @@ cmake-build-debug/*
 **/cmake-build-debug/*
 **/cmake-build-debug/**
 
+# Vagrant
+.vagrant
+.vagrant/
+.vagrant/*
