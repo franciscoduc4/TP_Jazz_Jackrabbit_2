@@ -2,7 +2,7 @@
 
 ![Banner](assets/Miscellaneous/banner.png)
 
-## Trabajo Práctico Final de la materia Taller de Programación I.
+## Trabajo Práctico Final de la materia Taller de Programación I
 
 | **Integrantes** | **Padrón** | **Email** |
 | :-------------: | :--------: | :-------: |
@@ -42,7 +42,7 @@ Para instalar la tipografía utilizada, se debe ejecutar esta línea de codigo, 
 sudo cp ./assets/Miscellaneous/Jazz-Jackrabbit-2.ttf /usr/share/fonts/
 ```
 
-### Crear y entrar al directorio de compilación 
+### Crear y entrar al directorio de compilación
 
 ```sh
 mkdir build
