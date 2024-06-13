@@ -8,7 +8,7 @@ enum class Command : char {
     CREATE_GAME,
     JOIN_GAME,
     GAMES_LIST,
-    EPISODES_LIST,
+    MAPS_LIST,
     GAME_MODE,
     CHARACTER_TYPE,
     START_GAME,

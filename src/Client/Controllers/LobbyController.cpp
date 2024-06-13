@@ -1,8 +1,11 @@
 #include "LobbyController.h"
 
 #include "DTO/startGame.h"
+#include "DTO/createGame.h"
 
-LobbyController::LobbyController(Serializer& serializer, Deserializer& deserializer, std::shared_ptr<Queue<std::unique_ptr<DTO>>>& lobbyQueue) :
+LobbyController::LobbyController(Serializer& serializer, 
+    Deserializer& deserializer, 
+    std::shared_ptr<Queue<std::unique_ptr<DTO>>>& lobbyQueue) :
         serializer(serializer),
         deserializer(deserializer),
         lobbyQueue(lobbyQueue),
@@ -14,6 +17,17 @@ void LobbyController::sendRequest(const LobbyMessage& msg) {
         this->selected = GameInfo(msg.getGameId(), msg.getGameName(), msg.getMaxPlayers(), 1);
     }
     this->serializer.serializeLobbyMessage(msg);
+}
+
+bool LobbyController::recvResponse() {
+    std::unique_ptr<DTO> dto;
+    try {
+        dto = this->lobbyQueue->pop();
+    } catch (std::exception &e) {
+        return false;
+    }
+    auto* cgDTO = dynamic_cast<CreateGameDTO*>(dto.get());
+    return cgDTO->getCommand() == Command::CREATE_GAME;
 }
 
 void LobbyController::startGame(const LobbyMessage& msg) {

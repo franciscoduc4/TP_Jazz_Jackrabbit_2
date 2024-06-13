@@ -5,8 +5,6 @@
 
 #include <netinet/in.h>
 
-StartGameDTO::StartGameDTO() : CommandDTO(Command::START_GAME), gameId(-1) {}
-
 StartGameDTO::StartGameDTO(const uint32_t& gameId):
         CommandDTO(Command::START_GAME), gameId(gameId) {}
 

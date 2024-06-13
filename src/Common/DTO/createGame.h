@@ -6,14 +6,14 @@
 
 #include "../Types/character.h"
 #include "../Types/gameMode.h"
+#include <vector>
 
 #include "command.h"
 
 class CreateGameDTO: public CommandDTO {
 private:
-    std::string episodeName;
-    uint32_t episodeId;
-    GameMode gameMode;
+    std::string mapName;
+    uint32_t mapId;
     uint8_t maxPlayers;
     CharacterType characterType;
     std::string gameName;
@@ -23,15 +23,18 @@ private:
 public:
     explicit CreateGameDTO(const uint32_t& gameId);
 
-    CreateGameDTO(std::string episodeName, uint8_t maxPlayers,
-            CharacterType character, std::string gameName, uint32_t gameId);
-
-    CreateGameDTO(const uint32_t& playerId, std::string episodeName, uint8_t maxPlayers,
+    CreateGameDTO(uint32_t mapId, uint8_t maxPlayers,
                   CharacterType character, std::string gameName, uint32_t gameId);
 
-    std::string getEpisodeName() const;
+    CreateGameDTO(uint32_t mapId, std::string mapName, uint8_t maxPlayers,
+            CharacterType character, std::string gameName, uint32_t gameId);
 
-    uint32_t getEpisodeId() const;
+    CreateGameDTO(const uint32_t& playerId, uint32_t mapId, std::string mapName, uint8_t maxPlayers,
+                  CharacterType character, std::string gameName, uint32_t gameId);
+
+    std::string getMapName() const;
+
+    uint32_t getMapId() const;
 
     uint32_t getGameId() const;
 

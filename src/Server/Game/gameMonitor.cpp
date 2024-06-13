@@ -3,14 +3,16 @@
 #include <sstream>
 #include <utility>
 
-#include "../../Common/DTO/episodesList.h"
+#include "../../Common/DTO/mapsList.h"
 #include "../../Common/DTO/gamesList.h"
 #include "../../Common/DTO/joinGame.h"
 
-GameMonitor::GameMonitor(QueueMonitor<std::unique_ptr<DTO>>& queueMonitor):
-        queueMonitor(queueMonitor), mapsManager() {}
+#include "maps/mapsManager.h"
 
-bool GameMonitor::createGame(uint32_t playerId, uint32_t episodeId, std::string episodeName,
+GameMonitor::GameMonitor(QueueMonitor<std::unique_ptr<DTO>>& queueMonitor):
+        queueMonitor(queueMonitor) {}
+
+bool GameMonitor::createGame(uint32_t playerId, uint32_t mapId, std::string mapName,
                              GameMode gameMode, uint8_t maxPlayers, CharacterType characterType,
                              std::string gameName,
                              std::shared_ptr<Queue<std::unique_ptr<CommandDTO>>> recvQueue,
@@ -23,7 +25,7 @@ bool GameMonitor::createGame(uint32_t playerId, uint32_t episodeId, std::string 
         }
     }
     queueMonitor.assignGameIdToQueues(gameId, sendQueue);
-    games[gameId] = std::make_unique<Game>(gameId, gameName, playerId, episodeName, gameMode,
+    games[gameId] = std::make_unique<Game>(gameId, gameName, playerId, mapName, gameMode,
                                            maxPlayers, characterType, recvQueue, queueMonitor);
 
     return true;
@@ -68,10 +70,9 @@ void GameMonitor::gamesList(std::shared_ptr<Queue<std::unique_ptr<DTO>>>& sendQu
     sendQueue->push(std::move(dto));
 }
 
-void GameMonitor::episodesList(std::shared_ptr<Queue<std::unique_ptr<DTO>>>& sendQueue) {
+void GameMonitor::mapsList(std::shared_ptr<Queue<std::unique_ptr<DTO>>>& sendQueue) {
     std::lock_guard<std::mutex> lock(mtx);
-    auto episodes = mapsManager.getEpisodes();
-    auto dto = std::make_unique<EpisodesListDTO>(episodes);
+    auto dto = std::make_unique<MapsListDTO>(MapsManager::getMapIdAndName());
     sendQueue->push(std::move(dto));
 }
 

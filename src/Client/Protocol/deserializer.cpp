@@ -34,7 +34,7 @@ std::map<uint32_t, std::vector<GameInfo>> Deserializer::getGamesList(std::unique
     std::map<uint32_t, std::vector<GameInfo>> gamesList;
     auto* gamesListDTO = dynamic_cast<GamesListDTO*>(dto.get());
     for (auto& game : gamesListDTO->getGamesList()) {
-        gamesList[game.getGameId()] = GameListInfo(game.getGameName(), game.getEpisode(), game.getMaxPlayers(),
+        gamesList[game.getGameId()] = GameListInfo(game.getGameName(), game.getMap(), game.getMaxPlayers(),
                                                    game.getPlayers(), game.getGameMode());
     }
     return gamesList;

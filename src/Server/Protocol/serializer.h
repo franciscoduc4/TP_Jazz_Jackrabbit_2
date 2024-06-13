@@ -8,7 +8,7 @@
 
 #include "../../Common/DTO/command.h"
 #include "../../Common/DTO/createGame.h"
-#include "../../Common/DTO/episodesList.h"
+#include "../../Common/DTO/mapsList.h"
 #include "../../Common/DTO/game.h"
 #include "../../Common/DTO/joinGame.h"
 #include "../../Common/DTO/lobby.h"
@@ -33,7 +33,7 @@ public:
     std::vector<char> serializeItemDTO(const std::unique_ptr<ItemDTO> dto);
     std::vector<char> serializeWeaponDTO(const std::unique_ptr<WeaponDTO> dto);
     std::vector<char> serializeTileDTO(const std::unique_ptr<TileDTO> dto);
-    std::vector<char> serializeEpisodesList(const std::unique_ptr<EpisodesListDTO> dto);
+    std::vector<char> serializeMapsList(const std::unique_ptr<MapsListDTO> dto);
 
     Serializer() {}
     explicit Serializer(std::shared_ptr<Socket> socket);

@@ -2,12 +2,28 @@
 
 #include <utility>
 
+#include "../maps/mapsManager.h"
+
+
 CreateGameDTO::CreateGameDTO(const uint32_t& gameId): gameId(gameId) {}
 
-CreateGameDTO::CreateGameDTO(std::string episodeName, uint8_t maxPlayers,
+CreateGameDTO::CreateGameDTO(uint32_t mapId, uint8_t maxPlayers,
+                             CharacterType characterType, std::string gameName, uint32_t gameId):
+        CommandDTO(Command::CREATE_GAME),
+        mapId(mapId),
+        mapName(MapsManager::getMapNameById(mapId)),
+        maxPlayers(maxPlayers),
+        characterType(characterType),
+        gameName(std::move(gameName)),
+        gameId(gameId) {
+    this->mode = (maxPlayers == 1) ? GameMode::SINGLE_PLAYER : GameMode::PARTY_MODE;
+}
+
+CreateGameDTO::CreateGameDTO(uint32_t mapId, std::string mapName, uint8_t maxPlayers,
         CharacterType characterType, std::string gameName, uint32_t gameId):
         CommandDTO(Command::CREATE_GAME),
-        episodeName(std::move(episodeName)),
+        mapId(mapId),
+        mapName(std::move(mapName)),
         maxPlayers(maxPlayers),
         characterType(characterType),
         gameName(std::move(gameName)),
@@ -15,10 +31,11 @@ CreateGameDTO::CreateGameDTO(std::string episodeName, uint8_t maxPlayers,
     this->mode = (maxPlayers == 1) ? GameMode::SINGLE_PLAYER : GameMode::PARTY_MODE;
 }
 
-CreateGameDTO::CreateGameDTO(const uint32_t& playerId, std::string episodeName, uint8_t maxPlayers,
+CreateGameDTO::CreateGameDTO(const uint32_t& playerId, uint32_t mapId, std::string mapName, uint8_t maxPlayers,
                              CharacterType characterType, std::string gameName, uint32_t gameId):
         CommandDTO(playerId, Command::CREATE_GAME),
-        episodeName(episodeName),
+        mapId(mapId),
+        mapName(std::move(mapName)),
         maxPlayers(maxPlayers),
         characterType(characterType),
         gameName(std::move(gameName)),
@@ -26,9 +43,9 @@ CreateGameDTO::CreateGameDTO(const uint32_t& playerId, std::string episodeName, 
     this->mode = (maxPlayers == 1) ? GameMode::SINGLE_PLAYER : GameMode::PARTY_MODE;
 }
 
-std::string CreateGameDTO::getEpisodeName() const { return episodeName; }
+std::string CreateGameDTO::getMapName() const { return mapName; }
 
-uint32_t CreateGameDTO::getEpisodeId() const { return episodeId; }
+uint32_t CreateGameDTO::getMapId() const { return mapId; }
 
 uint32_t CreateGameDTO::getGameId() const { return gameId; }
 
@@ -42,8 +59,8 @@ GameMode CreateGameDTO::getGameMode() const { return mode; }
 
 std::vector<char> CreateGameDTO::getData() const {
     std::vector<char> data;
-    data.push_back(static_cast<char>(episodeName.size()));
-    data.insert(data.end(), episodeName.begin(), episodeName.end());
+    data.push_back(static_cast<char>(mapName.size()));
+    data.insert(data.end(), mapName.begin(), mapName.end());
     data.push_back(static_cast<char>(maxPlayers));
     data.push_back(static_cast<char>(characterType));
     data.push_back(static_cast<char>(gameName.size()));

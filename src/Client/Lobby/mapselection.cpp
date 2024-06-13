@@ -35,7 +35,7 @@ MapSelection::~MapSelection() {
 void MapSelection::on_btnChoose_clicked() {
     // size_t selection = sceneSpritesWidget->getCurrentSpriteIndex();
     // Episode episode = static_cast<Episode>(selection + 1);
-    // this->msg.setEpisode(episode);
+    // this->msg.setMap(episode);
     this->hide();
     auto cg = new CreateGame(this, this->controller, this->msg, this->clientJoinedGame);
     cg->show();
@@ -43,7 +43,7 @@ void MapSelection::on_btnChoose_clicked() {
 
 
 void MapSelection::on_btnBack_clicked() {
-    // this->msg.setEpisode(Episode::INVALID);
+    // this->msg.setMap(Episode::INVALID);
 
     this->hide();
 

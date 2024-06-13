@@ -27,7 +27,7 @@ private:
     int16_t entityCount;
     int16_t movesPerCell;
     float gravity;
-    std::string episodeName;
+    std::string mapName;
 
 
     Vector<int16_t> calculateNewPosition(const Vector<int16_t>& position, Direction dir) const;
@@ -38,7 +38,7 @@ private:
 
 
 public:
-    explicit GameMap(Vector<int16_t> size, std::string episodeName);
+    explicit GameMap(Vector<int16_t> size, std::string mapName);
 
     std::vector<std::shared_ptr<Entity>> getObjectsInShootRange(Vector<int16_t> mapPosition,
                                                                 Direction dir);

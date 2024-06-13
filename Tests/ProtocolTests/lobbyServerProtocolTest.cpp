@@ -210,7 +210,7 @@ TEST(lobbyServerProtocolTest, testSerializeStart) {
 //     auto deserializedCreateGameDTO = dynamic_cast<CreateGameDTO*>(deserializedCommand.get());
 //     ASSERT_NE(deserializedCreateGameDTO, nullptr);
 
-//     EXPECT_EQ(deserializedCreateGameDTO->getEpisodeName(), Episode::FORMERLY_PRINCE);
+//     EXPECT_EQ(deserializedCreateGameDTO->getMapName(), Episode::FORMERLY_PRINCE);
 //     EXPECT_EQ(deserializedCreateGameDTO->getGameMode(), GameMode::SINGLE_PLAYER);
 //     EXPECT_EQ(deserializedCreateGameDTO->getMaxPlayers(), maxPlayers);
 //     EXPECT_EQ(deserializedCreateGameDTO->getCharacterType(), CharacterType::JAZZ);

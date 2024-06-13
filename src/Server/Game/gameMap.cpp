@@ -10,13 +10,13 @@
 // EntityFactory entityFactory;
 // int16_t movesPerCell;
 // float gravity;
-// std::string episodeName;
+// std::string mapName;
 
-GameMap::GameMap(Vector<int16_t> size, std::string episodeName):
+GameMap::GameMap(Vector<int16_t> size, std::string mapName):
         size(size),
         entityFactory(*this),
         gravity(CONFIG->getGameGravity()),
-        episodeName(episodeName) {}
+        mapName(mapName) {}
 
 std::vector<std::shared_ptr<Entity>> GameMap::getObjectsInShootRange(Vector<int16_t> mapPosition,
                                                                      Direction dir) {

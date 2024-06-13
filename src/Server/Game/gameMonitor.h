@@ -9,9 +9,9 @@
 #include "../../Common/Types/gameInfo.h"
 #include "../../Common/Types/gameMode.h"
 #include "../../Common/queueMonitor.h"
+#include "maps/mapsManager.h"
 
 #include "game.h"
-#include "mapsManager.h"
 
 class GameMonitor {
 private:
@@ -19,11 +19,10 @@ private:
     std::mutex mtx;
     QueueMonitor<std::unique_ptr<DTO>>& queueMonitor;
     uint32_t gamesListSize;
-    MapsManager mapsManager;
 
 public:
     explicit GameMonitor(QueueMonitor<std::unique_ptr<DTO>>& queueMonitor);
-    bool createGame(uint32_t playerId, uint32_t episodeId, std::string episodeName,
+    bool createGame(uint32_t playerId, uint32_t mapId, std::string mapName,
                     GameMode gameMode, uint8_t maxPlayers, CharacterType characterType,
                     std::string gameName,
                     std::shared_ptr<Queue<std::unique_ptr<CommandDTO>>> recvQueue, uint32_t gameId,
@@ -33,7 +32,7 @@ public:
                   std::shared_ptr<Queue<std::unique_ptr<DTO>>>& sendQueue);
     void startGame(uint32_t playerId, uint32_t gameId);
     void gamesList(std::shared_ptr<Queue<std::unique_ptr<DTO>>>& sendQueue);
-    void episodesList(std::shared_ptr<Queue<std::unique_ptr<DTO>>>& sendQueue);
+    void mapsList(std::shared_ptr<Queue<std::unique_ptr<DTO>>>& sendQueue);
     uint8_t getCurrentPlayers(uint32_t gameId);
     void endGame(const std::string& gameName);
     void endAllGames();

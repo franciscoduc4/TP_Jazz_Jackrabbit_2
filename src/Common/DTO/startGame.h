@@ -2,6 +2,7 @@
 #define START_GAME_DTO_H_
 
 #include <string>
+#include <vector>
 
 #include "command.h"
 
@@ -10,7 +11,6 @@ private:
     uint32_t gameId;
 
 public:
-    StartGameDTO();
     explicit StartGameDTO(const uint32_t& gameId);
     StartGameDTO(uint32_t& playerId, uint32_t& gameId);
     uint32_t getGameId() const;

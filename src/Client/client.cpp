@@ -39,7 +39,7 @@ void Client::start() {
         // START - TESTING SKIP QT
         LobbyMessage msg;
         msg.setCharacter(CharacterType::JAZZ);
-        msg.setEpisode("BEACH");
+        msg.setMap(0);
         msg.setGameId(1);
         msg.setGameName("Dummy");
         msg.setLobbyCmd(Command::CREATE_GAME);
@@ -48,6 +48,7 @@ void Client::start() {
         clientJoinedGame = true;
 
         this->lobbyController.sendRequest(msg);
+        this->lobbyController.recvResponse();
         this->lobbyController.startGame(msg);
         bool gameStartAck = this->lobbyController.recvStartGame();
         // END - TESTING SKIP QT

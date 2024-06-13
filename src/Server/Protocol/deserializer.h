@@ -7,7 +7,7 @@
 
 #include "../../Common/DTO/command.h"
 #include "../../Common/DTO/createGame.h"
-#include "../../Common/DTO/episodesList.h"
+#include "../../Common/DTO/mapsList.h"
 #include "../../Common/DTO/gamesList.h"
 #include "../../Common/DTO/joinGame.h"
 #include "../../Common/DTO/move.h"
@@ -22,7 +22,7 @@ private:
 
     std::unique_ptr<CreateGameDTO> deserializeCreateGame(bool& wasClosed, uint32_t& playerId);
 
-    std::unique_ptr<EpisodesListDTO> deserializeEpisodesList(bool& wasClosed, uint32_t& playerId);
+    std::unique_ptr<MapsListDTO> deserializeMapsList(bool& wasClosed, uint32_t& playerId);
 
     std::unique_ptr<JoinGameDTO> deserializeJoinGame(bool& wasClosed, uint32_t& playerId);
 

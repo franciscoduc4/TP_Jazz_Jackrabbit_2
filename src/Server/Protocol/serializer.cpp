@@ -126,11 +126,11 @@ std::vector<char> Serializer::serializeGamesList(const std::unique_ptr<GamesList
         const unsigned char* cp = reinterpret_cast<const unsigned char*>(&currentPlayers);
         buffer.insert(buffer.end(), cp, cp + sizeof(uint32_t));
 
-        std::string episodeName = gameInfo.episodeName;
-        uint32_t episodeLength = htonl(episodeName.length());
-        buffer.insert(buffer.end(), reinterpret_cast<const unsigned char*>(&episodeLength),
-                      reinterpret_cast<const unsigned char*>(&episodeLength) + sizeof(uint32_t));
-        const unsigned char* ep = reinterpret_cast<const unsigned char*>(&episodeName);
+        std::string mapName = gameInfo.mapName;
+        uint32_t mapLength = htonl(mapName.length());
+        buffer.insert(buffer.end(), reinterpret_cast<const unsigned char*>(&mapLength),
+                      reinterpret_cast<const unsigned char*>(&mapLength) + sizeof(uint32_t));
+        const unsigned char* ep = reinterpret_cast<const unsigned char*>(&mapName);
         buffer.insert(buffer.end(), ep, ep + sizeof(uint32_t));
     }
     return buffer;
@@ -271,27 +271,27 @@ void Serializer::sendGameDTO(const std::unique_ptr<GameDTO> dto, bool& wasClosed
     socket->sendall(buffer.data(), buffer.size(), &wasClosed);
 }
 
-std::vector<char> Serializer::serializeEpisodesList(const std::unique_ptr<EpisodesListDTO> dto) {
+std::vector<char> Serializer::serializeMapsList(const std::unique_ptr<MapsListDTO> dto) {
     std::vector<char> buffer;
-    buffer.push_back(static_cast<char>(Command::EPISODES_LIST));
-    auto episodes = dto->getEpisodesMap();
-    uint32_t episodesSize = htonl(episodes.size());
-    const unsigned char* p = reinterpret_cast<const unsigned char*>(&episodesSize);
+    buffer.push_back(static_cast<char>(Command::MAPS_LIST));
+    auto maps = dto->getMapsMap();
+    uint32_t mapsSize = htonl(maps.size());
+    const unsigned char* p = reinterpret_cast<const unsigned char*>(&mapsSize);
     buffer.insert(buffer.end(), p, p + sizeof(uint32_t));
 
-    for (const auto& episodePair: episodes) {
-        uint32_t id = episodePair.first;
-        const std::string& episode = episodePair.second;
+    for (const auto& mapPair: maps) {
+        uint32_t id = mapPair.first;
+        const std::string& map = mapPair.second;
 
-        uint32_t episodeId = htonl(id);
-        const unsigned char* p = reinterpret_cast<const unsigned char*>(&episodeId);
+        uint32_t mapId = htonl(id);
+        const unsigned char* p = reinterpret_cast<const unsigned char*>(&mapId);
         buffer.insert(buffer.end(), p, p + sizeof(uint32_t));
 
-        uint32_t nameLength = htonl(episode.length());
+        uint32_t nameLength = htonl(map.length());
         const unsigned char* np = reinterpret_cast<const unsigned char*>(&nameLength);
         buffer.insert(buffer.end(), np, np + sizeof(uint32_t));
 
-        buffer.insert(buffer.end(), episode.begin(), episode.end());
+        buffer.insert(buffer.end(), map.begin(), map.end());
     }
 
     return buffer;
