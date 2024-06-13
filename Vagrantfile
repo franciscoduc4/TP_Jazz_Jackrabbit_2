@@ -12,7 +12,21 @@ Vagrant.configure("2") do |config|
   # Se usa la clave ssh para clonar la repo, que se obtiene desde el archivo YAML.
   ssh_key_path = config_settings['ssh_key_path']
   config.vm.provision "file", source: ssh_key_path, destination: "/home/vagrant/.ssh/id_rsa"
+
+  # Provisión del archivo de tipografía.
+  config.vm.provision "file", source: "./assets/Miscellaneous/Jazz-Jackrabbit-2.ttf", destination: "/home/vagrant/Jazz-Jackrabbit-2.ttf"
+
+  # Instalación de la tipografía.
+  config.vm.provision "shell", inline: <<-SHELL
+  # Se crea el directorio de tipografías, si no existe.
+  mkdir -p /home/vagrant/.local/share/fonts
   
+  # Se mueve la tipografía provista al directorio de tipografías.
+  mv /home/vagrant/Jazz-Jackrabbit-2.ttf /home/vagrant/.local/share/fonts/
+  
+  # Actualización del caché de tipografías.
+  fc-cache -fv
+
   # Instalación de dependencias.
   config.vm.provision "shell", inline: <<-SHELL
     sudo apt-get update

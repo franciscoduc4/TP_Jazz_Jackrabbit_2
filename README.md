@@ -123,7 +123,13 @@ Para ejecutar el juego, primero debe compilarse utilizando CMake. Una vez compil
 
 El proyecto también cuenta con un Vagrantfile que permite la ejecución del mismo. Para ello, se requiere que el usuario tenga instalado Vagrant.
 
+#### Prerequisitos
+
+Para utilizar Vagrant, se requiere que el usuario tenga claves SSH de GitHub y permisos al [repositorio](https://github.com/franciscoduc4/TP_Jazz_Jackrabbit_2) para poder clonarlo. La ruta al archivo debe configurarse en el archivo `src/config/common.yaml`, en la clave `ssh_key_path`, que en el ejemplo provisto se usa `~/.ssh/id_rsa`.
+
 *Known Issue: si el archivo `id_rsa` (el que contiene las claves SSH) está encriptado, Vagrant no ejecuta correctamente el clonado del repositorio, por lo que hay que correr nuevamente el comando para clonar y compilar el mismo.*
+
+#### Ejecución
 
 Para ejecutar el programa usándo esta herramienta:
 
