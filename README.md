@@ -123,6 +123,8 @@ Para ejecutar el juego, primero debe compilarse utilizando CMake. Una vez compil
 
 El proyecto también cuenta con un Vagrantfile que permite la ejecución del mismo. Para ello, se requiere que el usuario tenga instalado Vagrant.
 
+*Known Issue: si el archivo `id_rsa` (el que contiene las claves SSH) está encriptado, Vagrant no ejecuta correctamente el clonado del repositorio, por lo que hay que correr nuevamente el comando para clonar y compilar el mismo.*
+
 Para ejecutar el programa usándo esta herramienta:
 
 ```sh
