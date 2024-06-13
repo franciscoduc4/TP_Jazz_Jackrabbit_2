@@ -1,5 +1,5 @@
-#ifndef SCENESELECTION_H
-#define SCENESELECTION_H
+#ifndef MAPSELECTION_H
+#define MAPSELECTION_H
 
 #include <QDialog>
 #include <QVBoxLayout>
@@ -10,17 +10,17 @@
 #include "SelectWidgets/scenespriteswidget.h"
 
 namespace Ui {
-class SceneSelection;
+class MapSelection;
 }
 
-class SceneSelection: public QDialog {
+class MapSelection: public QDialog {
     Q_OBJECT
 
 
 public:
-    explicit SceneSelection(QWidget* parent, LobbyController& controller, LobbyMessage& msg,
+    explicit MapSelection(QWidget* parent, LobbyController& controller, LobbyMessage& msg,
                             bool& clientJoinedGame);
-    ~SceneSelection();
+    ~MapSelection();
 
 private slots:
     void on_btnChoose_clicked();
@@ -28,11 +28,11 @@ private slots:
     void on_btnBack_clicked();
 
 private:
-    Ui::SceneSelection* ui;
+    Ui::MapSelection* ui;
     LobbyController& controller;
     LobbyMessage& msg;
     bool& clientJoinedGame;
     SceneSpritesWidget* sceneSpritesWidget;
 };
 
-#endif  // SCENESELECTION_H
+#endif  // MAPSELECTION_H

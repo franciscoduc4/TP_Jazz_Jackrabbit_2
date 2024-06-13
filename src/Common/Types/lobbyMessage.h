@@ -7,7 +7,6 @@
 
 #include "Types/character.h"
 #include "Types/command.h"
-#include "Types/episode.h"
 
 struct LobbyMessage {
     std::string playerName;
@@ -16,7 +15,7 @@ struct LobbyMessage {
     std::string gameName;
     uint32_t gameId;
     CharacterType character;
-    Episode episode;
+    uint32_t mapId;
 
     LobbyMessage():
             playerName(""),
@@ -25,25 +24,22 @@ struct LobbyMessage {
             gameName(""),
             gameId(-1),
             character(CharacterType::INVALID),
-            episode(Episode::INVALID) {}
+            mapId(-1) {}
 
-    LobbyMessage(std::string  playerName,
-                 const Command& cmd,
-                 const int8_t& maxPlayers, std::string  gameName, const uint32_t& gameId,
-                 const CharacterType& character, const Episode& episode):
+    LobbyMessage(std::string playerName, const Command& cmd, const int8_t& maxPlayers,
+                 std::string gameName, const uint32_t& gameId, const CharacterType& character,
+                 const uint32_t& mapId):
             playerName(std::move(playerName)),
             cmd(cmd),
             maxPlayers(maxPlayers),
             gameName(std::move(gameName)),
             gameId(gameId),
             character(character),
-            episode(episode) {}
+            mapId(mapId) {}
 
     void setPlayerName(const std::string& name) { playerName = name; }
 
-    void setLobbyCmd(const Command& command) {
-        cmd = command;
-    }
+    void setLobbyCmd(const Command& command) { cmd = command; }
 
     void setMaxPlayers(const int8_t& players) { maxPlayers = players; }
 
@@ -53,7 +49,7 @@ struct LobbyMessage {
 
     void setCharacter(CharacterType selectedCharacter) { character = selectedCharacter; }
 
-    void setEpisode(Episode ep) { episode = ep; }
+    void setMap(const uint32_t& id) { mapId = id; }
 
     std::string getPlayerName() const { return playerName; }
 
@@ -67,19 +63,18 @@ struct LobbyMessage {
 
     CharacterType getCharacter() const { return character; }
 
-    Episode getEpisode() const { return episode; }
+    uint32_t getMap() const { return mapId; }
 
-    LobbyMessage& build(const std::string& namePlayer,
-                        Command lobbyCmd,
-                        int8_t maxPlayerNumber, const std::string& nameGame, uint32_t idGame,
-                        CharacterType characterType, Episode ep) {
+    LobbyMessage& build(const std::string& namePlayer, Command lobbyCmd, int8_t maxPlayerNumber,
+                        const std::string& nameGame, uint32_t idGame, CharacterType characterType,
+                        const uint32_t& idMap) {
         this->playerName = namePlayer;
         this->cmd = lobbyCmd;
         this->maxPlayers = maxPlayerNumber;
         this->gameName = nameGame;
         this->gameId = idGame;
         this->character = characterType;
-        this->episode = ep;
+        this->mapId = idMap;
         return *this;
     }
 };

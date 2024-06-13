@@ -9,14 +9,24 @@ struct GameInfo {
     uint32_t maxPlayers;
     uint32_t currentPlayers;
     bool ableToJoin;
+    std::string mapName;
 
     GameInfo() : id(-1), maxPlayers(-1), currentPlayers(-1), ableToJoin(false){}
-
     GameInfo(const uint32_t& gameId, std::string name, const uint32_t& maxPlayers, const uint32_t& currentPlayers):
             id(gameId),
             name(std::move(name)),
             maxPlayers(maxPlayers),
-            currentPlayers(currentPlayers) {
+            currentPlayers(currentPlayers),
+            mapName("invalid") {
+        this->ableToJoin = (maxPlayers > currentPlayers);
+            }
+
+    GameInfo(const uint32_t& gameId, std::string name, const uint32_t& maxPlayers, const uint32_t& currentPlayers, std::string mapName):
+            id(gameId),
+            name(std::move(name)),
+            maxPlayers(maxPlayers),
+            currentPlayers(currentPlayers),
+            mapName(mapName) {
         this->ableToJoin = (maxPlayers > currentPlayers);
     }
 
@@ -25,6 +35,7 @@ struct GameInfo {
     uint32_t getMaxPlayers() const { return maxPlayers; }
     uint32_t getCurrentPlayers() const { return currentPlayers; }
     bool isAbleToJoin() const { return ableToJoin; }
+    std::string getMapName() const { return mapName; }
 
     void updateCurrentPlayers(const uint32_t& players) {
         currentPlayers = players;

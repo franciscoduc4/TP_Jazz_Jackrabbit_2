@@ -22,7 +22,6 @@ ReceiverThread::ReceiverThread(std::shared_ptr<Socket> socket, std::atomic<bool>
 void ReceiverThread::run() {
     while (inGame) {
         try {
-
             std::unique_ptr<CommandDTO> commandDTO = deserializer.getCommand(wasClosed, playerId);
             recvQueue->push(std::move(commandDTO));
         } catch (const std::exception& e) {

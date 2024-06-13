@@ -20,9 +20,6 @@ public:
     explicit WaitingRoom(QWidget *parent, LobbyController& controller, LobbyMessage& msg, bool& clientJoinedGame);
     ~WaitingRoom();
 
-private slots:
-    void on_btnBack_clicked();
-
 private:
     Ui::WaitingRoom *ui;
     LobbyController& controller;

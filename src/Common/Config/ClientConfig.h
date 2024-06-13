@@ -19,6 +19,9 @@ private:
 public:
     static ClientConfig* getInstance();
     // Logger& getLogger();
+    // Refresh Interval
+    static int getGamesListRefreshInterval();
+    static int getWaitingRoomRefreshInterval();
     // Files
     static std::string getEpisodeFile();
     static std::string getCharacterSelectFile();

@@ -1,6 +1,8 @@
 #include "gamelist.h"
 
 #include <QFile>
+#include <QHBoxLayout>
+#include <QTimer>
 
 #include "ui_gamelist.h"
 #include "waitingroom.h"
@@ -18,47 +20,68 @@ GameList::GameList(QWidget* parent, LobbyController& controller, LobbyMessage& m
 
     ui->centralwidget->setStyleSheet(styleSheet);
     ui->labelTitle->setAttribute(Qt::WA_TranslucentBackground);
+
+    this->timer = new QTimer(this);
+    connect(timer, &QTimer::timeout, this, &GameList::updateGameList);
+    timer->start(ClientConfig::getGamesListRefreshInterval());
 }
 
 GameList::~GameList() { delete ui; }
 
 void GameList::updateGameList() {
-    // ui->listGames->clear();
+    this->controller.sendRequest(this->msg);
+    auto gamesList = this->controller.getGamesList();
 
-    // auto games = client.getGameList();
-    // for (const auto& game: games) {
-    //     GameListItem* itemWidget = new GameListItem(game.name, game.players, game.totalPlayers);
-    //     QListWidgetItem* item = new QListWidgetItem(ui->listGames);
-    //     item->setSizeHint(itemWidget->sizeHint());
-    //     ui->listGames->setItemWidget(item, itemWidget);
+    // Clear the QListWidget
+    ui->listGames->clear();
 
-    //     connect(itemWidget, &GameListItem::joinGame, this, &GameList::joinGame);
-    // }
+    std::cout << "Games List size: " << gamesList.size() << std::endl;
+
+    if (gamesList.empty()) {
+        // If there are no games, display a message
+        QListWidgetItem* item = new QListWidgetItem("No hay juegos disponibles para unirse");
+        item->setForeground(Qt::red);
+        ui->listGames->addItem(item);
+    } else {
+        for (const auto& game : gamesList) {
+            QListWidgetItem* item = new QListWidgetItem;
+            QWidget* widget = new QWidget;
+            QHBoxLayout* layout = new QHBoxLayout;
+            QLabel* gameNameLabel = new QLabel(QString::fromStdString(game.second.getGameName()));
+            QLabel* playersLabel = new QLabel(QString::number(game.second.getCurrentPlayers()) + "/" + QString::number(game.second.getMaxPlayers()));
+            QPushButton* joinButton = new QPushButton("Unirme");
+
+            connect(joinButton, &QPushButton::clicked, this, [this, game]() {
+                this->joinGame(QString::fromStdString(game.second.getGameName()));
+            });
+
+            layout->addWidget(gameNameLabel, 3);
+            layout->addWidget(playersLabel, 1);
+            layout->addWidget(joinButton, 1);
+            widget->setLayout(layout);
+
+            item->setSizeHint(widget->sizeHint());
+            ui->listGames->addItem(item);
+            ui->listGames->setItemWidget(item, widget);
+        }
+    }
 }
 
 void GameList::joinGame(const QString& gameName) {
     // this->msg.setGameName(gameName);
     // client.joinGame(this->msg);
+    this->timer->stop();
+
+    this->msg.setLobbyCmd(Command::JOIN_GAME);
 
     this->hide();
 
-    WaitingRoom wr(this, this->controller, this->msg, this->clientJoinedGame);
-    wr.setModal(true);
-    wr.exec();
-
-    this->close();
-}
-
-void GameList::on_btnJoin_clicked() {
-    this->hide();
-    WaitingRoom wr(this, this->controller, this->msg, this->clientJoinedGame);
-    wr.setModal(true);
-    wr.exec();
-    this->close();
+    auto wr = new WaitingRoom(this, this->controller, this->msg, this->clientJoinedGame);
+    wr->show();
 }
 
 void GameList::on_btnBack_clicked() {
-    this->msg.setGameName("");
+    // this->msg.setGameName("");
 
     this->hide();
 
@@ -67,5 +90,5 @@ void GameList::on_btnBack_clicked() {
         parent->show();
     }
 
-    this->close();
+    this->deleteLater();
 }

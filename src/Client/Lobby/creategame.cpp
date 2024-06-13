@@ -38,10 +38,8 @@ void CreateGame::on_btnCreate_clicked() {
 
     this->hide();
 
-    CharacterSelection cs(this, this->controller, this->msg, this->clientJoinedGame);
-    cs.setModal(true);
-    cs.exec();
-    this->close();
+    auto cs = new CharacterSelection(this, this->controller, this->msg, this->clientJoinedGame);
+    cs->show();
 }
 
 
@@ -56,5 +54,5 @@ void CreateGame::on_btnBack_clicked() {
         parent->show();
     }
 
-    this->close();
+    this->deleteLater();
 }
