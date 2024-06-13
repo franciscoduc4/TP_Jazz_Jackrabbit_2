@@ -14,6 +14,8 @@ project(TP_Jazz_Jackrabbit_2
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED YES)
 
+set(CMAKE_BINARY_DIR ${CMAKE_SOURCE_DIR}/build)
+
 # Opciones de compilación
 option(DEBUG "Compile in debug mode" OFF)
 if (DEBUG)
