@@ -1,6 +1,6 @@
 #include "./client.h"
 
-#include "../Common/DTO/move.h"
+#include "../Common/DTO/gameCommand.h"
 #include "../Common/Types/direction.h"
 #include "./SDL/gamescreen.h"
 

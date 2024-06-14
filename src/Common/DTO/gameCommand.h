@@ -7,12 +7,12 @@
 
 #include "command.h"
 
-class MoveDTO: public CommandDTO {
+class GameCommandDTO : public CommandDTO {
 private:
     Direction moveType;
 
 public:
-    MoveDTO(uint32_t& player_id, Direction moveType);
+    GameCommandDTO(const uint32_t& player_id, const Direction& moveType, const Command& cmd);
 
     Direction getMoveType() const;
 

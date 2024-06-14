@@ -1,6 +1,6 @@
-#include "move.h"
+#include "gameCommand.h"
 
-MoveHandler::MoveHandler(std::unique_ptr<MoveDTO> moveCommand):
+MoveHandler::MoveHandler(std::unique_ptr<GameCommandDTO> moveCommand):
         moveCommand(std::move(moveCommand)) {}
 
 void MoveHandler::execute(GameMap& gameMap, std::atomic<bool>& keepRunning, double deltaTime) {
