@@ -1,7 +1,6 @@
 #include "mapselection.h"
 
 #include "../Common/Config/ClientConfig.h"
-// #include "../Common/Types/episode.h"
 
 #include "creategame.h"
 #include "ui_mapselection.h"
