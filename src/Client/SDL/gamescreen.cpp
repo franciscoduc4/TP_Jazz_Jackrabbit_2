@@ -265,24 +265,35 @@ void GameScreen::run() {
         x_screen = dir_screen[0];
         y_screen = dir_screen[1];
 
-        this->pj.draw_players(window, renderer, pjs_textures, players, x_screen, y_screen, this->mainPlayerId);
+        if (players.size() > 0) {
+            this->pj.draw_players(window, renderer, pjs_textures, players, x_screen, y_screen, this->mainPlayerId);
+        }
 
         std::vector<EnemyDTO> enemiesSnapshot = snapshot->getEnemies();
-        this->enemies.draw_enemy(window, renderer, enemy, enemiesSnapshot, mainPlayer/*players[0]*/, x_screen, y_screen);
+        if (enemiesSnapshot.size() > 0) {
+            this->enemies.draw_enemy(window, renderer, enemy, enemiesSnapshot, mainPlayer/*players[0]*/, x_screen, y_screen);
+        }
 
         std::vector<BulletDTO> bullets = snapshot->getBullets();
-        this->proj.draw_projectile(window, renderer, projectile, bullets);
+        if (bullets.size() > 0) {
+            this->proj.draw_projectile(window, renderer, projectile, bullets);
+        }
 
         std::vector<ItemDTO> itemsSnapshot = snapshot->getItems();
-        this->points.draw_points(renderer, items, itemsSnapshot, mainPlayer/*players[0]*/, x_screen, y_screen); 
+        if (itemsSnapshot.size() >  0) {
+            this->points.draw_points(renderer, items, itemsSnapshot, mainPlayer/*players[0]*/, x_screen, y_screen); 
+        }
 
         std::vector<WeaponDTO> weapons = snapshot->getWeapons();
 
         std::vector<TileDTO> tiles = snapshot->getTiles(); 
-        this->level.draw_tiles(window, renderer, tiles_textures, tiles);
-
-        this->stats.draw_interface(window, renderer, *pjs_textures[mainPlayer.getType()/*players[0].getType()*/], mainPlayer.getType(), font, 1000/*getPoints()*/, 3/*getLives()*/);
-
+        if (tiles.size() > 0) {
+            this->level.draw_tiles(window, renderer, tiles_textures, tiles);
+        }
+        if (mainPlayer) {
+           this->stats.draw_interface(window, renderer, *pjs_textures[mainPlayer.getType()/*players[0].getType()*/], mainPlayer.getType(), font, 1000/*getPoints()*/, 3/*getLives()*/);
+        }
+        
         x_screen = 0;
         y_screen = 0;
 
