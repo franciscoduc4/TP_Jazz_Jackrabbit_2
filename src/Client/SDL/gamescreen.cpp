@@ -27,10 +27,19 @@
 
 //GameScreen::GameScreen(Client& player): client(player), pj(1), points(0), level(0), stats(CharacterType::JAZZ)/*, config(ClientConfig::getInstance())*/ {
 //}
-
-GameScreen::GameScreen(GameController& controller): controller(controller), pj(1), points(0), level(0), stats(CharacterType::JAZZ), proj(0)/*, config(ClientConfig::getInstance())*/ {
+GameScreen::GameScreen(GameController& controller, uint32_t playerId): controller(controller), mainPlayerId(playerId), pj(1), points(0), level(0), stats(CharacterType::JAZZ), proj(0)/*, config(ClientConfig::getInstance())*/ {
 }
 
+PlayerDTO GameScreen::searchMainPlayer(std::vector<PlayerDTO>& players) {
+    int i = 0;
+    while (i < players.size()) {
+        if (players[i].getPlayerId() == this->mainPlayerId) {
+            return players[i];
+        }
+        i++;
+    }
+    return players[i - 1];
+}
 
 void GameScreen::run() {
     SDL2pp::SDL sdl(SDL_INIT_VIDEO);
@@ -146,43 +155,11 @@ void GameScreen::run() {
     fontSurface.SetColorKey(true, SDL_MapRGB(fontSurface.Get()->format, 0, 128, 255));
     SDL2pp::Texture font(renderer, fontSurface);
 
-    int walk_mov = 0;
-    int count_walk = 0;
-
-    int shoot_mov = 1;
-    int count_shoot = 0;
-
-    int run_mov = 2;
-    int count_run = 0;
-
-    int jump_mov = 3;
-    int count_jump = 0;
-
-    int dash_mov = 4;
-    int count_dash = 0;
-    int dash_timer = 0;
-
-    bool is_walking = false;
-    bool is_running = false;
-    bool is_shooting = false;
-    bool is_jumping = false;
-    bool is_dashing = false;
-
-    int dir_x = 0;
-    int dir_y = 0;
-    int speed_run = 1;
-
-    int pos_x = 0;
-    int pos_y = 0;
-
-    int flip = 0;
-
     int x_screen = 0;
     int y_screen = 0;    
 
     std::cout << "Textures created" << std::endl;
 
-    uint32_t playerId = 0;
     while (true) {
         SDL_Event event;
         std::cout << "Waiting for event" << std::endl;
@@ -196,62 +173,64 @@ void GameScreen::run() {
                         {
 		                    Command move = Command::MOVE;
 		                    std::vector<uint8_t> par{static_cast<uint8_t>(Direction::RIGHT)};
-		                    this->controller.sendMsg(playerId, move, par); //playerId hardcodeado, pedir qque pasen playerID
+		                    this->controller.sendMsg(this->mainPlayerId, move, par);
 		                    break;
                     	}
                     case SDLK_LEFT:
 		                {    
 		             		Command move = Command::MOVE;
 		                    std::vector<uint8_t> elements{static_cast<uint8_t>(Direction::LEFT)};
-		                    this->controller.sendMsg(playerId, move, elements);
+		                    this->controller.sendMsg(this->mainPlayerId, move, elements);
 		                    break;
                     	}
 
                   	case SDLK_LSHIFT:
-
-                        if (is_walking) {
-                            speed_run = 3;
-                            is_running = true;
+                        {
+                            /* 
+                            Command run = Command::RUN;
+                            std::vector<uint8_t> elements;
+                            this->controller.sendMsg(this->mainPlayerId, move, elements);
+                            break;
+                            */
                         }
-                        break;
-                    case SDLK_UP:
-                        dir_y = -10;
-                        break;
-                    case SDLK_DOWN:
-                        dir_y = 10;
-                        break;
                     case SDLK_m:
                     	{
 		                    //is_shooting = true;
 		                    Command shoot = Command::SHOOT;
 		                    std::vector<uint8_t> elements;
-		                    this->controller.sendMsg(playerId, shoot, elements);
+		                    this->controller.sendMsg(this->mainPlayerId, shoot, elements);
 		                    break;
 		               	}
 
                     case SDLK_SPACE:
-                        is_jumping = true;
-                        break;
+                        {
+                            /* 
+                            Command jump = Command::JUMP;
+                            std::vector<uint8_t> elememts;
+                            this->controller.sendMsg(this->mainPlayerId, jump, elements);
+                            break;
+                            */                        
+                        }
                     case SDLK_d:
-                        is_dashing = true;
-                        break;
+                        {
+                            /* 
+                            Command dash = Command::DASH;
+                            std::vector<uint8_t> elememts;
+                            this->controller.sendMsg(this->mainPlayerId, dash, elements);
+                            break;
+                            */                        
+                        }
+                        
                 }
             } else if (event.type == SDL_KEYUP) {
                 switch (event.key.keysym.sym) {
                     case SDLK_RIGHT:
                     case SDLK_LEFT:
-                        is_walking = false;
-                        count_walk = 0;
-                        dir_x = 0;
                         break;
                     case SDLK_LSHIFT:
-                        is_running = false;
-                        count_run = 0;
-                        speed_run = 1;
                         break;
                     case SDLK_UP:
                     case SDLK_DOWN:
-                        dir_y = 0;
                         break;
                 }
             }
@@ -285,29 +264,29 @@ void GameScreen::run() {
             SDL_Delay(100);
             continue;
         }
-
-        std::vector<int> dir_screen = this->level.draw_background(window, renderer, background, players[0]);
+        PlayerDTO mainPlayer = searchMainPlayer(players);
+        std::vector<int> dir_screen = this->level.draw_background(window, renderer, background, mainPlayer/*players[0]*/);
         this->level.draw_floor(window, renderer, sandFloor, players[0].getSpeed());
         x_screen = dir_screen[0];
         y_screen = dir_screen[1];
 
-        this->pj.draw_players(window, renderer, pjs_textures, players, x_screen, y_screen);
+        this->pj.draw_players(window, renderer, pjs_textures, players, x_screen, y_screen, this->mainPlayerId);
 
         std::vector<EnemyDTO> enemiesSnapshot = snapshot->getEnemies();
-        this->enemies.draw_enemy(window, renderer, enemy, enemiesSnapshot, players[0], x_screen, y_screen);
+        this->enemies.draw_enemy(window, renderer, enemy, enemiesSnapshot, mainPlayer/*players[0]*/, x_screen, y_screen);
 
         std::vector<BulletDTO> bullets = snapshot->getBullets();
         this->proj.draw_projectile(window, renderer, projectile, bullets);
 
         std::vector<ItemDTO> itemsSnapshot = snapshot->getItems();
-        this->points.draw_points(renderer, items, itemsSnapshot, players[0], x_screen, y_screen); 
+        this->points.draw_points(renderer, items, itemsSnapshot, mainPlayer/*players[0]*/, x_screen, y_screen); 
 
         std::vector<WeaponDTO> weapons = snapshot->getWeapons();
 
         std::vector<TileDTO> tiles = snapshot->getTiles(); 
         this->level.draw_tiles(window, renderer, tiles_textures, tiles);
 
-        this->stats.draw_interface(window, renderer, *pjs_textures[players[0].getType()], font, 1000/*getPoints()*/, 3/*getLives()*/);
+        this->stats.draw_interface(window, renderer, *pjs_textures[mainPlayer.getType()/*players[0].getType()*/], font, 1000/*getPoints()*/, 3/*getLives()*/);
 
         x_screen = 0;
         y_screen = 0;

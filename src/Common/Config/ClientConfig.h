@@ -19,9 +19,6 @@ private:
 public:
     static ClientConfig* getInstance();
     // Logger& getLogger();
-    // Refresh Interval
-    static int getGamesListRefreshInterval();
-    static int getWaitingRoomRefreshInterval();
     // Files
     static std::string getEpisodeFile();
     static std::string getCharacterSelectFile();
@@ -62,16 +59,30 @@ public:
     static std::vector<std::vector<int>> getJazzShootingSprites();
     static std::vector<std::vector<int>> getJazzJumpingSprites();
     static std::vector<std::vector<int>> getJazzDashingSprites();
+    static std::vector<std::vector<int>> getJazzSpecialAttackSprites();
+    static std::vector<std::vector<int>> getJazzIntoxicatedSprites();
+    static std::vector<std::vector<int>> getJazzTakingDamageSprites();
+    static std::vector<std::vector<int>> getJazzDeadSprites();
     // Spaz
     static std::vector<std::vector<int>> getSpazWalkingSprites();
     static std::vector<std::vector<int>> getSpazRunningSprites();
     static std::vector<std::vector<int>> getSpazShootingSprites();
     static std::vector<std::vector<int>> getSpazJumpingSprites();
+    static std::vector<std::vector<int>> getSpazDashingSprites();
+    static std::vector<std::vector<int>> getSpazSpecialAttackSprites();
+    static std::vector<std::vector<int>> getSpazIntoxicatedSprites();
+    static std::vector<std::vector<int>> getSpazTakingDamageSprites();
+    static std::vector<std::vector<int>> getSpazDeadSprites();
     // Lori
     static std::vector<std::vector<int>> getLoriWalkingSprites();
     static std::vector<std::vector<int>> getLoriRunningSprites();
     static std::vector<std::vector<int>> getLoriShootingSprites();
     static std::vector<std::vector<int>> getLoriJumpingSprites();
+    static std::vector<std::vector<int>> getLoriDashingSprites();
+    static std::vector<std::vector<int>> getLoriSpecialAttackSprites();
+    static std::vector<std::vector<int>> getLoriIntoxicatedSprites();
+    static std::vector<std::vector<int>> getLoriTakingDamageSprites();
+    static std::vector<std::vector<int>> getLoriDeadSprites();
     // Items Sprites
     static std::vector<std::vector<int>> getRedGemSprites();
     static std::vector<std::vector<int>> getGoldCoinSprites();

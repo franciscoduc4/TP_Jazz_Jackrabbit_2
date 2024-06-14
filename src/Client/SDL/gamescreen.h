@@ -33,12 +33,16 @@ class GameScreen {
 	//ClientConfig* config;
     //Client& client;
     GameController& controller;
+    uint32_t mainPlayerId;
 
 public:
     //GameScreen(int character);
 
     //explicit GameScreen(Client& player);
-    explicit GameScreen(GameController& controller);
+
+    GameScreen(GameController& controller, uint32_t playerId);
+
+    PlayerDTO searchMainPlayer(std::vector<PlayerDTO>& players);
 
     void run();
 };
