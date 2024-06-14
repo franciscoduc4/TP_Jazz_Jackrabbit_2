@@ -24,9 +24,8 @@ void CreateGameHandler::execute(GameMonitor& gameMonitor, std::atomic<bool>& inG
     GameMode gameMode = command->getGameMode();
     CharacterType characterType = command->getCharacterType();
     std::string gameName = command->getGameName();
-    uint32_t gameId = gameMonitor.getGamesListSize();
 
-
-    gameMonitor.createGame(playerId, mapId, gameMode, maxPlayers, characterType, gameName, recvQueue, gameId, sendQueue); 
+    gameMonitor.createGame(playerId, mapId, gameMode, maxPlayers, characterType, gameName,
+                           recvQueue, sendQueue);
     std::cout << "[CG HANDLER] Game created" << std::endl;
 }

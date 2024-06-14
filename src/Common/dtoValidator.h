@@ -29,8 +29,6 @@ public:
                type < static_cast<char>(Direction::RIGHT);
     }
     static bool validateDTOType(const char& type) {
-        std::cout << (type >= static_cast<char>(DTOType::COMMAND_DTO)) << std::endl;
-        std::cout << (type < static_cast<char>(DTOType::GAME_DTO)) << std::endl;
         return type >= static_cast<char>(DTOType::COMMAND_DTO) &&
                type < static_cast<char>(DTOType::GAME_DTO);
     }

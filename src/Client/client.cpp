@@ -40,7 +40,7 @@ void Client::start() {
         LobbyMessage msg;
         msg.setCharacter(CharacterType::JAZZ);
         msg.setMap(0);
-        //msg.setGameId(1);
+        // msg.setGameId(1);
         msg.setGameName("Dummy");
         msg.setLobbyCmd(Command::CREATE_GAME);
         msg.setMaxPlayers(1);
@@ -51,8 +51,11 @@ void Client::start() {
         std::cout << "Request sent." << std::endl;
         bool responseReceived = this->lobbyController.recvResponse();
         std::cout << "Response received: " << responseReceived << std::endl;
+        LobbyMessage msg2;
+        msg2.setLobbyCmd(Command::START_GAME);
+        msg2.setGameId(0);
         if (responseReceived) {
-            this->lobbyController.startGame(msg);
+            this->lobbyController.startGame(msg2);
             bool gameStartAck = this->lobbyController.recvStartGame();
             std::cout << "Game start ack: " << gameStartAck << std::endl;
             if (!gameStartAck) {

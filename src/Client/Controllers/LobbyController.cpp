@@ -1,11 +1,12 @@
 #include "LobbyController.h"
-#include "DTO/startGame.h"
-#include "DTO/createGame.h"
+
 #include <iostream>
 
-LobbyController::LobbyController(Serializer& serializer, 
-    Deserializer& deserializer, 
-    std::shared_ptr<Queue<std::unique_ptr<DTO>>>& lobbyQueue) :
+#include "DTO/createGame.h"
+#include "DTO/startGame.h"
+
+LobbyController::LobbyController(Serializer& serializer, Deserializer& deserializer,
+                                 std::shared_ptr<Queue<std::unique_ptr<DTO>>>& lobbyQueue):
         serializer(serializer),
         deserializer(deserializer),
         lobbyQueue(lobbyQueue),
@@ -37,8 +38,7 @@ bool LobbyController::recvResponse() {
 }
 
 void LobbyController::startGame(const LobbyMessage& msg) {
-    std::unique_ptr<DTO> startGameDTO = std::make_unique<StartGameDTO>(msg.getGameId());
-    this->serializer.sendMsg(startGameDTO);
+    this->serializer.serializeLobbyMessage(msg);
 }
 
 bool LobbyController::recvStartGame() {
@@ -51,6 +51,7 @@ bool LobbyController::recvStartGame() {
     }
     auto* sgDTO = dynamic_cast<StartGameDTO*>(dto.get());
     if (sgDTO) {
+        std::cout << "[LOVI CONTROLER] Received start game DTO." << std::endl;
         return sgDTO->getCommand() == Command::START_GAME;
     } else {
         std::cerr << "Failed to cast to StartGameDTO in recvStartGame." << std::endl;

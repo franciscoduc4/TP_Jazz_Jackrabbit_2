@@ -4,8 +4,8 @@
 
 #include "../../Common/Types/command.h"
 #include "../../Common/Types/entity.h"
-#include "DTO/startGame.h"
 #include "DTO/createGame.h"
+#include "DTO/startGame.h"
 
 ReceiverThread::ReceiverThread(Deserializer& deserializer, std::shared_ptr<Socket>& socket,
                                std::atomic<bool>& was_closed):
@@ -22,23 +22,23 @@ void ReceiverThread::receiveCommandDTO() {
     if (lobbyTypeChar == static_cast<char>(Command::START_GAME)) {
         uint32_t gameId;
         this->socket->recvall(&gameId, sizeof(uint32_t), &closed);
+        gameId = ntohl(gameId);
         this->was_closed.store(closed);
         if (this->was_closed.load()) {
             return;
         }
-        uint32_t id = ntohl(gameId);
-        std::unique_ptr<DTO> dto = std::make_unique<StartGameDTO>(id);
+        std::unique_ptr<DTO> dto = std::make_unique<StartGameDTO>(gameId);
         this->deserializer.deserialize_lobbyMsg(dto);
     } else if (lobbyTypeChar == static_cast<char>(Command::CREATE_GAME)) {
         uint32_t gameId;
         this->socket->recvall(&gameId, sizeof(uint32_t), &closed);
+        gameId = ntohl(gameId);
         std::cout << "[RECEIVER] Received game id: " << gameId << std::endl;
         this->was_closed.store(closed);
         if (this->was_closed.load()) {
             return;
         }
-        uint32_t id = ntohl(gameId);
-        std::unique_ptr<DTO> cgDto = std::make_unique<CreateGameDTO>(id);
+        std::unique_ptr<DTO> cgDto = std::make_unique<CreateGameDTO>(gameId);
         this->deserializer.deserialize_lobbyMsg(cgDto);
     }
     /*if (!DTOValidator::validateLobbyState(lobbyTypeChar)) {
