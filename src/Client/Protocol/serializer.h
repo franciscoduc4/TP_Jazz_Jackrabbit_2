@@ -5,7 +5,7 @@
 #include <memory>
 #include <vector>
 
-#include "../../Common/DTO/dto.h"
+#include "../../Common/DTO/command.h"
 #include "../../Common/queue.h"
 #include "../../Common/socket.h"
 #include "Types/lobbyMessage.h"

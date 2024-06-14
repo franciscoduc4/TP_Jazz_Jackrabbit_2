@@ -65,7 +65,8 @@ void Client::start() {
         }
         // END - TESTING SKIP QT
 
-        GameScreen game(this->gameController);
+        GameScreen game(this->gameController, this->playerId);
         game.run();
+        clientJoinedGame = false;
     } while (clientJoinedGame);
 }

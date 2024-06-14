@@ -37,7 +37,7 @@ bool LobbyController::recvResponse() {
 }
 
 void LobbyController::startGame(const LobbyMessage& msg) {
-    std::unique_ptr<DTO> startGameDTO = std::make_unique<StartGameDTO>(msg.getGameId());
+    std::unique_ptr<CommandDTO> startGameDTO = std::make_unique<StartGameDTO>(msg.getGameId());
     this->serializer.sendMsg(startGameDTO);
 }
 

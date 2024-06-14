@@ -40,7 +40,6 @@ void SenderThread::run() {
         }
     }
 }
- */
 
 void SenderThread::runLobby(bool& wasClosed) {
     while (keepPlaying && !inGame) {
