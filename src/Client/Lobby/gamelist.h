@@ -5,6 +5,7 @@
 
 #include "../../Common/Types/lobbyMessage.h"
 #include "../client.h"
+#include "../../Common/Config/ClientConfig.h"
 
 namespace Ui {
 class GameList;
@@ -26,13 +27,12 @@ public:
 private slots:
     void on_btnBack_clicked();
 
-    void on_btnJoin_clicked();
-
 private:
     Ui::GameList* ui;
     LobbyController& controller;
     LobbyMessage& msg;
     bool& clientJoinedGame;
+    QTimer* timer;
 };
 
 #endif  // GAMELIST_H

@@ -3,7 +3,7 @@
 
 #include <string>
 #include <vector>
-
+#include <map>
 #include <yaml-cpp/yaml.h>
 
 class ServerConfig {
@@ -111,6 +111,14 @@ public:
     static int getJumpingEnemyViewDistance();
     static int getJumpingEnemyViewDistanceHit();
     static std::vector<int16_t> getJumpingEnemyJumpProb();
+
+    static int getGameMapSizeX(const std::string& mapName);
+    static int getGameMapSizeY(const std::string& mapName);
+    static int getGameMapObstacles(const std::string& mapName);
+    static int getGameMapEnemies(const std::string& mapName);
+    static int getGameMapGems(const std::string& mapName);
+    static int getGameMapSilverCoins(const std::string& mapName);
+    static int getGameMapGoldCoins(const std::string& mapName);
 };
 
 #endif  // __SERVER_CONFIG_H__

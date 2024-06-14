@@ -6,7 +6,6 @@
 
 #include "../../Common/DTO/command.h"
 #include "../../Common/DTO/game.h"
-#include "../../Common/Types/episode.h"
 #include "../../Common/Types/gameInfo.h"
 #include "../../Common/Types/gameMode.h"
 #include "../../Common/queue.h"
@@ -24,18 +23,22 @@ private:
     std::atomic<bool> keepRunning;
     size_t commandsToProcess;
     std::shared_ptr<Queue<std::unique_ptr<CommandDTO>>> recvQueue;
-    QueueMonitor<std::unique_ptr<GameDTO>> queueMonitor;
+    QueueMonitor<std::unique_ptr<DTO>> queueMonitor;
     GameMap& gameMap;
+    uint32_t gameId;
 
 public:
     GameLoopThread(std::shared_ptr<Queue<std::unique_ptr<CommandDTO>>> recvQueue,
-                   QueueMonitor<std::unique_ptr<GameDTO>>& queueMonitor, GameMap& gameMap);
+                   QueueMonitor<std::unique_ptr<DTO>>& queueMonitor, GameMap& gameMap,
+                   uint32_t gameId);
 
     void run() override;
     void stop();
     void processCommands(double deltaTime);
     void adjustCommandsToProcess(std::chrono::duration<double> processingDuration,
                                  double frameRate);
+
+    bool isRunning() const;
 };
 
 #endif  // GAMELOOP_THREAD_H_

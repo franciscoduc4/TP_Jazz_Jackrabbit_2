@@ -11,7 +11,6 @@
 #include "../../src/Common/DTO/gamesList.h"
 #include "../../src/Common/DTO/joinGame.h"
 #include "../../src/Common/Types/command.h"
-#include "../../src/Common/Types/episode.h"
 #include "../../src/Common/Types/gameMode.h"
 #include "../../src/Common/Types/lobbyState.h"
 #include "../../src/Common/socket.h"
@@ -211,7 +210,7 @@ TEST(lobbyServerProtocolTest, testSerializeStart) {
 //     auto deserializedCreateGameDTO = dynamic_cast<CreateGameDTO*>(deserializedCommand.get());
 //     ASSERT_NE(deserializedCreateGameDTO, nullptr);
 
-//     EXPECT_EQ(deserializedCreateGameDTO->getEpisodeName(), Episode::FORMERLY_PRINCE);
+//     EXPECT_EQ(deserializedCreateGameDTO->getMapName(), Episode::FORMERLY_PRINCE);
 //     EXPECT_EQ(deserializedCreateGameDTO->getGameMode(), GameMode::SINGLE_PLAYER);
 //     EXPECT_EQ(deserializedCreateGameDTO->getMaxPlayers(), maxPlayers);
 //     EXPECT_EQ(deserializedCreateGameDTO->getCharacterType(), CharacterType::JAZZ);

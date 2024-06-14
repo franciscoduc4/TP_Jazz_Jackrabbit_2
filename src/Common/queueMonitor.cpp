@@ -6,49 +6,67 @@
 #include "DTO/game.h"
 
 template <typename T>
-std::shared_ptr<Queue<T>> QueueMonitor<T>::createQueue() {
+std::shared_ptr<Queue<T>> QueueMonitor<T>::createQueue(uint32_t id) {
     std::lock_guard<std::mutex> lock(mtx);
     auto queue = std::make_shared<Queue<T>>();
-    queues.push_back(queue);
+    queues[id].push_back(queue);
     return queue;
 }
 
 template <typename T>
-void QueueMonitor<T>::closeQueue(std::shared_ptr<Queue<T>> queue) {
+void QueueMonitor<T>::closeQueue(uint32_t id, std::shared_ptr<Queue<T>> queue) {
     std::lock_guard<std::mutex> lock(mtx);
-    queue->close();
-}
-
-template <typename T>
-void QueueMonitor<T>::removeQueue(std::shared_ptr<Queue<T>> queue) {
-    std::lock_guard<std::mutex> lock(mtx);
-    auto it = std::find(queues.begin(), queues.end(), queue);
-    if (it != queues.end()) {
-        queues.erase(it);
-    }
-}
-
-template <typename T>
-void QueueMonitor<T>::closeQueues() {
-    std::lock_guard<std::mutex> lock(mtx);
-    for (auto& queue: queues) {
+    auto& vec = queues[id];
+    auto it = std::find(vec.begin(), vec.end(), queue);
+    if (it != vec.end()) {
         queue->close();
     }
 }
 
 template <typename T>
-void QueueMonitor<T>::removeQueues() {
+void QueueMonitor<T>::removeQueue(uint32_t id, std::shared_ptr<Queue<T>> queue) {
     std::lock_guard<std::mutex> lock(mtx);
-    queues.clear();
+    auto& vec = queues[id];
+    auto it = std::find(vec.begin(), vec.end(), queue);
+    if (it != vec.end()) {
+        vec.erase(it);
+        if (vec.empty()) {
+            queues.erase(id);
+        }
+    }
 }
 
 template <typename T>
-void QueueMonitor<T>::broadcast(T&& event) {
+void QueueMonitor<T>::closeQueues(uint32_t id) {
     std::lock_guard<std::mutex> lock(mtx);
-    for (auto& queue: queues) {
+    auto& vec = queues[id];
+    for (auto& queue: vec) {
+        queue->close();
+    }
+}
+
+template <typename T>
+void QueueMonitor<T>::removeQueues(uint32_t id) {
+    std::lock_guard<std::mutex> lock(mtx);
+    queues.erase(id);
+}
+
+template <typename T>
+void QueueMonitor<T>::broadcast(uint32_t id, T&& event) {
+    std::lock_guard<std::mutex> lock(mtx);
+    auto& vec = queues[id];
+    for (auto& queue: vec) {
         queue->try_push(std::move(event));
     }
 }
 
+template <typename T>
+void QueueMonitor<T>::assignGameIdToQueues(uint32_t gameId, std::shared_ptr<Queue<T>> queue) {
+    std::lock_guard<std::mutex> lock(mtx);
+    queues[gameId].push_back(queue);
+}
+
+
+// Especificaciones de instanciación para los tipos utilizados
 template class QueueMonitor<std::string>;
-template class QueueMonitor<std::unique_ptr<GameDTO>>;
+template class QueueMonitor<std::unique_ptr<DTO>>;

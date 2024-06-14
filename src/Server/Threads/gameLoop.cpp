@@ -1,20 +1,25 @@
 #include "gameLoop.h"
 
+#include <algorithm>
 #include <chrono>
-
+#include <utility>
 
 GameLoopThread::GameLoopThread(std::shared_ptr<Queue<std::unique_ptr<CommandDTO>>> recvQueue,
-                               QueueMonitor<std::unique_ptr<GameDTO>>& queueMonitor,
-                               GameMap& gameMap):
+                               QueueMonitor<std::unique_ptr<DTO>>& queueMonitor, GameMap& gameMap,
+                               uint32_t gameId):
         frameRate(0.016),  // 1 frame per 16 ms === 60 fps
         keepRunning(true),
         commandsToProcess(1),
         recvQueue(recvQueue),
         queueMonitor(),
-        gameMap(gameMap) {}
+        gameMap(gameMap),
+        gameId(gameId) {}
 
 void GameLoopThread::run() {
     auto lastTime = std::chrono::high_resolution_clock::now();
+
+    auto gameDTO = gameMap.getGameDTO();
+    queueMonitor.broadcast(gameId, std::move(gameDTO));
 
     while (keepRunning) {
         auto currentTime = std::chrono::high_resolution_clock::now();
@@ -25,7 +30,7 @@ void GameLoopThread::run() {
         gameMap.update(deltaTime.count());
 
         std::unique_ptr<GameDTO> gameDTO = gameMap.getGameDTO();
-        queueMonitor.broadcast(std::move(gameDTO));
+        queueMonitor.broadcast(gameId, std::move(gameDTO));
 
         auto processingEndTime = std::chrono::high_resolution_clock::now();
         std::chrono::duration<double> processingDuration = processingEndTime - currentTime;
@@ -79,3 +84,5 @@ void GameLoopThread::adjustCommandsToProcess(std::chrono::duration<double> proce
 
 
 void GameLoopThread::stop() { keepRunning = false; }
+
+bool GameLoopThread::isRunning() const { return keepRunning; }

@@ -25,7 +25,7 @@ void SceneSelection::on_btnChoose_clicked()
 {
     size_t selection = sceneSpritesWidget->getCurrentSprite();
     EpisodeSelect episode = static_cast<EpisodeSelect>(selection + 1);
-    this->msg.setEpisode(episode);
+    this->msg.setMap(episode);
     CreateGame* cg = new CreateGame(this, this->monitor, this->msg);
     cg->show();
     this->close();
@@ -34,7 +34,7 @@ void SceneSelection::on_btnChoose_clicked()
 
 void SceneSelection::on_btnBack_clicked()
 {
-    this->msg.setEpisode(EpisodeSelect::INVALID);
+    this->msg.setMap(EpisodeSelect::INVALID);
     QWidget* parent = this->parentWidget();
     if (parent){
         parent->show();

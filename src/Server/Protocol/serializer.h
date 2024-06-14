@@ -8,6 +8,7 @@
 
 #include "../../Common/DTO/command.h"
 #include "../../Common/DTO/createGame.h"
+#include "../../Common/DTO/mapsList.h"
 #include "../../Common/DTO/game.h"
 #include "../../Common/DTO/joinGame.h"
 #include "../../Common/DTO/lobby.h"
@@ -24,7 +25,6 @@ public:
     std::vector<char> serializeCreateGame(const std::unique_ptr<CreateGameDTO>& dto);
     std::vector<char> serializeJoinGame(const std::unique_ptr<JoinGameDTO>& dto);
     std::vector<char> serializeGamesList(const std::unique_ptr<CommandDTO>& dto);
-    std::vector<char> serializeStartGame(const std::unique_ptr<StartGameDTO>& dto);
     std::vector<char> serializeGamesList(const std::unique_ptr<GamesListDTO>& dto);
     std::vector<char> serializeGameDTO(const std::unique_ptr<GameDTO> dto);
     std::vector<char> serializePlayerDTO(const std::unique_ptr<PlayerDTO> dto);
@@ -33,6 +33,7 @@ public:
     std::vector<char> serializeItemDTO(const std::unique_ptr<ItemDTO> dto);
     std::vector<char> serializeWeaponDTO(const std::unique_ptr<WeaponDTO> dto);
     std::vector<char> serializeTileDTO(const std::unique_ptr<TileDTO> dto);
+    std::vector<char> serializeMapsList(const std::unique_ptr<MapsListDTO> dto);
 
     Serializer() {}
     explicit Serializer(std::shared_ptr<Socket> socket);

@@ -6,7 +6,6 @@
 
 #include "../../../Common/DTO/createGame.h"
 #include "../../../Common/DTO/lobby.h"
-#include "../../../Common/Types/episode.h"
 #include "../../../Common/Types/gameMode.h"
 #include "../../../Common/Types/lobbyState.h"
 #include "../../../Common/queue.h"
@@ -16,21 +15,18 @@
 CreateGameHandler::CreateGameHandler(std::unique_ptr<CreateGameDTO> command):
         command(std::move(command)) {}
 
-std::unique_ptr<CommandDTO> CreateGameHandler::execute(
-        GameMonitor& gameMonitor, std::atomic<bool>& inGame,
-        std::shared_ptr<Queue<std::unique_ptr<CommandDTO>>> recvQueue) {
+void CreateGameHandler::execute(GameMonitor& gameMonitor, std::atomic<bool>& inGame,
+                                std::shared_ptr<Queue<std::unique_ptr<CommandDTO>>> recvQueue,
+                                std::shared_ptr<Queue<std::unique_ptr<DTO>>> sendQueue) {
     uint32_t playerId = command->getPlayerId();
-    Episode episode = command->getEpisodeName();
+    uint32_t mapId = command->getMapId();
+    std::string mapName = command->getMapName();
     uint8_t maxPlayers = command->getMaxPlayers();
     GameMode gameMode = (maxPlayers == 1) ? GameMode::SINGLE_PLAYER : GameMode::PARTY_MODE;
     CharacterType characterType = command->getCharacterType();
     std::string gameName = command->getGameName();
-    uint32_t gameId = gameMonitor.getGamesList().size();
-    if (gameMonitor.createGame(playerId, episode, gameMode, maxPlayers, characterType, gameName,
-                               recvQueue, gameId)) {
-        return std::make_unique<CreateGameDTO>(playerId, episode, maxPlayers,
-                                               characterType, gameName, gameId);
-    } else {
-        return nullptr;
-    }
+    uint32_t gameId = gameMonitor.getGamesListSize();
+
+    gameMonitor.createGame(playerId, mapId, mapName, gameMode, maxPlayers, characterType,
+                           gameName, recvQueue, gameId, sendQueue);
 }

@@ -3,6 +3,9 @@ file(GLOB_RECURSE COMMON_SOURCES
     ${PROJECT_SOURCE_DIR}/src/Common/*.h
 )
 
+# Maps Singleton Classes
+include_directories(maps)
+
 add_library(common ${COMMON_SOURCES}
         dtoValidator.h
 )

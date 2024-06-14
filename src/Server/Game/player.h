@@ -23,7 +23,7 @@ private:
 
 public:
     Player(std::shared_ptr<Socket> socket, GameMonitor& gameMonitor,
-           QueueMonitor<std::unique_ptr<GameDTO>>& queueMonitor, uint32_t playerId);
+           QueueMonitor<std::unique_ptr<DTO>>& queueMonitor, uint32_t playerId);
     void disconnect();
     bool isPlaying() const;
 };

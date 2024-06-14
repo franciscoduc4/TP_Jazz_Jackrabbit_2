@@ -6,6 +6,7 @@
 class DTO {
 public:
     virtual DTOType getType() const = 0;
+    virtual ~DTO() = default;
 };
 
 #endif  // DTO_H_

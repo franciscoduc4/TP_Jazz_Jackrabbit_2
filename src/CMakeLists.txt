@@ -46,28 +46,24 @@ if(CLIENT)
             ${PROJECT_SOURCE_DIR}/src/Client/creategame.ui
             ${PROJECT_SOURCE_DIR}/src/Client/gamelist.ui
             ${PROJECT_SOURCE_DIR}/src/Client/lobby.ui
-            ${PROJECT_SOURCE_DIR}/src/Client/sceneselection.ui
+            ${PROJECT_SOURCE_DIR}/src/Client/mapselection.ui
             ${PROJECT_SOURCE_DIR}/src/Client/waitingroom.ui
             ${PROJECT_SOURCE_DIR}/src/Client/welcomes.ui
     )
 
     qt5_wrap_ui(UIS_HEADERS ${UI_FILES})
-
     qt5_add_resources(RESOURCES ${PROJECT_SOURCE_DIR}/src/Client/resources.qrc)
 
     add_executable(jazzclient ${CLIENT_SOURCES} ${UIS_HEADERS} ${RESOURCES}
-            Client/Controllers/LobbyController.h
-            Client/Controllers/LobbyController.cpp
-            Client/Controllers/GameController.cpp
-            Client/Controllers/GameController.h
-            Client/SDL/level.cpp)
+        Client/Controllers/LobbyController.h
+        Client/Controllers/LobbyController.cpp
+        Client/Controllers/GameController.cpp
+        Client/Controllers/GameController.h
+        Client/SDL/level.cpp)
     target_link_libraries(jazzclient common Qt5::Widgets Qt5::Core SDL2 SDL2pp SDL2_image yaml-cpp fmt::fmt -pthread)
     target_include_directories(jazzclient PUBLIC ${PROJECT_SOURCE_DIR}/src/Common)
-
     set_target_properties(jazzclient PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
 endif()
 
 # Copy YAML files to the build directory
 file(COPY ${CMAKE_SOURCE_DIR}/src/config DESTINATION ${CMAKE_BINARY_DIR})
-
-#add_executable(main.cpp)

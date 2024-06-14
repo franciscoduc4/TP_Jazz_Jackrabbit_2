@@ -33,6 +33,6 @@ public:
 
     virtual std::vector<char> getData() const;
 
-    virtual ~CommandDTO() {}
+    virtual ~CommandDTO() = default;
 };
 #endif  // COMMAND_DTO_H_

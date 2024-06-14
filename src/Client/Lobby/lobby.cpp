@@ -1,7 +1,7 @@
 #include "lobby.h"
 
 #include "characterselection.h"
-#include "sceneselection.h"
+#include "mapselection.h"
 #include "ui_lobby.h"
 
 Lobby::Lobby(QWidget* parent, LobbyController& controller, LobbyMessage& msg, bool& clientJoinedGame):
@@ -11,14 +11,17 @@ Lobby::Lobby(QWidget* parent, LobbyController& controller, LobbyMessage& msg, bo
         msg(msg),
         clientJoinedGame(clientJoinedGame) {
     ui->setupUi(this);
+
     QString playerName = QString::fromStdString(this->msg.getPlayerName());
     QString welcomeText = ui->labelTitle->text();
     welcomeText.append(playerName);
     ui->labelTitle->setText(welcomeText);
+
     QFile file(":/Lobby/Styles/lobby.qss");
     file.open(QFile::ReadOnly);
     QString styleSheet = QLatin1String(file.readAll());
     ui->centralwidget->setStyleSheet(styleSheet);
+
     ui->labelTitle->setAttribute(Qt::WA_TranslucentBackground);
 }
 
@@ -29,11 +32,9 @@ void Lobby::on_btnCreateGame_clicked() {
 
     this->hide();
 
-    SceneSelection ss(this, this->controller, this->msg, this->clientJoinedGame);
-    ss.setModal(true);
-    ss.exec();
+    auto ms = new MapSelection(this, this->controller, this->msg, this->clientJoinedGame);
+    ms->show();
 
-    this->close();
 }
 
 
@@ -42,11 +43,9 @@ void Lobby::on_btnJoinGame_clicked() {
 
     this->hide();
 
-    CharacterSelection cs(this, this->controller, this->msg, this->clientJoinedGame);
-    cs.setModal(true);
-    cs.exec();
+    auto cs = new CharacterSelection(this, this->controller, this->msg, this->clientJoinedGame);
+    cs->show();
 
-    // this->close();
 }
 
 
@@ -59,5 +58,5 @@ void Lobby::on_btnBack_clicked() {
         parent->show();
     }
 
-    this->close();
+    this->deleteLater();
 }
