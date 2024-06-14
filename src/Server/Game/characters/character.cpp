@@ -38,6 +38,7 @@ void Character::recvDamage(uint16_t dmg, float time) {
 }
 
 void Character::update(float time) {
+    std::cout << "[CHARACTER] Updating character" << std::endl;
     if (isIntoxicated) {
         intoxicatedTime -= time;
         if (intoxicatedTime <= 0) {
@@ -46,8 +47,10 @@ void Character::update(float time) {
         }
     }
     auto newState = std::unique_ptr<State>(state->exec(*this, time));
+    std::cout << "[CHARACTER] New state: " << newState.get() << std::endl;
     if (newState) {
         state = std::move(newState);
+        std::cout << "[CHARACTER] New state moved" << std::endl;
     }
 }
 

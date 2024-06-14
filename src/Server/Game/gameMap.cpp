@@ -207,9 +207,11 @@ Vector<int16_t> GameMap::getAvailablePosition() {
 }
 
 void GameMap::update(float time) {
+    std::cout << "[GAMEMAP] Updating game map" << std::endl;
     for (auto& [_, entity]: mapGrid) {
         auto character = std::dynamic_pointer_cast<Character>(entity);
         character->update(time);
+        std::cout << "[GAMEMAP] Entity updated" << std::endl;
     }
 }
 

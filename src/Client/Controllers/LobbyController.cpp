@@ -51,7 +51,7 @@ bool LobbyController::recvStartGame() {
     }
     auto* sgDTO = dynamic_cast<StartGameDTO*>(dto.get());
     if (sgDTO) {
-        std::cout << "[LOVI CONTROLER] Received start game DTO." << std::endl;
+        std::cout << "[LOBBY CONTROLLER] Received start game DTO." << std::endl;
         return sgDTO->getCommand() == Command::START_GAME;
     } else {
         std::cerr << "Failed to cast to StartGameDTO in recvStartGame." << std::endl;

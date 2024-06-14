@@ -171,14 +171,23 @@ void Serializer::sendId(uint32_t id, bool& wasClosed) {
 std::vector<char> Serializer::serializePlayerDTO(const std::unique_ptr<PlayerDTO> dto) {
     std::vector<char> buffer;
     buffer.push_back(static_cast<char>(dto->getPlayerId()));
+    std::cout << "[SERVER SERIALIZER PLAYER] Serializing player id: " << (int)dto->getPlayerId() << std::endl;
     buffer.push_back(static_cast<char>(dto->getDamage()));
+    std::cout << "[SERVER SERIALIZER PLAYER] Serializing player damage: " << dto->getDamage() << std::endl;
     buffer.push_back(static_cast<char>(dto->getHealth()));
+    std::cout << "[SERVER SERIALIZER PLAYER] Serializing player health: " << dto->getHealth() << std::endl;
     buffer.push_back(static_cast<char>(dto->getSpeed()));
+    std::cout << "[SERVER SERIALIZER PLAYER] Serializing player speed: " << dto->getSpeed() << std::endl;
     buffer.push_back(static_cast<char>(dto->getRespawnTime()));
+    std::cout << "[SERVER SERIALIZER PLAYER] Serializing player respawn time: " << dto->getRespawnTime() << std::endl;
     buffer.push_back(static_cast<char>(dto->getX()));
+    std::cout << "[SERVER SERIALIZER PLAYER] Serializing player x: " << dto->getX() << std::endl;
     buffer.push_back(static_cast<char>(dto->getY()));
+    std::cout << "[SERVER SERIALIZER PLAYER] Serializing player y: " << dto->getY() << std::endl;
     buffer.push_back(static_cast<char>(dto->getType()));
+    std::cout << "[SERVER SERIALIZER PLAYER] Serializing player type: " << (int)dto->getType() << std::endl;
     buffer.push_back(static_cast<char>(dto->getState()));
+    std::cout << "[SERVER SERIALIZER PLAYER] Serializing player state: " << (int)dto->getState() << std::endl;
     return buffer;
 }
 
@@ -234,6 +243,7 @@ std::vector<char> Serializer::serializeWeaponDTO(const std::unique_ptr<WeaponDTO
 }
 
 void Serializer::sendGameDTO(const std::unique_ptr<GameDTO> dto, bool& wasClosed) {
+    std::cout << "[SERVER SERIALIZER] entrando" << std::endl;
     char gamedto = static_cast<char>(DTOType::GAME_DTO);
     socket->sendall(&gamedto, sizeof(char), &wasClosed);
     std::cout << "[SERVER SERIALIZER] Sending game dto" << std::endl;
@@ -244,6 +254,7 @@ void Serializer::sendGameDTO(const std::unique_ptr<GameDTO> dto, bool& wasClosed
     buffer.push_back(static_cast<char>(players.size()));
     for (const auto& player: players) {
         std::vector<char> playerBuffer = serializePlayerDTO(std::make_unique<PlayerDTO>(player));
+        std::cout << "[SERVER SERIALIZER] Player buffer size: " << playerBuffer.size() << std::endl;
         buffer.insert(buffer.end(), playerBuffer.begin(), playerBuffer.end());
     }
 

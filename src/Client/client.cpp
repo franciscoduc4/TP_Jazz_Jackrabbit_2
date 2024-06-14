@@ -37,14 +37,18 @@ void Client::start() {
         //   }
         // TODO: Continue with SDL.
         // START - TESTING SKIP QT
+        Command cmd = (this->playerId == 0) ? Command::CREATE_GAME : Command::JOIN_GAME;
+
         LobbyMessage msg;
         msg.setCharacter(CharacterType::JAZZ);
         msg.setMap(0);
-        // msg.setGameId(1);
         msg.setGameName("Dummy");
-        msg.setLobbyCmd(Command::CREATE_GAME);
+        msg.setLobbyCmd(cmd);
         msg.setMaxPlayers(1);
         msg.setPlayerName("Test");
+        if (cmd == Command::JOIN_GAME) {
+            msg.setGameId(0);
+        }
         clientJoinedGame = true;
 
         this->lobbyController.sendRequest(msg);
