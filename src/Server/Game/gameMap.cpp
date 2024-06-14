@@ -1,7 +1,9 @@
 #include "gameMap.h"
-#include "../../Common/maps/mapsManager.h"
+
 #include <iostream>
-#include <optional> 
+#include <optional>
+
+#include "../../Common/maps/mapsManager.h"
 
 #define CONFIG ServerConfig::getInstance()
 
@@ -10,8 +12,7 @@ GameMap::GameMap(Vector<int16_t> size, uint32_t mapId):
         entityFactory(*this),
         gravity(CONFIG->getGameGravity()),
         movesPerCell(CONFIG->getGameMaxMoves()),
-        mapId(mapId)
-         {}
+        mapId(mapId) {}
 
 void GameMap::loadMap(uint32_t mapId) {
     std::string filePath = MapsManager::getMapFileNameById(mapId);
@@ -36,15 +37,16 @@ void GameMap::loadMap(uint32_t mapId) {
 
     // Cargar enemigos
     if (config["ENEMIES"]) {
-        for (const auto& enemy : config["ENEMIES"]) {
+        for (const auto& enemy: config["ENEMIES"]) {
             auto enemyType = enemy.first.as<std::string>();
             std::cout << "[GAMEMAP] Enemy type: " << enemyType << std::endl;
-            for (const auto& pos : enemy.second) {
+            for (const auto& pos: enemy.second) {
                 if (pos.size() != 2) {
                     throw std::runtime_error("Invalid enemy position configuration in YAML file");
                 }
                 Vector<int16_t> position = {pos[0].as<int16_t>(), pos[1].as<int16_t>()};
-                std::cout << "[GAMEMAP] Enemy position: (" << position.x << ", " << position.y << ")" << std::endl;
+                std::cout << "[GAMEMAP] Enemy position: (" << position.x << ", " << position.y
+                          << ")" << std::endl;
                 EnemyType type = getEnemyType(enemyType);
                 addEnemy(type, position);
             }
@@ -56,9 +58,12 @@ void GameMap::loadMap(uint32_t mapId) {
 
 
 EnemyType GameMap::getEnemyType(const std::string& type) {
-    if (type == "TURTLES") return EnemyType::TURTLE;
-    if (type == "SCHWARZENGUARDS") return EnemyType::SCHWARZENGUARD;
-    if (type == "YELLOWMONS") return EnemyType::YELLOWMON;
+    if (type == "TURTLES")
+        return EnemyType::TURTLE;
+    if (type == "SCHWARZENGUARDS")
+        return EnemyType::SCHWARZENGUARD;
+    if (type == "YELLOWMONS")
+        return EnemyType::YELLOWMON;
     throw std::runtime_error("Unknown enemy type");
 }
 
@@ -120,7 +125,8 @@ bool GameMap::isFreePosition(Vector<int16_t> position) {
 
 void GameMap::addEntityToMap(std::shared_ptr<Entity> entity, Vector<int16_t> position) {
     Vector<int16_t> mapPosition = entity->getMapPosition(movesPerCell);
-    std::cout << "[GAMEMAP] Adding entity at position: (" << mapPosition.x << ", " << mapPosition.y << ")" << std::endl;
+    std::cout << "[GAMEMAP] Adding entity at position: (" << mapPosition.x << ", " << mapPosition.y
+              << ")" << std::endl;
     if (isFreePosition(mapPosition)) {
         mapGrid[mapPosition] = entity;
     } else {
@@ -149,14 +155,16 @@ Vector<int16_t> GameMap::getInitialPositionForCharacterType(CharacterType type) 
             throw std::runtime_error("Unknown character type");
     }
 
-    for (const auto& pos : config["PLAYERS"][characterTypeStr]) {
+    for (const auto& pos: config["PLAYERS"][characterTypeStr]) {
         if (pos.size() != 2) {
-            throw std::runtime_error("Invalid player position configuration in YAML file for " + characterTypeStr);
+            throw std::runtime_error("Invalid player position configuration in YAML file for " +
+                                     characterTypeStr);
         }
         return {pos[0].as<int16_t>(), pos[1].as<int16_t>()};
     }
 
-    throw std::runtime_error("Initial position for character type not found in YAML for " + characterTypeStr);
+    throw std::runtime_error("Initial position for character type not found in YAML for " +
+                             characterTypeStr);
 }
 
 std::shared_ptr<Character> GameMap::addCharacter(uint32_t playerId, CharacterType type) {
@@ -184,7 +192,8 @@ void GameMap::addEnemy(EnemyType type, Vector<int16_t> position) {
         throw std::runtime_error("Invalid position for enemy");
     }
     auto enemy = entityFactory.createEnemy(entityCount, type, position);
-    std::cout << "[GAMEMAP] Adding enemy at position: (" << position.x << ", " << position.y << ")" << std::endl;
+    std::cout << "[GAMEMAP] Adding enemy at position: (" << position.x << ", " << position.y << ")"
+              << std::endl;
     entityCount++;
     addEntityToMap(enemy, position);
 }
@@ -209,8 +218,8 @@ Vector<int16_t> GameMap::getAvailablePosition() {
 void GameMap::update(float time) {
     std::cout << "[GAMEMAP] Updating game map" << std::endl;
     for (auto& [_, entity]: mapGrid) {
-        auto character = std::dynamic_pointer_cast<Character>(entity);
-        character->update(time);
+        // auto character = std::dynamic_pointer_cast<Character>(entity);
+        // entity->update(time);
         std::cout << "[GAMEMAP] Entity updated" << std::endl;
     }
 }
