@@ -12,12 +12,12 @@
 
 class Serializer {
 private:
-    std::shared_ptr<Queue<std::unique_ptr<DTO>>>& queue;
+    std::shared_ptr<Queue<std::unique_ptr<CommandDTO>>>& queue;
 
 public:
-    explicit Serializer(std::shared_ptr<Queue<std::unique_ptr<DTO>>>& queue);
+    explicit Serializer(std::shared_ptr<Queue<std::unique_ptr<CommandDTO>>>& queue);
 
-    void sendMsg(std::unique_ptr<DTO>& dto);
+    void sendMsg(std::unique_ptr<CommandDTO>& dto);
 
     void serializeLobbyMessage(const LobbyMessage& msg);
 };

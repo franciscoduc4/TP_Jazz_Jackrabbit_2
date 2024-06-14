@@ -88,10 +88,10 @@ std::unique_ptr<CommandDTO> Deserializer::deserializeGamesList(bool& wasClosed,
 }
 
 
-std::unique_ptr<MoveDTO> Deserializer::deserializeMove(bool& wasClosed, uint32_t& playerId) {
+std::unique_ptr<GameCommandDTO> Deserializer::deserializeMove(bool& wasClosed, uint32_t& playerId) {
     Direction direction;
     socket->recvall(&direction, sizeof(char), &wasClosed);
-    return std::make_unique<MoveDTO>(playerId, direction);
+    return std::make_unique<GameCommandDTO>(playerId, direction, Command::MOVE);
 }
 
 std::unique_ptr<StartGameDTO> Deserializer::deserializeStart(bool& wasClosed, uint32_t& playerId) {
@@ -114,5 +114,5 @@ std::unique_ptr<CommandDTO> Deserializer::deserializeSwitchWeapon(bool& wasClose
 std::unique_ptr<CommandDTO> Deserializer::deserializeSprint(bool& wasClosed, uint32_t& playerId) {
     Direction direction;
     socket->recvall(&direction, sizeof(char), &wasClosed);
-    return std::make_unique<MoveDTO>(playerId, direction);
+    return std::make_unique<GameCommandDTO>(playerId, direction, Command::MOVE);
 }

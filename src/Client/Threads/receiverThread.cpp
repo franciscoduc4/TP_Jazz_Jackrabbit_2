@@ -343,9 +343,8 @@ void ReceiverThread::run() {
                     break;
                 default:
                     break;
-            } 
-           */
-          this->receiveGameDTO();
+            }
+            // this->receiveGameDTO();
         } catch (const std::exception& e) {
             if (!this->was_closed.load() || _keep_running) {
                 std::cerr << "ReceiverThread error: " << e.what() << std::endl;

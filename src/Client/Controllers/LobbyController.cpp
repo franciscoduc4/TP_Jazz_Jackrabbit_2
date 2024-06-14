@@ -1,7 +1,7 @@
 #include "LobbyController.h"
-
 #include "DTO/startGame.h"
 #include "DTO/createGame.h"
+#include <iostream>
 
 LobbyController::LobbyController(Serializer& serializer, 
     Deserializer& deserializer, 
@@ -10,7 +10,7 @@ LobbyController::LobbyController(Serializer& serializer,
         deserializer(deserializer),
         lobbyQueue(lobbyQueue),
         games(std::map<uint32_t, GameInfo>()),
-        selected(){}
+        selected() {}
 
 void LobbyController::sendRequest(const LobbyMessage& msg) {
     if (msg.getLobbyCmd() != Command::GAMES_LIST) {
@@ -23,11 +23,17 @@ bool LobbyController::recvResponse() {
     std::unique_ptr<DTO> dto;
     try {
         dto = this->lobbyQueue->pop();
-    } catch (std::exception &e) {
+    } catch (const std::exception& e) {
+        std::cerr << "Exception caught in recvResponse: " << e.what() << std::endl;
         return false;
     }
     auto* cgDTO = dynamic_cast<CreateGameDTO*>(dto.get());
-    return cgDTO->getCommand() == Command::CREATE_GAME;
+    if (cgDTO) {
+        return cgDTO->getCommand() == Command::CREATE_GAME;
+    } else {
+        std::cerr << "Failed to cast to CreateGameDTO in recvResponse." << std::endl;
+        return false;
+    }
 }
 
 void LobbyController::startGame(const LobbyMessage& msg) {
@@ -39,11 +45,17 @@ bool LobbyController::recvStartGame() {
     std::unique_ptr<DTO> dto;
     try {
         dto = this->lobbyQueue->pop();
-    } catch (std::exception &e) {
+    } catch (const std::exception& e) {
+        std::cerr << "Exception caught in recvStartGame: " << e.what() << std::endl;
         return false;
     }
     auto* sgDTO = dynamic_cast<StartGameDTO*>(dto.get());
-    return sgDTO->getCommand() == Command::START_GAME;
+    if (sgDTO) {
+        return sgDTO->getCommand() == Command::START_GAME;
+    } else {
+        std::cerr << "Failed to cast to StartGameDTO in recvStartGame." << std::endl;
+        return false;
+    }
 }
 
 std::map<uint32_t, GameInfo>& LobbyController::getGamesList() {
@@ -52,25 +64,11 @@ std::map<uint32_t, GameInfo>& LobbyController::getGamesList() {
     try {
         dto = this->lobbyQueue->pop();
         gamesList = dynamic_cast<GamesListDTO*>(dto.get());
-    } catch (std::exception &e) {
-        return this->games;
+        if (gamesList) {
+            this->games = std::move(gamesList->getGames());
+        }
+    } catch (const std::exception& e) {
+        std::cerr << "Exception caught in getGamesList: " << e.what() << std::endl;
     }
-
-    this->games = std::move(gamesList->getGames());
-
     return this->games;
 }
-
-/*
-void LobbyController::waitForGameStart() {
-    QMutexLocker locker(&mutex);
-    while (true) {
-        condition.wait(&mutex);
-        std::unique_ptr<DTO> dto = deserializer.popFromQueue();
-        if (dynamic_cast<StartGameDTO*>(dto.get()) != nullptr) {
-            // Game has started
-            break;
-        }
-    }
-}
-*/

@@ -1,6 +1,7 @@
 #include "mapsManager.h"
+#include <iostream>
 
-const static std::string MAPS_DIR = "../../maps";
+const static std::string MAPS_DIR = "../src/maps";  // Ajusta la ruta relativa aquí
 
 MapsManager* MapsManager::instance = nullptr;
 
@@ -12,14 +13,24 @@ MapsManager::MapsManager() :
 MapsManager* MapsManager::getInstance() {
     if (instance == nullptr) {
         instance = new MapsManager();
-        loadMaps(instance);
+        try {
+            loadMaps(instance);
+        } catch (const std::exception& e) {
+            std::cerr << "Exception caught in MapsManager::getInstance: " << e.what() << std::endl;
+            delete instance;
+            instance = nullptr;
+            throw;
+        }
     }
     return instance;
 }
 
 void MapsManager::loadMaps(MapsManager* ins) {
     const std::filesystem::path mapsdir = MAPS_DIR;
-    for (const auto& entry: std::filesystem::directory_iterator(mapsdir)) {
+    if (!std::filesystem::exists(mapsdir)) {
+        throw std::runtime_error("Directory does not exist: " + mapsdir.string());
+    }
+    for (const auto& entry : std::filesystem::directory_iterator(mapsdir)) {
         if (entry.is_directory()) continue;
         if (ins->loadedMaps_.find(entry.path().filename().string()) != ins->loadedMaps_.end()) {
             continue;
@@ -46,6 +57,7 @@ std::string MapsManager::getMapNameById(const uint32_t& id) {
     }
     return thisInstance->maps_[id].first;
 }
+
 std::string MapsManager::getMapFileNameById(const uint32_t& id) {
     MapsManager* thisInstance = getInstance();
     if (thisInstance->maps_.find(id) == thisInstance->maps_.end()) {

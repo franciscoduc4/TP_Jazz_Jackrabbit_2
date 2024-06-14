@@ -168,6 +168,7 @@ std::vector<char> Serializer::serializeEnemyDTO(const std::unique_ptr<EnemyDTO> 
     buffer.push_back(static_cast<char>(dto->getX()));
     buffer.push_back(static_cast<char>(dto->getY()));
     buffer.push_back(static_cast<char>(dto->getType()));
+    ;
     buffer.push_back(static_cast<char>(dto->getState()));
     return buffer;
 }
