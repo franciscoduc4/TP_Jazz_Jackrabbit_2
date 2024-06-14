@@ -15,8 +15,8 @@ Projectile::Projectile(int p_type) {
 	this->width_fire = ClientConfig::getFireWidth();
 	this->height_fire = ClientConfig::getFireHeight();
 	
-	this->draw_width = 20;
-	this->draw_height = 10;
+	this->draw_width = ClientConfig::getProjWidth();
+	this->draw_height = ClientConfig::getProjHeight();
 
 	std::vector<std::vector<int>> normal_sprites = ClientConfig::getNormalProjectileSprites();
     for (int i = 0; i < normal_sprites.size(); i++) {

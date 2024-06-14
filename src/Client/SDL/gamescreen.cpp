@@ -22,12 +22,7 @@
 #include "../../Common/Types/tile.h"
 
 
-//GameScreen::GameScreen(int character):
-//        pj(character), turtle(0, 0, 200), schartz_guard(1, 0, 400), yellowM(2, 0, 100), points(0) {}
-
-//GameScreen::GameScreen(Client& player): client(player), pj(1), points(0), level(0), stats(CharacterType::JAZZ)/*, config(ClientConfig::getInstance())*/ {
-//}
-GameScreen::GameScreen(GameController& controller, uint32_t playerId): controller(controller), mainPlayerId(playerId), pj(1), points(0), level(0), stats(CharacterType::JAZZ), proj(0)/*, config(ClientConfig::getInstance())*/ {
+GameScreen::GameScreen(GameController& controller, uint32_t playerId): controller(controller), mainPlayerId(playerId), pj(1), level(0), proj(0)/*, config(ClientConfig::getInstance())*/ {
 }
 
 PlayerDTO GameScreen::searchMainPlayer(std::vector<PlayerDTO>& players) {
@@ -146,13 +141,14 @@ void GameScreen::run() {
     SDL2pp::Texture items(renderer, itemsSurface);
 
     // TEXTURAS FONT
+    std::tuple<int, int, int> fontColorKey = ClientConfig::getInterfaceFontColourKey();
     SDL_Surface* font_surf = IMG_Load(this->stats.getFontPath().c_str());
     if (!font_surf) {
         std::cerr << "Error loading font surface: " << IMG_GetError() << std::endl;
         return;
     }
     SDL2pp::Surface fontSurface(font_surf);
-    fontSurface.SetColorKey(true, SDL_MapRGB(fontSurface.Get()->format, 0, 128, 255));
+    fontSurface.SetColorKey(true, SDL_MapRGB(fontSurface.Get()->format, std::get<0>(fontColorKey), std::get<1>(fontColorKey), std::get<2>(fontColorKey)));
     SDL2pp::Texture font(renderer, fontSurface);
 
     int x_screen = 0;
@@ -241,7 +237,6 @@ void GameScreen::run() {
 
         std::unique_ptr<DTO> serverMsg = this->controller.getServerMsg();
 
-        //std::unique_ptr<DTO> serverMsg = this->client.getServerMsg();
         if (!serverMsg) {
             std::cerr << "No message received from server." << std::endl;
             SDL_Delay(100);
@@ -286,7 +281,7 @@ void GameScreen::run() {
         std::vector<TileDTO> tiles = snapshot->getTiles(); 
         this->level.draw_tiles(window, renderer, tiles_textures, tiles);
 
-        this->stats.draw_interface(window, renderer, *pjs_textures[mainPlayer.getType()/*players[0].getType()*/], font, 1000/*getPoints()*/, 3/*getLives()*/);
+        this->stats.draw_interface(window, renderer, *pjs_textures[mainPlayer.getType()/*players[0].getType()*/], mainPlayer.getType(), font, 1000/*getPoints()*/, 3/*getLives()*/);
 
         x_screen = 0;
         y_screen = 0;

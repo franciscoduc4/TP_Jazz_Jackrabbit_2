@@ -13,8 +13,8 @@
 #include <iostream>
 
 Player::Player(int character) {
-	this->width = 50;
-	this->height = 80;
+	this->width = ClientConfig::getPlayerWidth();
+	this->height = ClientConfig::getPlayerHeight();
 	this->flip = 0;
 	this->init = false;
 	
@@ -197,12 +197,10 @@ void Player::draw_players(SDL2pp::Window& window, SDL2pp::Renderer& renderer, st
 			this->counts[p.getPlayerId()][CharacterStateEntity::SPRINTING] = 0;
 			this->counts[p.getPlayerId()][CharacterStateEntity::SHOOTING] = 0;
 			this->counts[p.getPlayerId()][CharacterStateEntity::JUMPING] = 0;
-			//this->counts[p.getPlayerId()][Dash] = 0;
 			this->counts[p.getPlayerId()][CharacterStateEntity::SPECIAL_ATTACK] = 0;
 			this->counts[p.getPlayerId()][CharacterStateEntity::INTOXICATED] = 0;
 			this->counts[p.getPlayerId()][CharacterStateEntity::TAKING_DAMAGE] = 0;
 			this->counts[p.getPlayerId()][CharacterStateEntity::DEAD] = 0;
-			//this->counts[p.getPlayerId()][Liveicon] = 0;
 
 		}	
 		std::list<RectangularSprite>::iterator it = img_coords(p.getType(), mov_type, pjId);
@@ -235,28 +233,3 @@ void Player::draw_players(SDL2pp::Window& window, SDL2pp::Renderer& renderer, st
 	}
 	this->init = true;
 }
-
-
-
-
-/*
-void Player::CharacterStateEntity::SHOOTING(int x, int y, int flip) {
-	
-	Projectile p(0, x, y, flip);
-	this->projectiles.push_back(p);
-}
-
-
-void Player::draw_projectiles(SDL2pp::Window& window, SDL2pp::Renderer& renderer, SDL2pp::Texture& projectile) {
-	std::list<Projectile>::iterator it = this->projectiles.begin();
-	
-	while (it != this->projectiles.end()) {
-		if (!it->draw_projectile(window, renderer, projectile)) {
-			it = this->projectiles.erase(it);
-		} else {
-			++it;
-		}
-		
-	}
-}
-*/

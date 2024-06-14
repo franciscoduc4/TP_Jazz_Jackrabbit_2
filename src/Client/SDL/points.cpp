@@ -7,11 +7,9 @@
 
 #include <SDL2pp/SDL2pp.hh>
 
-enum lvl { lvl1, lvl2 };
-
-Points::Points(int level_type) {
-    this->draw_width = 20;
-    this->draw_height = 20;
+Points::Points() {
+    this->draw_width = ClientConfig::getItemsWidth();
+    this->draw_height = ClientConfig::getItemsHeight();
 
     std::vector<std::vector<int>> redgems_sprites = ClientConfig::getRedGemSprites();    
     for (int i = 0; i < redgems_sprites.size(); i++) {

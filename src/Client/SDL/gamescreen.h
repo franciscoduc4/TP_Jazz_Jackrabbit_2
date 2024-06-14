@@ -30,16 +30,10 @@ class GameScreen {
     Projectile proj;
     Interface stats;
 
-	//ClientConfig* config;
-    //Client& client;
     GameController& controller;
     uint32_t mainPlayerId;
 
 public:
-    //GameScreen(int character);
-
-    //explicit GameScreen(Client& player);
-
     GameScreen(GameController& controller, uint32_t playerId);
 
     PlayerDTO searchMainPlayer(std::vector<PlayerDTO>& players);

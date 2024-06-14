@@ -29,8 +29,8 @@ Enemy::Enemy() {
 	//WALKING ENEMY
     this->enemies_path[EnemyType::WALKING_ENEMY] = ClientConfig::getTurtleFile();// "../assets/Enemies/TurtleEnemies.png";
 
-	std::vector<int> walking_enemy_w_h{50, 50};
-	this->width_height[EnemyType::WALKING_ENEMY] = walking_enemy_w_h;
+	std::vector<int> walking_enemy_w_h{ClientConfig::getTurtleWidth(), ClientConfig::getTurtleHeight()};
+    this->width_height[EnemyType::WALKING_ENEMY] = walking_enemy_w_h;
 	
     std::vector<std::vector<int>> turtle_walking_sprites = ClientConfig::getTurtleWalkingSprites();
     for (int i = 0; i < turtle_walking_sprites.size(); i++) {

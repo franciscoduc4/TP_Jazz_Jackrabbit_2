@@ -37,6 +37,7 @@ void Client::start() {
         //   }
         // TODO: Continue with SDL.
         // START - TESTING SKIP QT
+        /*
         LobbyMessage msg;
         msg.setCharacter(CharacterType::JAZZ);
         msg.setMap(0);
@@ -64,7 +65,7 @@ void Client::start() {
             return;
         }
         // END - TESTING SKIP QT
-
+        */
         GameScreen game(this->gameController, this->playerId);
         game.run();
         clientJoinedGame = false;
