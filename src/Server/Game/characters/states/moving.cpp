@@ -30,6 +30,9 @@ std::unique_ptr<State> MovingState::shoot(Character& character, std::shared_ptr<
 }
 
 std::unique_ptr<State> MovingState::move(Character& character, Direction direction, float time) {
+    if (direction != this->direction) {
+        return std::make_unique<MovingState>(character, direction, time);
+    }
     switch (direction) {
         case Direction::UP:
             character.moveUp();
