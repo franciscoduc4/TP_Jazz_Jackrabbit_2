@@ -224,14 +224,13 @@ void GameScreen::run() {
                 }
             } else if (event.type == SDL_KEYUP) {
                 switch (event.key.keysym.sym) {
-                    case SDLK_RIGHT:
-                    case SDLK_LEFT:
-                        break;
-                    case SDLK_LSHIFT:
-                        break;
-                    case SDLK_UP:
-                    case SDLK_DOWN:
-                        break;
+                    case SDLK_RIGHT: case SDLK_LEFT: case SDLK_LSHIFT:
+                        {
+                            Command idle = Command::IDLE;
+                            std::vector<uint8_t> elements;
+                            this->controller.sendMsg(this->mainPlayerId, idle, elements);
+                            break;
+                        }
                 }
             }
         }
