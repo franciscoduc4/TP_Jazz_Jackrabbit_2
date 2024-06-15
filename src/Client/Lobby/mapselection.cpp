@@ -14,16 +14,12 @@ MapSelection::MapSelection(QWidget* parent, LobbyController& controller, LobbyMe
         clientJoinedGame(clientJoinedGame),
         buttonGroup(new QButtonGroup(this)) {
     ui->setupUi(this);
-    std::cout << "[MAP SELECTION] UI setup completed" << std::endl;
 
     this->controller.sendRequest(this->msg);
-    std::cout << "[MAP SELECTION] Request sent to controller" << std::endl;
 
     std::unordered_map<uint8_t, std::string> maps = this->controller.getMaps();
-    std::cout << "[MAP SELECTION] Maps received: " << maps.size() << std::endl;
 
     if (maps.empty()) {
-        std::cout << "[MAP SELECTION] No maps available" << std::endl;
         auto* msgBox = new QMessageBox(this);
         msgBox->setIcon(QMessageBox::Information);
         msgBox->setText("No hay mapas disponibles.");
@@ -32,22 +28,46 @@ MapSelection::MapSelection(QWidget* parent, LobbyController& controller, LobbyMe
         return;
     }
 
-    std::cout << "[MAP SELECTION] Populating map selection UI" << std::endl;
-
-    // Check if ui->widgetScenes has a layout, if not create one
     if (!ui->widgetScenes->layout()) {
-        std::cout << "[MAP SELECTION] ui->widgetScenes has no layout, creating one" << std::endl;
         ui->widgetScenes->setLayout(new QVBoxLayout());
     }
 
-    // Iterate over the map data
     for (const auto& [id, name]: maps) {
-        auto* radioButton = new QRadioButton(QString::fromStdString(name));
-        buttonGroup->addButton(radioButton, id);
-        ui->widgetScenes->layout()->addWidget(radioButton);
-        std::cout << "[MAP SELECTION] Added map: " << name << " with ID: " << static_cast<int>(id)
-                  << std::endl;
+        QString mapName = QString::fromStdString(name);
+
+        if (mapName.endsWith(".yaml")) {
+            mapName.remove(".yaml");
+        } else if (mapName.endsWith(".yml")) {
+            mapName.remove(".yml");
+        }
+
+        auto* button = new QPushButton(mapName);
+        button->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+        button->setCheckable(true);
+
+        QFont font("Jazz Jackrabbit 2");
+        font.setPointSize(30);
+        QFontMetrics fm(font);
+        int textWidth = fm.horizontalAdvance(button->text());
+
+        while (textWidth > button->width() && font.pointSize() > 1) {
+            font.setPointSize(font.pointSize() - 1);
+            fm = QFontMetrics(font);
+            textWidth = fm.horizontalAdvance(button->text());
+        }
+
+        button->setFont(font);
+
+        buttonGroup->addButton(button, id);
+        ui->widgetScenes->layout()->addWidget(button);
     }
+
+    QFile file(":/Lobby/Styles/mapselection.qss");
+    file.open(QFile::ReadOnly);
+    QString styleSheet = QLatin1String(file.readAll());
+
+    ui->centralwidget->setStyleSheet(styleSheet);
+    ui->labelTitle->setAttribute(Qt::WA_TranslucentBackground);
 }
 
 MapSelection::~MapSelection() {
