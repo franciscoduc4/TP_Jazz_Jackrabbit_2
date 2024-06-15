@@ -11,6 +11,7 @@ void GameController::sendMsg(uint8_t playerId, Command& cmd, std::vector<uint8_t
     switch (cmd) {
         case Command::IDLE:
             idle_msg(playerId);
+            break;
         case Command::MOVE:
             move_msg(playerId, parameters);
             break;
@@ -21,9 +22,12 @@ void GameController::sendMsg(uint8_t playerId, Command& cmd, std::vector<uint8_t
 }
 
 void GameController::move_msg(uint8_t playerId, std::vector<uint8_t>& parameters) {
+    if (parameters.size() < 1) {
+        std::cerr << "[GAME CONTROLLER] Invalid parameters for MOVE command" << std::endl;
+        return;
+    }
     Direction dir = static_cast<Direction>(parameters[0]);
-    std::unique_ptr<CommandDTO> move =
-		std::make_unique<GameCommandDTO>(playerId, dir, Command::MOVE);
+    std::unique_ptr<CommandDTO> move = std::make_unique<GameCommandDTO>(playerId, dir, Command::MOVE);
     this->serializer.sendMsg(move);
 }
 

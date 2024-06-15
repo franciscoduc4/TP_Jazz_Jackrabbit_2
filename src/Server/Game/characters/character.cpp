@@ -222,6 +222,7 @@ void Character::moveRight() {
               << " map position: " << mapPosition << std::endl;
 
     gameMap.moveObject(pos, mapPosition, Direction::RIGHT);
+    //state = std::make_unique<MovingState>(*this, Direction::RIGHT, 0);
 }
 
 void Character::moveLeft() {
