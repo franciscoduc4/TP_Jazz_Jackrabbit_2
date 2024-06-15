@@ -15,12 +15,12 @@ Game::Game(uint8_t gameId, std::string gameName, uint8_t mapId, uint8_t playerId
         gameMap({255, 255}, mapId),
         currentPlayers(1),
         gameLoop(recvQueue, queueMonitor, gameMap, gameId) {
-    std::cout << "[GAME] Game created with id: " << gameId << " and name: " << this->gameName
+    std::cout << "[GAME] Game created with id: " << (int)gameId << " and name: " << this->gameName
               << std::endl;
     gameMap.loadMap(mapId);
-    std::cout << "[GAME] Map loaded for mapId: " << mapId << std::endl;
+    std::cout << "[GAME] Map loaded for mapId: " << (int)mapId << std::endl;
     gameMap.addCharacter(playerId, characterType);
-    std::cout << "[GAME] Character added with playerId: " << playerId
+    std::cout << "[GAME] Character added with playerId: " << (int)playerId
               << " and characterType: " << (int)characterType << std::endl;
 }
 
