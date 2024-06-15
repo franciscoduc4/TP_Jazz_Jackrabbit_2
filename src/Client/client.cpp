@@ -1,6 +1,6 @@
 #include "./client.h"
 
-#include "../Common/DTO/move.h"
+#include "../Common/DTO/gameCommand.h"
 #include "../Common/Types/direction.h"
 #include "./SDL/gamescreen.h"
 
@@ -9,7 +9,7 @@ Client::Client(char* ip, char* port):
         port(port),
         skt(std::make_shared<Socket>(ip, port)),
         was_closed(false),
-        senderQueue(std::make_shared<Queue<std::unique_ptr<DTO>>>()),
+        senderQueue(std::make_shared<Queue<std::unique_ptr<CommandDTO>>>()),
         lobbyQueue(std::make_shared<Queue<std::unique_ptr<DTO>>>()),
         gameQueue(std::make_shared<Queue<std::unique_ptr<DTO>>>()),
         sender(this->senderQueue, this->skt, this->was_closed),
@@ -29,8 +29,8 @@ void Client::start() {
 
     bool clientJoinedGame = false;
     do {
-        // LobbyInit init;
-        // clientJoinedGame = init.launchQT(this->lobbyController, (bool&)clientJoinedGame);
+        LobbyInit init;
+        clientJoinedGame = init.launchQT(this->lobbyController, (bool&)clientJoinedGame);
 
         //   if (!clientJoinedGame) {
         //       return;
@@ -72,12 +72,7 @@ void Client::start() {
         }
         // END - TESTING SKIP QT
 
-
-        // GameScreen game(*this);
         GameScreen game(this->gameController);
         game.run();
     } while (clientJoinedGame);
-
-    // GameScreen game(this->gameController);
-    // game.run();
 }

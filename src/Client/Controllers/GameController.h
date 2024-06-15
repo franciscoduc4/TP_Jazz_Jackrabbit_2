@@ -1,6 +1,9 @@
 #ifndef GAMECONTROLLER_H
 #define GAMECONTROLLER_H
 
+#include <memory>
+#include <vector>
+
 #include "../Protocol/deserializer.h"
 #include "../Protocol/serializer.h"
 #include "../../Common/Types/command.h"
@@ -12,7 +15,8 @@ private:
     Deserializer& deserializer;
     std::shared_ptr<Queue<std::unique_ptr<DTO>>>& gameQueue;
 public:
-    GameController(Serializer& serializer, Deserializer& deserializer, std::shared_ptr<Queue<std::unique_ptr<DTO>>>& gameQueue);
+    GameController(Serializer& serializer, Deserializer& deserializer,
+        std::shared_ptr<Queue<std::unique_ptr<DTO>>>& gameQueue);
 
     void sendMsg(uint32_t playerId, Command& cmd, std::vector<uint8_t>& parameters);
 

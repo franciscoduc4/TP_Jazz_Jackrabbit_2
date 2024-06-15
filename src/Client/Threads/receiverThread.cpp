@@ -1,12 +1,5 @@
 #include "./receiverThread.h"
 
-#include <netinet/in.h>
-
-#include "../../Common/Types/command.h"
-#include "../../Common/Types/entity.h"
-#include "DTO/createGame.h"
-#include "DTO/startGame.h"
-
 ReceiverThread::ReceiverThread(Deserializer& deserializer, std::shared_ptr<Socket>& socket,
                                std::atomic<bool>& was_closed):
         deserializer(deserializer), socket(socket), was_closed(was_closed), closed(false) {}
@@ -261,7 +254,7 @@ void ReceiverThread::receiveGamesList() {
         return;
     }
     uint32_t games = ntohl(gamesAmount);
-    std::map<uint32_t, GameInfo> gamesMap;
+    std::unordered_map<uint32_t, GameInfo> gamesMap;
     for (int i = 0; i < games; i++) {
         uint32_t gameId;
         socket->recvall(&gameId, sizeof(uint32_t), &closed);
@@ -302,6 +295,42 @@ void ReceiverThread::receiveGamesList() {
         gamesMap[id] = gameInfo;
     }
     std::unique_ptr<DTO> message = std::make_unique<GamesListDTO>(gamesMap);
+    this->deserializer.deserialize_lobbyMsg(message);
+}
+
+void ReceiverThread::receiveMapsList() {
+    uint32_t mapsAmount;
+    socket->recvall(&mapsAmount, sizeof(uint32_t), &closed);
+    this->was_closed.store(closed);
+    if (this->was_closed.load()) {
+        return;
+    }
+    uint32_t games = ntohl(mapsAmount);
+    std::unordered_map<uint32_t, std::string> mapsMap;
+    for (int i = 0; i < games; i++) {
+        uint32_t mapId;
+        socket->recvall(&mapId, sizeof(uint32_t), &closed);
+        this->was_closed.store(closed);
+        if (this->was_closed.load()) {
+            return;
+        }
+        uint32_t id = ntohl(mapId);
+        char nameLength;
+        socket->recvall(&nameLength, sizeof(char), &closed);
+        this->was_closed.store(closed);
+        if (this->was_closed.load()) {
+            return;
+        }
+        std::string name;
+        name.resize(nameLength);
+        socket->recvall(&name[0], nameLength, &closed);
+        this->was_closed.store(closed);
+        if (this->was_closed.load()) {
+            return;
+        }
+        mapsMap[id] = name;
+    }
+    std::unique_ptr<DTO> message = std::make_unique<MapsListDTO>(mapsMap);
     this->deserializer.deserialize_lobbyMsg(message);
 }
 

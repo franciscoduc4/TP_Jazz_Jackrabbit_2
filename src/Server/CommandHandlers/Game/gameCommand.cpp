@@ -1,6 +1,6 @@
 #include "gameCommand.h"
 
-#include "../../../Common/DTO/move.h"
+#include "../../../Common/DTO/gameCommand.h"
 #include "../../../Common/DTO/switchWeapon.h"
 
 #include "jump.h"
@@ -12,9 +12,9 @@ std::unique_ptr<GameCommandHandler> GameCommandHandler::createHandler(
         std::unique_ptr<CommandDTO> command) {
     switch (command->getCommand()) {
         case Command::MOVE: {
-            auto moveCommand = dynamic_cast<MoveDTO*>(command.get());
+            auto moveCommand = dynamic_cast<GameCommandDTO*>(command.get());
             command.release();
-            return std::make_unique<MoveHandler>(std::unique_ptr<MoveDTO>(moveCommand));
+            return std::make_unique<MoveHandler>(std::unique_ptr<GameCommandDTO>(moveCommand));
         }
         case Command::SHOOT: {
             return std::make_unique<ShootHandler>(std::unique_ptr<CommandDTO>(command.release()));
