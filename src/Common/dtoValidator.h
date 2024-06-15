@@ -30,7 +30,7 @@ public:
     }
     static bool validateDTOType(const char& type) {
         return type >= static_cast<char>(DTOType::COMMAND_DTO) &&
-               type < static_cast<char>(DTOType::GAME_DTO);
+               type <= static_cast<char>(DTOType::GAME_DTO);
     }
     static bool validateElementType(const char& type) {
         return type >= static_cast<char>(ElementType::PLAYER) &&

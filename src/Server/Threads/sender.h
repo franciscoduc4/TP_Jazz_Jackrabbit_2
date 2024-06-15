@@ -17,7 +17,7 @@
 
 class SenderThread: public Thread {
 private:
-    uint32_t playerId;
+    uint8_t playerId;
     Serializer serializer;
     Deserializer deserializer;
     std::atomic<bool>& keepPlaying;
@@ -32,7 +32,7 @@ private:
 
 public:
     SenderThread(std::shared_ptr<Socket> socket, std::atomic<bool>& keepPlaying,
-                 std::atomic<bool>& inGame, GameMonitor& gameMonitor, uint32_t playerId);
+                 std::atomic<bool>& inGame, GameMonitor& gameMonitor, uint8_t playerId);
 
     void run() override;
 

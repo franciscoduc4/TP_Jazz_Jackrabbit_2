@@ -16,8 +16,8 @@ JoinGameHandler::JoinGameHandler(std::unique_ptr<JoinGameDTO> command):
 void JoinGameHandler::execute(GameMonitor& gameMonitor, std::atomic<bool>& inGame,
                               std::shared_ptr<Queue<std::unique_ptr<CommandDTO>>> recvQueue,
                               std::shared_ptr<Queue<std::unique_ptr<DTO>>> sendQueue) {
-    uint32_t playerId = command->getPlayerId();
-    uint32_t gameId = command->getGameId();
+    uint8_t playerId = command->getPlayerId();
+    uint8_t gameId = command->getGameId();
     CharacterType characterType = command->getCharacterType();
     gameMonitor.joinGame(playerId, gameId, characterType, sendQueue);
 }

@@ -18,8 +18,8 @@ CreateGameHandler::CreateGameHandler(std::unique_ptr<CreateGameDTO> command):
 void CreateGameHandler::execute(GameMonitor& gameMonitor, std::atomic<bool>& inGame,
                                 std::shared_ptr<Queue<std::unique_ptr<CommandDTO>>> recvQueue,
                                 std::shared_ptr<Queue<std::unique_ptr<DTO>>> sendQueue) {
-    uint32_t playerId = command->getPlayerId();
-    uint32_t mapId = command->getMapId();
+    uint8_t playerId = command->getPlayerId();
+    uint8_t mapId = command->getMapId();
     uint8_t maxPlayers = command->getMaxPlayers();
     GameMode gameMode = command->getGameMode();
     CharacterType characterType = command->getCharacterType();

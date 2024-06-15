@@ -1,4 +1,5 @@
 #include "bouncer.h"
+
 #include "../../../Common/Config/ServerConfig.h"
 #define CONFIG ServerConfig::getInstance()
 
@@ -7,7 +8,7 @@ Bouncer::Bouncer():
         maxBullets(CONFIG->getWeaponBouncerBullets()),
         damage(CONFIG->getWeaponBouncerDamage()),
         fireRate(CONFIG->getWeaponBouncerFireRate()),
-        lastTimeShot(-1) {}  
+        lastTimeShot(-1) {}
 
 void Bouncer::update(float time) {
     if (lastTimeShot != -1 && time - lastTimeShot >= fireRate) {
@@ -15,7 +16,7 @@ void Bouncer::update(float time) {
         lastTimeShot = -1;
     }
 }
-void Bouncer::shoot(std::vector<std::shared_ptr<Entity>>& shootingEntities, int16_t xPos,
+void Bouncer::shoot(std::vector<std::shared_ptr<Entity>>& shootingEntities, uint8_t xPos,
                     float time) {
     lastTimeShot = time;
     bullets--;
@@ -35,9 +36,9 @@ bool Bouncer::isEmpty() { return bullets == 0; }
 
 bool Bouncer::isLoaded() { return bullets == maxBullets; }
 
-int16_t Bouncer::getBullets() { return bullets; }
+uint8_t Bouncer::getBullets() { return bullets; }
 
-uint32_t Bouncer::getBulletsShot() { return bulletsShot; }
+uint8_t Bouncer::getBulletsShot() { return bulletsShot; }
 
 bool Bouncer::shootTime(float time) {
     return lastTimeShot != -1 && time - lastTimeShot >= fireRate;

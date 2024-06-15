@@ -8,6 +8,7 @@
 
 #include "../../Common/DTO/createGame.h"
 #include "../../Common/DTO/dto.h"
+#include "../../Common/DTO/move.h"
 #include "../../Common/DTO/startGame.h"
 #include "../../Common/queue.h"
 #include "../../Common/socket.h"

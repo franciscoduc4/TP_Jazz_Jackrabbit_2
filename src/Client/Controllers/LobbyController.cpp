@@ -10,7 +10,7 @@ LobbyController::LobbyController(Serializer& serializer, Deserializer& deseriali
         serializer(serializer),
         deserializer(deserializer),
         lobbyQueue(lobbyQueue),
-        games(std::map<uint32_t, GameInfo>()),
+        games(std::map<uint8_t, GameInfo>()),
         selected() {}
 
 void LobbyController::sendRequest(const LobbyMessage& msg) {
@@ -59,7 +59,7 @@ bool LobbyController::recvStartGame() {
     }
 }
 
-std::map<uint32_t, GameInfo>& LobbyController::getGamesList() {
+std::map<uint8_t, GameInfo>& LobbyController::getGamesList() {
     std::unique_ptr<DTO> dto;
     GamesListDTO* gamesList;
     try {

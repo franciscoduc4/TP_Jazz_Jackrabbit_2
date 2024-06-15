@@ -1,9 +1,10 @@
 #ifndef __SERVER_CONFIG_H__
 #define __SERVER_CONFIG_H__
 
+#include <map>
 #include <string>
 #include <vector>
-#include <map>
+
 #include <yaml-cpp/yaml.h>
 
 class ServerConfig {
@@ -16,109 +17,109 @@ public:
     static ServerConfig* getInstance();
     static std::string getLogFile();
     static float getGameGravity();
-    static int getGameMaxMoves();
-    static int getGameMaxRevived();
+    static uint8_t getGameMaxMoves();
+    static uint8_t getGameMaxRevived();
 
-    static int getCharacterInitialX();
-    static int getCharacterInitialY();
-    static int getCharacterInitialHealth();
-    static int getCharacterReviveTime();
-    static int getCharacterMaxRevived();
-    static int getCharacterMaxMovesPerCell();
-    static int getCharacterRespawnTime();
-    static int getCharacterDamageTime();
-    static int getCharacterIntoxicatedTime();
+    static uint8_t getCharacterInitialX();
+    static uint8_t getCharacterInitialY();
+    static uint8_t getCharacterInitialHealth();
+    static uint8_t getCharacterReviveTime();
+    static uint8_t getCharacterMaxRevived();
+    static uint8_t getCharacterMaxMovesPerCell();
+    static uint8_t getCharacterRespawnTime();
+    static uint8_t getCharacterDamageTime();
+    static uint8_t getCharacterIntoxicatedTime();
 
-    static int getJazzShootCooldownTime();
+    static uint8_t getJazzShootCooldownTime();
     static float getJazzHorizontalSpeed();
     static float getJazzVerticalSpeed();
     static float getJazzSprintSpeed();
-    static int getJazzJumpHeight();
+    static uint8_t getJazzJumpHeight();
 
-    static int getLoriShootCooldownTime();
+    static uint8_t getLoriShootCooldownTime();
     static float getLoriHorizontalSpeed();
     static float getLoriVerticalSpeed();
     static float getLoriSprintSpeed();
-    static int getLoriJumpHeight();
+    static uint8_t getLoriJumpHeight();
 
-    static int getSpazShootCooldownTime();
+    static uint8_t getSpazShootCooldownTime();
     static float getSpazHorizontalSpeed();
     static float getSpazVerticalSpeed();
     static float getSpazSprintSpeed();
-    static int getSpazJumpHeight();
+    static uint8_t getSpazJumpHeight();
 
-    static int getWeaponBlasterBullets();
-    static int getWeaponBlasterDamage();
+    static uint8_t getWeaponBlasterBullets();
+    static uint8_t getWeaponBlasterDamage();
     static float getWeaponBlasterFireRate();
-    static int getWeaponBouncerBullets();
-    static int getWeaponBouncerDamage();
+    static uint8_t getWeaponBouncerBullets();
+    static uint8_t getWeaponBouncerDamage();
     static float getWeaponBouncerFireRate();
-    static int getWeaponFreezerBullets();
-    static int getWeaponFreezerDamage();
+    static uint8_t getWeaponFreezerBullets();
+    static uint8_t getWeaponFreezerDamage();
     static float getWeaponFreezerFireRate();
-    static int getWeaponRFMissileBullets();
-    static int getWeaponRFMissileDamage();
+    static uint8_t getWeaponRFMissileBullets();
+    static uint8_t getWeaponRFMissileDamage();
     static float getWeaponRFMissileFireRate();
 
-    static int getObstacleMoves();
+    static uint8_t getObstacleMoves();
 
-    static int getGameMapSizeX();
-    static int getGameMapSizeY();
+    static uint8_t getGameMapSizeX();
+    static uint8_t getGameMapSizeY();
 
     static void deleteInstance();
 
-    static int getWalkingEnemyInitialX();
-    static int getWalkingEnemyInitialY();
-    static int getWalkingEnemyInitialHealth();
-    static int getWalkingEnemyDamage();
-    static int getWalkingEnemyMaxMoves();
-    static int getWalkingEnemyMaxRevived();
-    static int getWalkingEnemyDamageTime();
-    static int getWalkingEnemyReviveTime();
-    static int getWalkingEnemyMaxMovesPerCell();
-    static int getWalkingEnemyHitDistance();
-    static int getWalkingEnemyHitDistanceY();
-    static int getWalkingEnemyViewDistance();
-    static int getWalkingEnemyViewDistanceHit();
-    static std::vector<int16_t> getWalkingEnemyWalkProb();
+    static uint8_t getWalkingEnemyInitialX();
+    static uint8_t getWalkingEnemyInitialY();
+    static uint8_t getWalkingEnemyInitialHealth();
+    static uint8_t getWalkingEnemyDamage();
+    static uint8_t getWalkingEnemyMaxMoves();
+    static uint8_t getWalkingEnemyMaxRevived();
+    static uint8_t getWalkingEnemyDamageTime();
+    static uint8_t getWalkingEnemyReviveTime();
+    static uint8_t getWalkingEnemyMaxMovesPerCell();
+    static uint8_t getWalkingEnemyHitDistance();
+    static uint8_t getWalkingEnemyHitDistanceY();
+    static uint8_t getWalkingEnemyViewDistance();
+    static uint8_t getWalkingEnemyViewDistanceHit();
+    static std::vector<uint8_t> getWalkingEnemyWalkProb();
 
-    static int getFlyingEnemyInitialX();
-    static int getFlyingEnemyInitialY();
-    static int getFlyingEnemyInitialHealth();
-    static int getFlyingEnemyDamage();
-    static int getFlyingEnemyMaxMoves();
-    static int getFlyingEnemyMaxRevived();
-    static int getFlyingEnemyDamageTime();
-    static int getFlyingEnemyReviveTime();
-    static int getFlyingEnemyMaxMovesPerCell();
-    static int getFlyingEnemyHitDistance();
-    static int getFlyingEnemyHitDistanceY();
-    static int getFlyingEnemyViewDistance();
-    static int getFlyingEnemyViewDistanceHit();
-    static std::vector<int16_t> getFlyingEnemyFlyProb();
+    static uint8_t getFlyingEnemyInitialX();
+    static uint8_t getFlyingEnemyInitialY();
+    static uint8_t getFlyingEnemyInitialHealth();
+    static uint8_t getFlyingEnemyDamage();
+    static uint8_t getFlyingEnemyMaxMoves();
+    static uint8_t getFlyingEnemyMaxRevived();
+    static uint8_t getFlyingEnemyDamageTime();
+    static uint8_t getFlyingEnemyReviveTime();
+    static uint8_t getFlyingEnemyMaxMovesPerCell();
+    static uint8_t getFlyingEnemyHitDistance();
+    static uint8_t getFlyingEnemyHitDistanceY();
+    static uint8_t getFlyingEnemyViewDistance();
+    static uint8_t getFlyingEnemyViewDistanceHit();
+    static std::vector<uint8_t> getFlyingEnemyFlyProb();
 
-    static int getJumpingEnemyInitialX();
-    static int getJumpingEnemyInitialY();
-    static int getJumpingEnemyInitialHealth();
-    static int getJumpingEnemyDamage();
-    static int getJumpingEnemyMaxMoves();
-    static int getJumpingEnemyMaxRevived();
-    static int getJumpingEnemyDamageTime();
-    static int getJumpingEnemyReviveTime();
-    static int getJumpingEnemyMaxMovesPerCell();
-    static int getJumpingEnemyHitDistance();
-    static int getJumpingEnemyHitDistanceY();
-    static int getJumpingEnemyViewDistance();
-    static int getJumpingEnemyViewDistanceHit();
-    static std::vector<int16_t> getJumpingEnemyJumpProb();
+    static uint8_t getJumpingEnemyInitialX();
+    static uint8_t getJumpingEnemyInitialY();
+    static uint8_t getJumpingEnemyInitialHealth();
+    static uint8_t getJumpingEnemyDamage();
+    static uint8_t getJumpingEnemyMaxMoves();
+    static uint8_t getJumpingEnemyMaxRevived();
+    static uint8_t getJumpingEnemyDamageTime();
+    static uint8_t getJumpingEnemyReviveTime();
+    static uint8_t getJumpingEnemyMaxMovesPerCell();
+    static uint8_t getJumpingEnemyHitDistance();
+    static uint8_t getJumpingEnemyHitDistanceY();
+    static uint8_t getJumpingEnemyViewDistance();
+    static uint8_t getJumpingEnemyViewDistanceHit();
+    static std::vector<uint8_t> getJumpingEnemyJumpProb();
 
-    static int getGameMapSizeX(const std::string& mapName);
-    static int getGameMapSizeY(const std::string& mapName);
-    static int getGameMapObstacles(const std::string& mapName);
-    static int getGameMapEnemies(const std::string& mapName);
-    static int getGameMapGems(const std::string& mapName);
-    static int getGameMapSilverCoins(const std::string& mapName);
-    static int getGameMapGoldCoins(const std::string& mapName);
+    static uint8_t getGameMapSizeX(const std::string& mapName);
+    static uint8_t getGameMapSizeY(const std::string& mapName);
+    static uint8_t getGameMapObstacles(const std::string& mapName);
+    static uint8_t getGameMapEnemies(const std::string& mapName);
+    static uint8_t getGameMapGems(const std::string& mapName);
+    static uint8_t getGameMapSilverCoins(const std::string& mapName);
+    static uint8_t getGameMapGoldCoins(const std::string& mapName);
 };
 
 #endif  // __SERVER_CONFIG_H__

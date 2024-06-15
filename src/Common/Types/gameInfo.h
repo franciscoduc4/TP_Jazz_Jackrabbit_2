@@ -4,24 +4,26 @@
 #include <string>
 
 struct GameInfo {
-    uint32_t id;
+    uint8_t id;
     std::string name;
-    uint32_t maxPlayers;
-    uint32_t currentPlayers;
+    uint8_t maxPlayers;
+    uint8_t currentPlayers;
     bool ableToJoin;
     std::string mapName;
 
-    GameInfo() : id(-1), maxPlayers(-1), currentPlayers(-1), ableToJoin(false){}
-    GameInfo(const uint32_t& gameId, std::string name, const uint32_t& maxPlayers, const uint32_t& currentPlayers):
+    GameInfo(): id(-1), maxPlayers(-1), currentPlayers(-1), ableToJoin(false) {}
+    GameInfo(const uint8_t& gameId, std::string name, const uint8_t& maxPlayers,
+             const uint8_t& currentPlayers):
             id(gameId),
             name(std::move(name)),
             maxPlayers(maxPlayers),
             currentPlayers(currentPlayers),
             mapName("invalid") {
         this->ableToJoin = (maxPlayers > currentPlayers);
-            }
+    }
 
-    GameInfo(const uint32_t& gameId, std::string name, const uint32_t& maxPlayers, const uint32_t& currentPlayers, std::string mapName):
+    GameInfo(const uint8_t& gameId, std::string name, const uint8_t& maxPlayers,
+             const uint8_t& currentPlayers, std::string mapName):
             id(gameId),
             name(std::move(name)),
             maxPlayers(maxPlayers),
@@ -30,18 +32,17 @@ struct GameInfo {
         this->ableToJoin = (maxPlayers > currentPlayers);
     }
 
-    uint32_t getGameId() const { return id; }
+    uint8_t getGameId() const { return id; }
     std::string getGameName() const { return name; }
-    uint32_t getMaxPlayers() const { return maxPlayers; }
-    uint32_t getCurrentPlayers() const { return currentPlayers; }
+    uint8_t getMaxPlayers() const { return maxPlayers; }
+    uint8_t getCurrentPlayers() const { return currentPlayers; }
     bool isAbleToJoin() const { return ableToJoin; }
     std::string getMapName() const { return mapName; }
 
-    void updateCurrentPlayers(const uint32_t& players) {
+    void updateCurrentPlayers(const uint8_t& players) {
         currentPlayers = players;
         this->ableToJoin = (maxPlayers > currentPlayers);
     }
-
 };
 
 #endif  // GAME_INFO_H_

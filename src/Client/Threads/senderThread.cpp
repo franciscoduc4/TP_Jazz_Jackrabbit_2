@@ -31,6 +31,9 @@ void SenderThread::sendCommandDTO(const CommandDTO& cmd) {
         case Command::START_GAME:
             this->sendStartGame(cmd);
             break;
+        case Command::MOVE:
+            this->sendMovement(cmd);
+            break;
         default:
             std::cout << "[CLIENT SENDER] Unknown command: " << (int)command << std::endl;
             break;
@@ -43,14 +46,14 @@ void SenderThread::sendCommandDTO(const CommandDTO& cmd) {
 
 void SenderThread::sendCreateGame(const CommandDTO& cmd) {
     auto createGame = dynamic_cast<const CreateGameDTO&>(cmd);
-    uint32_t mapId = createGame.getMapId();
+    uint8_t mapId = createGame.getMapId();
     uint8_t maxPlayers = createGame.getMaxPlayers();
     CharacterType character = createGame.getCharacterType();
     std::string gameName = createGame.getGameName();
 
     mapId = htonl(mapId);
 
-    this->socket->sendall(&mapId, sizeof(uint32_t), &this->closed);
+    this->socket->sendall(&mapId, sizeof(uint8_t), &this->closed);
     std::cout << "[CLIENT SENDER] Sent mapId: " << mapId << std::endl;
     this->was_closed.store(this->closed);
 
@@ -92,11 +95,11 @@ void SenderThread::sendCreateGame(const CommandDTO& cmd) {
 
 void SenderThread::sendStartGame(const CommandDTO& cmd) {
     auto startGame = dynamic_cast<const StartGameDTO&>(cmd);
-    uint32_t gameId = startGame.getGameId();
+    uint8_t gameId = startGame.getGameId();
     std::cout << "[CLIENT SENDER] Getting gameId for start game: " << gameId << std::endl;
     gameId = htonl(gameId);
 
-    this->socket->sendall(&gameId, sizeof(uint32_t), &this->closed);
+    this->socket->sendall(&gameId, sizeof(uint8_t), &this->closed);
     std::cout << "[CLIENT SENDER] Sent gameId for start game: " << gameId << std::endl;
     this->was_closed.store(this->closed);
     if (this->was_closed.load()) {
@@ -105,10 +108,11 @@ void SenderThread::sendStartGame(const CommandDTO& cmd) {
 }
 
 void SenderThread::sendMovement(const CommandDTO& cmd) {
-    Command command = cmd.getCommand();
+    auto moveDTO = dynamic_cast<const MoveDTO&>(cmd);
+    Direction direction = moveDTO.getMoveType();
 
-    this->socket->sendall(&command, sizeof(char), &this->closed);
-    std::cout << "[CLIENT SENDER] Sent movement command: " << (int)command << std::endl;
+    this->socket->sendall(&direction, sizeof(char), &this->closed);
+    std::cout << "[CLIENT SENDER] Sent direction: " << (int)direction << std::endl;
     this->was_closed.store(this->closed);
 
     if (this->was_closed.load()) {
@@ -116,14 +120,16 @@ void SenderThread::sendMovement(const CommandDTO& cmd) {
                   << std::endl;
         return;
     }
-    std::vector<char> data = cmd.getData();
+    // std::vector<char> data = cmd.getData();
 
-    this->socket->sendall(data.data(), data.size(), &this->closed);
-    std::cout << "[CLIENT SENDER] Sent movement data" << std::endl;
-    this->was_closed.store(this->closed);
-    if (this->was_closed.load()) {
-        std::cout << "[CLIENT SENDER] Socket was closed after sending movement data" << std::endl;
-    }
+    // this->socket->sendall(data.data(), data.size(), &this->closed);
+
+    // std::cout << "[CLIENT SENDER] Sent movement data" << std::endl;
+    // this->was_closed.store(this->closed);
+    // if (this->was_closed.load()) {
+    //     std::cout << "[CLIENT SENDER] Socket was closed after sending movement data" <<
+    //     std::endl;
+    // }
 }
 
 void SenderThread::run() {

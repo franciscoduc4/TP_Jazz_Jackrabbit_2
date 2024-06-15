@@ -2,7 +2,7 @@
 
 #define CONFIG ServerConfig::getInstance()
 
-FlyingEnemy::FlyingEnemy(GameMap& map, Vector<int16_t> pos, int16_t id):
+FlyingEnemy::FlyingEnemy(GameMap& map, Vector<uint8_t> pos, uint8_t id):
         Enemy(map, pos, id, CONFIG->getFlyingEnemyInitialHealth(), Direction::LEFT,
               CONFIG->getFlyingEnemyDamage(), std::make_unique<EnemyIdle>(),
               CONFIG->getFlyingEnemyViewDistance(), CONFIG->getFlyingEnemyViewDistanceHit(),

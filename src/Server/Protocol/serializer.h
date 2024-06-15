@@ -8,10 +8,10 @@
 
 #include "../../Common/DTO/command.h"
 #include "../../Common/DTO/createGame.h"
-#include "../../Common/DTO/mapsList.h"
 #include "../../Common/DTO/game.h"
 #include "../../Common/DTO/joinGame.h"
 #include "../../Common/DTO/lobby.h"
+#include "../../Common/DTO/mapsList.h"
 #include "../../Common/DTO/move.h"
 #include "../../Common/DTO/startGame.h"
 #include "../../Common/Types/command.h"
@@ -26,7 +26,7 @@ public:
     std::vector<char> serializeJoinGame(const std::unique_ptr<JoinGameDTO>& dto);
     std::vector<char> serializeGamesList(const std::unique_ptr<CommandDTO>& dto);
     std::vector<char> serializeGamesList(const std::unique_ptr<GamesListDTO>& dto);
-    std::vector<char> serializeGameDTO(const std::unique_ptr<GameDTO> dto);
+    // std::vector<char> serializeGameDTO(const std::unique_ptr<GameDTO> dto);
     std::vector<char> serializePlayerDTO(const std::unique_ptr<PlayerDTO> dto);
     std::vector<char> serializeEnemyDTO(const std::unique_ptr<EnemyDTO> dto);
     std::vector<char> serializeBulletDTO(const std::unique_ptr<BulletDTO> dto);
@@ -37,7 +37,7 @@ public:
 
     Serializer() {}
     explicit Serializer(std::shared_ptr<Socket> socket);
-    void sendId(uint32_t id, bool& wasClosed);
+    void sendId(uint8_t id, bool& wasClosed);
     void sendCommand(const std::unique_ptr<CommandDTO> dto, bool& wasClosed);
     void sendGameDTO(const std::unique_ptr<GameDTO> dto, bool& wasClosed);
 };

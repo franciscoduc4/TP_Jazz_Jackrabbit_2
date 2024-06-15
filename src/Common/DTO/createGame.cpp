@@ -5,20 +5,20 @@
 #include "../maps/mapsManager.h"
 
 
-CreateGameDTO::CreateGameDTO(const uint32_t& gameId): gameId(gameId), 
-    CommandDTO(Command::CREATE_GAME) {}
+CreateGameDTO::CreateGameDTO(const uint8_t& gameId):
+        gameId(gameId), CommandDTO(Command::CREATE_GAME) {}
 
-CreateGameDTO::CreateGameDTO(uint32_t mapId, uint8_t maxPlayers,
-                             CharacterType characterType, std::string gameName):
+CreateGameDTO::CreateGameDTO(uint8_t mapId, uint8_t maxPlayers, CharacterType characterType,
+                             std::string gameName):
         CommandDTO(Command::CREATE_GAME),
         mapId(mapId),
         maxPlayers(maxPlayers),
         characterType(characterType),
-        gameName(std::move(gameName)){
+        gameName(std::move(gameName)) {
     this->mode = (maxPlayers == 1) ? GameMode::SINGLE_PLAYER : GameMode::PARTY_MODE;
 }
 
-CreateGameDTO::CreateGameDTO(const uint32_t& playerId, uint32_t mapId, uint8_t maxPlayers,
+CreateGameDTO::CreateGameDTO(const uint8_t& playerId, uint8_t mapId, uint8_t maxPlayers,
                              CharacterType characterType, std::string gameName):
         CommandDTO(playerId, Command::CREATE_GAME),
         mapId(mapId),
@@ -29,9 +29,9 @@ CreateGameDTO::CreateGameDTO(const uint32_t& playerId, uint32_t mapId, uint8_t m
 }
 
 
-uint32_t CreateGameDTO::getMapId() const { return mapId; }
+uint8_t CreateGameDTO::getMapId() const { return mapId; }
 
-uint32_t CreateGameDTO::getGameId() const { return gameId; }
+uint8_t CreateGameDTO::getGameId() const { return gameId; }
 
 uint8_t CreateGameDTO::getMaxPlayers() const { return maxPlayers; }
 

@@ -3,8 +3,8 @@
 #include <iostream>
 #include <utility>
 
-Game::Game(uint32_t gameId, std::string gameName, uint32_t mapId, uint32_t playerId,
-           GameMode gameMode, uint8_t maxPlayers, CharacterType characterType,
+Game::Game(uint8_t gameId, std::string gameName, uint8_t mapId, uint8_t playerId, GameMode gameMode,
+           uint8_t maxPlayers, CharacterType characterType,
            std::shared_ptr<Queue<std::unique_ptr<CommandDTO>>> recvQueue,
            QueueMonitor<std::unique_ptr<DTO>>& queueMonitor):
         gameId(gameId),
@@ -35,7 +35,7 @@ bool Game::isFull() const {
     return currentPlayers == maxPlayers;
 }
 
-void Game::addPlayer(uint32_t playerId, CharacterType characterType) {
+void Game::addPlayer(uint8_t playerId, CharacterType characterType) {
     std::cout << "[GAME] addPlayer called with playerId: " << playerId
               << " and characterType: " << (int)characterType << std::endl;
     gameMap.addCharacter(playerId, characterType);
@@ -43,14 +43,14 @@ void Game::addPlayer(uint32_t playerId, CharacterType characterType) {
     std::cout << "[GAME] Player added, currentPlayers now: " << (int)currentPlayers << std::endl;
 }
 
-void Game::removePlayer(uint32_t playerId) {
+void Game::removePlayer(uint8_t playerId) {
     std::cout << "[GAME] removePlayer called with playerId: " << playerId << std::endl;
     gameMap.removeCharacter(playerId);
     currentPlayers--;
     std::cout << "[GAME] Player removed, currentPlayers now: " << (int)currentPlayers << std::endl;
 }
 
-uint32_t Game::getGameId() const {
+uint8_t Game::getGameId() const {
     std::cout << "[GAME] getGameId called, returning: " << gameId << std::endl;
     return gameId;
 }
