@@ -109,9 +109,9 @@ void GameMonitor::gamesList(std::shared_ptr<Queue<std::unique_ptr<DTO>>> sendQue
 void GameMonitor::mapsList(std::shared_ptr<Queue<std::unique_ptr<DTO>>> sendQueue) {
     std::cout << "[GM] Attempting to lock mutex in mapsList" << std::endl;
     std::lock_guard<std::mutex> lock(mtx);
-    std::cout << "[Game Monitor] Getting maps list" << std::endl;
+    std::cout << "[GM] Getting maps list" << std::endl;
     auto dto = std::make_unique<MapsListDTO>(MapsManager::getMapIdAndName());
-    std::cout << "[Game Monitor] Sending maps list" << std::endl;
+    std::cout << "[GM] Sending maps list" << std::endl;
     sendQueue->push(std::move(dto));
     std::cout << "[GM] Pushed MapsListDTO to send queue" << std::endl;
 }

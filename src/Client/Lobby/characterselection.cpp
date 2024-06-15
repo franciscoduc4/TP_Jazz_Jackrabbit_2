@@ -1,5 +1,7 @@
 #include "characterselection.h"
 
+#include <QMessageBox>
+
 #include "../../Common/Types/character.h"
 #include "../../Common/Types/lobbyMessage.h"
 
@@ -7,10 +9,8 @@
 #include "ui_characterselection.h"
 #include "waitingroom.h"
 
-#include <QMessageBox>
-
-CharacterSelection::CharacterSelection(QWidget* parent, LobbyController& controller, LobbyMessage& msg,
-                                       bool& clientJoinedGame):
+CharacterSelection::CharacterSelection(QWidget* parent, LobbyController& controller,
+                                       LobbyMessage& msg, bool& clientJoinedGame):
         QDialog(parent),
         ui(new Ui::CharacterSelection),
         controller(controller),
@@ -36,7 +36,7 @@ CharacterSelection::~CharacterSelection() {
 }
 
 void CharacterSelection::on_btnChoose_clicked() {
-    // this->msg.setCharacter(characterSelectionWidget->getCurrentCharacter());
+    // this->msg.setCharacter(characterSelectionWidget->getSelectedCharacter());
     this->controller.sendRequest(this->msg);
     this->hide();
     if (this->msg.getLobbyCmd() == Command::CREATE_GAME) {

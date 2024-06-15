@@ -1,14 +1,14 @@
 #include "lobbyCommand.h"
 
 #include "../../../Common/DTO/createGame.h"
-#include "../../../Common/DTO/mapsList.h"
 #include "../../../Common/DTO/joinGame.h"
+#include "../../../Common/DTO/mapsList.h"
 #include "../../../Common/DTO/startGame.h"
 
 #include "createGame.h"
-#include "mapsListHandler.h"
 #include "gamesList.h"
 #include "joinGame.h"
+#include "mapsList.h"
 #include "startGame.h"
 
 std::unique_ptr<LobbyCommandHandler> LobbyCommandHandler::createHandler(
@@ -23,8 +23,7 @@ std::unique_ptr<LobbyCommandHandler> LobbyCommandHandler::createHandler(
         case Command::MAPS_LIST: {
             auto mapsListCommand = dynamic_cast<MapsListDTO*>(command.get());
             command.release();
-            return std::make_unique<MapsListHandler>(
-                    std::unique_ptr<MapsListDTO>(mapsListCommand));
+            return std::make_unique<MapsListHandler>(std::unique_ptr<MapsListDTO>(mapsListCommand));
         }
         case Command::JOIN_GAME: {
             auto joinGameCommand = dynamic_cast<JoinGameDTO*>(command.get());
