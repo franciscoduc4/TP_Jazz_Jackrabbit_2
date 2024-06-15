@@ -81,7 +81,8 @@ void GameList::joinGame(const QString& gameName) {
 }
 
 void GameList::on_btnBack_clicked() {
-    // this->msg.setGameName("");
+    this->msg.setGameName("");
+    this->msg.setGameId(-1);
 
     this->hide();
 
