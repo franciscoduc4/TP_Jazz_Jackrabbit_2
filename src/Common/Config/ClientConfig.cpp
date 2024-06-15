@@ -26,6 +26,12 @@ std::string ClientConfig::getLogFile() {
     return logFile;
 }
 
+
+
+int ClientConfig::getGamesListRefreshInterval() {
+    return getInstance()->root["GAMES_LIST_REFRESH_INTERVAL"].as<int>();
+}
+
 // Files
 std::string ClientConfig::getEpisodeFile() {
     return getInstance()->root["EPISODES_FILE"].as<std::string>();

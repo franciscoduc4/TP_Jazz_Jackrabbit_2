@@ -1,6 +1,9 @@
 # Log File
 LOG_FILE: "logs/client.log"
 
+# Refresh Times
+GAMES_LIST_REFRESH_INTERVAL: 5000
+
 # Sprites Files
 EPISODES_FILE: "assets/Miscellaneous/EpisodeSelect.png"
 CHARACTERS_SELECT_FILE: "assets/Miscellaneous/CharacterSelect.png"
