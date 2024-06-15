@@ -120,23 +120,16 @@ std::vector<std::shared_ptr<Entity>> GameMap::getObjectsInExplosionRange(
 
 void GameMap::moveObject(Vector<uint8_t>& position, Vector<uint8_t> mapPosition, Direction dir) {
     try {
-        Vector<uint8_t> newPosition = calculateNewPosition(position, dir);
-        std::cout << "[GAMEMAP] New position: (" << static_cast<int>(newPosition.x) << ", "
-                  << static_cast<int>(newPosition.y) << ")" << std::endl;
-
-        if (!isValidPosition(newPosition))
+        auto character = std::dynamic_pointer_cast<Character>(mapGrid[mapPosition]);
+        if (!character) {
+            std::cerr << "[GAMEMAP] Invalid character" << std::endl;
             return;
+        }
 
+        Vector<uint8_t> newPosition = calculateNewPosition(position, dir);
         Vector<uint8_t> newMapPosition = getMapPosition(newPosition);
-        std::cout << "[GAMEMAP] New map position: (" << static_cast<int>(newMapPosition.x) << ", "
-                  << static_cast<int>(newMapPosition.y) << ")" << std::endl;
-
         if (!handleMovement(position, mapPosition, newPosition, newMapPosition)) {
-            auto character = std::dynamic_pointer_cast<Character>(mapGrid[mapPosition]);
-            if (!isFreePosition(newMapPosition)) {
-                character->interact(mapGrid[newMapPosition]);
-            } else {
-            }
+            character->interact(mapGrid[newMapPosition]);
         }
     } catch (const std::exception& e) {
         std::cerr << "[GAMEMAP] Error moving object: " << e.what() << std::endl;
@@ -268,17 +261,8 @@ Vector<uint8_t> GameMap::getAvailablePosition() {
 void GameMap::update(float time) {
     std::cout << "[GAMEMAP] Updating game map" << std::endl;
     try {
-        for (auto& [_, entity]: mapGrid) {
-            switch (entity->getType()) {
-                case EntityType::CHARACTER: {
-                    auto character = std::dynamic_pointer_cast<Character>(entity);
-                    character->update(time);
-                    break;
-                }
-                default:
-                    break;
-            }
-            std::cout << "[GAMEMAP] Entity updated" << std::endl;
+        for (const auto& character: characters) {
+            character.second->update(time);
         }
     } catch (const std::exception& e) {
         std::cerr << "[GAMEMAP] Error updating game map: " << e.what() << std::endl;
@@ -407,10 +391,12 @@ bool GameMap::handleMovement(Vector<uint8_t>& position, Vector<uint8_t> mapPosit
         if (newMapPosition == mapPosition) {
             std::cout << "[GAMEMAP] Same map position" << std::endl;
             return true;
-        } else if (isValidMapPosition(newMapPosition) && isFreePosition(newMapPosition)) {
+        } else if (isFreePosition(newMapPosition)) {
             std::cout << "[GAMEMAP] Moving object to new position" << std::endl;
             mapGrid[newMapPosition] = mapGrid[mapPosition];
             mapGrid.erase(mapPosition);
+            std::cout << "[GAMEMAP] Object at old position is nullptr: "
+                      << (mapGrid.find(mapPosition) == mapGrid.end()) << std::endl;
             std::cout << "[GAMEMAP] Object old position: " << position << std::endl;
             position = newPosition;
             std::cout << "[GAMEMAP] Object new position: " << position << std::endl;
