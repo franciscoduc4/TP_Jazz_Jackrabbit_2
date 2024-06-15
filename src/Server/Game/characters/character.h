@@ -62,6 +62,7 @@ public:
               float horizontalSpeed, float sprintSpeed, float verticalSpeed, float jumpHeight,
               float shootCooldownTime);
 
+    void idle(float time);
     void recvDamage(uint8_t damage, float time) override;
     void update(float time);
     void shoot(float time);

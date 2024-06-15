@@ -25,9 +25,17 @@ Character::Character(GameMap& gameMap, Vector<uint8_t> pos, uint8_t playerId, Ch
         jumpHeight(jumpHeight),
         shootCooldownTime(shootCooldownTime),
         currentWeapon(std::make_unique<Blaster>()),
-        state(std::make_unique<IdleState>()) {
+        state(std::unique_ptr<IdleState>()) {
     std::cout << "[CHARACTER] Character created with ID: " << static_cast<int>(playerId)
               << std::endl;
+}
+
+void Character::idle(float time) {
+    std::cout << "[CHARACTER] Character ID: " << static_cast<int>(id) << " idling" << std::endl;
+    auto newState = std::unique_ptr<State>(state->stopAction());
+    if (newState) {
+        state = std::move(newState);
+    }
 }
 
 void Character::recvDamage(uint8_t dmg, float time) {

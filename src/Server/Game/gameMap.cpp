@@ -303,6 +303,7 @@ std::shared_ptr<Entity> GameMap::getEntityAt(Vector<uint8_t> mapPosition) {
 }
 
 std::unique_ptr<GameDTO> GameMap::getGameDTO() {
+    std::cout << "[GAMEMAP] Creating GameDTO" << std::endl;
     std::vector<PlayerDTO> playersDTO;
     std::vector<EnemyDTO> enemies;
     std::vector<BulletDTO> bullets;
@@ -311,13 +312,28 @@ std::unique_ptr<GameDTO> GameMap::getGameDTO() {
     std::vector<TileDTO> tiles;
 
     try {
-        for (const auto& [pos, entity]: mapGrid) {
-            if (entity->getType() == EntityType::CHARACTER) {
-                auto character = std::dynamic_pointer_cast<Character>(entity);
-                playersDTO.push_back(character->getDTO());
-                std::cout << "[GAMEMAP] Character added to DTO" << std::endl;
-            }
+        for (const auto& character: characters) {
+            playersDTO.push_back(character.second->getDTO());
+            std::cout << "[GAMEMAP] Character added to DTO" << std::endl;
         }
+        // for (const auto& [pos, entity]: mapGrid) {
+        //     switch (entity->getType()) {
+        //         // case EntityType::ENEMY:
+        //         //     // enemies.push_back(std::dynamic_pointer_cast<Enemy>(entity)->getDTO());
+        //         //     break;
+        //         // case EntityType::BULLET:
+        //         //     // bullets.push_back(std::dynamic_pointer_cast<Bullet>(entity)->getDTO());
+        //         //     break;
+        //         // case EntityType::ITEM:
+        //         //     // items.push_back(std::dynamic_pointer_cast<Item>(entity)->getDTO());
+        //         //     break;
+        //         // case EntityType::TILE:
+        //         //     // tiles.push_back(std::dynamic_pointer_cast<Tile>(entity)->getDTO());
+        //         //     break;
+        //         default:
+        //             break;
+        //     }
+        // }
         std::cout << "[GAMEMAP] playersDTO size: " << playersDTO.size() << std::endl;
 
         return std::make_unique<GameDTO>(playersDTO, enemies, bullets, items, weapons, tiles);
