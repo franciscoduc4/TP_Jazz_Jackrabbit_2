@@ -23,9 +23,7 @@ set(PROJECT_SOURCES
         creategame.cpp creategame.h creategame.ui
         characterselection.cpp characterselection.h characterselection.ui
         waitingroom.cpp waitingroom.h waitingroom.ui
-        SelectWidgets/scenespriteswidget.cpp SelectWidgets/scenespriteswidget.h
         SelectWidgets/characterselectionwidget.cpp SelectWidgets/characterselectionwidget.h
-
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)

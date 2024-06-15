@@ -27,11 +27,11 @@ std::shared_ptr<Character> EntityFactory::createCharacter(uint8_t characterId, C
 std::shared_ptr<Enemy> EntityFactory::createEnemy(uint8_t enemyId, EnemyType type,
                                                   Vector<int16_t> position) {
     switch (type) {
-        case EnemyType::WALKING_ENEMY:
+        case EnemyType::TURTLE:
             return createWalker(enemyId, position);
-        case EnemyType::FLYING_ENEMY:
+        case EnemyType::YELLOWMON:
             return createFlyer(enemyId, position);
-        case EnemyType::JUMPING_ENEMY:
+        case EnemyType::SCHWARZENGUARD:
             return createJumper(enemyId, position);
     }
     return nullptr;

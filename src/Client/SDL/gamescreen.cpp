@@ -115,7 +115,7 @@ void GameScreen::run() {
     std::cout << "Players created" << std::endl;
 
     // TEXTURA ENEMIGOS
-    SDL_Surface* enemy_surf = IMG_Load(this->enemies.getPath(EnemyType::WALKING_ENEMY).c_str());
+    SDL_Surface* enemy_surf = IMG_Load(this->enemies.getPath(EnemyType::TURTLE).c_str());
     if (!enemy_surf) {
         std::cerr << "Error loading enemy surface: " << IMG_GetError() << std::endl;
         return;

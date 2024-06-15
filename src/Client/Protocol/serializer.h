@@ -8,6 +8,7 @@
 #include "../../Common/DTO/command.h"
 #include "../../Common/queue.h"
 #include "../../Common/socket.h"
+#include "DTO/command.h"
 #include "Types/lobbyMessage.h"
 
 class Serializer {

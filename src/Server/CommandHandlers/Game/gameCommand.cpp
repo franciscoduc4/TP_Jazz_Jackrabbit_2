@@ -4,7 +4,7 @@
 #include "../../../Common/DTO/switchWeapon.h"
 
 #include "jump.h"
-#include "gameCommand.h"
+#include "move.h"
 #include "shoot.h"
 #include "switchWeapon.h"
 #include "move.h"

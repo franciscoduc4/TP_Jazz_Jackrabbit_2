@@ -26,7 +26,6 @@ Enemy::Enemy() {
     this->flip = 0;
     this->init = false;
 
-	//WALKING ENEMY
     this->enemies_path[EnemyType::WALKING_ENEMY] = ClientConfig::getTurtleFile();// "../assets/Enemies/TurtleEnemies.png";
 
 	std::vector<int> walking_enemy_w_h{ClientConfig::getTurtleWidth(), ClientConfig::getTurtleHeight()};

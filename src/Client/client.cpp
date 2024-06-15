@@ -29,31 +29,39 @@ void Client::start() {
 
     bool clientJoinedGame = false;
     do {
-        // LobbyInit init;
-        // clientJoinedGame = init.launchQT(this->lobbyController, (bool&)clientJoinedGame);
+        LobbyInit init;
+        clientJoinedGame = init.launchQT(this->lobbyController, (bool&)clientJoinedGame);
 
         //   if (!clientJoinedGame) {
         //       return;
         //   }
         // TODO: Continue with SDL.
         // START - TESTING SKIP QT
+
         /*
+        Command cmd = (this->playerId == 0) ? Command::CREATE_GAME : Command::JOIN_GAME;
+
         LobbyMessage msg;
         msg.setCharacter(CharacterType::JAZZ);
         msg.setMap(0);
-        msg.setGameId(1);
         msg.setGameName("Dummy");
-        msg.setLobbyCmd(Command::CREATE_GAME);
+        msg.setLobbyCmd(cmd);
         msg.setMaxPlayers(1);
         msg.setPlayerName("Test");
+        if (cmd == Command::JOIN_GAME) {
+            msg.setGameId(0);
+        }
         clientJoinedGame = true;
 
         this->lobbyController.sendRequest(msg);
         std::cout << "Request sent." << std::endl;
         bool responseReceived = this->lobbyController.recvResponse();
         std::cout << "Response received: " << responseReceived << std::endl;
+        LobbyMessage msg2;
+        msg2.setLobbyCmd(Command::START_GAME);
+        msg2.setGameId(0);
         if (responseReceived) {
-            this->lobbyController.startGame(msg);
+            this->lobbyController.startGame(msg2);
             bool gameStartAck = this->lobbyController.recvStartGame();
             std::cout << "Game start ack: " << gameStartAck << std::endl;
             if (!gameStartAck) {
@@ -68,6 +76,5 @@ void Client::start() {
         */
         GameScreen game(this->gameController, this->playerId);
         game.run();
-        clientJoinedGame = false;
     } while (clientJoinedGame);
 }

@@ -4,6 +4,7 @@
 #include <climits>
 #include <condition_variable>
 #include <deque>
+#include <iostream>
 #include <mutex>
 #include <queue>
 #include <stdexcept>
@@ -121,7 +122,6 @@ public:
         if (closed) {
             throw ClosedQueue();
         }
-
         while (q.size() == this->max_size) {
             is_not_full.wait(lck);
         }

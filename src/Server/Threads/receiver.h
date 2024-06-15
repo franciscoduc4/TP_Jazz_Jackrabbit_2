@@ -19,11 +19,10 @@ private:
     std::atomic<bool>& inGame;
     bool wasClosed;
     std::shared_ptr<Queue<std::unique_ptr<CommandDTO>>> recvQueue;
-    GameMonitor& gameMonitor;
 
 public:
     ReceiverThread(std::shared_ptr<Socket> socket, std::atomic<bool>& keepPlaying,
-                   std::atomic<bool>& inGame, GameMonitor& gameMonitor, uint32_t playerId,
+                   std::atomic<bool>& inGame, uint32_t playerId,
                    std::shared_ptr<Queue<std::unique_ptr<CommandDTO>>> recvQueue);
     void run() override;
 };
