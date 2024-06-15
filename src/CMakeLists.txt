@@ -48,7 +48,7 @@ if(CLIENT)
             ${PROJECT_SOURCE_DIR}/src/Client/lobby.ui
             ${PROJECT_SOURCE_DIR}/src/Client/mapselection.ui
             ${PROJECT_SOURCE_DIR}/src/Client/waitingroom.ui
-            ${PROJECT_SOURCE_DIR}/src/Client/welcomes.ui
+            ${PROJECT_SOURCE_DIR}/src/Client/welcome.ui
     )
 
     qt5_wrap_ui(UIS_HEADERS ${UI_FILES})
