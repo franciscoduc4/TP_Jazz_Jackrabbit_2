@@ -73,9 +73,22 @@ void GameLoopThread::processCommands(double deltaTime) {
             std::unique_ptr<CommandDTO> command;
             if (recvQueue->try_pop(command)) {
                 std::cout << "[GAME LOOP] Processing command" << std::endl;
+                if (!command) {
+                    std::cerr << "[GAME LOOP] Null command received" << std::endl;
+                    continue;
+                }
+
                 auto handler = GameCommandHandler::createHandler(std::move(command));
+                if (!handler) {
+                    std::cerr << "[GAME LOOP] Failed to create handler" << std::endl;
+                    continue;
+                }
+
+                std::cout << "[GAME LOOP] Executing handler" << std::endl;
                 handler->execute(gameMap, keepRunning, deltaTime);
+
                 processedCommands++;
+                std::cout << "[GAME LOOP] Command processed number: " << processedCommands << std::endl;
             } else {
                 std::cout << "[GAME LOOP] No more commands to process" << std::endl;
                 break;
@@ -86,6 +99,7 @@ void GameLoopThread::processCommands(double deltaTime) {
         std::cerr << "[GAME LOOP] Error processing commands: " << e.what() << std::endl;
     }
 }
+
 
 void GameLoopThread::adjustCommandsToProcess(std::chrono::duration<double> processingDuration,
                                              double frameRate) {

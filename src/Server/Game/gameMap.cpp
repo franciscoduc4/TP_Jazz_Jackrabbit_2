@@ -261,13 +261,19 @@ Vector<uint8_t> GameMap::getAvailablePosition() {
 void GameMap::update(float time) {
     std::cout << "[GAMEMAP] Updating game map" << std::endl;
     try {
-        for (const auto& character: characters) {
-            character.second->update(time);
+        for (const auto& characterPair: characters) {
+            if (!characterPair.second) {
+                std::cerr << "[GAMEMAP] Null character in map" << std::endl;
+                continue;
+            }
+            std::cout << "[GAMEMAP] Updating character with ID: " << static_cast<int>(characterPair.first) << std::endl;
+            characterPair.second->update(time);
         }
     } catch (const std::exception& e) {
         std::cerr << "[GAMEMAP] Error updating game map: " << e.what() << std::endl;
     }
 }
+
 
 void GameMap::removeCharacter(uint8_t playerId) {
     try {
@@ -344,6 +350,7 @@ std::unique_ptr<GameDTO> GameMap::getGameDTO() {
 }
 
 std::shared_ptr<Character> GameMap::getCharacter(uint8_t playerId) {
+    std::cout << "[GAMEMAP] Getting character with ID " << (int)(playerId) << std::endl;
     try {
         return characters.at(playerId);
     } catch (const std::exception& e) {

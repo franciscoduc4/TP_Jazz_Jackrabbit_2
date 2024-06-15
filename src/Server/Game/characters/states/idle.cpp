@@ -13,10 +13,9 @@
 IdleState::IdleState() { characterState = IDLE; }
 
 std::unique_ptr<State> IdleState::exec(Character& character, float time) {
-    std::cout << "[IDLE] Executing idle state" << std::endl;
+    std::cout << "[IDLE] Executing idle state for character ID: " << static_cast<int>(character.getId()) << std::endl;
     return nullptr;
 }
-
 std::unique_ptr<State> IdleState::shoot(Character& character, std::shared_ptr<Weapon> weapon,
                                         float time) {
     if (weapon->isEmpty() || !weapon->shootTime(time)) {

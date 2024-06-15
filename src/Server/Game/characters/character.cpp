@@ -25,18 +25,27 @@ Character::Character(GameMap& gameMap, Vector<uint8_t> pos, uint8_t playerId, Ch
         jumpHeight(jumpHeight),
         shootCooldownTime(shootCooldownTime),
         currentWeapon(std::make_unique<Blaster>()),
-        state(std::unique_ptr<IdleState>()) {
+        state(std::make_unique<IdleState>()) {
     std::cout << "[CHARACTER] Character created with ID: " << static_cast<int>(playerId)
               << std::endl;
 }
 
 void Character::idle(float time) {
     std::cout << "[CHARACTER] Character ID: " << static_cast<int>(id) << " idling" << std::endl;
-    auto newState = std::unique_ptr<State>(state->stopAction());
+    if (!state) {
+        std::cerr << "[CHARACTER] Error: Null state for character ID: " << static_cast<int>(id) << std::endl;
+        return;
+    }
+
+    auto newState = std::unique_ptr<State>(state->exec(*this, time));
     if (newState) {
+        std::cout << "[CHARACTER] State changed to new state" << std::endl;
         state = std::move(newState);
+    } else {
+        std::cout << "[CHARACTER] State remains the same" << std::endl;
     }
 }
+
 
 void Character::recvDamage(uint8_t dmg, float time) {
     std::cout << "[CHARACTER] Character ID: " << static_cast<int>(id)
@@ -55,20 +64,29 @@ void Character::recvDamage(uint8_t dmg, float time) {
 
 void Character::update(float time) {
     std::cout << "[CHARACTER] Updating character ID: " << static_cast<int>(id) << std::endl;
-    if (isIntoxicated) {
-        intoxicatedTime -= time;
-        if (intoxicatedTime <= 0) {
-            isIntoxicated = false;
-            intoxicatedTime = 0;
-            std::cout << "[CHARACTER] Character ID: " << static_cast<int>(id)
-                      << " no longer intoxicated" << std::endl;
+    try {
+        if (isIntoxicated) {
+            intoxicatedTime -= time;
+            if (intoxicatedTime <= 0) {
+                isIntoxicated = false;
+                intoxicatedTime = 0;
+                std::cout << "[CHARACTER] Character ID: " << static_cast<int>(id) << " no longer intoxicated" << std::endl;
+            }
         }
-    }
-    auto newState = std::unique_ptr<State>(state->exec(*this, time));
-    if (newState) {
-        state = std::move(newState);
+
+        if (!state) {
+            std::cerr << "[CHARACTER] Null state for character ID: " << static_cast<int>(id) << std::endl;
+            return;
+        }
+        auto newState = std::unique_ptr<State>(state->exec(*this, time));
+        if (newState) {
+            state = std::move(newState);
+        }
+    } catch (const std::exception& e) {
+        std::cerr << "[CHARACTER] Error updating character ID: " << static_cast<int>(id) << ": " << e.what() << std::endl;
     }
 }
+
 
 void Character::shoot(float time) {
     std::cout << "[CHARACTER] Character ID: " << static_cast<int>(id) << " shooting" << std::endl;
