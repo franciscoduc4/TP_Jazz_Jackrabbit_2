@@ -1,6 +1,9 @@
 #ifndef GAMECONTROLLER_H
 #define GAMECONTROLLER_H
 
+#include <memory>
+#include <vector>
+
 #include "../../Common/DTO/dto.h"
 #include "../../Common/Types/command.h"
 #include "../Protocol/deserializer.h"

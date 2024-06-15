@@ -3,6 +3,7 @@
 
 #include <atomic>
 #include <memory>
+#include <vector>
 
 // #include "../Client/SDL/gamescreen.h"
 #include "../Common/Config/ClientConfig.h"
@@ -23,7 +24,7 @@ private:
     char* port;
     std::shared_ptr<Socket> skt;
     std::atomic<bool> was_closed;
-    std::shared_ptr<Queue<std::unique_ptr<DTO>>> senderQueue;
+    std::shared_ptr<Queue<std::unique_ptr<CommandDTO>>> senderQueue;
     std::shared_ptr<Queue<std::unique_ptr<DTO>>> lobbyQueue;
     std::shared_ptr<Queue<std::unique_ptr<DTO>>> gameQueue;
     SenderThread sender;

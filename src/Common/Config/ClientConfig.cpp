@@ -26,15 +26,6 @@ std::string ClientConfig::getLogFile() {
     return logFile;
 }
 
-// Refresh Intervals
-int ClientConfig::getGamesListRefreshInterval() {
-    return getInstance()->root["GAMES_LIST_REFRESH_INTERVAL"].as<int>();
-}
-
-int ClientConfig::getWaitingRoomRefreshInterval() {
-    return getInstance()->root["WAITING_ROOM_REFRESH_INTERVAL"].as<int>();
-}
-
 // Files
 std::string ClientConfig::getEpisodeFile() {
     return getInstance()->root["EPISODES_FILE"].as<std::string>();
@@ -64,6 +55,10 @@ std::string ClientConfig::getSFXFile() { return getInstance()->root["SFX_FILE"].
 
 std::string ClientConfig::getItemsFile() {
     return getInstance()->root["ITEMS_FILE"].as<std::string>();
+}
+
+std::string ClientConfig::getInterfaceFontFile() {
+    return getInstance()->root["INTERFACE_FONT_FILE"].as<std::string>();
 }
 
 // Colour Keys
@@ -116,6 +111,12 @@ std::tuple<int, int, int> ClientConfig::getItemsColourKey() {
                            itemsColourKeyNode[2].as<int>());
 }
 
+std::tuple<int, int, int> ClientConfig::getInterfaceFontColourKey() {
+    YAML::Node interfaceFontColourKeyNode = getInstance()->root["INTERFACE_FONT_CK"];
+    return std::make_tuple(interfaceFontColourKeyNode[0].as<int>(), interfaceFontColourKeyNode[1].as<int>(),
+                           interfaceFontColourKeyNode[2].as<int>());
+}
+
 // Rectangular Sprites
 std::vector<std::vector<int>> ClientConfig::getEpisodesSprites() {
     YAML::Node episodesSpritesNode = getInstance()->root["EPISODES_SPRITES"];
@@ -129,6 +130,11 @@ std::vector<std::vector<int>> ClientConfig::getEpisodesSprites() {
 
 // Enemies
 // Turtle
+
+int ClientConfig::getTurtleWidth() { return getInstance()->root["TURTLE_WIDTH"].as<int>(); }
+
+int ClientConfig::getTurtleHeight() { return getInstance()->root["TURTLE_HEIGHT"].as<int>(); }
+
 std::vector<std::vector<int>> ClientConfig::getTurtleWalkingSprites() {
     YAML::Node turtleWalkingSpritesNode = getInstance()->root["TURTLE_WALKING_SPRITES"];
     std::vector<std::vector<int>> turtleWalkingSprites;
@@ -226,6 +232,22 @@ std::vector<std::vector<int>> ClientConfig::getYellowMonsDyingSprites() {
 
 // Players
 // Jazz
+int ClientConfig::getPlayerWidth() { return getInstance()->root["PLAYER_WIDTH"].as<int>(); }
+
+int ClientConfig::getPlayerHeight() { return getInstance()->root["PLAYER_HEIGHT"].as<int>(); }
+
+std::vector<std::vector<int>> ClientConfig::getJazzIdleSprites() {
+    YAML::Node jazzIdleSpritesNode = getInstance()->root["JAZZ_IDLE"];
+    std::vector<std::vector<int>> jazzIdleSprites;
+    for (YAML::const_iterator it = jazzIdleSpritesNode.begin();
+         it != jazzIdleSpritesNode.end(); ++it) {
+        jazzIdleSprites.push_back(it->as<std::vector<int>>());
+    }
+    return jazzIdleSprites;
+}
+
+
+
 std::vector<std::vector<int>> ClientConfig::getJazzWalkingSprites() {
     YAML::Node jazzWalkingSpritesNode = getInstance()->root["JAZZ_WALKING"];
     std::vector<std::vector<int>> jazzWalkingSprites;
@@ -276,7 +298,69 @@ std::vector<std::vector<int>> ClientConfig::getJazzDashingSprites() {
     return jazzDashingSprites;
 }
 
+std::vector<std::vector<int>> ClientConfig::getJazzSpecialAttackSprites() {
+    YAML::Node jazzSpecialAttackSpritesNode = getInstance()->root["JAZZ_SPECIAL_ATTACK"];
+    std::vector<std::vector<int>> jazzSpecialAttackSprites;
+    for (YAML::const_iterator it = jazzSpecialAttackSpritesNode.begin();
+         it != jazzSpecialAttackSpritesNode.end(); ++it) {
+        jazzSpecialAttackSprites.push_back(it->as<std::vector<int>>());
+    }
+    return jazzSpecialAttackSprites;
+}
+
+std::vector<std::vector<int>> ClientConfig::getJazzIntoxicatedSprites() {
+    YAML::Node jazzIntoxicatedSpritesNode = getInstance()->root["JAZZ_INTOXICATED"];
+    std::vector<std::vector<int>> jazzIntoxicatedSprites;
+    for (YAML::const_iterator it = jazzIntoxicatedSpritesNode.begin();
+         it != jazzIntoxicatedSpritesNode.end(); ++it) {
+        jazzIntoxicatedSprites.push_back(it->as<std::vector<int>>());
+    }
+    return jazzIntoxicatedSprites;
+}
+
+std::vector<std::vector<int>> ClientConfig::getJazzTakingDamageSprites() {
+    YAML::Node jazzTakingDamageSpritesNode = getInstance()->root["JAZZ_TAKING_DAMAGE"];
+    std::vector<std::vector<int>> jazzTakingDamageSprites;
+    for (YAML::const_iterator it = jazzTakingDamageSpritesNode.begin();
+         it != jazzTakingDamageSpritesNode.end(); ++it) {
+        jazzTakingDamageSprites.push_back(it->as<std::vector<int>>());
+    }
+    return jazzTakingDamageSprites;
+}
+
+std::vector<std::vector<int>> ClientConfig::getJazzDeadSprites() {
+    YAML::Node jazzDeadSpritesNode = getInstance()->root["JAZZ_DEAD"];
+    std::vector<std::vector<int>> jazzDeadSprites;
+    for (YAML::const_iterator it = jazzDeadSpritesNode.begin();
+         it != jazzDeadSpritesNode.end(); ++it) {
+        jazzDeadSprites.push_back(it->as<std::vector<int>>());
+    }
+    return jazzDeadSprites;
+}
+
+std::vector<std::vector<int>> ClientConfig::getJazzIconSprites() {
+    YAML::Node jazzIconSpritesNode = getInstance()->root["JAZZ_ICON"];
+    std::vector<std::vector<int>> jazzIconSprites;
+    for (YAML::const_iterator it = jazzIconSpritesNode.begin();
+         it != jazzIconSpritesNode.end(); ++it) {
+        jazzIconSprites.push_back(it->as<std::vector<int>>());
+    }
+    return jazzIconSprites;
+}
+
+
 // Spaz
+std::vector<std::vector<int>> ClientConfig::getSpazIdleSprites() {
+    YAML::Node spazIdleSpritesNode = getInstance()->root["SPAZ_IDLE"];
+    std::vector<std::vector<int>> spazIdleSprites;
+    for (YAML::const_iterator it = spazIdleSpritesNode.begin();
+         it != spazIdleSpritesNode.end(); ++it) {
+        spazIdleSprites.push_back(it->as<std::vector<int>>());
+    }
+    return spazIdleSprites;
+}
+
+
 std::vector<std::vector<int>> ClientConfig::getSpazWalkingSprites() {
     YAML::Node spazWalkingSpritesNode = getInstance()->root["SPAZ_WALKING"];
     std::vector<std::vector<int>> spazWalkingSprites;
@@ -317,7 +401,79 @@ std::vector<std::vector<int>> ClientConfig::getSpazJumpingSprites() {
     return spazJumpingSprites;
 }
 
+std::vector<std::vector<int>> ClientConfig::getSpazDashingSprites() {
+    YAML::Node spazDashingSpritesNode = getInstance()->root["SPAZ_DASHING"];
+    std::vector<std::vector<int>> spazDashingSprites;
+    for (YAML::const_iterator it = spazDashingSpritesNode.begin();
+         it != spazDashingSpritesNode.end(); ++it) {
+        spazDashingSprites.push_back(it->as<std::vector<int>>());
+    }
+    return spazDashingSprites;
+}
+
+std::vector<std::vector<int>> ClientConfig::getSpazSpecialAttackSprites() {
+    YAML::Node spazSpecialAttackSpritesNode = getInstance()->root["SPAZ_SPECIAL_ATTACK"];
+    std::vector<std::vector<int>> spazSpecialAttackSprites;
+    for (YAML::const_iterator it = spazSpecialAttackSpritesNode.begin();
+         it != spazSpecialAttackSpritesNode.end(); ++it) {
+        spazSpecialAttackSprites.push_back(it->as<std::vector<int>>());
+    }
+    return spazSpecialAttackSprites;
+}
+
+std::vector<std::vector<int>> ClientConfig::getSpazIntoxicatedSprites() {
+    YAML::Node spazIntoxicatedSpritesNode = getInstance()->root["SPAZ_INTOXICATED"];
+    std::vector<std::vector<int>> spazIntoxicatedSprites;
+    for (YAML::const_iterator it = spazIntoxicatedSpritesNode.begin();
+         it != spazIntoxicatedSpritesNode.end(); ++it) {
+        spazIntoxicatedSprites.push_back(it->as<std::vector<int>>());
+    }
+    return spazIntoxicatedSprites;
+}
+
+std::vector<std::vector<int>> ClientConfig::getSpazTakingDamageSprites() {
+    YAML::Node spazTakingDamageSpritesNode = getInstance()->root["SPAZ_TAKING_DAMAGE"];
+    std::vector<std::vector<int>> spazTakingDamageSprites;
+    for (YAML::const_iterator it = spazTakingDamageSpritesNode.begin();
+         it != spazTakingDamageSpritesNode.end(); ++it) {
+        spazTakingDamageSprites.push_back(it->as<std::vector<int>>());
+    }
+    return spazTakingDamageSprites;
+}
+
+std::vector<std::vector<int>> ClientConfig::getSpazDeadSprites() {
+    YAML::Node spazDeadSpritesNode = getInstance()->root["SPAZ_DEAD"];
+    std::vector<std::vector<int>> spazDeadSprites;
+    for (YAML::const_iterator it = spazDeadSpritesNode.begin();
+         it != spazDeadSpritesNode.end(); ++it) {
+        spazDeadSprites.push_back(it->as<std::vector<int>>());
+    }
+    return spazDeadSprites;
+}
+
+std::vector<std::vector<int>> ClientConfig::getSpazIconSprites() {
+    YAML::Node spazIconSpritesNode = getInstance()->root["SPAZ_ICON"];
+    std::vector<std::vector<int>> spazIconSprites;
+    for (YAML::const_iterator it = spazIconSpritesNode.begin();
+         it != spazIconSpritesNode.end(); ++it) {
+        spazIconSprites.push_back(it->as<std::vector<int>>());
+    }
+    return spazIconSprites;
+}
+
+
 // Lori
+std::vector<std::vector<int>> ClientConfig::getLoriIdleSprites() {
+    YAML::Node loriIdleSpritesNode = getInstance()->root["LORI_IDLE"];
+    std::vector<std::vector<int>> loriIdleSprites;
+    for (YAML::const_iterator it = loriIdleSpritesNode.begin();
+         it != loriIdleSpritesNode.end(); ++it) {
+        loriIdleSprites.push_back(it->as<std::vector<int>>());
+    }
+    return loriIdleSprites;
+}
+
+
 std::vector<std::vector<int>> ClientConfig::getLoriWalkingSprites() {
     YAML::Node loriWalkingSpritesNode = getInstance()->root["LORI_WALKING"];
     std::vector<std::vector<int>> loriWalkingSprites;
@@ -358,7 +514,72 @@ std::vector<std::vector<int>> ClientConfig::getLoriJumpingSprites() {
     return loriJumpingSprites;
 }
 
+std::vector<std::vector<int>> ClientConfig::getLoriDashingSprites() {
+    YAML::Node loriDashingSpritesNode = getInstance()->root["LORI_DASHING"];
+    std::vector<std::vector<int>> loriDashingSprites;
+    for (YAML::const_iterator it = loriDashingSpritesNode.begin();
+         it != loriDashingSpritesNode.end(); ++it) {
+        loriDashingSprites.push_back(it->as<std::vector<int>>());
+    }
+    return loriDashingSprites;
+}
+
+std::vector<std::vector<int>> ClientConfig::getLoriSpecialAttackSprites() {
+    YAML::Node loriSpecialAttackSpritesNode = getInstance()->root["LORI_SPECIAL_ATTACK"];
+    std::vector<std::vector<int>> loriSpecialAttackSprites;
+    for (YAML::const_iterator it = loriSpecialAttackSpritesNode.begin();
+         it != loriSpecialAttackSpritesNode.end(); ++it) {
+        loriSpecialAttackSprites.push_back(it->as<std::vector<int>>());
+    }
+    return loriSpecialAttackSprites;
+}
+
+std::vector<std::vector<int>> ClientConfig::getLoriIntoxicatedSprites() {
+    YAML::Node loriIntoxicatedSpritesNode = getInstance()->root["LORI_INTOXICATED"];
+    std::vector<std::vector<int>> loriIntoxicatedSprites;
+    for (YAML::const_iterator it = loriIntoxicatedSpritesNode.begin();
+         it != loriIntoxicatedSpritesNode.end(); ++it) {
+        loriIntoxicatedSprites.push_back(it->as<std::vector<int>>());
+    }
+    return loriIntoxicatedSprites;
+}
+
+std::vector<std::vector<int>> ClientConfig::getLoriTakingDamageSprites() {
+    YAML::Node loriTakingDamageSpritesNode = getInstance()->root["LORI_TAKING_DAMAGE"];
+    std::vector<std::vector<int>> loriTakingDamageSprites;
+    for (YAML::const_iterator it = loriTakingDamageSpritesNode.begin();
+         it != loriTakingDamageSpritesNode.end(); ++it) {
+        loriTakingDamageSprites.push_back(it->as<std::vector<int>>());
+    }
+    return loriTakingDamageSprites;
+}
+
+std::vector<std::vector<int>> ClientConfig::getLoriDeadSprites() {
+    YAML::Node loriDeadSpritesNode = getInstance()->root["LORI_DEAD"];
+    std::vector<std::vector<int>> loriDeadSprites;
+    for (YAML::const_iterator it = loriDeadSpritesNode.begin();
+         it != loriDeadSpritesNode.end(); ++it) {
+        loriDeadSprites.push_back(it->as<std::vector<int>>());
+    }
+    return loriDeadSprites;
+}
+
+std::vector<std::vector<int>> ClientConfig::getLoriIconSprites() {
+    YAML::Node loriIconSpritesNode = getInstance()->root["LORI_ICON"];
+    std::vector<std::vector<int>> loriIconSprites;
+    for (YAML::const_iterator it = loriIconSpritesNode.begin();
+         it != loriIconSpritesNode.end(); ++it) {
+        loriIconSprites.push_back(it->as<std::vector<int>>());
+    }
+    return loriIconSprites;
+}
+
+
 // Items
+int ClientConfig::getItemsWidth() { return getInstance()->root["ITEMS_WIDTH"].as<int>(); }
+
+int ClientConfig::getItemsHeight() { return getInstance()->root["ITEMS_HEIGHT"].as<int>(); }
+
 std::vector<std::vector<int>> ClientConfig::getRedGemSprites() {
     YAML::Node redGemSpritesNode = getInstance()->root["RED_GEM_SPRITES"];
     std::vector<std::vector<int>> redGemSprites;
@@ -389,6 +610,10 @@ std::vector<std::vector<int>> ClientConfig::getSilverCoinSprites() {
 }
 
 // Projectiles
+int ClientConfig::getProjWidth() { return getInstance()->root["PROJ_WIDTH"].as<int>(); }
+
+int ClientConfig::getProjHeight() { return getInstance()->root["PROJ_HEIGHT"].as<int>(); }
+
 std::vector<std::vector<int>> ClientConfig::getNormalProjectileSprites() {
     YAML::Node normalProjectileSpritesNode = getInstance()->root["NORMAL_PROJECTILE_SPRITES"];
     std::vector<std::vector<int>> normalProjectileSprites;
@@ -447,6 +672,22 @@ int ClientConfig::getFireY() { return getInstance()->root["PROJ_Y_FIRE"].as<int>
 int ClientConfig::getFireWidth() { return getInstance()->root["PROJ_WIDTH_FIRE"].as<int>(); }
 
 int ClientConfig::getFireHeight() { return getInstance()->root["PROJ_HEIGHT_FIRE"].as<int>(); }
+
+//Interface font
+std::vector<std::vector<int>> ClientConfig::getInterfaceFontSprites() {
+    YAML::Node interfaceFontSpritesNode = getInstance()->root["INTERFACE_FONT"];
+    std::vector<std::vector<int>> interfaceFontSprites;
+    for (YAML::const_iterator it = interfaceFontSpritesNode.begin(); it != interfaceFontSpritesNode.end();
+         ++it) {
+        interfaceFontSprites.push_back(it->as<std::vector<int>>());
+    }
+    return interfaceFontSprites;
+}
+
+int ClientConfig::getWidthFont() { return getInstance()->root["INTERFACE_WIDTH"].as<int>(); }
+
+int ClientConfig::getHeightFont() { return getInstance()->root["INTERFACE_HEIGHT"].as<int>(); }
+
 
 // Sprites
 std::vector<std::vector<std::pair<int, int>>> ClientConfig::getJazzSelectNameSprites() {

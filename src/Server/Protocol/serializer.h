@@ -8,11 +8,11 @@
 
 #include "../../Common/DTO/command.h"
 #include "../../Common/DTO/createGame.h"
+#include "../../Common/DTO/mapsList.h"
 #include "../../Common/DTO/game.h"
 #include "../../Common/DTO/joinGame.h"
 #include "../../Common/DTO/lobby.h"
-#include "../../Common/DTO/mapsList.h"
-#include "../../Common/DTO/move.h"
+#include "../../Common/DTO/gameCommand.h"
 #include "../../Common/DTO/startGame.h"
 #include "../../Common/Types/command.h"
 #include "../../Common/socket.h"

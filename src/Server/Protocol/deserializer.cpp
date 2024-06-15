@@ -96,7 +96,8 @@ std::unique_ptr<CreateGameDTO> Deserializer::deserializeCreateGame(bool& wasClos
                                            std::string(nameBuffer.begin(), nameBuffer.end()));
 }
 
-std::unique_ptr<MapsListDTO> Deserializer::deserializeMapsList(bool& wasClosed, uint8_t& playerId) {
+std::unique_ptr<MapsListDTO> Deserializer::deserializeMapsList(bool& wasClosed,
+                                                               uint8_t& playerId) {
     std::cout << "[SERVER DESERIALIZER] Deserialize Maps List" << std::endl;
     return std::make_unique<MapsListDTO>();
 }
@@ -124,7 +125,7 @@ std::unique_ptr<CommandDTO> Deserializer::deserializeGamesList(bool& wasClosed, 
     return std::make_unique<GamesListDTO>();
 }
 
-std::unique_ptr<MoveDTO> Deserializer::deserializeMove(bool& wasClosed, uint8_t& playerId) {
+std::unique_ptr<GameCommandDTO> Deserializer::deserializeMove(bool& wasClosed, uint8_t& playerId) {
     Direction direction;
     socket->recvall(&direction, sizeof(char), &wasClosed);
     std::cout << "[SERVER DESERIALIZER MOVE] Received direction: " << (int)direction << std::endl;
@@ -133,7 +134,7 @@ std::unique_ptr<MoveDTO> Deserializer::deserializeMove(bool& wasClosed, uint8_t&
                   << std::endl;
         return nullptr;
     }
-    return std::make_unique<MoveDTO>(playerId, direction);
+    return std::make_unique<GameCommandDTO>(playerId, direction, Command::MOVE);
 }
 
 std::unique_ptr<StartGameDTO> Deserializer::deserializeStart(bool& wasClosed, uint8_t& playerId) {
@@ -174,5 +175,5 @@ std::unique_ptr<CommandDTO> Deserializer::deserializeSprint(bool& wasClosed, uin
                   << std::endl;
         return nullptr;
     }
-    return std::make_unique<MoveDTO>(playerId, direction);
+    return std::make_unique<GameCommandDTO>(playerId, direction, Command::MOVE);
 }

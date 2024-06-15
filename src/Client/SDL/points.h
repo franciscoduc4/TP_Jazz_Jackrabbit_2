@@ -29,7 +29,7 @@ class Points {
 
 
 public:
-    Points(int level_type);
+    Points();
 
     void draw_points(SDL2pp::Renderer& renderer, SDL2pp::Texture& points, std::vector<ItemDTO> pointsdto, PlayerDTO& player, int dir_x_screen, int dir_y_screen);
 

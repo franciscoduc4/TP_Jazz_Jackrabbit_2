@@ -7,8 +7,8 @@ file(COPY ${CMAKE_SOURCE_DIR}/src/config DESTINATION ${CMAKE_BINARY_DIR})
 cmake_minimum_required(VERSION 3.16)
 
 project(TP_Jazz_Jackrabbit_2
-    DESCRIPTION "TP para Taller de Programación 1 1c2024 FIUBA"
-    LANGUAGES CXX
+        DESCRIPTION "TP para Taller de Programación 1 1c2024 FIUBA"
+        LANGUAGES CXX
 )
 
 set(CMAKE_CXX_STANDARD 17)

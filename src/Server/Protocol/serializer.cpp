@@ -35,13 +35,12 @@ void Serializer::sendCommand(const std::unique_ptr<CommandDTO> dto, bool& wasClo
             buffer = serializeGamesList(
                     std::make_unique<GamesListDTO>(static_cast<const GamesListDTO&>(*dto)));
             break;
-        case Command::START_GAME:
-            // std::cout << "[SERVER SERIALIZER] Start game command, no additional data to send"
-            // << std::endl;
-            break;
         case Command::MAPS_LIST:
             buffer = serializeMapsList(
                     std::make_unique<MapsListDTO>(static_cast<const MapsListDTO&>(*dto)));
+        case Command::START_GAME:
+            std::cout << "[SERVER SERIALIZER] Start game command, no additional data to send"
+                      << std::endl;
             break;
         default:
             // std::cerr << "[SERVER SERIALIZER] Unknown command, nothing to serialize" <<
@@ -334,10 +333,8 @@ std::vector<char> Serializer::serializeMapsList(const std::unique_ptr<MapsListDT
     buffer.push_back(static_cast<char>(Command::MAPS_LIST));
     auto maps = dto->getMapsMap();
     uint8_t mapsSize = maps.size();
-    const unsigned char* p = reinterpret_cast<const unsigned char*>(&mapsSize);
-    buffer.insert(buffer.end(), p, p + sizeof(uint8_t));
-    // std::cout << "[SERVER SERIALIZER] Serializing maps list, maps count: " << maps.size()
-    //   << std::endl;
+    const auto* sizeMaps = reinterpret_cast<const unsigned char*>(&mapsSize);
+    buffer.insert(buffer.end(), sizeMaps, sizeMaps + sizeof(uint8_t));
 
     for (const auto& mapPair: maps) {
         uint8_t mapId = mapPair.first;

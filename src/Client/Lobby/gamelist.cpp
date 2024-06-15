@@ -23,7 +23,7 @@ GameList::GameList(QWidget* parent, LobbyController& controller, LobbyMessage& m
 
     this->timer = new QTimer(this);
     connect(timer, &QTimer::timeout, this, &GameList::updateGameList);
-    timer->start(ClientConfig::getGamesListRefreshInterval());
+    //timer->start(ClientConfig::getGamesListRefreshInterval());
 }
 
 GameList::~GameList() { delete ui; }

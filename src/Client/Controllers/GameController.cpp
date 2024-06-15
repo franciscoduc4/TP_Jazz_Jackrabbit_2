@@ -1,7 +1,6 @@
 #include "GameController.h"
-
-#include "../Common/DTO/move.h"
 #include "../Common/Types/direction.h"
+#include "../Common/DTO/gameCommand.h"
 
 
 GameController::GameController(Serializer& serializer, Deserializer& deserializer,
@@ -21,13 +20,14 @@ void GameController::sendMsg(uint8_t playerId, Command& cmd, std::vector<uint8_t
 
 void GameController::move_msg(uint8_t playerId, std::vector<uint8_t>& parameters) {
     Direction dir = static_cast<Direction>(parameters[0]);
-    std::unique_ptr<DTO> move = std::make_unique<MoveDTO>(playerId, dir);
+    std::unique_ptr<CommandDTO> move =
+		std::make_unique<GameCommandDTO>(playerId, dir, Command::MOVE);
     this->serializer.sendMsg(move);
 }
 
 void GameController::shoot_msg(uint8_t playerId) {
-    std::unique_ptr<DTO> shoot = std::make_unique<CommandDTO>(playerId, Command::SHOOT);
-    this->serializer.sendMsg(shoot);
+	std::unique_ptr<CommandDTO> shoot = std::make_unique<CommandDTO>(playerId, Command::SHOOT);
+	this->serializer.sendMsg(shoot);
 }
 
 std::unique_ptr<DTO> GameController::getServerMsg() {
