@@ -76,33 +76,24 @@ MapSelection::~MapSelection() {
 }
 
 void MapSelection::on_btnChoose_clicked() {
-    std::cout << "[MAP SELECTION] Choose button clicked" << std::endl;
     if (buttonGroup->checkedId() == -1) {
         QMessageBox::information(this, "Error", "Seleccione un mapa para continuar.");
-        std::cout << "[MAP SELECTION] No map selected, showing error message" << std::endl;
     } else {
         this->msg.setMap(buttonGroup->checkedId());
-        std::cout << "[MAP SELECTION] Map selected with ID: " << buttonGroup->checkedId()
-                  << std::endl;
         this->hide();
         auto cg = new CreateGame(this, this->controller, this->msg, this->clientJoinedGame);
         cg->show();
-        std::cout << "[MAP SELECTION] CreateGame dialog shown" << std::endl;
     }
 }
 
 void MapSelection::on_btnBack_clicked() {
-    std::cout << "[MAP SELECTION] Back button clicked" << std::endl;
     this->msg.setMap(-1);
     this->hide();
-    std::cout << "[MAP SELECTION] Map deselected and dialog hidden" << std::endl;
 
     QWidget* parent = this->parentWidget();
     if (parent) {
         parent->show();
-        std::cout << "[MAP SELECTION] Parent widget shown" << std::endl;
     }
 
     this->deleteLater();
-    std::cout << "[MAP SELECTION] Dialog marked for deletion" << std::endl;
 }
