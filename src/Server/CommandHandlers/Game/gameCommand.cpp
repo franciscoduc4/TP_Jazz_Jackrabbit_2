@@ -7,6 +7,7 @@
 #include "move.h"
 #include "shoot.h"
 #include "switchWeapon.h"
+#include "move.h"
 
 std::unique_ptr<GameCommandHandler> GameCommandHandler::createHandler(
         std::unique_ptr<CommandDTO> command) {

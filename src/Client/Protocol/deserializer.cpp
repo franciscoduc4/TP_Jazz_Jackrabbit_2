@@ -7,6 +7,7 @@
 #include <iostream>
 
 #include "../Common/DTO/dto.h"
+//#include "../Common/Types/episode.h"
 #include "../Common/Types/gameMode.h"
 #include "../Common/queue.h"
 
@@ -18,8 +19,7 @@
 #include "../../Common/DTO/tile.h"
 #include "../../Common/Types/entity.h"
 
-Deserializer::Deserializer(std::shared_ptr<Queue<std::unique_ptr<DTO>>>& lobbyQueue,
-    std::shared_ptr<Queue<std::unique_ptr<DTO>>>& gameQueue) :
+Deserializer::Deserializer(std::shared_ptr<Queue<std::unique_ptr<DTO>>>& lobbyQueue, std::shared_ptr<Queue<std::unique_ptr<DTO>>>& gameQueue) :
         lobbyQueue(lobbyQueue), gameQueue(gameQueue) {}
 
 void Deserializer::deserialize_lobbyMsg(std::unique_ptr<DTO>& dto) {
@@ -30,6 +30,7 @@ void Deserializer::deserialize_lobbyMsg(std::unique_ptr<DTO>& dto) {
 void Deserializer::deserialize_gameMsg(std::unique_ptr<DTO>& dto) {
     gameQueue->push(std::move(dto));
 }
+
 
 void Deserializer::setPlayerId(uint32_t playerId) {
     std::unique_ptr<DTO> player = std::make_unique<CommandDTO>(playerId, Command::IDLE);

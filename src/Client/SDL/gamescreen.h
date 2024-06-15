@@ -2,6 +2,7 @@
 #define CLIENT_GAME_SCREEN_H_
 
 #include <string>
+#include <memory>
 
 #include "../../Client/client.h"
 #include "../../Common/DTO/game.h"
@@ -14,6 +15,7 @@
 #include "player.h"
 #include "points.h"
 #include "level.h"
+#include "projectile.h"
 #include "interface.h"
 
 class GameScreen {
@@ -26,17 +28,16 @@ class GameScreen {
     Enemy enemies;
     Points points;
     Level level;
+    Projectile proj;
     Interface stats;
 
-	//ClientConfig* config;
-    //Client& client;
     GameController& controller;
+    uint32_t mainPlayerId;
 
 public:
-    //GameScreen(int character);
+    GameScreen(GameController& controller, uint32_t playerId);
 
-    //explicit GameScreen(Client& player);
-    explicit GameScreen(GameController& controller);
+    std::unique_ptr<PlayerDTO> searchMainPlayer(std::vector<PlayerDTO>& players);
 
     void run();
 };

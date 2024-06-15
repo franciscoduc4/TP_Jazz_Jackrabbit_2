@@ -11,19 +11,19 @@
 class Interface {
     std::string font_path;
     std::vector<RectangularSprite> numbers; 
-    std::vector<RectangularSprite> sprites;
+    std::map<CharacterType, std::vector<RectangularSprite>> sprites;
     int draw_width;
     int draw_height;
     int counts;
 
 public:
-    explicit Interface(CharacterType character);
+    Interface();
 
     std::string getFontPath();
 
-    std::vector<RectangularSprite>::iterator icon_coords();
+    std::vector<RectangularSprite>::iterator icon_coords(CharacterType type);
 
-    void draw_interface(SDL2pp::Window& window, SDL2pp::Renderer& renderer, SDL2pp::Texture& iconTexture, SDL2pp::Texture& font, int points, int lives);
+    void draw_interface(SDL2pp::Window& window, SDL2pp::Renderer& renderer, SDL2pp::Texture& iconTexture, CharacterType type, SDL2pp::Texture& font, int points, int lives);
 
 };
 
