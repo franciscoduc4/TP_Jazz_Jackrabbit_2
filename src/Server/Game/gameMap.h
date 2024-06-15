@@ -28,6 +28,7 @@ private:
     int16_t movesPerCell;
     float gravity;
     std::string mapName;
+    uint32_t mapId;
 
 
     Vector<int16_t> calculateNewPosition(const Vector<int16_t>& position, Direction dir) const;
@@ -38,7 +39,9 @@ private:
 
 
 public:
-    explicit GameMap(Vector<int16_t> size, std::string mapName);
+    explicit GameMap(Vector<int16_t> size, uint32_t mapId);
+
+    void loadMap(uint32_t mapId);
 
     std::vector<std::shared_ptr<Entity>> getObjectsInShootRange(Vector<int16_t> mapPosition,
                                                                 Direction dir);
@@ -52,10 +55,9 @@ public:
 
     void addEntityToMap(std::shared_ptr<Entity> entity, Vector<int16_t> position);
 
-    std::shared_ptr<Character> addCharacter(uint32_t playerId, CharacterType type,
-                                            std::optional<Vector<int16_t>> position);
+    std::shared_ptr<Character> addCharacter(uint32_t playerId, CharacterType type);
 
-    void addEnemy(EnemyType type, std::optional<Vector<int16_t>> position);
+    void addEnemy(EnemyType type, Vector<int16_t> position);
 
     void update(float time);
 
@@ -78,6 +80,12 @@ public:
     void printMapGrid() const;
 
     Vector<int16_t> getMapPosition(Vector<int16_t> position, int16_t movesPerCell);
+
+    Vector<int16_t> getInitialPositionForCharacterType(CharacterType type);
+
+
+
+    EnemyType getEnemyType(const std::string& type);
 };
 
 #endif  // GAME_MAP_H_

@@ -12,7 +12,6 @@
 
 class CreateGameDTO: public CommandDTO {
 private:
-    std::string mapName;
     uint32_t mapId;
     uint8_t maxPlayers;
     CharacterType characterType;
@@ -24,15 +23,12 @@ public:
     explicit CreateGameDTO(const uint32_t& gameId);
 
     CreateGameDTO(uint32_t mapId, uint8_t maxPlayers,
-                  CharacterType character, std::string gameName, uint32_t gameId);
+                  CharacterType character, std::string gameName);
 
-    CreateGameDTO(uint32_t mapId, std::string mapName, uint8_t maxPlayers,
-            CharacterType character, std::string gameName, uint32_t gameId);
 
-    CreateGameDTO(const uint32_t& playerId, uint32_t mapId, std::string mapName, uint8_t maxPlayers,
-                  CharacterType character, std::string gameName, uint32_t gameId);
+    CreateGameDTO(const uint32_t& playerId, uint32_t mapId, uint8_t maxPlayers,
+                  CharacterType character, std::string gameName);
 
-    std::string getMapName() const;
 
     uint32_t getMapId() const;
 

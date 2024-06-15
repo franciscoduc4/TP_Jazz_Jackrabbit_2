@@ -1,14 +1,15 @@
 #include "mapsManager.h"
+
 #include <iostream>
 
 const static std::string MAPS_DIR = "../src/maps";  // Ajusta la ruta relativa aquí
 
 MapsManager* MapsManager::instance = nullptr;
 
-MapsManager::MapsManager() : 
-    nextId_(0), 
-    maps_(std::unordered_map<uint32_t, std::pair<std::string, std::string>>()),
-    loadedMaps_(std::unordered_map<std::string, bool>()) {}
+MapsManager::MapsManager():
+        nextId_(0),
+        maps_(std::unordered_map<uint32_t, std::pair<std::string, std::string>>()),
+        loadedMaps_(std::unordered_map<std::string, bool>()) {}
 
 MapsManager* MapsManager::getInstance() {
     if (instance == nullptr) {
@@ -30,8 +31,9 @@ void MapsManager::loadMaps(MapsManager* ins) {
     if (!std::filesystem::exists(mapsdir)) {
         throw std::runtime_error("Directory does not exist: " + mapsdir.string());
     }
-    for (const auto& entry : std::filesystem::directory_iterator(mapsdir)) {
-        if (entry.is_directory()) continue;
+    for (const auto& entry: std::filesystem::directory_iterator(mapsdir)) {
+        if (entry.is_directory())
+            continue;
         if (ins->loadedMaps_.find(entry.path().filename().string()) != ins->loadedMaps_.end()) {
             continue;
         }
@@ -69,7 +71,7 @@ std::string MapsManager::getMapFileNameById(const uint32_t& id) {
 std::unordered_map<uint32_t, std::string> MapsManager::getMapIdAndName() {
     MapsManager* thisInstance = getInstance();
     std::unordered_map<uint32_t, std::string> mapIdAndName;
-    for (const auto& map : thisInstance->maps_) {
+    for (const auto& map: thisInstance->maps_) {
         mapIdAndName.emplace(map.first, map.second.first);
     }
     return mapIdAndName;

@@ -2,9 +2,9 @@
 #define ENEMYTYPE_H_
 
 enum class EnemyType : char {
-    WALKING_ENEMY,
-    FLYING_ENEMY,
-    JUMPING_ENEMY,
+    TURTLE,
+    SCHWARZENGUARD,
+    YELLOWMON,
 };
 
 #endif /* ENEMYTYPE_H_ */

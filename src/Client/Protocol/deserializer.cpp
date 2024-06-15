@@ -23,6 +23,7 @@ Deserializer::Deserializer(std::shared_ptr<Queue<std::unique_ptr<DTO>>>& lobbyQu
         lobbyQueue(lobbyQueue), gameQueue(gameQueue) {}
 
 void Deserializer::deserialize_lobbyMsg(std::unique_ptr<DTO>& dto) {
+    std::cout << "[DESERIALIZER] pushing lobby message" << std::endl;
     lobbyQueue->push(std::move(dto));
 }
 

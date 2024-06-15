@@ -38,6 +38,7 @@ void Character::recvDamage(uint16_t dmg, float time) {
 }
 
 void Character::update(float time) {
+    std::cout << "[CHARACTER] Updating character" << std::endl;
     if (isIntoxicated) {
         intoxicatedTime -= time;
         if (intoxicatedTime <= 0) {
@@ -45,9 +46,12 @@ void Character::update(float time) {
             intoxicatedTime = 0;
         }
     }
+    std::cout << "[CHARACTER] Executing state" << std::endl;
     auto newState = std::unique_ptr<State>(state->exec(*this, time));
+    std::cout << "[CHARACTER] New state: " << newState.get() << std::endl;
     if (newState) {
         state = std::move(newState);
+        std::cout << "[CHARACTER] New state moved" << std::endl;
     }
 }
 
@@ -115,9 +119,7 @@ void Character::die(float respawnTime) {
     }
 }
 
-void Character::heal(uint32_t healQnt) {
-    Entity::heal(healQnt);
-}
+void Character::heal(uint32_t healQnt) { Entity::heal(healQnt); }
 
 void Character::revive(float time) {
     if (maxRevived <= 0)
@@ -161,51 +163,57 @@ void Character::switchWeapon(WeaponType type) {
     }
 }
 
-WeaponType Character::getCurrentWeaponType() {
-    return currentWeapon->getWeaponType();
-}
+WeaponType Character::getCurrentWeaponType() { return currentWeapon->getWeaponType(); }
 
 
 void Character::moveRight() {
-    if (isIntoxicated) return;
+    if (isIntoxicated)
+        return;
 
     auto mapPosition = getMapPosition(movesPerCell);
     Vector<int16_t> newPosition = pos + Vector<int16_t>{movesPerCell, 0};
 
-    if (!gameMap.isValidMapPosition(newPosition)) return; 
+    if (!gameMap.isValidMapPosition(newPosition))
+        return;
 
     gameMap.moveObject(pos, mapPosition, Direction::RIGHT);
 }
 
 void Character::moveLeft() {
-    if (isIntoxicated) return;
+    if (isIntoxicated)
+        return;
 
     auto mapPosition = getMapPosition(movesPerCell);
     Vector<int16_t> newPosition = pos - Vector<int16_t>{movesPerCell, 0};
 
-    if (!gameMap.isValidMapPosition(newPosition)) return;
+    if (!gameMap.isValidMapPosition(newPosition))
+        return;
 
     gameMap.moveObject(pos, mapPosition, Direction::LEFT);
 }
 
 void Character::moveUp() {
-    if (isIntoxicated) return;
+    if (isIntoxicated)
+        return;
 
     auto mapPosition = getMapPosition(movesPerCell);
     Vector<int16_t> newPosition = pos + Vector<int16_t>{0, movesPerCell};
 
-    if (!gameMap.isValidMapPosition(newPosition)) return; 
+    if (!gameMap.isValidMapPosition(newPosition))
+        return;
 
     gameMap.moveObject(pos, mapPosition, Direction::UP);
 }
 
 void Character::moveDown() {
-    if (isIntoxicated) return;
+    if (isIntoxicated)
+        return;
 
     auto mapPosition = getMapPosition(movesPerCell);
     Vector<int16_t> newPosition = pos - Vector<int16_t>{0, movesPerCell};
 
-    if (!gameMap.isValidMapPosition(newPosition)) return; 
+    if (!gameMap.isValidMapPosition(newPosition))
+        return;
 
     gameMap.moveObject(pos, mapPosition, Direction::DOWN);
 }

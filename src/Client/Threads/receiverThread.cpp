@@ -1,6 +1,5 @@
 #include "./receiverThread.h"
 
-
 ReceiverThread::ReceiverThread(Deserializer& deserializer, std::shared_ptr<Socket>& socket,
                                std::atomic<bool>& was_closed):
         deserializer(deserializer), socket(socket), was_closed(was_closed), closed(false) {}
@@ -8,6 +7,7 @@ ReceiverThread::ReceiverThread(Deserializer& deserializer, std::shared_ptr<Socke
 void ReceiverThread::receiveCommandDTO() {
     char lobbyTypeChar;
     socket->recvall(&lobbyTypeChar, sizeof(char), &closed);
+    std::cout << "[RECEIVER] Received command: " << lobbyTypeChar << std::endl;
     this->was_closed.store(closed);
     if (this->was_closed.load()) {
         return;
@@ -15,22 +15,23 @@ void ReceiverThread::receiveCommandDTO() {
     if (lobbyTypeChar == static_cast<char>(Command::START_GAME)) {
         uint32_t gameId;
         this->socket->recvall(&gameId, sizeof(uint32_t), &closed);
+        gameId = ntohl(gameId);
         this->was_closed.store(closed);
         if (this->was_closed.load()) {
             return;
         }
-        uint32_t id = ntohl(gameId);
-        std::unique_ptr<DTO> dto = std::make_unique<StartGameDTO>(id);
+        std::unique_ptr<DTO> dto = std::make_unique<StartGameDTO>(gameId);
         this->deserializer.deserialize_lobbyMsg(dto);
     } else if (lobbyTypeChar == static_cast<char>(Command::CREATE_GAME)) {
         uint32_t gameId;
         this->socket->recvall(&gameId, sizeof(uint32_t), &closed);
+        gameId = ntohl(gameId);
+        std::cout << "[RECEIVER] Received game id: " << gameId << std::endl;
         this->was_closed.store(closed);
         if (this->was_closed.load()) {
             return;
         }
-        uint32_t id = ntohl(gameId);
-        std::unique_ptr<DTO> cgDto = std::make_unique<CreateGameDTO>(id);
+        std::unique_ptr<DTO> cgDto = std::make_unique<CreateGameDTO>(gameId);
         this->deserializer.deserialize_lobbyMsg(cgDto);
     }
     /*if (!DTOValidator::validateLobbyState(lobbyTypeChar)) {
@@ -51,22 +52,33 @@ std::vector<PlayerDTO> ReceiverThread::receivePlayers() {
     for (uint8_t i = 0; i < cant_jugadores; i++) {
         this->socket->recvall(&aux, sizeof(uint8_t), &closed);
         uint32_t playerId = static_cast<uint32_t>(aux);
+        std::cout << "[CLIENT RECEIVER PLAYER] Player ID: " << playerId << std::endl;
         this->socket->recvall(&aux, sizeof(uint8_t), &closed);
         int damage = static_cast<int>(aux);
+        std::cout << "[CLIENT RECEIVER PLAYER] Damage: " << damage << std::endl;
         this->socket->recvall(&aux, sizeof(uint8_t), &closed);
         int health = static_cast<int>(aux);
+        std::cout << "[CLIENT RECEIVER PLAYER] Health: " << health << std::endl;
         this->socket->recvall(&aux, sizeof(uint8_t), &closed);
         int speed = static_cast<int>(aux);
+        std::cout << "[CLIENT RECEIVER PLAYER] Speed: " << speed << std::endl;
         this->socket->recvall(&aux, sizeof(uint8_t), &closed);
         int getRespawnTime = static_cast<int>(aux);
+        std::cout << "[CLIENT RECEIVER PLAYER] Respawn time: " << getRespawnTime << std::endl;
         this->socket->recvall(&aux, sizeof(uint8_t), &closed);
         uint16_t x = static_cast<uint16_t>(aux);
+        std::cout << "[CLIENT RECEIVER PLAYER] X: " << x << std::endl;
         this->socket->recvall(&aux, sizeof(uint8_t), &closed);
         uint16_t y = static_cast<uint16_t>(aux);
+        std::cout << "[CLIENT RECEIVER PLAYER] Y: " << y << std::endl;
         this->socket->recvall(&aux, sizeof(uint8_t), &closed);
         CharacterType pj_type = static_cast<CharacterType>(aux);
+        std::cout << "[CLIENT RECEIVER PLAYER] Character type: " << static_cast<int>(pj_type)
+                  << std::endl;
         this->socket->recvall(&aux, sizeof(uint8_t), &closed);
         CharacterStateEntity state = static_cast<CharacterStateEntity>(aux);
+        std::cout << "[CLIENT RECEIVER PLAYER] Character state: " << static_cast<int>(state)
+                  << std::endl;
         WeaponDTO weapon(0, 0, 0, 0, 0);  // PRUEBA CON UN WEAPON CUALQUIERA
         PlayerDTO player(x, y, playerId, health, damage, speed, weapon, pj_type, state);
         players.push_back(player);
@@ -108,7 +120,7 @@ std::vector<EnemyDTO> ReceiverThread::receiveEnemies() {
         enemies.push_back(enemy);
     }
 
-    // EnemyDTO enemy(50, 30, 0, 100, 20, 1, EnemyType::WALKING_ENEMY,
+    // EnemyDTO enemy(50, 30, 0, 100, 20, 1, EnemyType::TURTLE,
     // EnemyStateEntity::ENEMY_WALKING); enemies.push_back(enemy);
     return enemies;
 }
@@ -362,6 +374,7 @@ void ReceiverThread::run() {
             std::cout << "DTO type post cast: " << static_cast<int>(dtoType) << std::endl;
             switch (dtoType) {
                 case DTOType::GAME_DTO:
+                    std::cout << "[CLIENT RECEIVER] Receiving game DTO." << std::endl;
                     this->receiveGameDTO();
                     break;
                 // case DTOType::LOBBY_DTO:
