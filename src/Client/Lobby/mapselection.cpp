@@ -17,7 +17,7 @@ MapSelection::MapSelection(QWidget* parent, LobbyController& controller, LobbyMe
 
     this->controller.sendRequest(this->msg);
 
-    std::unordered_map<uint32_t, std::string> maps = this->controller.getMaps();
+    std::unordered_map<uint8_t, std::string> maps = this->controller.getMaps();
 
     if (maps.empty()) {
         auto* msgBox = new QMessageBox(this);

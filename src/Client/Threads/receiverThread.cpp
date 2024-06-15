@@ -76,11 +76,11 @@ std::vector<PlayerDTO> ReceiverThread::receivePlayers() {
         std::cout << "[CLIENT RECEIVER PLAYER] Respawn time: " << getRespawnTime << std::endl;
 
         this->socket->recvall(&aux, sizeof(uint8_t), &closed);
-        uint16_t x = static_cast<uint16_t>(aux);
+        uint8_t x = static_cast<uint8_t>(aux);
         std::cout << "[CLIENT RECEIVER PLAYER] X: " << x << std::endl;
 
         this->socket->recvall(&aux, sizeof(uint8_t), &closed);
-        uint16_t y = static_cast<uint16_t>(aux);
+        uint8_t y = static_cast<uint8_t>(aux);
         std::cout << "[CLIENT RECEIVER PLAYER] Y: " << y << std::endl;
 
         this->socket->recvall(&aux, sizeof(uint8_t), &closed);
@@ -88,7 +88,7 @@ std::vector<PlayerDTO> ReceiverThread::receivePlayers() {
         this->socket->recvall(&aux, sizeof(uint8_t), &closed);
         CharacterStateEntity state = static_cast<CharacterStateEntity>(aux);
         WeaponDTO weapon(0, 0, 0, 0, 0); //PRUEBA CON UN WEAPON CUALQUIERA
-        PlayerDTO player(x, y, playerId, health, damage, speed, weapon, pj_type, state);
+        PlayerDTO player(x, y, playerId, health, damage, speed, pj_type, state);
         players.push_back(player);
     }
 
@@ -127,11 +127,11 @@ std::vector<EnemyDTO> ReceiverThread::receiveEnemies() {
         std::cout << "[CLIENT RECEIVER ENEMY] Speed: " << enemy_speed << std::endl;
 
         this->socket->recvall(&aux, sizeof(uint8_t), &closed);
-        uint16_t enemy_x = static_cast<uint16_t>(aux);
+        uint8_t enemy_x = static_cast<uint8_t>(aux);
         std::cout << "[CLIENT RECEIVER ENEMY] X: " << enemy_x << std::endl;
 
         this->socket->recvall(&aux, sizeof(uint8_t), &closed);
-        uint16_t enemy_y = static_cast<uint16_t>(aux);
+        uint8_t enemy_y = static_cast<uint8_t>(aux);
         std::cout << "[CLIENT RECEIVER ENEMY] Y: " << enemy_y << std::endl;
 
         this->socket->recvall(&aux, sizeof(uint8_t), &closed);
@@ -143,9 +143,6 @@ std::vector<EnemyDTO> ReceiverThread::receiveEnemies() {
         EnemyDTO enemy(enemy_x, enemy_y, enemyId, enemy_health, enemy_damage, enemy_speed, enemy_type, enemy_state);
         std::cout << "[CLIENT RECEIVER ENEMY] State: " << static_cast<int>(enemy_state)
                   << std::endl;
-
-        EnemyDTO enemy(enemy_x, enemy_y, enemyId, enemy_health, enemy_damage, enemy_speed,
-                       enemy_type, enemy_state);
         enemies.push_back(enemy);
     }
     // EnemyDTO enemy(50, 30, 0, 100, 20, 1, EnemyType::WALKING_ENEMY, EnemyStateEntity::ENEMY_WALKING);
@@ -180,11 +177,11 @@ std::vector<BulletDTO> ReceiverThread::receiveBullets() {
         std::cout << "[CLIENT RECEIVER BULLET] Speed: " << bullet_speed << std::endl;
 
         this->socket->recvall(&aux, sizeof(uint8_t), &closed);
-        uint16_t bullet_x = static_cast<uint16_t>(aux);
+        uint8_t bullet_x = static_cast<uint8_t>(aux);
         std::cout << "[CLIENT RECEIVER BULLET] X: " << bullet_x << std::endl;
 
         this->socket->recvall(&aux, sizeof(uint8_t), &closed);
-        uint16_t bullet_y = static_cast<uint16_t>(aux);
+        uint8_t bullet_y = static_cast<uint8_t>(aux);
         std::cout << "[CLIENT RECEIVER BULLET] Y: " << bullet_y << std::endl;
 
         this->socket->recvall(&aux, sizeof(uint8_t), &closed);
@@ -210,11 +207,11 @@ std::vector<ItemDTO> ReceiverThread::receiveItems() {
     uint8_t aux;
     for (uint8_t i = 0; i < cant_items; i++) {
         this->socket->recvall(&aux, sizeof(uint8_t), &closed);
-        uint16_t item_x = static_cast<uint16_t>(aux);
+        uint8_t item_x = static_cast<uint8_t>(aux);
         std::cout << "[CLIENT RECEIVER ITEM] X: " << item_x << std::endl;
 
         this->socket->recvall(&aux, sizeof(uint8_t), &closed);
-        uint16_t item_y = static_cast<uint16_t>(aux);
+        uint8_t item_y = static_cast<uint8_t>(aux);
         std::cout << "[CLIENT RECEIVER ITEM] Y: " << item_y << std::endl;
 
         this->socket->recvall(&aux, sizeof(uint8_t), &closed);
@@ -257,11 +254,11 @@ std::vector<WeaponDTO> ReceiverThread::receiveWeapons() {
         std::cout << "[CLIENT RECEIVER WEAPON] Shoot speed: " << shoot_speed << std::endl;
 
         this->socket->recvall(&aux, sizeof(uint8_t), &closed);
-        uint16_t weapon_x = static_cast<uint16_t>(aux);
+        uint8_t weapon_x = static_cast<uint8_t>(aux);
         std::cout << "[CLIENT RECEIVER WEAPON] X: " << weapon_x << std::endl;
 
         this->socket->recvall(&aux, sizeof(uint8_t), &closed);
-        uint16_t weapon_y = static_cast<uint16_t>(aux);
+        uint8_t weapon_y = static_cast<uint8_t>(aux);
         std::cout << "[CLIENT RECEIVER WEAPON] Y: " << weapon_y << std::endl;
 
         this->socket->recvall(&aux, sizeof(uint8_t), &closed);
@@ -278,11 +275,11 @@ std::vector<WeaponDTO> ReceiverThread::receiveWeapons() {
         std::cout << "[CLIENT RECEIVER WEAPON] Bullet speed: " << bullet_speed << std::endl;
 
         this->socket->recvall(&aux, sizeof(uint8_t), &closed);
-        uint16_t bullet_x = static_cast<uint16_t>(aux);
+        uint8_t bullet_x = static_cast<uint8_t>(aux);
         std::cout << "[CLIENT RECEIVER WEAPON] Bullet X: " << bullet_x << std::endl;
 
         this->socket->recvall(&aux, sizeof(uint8_t), &closed);
-        uint16_t bullet_y = static_cast<uint16_t>(aux);
+        uint8_t bullet_y = static_cast<uint8_t>(aux);
         std::cout << "[CLIENT RECEIVER WEAPON] Bullet Y: " << bullet_y << std::endl;
 
         this->socket->recvall(&aux, sizeof(uint8_t), &closed);
@@ -308,11 +305,11 @@ std::vector<TileDTO> ReceiverThread::receiveTiles() {
     uint8_t aux;
     for (uint8_t i = 0; i < cant_tiles; i++) {
         this->socket->recvall(&aux, sizeof(uint8_t), &closed);
-        uint16_t tile_x = static_cast<uint16_t>(aux);
+        uint8_t tile_x = static_cast<uint8_t>(aux);
         std::cout << "[CLIENT RECEIVER TILE] X: " << tile_x << std::endl;
 
         this->socket->recvall(&aux, sizeof(uint8_t), &closed);
-        uint16_t tile_y = static_cast<uint16_t>(aux);
+        uint8_t tile_y = static_cast<uint8_t>(aux);
 
         std::cout << "[CLIENT RECEIVER TILE] Y: " << tile_y << std::endl;
 
@@ -351,7 +348,7 @@ void ReceiverThread::receiveGamesList() {
         return;
     }
     uint8_t games = ntohl(gamesAmount);
-    std::map<uint8_t, GameInfo> gamesMap;
+    std::unordered_map<uint8_t, GameInfo> gamesMap;
     for (int i = 0; i < games; i++) {
         uint8_t gameId;
         socket->recvall(&gameId, sizeof(uint8_t), &closed);

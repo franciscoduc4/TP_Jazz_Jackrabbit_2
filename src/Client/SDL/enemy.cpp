@@ -26,24 +26,24 @@ Enemy::Enemy() {
     this->flip = 0;
     this->init = false;
 
-    this->enemies_path[EnemyType::WALKING_ENEMY] = ClientConfig::getTurtleFile();// "../assets/Enemies/TurtleEnemies.png";
+    this->enemies_path[EnemyType::TURTLE] = ClientConfig::getTurtleFile();// "../assets/Enemies/TurtleEnemies.png";
 
 	std::vector<int> walking_enemy_w_h{ClientConfig::getTurtleWidth(), ClientConfig::getTurtleHeight()};
-    this->width_height[EnemyType::WALKING_ENEMY] = walking_enemy_w_h;
+    this->width_height[EnemyType::TURTLE] = walking_enemy_w_h;
 	
     std::vector<std::vector<int>> turtle_walking_sprites = ClientConfig::getTurtleWalkingSprites();
     for (int i = 0; i < turtle_walking_sprites.size(); i++) {
-        this->sprites[EnemyType::WALKING_ENEMY][EnemyStateEntity::ENEMY_WALKING].push_back(RectangularSprite(turtle_walking_sprites[i]));
+        this->sprites[EnemyType::TURTLE][EnemyStateEntity::ENEMY_WALKING].push_back(RectangularSprite(turtle_walking_sprites[i]));
     }
 
     std::vector<std::vector<int>> turtle_attacking_sprites = ClientConfig::getTurtleAttackingSprites();
     for (int i = 0; i < turtle_attacking_sprites.size(); i++) {
-        this->sprites[EnemyType::WALKING_ENEMY][EnemyStateEntity::ENEMY_ATTACKING].push_back(RectangularSprite(turtle_attacking_sprites[i]));
+        this->sprites[EnemyType::TURTLE][EnemyStateEntity::ENEMY_ATTACKING].push_back(RectangularSprite(turtle_attacking_sprites[i]));
     }                
 
     std::vector<std::vector<int>> turtle_dying_sprites = ClientConfig::getTurtleDyingSprites();
     for (int i = 0; i < turtle_dying_sprites.size(); i++) {
-        this->sprites[EnemyType::WALKING_ENEMY][EnemyStateEntity::ENEMY_DEAD].push_back(RectangularSprite(turtle_dying_sprites[i]));
+        this->sprites[EnemyType::TURTLE][EnemyStateEntity::ENEMY_DEAD].push_back(RectangularSprite(turtle_dying_sprites[i]));
     }
 
 

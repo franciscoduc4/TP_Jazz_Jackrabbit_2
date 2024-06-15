@@ -32,10 +32,10 @@ class GameScreen {
     Interface stats;
 
     GameController& controller;
-    uint32_t mainPlayerId;
+    uint8_t mainPlayerId;
 
 public:
-    GameScreen(GameController& controller, uint32_t playerId);
+    GameScreen(GameController& controller, uint8_t playerId);
 
     std::unique_ptr<PlayerDTO> searchMainPlayer(std::vector<PlayerDTO>& players);
 

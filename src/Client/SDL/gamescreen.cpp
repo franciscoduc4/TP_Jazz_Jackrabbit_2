@@ -28,8 +28,8 @@
 GameScreen::GameScreen(GameController& controller, uint8_t playerId): controller(controller), mainPlayerId(playerId), pj(1), level(0), proj(0)/*, config(ClientConfig::getInstance())*/ {
 }
 
-GameScreen::GameScreen(GameController& controller):
-        controller(controller), pj(1), points(0), level(0), stats(CharacterType::JAZZ) {}
+/*GameScreen::GameScreen(GameController& controller):
+        controller(controller), pj(1), points(0), level(0), stats(CharacterType::JAZZ) {}*/
 
 std::unique_ptr<PlayerDTO> GameScreen::searchMainPlayer(std::vector<PlayerDTO>& players) {
     int i = 0;
