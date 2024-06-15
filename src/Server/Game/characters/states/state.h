@@ -27,8 +27,9 @@ public:
     virtual std::unique_ptr<State> specialAttack(Character& character, float time) = 0;
     virtual std::unique_ptr<State> becomeIntoxicated(Character& character, float duration) = 0;
     virtual std::unique_ptr<State> stopAction() = 0;
-
     CharacterStateEntity characterState = IDLE;
+
+    virtual CharacterStateEntity getCharacterState() { return characterState; }
 };
 
 #endif  // STATE_H

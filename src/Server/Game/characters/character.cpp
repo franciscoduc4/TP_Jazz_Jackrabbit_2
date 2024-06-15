@@ -278,5 +278,5 @@ PlayerDTO Character::getDTO() const {
                      static_cast<uint8_t>(0),
                      static_cast<uint8_t>(0),
                      type,
-                     CharacterStateEntity::IDLE};
+                     state->getCharacterState()};
 }
