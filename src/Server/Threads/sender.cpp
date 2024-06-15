@@ -49,6 +49,7 @@ void SenderThread::runLobby(bool& wasClosed) {
             if (command == nullptr) {
                 continue;
             }
+            std::cout << "Command received: " << static_cast<char>(command->getCommand()) << std::endl;
             auto handler = LobbyCommandHandler::createHandler(std::move(command));
             handler->execute(gameMonitor, std::ref(inGame), recvQueue, sendQueue);
 

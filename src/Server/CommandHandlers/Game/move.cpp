@@ -1,4 +1,4 @@
-#include "gameCommand.h"
+#include "move.h"
 
 MoveHandler::MoveHandler(std::unique_ptr<GameCommandDTO> moveCommand):
         moveCommand(std::move(moveCommand)) {}

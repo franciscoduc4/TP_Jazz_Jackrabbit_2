@@ -22,7 +22,7 @@
      <height>600</height>
     </rect>
    </property>
-   <widget class="QListWidget" name="listGames">
+   <widget class="QWidget" name="listGamesWidget">
     <property name="geometry">
      <rect>
       <x>30</x>

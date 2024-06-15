@@ -32,6 +32,9 @@ void Serializer::sendCommand(const std::unique_ptr<CommandDTO> dto, bool& wasClo
             buffer = serializeGamesList(
                     std::make_unique<GamesListDTO>(static_cast<const GamesListDTO&>(*dto)));
             break;
+        case Command::MAPS_LIST:
+            buffer = serializeMapsList(
+                    std::make_unique<MapsListDTO>(static_cast<const MapsListDTO&>(*dto)));
         case Command::START_GAME:
             break;
         default:
@@ -276,19 +279,19 @@ std::vector<char> Serializer::serializeMapsList(const std::unique_ptr<MapsListDT
     buffer.push_back(static_cast<char>(Command::MAPS_LIST));
     auto maps = dto->getMapsMap();
     uint32_t mapsSize = htonl(maps.size());
-    const unsigned char* p = reinterpret_cast<const unsigned char*>(&mapsSize);
-    buffer.insert(buffer.end(), p, p + sizeof(uint32_t));
+    const auto* sizeMaps = reinterpret_cast<const unsigned char*>(&mapsSize);
+    buffer.insert(buffer.end(), sizeMaps, sizeMaps + sizeof(uint32_t));
 
     for (const auto& mapPair: maps) {
         uint32_t id = mapPair.first;
         const std::string& map = mapPair.second;
 
         uint32_t mapId = htonl(id);
-        const unsigned char* p = reinterpret_cast<const unsigned char*>(&mapId);
+        const auto* p = reinterpret_cast<const unsigned char*>(&mapId);
         buffer.insert(buffer.end(), p, p + sizeof(uint32_t));
 
         uint32_t nameLength = htonl(map.length());
-        const unsigned char* np = reinterpret_cast<const unsigned char*>(&nameLength);
+        const auto* np = reinterpret_cast<const unsigned char*>(&nameLength);
         buffer.insert(buffer.end(), np, np + sizeof(uint32_t));
 
         buffer.insert(buffer.end(), map.begin(), map.end());

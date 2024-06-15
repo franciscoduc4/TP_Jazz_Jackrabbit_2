@@ -29,8 +29,8 @@ void Client::start() {
 
     bool clientJoinedGame = false;
     do {
-        // LobbyInit init;
-        // clientJoinedGame = init.launchQT(this->lobbyController, (bool&)clientJoinedGame);
+        LobbyInit init;
+        clientJoinedGame = init.launchQT(this->lobbyController, (bool&)clientJoinedGame);
 
         //   if (!clientJoinedGame) {
         //       return;
