@@ -236,6 +236,18 @@ int ClientConfig::getPlayerWidth() { return getInstance()->root["PLAYER_WIDTH"].
 
 int ClientConfig::getPlayerHeight() { return getInstance()->root["PLAYER_HEIGHT"].as<int>(); }
 
+std::vector<std::vector<int>> ClientConfig::getJazzIdleSprites() {
+    YAML::Node jazzIdleSpritesNode = getInstance()->root["JAZZ_IDLE"];
+    std::vector<std::vector<int>> jazzIdleSprites;
+    for (YAML::const_iterator it = jazzIdleSpritesNode.begin();
+         it != jazzIdleSpritesNode.end(); ++it) {
+        jazzIdleSprites.push_back(it->as<std::vector<int>>());
+    }
+    return jazzIdleSprites;
+}
+
+
+
 std::vector<std::vector<int>> ClientConfig::getJazzWalkingSprites() {
     YAML::Node jazzWalkingSpritesNode = getInstance()->root["JAZZ_WALKING"];
     std::vector<std::vector<int>> jazzWalkingSprites;
@@ -338,6 +350,17 @@ std::vector<std::vector<int>> ClientConfig::getJazzIconSprites() {
 
 
 // Spaz
+std::vector<std::vector<int>> ClientConfig::getSpazIdleSprites() {
+    YAML::Node spazIdleSpritesNode = getInstance()->root["SPAZ_IDLE"];
+    std::vector<std::vector<int>> spazIdleSprites;
+    for (YAML::const_iterator it = spazIdleSpritesNode.begin();
+         it != spazIdleSpritesNode.end(); ++it) {
+        spazIdleSprites.push_back(it->as<std::vector<int>>());
+    }
+    return spazIdleSprites;
+}
+
+
 std::vector<std::vector<int>> ClientConfig::getSpazWalkingSprites() {
     YAML::Node spazWalkingSpritesNode = getInstance()->root["SPAZ_WALKING"];
     std::vector<std::vector<int>> spazWalkingSprites;
@@ -440,6 +463,17 @@ std::vector<std::vector<int>> ClientConfig::getSpazIconSprites() {
 
 
 // Lori
+std::vector<std::vector<int>> ClientConfig::getLoriIdleSprites() {
+    YAML::Node loriIdleSpritesNode = getInstance()->root["LORI_IDLE"];
+    std::vector<std::vector<int>> loriIdleSprites;
+    for (YAML::const_iterator it = loriIdleSpritesNode.begin();
+         it != loriIdleSpritesNode.end(); ++it) {
+        loriIdleSprites.push_back(it->as<std::vector<int>>());
+    }
+    return loriIdleSprites;
+}
+
+
 std::vector<std::vector<int>> ClientConfig::getLoriWalkingSprites() {
     YAML::Node loriWalkingSpritesNode = getInstance()->root["LORI_WALKING"];
     std::vector<std::vector<int>> loriWalkingSprites;

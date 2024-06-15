@@ -60,6 +60,7 @@ public:
     static int getPlayerWidth();
     static int getPlayerHeight();
     // Jazz
+    static std::vector<std::vector<int>> getJazzIdleSprites();
     static std::vector<std::vector<int>> getJazzWalkingSprites();
     static std::vector<std::vector<int>> getJazzRunningSprites();
     static std::vector<std::vector<int>> getJazzShootingSprites();
@@ -71,6 +72,7 @@ public:
     static std::vector<std::vector<int>> getJazzDeadSprites();
     static std::vector<std::vector<int>> getJazzIconSprites();
     // Spaz
+    static std::vector<std::vector<int>> getSpazIdleSprites();
     static std::vector<std::vector<int>> getSpazWalkingSprites();
     static std::vector<std::vector<int>> getSpazRunningSprites();
     static std::vector<std::vector<int>> getSpazShootingSprites();
@@ -82,6 +84,7 @@ public:
     static std::vector<std::vector<int>> getSpazDeadSprites();
     static std::vector<std::vector<int>> getSpazIconSprites();
     // Lori
+    static std::vector<std::vector<int>> getLoriIdleSprites();
     static std::vector<std::vector<int>> getLoriWalkingSprites();
     static std::vector<std::vector<int>> getLoriRunningSprites();
     static std::vector<std::vector<int>> getLoriShootingSprites();

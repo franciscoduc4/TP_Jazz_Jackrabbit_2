@@ -25,15 +25,19 @@
 GameScreen::GameScreen(GameController& controller, uint32_t playerId): controller(controller), mainPlayerId(playerId), pj(1), level(0), proj(0)/*, config(ClientConfig::getInstance())*/ {
 }
 
-PlayerDTO GameScreen::searchMainPlayer(std::vector<PlayerDTO>& players) {
+std::unique_ptr<PlayerDTO> GameScreen::searchMainPlayer(std::vector<PlayerDTO>& players) {
     int i = 0;
+    
     while (i < players.size()) {
         if (players[i].getPlayerId() == this->mainPlayerId) {
-            return players[i];
+            return std::make_unique<PlayerDTO>(players[i]);
         }
         i++;
     }
-    return players[i - 1];
+    if (i == 0) {
+        return nullptr;
+    }
+    return std::make_unique<PlayerDTO>(players[i - 1]);
 }
 
 void GameScreen::run() {
@@ -259,9 +263,12 @@ void GameScreen::run() {
             SDL_Delay(100);
             continue;
         }
-        PlayerDTO mainPlayer = searchMainPlayer(players);
-        std::vector<int> dir_screen = this->level.draw_background(window, renderer, background, mainPlayer/*players[0]*/);
-        this->level.draw_floor(window, renderer, sandFloor, players[0].getSpeed());
+        std::unique_ptr<PlayerDTO> mainPlayer = searchMainPlayer(players);
+        if (!mainPlayer) {
+            continue;
+        }
+        std::vector<int> dir_screen = this->level.draw_background(window, renderer, background, *mainPlayer/*players[0]*/);
+        this->level.draw_floor(window, renderer, sandFloor, mainPlayer->getSpeed()/*players[0].getSpeed()*/);
         x_screen = dir_screen[0];
         y_screen = dir_screen[1];
 
@@ -271,7 +278,7 @@ void GameScreen::run() {
 
         std::vector<EnemyDTO> enemiesSnapshot = snapshot->getEnemies();
         if (enemiesSnapshot.size() > 0) {
-            this->enemies.draw_enemy(window, renderer, enemy, enemiesSnapshot, mainPlayer/*players[0]*/, x_screen, y_screen);
+            this->enemies.draw_enemy(window, renderer, enemy, enemiesSnapshot, *mainPlayer/*players[0]*/, x_screen, y_screen);
         }
 
         std::vector<BulletDTO> bullets = snapshot->getBullets();
@@ -281,7 +288,7 @@ void GameScreen::run() {
 
         std::vector<ItemDTO> itemsSnapshot = snapshot->getItems();
         if (itemsSnapshot.size() >  0) {
-            this->points.draw_points(renderer, items, itemsSnapshot, mainPlayer/*players[0]*/, x_screen, y_screen); 
+            this->points.draw_points(renderer, items, itemsSnapshot, *mainPlayer/*players[0]*/, x_screen, y_screen); 
         }
 
         std::vector<WeaponDTO> weapons = snapshot->getWeapons();
@@ -290,10 +297,9 @@ void GameScreen::run() {
         if (tiles.size() > 0) {
             this->level.draw_tiles(window, renderer, tiles_textures, tiles);
         }
-        if (mainPlayer) {
-           this->stats.draw_interface(window, renderer, *pjs_textures[mainPlayer.getType()/*players[0].getType()*/], mainPlayer.getType(), font, 1000/*getPoints()*/, 3/*getLives()*/);
-        }
-        
+
+        this->stats.draw_interface(window, renderer, *pjs_textures[mainPlayer->getType()/*players[0].getType()*/], mainPlayer->getType(), font, 1000/*getPoints()*/, 3/*getLives()*/);
+
         x_screen = 0;
         y_screen = 0;
 

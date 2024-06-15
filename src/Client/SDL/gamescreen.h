@@ -2,6 +2,7 @@
 #define CLIENT_GAME_SCREEN_H_
 
 #include <string>
+#include <memory>
 
 #include "../../Client/client.h"
 #include "../../Common/DTO/game.h"
@@ -36,7 +37,7 @@ class GameScreen {
 public:
     GameScreen(GameController& controller, uint32_t playerId);
 
-    PlayerDTO searchMainPlayer(std::vector<PlayerDTO>& players);
+    std::unique_ptr<PlayerDTO> searchMainPlayer(std::vector<PlayerDTO>& players);
 
     void run();
 };

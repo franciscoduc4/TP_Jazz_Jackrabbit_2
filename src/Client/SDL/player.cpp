@@ -20,6 +20,11 @@ Player::Player(int character) {
 	
 	this->image_path[CharacterType::JAZZ] = ClientConfig::getJazzFile();//"../assets/Characters/Jazz.png";
 	
+	std::vector<std::vector<int>> idle_sprites = ClientConfig::getJazzIdleSprites();
+	for (int i = 0; i < idle_sprites.size(); i++) {
+		this->sprites[CharacterType::JAZZ][CharacterStateEntity::IDLE].push_back(RectangularSprite(idle_sprites[i]));
+	}
+
 	std::vector<std::vector<int>> walking_sprites = ClientConfig::getJazzWalkingSprites();
 	for (int i = 0; i < walking_sprites.size(); i++) {
 		this->sprites[CharacterType::JAZZ][CharacterStateEntity::MOVING].push_back(RectangularSprite(walking_sprites[i]));
@@ -66,6 +71,11 @@ Player::Player(int character) {
 	}
 	
 	this->image_path[CharacterType::LORI] = ClientConfig::getLoriFile();//"../assets/Characters/Lori.png";
+
+	std::vector<std::vector<int>> lori_idle_sprites = ClientConfig::getLoriIdleSprites();
+	for (int i = 0; i < lori_idle_sprites.size(); i++) {
+		this->sprites[CharacterType::LORI][CharacterStateEntity::IDLE].push_back(RectangularSprite(lori_idle_sprites[i]));
+	}
 
 	std::vector<std::vector<int>> lori_walking_sprites = ClientConfig::getLoriWalkingSprites();
 	for (int i = 0; i < lori_walking_sprites.size(); i++) {
@@ -114,6 +124,11 @@ Player::Player(int character) {
 	
 	
 	this->image_path[CharacterType::SPAZ] = ClientConfig::getSpazFile();//"../assets/Characters/Spaz.png";
+
+	std::vector<std::vector<int>> spaz_idle_sprites = ClientConfig::getSpazIdleSprites();
+	for (int i = 0; i < spaz_idle_sprites.size(); i++) {
+		this->sprites[CharacterType::SPAZ][CharacterStateEntity::IDLE].push_back(RectangularSprite(spaz_idle_sprites[i]));
+	}
 
 	std::vector<std::vector<int>> spaz_walking_sprites = ClientConfig::getSpazWalkingSprites();
 	for (int i = 0; i < spaz_walking_sprites.size(); i++) {
@@ -193,6 +208,7 @@ void Player::draw_players(SDL2pp::Window& window, SDL2pp::Renderer& renderer, st
 		int pjId = p.getPlayerId();
 		if (!this->init) {
 			this->last_move[pjId] = mov_type;
+			this->counts[p.getPlayerId()][CharacterStateEntity::IDLE] = 0;
 			this->counts[p.getPlayerId()][CharacterStateEntity::MOVING] = 0;
 			this->counts[p.getPlayerId()][CharacterStateEntity::SPRINTING] = 0;
 			this->counts[p.getPlayerId()][CharacterStateEntity::SHOOTING] = 0;
