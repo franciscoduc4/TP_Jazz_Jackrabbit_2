@@ -7,9 +7,9 @@
 GameLoopThread::GameLoopThread(std::shared_ptr<Queue<std::unique_ptr<CommandDTO>>> recvQueue,
                                QueueMonitor<std::unique_ptr<DTO>>& queueMonitor, GameMap& gameMap,
                                uint8_t gameId):
-        frameRate(0.032),  // 1 frame per 16 ms === 60 fps
+        frameRate(0.016),  // 1 frame per 16 ms === 60 fps
         keepRunning(false),
-        commandsToProcess(1),
+        commandsToProcess(10),
         recvQueue(recvQueue),
         queueMonitor(queueMonitor),
         gameMap(gameMap),
@@ -49,7 +49,7 @@ void GameLoopThread::run() {
             std::cout << "[GAME LOOP] Processing duration: " << processingDuration.count()
                       << std::endl;
 
-            adjustCommandsToProcess(processingDuration, frameRate);
+            // adjustCommandsToProcess(processingDuration, frameRate);
 
             std::chrono::duration<double> frameDuration(frameRate);
             auto sleepTime = frameDuration - processingDuration;
@@ -88,7 +88,8 @@ void GameLoopThread::processCommands(double deltaTime) {
                 handler->execute(gameMap, keepRunning, deltaTime);
 
                 processedCommands++;
-                std::cout << "[GAME LOOP] Command processed number: " << processedCommands << std::endl;
+                std::cout << "[GAME LOOP] Command processed number: " << processedCommands
+                          << std::endl;
             } else {
                 std::cout << "[GAME LOOP] No more commands to process" << std::endl;
                 break;

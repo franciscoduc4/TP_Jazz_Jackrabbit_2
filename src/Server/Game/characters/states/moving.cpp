@@ -14,10 +14,12 @@
 MovingState::MovingState(Character& character, Direction direction, float time):
         character(character), direction(direction), time(time) {
     characterState = CharacterStateEntity::MOVING;
-    move(character, direction, time);
 }
 
 std::unique_ptr<State> MovingState::exec(Character& character, float time) {
+    if (this->time - time >= movingTime) {
+        return std::unique_ptr<IdleState>();
+    }
     return move(character, direction, time);
 }
 
@@ -31,7 +33,8 @@ std::unique_ptr<State> MovingState::shoot(Character& character, std::shared_ptr<
 
 std::unique_ptr<State> MovingState::move(Character& character, Direction direction, float time) {
     if (direction != this->direction) {
-        return std::make_unique<MovingState>(character, direction, time);
+        this->direction = direction;
+        return nullptr;
     }
     switch (direction) {
         case Direction::UP:

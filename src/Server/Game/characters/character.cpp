@@ -32,17 +32,22 @@ Character::Character(GameMap& gameMap, Vector<uint8_t> pos, uint8_t playerId, Ch
 
 void Character::idle(float time) {
     std::cout << "[CHARACTER] Character ID: " << static_cast<int>(id) << " idling" << std::endl;
-    if (!state) {
-        std::cerr << "[CHARACTER] Error: Null state for character ID: " << static_cast<int>(id) << std::endl;
-        return;
-    }
+    // if (!state) {
+    //     std::cerr << "[CHARACTER] Error: Null state for character ID: " << static_cast<int>(id)
+    //     << std::endl; return;
+    // }
 
-    auto newState = std::unique_ptr<State>(state->exec(*this, time));
+    // auto newState = std::unique_ptr<State>(state->exec(*this, time));
+    // if (newState) {
+    //     std::cout << "[CHARACTER] State changed to new state" << std::endl;
+    //     state = std::move(newState);
+    // } else {
+    //     std::cout << "[CHARACTER] State remains the same" << std::endl;
+    // }
+
+    auto newState = std::unique_ptr<State>(state->stopAction());
     if (newState) {
-        std::cout << "[CHARACTER] State changed to new state" << std::endl;
         state = std::move(newState);
-    } else {
-        std::cout << "[CHARACTER] State remains the same" << std::endl;
     }
 }
 
@@ -70,12 +75,14 @@ void Character::update(float time) {
             if (intoxicatedTime <= 0) {
                 isIntoxicated = false;
                 intoxicatedTime = 0;
-                std::cout << "[CHARACTER] Character ID: " << static_cast<int>(id) << " no longer intoxicated" << std::endl;
+                std::cout << "[CHARACTER] Character ID: " << static_cast<int>(id)
+                          << " no longer intoxicated" << std::endl;
             }
         }
 
         if (!state) {
-            std::cerr << "[CHARACTER] Null state for character ID: " << static_cast<int>(id) << std::endl;
+            std::cerr << "[CHARACTER] Null state for character ID: " << static_cast<int>(id)
+                      << std::endl;
             return;
         }
         auto newState = std::unique_ptr<State>(state->exec(*this, time));
@@ -83,7 +90,8 @@ void Character::update(float time) {
             state = std::move(newState);
         }
     } catch (const std::exception& e) {
-        std::cerr << "[CHARACTER] Error updating character ID: " << static_cast<int>(id) << ": " << e.what() << std::endl;
+        std::cerr << "[CHARACTER] Error updating character ID: " << static_cast<int>(id) << ": "
+                  << e.what() << std::endl;
     }
 }
 
@@ -222,7 +230,7 @@ void Character::moveRight() {
               << " map position: " << mapPosition << std::endl;
 
     gameMap.moveObject(pos, mapPosition, Direction::RIGHT);
-    //state = std::make_unique<MovingState>(*this, Direction::RIGHT, 0);
+    // state = std::make_unique<MovingState>(*this, Direction::RIGHT, 0);
 }
 
 void Character::moveLeft() {
