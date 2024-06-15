@@ -17,7 +17,7 @@ void AcceptorThread::run() {
                 break;
             }
             auto player = std::make_unique<Player>(playerSocket, gameMonitor, queueMonitor,
-                                                   static_cast<uint32_t>(players.size()));
+                                                   static_cast<uint8_t>(players.size()));
             players.emplace_back(std::move(player));
             removeDeadPlayers();
         } catch (const std::exception& e) {
@@ -25,14 +25,14 @@ void AcceptorThread::run() {
                 std::cerr << e.what() << std::endl;
             }
             removeAllPlayers();
-            //gameMonitor.endAllGames();
+            // gameMonitor.endAllGames();
         }
     }
 }
 
 void AcceptorThread::stop() {
     removeAllPlayers();
-    //gameMonitor.endAllGames();
+    // gameMonitor.endAllGames();
     isAlive = false;
     serverSocket->shutdown(SHUT_RDWR);
     serverSocket->close();

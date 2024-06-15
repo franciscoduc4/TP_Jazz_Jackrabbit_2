@@ -5,30 +5,27 @@
 #include <utility>
 #include <vector>
 
-#include "../Types/elements.h"
 #include "../Types/dto.h"
-
+#include "../Types/elements.h"
 
 
 class GameElementDTO {
 private:
     ElementType type;
 
-    uint32_t playerId;
+    uint8_t playerId;
     uint16_t x;
     uint16_t y;
     bool isVisible;
 
 
-
 public:
-    
     GameElementDTO();
 
     explicit GameElementDTO(ElementType element);
 
-    GameElementDTO(uint32_t& playerId, ElementType element);
-    
+    GameElementDTO(uint8_t& playerId, ElementType element);
+
 
     ElementType getElementType() const;
 

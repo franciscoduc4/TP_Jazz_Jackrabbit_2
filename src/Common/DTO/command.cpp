@@ -2,11 +2,12 @@
 
 CommandDTO::CommandDTO(): commandType(Command::IDLE), playerId(-1) {}
 
-CommandDTO::CommandDTO(Command command): commandType(command), playerId(-1){}
+CommandDTO::CommandDTO(Command command): commandType(command), playerId(-1) {}
 
-CommandDTO::CommandDTO(const uint32_t& playerId, Command command): playerId(playerId), commandType(command) {}
+CommandDTO::CommandDTO(const uint8_t& playerId, Command command):
+        playerId(playerId), commandType(command) {}
 
-uint32_t CommandDTO::getPlayerId() const { return playerId; }
+uint8_t CommandDTO::getPlayerId() const { return playerId; }
 
 Command CommandDTO::getCommand() const { return commandType; }
 

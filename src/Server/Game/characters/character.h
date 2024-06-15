@@ -6,6 +6,7 @@
 #include <vector>
 
 #include "../../../Common/Config/ServerConfig.h"
+#include "../../../Common/DTO/player.h"
 #include "../../../Common/Types/character.h"
 #include "../../../Common/Types/direction.h"
 #include "../entity.h"
@@ -29,11 +30,11 @@ protected:
     CharacterType type;
     GameMap& gameMap;
 
-    int16_t maxHealth;
+    uint8_t maxHealth;
     float reviveTime;
-    int16_t maxRevived;
-    int16_t movesPerCell;
-    int16_t timesRevived;
+    uint8_t maxRevived;
+    uint8_t movesPerCell;
+    uint8_t timesRevived;
 
     float respawnTime;
     float damageTime;
@@ -57,11 +58,11 @@ protected:
     float shootCooldown = 0.0f;
 
 public:
-    Character(GameMap& gameMap, Vector<int16_t> pos, int16_t characterId, CharacterType type,
+    Character(GameMap& gameMap, Vector<uint8_t> pos, uint8_t playerId, CharacterType type,
               float horizontalSpeed, float sprintSpeed, float verticalSpeed, float jumpHeight,
               float shootCooldownTime);
 
-    void recvDamage(uint16_t damage, float time) override;
+    void recvDamage(uint8_t damage, float time) override;
     void update(float time);
     void shoot(float time);
 
@@ -78,7 +79,7 @@ public:
     void die(float respawnTime) override;
     void revive(float time);
 
-    void heal(uint16_t amount);
+    void heal(uint8_t amount);
 
     std::vector<std::shared_ptr<Entity>> getTargets();
     void interact(std::shared_ptr<Entity>& other);
@@ -96,7 +97,7 @@ public:
 
     CharacterType getCharacterType();
 
-    void heal(uint32_t healQnt);
+    PlayerDTO getDTO() const;
 };
 
 #endif  // PLAYER_CHARACTER_H

@@ -16,26 +16,25 @@ class GameMap;
 class Enemy: public Entity {
 protected:
     GameMap& gameMap;
-    uint16_t dmg;
+    uint8_t dmg;
     std::unique_ptr<EnemyState> state;
-    int16_t viewDistance;
-    int16_t viewDistanceHit;
-    int16_t movesPerCell;
-    int16_t hitDistance;
-    std::vector<int16_t> walkProb;
-    std::vector<int16_t> jumpProb;
-    std::vector<int16_t> flyProb;
+    uint8_t viewDistance;
+    uint8_t viewDistanceHit;
+    uint8_t movesPerCell;
+    uint8_t hitDistance;
+    std::vector<uint8_t> walkProb;
+    std::vector<uint8_t> jumpProb;
+    std::vector<uint8_t> flyProb;
 
 public:
-    Enemy(GameMap& map, Vector<int16_t> pos, int16_t id, int16_t health, Direction dir,
-          uint16_t dmg, std::unique_ptr<EnemyState> initialState, int16_t viewDistance,
-          int16_t viewDistanceHit, int16_t movesPerCell, int16_t hitDistance,
-          std::vector<int16_t> walkProb, std::vector<int16_t> jumpProb,
-          std::vector<int16_t> flyProb);
+    Enemy(GameMap& map, Vector<uint8_t> pos, uint8_t id, uint8_t health, Direction dir, uint8_t dmg,
+          std::unique_ptr<EnemyState> initialState, uint8_t viewDistance, uint8_t viewDistanceHit,
+          uint8_t movesPerCell, uint8_t hitDistance, std::vector<uint8_t> walkProb,
+          std::vector<uint8_t> jumpProb, std::vector<uint8_t> flyProb);
 
     void update(std::vector<std::shared_ptr<Character>> characters, float time);
 
-    void recvDamage(uint16_t dmg, float time) override;
+    void recvDamage(uint8_t dmg, float time) override;
 
     void attack(std::vector<std::shared_ptr<Character>> characters, float time);
 

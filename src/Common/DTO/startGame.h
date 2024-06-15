@@ -8,12 +8,13 @@
 
 class StartGameDTO: public CommandDTO {
 private:
-    uint32_t gameId;
+    uint8_t gameId;
 
 public:
-    explicit StartGameDTO(const uint32_t& gameId);
-    StartGameDTO(uint32_t& playerId, uint32_t& gameId);
-    uint32_t getGameId() const;
+    StartGameDTO();
+    explicit StartGameDTO(const uint8_t& gameId);
+    StartGameDTO(uint8_t& playerId, uint8_t& gameId);
+    uint8_t getGameId() const;
     std::vector<char> getData() const override;
 };
 

@@ -2,7 +2,7 @@ LOG_FILE: "server.log"
 
 GAME:
   GRAVITY: 9.8
-  MAX_MOVES: 100
+  MAX_MOVES: 2
   MAX_REVIVED: 3
 
 GAMEMAP:

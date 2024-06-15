@@ -3,6 +3,7 @@
 
 #include <atomic>
 #include <memory>
+#include <vector>
 
 // #include "../Client/SDL/gamescreen.h"
 #include "../Common/Config/ClientConfig.h"
@@ -16,7 +17,6 @@
 #include "Controllers/GameController.h"
 #include "Controllers/LobbyController.h"
 #include "Lobby/lobbyInit.h"
-#include "../Common/Types/command.h"
 
 class Client {
 private:
@@ -24,7 +24,7 @@ private:
     char* port;
     std::shared_ptr<Socket> skt;
     std::atomic<bool> was_closed;
-    std::shared_ptr<Queue<std::unique_ptr<DTO>>> senderQueue;
+    std::shared_ptr<Queue<std::unique_ptr<CommandDTO>>> senderQueue;
     std::shared_ptr<Queue<std::unique_ptr<DTO>>> lobbyQueue;
     std::shared_ptr<Queue<std::unique_ptr<DTO>>> gameQueue;
     SenderThread sender;
@@ -33,15 +33,15 @@ private:
     ReceiverThread receiver;
     LobbyController lobbyController;
     GameController gameController;
-    uint32_t playerId;
+    uint8_t playerId;
 
 public:
     Client(char* ip, char* port);
     void start();
     std::unique_ptr<DTO> getServerMsg();
     void sendMsg(Command& cmd, std::vector<uint8_t>& parameters);
-	void move_msg(std::vector<uint8_t>& parameters);
-	void shoot_msg();
+    void move_msg(std::vector<uint8_t>& parameters);
+    void shoot_msg();
 };
 
 #endif  // CLIENT_H

@@ -24,4 +24,6 @@ enum EnemyStateEntity : char {
     ENEMY_RESPAWNING         // El enemigo está reapareciendo
 };
 
+enum EntityType : char { CHARACTER, ENEMY, OBSTACLE, TILE, BULLET, ITEM };
+
 #endif  // ENTITYSTATE_H

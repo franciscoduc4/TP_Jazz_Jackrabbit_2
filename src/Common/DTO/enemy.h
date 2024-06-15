@@ -12,7 +12,7 @@ class EnemyDTO: public GameElementDTO {
 private:
     uint16_t x;
     uint16_t y;
-    uint32_t enemy_id;
+    uint8_t enemy_id;
     int health;
     int damage;
     int speed;
@@ -23,9 +23,9 @@ private:
 
 
 public:
-    EnemyDTO(uint16_t x, uint16_t y, uint32_t enemy_id, int health, int damage, int speed,
+    EnemyDTO(uint16_t x, uint16_t y, uint8_t enemy_id, int health, int damage, int speed,
              EnemyType type, EnemyStateEntity state);
-    uint32_t getEnemyId() const;
+    uint8_t getEnemyId() const;
     uint16_t getX() const;
     uint16_t getY() const;
     int getDamage() const;

@@ -15,7 +15,7 @@
 
 class Player {
 private:
-    uint32_t playerId;
+    uint8_t playerId;
     std::shared_ptr<Socket> socket;
     std::atomic<bool> inGame{false};
     std::atomic<bool> keepPlaying{true};
@@ -23,7 +23,7 @@ private:
 
 public:
     Player(std::shared_ptr<Socket> socket, GameMonitor& gameMonitor,
-           QueueMonitor<std::unique_ptr<DTO>>& queueMonitor, uint32_t playerId);
+           QueueMonitor<std::unique_ptr<DTO>>& queueMonitor, uint8_t playerId);
     void disconnect();
     bool isPlaying() const;
 };

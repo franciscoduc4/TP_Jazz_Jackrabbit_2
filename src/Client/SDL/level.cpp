@@ -3,6 +3,7 @@
 #include <SDL2pp/SDL2pp.hh>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
+#include "../Common/Config/ClientConfig.h"
 
 
 #include <iostream>

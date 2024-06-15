@@ -1,22 +1,30 @@
 #include "entity.h"
 
 
-Entity::Entity(Vector<int16_t> pos, int16_t id, int16_t health, Direction dir):
-        pos(pos), id(id), health(health), initialHealth(health), dir(dir), isDead(false) {}
+Entity::Entity(Vector<uint8_t> pos, uint8_t id, uint8_t health, Direction dir, EntityType type):
+        pos(pos),
+        id(id),
+        health(health),
+        initialHealth(health),
+        dir(dir),
+        type(type),
+        isDead(false) {}
 
-Vector<int16_t> Entity::getPosition() const { return pos; }
+Vector<uint8_t> Entity::getPosition() const { return pos; }
 
-int16_t Entity::getId() const { return id; }
+uint8_t Entity::getId() const { return id; }
 
 Direction Entity::getDirection() const { return dir; }
 
-int16_t Entity::getHealth() const { return health; }
+uint8_t Entity::getHealth() const { return health; }
 
-Vector<int16_t> Entity::getMapPosition(int16_t movesPerCell) const {
-    return {static_cast<int16_t>(pos.x / movesPerCell), static_cast<int16_t>(pos.y / movesPerCell)};
+Vector<uint8_t> Entity::getMapPosition(uint8_t movesPerCell) const {
+    std::cout << "[ENTITY] Position: " << pos << " movesPerCell: " << (int)movesPerCell
+              << std::endl;
+    return {static_cast<uint8_t>(pos.x / movesPerCell), static_cast<uint8_t>(pos.y / movesPerCell)};
 }
 
-void Entity::recvDamage(uint16_t damage, float time) {
+void Entity::recvDamage(uint8_t damage, float time) {
     health -= damage;
     if (health <= 0) {
         die(time);
@@ -27,19 +35,21 @@ bool Entity::getIsDead() const { return isDead; }
 
 void Entity::die(float time) { isDead = true; }
 
-void Entity::setPosition(Vector<int16_t> newPosition) { pos = newPosition; }
+void Entity::setPosition(Vector<uint8_t> newPosition) { pos = newPosition; }
 
 void Entity::setDirection(Direction newDir) { dir = newDir; }
 
 bool Entity::isAlive() const { return !isDead; }
 
-int16_t Entity::getDistanceTo(std::shared_ptr<Entity> other) const {
-    return static_cast<int16_t>(pos.distance(other->getPosition()));
+uint8_t Entity::getDistanceTo(std::shared_ptr<Entity> other) const {
+    return static_cast<uint8_t>(pos.distance(other->getPosition()));
 }
 
-void Entity::heal(uint32_t healQnt) {
+void Entity::heal(uint8_t healQnt) {
     health += healQnt;
     if (health > initialHealth) {
         health = initialHealth;
     }
 }
+
+EntityType Entity::getType() const { return type; }

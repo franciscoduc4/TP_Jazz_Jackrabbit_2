@@ -29,18 +29,16 @@ public:
                type < static_cast<char>(Direction::RIGHT);
     }
     static bool validateDTOType(const char& type) {
-        std::cout << (type >= static_cast<char>(DTOType::COMMAND_DTO)) << std::endl;
-        std::cout << (type < static_cast<char>(DTOType::GAME_DTO)) << std::endl;
         return type >= static_cast<char>(DTOType::COMMAND_DTO) &&
-               type < static_cast<char>(DTOType::GAME_DTO);
+               type <= static_cast<char>(DTOType::GAME_DTO);
     }
     static bool validateElementType(const char& type) {
         return type >= static_cast<char>(ElementType::PLAYER) &&
                type < static_cast<char>(ElementType::NONE);
     }
     static bool validateEnemyType(const char& type) {
-        return type >= static_cast<char>(EnemyType::WALKING_ENEMY) &&
-               type < static_cast<char>(EnemyType::JUMPING_ENEMY);
+        return type >= static_cast<char>(EnemyType::TURTLE) &&
+               type < static_cast<char>(EnemyType::SCHWARZENGUARD);
     }
     static bool validateCharacterStateEntityType(const char& type) {
         return type >= static_cast<char>(CharacterStateEntity::IDLE) &&

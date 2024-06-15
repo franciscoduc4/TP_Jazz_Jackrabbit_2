@@ -11,55 +11,52 @@
 
 EntityFactory::EntityFactory(GameMap& gameMap): gameMap(gameMap) {}
 
-std::shared_ptr<Character> EntityFactory::createCharacter(uint8_t characterId, CharacterType type,
-                                                          Vector<int16_t> position) {
+std::shared_ptr<Character> EntityFactory::createCharacter(uint8_t playerId, CharacterType type,
+                                                          Vector<uint8_t> position) {
     switch (type) {
         case CharacterType::JAZZ:
-            return createJazz(characterId, position);
+            return createJazz(playerId, position);
         case CharacterType::SPAZ:
-            return createSpaz(characterId, position);
+            return createSpaz(playerId, position);
         case CharacterType::LORI:
-            return createLori(characterId, position);
+            return createLori(playerId, position);
     }
     return nullptr;
 }
 
 std::shared_ptr<Enemy> EntityFactory::createEnemy(uint8_t enemyId, EnemyType type,
-                                                  Vector<int16_t> position) {
+                                                  Vector<uint8_t> position) {
     switch (type) {
-        case EnemyType::WALKING_ENEMY:
+        case EnemyType::TURTLE:
             return createWalker(enemyId, position);
-        case EnemyType::FLYING_ENEMY:
+        case EnemyType::YELLOWMON:
             return createFlyer(enemyId, position);
-        case EnemyType::JUMPING_ENEMY:
+        case EnemyType::SCHWARZENGUARD:
             return createJumper(enemyId, position);
     }
     return nullptr;
 }
 
-std::shared_ptr<Character> EntityFactory::createJazz(int16_t characterId,
-                                                     Vector<int16_t> position) {
-    return std::make_shared<Jazz>(gameMap, position, characterId);
+std::shared_ptr<Character> EntityFactory::createJazz(uint8_t playerId, Vector<uint8_t> position) {
+    return std::make_shared<Jazz>(gameMap, position, playerId);
 }
 
-std::shared_ptr<Character> EntityFactory::createSpaz(int16_t characterId,
-                                                     Vector<int16_t> position) {
-    return std::make_shared<Spaz>(gameMap, position, characterId);
+std::shared_ptr<Character> EntityFactory::createSpaz(uint8_t playerId, Vector<uint8_t> position) {
+    return std::make_shared<Spaz>(gameMap, position, playerId);
 }
 
-std::shared_ptr<Character> EntityFactory::createLori(int16_t characterId,
-                                                     Vector<int16_t> position) {
-    return std::make_shared<Lori>(gameMap, position, characterId);
+std::shared_ptr<Character> EntityFactory::createLori(uint8_t playerId, Vector<uint8_t> position) {
+    return std::make_shared<Lori>(gameMap, position, playerId);
 }
 
-std::shared_ptr<Enemy> EntityFactory::createWalker(int16_t enemyId, Vector<int16_t> position) {
+std::shared_ptr<Enemy> EntityFactory::createWalker(uint8_t enemyId, Vector<uint8_t> position) {
     return std::make_shared<WalkingEnemy>(gameMap, position, enemyId);
 }
 
-std::shared_ptr<Enemy> EntityFactory::createFlyer(int16_t enemyId, Vector<int16_t> position) {
+std::shared_ptr<Enemy> EntityFactory::createFlyer(uint8_t enemyId, Vector<uint8_t> position) {
     return std::make_shared<FlyingEnemy>(gameMap, position, enemyId);
 }
 
-std::shared_ptr<Enemy> EntityFactory::createJumper(int16_t enemyId, Vector<int16_t> position) {
+std::shared_ptr<Enemy> EntityFactory::createJumper(uint8_t enemyId, Vector<uint8_t> position) {
     return std::make_shared<JumpingEnemy>(gameMap, position, enemyId);
 }
