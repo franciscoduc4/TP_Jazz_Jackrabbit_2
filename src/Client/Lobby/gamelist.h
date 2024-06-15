@@ -21,7 +21,7 @@ public:
 
     void updateGameList();
 
-    void joinGame(const QString& gameName);
+    void joinGame(const uint8_t& gameId, const QString& gameName);
 
 
 private slots:

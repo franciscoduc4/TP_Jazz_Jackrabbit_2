@@ -39,20 +39,20 @@ void GameList::updateGameList() {
 
     if (gamesList.empty()) {
         // If there are no games, display a message
-        QListWidgetItem* item = new QListWidgetItem("No hay juegos disponibles para unirse");
+        auto* item = new QListWidgetItem("No hay juegos disponibles para unirse");
         item->setForeground(Qt::red);
         ui->listGames->addItem(item);
     } else {
         for (const auto& game : gamesList) {
-            QListWidgetItem* item = new QListWidgetItem;
-            QWidget* widget = new QWidget;
-            QHBoxLayout* layout = new QHBoxLayout;
-            QLabel* gameNameLabel = new QLabel(QString::fromStdString(game.second.getGameName()));
-            QLabel* playersLabel = new QLabel(QString::number(game.second.getCurrentPlayers()) + "/" + QString::number(game.second.getMaxPlayers()));
-            QPushButton* joinButton = new QPushButton("Unirme");
+            auto* item = new QListWidgetItem;
+            auto* widget = new QWidget;
+            auto* layout = new QHBoxLayout;
+            auto* gameNameLabel = new QLabel(QString::fromStdString(game.second.getGameName()));
+            auto* playersLabel = new QLabel(QString::number(game.second.getCurrentPlayers()) + "/" + QString::number(game.second.getMaxPlayers()));
+            auto* joinButton = new QPushButton("Unirme");
 
-            connect(joinButton, &QPushButton::clicked, this, [this, game]() {
-                this->joinGame(QString::fromStdString(game.second.getGameName()));
+            connect(joinButton, &QPushButton::clicked, this, [this, gameId = game.first, gameName = QString::fromStdString(game.second.getGameName())]() {
+                this->joinGame(gameId, gameName);
             });
 
             layout->addWidget(gameNameLabel, 3);
@@ -67,9 +67,9 @@ void GameList::updateGameList() {
     }
 }
 
-void GameList::joinGame(const QString& gameName) {
-    // this->msg.setGameName(gameName);
-    // client.joinGame(this->msg);
+void GameList::joinGame(const uint8_t& gameId, const QString& gameName) {
+    this->msg.setGameId(gameId);
+    this->msg.setGameName(gameName.toStdString());
     this->timer->stop();
 
     this->msg.setLobbyCmd(Command::JOIN_GAME);
