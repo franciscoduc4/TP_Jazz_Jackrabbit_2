@@ -9,6 +9,7 @@
 #include <arpa/inet.h>
 
 #include "../../Common/DTO/dto.h"
+#include "../../Common/DTO/gamesList.h"
 #include "../../Common/Types/command.h"
 #include "../../Common/Types/direction.h"
 #include "../../Common/maps/mapsManager.h"

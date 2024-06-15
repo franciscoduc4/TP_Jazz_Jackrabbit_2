@@ -8,7 +8,7 @@
 #include "../CommandHandlers/Game/gameCommand.h"
 
 ReceiverThread::ReceiverThread(std::shared_ptr<Socket> socket, std::atomic<bool>& keepPlaying,
-                               std::atomic<bool>& inGame, uint32_t playerId,
+                               std::atomic<bool>& inGame, uint8_t playerId,
                                std::shared_ptr<Queue<std::unique_ptr<CommandDTO>>> recvQueue):
         playerId(playerId),
         serializer(socket),

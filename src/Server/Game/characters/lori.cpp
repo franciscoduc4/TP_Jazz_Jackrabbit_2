@@ -2,8 +2,8 @@
 
 #define CONFIG ServerConfig::getInstance()
 
-Lori::Lori(GameMap& map, Vector<int16_t> pos, int16_t characterId):
-        Character(map, pos, characterId, CharacterType::LORI, CONFIG->getLoriHorizontalSpeed(),
+Lori::Lori(GameMap& map, Vector<uint8_t> pos, uint8_t playerId):
+        Character(map, pos, playerId, CharacterType::LORI, CONFIG->getLoriHorizontalSpeed(),
                   CONFIG->getLoriSprintSpeed(), CONFIG->getLoriVerticalSpeed(),
                   CONFIG->getLoriJumpHeight(), CONFIG->getLoriShootCooldownTime()) {}
 

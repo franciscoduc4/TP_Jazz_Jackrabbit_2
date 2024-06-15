@@ -18,20 +18,18 @@ private:
     Serializer& serializer;
     Deserializer& deserializer;
     std::shared_ptr<Queue<std::unique_ptr<DTO>>>& lobbyQueue;
-    std::unordered_map<uint32_t, GameInfo> games;
+    std::unordered_map<uint8_t, GameInfo> games;
     GameInfo selected;
 
 public:
-    LobbyController(Serializer& serializer, 
-        Deserializer& deserializer, 
-        std::shared_ptr<Queue<std::unique_ptr<DTO>>>& lobbyQueue);
+    LobbyController(Serializer& serializer, Deserializer& deserializer,
+                    std::shared_ptr<Queue<std::unique_ptr<DTO>>>& lobbyQueue);
     void sendRequest(const LobbyMessage& msg);
     bool recvResponse();
     void startGame(const LobbyMessage& msg);
     bool recvStartGame();
-    std::unordered_map<uint32_t, std::string> getMaps();
-    std::unordered_map<uint32_t, GameInfo>& getGamesList();
-
+    std::unordered_map<uint8_t, std::string> getMaps();
+    std::unordered_map<uint8_t, GameInfo>& getGamesList();
 };
 
 #endif  // LOBBYCONTROLLER_H

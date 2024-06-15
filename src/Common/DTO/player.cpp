@@ -1,6 +1,6 @@
 #include "player.h"
 
-PlayerDTO::PlayerDTO(uint32_t playerId):   
+PlayerDTO::PlayerDTO(uint8_t playerId):
         x(0),
         y(0),
         player_id(playerId),
@@ -14,8 +14,8 @@ PlayerDTO::PlayerDTO(uint32_t playerId):
         type(CharacterType::INVALID),
         state(CharacterStateEntity::IDLE) {}
 
-PlayerDTO::PlayerDTO(uint16_t x, uint16_t y, uint32_t playerId, int health, int damage, int speed,
-                     WeaponDTO currentWeapon, CharacterType type, CharacterStateEntity state):
+PlayerDTO::PlayerDTO(uint8_t x, uint8_t y, uint8_t playerId, int health, int damage, int speed,
+                     CharacterType type, CharacterStateEntity state):
         x(x),
         y(y),
         player_id(playerId),
@@ -30,11 +30,11 @@ PlayerDTO::PlayerDTO(uint16_t x, uint16_t y, uint32_t playerId, int health, int 
         state(state) {}
 
 
-uint32_t PlayerDTO::getPlayerId() const { return player_id; }
+uint8_t PlayerDTO::getPlayerId() const { return player_id; }
 
-uint16_t PlayerDTO::getX() const { return x; }
+uint8_t PlayerDTO::getX() const { return x; }
 
-uint16_t PlayerDTO::getY() const { return y; }
+uint8_t PlayerDTO::getY() const { return y; }
 
 int PlayerDTO::getDamage() const { return damage; }
 

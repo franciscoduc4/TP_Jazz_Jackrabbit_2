@@ -10,7 +10,7 @@ LobbyController::LobbyController(Serializer& serializer, Deserializer& deseriali
         serializer(serializer),
         deserializer(deserializer),
         lobbyQueue(lobbyQueue),
-        games(std::unordered_map<uint32_t, GameInfo>()),
+        games(std::unordered_map<uint8_t, GameInfo>()),
         selected() {}
 
 void LobbyController::sendRequest(const LobbyMessage& msg) {
@@ -61,7 +61,7 @@ bool LobbyController::recvStartGame() {
     }
 }
 
-std::unordered_map<uint32_t, std::string> LobbyController::getMaps() {
+std::unordered_map<uint8_t, std::string> LobbyController::getMaps() {
     std::cout << "[Lobby Controller] Getting maps..." << std::endl;
     try {
         std::unique_ptr<DTO> dto = this->lobbyQueue->pop();
@@ -75,7 +75,7 @@ std::unordered_map<uint32_t, std::string> LobbyController::getMaps() {
     return {};
 }
 
-std::unordered_map<uint32_t, GameInfo>& LobbyController::getGamesList() {
+std::unordered_map<uint8_t, GameInfo>& LobbyController::getGamesList() {
     std::unique_ptr<DTO> dto;
     GamesListDTO* gamesList;
     try {

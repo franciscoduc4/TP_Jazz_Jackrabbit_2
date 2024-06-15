@@ -1,10 +1,10 @@
 #include "gameElement.h"
 
-GameElementDTO::GameElementDTO()  {}
+GameElementDTO::GameElementDTO() {}
 
 GameElementDTO::GameElementDTO(ElementType element): type(element) {}
 
-GameElementDTO::GameElementDTO(uint32_t& playerId, ElementType element):
+GameElementDTO::GameElementDTO(uint8_t& playerId, ElementType element):
         playerId(playerId), type(element) {}
 
 ElementType GameElementDTO::getElementType() const { return type; }

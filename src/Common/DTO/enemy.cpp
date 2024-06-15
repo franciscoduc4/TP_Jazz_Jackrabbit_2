@@ -1,6 +1,6 @@
 #include "enemy.h"
 
-EnemyDTO::EnemyDTO(uint16_t x, uint16_t y, uint32_t enemy_id, int health, int damage, int speed,
+EnemyDTO::EnemyDTO(uint16_t x, uint16_t y, uint8_t enemy_id, int health, int damage, int speed,
                    EnemyType type, EnemyStateEntity state):
         x(x),
         y(y),
@@ -12,7 +12,7 @@ EnemyDTO::EnemyDTO(uint16_t x, uint16_t y, uint32_t enemy_id, int health, int da
         state(state) {}
 
 
-uint32_t EnemyDTO::getEnemyId() const { return enemy_id; }
+uint8_t EnemyDTO::getEnemyId() const { return enemy_id; }
 uint16_t EnemyDTO::getX() const { return x; }
 uint16_t EnemyDTO::getY() const { return y; }
 

@@ -67,7 +67,7 @@ void SenderThread::run() {
 
             CommandDTO* cmd = dynamic_cast<CommandDTO*>(msg.get());
             this->sendCommandDTO(*cmd);
-            
+
             if (this->was_closed.load()) {
                 stop();
             }

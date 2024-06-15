@@ -50,7 +50,7 @@ struct Vector {
     }
 
     friend std::ostream& operator<<(std::ostream& os, const Vector& vec) {
-        os << "(" << vec.x << ", " << vec.y << ")";
+        os << "(" << (int)vec.x << ", " << (int)vec.y << ")";
         return os;
     }
 };

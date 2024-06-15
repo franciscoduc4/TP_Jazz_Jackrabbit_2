@@ -2,12 +2,13 @@
 #define WEAPON_H_
 
 #include <iostream>
+#include <memory>
 #include <vector>
 
+#include "../../../Common/DTO/weapon.h"
 #include "../../../Common/Types/character.h"
 #include "../../../Common/Types/weapon.h"
 #include "../entity.h"
-#include <memory>
 
 class GameMap;
 class State;
@@ -17,13 +18,13 @@ class Weapon {
 public:
     virtual void update(float time) = 0;
 
-    virtual void shoot(std::vector<std::shared_ptr<Entity>>& shootingEntities, int16_t xPos,
+    virtual void shoot(std::vector<std::shared_ptr<Entity>>& shootingEntities, uint8_t xPos,
                        float time) = 0;
     virtual void reload() = 0;
     virtual bool isEmpty() = 0;
     virtual bool isLoaded() = 0;
-    virtual int16_t getBullets() = 0;
-    virtual uint32_t getBulletsShot() = 0;
+    virtual uint8_t getBullets() = 0;
+    virtual uint8_t getBulletsShot() = 0;
     virtual bool shootTime(float time) = 0;
     virtual float getFireRate() = 0;
     virtual WeaponType getWeaponType() = 0;

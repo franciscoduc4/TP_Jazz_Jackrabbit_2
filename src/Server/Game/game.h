@@ -18,9 +18,9 @@
 
 class Game {
 private:
-    uint32_t gameId;
+    uint8_t gameId;
     std::string gameName;
-    uint32_t mapId;
+    uint8_t mapId;
     GameMode gameMode;
     uint8_t maxPlayers;
     uint8_t currentPlayers;
@@ -28,21 +28,21 @@ private:
     GameMap gameMap;
 
 public:
-    explicit Game(uint32_t gameId, std::string gameName, uint32_t mapId, uint32_t playerId,
+    explicit Game(uint8_t gameId, std::string gameName, uint8_t mapId, uint8_t playerId,
                   GameMode gameMode, uint8_t maxPlayers, CharacterType characterType,
                   std::shared_ptr<Queue<std::unique_ptr<CommandDTO>>> recvQueue,
                   QueueMonitor<std::unique_ptr<DTO>>& queueMonitor);
 
 
-    uint32_t getGameId() const;
+    uint8_t getGameId() const;
 
     std::string getGameName() const;
 
-    void addPlayer(uint32_t playerId, CharacterType characterType);
+    void addPlayer(uint8_t playerId, CharacterType characterType);
 
     bool isFull() const;
 
-    void removePlayer(uint32_t playerId);
+    void removePlayer(uint8_t playerId);
 
     GameInfo getGameInfo();
 

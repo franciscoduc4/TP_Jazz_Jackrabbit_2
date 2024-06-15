@@ -10,13 +10,13 @@
 
 class GamesListDTO: public CommandDTO {
 private:
-    std::unordered_map<uint32_t, GameInfo> games;
+    std::unordered_map<uint8_t, GameInfo> games;
 
 public:
     GamesListDTO();
-    GamesListDTO(std::unordered_map<uint32_t, GameInfo> games);
+    GamesListDTO(std::unordered_map<uint8_t, GameInfo> games);
 
-    std::unordered_map<uint32_t, GameInfo> getGames() const;
+    std::unordered_map<uint8_t, GameInfo> getGames() const;
 
     ~GamesListDTO() {}
 };

@@ -13,7 +13,7 @@ class CommandDTO: public DTO {
 private:
     Command commandType;
 
-    uint32_t playerId;
+    uint8_t playerId;
 
     DTOType type = DTOType::COMMAND_DTO;
 
@@ -23,9 +23,9 @@ public:
 
     explicit CommandDTO(Command command);
 
-    CommandDTO(const uint32_t& playerId, Command command);
+    CommandDTO(const uint8_t& playerId, Command command);
 
-    uint32_t getPlayerId() const;
+    uint8_t getPlayerId() const;
 
     Command getCommand() const;
 
