@@ -19,8 +19,8 @@ std::vector<char> StartGameDTO::getData() const {
     if (gameId == -1) {
         return std::vector<char>();
     }
-    uint8_t network_gameId = htonl(gameId);
-    std::vector<char> data(sizeof(uint8_t));
-    memcpy(reinterpret_cast<void*>(data[0]), &network_gameId, sizeof(uint8_t));
+    std::vector<char> data;
+    data.resize(sizeof(uint8_t));
+    data.push_back(static_cast<char>(gameId));
     return data;
 }

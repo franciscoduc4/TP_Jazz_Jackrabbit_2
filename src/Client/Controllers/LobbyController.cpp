@@ -61,6 +61,23 @@ bool LobbyController::recvStartGame() {
     }
 }
 
+uint8_t LobbyController::recvCreateGame() {
+    std::unique_ptr<DTO> dto;
+    try {
+        dto = this->lobbyQueue->pop();
+    } catch (const std::exception& e) {
+        std::cerr << "Exception caught in recvCreateGame: " << e.what() << std::endl;
+        return 0;
+    }
+    auto* cgDTO = dynamic_cast<CreateGameDTO*>(dto.get());
+    if (cgDTO) {
+        return cgDTO->getGameId();
+    } else {
+        std::cerr << "Failed to cast to CreateGameDTO in recvCreateGame." << std::endl;
+        return 0;
+    }
+}
+
 std::unordered_map<uint8_t, std::string> LobbyController::getMaps() {
     std::cout << "[Lobby Controller] Getting maps..." << std::endl;
     try {

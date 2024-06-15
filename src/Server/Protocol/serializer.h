@@ -22,10 +22,10 @@ private:
     std::shared_ptr<Socket> socket;
 
 public:
-    std::vector<char> serializeCreateGame(const std::unique_ptr<CreateGameDTO> dto);
-    std::vector<char> serializeJoinGame(const std::unique_ptr<JoinGameDTO> dto);
-    std::vector<char> serializeGamesList(const std::unique_ptr<CommandDTO> dto);
-    std::vector<char> serializeGamesList(const std::unique_ptr<GamesListDTO> dto);
+    std::vector<char> serializeCreateGame(const std::unique_ptr<CreateGameDTO>& dto);
+    std::vector<char> serializeJoinGame(const std::unique_ptr<JoinGameDTO>& dto);
+    std::vector<char> serializeGamesList(const std::unique_ptr<CommandDTO>& dto);
+    std::vector<char> serializeGamesList(const std::unique_ptr<GamesListDTO>& dto);
     std::vector<char> serializePlayerDTO(const std::unique_ptr<PlayerDTO> dto);
     std::vector<char> serializeEnemyDTO(const std::unique_ptr<EnemyDTO> dto);
     std::vector<char> serializeBulletDTO(const std::unique_ptr<BulletDTO> dto);

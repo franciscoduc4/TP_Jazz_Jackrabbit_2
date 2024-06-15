@@ -45,20 +45,17 @@ std::unique_ptr<CommandDTO> Deserializer::getCommand(bool& wasClosed, uint8_t& p
 
 std::unique_ptr<CreateGameDTO> Deserializer::deserializeCreateGame(bool& wasClosed,
                                                                    uint8_t& playerId) {
-    uint8_t mapIdNetwork;
-    socket->recvall(&mapIdNetwork, sizeof(uint8_t), &wasClosed);
+    uint8_t mapId;
+    socket->recvall(&mapId, sizeof(uint8_t), &wasClosed);
     if (wasClosed) {
         std::cerr << "[SERVER DESERIALIZER] Connection was closed while receiving mapIdNetwork"
                   << std::endl;
         return nullptr;
     }
-    std::cout << "[SERVER DESERIALIZER] Map id network: " << mapIdNetwork << std::endl;
-    uint8_t mapId = ntohl(mapIdNetwork);
-
-    std::cout << "[SERVER DESERIALIZER] Map id: " << mapId << std::endl;
+    std::cout << "[SERVER DESERIALIZER] Map id: " << (int)mapId << std::endl;
 
     uint8_t maxPlayers;
-    socket->recvall(&maxPlayers, sizeof(char), &wasClosed);
+    socket->recvall(&maxPlayers, sizeof(uint8_t), &wasClosed);
     if (wasClosed) {
         std::cerr << "[SERVER DESERIALIZER] Connection was closed while receiving maxPlayers"
                   << std::endl;
@@ -76,7 +73,7 @@ std::unique_ptr<CreateGameDTO> Deserializer::deserializeCreateGame(bool& wasClos
     std::cout << "[SERVER DESERIALIZER] Character type: " << (int)characterType << std::endl;
 
     uint8_t lengthName = 0;
-    socket->recvall(&lengthName, sizeof(char), &wasClosed);
+    socket->recvall(&lengthName, sizeof(uint8_t), &wasClosed);
     if (wasClosed) {
         std::cerr << "[SERVER DESERIALIZER] Connection was closed while receiving lengthName"
                   << std::endl;
@@ -96,8 +93,7 @@ std::unique_ptr<CreateGameDTO> Deserializer::deserializeCreateGame(bool& wasClos
                                            std::string(nameBuffer.begin(), nameBuffer.end()));
 }
 
-std::unique_ptr<MapsListDTO> Deserializer::deserializeMapsList(bool& wasClosed,
-                                                               uint8_t& playerId) {
+std::unique_ptr<MapsListDTO> Deserializer::deserializeMapsList(bool& wasClosed, uint8_t& playerId) {
     std::cout << "[SERVER DESERIALIZER] Deserialize Maps List" << std::endl;
     return std::make_unique<MapsListDTO>();
 }
@@ -140,7 +136,6 @@ std::unique_ptr<GameCommandDTO> Deserializer::deserializeMove(bool& wasClosed, u
 std::unique_ptr<StartGameDTO> Deserializer::deserializeStart(bool& wasClosed, uint8_t& playerId) {
     uint8_t gameId;
     socket->recvall(&gameId, sizeof(uint8_t), &wasClosed);
-    gameId = ntohl(gameId);
     std::cout << "[SERVER DESERIALIZER] Game id: " << gameId << std::endl;
     if (wasClosed) {
         std::cerr << "[SERVER DESERIALIZER] Connection was closed while receiving gameId"
