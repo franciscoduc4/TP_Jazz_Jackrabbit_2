@@ -76,7 +76,7 @@ CharacterSelection::~CharacterSelection() {
 }
 
 void CharacterSelection::on_btnChoose_clicked() {
-    // this->msg.setCharacter(characterSelectionWidget->getCurrentCharacter());
+    this->msg.setCharacter(characterSelectionWidget->getSelectedCharacter());
     this->controller.sendRequest(this->msg);
     std::cout << "[CHARACTER SELECTION] Request sent to controller" << std::endl;
 

@@ -166,11 +166,11 @@ Vector<uint8_t> GameMap::getInitialPositionForCharacterType(CharacterType type) 
             case CharacterType::JAZZ:
                 characterTypeStr = "JAZZ";
                 break;
-            case CharacterType::LORI:
-                characterTypeStr = "LORI";
-                break;
             case CharacterType::SPAZ:
                 characterTypeStr = "SPAZ";
+                break;
+            case CharacterType::LORI:
+                characterTypeStr = "LORI";
                 break;
             default:
                 throw std::runtime_error("Unknown character type");

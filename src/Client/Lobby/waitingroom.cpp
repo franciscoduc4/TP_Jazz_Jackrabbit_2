@@ -67,7 +67,7 @@ WaitingRoom::WaitingRoom(QWidget* parent, LobbyController& controller, LobbyMess
     std::cout << "[WAITING ROOM] Sent request to controller" << std::endl;
     this->controller.recvStartGame();
     std::cout << "[WAITING ROOM] Received start game command from controller" << std::endl;
-    this->hide();
+    clientJoinedGame = true;
 }
 
 WaitingRoom::~WaitingRoom() {
