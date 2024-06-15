@@ -42,10 +42,6 @@ void Serializer::sendCommand(const std::unique_ptr<CommandDTO> dto, bool& wasClo
             std::cout << "[SERVER SERIALIZER] Start game command, no additional data to send"
                       << std::endl;
             break;
-        case Command::MAPS_LIST:
-            buffer = serializeMapsList(
-                    std::make_unique<MapsListDTO>(static_cast<const MapsListDTO&>(*dto)));
-            break;
         default:
             std::cerr << "[SERVER SERIALIZER] Unknown command, nothing to serialize" << std::endl;
             return;

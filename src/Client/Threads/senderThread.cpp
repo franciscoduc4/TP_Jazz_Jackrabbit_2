@@ -37,47 +37,11 @@ void SenderThread::sendCommandDTO(const CommandDTO& cmd) {
     std::cout << "[CLIENT SENDER] Getting command" << std::endl;
     this->socket->sendall(&command, sizeof(char), &this->closed);
     std::cout << "[CLIENT SENDER] Sent command" << std::endl;
-
-    switch (command) {
-        case Command::CREATE_GAME:
-            this->sendCreateGame(cmd);
-            break;
-        case Command::MAPS_LIST:
-            std::cout << "[CLIENT SENDER] MAPS_LIST command" << std::endl;
-            break;
-        case Command::JOIN_GAME:
-            std::cout << "[CLIENT SENDER] JOIN_GAME command" << std::endl;
-            break;
-        case Command::GAMES_LIST:
-            std::cout << "[CLIENT SENDER] GAMES_LIST command" << std::endl;
-            break;
-        case Command::START_GAME:
-            this->sendStartGame(cmd);
-            break;
-        default:
-            std::cout << "[CLIENT SENDER] Unknown command: " << (int)command << std::endl;
-            break;
-    }
+    this->was_closed.store(closed);
     if (this->was_closed.load()) {
         std::cout << "[CLIENT SENDER] Socket was closed, exiting sendCommandDTO" << std::endl;
         return;
     }
-}
-
-void SenderThread::sendCreateGame(const CommandDTO& cmd) {
-    auto createGame = dynamic_cast<const CreateGameDTO&>(cmd);
-    uint32_t mapId = createGame.getMapId();
-    uint8_t maxPlayers = createGame.getMaxPlayers();
-    CharacterType character = createGame.getCharacterType();
-    std::string gameName = createGame.getGameName();
-
-    mapId = htonl(mapId);
-
-    this->socket->sendall(&mapId, sizeof(uint32_t), &this->closed);
-    std::cout << "[CLIENT SENDER] Sent mapId: " << mapId << std::endl;
-    this->was_closed.store(this->closed);
-    if (this->was_closed.load()) { return; }
-
     if (this->additionalData[static_cast<char>(command)]) {
         this->sendAditionalData(cmd);
     }
@@ -85,7 +49,9 @@ void SenderThread::sendCreateGame(const CommandDTO& cmd) {
 
 void SenderThread::sendAditionalData(const CommandDTO& cmd) {
     std::vector<char> data = cmd.getData();
-
+    if (data.empty()) {
+        return;
+    }
     this->socket->sendall(data.data(), data.size(), &this->closed);
     std::cout << "[CLIENT SENDER] Sent movement data" << std::endl;
     this->was_closed.store(this->closed);

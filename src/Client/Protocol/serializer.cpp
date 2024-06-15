@@ -38,9 +38,9 @@ void Serializer::serializeLobbyMessage(const LobbyMessage& msg) {
             case Command::CREATE_GAME:
                 std::cout << "Creating game" << std::endl;
                 this->queue->push(
-                    std::make_unique<CreateGameDTO>(htonl(msg.getMap()),
+                    std::make_unique<CreateGameDTO>(msg.getMap(),
                         msg.getMaxPlayers(), msg.getCharacter(),
-                        msg.getGameName(), msg.getGameId()));
+                        msg.getGameName()));
                 break;
             default:
                 break;
