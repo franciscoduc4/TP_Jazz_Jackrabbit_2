@@ -7,6 +7,8 @@
 #include <QGraphicsView>
 #include <QKeyEvent>
 #include <QVBoxLayout>
+#include <QTimer>
+#include <QPushButton>
 #include <utility>
 
 #include "../../../Common/Config/ClientConfig.h"
@@ -32,8 +34,15 @@ public:
     void updateCharacter(int index);
 
 protected:
+    void updateNameAnimation();
+    void updateCharacterAnimation();
+
     void keyPressEvent(QKeyEvent* event) override;
-    void paintEvent(QPaintEvent* event) override;
+    // void paintEvent(QPaintEvent* event) override;
+
+private slots:
+    void onLeftButtonClicked();
+    void onRightButtonClicked();
 
 private:
     QGraphicsView* nameAnimationView;
@@ -41,6 +50,12 @@ private:
     std::vector<CharacterData> characters;
     int currentCharacterIndex;
     QColor colourKey;
+    QTimer* nameAnimationTimer;
+    QTimer* characterAnimationTimer;
+    int nameAnimationFrameIndex;
+    int characterAnimationFrameIndex;
+    QPushButton* leftButton;
+    QPushButton* rightButton;
 };
 
 #endif  // CHARACTERSELECTIONWIDGET_H

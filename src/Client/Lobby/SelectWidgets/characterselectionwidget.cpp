@@ -5,16 +5,46 @@ CharacterSelectionWidget::CharacterSelectionWidget(QWidget* parent,
         QWidget{parent},
         currentCharacterIndex(0),
         colourKey(std::get<0>(colourKey), std::get<1>(colourKey), std::get<2>(colourKey)) {
-    std::cout << "[CHARACTER SELECTION] Initializing CharacterSelectionWidget" << std::endl;
+    setFocusPolicy(Qt::StrongFocus);
+    // Create a new QHBoxLayout as the main layout
+    auto* mainLayout = new QHBoxLayout(this);
 
-    auto* layout = new QVBoxLayout(this);
+    // Initialize buttons
+    leftButton = new QPushButton("<", this);
+    rightButton = new QPushButton(">", this);
+
+    // Set font for the buttons
+    QFont buttonFont("Jazz Jackrabbit 2", 30);
+    leftButton->setFont(buttonFont);
+    rightButton->setFont(buttonFont);
+
+    // Add buttons to the main layout with stretch factors for width
+    mainLayout->addWidget(leftButton, 1); // 5% of width
+
+    // Add stretch before QVBoxLayout
+    mainLayout->addStretch(1); // Adjust this value as needed
+
+    // Create a QVBoxLayout for the views
+    auto* viewLayout = new QVBoxLayout();
     nameAnimationView = new QGraphicsView(this);
     characterAnimationView = new QGraphicsView(this);
-    layout->addWidget(nameAnimationView);
-    layout->addWidget(characterAnimationView);
+    viewLayout->addWidget(nameAnimationView);
+    viewLayout->addWidget(characterAnimationView);
 
-    layout->setStretchFactor(nameAnimationView, 1);
-    layout->setStretchFactor(characterAnimationView, 9);
+    // Set stretch factors for height
+    viewLayout->setStretchFactor(nameAnimationView, 1); // 10% of height
+    viewLayout->setStretchFactor(characterAnimationView, 9); // 90% of height
+
+    // Add the view layout to the main layout
+    mainLayout->addLayout(viewLayout, 18); // 90% of width
+
+    // Add stretch after QVBoxLayout
+    mainLayout->addStretch(1); // Adjust this value as needed
+
+    mainLayout->addWidget(rightButton, 1); // 5% of width
+
+    // Set the main layout on the widget
+    setLayout(mainLayout);
 
 
     characters = {
@@ -46,27 +76,41 @@ CharacterSelectionWidget::CharacterSelectionWidget(QWidget* parent,
                                                                                    ClientConfig::getCharacterSelectFile(),
                                                                                    ClientConfig::getCharacterSelectColourKey()); })};
 
-    std::cout << "[CHARACTER SELECTION] Character data initialized" << std::endl;
+
+    // Initialize timers
+    nameAnimationTimer = new QTimer(this);
+    characterAnimationTimer = new QTimer(this);
+
+    // Connect timers to slots
+    connect(nameAnimationTimer, &QTimer::timeout, this, &CharacterSelectionWidget::updateNameAnimation);
+    connect(characterAnimationTimer, &QTimer::timeout, this, &CharacterSelectionWidget::updateCharacterAnimation);
+
+    // Start timers
+    nameAnimationTimer->start(100); // 100ms for a smooth continuous animation
+    characterAnimationTimer->start(100);
+
+    // Connect buttons to slots
+    connect(leftButton, &QPushButton::clicked, this, &CharacterSelectionWidget::onLeftButtonClicked);
+    connect(rightButton, &QPushButton::clicked, this, &CharacterSelectionWidget::onRightButtonClicked);
 
     updateCharacter(currentCharacterIndex);
 }
 
-void CharacterSelectionWidget::paintEvent(QPaintEvent* event) {
+/*void CharacterSelectionWidget::paintEvent(QPaintEvent* event) {
     QPainter painter(this);
     if (!characters.empty()) {
         const auto& characterSprites = characters[currentCharacterIndex].characterSpritesGetter();
         if (!characterSprites.empty()) {
             const auto& sprite = characterSprites[0];
             QPixmap pixmap = CharacterSelectionWidget::spriteToPixmap(sprite);
-            painter.drawPixmap(0, 0, pixmap);
+            // painter.drawPixmap(0, 0, pixmap);
         }
     }
 
     QWidget::paintEvent(event);
-}
+}*/
 
 void CharacterSelectionWidget::updateCharacter(int index) {
-    std::cout << "[CHARACTER SELECTION] Updating character to index: " << index << std::endl;
     currentCharacterIndex = index;
     auto nameSprites = characters[index].nameSpritesGetter();
     auto characterSprites = characters[index].characterSpritesGetter();
@@ -78,36 +122,31 @@ void CharacterSelectionWidget::updateCharacter(int index) {
         QPixmap pixmap = CharacterSelectionWidget::spriteToPixmap(sprite);
         auto* item = new QGraphicsPixmapItem(pixmap);
         nameScene->addItem(item);
-        std::cout << "[CHARACTER SELECTION] Added name sprite to scene" << std::endl;
     }
 
     for (const auto& sprite: characterSprites) {
         QPixmap pixmap = CharacterSelectionWidget::spriteToPixmap(sprite);
         auto* item = new QGraphicsPixmapItem(pixmap);
         characterScene->addItem(item);
-        std::cout << "[CHARACTER SELECTION] Added character sprite to scene" << std::endl;
     }
 
     nameAnimationView->setScene(nameScene);
     characterAnimationView->setScene(characterScene);
-    std::cout << "[CHARACTER SELECTION] Scenes updated" << std::endl;
 }
 
 QPixmap CharacterSelectionWidget::spriteToPixmap(const Sprite& sprite) {
-    std::cout << "[CHARACTER SELECTION] Converting sprite to pixmap" << std::endl;
     QString spriteSheetPath = ":/" + QString::fromStdString(sprite.getSpriteSheetPath());
 
     if (!QFile::exists(spriteSheetPath)) {
-        std::cerr << "[CHARACTER SELECTION] Sprite sheet file does not exist: " << spriteSheetPath.toStdString() << std::endl;
         return {};
     }
 
     QPixmap spriteSheet(spriteSheetPath);
 
     if (spriteSheet.isNull()) {
-        std::cerr << "[CHARACTER SELECTION] Sprite sheet pixmap is null" << std::endl;
         return {};
     }
+
     std::vector<std::pair<int, int>> vertices = sprite.getVertices();
 
     int minX = std::min_element(vertices.begin(), vertices.end(), [](const auto& a, const auto& b) {
@@ -124,36 +163,88 @@ QPixmap CharacterSelectionWidget::spriteToPixmap(const Sprite& sprite) {
                })->second;
 
     QPixmap spritePixmap = spriteSheet.copy(minX, minY, maxX - minX, maxY - minY);
-    std::cout << "[CHARACTER SELECTION] Sprite copied to pixmap" << std::endl;
 
+    QImage image = spritePixmap.toImage();
     std::tuple<int, int, int> spriteColourKey = sprite.getColourKey();
     QColor colourKey(std::get<0>(spriteColourKey), std::get<1>(spriteColourKey), std::get<2>(spriteColourKey));
-    QBitmap mask = spritePixmap.createMaskFromColor(colourKey, Qt::MaskInColor);
 
-    spritePixmap.setMask(mask);
+    // Create a QPolygon from the vertices
+    QPolygon polygon;
+    for (const auto& vertex : vertices) {
+        polygon << QPoint(vertex.first - minX, vertex.second - minY);
+    }
 
-    std::cout << "[CHARACTER SELECTION] Pixmap mask set" << std::endl;
-
-    return spritePixmap;
-}
-
-void CharacterSelectionWidget::keyPressEvent(QKeyEvent* event) {
-    std::cout << "[CHARACTER SELECTION] Key press event: " << event->key() << std::endl;
-    if (event->key() == Qt::Key_Left) {
-        if (currentCharacterIndex > 0) {
-            updateCharacter(currentCharacterIndex - 1);
-            std::cout << "[CHARACTER SELECTION] Character index decreased to "
-                      << currentCharacterIndex << std::endl;
-        }
-    } else if (event->key() == Qt::Key_Right) {
-        if (currentCharacterIndex < characters.size() - 1) {
-            updateCharacter(currentCharacterIndex + 1);
-            std::cout << "[CHARACTER SELECTION] Character index increased to "
-                      << currentCharacterIndex << std::endl;
+    for (int y = 0; y < image.height(); ++y) {
+        for (int x = 0; x < image.width(); ++x) {
+            if (!polygon.containsPoint(QPoint(x, y), Qt::OddEvenFill)) {
+                image.setPixelColor(x, y, colourKey);
+            }
         }
     }
 
-    update();
+    QPixmap finalSprite = QPixmap::fromImage(image);
+    QBitmap mask = finalSprite.createMaskFromColor(colourKey, Qt::MaskInColor);
+    finalSprite.setMask(mask);
+
+    return finalSprite;
+}
+
+void CharacterSelectionWidget::updateNameAnimation() {
+    // Increment frame index and wrap around if necessary
+    nameAnimationFrameIndex = (nameAnimationFrameIndex + 1) % characters[currentCharacterIndex].nameSpritesGetter().size();
+
+    // Get the new frame as a QPixmap
+    QPixmap newFrame = spriteToPixmap(characters[currentCharacterIndex].nameSpritesGetter()[nameAnimationFrameIndex]);
+
+    // Create a new QGraphicsScene
+    auto* scene = new QGraphicsScene(this);
+
+    // Add the new frame to the scene
+    scene->addPixmap(newFrame);
+
+    // Set the scene on the QGraphicsView
+    nameAnimationView->setScene(scene);
+}
+
+void CharacterSelectionWidget::updateCharacterAnimation() {
+    // Increment frame index and wrap around if necessary
+    characterAnimationFrameIndex = (characterAnimationFrameIndex + 1) % characters[currentCharacterIndex].characterSpritesGetter().size();
+
+    // Get the new frame as a QPixmap
+    QPixmap newFrame = spriteToPixmap(characters[currentCharacterIndex].characterSpritesGetter()[characterAnimationFrameIndex]);
+
+    // Create a new QGraphicsScene
+    auto* scene = new QGraphicsScene(this);
+
+    // Add the new frame to the scene
+    scene->addPixmap(newFrame);
+
+    // Set the scene on the QGraphicsView
+    characterAnimationView->setScene(scene);
+}
+
+void CharacterSelectionWidget::onLeftButtonClicked() {
+    if (currentCharacterIndex > 0) {
+        updateCharacter(currentCharacterIndex - 1);
+    } else {
+        updateCharacter(characters.size() - 1); // Wrap around to the last character
+    }
+}
+
+void CharacterSelectionWidget::onRightButtonClicked() {
+    if (currentCharacterIndex < characters.size() - 1) {
+        updateCharacter(currentCharacterIndex + 1);
+    } else {
+        updateCharacter(0); // Wrap around to the first character
+    }
+}
+
+void CharacterSelectionWidget::keyPressEvent(QKeyEvent* event) {
+    if (event->key() == Qt::Key_Left) {
+        onLeftButtonClicked();
+    } else if (event->key() == Qt::Key_Right) {
+        onRightButtonClicked();
+    }
 }
 
 CharacterType CharacterSelectionWidget::getSelectedCharacter() const {
