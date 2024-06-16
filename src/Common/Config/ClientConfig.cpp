@@ -26,8 +26,16 @@ std::string ClientConfig::getLogFile() {
     return logFile;
 }
 
+// Characters from Font File
+std::vector<int> ClientConfig::getGreaterThan() {
+    return getInstance()->root["GREATER_THAN"].as<std::vector<int>>();
+}
 
+std::vector<int> ClientConfig::getLessThan() {
+    return getInstance()->root["LESS_THAN"].as<std::vector<int>>();
+}
 
+// Intervals
 int ClientConfig::getGamesListRefreshInterval() {
     return getInstance()->root["GAMES_LIST_REFRESH_INTERVAL"].as<int>();
 }

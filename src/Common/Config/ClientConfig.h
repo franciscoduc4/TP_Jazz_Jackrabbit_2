@@ -19,6 +19,9 @@ private:
 public:
     static ClientConfig* getInstance();
     // Logger& getLogger();
+    // Characters from Font File
+    static std::vector<int> getGreaterThan();
+    static std::vector<int> getLessThan();
     // Refresh Interval
     static int getGamesListRefreshInterval();
     // Files

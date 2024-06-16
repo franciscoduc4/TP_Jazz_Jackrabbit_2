@@ -10,8 +10,32 @@ CharacterSelectionWidget::CharacterSelectionWidget(QWidget* parent,
     auto* mainLayout = new QHBoxLayout(this);
 
     // Initialize buttons
-    leftButton = new QPushButton("<", this);
-    rightButton = new QPushButton(">", this);
+    leftButton = new QPushButton(this);
+    rightButton = new QPushButton(this);
+
+    std::string path = ClientConfig::getInterfaceFontFile();
+    if (path.substr(0, 3) == "../") {
+        path = path.substr(3);
+    }
+    QString fontSpritesheet = ":/" + QString::fromStdString(path);
+    QPixmap spriteSheet(fontSpritesheet);
+
+    if (spriteSheet.isNull()) {
+        throw std::runtime_error("Failed to load sprite sheet");
+    }
+    RectangularSprite leftBtnSprite = RectangularSprite(ClientConfig::getLessThan());
+    std::cout << "Left button sprite: " << leftBtnSprite.getX() << ", " << leftBtnSprite.getY() << ", "
+              << leftBtnSprite.getWidth() << ", " << leftBtnSprite.getHeight() << std::endl;
+    QRect leftRect(leftBtnSprite.getX(), leftBtnSprite.getY(), leftBtnSprite.getWidth(), leftBtnSprite.getHeight());
+    QPixmap leftButtonPixmap = spriteSheet.copy(leftRect);
+    QIcon leftButtonIcon(leftButtonPixmap);
+    leftButton->setIcon(leftButtonIcon);
+
+    RectangularSprite rightBtnSprite = RectangularSprite(ClientConfig::getGreaterThan());
+    QRect rightRect(rightBtnSprite.getX(), rightBtnSprite.getY(), rightBtnSprite.getWidth(), rightBtnSprite.getHeight());
+    QPixmap rightButtonPixmap = spriteSheet.copy(rightRect);
+    QIcon rightButtonIcon(rightButtonPixmap);
+    rightButton->setIcon(rightButtonIcon);
 
     // Set font for the buttons
     QFont buttonFont("Jazz Jackrabbit 2", 30);

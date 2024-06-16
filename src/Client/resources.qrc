@@ -1,5 +1,7 @@
 <RCC>
     <qresource prefix="/">
+        <!-- Font File -->
+        <file>../../assets/Miscellaneous/Fonts.png</file>
         <!-- Spritesheets -->
         <file>../../assets/Miscellaneous/CharacterSelect.png</file>
         <file>../../assets/Miscellaneous/EpisodeSelect.png</file>
