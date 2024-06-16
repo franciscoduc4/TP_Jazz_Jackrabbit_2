@@ -1,8 +1,5 @@
 #include "characterselectionwidget.h"
 
-#include "../../../Common/Config/ClientConfig.h"
-#include "../../../Common/Types/character.h"
-
 CharacterSelectionWidget::CharacterSelectionWidget(QWidget* parent,
                                                    const std::tuple<int, int, int>& colourKey):
         QWidget{parent},
@@ -10,32 +7,62 @@ CharacterSelectionWidget::CharacterSelectionWidget(QWidget* parent,
         colourKey(std::get<0>(colourKey), std::get<1>(colourKey), std::get<2>(colourKey)) {
     std::cout << "[CHARACTER SELECTION] Initializing CharacterSelectionWidget" << std::endl;
 
-    QVBoxLayout* layout = new QVBoxLayout(this);
+    auto* layout = new QVBoxLayout(this);
     nameAnimationView = new QGraphicsView(this);
     characterAnimationView = new QGraphicsView(this);
     layout->addWidget(nameAnimationView);
     layout->addWidget(characterAnimationView);
 
+    layout->setStretchFactor(nameAnimationView, 1);
+    layout->setStretchFactor(characterAnimationView, 9);
+
+
     characters = {
             CharacterData(
                     []() {
-                        return Sprite::createSprites(ClientConfig::getJazzSelectNameSprites());
+                        return Sprite::createSpritesWithSpritesheetAndColourKey(ClientConfig::getJazzSelectNameSprites(),
+                                                                                ClientConfig::getCharacterSelectFile(),
+                                                                                ClientConfig::getCharacterSelectColourKey());
                     },
-                    []() { return Sprite::createSprites(ClientConfig::getJazzSelectSprites()); }),
+                    []() { return Sprite::createSpritesWithSpritesheetAndColourKey(ClientConfig::getJazzSelectSprites(),
+                                                                                   ClientConfig::getCharacterSelectFile(),
+                                                                                   ClientConfig::getCharacterSelectColourKey()); }),
             CharacterData(
                     []() {
-                        return Sprite::createSprites(ClientConfig::getSpazSelectNameSprites());
+                        return Sprite::createSpritesWithSpritesheetAndColourKey(ClientConfig::getSpazSelectNameSprites(),
+                                                                                ClientConfig::getCharacterSelectFile(),
+                                                                                ClientConfig::getCharacterSelectColourKey());
                     },
-                    []() { return Sprite::createSprites(ClientConfig::getSpazSelectSprites()); }),
+                    []() { return Sprite::createSpritesWithSpritesheetAndColourKey(ClientConfig::getSpazSelectSprites(),
+                                                                                   ClientConfig::getCharacterSelectFile(),
+                                                                                   ClientConfig::getCharacterSelectColourKey()); }),
             CharacterData(
                     []() {
-                        return Sprite::createSprites(ClientConfig::getLoriSelectNameSprites());
+                        return Sprite::createSpritesWithSpritesheetAndColourKey(ClientConfig::getLoriSelectNameSprites(),
+                                                                                ClientConfig::getCharacterSelectFile(),
+                                                                                ClientConfig::getCharacterSelectColourKey());
                     },
-                    []() { return Sprite::createSprites(ClientConfig::getLoriSelectSprites()); })};
+                    []() { return Sprite::createSpritesWithSpritesheetAndColourKey(ClientConfig::getLoriSelectSprites(),
+                                                                                   ClientConfig::getCharacterSelectFile(),
+                                                                                   ClientConfig::getCharacterSelectColourKey()); })};
 
     std::cout << "[CHARACTER SELECTION] Character data initialized" << std::endl;
 
     updateCharacter(currentCharacterIndex);
+}
+
+void CharacterSelectionWidget::paintEvent(QPaintEvent* event) {
+    QPainter painter(this);
+    if (!characters.empty()) {
+        const auto& characterSprites = characters[currentCharacterIndex].characterSpritesGetter();
+        if (!characterSprites.empty()) {
+            const auto& sprite = characterSprites[0];
+            QPixmap pixmap = CharacterSelectionWidget::spriteToPixmap(sprite);
+            painter.drawPixmap(0, 0, pixmap);
+        }
+    }
+
+    QWidget::paintEvent(event);
 }
 
 void CharacterSelectionWidget::updateCharacter(int index) {
@@ -44,19 +71,19 @@ void CharacterSelectionWidget::updateCharacter(int index) {
     auto nameSprites = characters[index].nameSpritesGetter();
     auto characterSprites = characters[index].characterSpritesGetter();
 
-    QGraphicsScene* nameScene = new QGraphicsScene(this);
-    QGraphicsScene* characterScene = new QGraphicsScene(this);
+    auto* nameScene = new QGraphicsScene(this);
+    auto* characterScene = new QGraphicsScene(this);
 
     for (const auto& sprite: nameSprites) {
-        QPixmap pixmap = this->spriteToPixmap(sprite);
-        QGraphicsPixmapItem* item = new QGraphicsPixmapItem(pixmap);
+        QPixmap pixmap = CharacterSelectionWidget::spriteToPixmap(sprite);
+        auto* item = new QGraphicsPixmapItem(pixmap);
         nameScene->addItem(item);
         std::cout << "[CHARACTER SELECTION] Added name sprite to scene" << std::endl;
     }
 
     for (const auto& sprite: characterSprites) {
-        QPixmap pixmap = this->spriteToPixmap(sprite);
-        QGraphicsPixmapItem* item = new QGraphicsPixmapItem(pixmap);
+        QPixmap pixmap = CharacterSelectionWidget::spriteToPixmap(sprite);
+        auto* item = new QGraphicsPixmapItem(pixmap);
         characterScene->addItem(item);
         std::cout << "[CHARACTER SELECTION] Added character sprite to scene" << std::endl;
     }
@@ -68,9 +95,20 @@ void CharacterSelectionWidget::updateCharacter(int index) {
 
 QPixmap CharacterSelectionWidget::spriteToPixmap(const Sprite& sprite) {
     std::cout << "[CHARACTER SELECTION] Converting sprite to pixmap" << std::endl;
-    QPixmap spriteSheet(QString::fromStdString(sprite.getSpriteSheetPath()));
+    QString spriteSheetPath = ":/" + QString::fromStdString(sprite.getSpriteSheetPath());
 
-    auto vertices = sprite.getVertices();
+    if (!QFile::exists(spriteSheetPath)) {
+        std::cerr << "[CHARACTER SELECTION] Sprite sheet file does not exist: " << spriteSheetPath.toStdString() << std::endl;
+        return {};
+    }
+
+    QPixmap spriteSheet(spriteSheetPath);
+
+    if (spriteSheet.isNull()) {
+        std::cerr << "[CHARACTER SELECTION] Sprite sheet pixmap is null" << std::endl;
+        return {};
+    }
+    std::vector<std::pair<int, int>> vertices = sprite.getVertices();
 
     int minX = std::min_element(vertices.begin(), vertices.end(), [](const auto& a, const auto& b) {
                    return a.first < b.first;
@@ -88,20 +126,12 @@ QPixmap CharacterSelectionWidget::spriteToPixmap(const Sprite& sprite) {
     QPixmap spritePixmap = spriteSheet.copy(minX, minY, maxX - minX, maxY - minY);
     std::cout << "[CHARACTER SELECTION] Sprite copied to pixmap" << std::endl;
 
-    QBitmap mask(spritePixmap.size());
-    QPainter painter(&mask);
-    painter.fillRect(mask.rect(), Qt::color0);
-
-    QVector<QPoint> points;
-    std::transform(vertices.begin(), vertices.end(), std::back_inserter(points),
-                   [minX, minY](const std::pair<int, int>& vertex) {
-                       return QPoint(vertex.first - minX, vertex.second - minY);
-                   });
-
-    painter.setBrush(Qt::color1);
-    painter.drawPolygon(points.data(), points.size());
+    std::tuple<int, int, int> spriteColourKey = sprite.getColourKey();
+    QColor colourKey(std::get<0>(spriteColourKey), std::get<1>(spriteColourKey), std::get<2>(spriteColourKey));
+    QBitmap mask = spritePixmap.createMaskFromColor(colourKey, Qt::MaskInColor);
 
     spritePixmap.setMask(mask);
+
     std::cout << "[CHARACTER SELECTION] Pixmap mask set" << std::endl;
 
     return spritePixmap;

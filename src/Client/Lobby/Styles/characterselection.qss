@@ -27,3 +27,9 @@ QLabel {
     background-color: white;
     border-image: none;
 }
+
+QGraphicsView {
+    background-color: rgba(0, 0, 0, 0);
+    background-image: blur(5px);
+    border-image: none;
+}

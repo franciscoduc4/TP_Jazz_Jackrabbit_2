@@ -79,7 +79,7 @@ void CharacterSelection::on_btnChoose_clicked() {
     this->msg.setCharacter(characterSelectionWidget->getSelectedCharacter());
     this->controller.sendRequest(this->msg);
     std::cout << "[CHARACTER SELECTION] Request sent to controller" << std::endl;
-
+    this->controller.recvResponse();
     this->hide();
     if (this->msg.getLobbyCmd() == Command::CREATE_GAME) {
         this->msg.setGameId(this->controller.recvCreateGame());
