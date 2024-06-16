@@ -247,7 +247,8 @@ bool GameMap::isValidMapPosition(Vector<uint8_t> mapPosition) {
 }
 
 bool GameMap::isValidPosition(Vector<uint8_t> position) {
-    return position.x >= 0 && position.x < size.x * movesPerCell && position.y >= 0 && position.y < size.y * movesPerCell;
+    return position.x >= 0 && position.x < size.x * movesPerCell && position.y >= 0 &&
+           position.y < size.y * movesPerCell;
 }
 
 
@@ -275,13 +276,11 @@ void GameMap::update(float time) {
             std::cout << "[GAMEMAP] Updating character with ID: "
                       << static_cast<int>(characterPair.first) << std::endl;
             characterPair.second->update(time);
-
         }
     } catch (const std::exception& e) {
         std::cerr << "[GAMEMAP] Error updating game map: " << e.what() << std::endl;
     }
 }
-
 
 
 void GameMap::removeCharacter(uint8_t playerId) {
@@ -333,29 +332,30 @@ std::unique_ptr<GameDTO> GameMap::getGameDTO() {
         }
         // for (const auto& [pos, entity]: mapGrid) {
         //     switch (entity->getType()) {
-        //         // case EntityType::ENEMY:
-        //         //     // enemies.push_back(std::dynamic_pointer_cast<Enemy>(entity)->getDTO());
-        //         //     break;
-        //         // case EntityType::BULLET:
-        //         //     // bullets.push_back(std::dynamic_pointer_cast<Bullet>(entity)->getDTO());
-        //         //     break;
-        //         // case EntityType::ITEM:
-        //         //     // items.push_back(std::dynamic_pointer_cast<Item>(entity)->getDTO());
-        //         //     break;
-        //         // case EntityType::TILE:
-        //         //     // tiles.push_back(std::dynamic_pointer_cast<Tile>(entity)->getDTO());
-        //         //     break;
-        //         default:
+        //         case EntityType::CHARACTER:
+        //             playersDTO.push_back(std::dynamic_pointer_cast<Character>(entity)->getDTO());
         //             break;
-        //     }
-        // }
-        std::cout << "[GAMEMAP] playersDTO size: " << playersDTO.size() << std::endl;
-
-        return std::make_unique<GameDTO>(playersDTO, enemies, bullets, items, weapons, tiles);
+        // case EntityType::ENEMY:
+        //     enemies.push_back(std::dynamic_pointer_cast<Enemy>(entity)->getDTO());
+        //     break;
+        // case EntityType::BULLET:
+        //     bullets.push_back(std::dynamic_pointer_cast<Bullet>(entity)->getDTO());
+        //     break;
+        // case EntityType::ITEM:
+        //     items.push_back(std::dynamic_pointer_cast<Item>(entity)->getDTO());
+        //     break;
+        // case EntityType::TILE:
+        //     tiles.push_back(std::dynamic_pointer_cast<Tile>(entity)->getDTO());
+        //     break;
+        // default:
+        //     break;
     } catch (const std::exception& e) {
         std::cerr << "[GAMEMAP] Error creating GameDTO: " << e.what() << std::endl;
         throw;
     }
+    std::cout << "[GAMEMAP] playersDTO size: " << playersDTO.size() << std::endl;
+
+    return std::make_unique<GameDTO>(playersDTO, enemies, bullets, items, weapons, tiles);
 }
 
 std::shared_ptr<Character> GameMap::getCharacter(uint8_t playerId) {
@@ -422,7 +422,9 @@ Vector<uint8_t> GameMap::calculateNewPosition(const Vector<uint8_t> position, Di
     return newPosition;
 }
 
-bool GameMap::handleMovement(Vector<uint8_t>& position, Vector<uint8_t> mapPosition, const Vector<uint8_t>& newPosition, const Vector<uint8_t>& newMapPosition) {
+bool GameMap::handleMovement(Vector<uint8_t>& position, Vector<uint8_t> mapPosition,
+                             const Vector<uint8_t>& newPosition,
+                             const Vector<uint8_t>& newMapPosition) {
     try {
         if (newMapPosition == mapPosition) {
             std::cout << "[GAMEMAP] Same map position" << std::endl;
@@ -448,6 +450,4 @@ bool GameMap::handleMovement(Vector<uint8_t>& position, Vector<uint8_t> mapPosit
 }
 
 
-Vector<uint8_t> GameMap::getSize() const {
-    return size;
-}
+Vector<uint8_t> GameMap::getSize() const { return size; }

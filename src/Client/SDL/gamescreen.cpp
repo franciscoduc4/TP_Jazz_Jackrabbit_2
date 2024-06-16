@@ -291,6 +291,7 @@ void GameScreen::run() {
 
         std::vector<EnemyDTO> enemiesSnapshot = snapshot->getEnemies();
         if (enemiesSnapshot.size() > 0) {
+            std::cout << "dibujando enemigos" << std::endl;
             this->enemies.draw_enemy(window, renderer, enemy, enemiesSnapshot, *mainPlayer,
                                      x_screen, y_screen);
         }

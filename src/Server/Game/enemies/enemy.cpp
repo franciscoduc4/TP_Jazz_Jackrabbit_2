@@ -80,3 +80,14 @@ std::shared_ptr<Character> Enemy::getClosestCharacter(
 }
 
 std::unique_ptr<EnemyState>& Enemy::getState() { return state; }
+
+EnemyDTO Enemy::getDTO() const {
+    return EnemyDTO{pos.x,
+                    pos.y,
+                    id,
+                    health,
+                    0,
+                    0,
+                    EnemyType::SCHWARZENGUARD,
+                    EnemyStateEntity::ENEMY_ATTACKING};
+}

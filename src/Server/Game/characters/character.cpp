@@ -32,11 +32,11 @@ Character::Character(GameMap& gameMap, Vector<uint8_t> pos, uint8_t playerId, Ch
 }
 
 void Character::idle(float time) {
-    //std::cout << "[CHARACTER] Character ID: " << static_cast<int>(id) << " idling" << std::endl;
-    // if (!state) {
-    //     std::cerr << "[CHARACTER] Error: Null state for character ID: " << static_cast<int>(id)
-    //     << std::endl; return;
-    // }
+    // std::cout << "[CHARACTER] Character ID: " << static_cast<int>(id) << " idling" << std::endl;
+    //  if (!state) {
+    //      std::cerr << "[CHARACTER] Error: Null state for character ID: " << static_cast<int>(id)
+    //      << std::endl; return;
+    //  }
 
     // auto newState = std::unique_ptr<State>(state->exec(*this, time));
     // if (newState) {
@@ -147,7 +147,7 @@ void Character::moveDown(float time) {
     }
 }
 
-void Character::jump(float time){
+void Character::jump(float time) {
     std::cout << "[CHARACTER] Character ID: " << static_cast<int>(id) << " jumping" << std::endl;
     auto newState = std::unique_ptr<State>(state->jump(*this, time));
     if (newState) {
@@ -200,7 +200,7 @@ void Character::revive(float time) {
 
 std::vector<std::shared_ptr<Entity>> Character::getTargets() {
     std::vector<std::shared_ptr<Entity>> targets;
-    // map.getObjectsInShootRange({pos.x / maxMoves, pos.y / maxMoves}, dir);
+    gameMap.getObjectsInShootRange({pos.x / movesPerCell, pos.y / movesPerCell}, dir);
     return targets;
 }
 
@@ -238,7 +238,8 @@ WeaponType Character::getCurrentWeaponType() {
 }
 
 void Character::moveRight() {
-    if (isIntoxicated) return;
+    if (isIntoxicated)
+        return;
 
     auto mapPosition = getMapPosition(movesPerCell);
     Vector<uint8_t> newPosition = pos + Vector<uint8_t>{movesPerCell, 0};
@@ -253,39 +254,36 @@ void Character::moveRight() {
         newPosition.x = 255;
     }
 
-    if (!gameMap.isValidMapPosition(newPosition)) return;
+    if (!gameMap.isValidMapPosition(newPosition))
+        return;
 
     gameMap.moveObject(pos, mapPosition, Direction::RIGHT);
-    pos = newPosition; // Actualizar la posición
+    pos = newPosition;  // Actualizar la posición
     std::cout << "[CHARACTER] Character pos x: " << static_cast<int>(pos.x) << std::endl;
-
-
 }
 
 void Character::moveLeft() {
-    if (isIntoxicated) return;
+    if (isIntoxicated)
+        return;
 
     auto mapPosition = getMapPosition(movesPerCell);
     Vector<uint8_t> newPosition = pos - Vector<uint8_t>{movesPerCell, 0};
 
     if (pos.x == 0 || newPosition.x < 0) {
         newPosition.x = 0;
-    } else if (newPosition.x > pos.x) { 
+    } else if (newPosition.x > pos.x) {
         newPosition.x = 0;
     }
 
-    if (!gameMap.isValidMapPosition(newPosition)) return;
+    if (!gameMap.isValidMapPosition(newPosition))
+        return;
 
     gameMap.moveObject(pos, mapPosition, Direction::LEFT);
-    pos = newPosition; 
+    pos = newPosition;
     std::cout << "[CHARACTER] Character pos x: " << static_cast<int>(pos.x) << std::endl;
-    
-
 }
 
-void Character::moveUp() {
-
-}
+void Character::moveUp() {}
 
 
 void Character::moveDown() {
@@ -301,18 +299,19 @@ void Character::moveDown() {
     gameMap.moveObject(pos, mapPosition, Direction::DOWN);
 }
 
-void Character::jump() { 
-    if (isIntoxicated) return;
+void Character::jump() {
+    if (isIntoxicated || jumping)
+        return;
 
     auto mapPosition = getMapPosition(movesPerCell);
-    Vector<uint8_t> newPosition = pos + Vector<uint8_t>{0, movesPerCell};
+    Vector<uint8_t> newPosition = pos - Vector<uint8_t>{0, movesPerCell};
 
-    if (!gameMap.isValidMapPosition(newPosition)) return;
+    if (!gameMap.isValidMapPosition(newPosition))
+        return;
 
     gameMap.moveObject(pos, mapPosition, Direction::UP);
-    pos = newPosition; 
+    pos = newPosition;
     std::cout << "[CHARACTER] Character pos y: " << static_cast<int>(pos.y) << std::endl;
-
 }
 
 bool Character::characIsIntoxicated() const { return isIntoxicated; }
@@ -322,8 +321,8 @@ float Character::getIntoxicatedTime() const { return intoxicatedTime; }
 CharacterType Character::getCharacterType() { return type; }
 
 PlayerDTO Character::getDTO() const {
-    return PlayerDTO{pos.x,
-                     pos.y,
+    return PlayerDTO{getMapPosition(movesPerCell).x,
+                     getMapPosition(movesPerCell).y,
                      id,
                      health,
                      static_cast<uint8_t>(0),
@@ -331,82 +330,3 @@ PlayerDTO Character::getDTO() const {
                      type,
                      state->getCharacterState()};
 }
-void Character::moveInAir(Direction direction, float time) {
-    if (direction == Direction::LEFT) {
-        pos.x = std::max(0, pos.x - static_cast<int>(horizontalSpeed * time));
-    } else if (direction == Direction::RIGHT) {
-        pos.x = std::min(mapSize.x * movesPerCell - 1, pos.x + static_cast<int>(horizontalSpeed * time));
-    }
-
-
-    //     // Lógica para mover el personaje en el aire
-    // switch (direction) {
-    //     case Direction::LEFT:
-    //         moveLeft(time);
-    //         break;
-    //     case Direction::RIGHT:
-    //         moveRight(time);
-    //         break;
-    //     default:
-    //         break;
-    // }
-}
-
-void Character::updatePosition(float time) {
-    if (jumping) {
-        float elapsedTime = time - jumpStartTime;
-        if (elapsedTime <= jumpDuration / 2) {
-            // Subida
-            float progress = elapsedTime / (jumpDuration / 2);
-            pos.y = initialY + static_cast<int>(jumpHeight * progress);
-        } else if (elapsedTime <= jumpDuration) {
-            // Bajada
-            float progress = (elapsedTime - jumpDuration / 2) / (jumpDuration / 2);
-            pos.y = initialY + static_cast<int>(jumpHeight * (1 - progress));
-        } else {
-            // Aterrizar
-            pos.y = initialY;
-            jumping = false;
-        }
-        std::cout << "[CHARACTER] Character ID: " << static_cast<int>(id)
-                  << " position y: " << static_cast<int>(pos.y) << std::endl;
-    } else {
-        // Lógica de gravedad normal si no está saltando
-        pos.y = std::max(0, pos.y - static_cast<int>(verticalSpeed * time));
-        std::cout << "[CHARACTER] Character ID: " << static_cast<int>(id)
-                  << " position y: " << static_cast<int>(pos.y) << std::endl;
-    }
-}
-
-void Character::startJump(float time) {
-    if (!jumping) {
-        jumping = true;
-        jumpStartTime = time;
-        jumpDuration = 1.0f;  // Duración total del salto en segundos
-        initialY = pos.y;
-        jumpHeight = 5;  // Altura máxima del salto
-    }
-}
-
-bool Character::hasLanded() const {
-    // Verificar si el personaje ha aterrizado
-    return pos.y == 0;  // Ejemplo simple, puedes ajustar según la lógica del juego
-}
-
-void Character::applyGravity(float gravity, float time) {
-    if (pos.y > 0) {
-        pos.y = std::max(0, pos.y - static_cast<int>(gravity * time));
-    }
-
-    // Si el personaje aterriza, cambiar al estado inactivo
-    if (pos.y == 0) {
-        auto newState = std::make_unique<IdleState>();
-        state = std::move(newState);
-    }
-}
-
-bool Character::isInAir() const {
-    // Verificar si el personaje está en el aire
-    return dynamic_cast<JumpingState*>(state.get()) != nullptr;
-}
-

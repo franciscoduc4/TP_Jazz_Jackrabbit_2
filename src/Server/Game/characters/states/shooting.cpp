@@ -4,32 +4,32 @@
 
 #include "../character.h"
 
+#include "damage.h"
 #include "dead.h"
 #include "idle.h"
 #include "intoxicated.h"
-#include "damage.h"
 #include "jumping.h"
 #include "moving.h"
 
 ShootingState::ShootingState(Character& character, std::shared_ptr<Weapon> weapon, float time):
-        character(character), weapon(weapon), shootCooldown(weapon->getFireRate())  {
+        character(character), weapon(weapon), shootCooldown(weapon->getFireRate()) {
     characterState = CharacterStateEntity::SHOOTING;
     shoot(character, weapon, time);
 }
 
 std::unique_ptr<State> ShootingState::exec(Character& character, float time) {
-    // Lógica de actualización específica para el estado de disparo
-    // Volver al estado idle después de disparar
-    return std::make_unique<IdleState>();
+    return shoot(character, weapon, time);
 }
 
 std::unique_ptr<State> ShootingState::shoot(Character& character, std::shared_ptr<Weapon> weapon,
                                             float time) {
     // Ya está disparando
     if (!weapon->isEmpty() && (time - startTime) > shootCooldown) {
+        std::cout << "Shooting" << std::endl;
         startTime = time;
         std::vector<std::shared_ptr<Entity>> characters = character.getTargets();
-        uint8_t x = character.getMapPosition(2).x; //moves per cell
+        uint8_t x = character.getMapPosition(2).x;  // moves per cell
+        std::cout << "shooting at " << x << std::endl;
         weapon->shoot(characters, x, time);
     }
     return nullptr;
@@ -57,7 +57,7 @@ std::unique_ptr<State> ShootingState::receiveDamage(Character& character, uint16
 }
 
 std::unique_ptr<State> ShootingState::die(Character& character, float time) {
-    //character.die(time);
+    // character.die(time);
     return std::make_unique<DeadState>(time);
 }
 

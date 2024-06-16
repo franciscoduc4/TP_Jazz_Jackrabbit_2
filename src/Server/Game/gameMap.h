@@ -23,6 +23,10 @@ private:
     Vector<uint8_t> size;
     std::map<Vector<uint8_t>, std::shared_ptr<Entity>> mapGrid;
     std::map<uint8_t, std::shared_ptr<Character>> characters;
+    std::map<uint8_t, std::shared_ptr<Enemy>> enemies;
+    // std::map<uint8_t, std::shared_ptr<Bullet>> bullets;
+    // std::map<uint8_t, std::shared_ptr<Item>> items;
+    // std::map<uint8_t, std::shared_ptr<Tile>> tiles;
     EntityFactory entityFactory;
     uint8_t entityCount;
     uint8_t movesPerCell;
@@ -91,7 +95,6 @@ public:
     uint8_t getMaxX() const { return size.x - movesPerCell; }
 
     uint8_t getMaxY() const { return size.y - movesPerCell; }
-    
 };
 
 #endif  // GAME_MAP_H_

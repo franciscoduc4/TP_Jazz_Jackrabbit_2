@@ -1,10 +1,10 @@
 #include "enemy.h"
-#include "../../Common/sprite.h"
-#include "../../Common/DTO/enemy.h"
-#include "../Common/Config/ClientConfig.h"
 
 #include <iostream>
 
+#include "../../Common/DTO/enemy.h"
+#include "../../Common/sprite.h"
+#include "../Common/Config/ClientConfig.h"
 
 #include "enemyweapon.h"
 
@@ -14,40 +14,46 @@ enum actions { Walk, Attack, Death };
 /*Solo que caminen*/
 
 /*
-ENEMY_IDLE,              
-ENEMY_JUMPING,           
-ENEMY_FLYING,            
-ENEMY_RECEIVING_DAMAGE,  
-ENEMY_DEAD,              
-ENEMY_RESPAWNING         
+ENEMY_IDLE,
+ENEMY_JUMPING,
+ENEMY_FLYING,
+ENEMY_RECEIVING_DAMAGE,
+ENEMY_DEAD,
+ENEMY_RESPAWNING
 */
 
 Enemy::Enemy() {
     this->flip = 0;
     this->init = false;
 
-    this->enemies_path[EnemyType::TURTLE] = ClientConfig::getTurtleFile();// "../assets/Enemies/TurtleEnemies.png";
+    this->enemies_path[EnemyType::TURTLE] =
+            ClientConfig::getTurtleFile();  // "../assets/Enemies/TurtleEnemies.png";
 
-	std::vector<int> walking_enemy_w_h{ClientConfig::getTurtleWidth(), ClientConfig::getTurtleHeight()};
+    std::vector<int> walking_enemy_w_h{ClientConfig::getTurtleWidth(),
+                                       ClientConfig::getTurtleHeight()};
     this->width_height[EnemyType::TURTLE] = walking_enemy_w_h;
-	
+
     std::vector<std::vector<int>> turtle_walking_sprites = ClientConfig::getTurtleWalkingSprites();
     for (int i = 0; i < turtle_walking_sprites.size(); i++) {
-        this->sprites[EnemyType::TURTLE][EnemyStateEntity::ENEMY_WALKING].push_back(RectangularSprite(turtle_walking_sprites[i]));
+        this->sprites[EnemyType::TURTLE][EnemyStateEntity::ENEMY_WALKING].push_back(
+                RectangularSprite(turtle_walking_sprites[i]));
     }
 
-    std::vector<std::vector<int>> turtle_attacking_sprites = ClientConfig::getTurtleAttackingSprites();
+    std::vector<std::vector<int>> turtle_attacking_sprites =
+            ClientConfig::getTurtleAttackingSprites();
     for (int i = 0; i < turtle_attacking_sprites.size(); i++) {
-        this->sprites[EnemyType::TURTLE][EnemyStateEntity::ENEMY_ATTACKING].push_back(RectangularSprite(turtle_attacking_sprites[i]));
-    }                
+        this->sprites[EnemyType::TURTLE][EnemyStateEntity::ENEMY_ATTACKING].push_back(
+                RectangularSprite(turtle_attacking_sprites[i]));
+    }
 
     std::vector<std::vector<int>> turtle_dying_sprites = ClientConfig::getTurtleDyingSprites();
     for (int i = 0; i < turtle_dying_sprites.size(); i++) {
-        this->sprites[EnemyType::TURTLE][EnemyStateEntity::ENEMY_DEAD].push_back(RectangularSprite(turtle_dying_sprites[i]));
+        this->sprites[EnemyType::TURTLE][EnemyStateEntity::ENEMY_DEAD].push_back(
+                RectangularSprite(turtle_dying_sprites[i]));
     }
 
 
-	/*
+    /*
     this->path = "../assets/Enemies/Schwartzenguard.png";
 
     this->draw_width = 60;
@@ -92,9 +98,9 @@ Enemy::Enemy() {
     this->sprites[Dead].push_back(RectangularSprite(531, 207, 56, 61));
     this->sprites[Dead].push_back(RectangularSprite(531, 207, 56, 61));
     this->sprites[Dead].push_back(RectangularSprite(531, 207, 56, 61));
-	*/
+    */
 
-	/*
+    /*
     this->path = "../assets/Enemies/Enemies.png";
 
     this->draw_width = 30;
@@ -129,16 +135,18 @@ Enemy::Enemy() {
     this->sprites[Dead].push_back(RectangularSprite(1030, 10, 35, 63));
     this->sprites[Dead].push_back(RectangularSprite(1030, 10, 35, 63));
     this->sprites[Dead].push_back(RectangularSprite(1030, 10, 35, 63));
-	*/
+    */
 }
 
 std::string Enemy::getPath(EnemyType enemy_type) { return this->enemies_path[enemy_type]; }
 
 
-std::list<RectangularSprite>::iterator Enemy::enemy_img_coords(EnemyType enemy_type, EnemyStateEntity mov_type, int enemyId) {
+std::list<RectangularSprite>::iterator Enemy::enemy_img_coords(EnemyType enemy_type,
+                                                               EnemyStateEntity mov_type,
+                                                               int enemyId) {
     if (mov_type != last_move[enemyId]) {
         this->counts[enemyId][mov_type] = 0;
-		this->last_move[enemyId] = mov_type;
+        this->last_move[enemyId] = mov_type;
     }
 
     std::list<RectangularSprite>::iterator it = this->sprites[enemy_type][mov_type].begin();
@@ -153,28 +161,31 @@ std::list<RectangularSprite>::iterator Enemy::enemy_img_coords(EnemyType enemy_t
 }
 
 
-void Enemy::draw_enemy(SDL2pp::Window& window, SDL2pp::Renderer& renderer, SDL2pp::Texture& enemy, std::vector<EnemyDTO> enemies, PlayerDTO& player, int dir_x_screen, int dir_y_screen) {
-	int index_width = 0;
-	int index_height = 1;
-	int mov_type = 0;
-    int x; 
+void Enemy::draw_enemy(SDL2pp::Window& window, SDL2pp::Renderer& renderer, SDL2pp::Texture& enemy,
+                       std::vector<EnemyDTO> enemies, PlayerDTO& player, int dir_x_screen,
+                       int dir_y_screen) {
+    int index_width = 0;
+    int index_height = 1;
+    int mov_type = 0;
+    int x;
     int y;
     int distance_main_enemy_x;
     int distance_main_enemy_y;
-    for (auto e : enemies) {
+    for (auto e: enemies) {
         EnemyStateEntity mov_type = e.getState();
-		int enemyId = e.getEnemyId();
+        int enemyId = e.getEnemyId();
         if (!this->init) {
             this->last_move[enemyId] = mov_type;
-			this->counts[enemyId][EnemyStateEntity::ENEMY_WALKING] = 0;
-			this->counts[enemyId][EnemyStateEntity::ENEMY_ATTACKING] = 0;
-			this->counts[enemyId][EnemyStateEntity::ENEMY_DEAD] = 0;
-		}	
-    	std::list<RectangularSprite>::iterator it = enemy_img_coords(e.getType(), mov_type, enemyId);
+            this->counts[enemyId][EnemyStateEntity::ENEMY_WALKING] = 0;
+            this->counts[enemyId][EnemyStateEntity::ENEMY_ATTACKING] = 0;
+            this->counts[enemyId][EnemyStateEntity::ENEMY_DEAD] = 0;
+        }
+        std::list<RectangularSprite>::iterator it =
+                enemy_img_coords(e.getType(), mov_type, enemyId);
         x = e.getX();
-		y = e.getY();
-		
-        if (dir_x_screen != 0) { 
+        y = e.getY();
+
+        if (dir_x_screen != 0) {
             distance_main_enemy_x = x - player.getX();
             x = dir_x_screen + distance_main_enemy_x;
         }
@@ -182,10 +193,11 @@ void Enemy::draw_enemy(SDL2pp::Window& window, SDL2pp::Renderer& renderer, SDL2p
             distance_main_enemy_y = y - player.getX();
             y = dir_y_screen + distance_main_enemy_y;
         }
+        std::cout << "adentro de dibujando enemigos capo" << std::endl;
         renderer.Copy(enemy, SDL2pp::Rect(it->getX(), it->getY(), it->getWidth(), it->getHeight()),
-                  SDL2pp::Rect(x, y, this->width_height[e.getType()][index_width], this->width_height[e.getType()][index_height]), 0.0,
-                  SDL2pp::NullOpt, this->flip);
-
+                      SDL2pp::Rect(x, y, this->width_height[e.getType()][index_width],
+                                   this->width_height[e.getType()][index_height]),
+                      0.0, SDL2pp::NullOpt, this->flip);
     }
     this->init = true;
 }

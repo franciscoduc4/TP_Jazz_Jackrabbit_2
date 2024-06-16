@@ -108,16 +108,6 @@ public:
 
     PlayerDTO getDTO() const;
 
-    void moveInAir(Direction direction, float time);
-    void updatePosition(float time);
-    bool hasLanded() const;
-
-    void applyGravity(float gravity, float time);
-
-    bool isInAir() const;
-
-    void startJump(float time);
-
     bool isJumping() { return jumping; }
 };
 

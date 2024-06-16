@@ -16,15 +16,14 @@ std::unique_ptr<GameCommandHandler> GameCommandHandler::createHandler(
             auto moveCommand = dynamic_cast<GameCommandDTO*>(command.get());
             command.release();
             std::cout << "[GAME CH] Creating move handler" << std::endl;
+            if (moveCommand->getMoveType() == Direction::UP) {
+                return std::make_unique<JumpHandler>(std::unique_ptr<CommandDTO>(moveCommand));
+            }
             return std::make_unique<MoveHandler>(std::unique_ptr<GameCommandDTO>(moveCommand));
         }
         case Command::SHOOT: {
             std::cout << "[GAME CH] Creating shoot handler" << std::endl;
             return std::make_unique<ShootHandler>(std::unique_ptr<CommandDTO>(command.release()));
-        }
-        case Command::JUMP: {
-            std::cout << "[GAME CH] Creating jump handler" << std::endl;
-            return std::make_unique<JumpHandler>(std::unique_ptr<CommandDTO>(command.release()));
         }
         case Command::IDLE: {
             std::cout << "[GAME CH] Creating idle handler" << std::endl;
