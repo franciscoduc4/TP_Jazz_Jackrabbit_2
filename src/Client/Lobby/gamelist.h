@@ -1,11 +1,13 @@
 #ifndef GAMELIST_H
 #define GAMELIST_H
 
+#include <QButtonGroup>
 #include <QDialog>
+#include <QMessageBox>
 
+#include "../../Common/Config/ClientConfig.h"
 #include "../../Common/Types/lobbyMessage.h"
 #include "../client.h"
-#include "../../Common/Config/ClientConfig.h"
 
 namespace Ui {
 class GameList;
@@ -20,12 +22,13 @@ public:
     ~GameList();
 
     void updateGameList();
-
+    void onGameSelected(int id);
     void joinGame(const uint8_t& gameId, const QString& gameName);
 
 
 private slots:
     void on_btnBack_clicked();
+    void on_btnJoin_clicked();
 
 private:
     Ui::GameList* ui;
@@ -33,6 +36,9 @@ private:
     LobbyMessage& msg;
     bool& clientJoinedGame;
     QTimer* timer;
+    QButtonGroup* buttonGroup;
+    uint8_t selectedGameId;
+    QString selectedGameName;
 };
 
 #endif  // GAMELIST_H

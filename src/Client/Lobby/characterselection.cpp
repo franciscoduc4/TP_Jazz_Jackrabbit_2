@@ -88,7 +88,6 @@ void CharacterSelection::on_btnChoose_clicked() {
         std::cout << "[CHARACTER SELECTION] WaitingRoom dialog shown" << std::endl;
     } else if (this->msg.getLobbyCmd() == Command::JOIN_GAME) {
         this->msg.setLobbyCmd(Command::GAMES_LIST);
-        this->controller.sendRequest(this->msg);
         auto gl = new GameList(this, this->controller, this->msg, this->clientJoinedGame);
         gl->show();
         std::cout << "[CHARACTER SELECTION] GameList dialog shown" << std::endl;
