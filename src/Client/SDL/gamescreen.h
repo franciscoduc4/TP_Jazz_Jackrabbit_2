@@ -1,22 +1,21 @@
 #ifndef CLIENT_GAME_SCREEN_H_
 #define CLIENT_GAME_SCREEN_H_
 
-#include <string>
 #include <memory>
+#include <string>
 
+#include "../../Client/Controllers/GameController.h"
 #include "../../Client/client.h"
+#include "../../Common/Config/ClientConfig.h"
 #include "../../Common/DTO/game.h"
 #include "../../Common/queue.h"
-#include "../../Client/Controllers/GameController.h"
-
-#include "../../Common/Config/ClientConfig.h"
 
 #include "enemy.h"
+#include "interface.h"
+#include "level.h"
 #include "player.h"
 #include "points.h"
-#include "level.h"
 #include "projectile.h"
-#include "interface.h"
 
 class GameScreen {
     Player pj;
@@ -33,6 +32,10 @@ class GameScreen {
 
     GameController& controller;
     uint8_t mainPlayerId;
+
+    void sendMoveCommand(Direction dir);
+    void sendShootCommand();
+    void sendIdleCommand();
 
 public:
     GameScreen(GameController& controller, uint8_t playerId);

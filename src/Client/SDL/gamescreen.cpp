@@ -26,15 +26,11 @@
 #include "projectile.h"
 
 GameScreen::GameScreen(GameController& controller, uint8_t playerId):
-        controller(controller),
-        mainPlayerId(playerId),
-        pj(1),
-        level(0),
-        proj(0) {}
+        controller(controller), mainPlayerId(playerId), pj(1), level(0), proj(0) {}
 
 
 std::unique_ptr<PlayerDTO> GameScreen::searchMainPlayer(std::vector<PlayerDTO>& players) {
-    for (auto& player : players) {
+    for (auto& player: players) {
         if (player.getPlayerId() == this->mainPlayerId) {
             return std::make_unique<PlayerDTO>(player);
         }
@@ -60,7 +56,8 @@ void GameScreen::run() {
     // TEXTURAS NIVEL
     SDL_Surface* bg_surf = IMG_Load(this->level.getLevelPath(TileType::BACKGROUND).c_str());
     if (!bg_surf) {
-        std::cerr << "[GAME SCREEN] Error loading background surface: " << IMG_GetError() << std::endl;
+        std::cerr << "[GAME SCREEN] Error loading background surface: " << IMG_GetError()
+                  << std::endl;
         return;
     }
     SDL2pp::Surface backgroundSurface(bg_surf);
@@ -79,7 +76,8 @@ void GameScreen::run() {
 
     std::cout << "[GAME SCREEN] Floor created" << std::endl;
 
-    std::map<TileType, std::unique_ptr<SDL2pp::Texture>> tiles_textures = this->level.getTilesTextures(renderer);
+    std::map<TileType, std::unique_ptr<SDL2pp::Texture>> tiles_textures =
+            this->level.getTilesTextures(renderer);
 
     // TEXTURAS PERSONAJES
     std::tuple<int, int, int> pjsColorKey = ClientConfig::getJazzColourKey();
@@ -133,7 +131,8 @@ void GameScreen::run() {
     // TEXTURAS PROJECTILES
     SDL_Surface* projectile_surf = IMG_Load("../assets/Miscellaneous/SFX.png");
     if (!projectile_surf) {
-        std::cerr << "[GAME SCREEN] Error loading projectile surface: " << IMG_GetError() << std::endl;
+        std::cerr << "[GAME SCREEN] Error loading projectile surface: " << IMG_GetError()
+                  << std::endl;
         return;
     }
     SDL2pp::Surface projectileSurface(projectile_surf);
@@ -198,59 +197,35 @@ void GameScreen::run() {
 
     std::cout << "Textures created" << std::endl;
 
+    const int frameDelay = 1000 / 30;  // Frame delay for 60 FPS
+    Uint32 frameStart;
+    int frameTime;
+
     while (true) {
+        frameStart = SDL_GetTicks();
+
         SDL_Event event;
         std::cout << "[GAME SCREEN] Waiting for event" << std::endl;
         while (SDL_PollEvent(&event)) {
-
             if (event.type == SDL_QUIT) {
                 std::cout << "[GAME SCREEN] SDL_QUIT event received, exiting run loop" << std::endl;
                 return;
             } else if (event.type == SDL_KEYDOWN) {
                 switch (event.key.keysym.sym) {
-                    case SDLK_RIGHT: {
-                        Command move = Command::MOVE;
-                        std::vector<uint8_t> par{static_cast<uint8_t>(Direction::RIGHT)};
-                        this->controller.sendMsg(this->mainPlayerId, move, par);
+                    case SDLK_RIGHT:
+                        sendMoveCommand(Direction::RIGHT);
                         break;
-                    }
-                    case SDLK_LEFT: {
-                        Command move = Command::MOVE;
-                        std::vector<uint8_t> elements{static_cast<uint8_t>(Direction::LEFT)};
-                        this->controller.sendMsg(this->mainPlayerId, move, elements);
+                    case SDLK_LEFT:
+                        sendMoveCommand(Direction::LEFT);
                         break;
-                    }
-
-                    case SDLK_LSHIFT: {
-                        /*
-                        Command run = Command::RUN;
-                        std::vector<uint8_t> elements;
-                        this->controller.sendMsg(this->mainPlayerId, move, elements);
+                    case SDLK_m:
+                        sendShootCommand();
                         break;
-                        */
-                    }
-                    case SDLK_m: {
-                        // is_shooting = true;
-                        Command shoot = Command::SHOOT;
-                        std::vector<uint8_t> elements;
-                        this->controller.sendMsg(this->mainPlayerId, shoot, elements);
+                    case SDLK_SPACE:
+                        sendMoveCommand(Direction::UP);
                         break;
-                    }
-
-                    case SDLK_SPACE: {
-                        Command move = Command::MOVE;
-                        std::vector<uint8_t> elements{static_cast<uint8_t>(Direction::UP)};
-                        this->controller.sendMsg(this->mainPlayerId, move, elements);
+                    default:
                         break;
-                    }
-                    case SDLK_d: {
-                        /*
-                        Command dash = Command::DASH;
-                        std::vector<uint8_t> elements;
-                        this->controller.sendMsg(this->mainPlayerId, dash, elements);
-                        break;
-                        */
-                    }
                 }
             } else if (event.type == SDL_KEYUP) {
                 switch (event.key.keysym.sym) {
@@ -291,18 +266,18 @@ void GameScreen::run() {
         if (players.empty()) {
             std::cerr << "[GAME SCREEN] No players found in snapshot." << std::endl;
             SDL_Delay(100);
-            continue;
+            return;
         }
         std::unique_ptr<PlayerDTO> mainPlayer = searchMainPlayer(players);
         if (!mainPlayer) {
-            continue;
+            return;
         }
-        std::vector<int> dir_screen = this->level.draw_background(window, renderer, background,
-                                                                  *mainPlayer /*players[0]*/);
-        this->level.draw_floor(window, renderer, sandFloor,
-                               mainPlayer->getSpeed() /*players[0].getSpeed()*/);
-        x_screen = dir_screen[0];
-        y_screen = dir_screen[1];
+        std::vector<int> dir_screen =
+                this->level.draw_background(window, renderer, background, *mainPlayer);
+        this->level.draw_floor(window, renderer, sandFloor, mainPlayer->getSpeed());
+
+        int x_screen = dir_screen[0];
+        int y_screen = dir_screen[1];
 
         if (players.size() > 0) {
             this->pj.draw_players(window, renderer, pjs_textures, players, x_screen, y_screen,
@@ -311,10 +286,9 @@ void GameScreen::run() {
 
         std::vector<EnemyDTO> enemiesSnapshot = snapshot->getEnemies();
         if (enemiesSnapshot.size() > 0) {
-            this->enemies.draw_enemy(window, renderer, enemy, enemiesSnapshot,
-                                     *mainPlayer /*players[0]*/, x_screen, y_screen);
+            this->enemies.draw_enemy(window, renderer, enemy, enemiesSnapshot, *mainPlayer,
+                                     x_screen, y_screen);
         }
-        std::cout << "[GAME SCREEN] Enemies drawn" << std::endl;
 
         std::vector<BulletDTO> bullets = snapshot->getBullets();
         if (bullets.size() > 0) {
@@ -323,27 +297,48 @@ void GameScreen::run() {
 
         std::vector<ItemDTO> itemsSnapshot = snapshot->getItems();
         if (itemsSnapshot.size() > 0) {
-            this->points.draw_points(renderer, items, itemsSnapshot, *mainPlayer /*players[0]*/,
-                                     x_screen, y_screen);
+            this->points.draw_points(renderer, items, itemsSnapshot, *mainPlayer, x_screen,
+                                     y_screen);
         }
 
         std::vector<WeaponDTO> weapons = snapshot->getWeapons();
-
         std::vector<TileDTO> tiles = snapshot->getTiles();
         if (tiles.size() > 0) {
             this->level.draw_tiles(window, renderer, tiles_textures, tiles);
         }
 
-        this->stats.draw_interface(
-                window, renderer, *pjs_textures[mainPlayer->getType() /*players[0].getType()*/],
-                mainPlayer->getType(), font, 1000 /*getPoints()*/, 3 /*getLives()*/);
-
-        x_screen = 0;
-        y_screen = 0;
+        this->stats.draw_interface(window, renderer, *pjs_textures[mainPlayer->getType()],
+                                   mainPlayer->getType(), font, 1000, 3);
 
         renderer.Present();
         std::cout << "[GAME SCREEN] Frame presented" << std::endl;
 
-        SDL_Delay(70);
+        renderer.Present();
+        std::cout << "[GAME SCREEN] Frame presented" << std::endl;
+
+        frameTime = SDL_GetTicks() - frameStart;
+
+        if (frameDelay > frameTime) {
+            SDL_Delay(frameDelay - frameTime);
+        }
     }
+}
+
+
+void GameScreen::sendMoveCommand(Direction dir) {
+    Command move = Command::MOVE;
+    std::vector<uint8_t> par{static_cast<uint8_t>(dir)};
+    this->controller.sendMsg(this->mainPlayerId, move, par);
+}
+
+void GameScreen::sendShootCommand() {
+    Command shoot = Command::SHOOT;
+    std::vector<uint8_t> elements;
+    this->controller.sendMsg(this->mainPlayerId, shoot, elements);
+}
+
+void GameScreen::sendIdleCommand() {
+    Command idle = Command::IDLE;
+    std::vector<uint8_t> elements;
+    this->controller.sendMsg(this->mainPlayerId, idle, elements);
 }
