@@ -30,6 +30,19 @@ public:
         return sprites;
     }
 
+    static std::vector<Sprite> createSpritesWithSpritesheetAndColourKey(
+            const std::vector<std::vector<std::pair<int, int>>>& valuesList,
+            const std::string& spritesheet,
+            const std::tuple<int, int, int>& colourKey) {
+        std::vector<Sprite> sprites;
+        for (const auto& values: valuesList) {
+            sprites.push_back(Sprite(values));
+            sprites.back().setSpriteSheetPath(spritesheet);
+            sprites.back().setColourKey(colourKey);
+        }
+        return sprites;
+    }
+
     void setSpriteSheetPath(const std::string& path) { spriteSheetPath = path; }
 
     void setColourKey(const std::tuple<int, int, int>& key) { colourKey = key; }
