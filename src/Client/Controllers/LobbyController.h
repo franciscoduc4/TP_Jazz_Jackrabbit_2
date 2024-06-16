@@ -23,9 +23,16 @@ private:
 public:
     LobbyController(Serializer& serializer, Deserializer& deserializer,
                     std::shared_ptr<Queue<std::unique_ptr<DTO>>>& lobbyQueue);
+    // UPDATES
+    bool hasGameUpdates(std::unique_ptr<DTO>& dto);
+    int processGameUpdate(std::unique_ptr<DTO>& dto);
+
+    // OUTBOUND METHODS
     void sendRequest(const LobbyMessage& msg);
-    bool recvResponse();
     void startGame(const LobbyMessage& msg);
+
+    // INBOUND METHODS
+    bool recvResponse();
     bool recvStartGame();
     uint8_t recvCreateGame();
     std::unordered_map<uint8_t, std::string> getMaps();

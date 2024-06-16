@@ -13,18 +13,20 @@ WaitingRoom::WaitingRoom(QWidget* parent, LobbyController& controller, LobbyMess
         msg(msg),
         clientJoinedGame(clientJoinedGame) {
     ui->setupUi(this);
-    std::cout << "[WAITING ROOM] UI setup completed" << std::endl;
 
-    std::cout << "[WAITING ROOM] Initializing WaitingRoom" << std::endl;
+    clientJoinedGame = true; // Al llegar acá y no poder volver atrás, se asume que el cliente se unió al juego
+
+    // Se crea un hilo para que el cliente pueda recibir actualizaciones de la cantidad de jugadores en la sala
+    updateThread = QThread::create([this] { this->pollForUpdates(); });
+    connect(this, &WaitingRoom::destroyed, updateThread, &QThread::quit);
+    updateThread->start();
+
     QString gameName = QString::fromStdString(this->msg.getGameName());
     ui->labelGameName->setText(gameName);
     std::cout << "[WAITING ROOM] Game name set: " << gameName.toStdString() << std::endl;
 
-    if (this->msg.getLobbyCmd() == Command::CREATE_GAME) {
-        QString maxPlayers = QString::number(this->msg.getMaxPlayers());
-        ui->maxPlayers->setText(maxPlayers);
-        std::cout << "[WAITING ROOM] Max players set: " << maxPlayers.toStdString() << std::endl;
-    }
+    QString maxPlayers = QString::number(this->msg.getMaxPlayers());
+    ui->maxPlayers->setText(maxPlayers);
 
     QFont font = ui->labelGameName->font();
     QFontMetrics fm(font);
@@ -41,15 +43,11 @@ WaitingRoom::WaitingRoom(QWidget* parent, LobbyController& controller, LobbyMess
     }
 
     ui->labelGameName->setFont(font);
-    std::cout << "[WAITING ROOM] Adjusted font size for game name" << std::endl;
 
     QFile file(":/Lobby/Styles/waitingroom.qss");
     if (file.open(QFile::ReadOnly)) {
         QString styleSheet = QLatin1String(file.readAll());
         ui->centralwidget->setStyleSheet(styleSheet);
-        std::cout << "[WAITING ROOM] Applied stylesheet" << std::endl;
-    } else {
-        std::cerr << "[WAITING ROOM] Failed to open stylesheet" << std::endl;
     }
 
     ui->labelTitle->setAttribute(Qt::WA_TranslucentBackground);
@@ -58,19 +56,31 @@ WaitingRoom::WaitingRoom(QWidget* parent, LobbyController& controller, LobbyMess
     ui->labelSlash->setAttribute(Qt::WA_TranslucentBackground);
     ui->numPlayers->setAttribute(Qt::WA_TranslucentBackground);
     ui->maxPlayers->setAttribute(Qt::WA_TranslucentBackground);
-    std::cout << "[WAITING ROOM] Set translucent background for labels" << std::endl;
-
 
     this->msg.setLobbyCmd(Command::START_GAME);
-    std::cout << "[WAITING ROOM] Lobby command set to START_GAME" << std::endl;
     this->controller.sendRequest(this->msg);
-    std::cout << "[WAITING ROOM] Sent request to controller" << std::endl;
     this->controller.recvStartGame();
-    std::cout << "[WAITING ROOM] Received start game command from controller" << std::endl;
-    clientJoinedGame = true;
+}
+
+void WaitingRoom::pollForUpdates() {
+    while (true) {
+        QMutexLocker locker(&mutex);
+        std::unique_ptr<DTO> updateDto;
+        if (controller.hasGameUpdates(updateDto)) {
+            int numPlayers = controller.processGameUpdate(updateDto);
+            emit numPlayersUpdated(numPlayers);
+        } else {
+            condition.wait(&mutex);
+        }
+    }
+}
+
+void WaitingRoom::updateNumPlayers(int numPlayers) {
+    ui->numPlayers->setText(QString::number(numPlayers));
 }
 
 WaitingRoom::~WaitingRoom() {
+    updateThread->quit();
+    updateThread->wait();
     delete ui;
-    std::cout << "[WAITING ROOM] Destructor called, UI deleted" << std::endl;
 }
