@@ -30,24 +30,16 @@ GameScreen::GameScreen(GameController& controller, uint8_t playerId):
         mainPlayerId(playerId),
         pj(1),
         level(0),
-        proj(0) /*, config(ClientConfig::getInstance())*/ {}
+        proj(0) {}
 
-/*GameScreen::GameScreen(GameController& controller):
-        controller(controller), pj(1), points(0), level(0), stats(CharacterType::JAZZ) {}*/
 
 std::unique_ptr<PlayerDTO> GameScreen::searchMainPlayer(std::vector<PlayerDTO>& players) {
-    int i = 0;
-
-    while (i < players.size()) {
-        if (players[i].getPlayerId() == this->mainPlayerId) {
-            return std::make_unique<PlayerDTO>(players[i]);
+    for (auto& player : players) {
+        if (player.getPlayerId() == this->mainPlayerId) {
+            return std::make_unique<PlayerDTO>(player);
         }
-        i++;
     }
-    if (i == 0) {
-        return nullptr;
-    }
-    return std::make_unique<PlayerDTO>(players[i - 1]);
+    return nullptr;
 }
 
 void GameScreen::run() {
@@ -68,8 +60,7 @@ void GameScreen::run() {
     // TEXTURAS NIVEL
     SDL_Surface* bg_surf = IMG_Load(this->level.getLevelPath(TileType::BACKGROUND).c_str());
     if (!bg_surf) {
-        std::cerr << "[GAME SCREEN] Error loading background surface: " << IMG_GetError()
-                  << std::endl;
+        std::cerr << "[GAME SCREEN] Error loading background surface: " << IMG_GetError() << std::endl;
         return;
     }
     SDL2pp::Surface backgroundSurface(bg_surf);
@@ -88,8 +79,7 @@ void GameScreen::run() {
 
     std::cout << "[GAME SCREEN] Floor created" << std::endl;
 
-    std::map<TileType, std::unique_ptr<SDL2pp::Texture>> tiles_textures =
-            this->level.getTilesTextures(renderer);
+    std::map<TileType, std::unique_ptr<SDL2pp::Texture>> tiles_textures = this->level.getTilesTextures(renderer);
 
     // TEXTURAS PERSONAJES
     std::tuple<int, int, int> pjsColorKey = ClientConfig::getJazzColourKey();
@@ -143,8 +133,7 @@ void GameScreen::run() {
     // TEXTURAS PROJECTILES
     SDL_Surface* projectile_surf = IMG_Load("../assets/Miscellaneous/SFX.png");
     if (!projectile_surf) {
-        std::cerr << "[GAME SCREEN] Error loading projectile surface: " << IMG_GetError()
-                  << std::endl;
+        std::cerr << "[GAME SCREEN] Error loading projectile surface: " << IMG_GetError() << std::endl;
         return;
     }
     SDL2pp::Surface projectileSurface(projectile_surf);
@@ -249,17 +238,15 @@ void GameScreen::run() {
                     }
 
                     case SDLK_SPACE: {
-                        /*
-                        Command jump = Command::JUMP;
-                        std::vector<uint8_t> elememts;
-                        this->controller.sendMsg(this->mainPlayerId, jump, elements);
+                        Command move = Command::MOVE;
+                        std::vector<uint8_t> elements{static_cast<uint8_t>(Direction::UP)};
+                        this->controller.sendMsg(this->mainPlayerId, move, elements);
                         break;
-                        */
                     }
                     case SDLK_d: {
                         /*
                         Command dash = Command::DASH;
-                        std::vector<uint8_t> elememts;
+                        std::vector<uint8_t> elements;
                         this->controller.sendMsg(this->mainPlayerId, dash, elements);
                         break;
                         */

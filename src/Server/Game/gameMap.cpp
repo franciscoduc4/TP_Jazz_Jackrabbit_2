@@ -129,14 +129,18 @@ void GameMap::moveObject(Vector<uint8_t>& position, Vector<uint8_t> mapPosition,
         Vector<uint8_t> newPosition = calculateNewPosition(position, dir);
         Vector<uint8_t> newMapPosition = getMapPosition(newPosition);
         std::cout << "[GAMEMAP] Object's old position: " << position << std::endl;
+
         if (!handleMovement(position, mapPosition, newPosition, newMapPosition)) {
             character->interact(mapGrid[newMapPosition]);
         }
         std::cout << "[GAMEMAP] Object's new position: " << position << std::endl;
+
+
     } catch (const std::exception& e) {
         std::cerr << "[GAMEMAP] Error moving object: " << e.what() << std::endl;
     }
 }
+
 
 bool GameMap::isFreePosition(Vector<uint8_t> position) {
     return mapGrid.find(position) == mapGrid.end();
@@ -238,14 +242,14 @@ void GameMap::addEnemy(EnemyType type, Vector<uint8_t> position) {
 }
 
 bool GameMap::isValidMapPosition(Vector<uint8_t> mapPosition) {
-    return mapPosition.x >= 0 && mapPosition.x <= size.x && mapPosition.y >= 0 &&
-           mapPosition.y <= size.y;
+    return mapPosition.x >= 0 && mapPosition.x < size.x && mapPosition.y >= 0 &&
+           mapPosition.y < size.y;
 }
 
 bool GameMap::isValidPosition(Vector<uint8_t> position) {
-    return position.x >= 0 && position.x <= size.x * movesPerCell && position.y >= 0 &&
-           position.y <= size.y * movesPerCell;
+    return position.x >= 0 && position.x < size.x * movesPerCell && position.y >= 0 && position.y < size.y * movesPerCell;
 }
+
 
 Vector<uint8_t> GameMap::getAvailablePosition() {
     try {
@@ -271,11 +275,13 @@ void GameMap::update(float time) {
             std::cout << "[GAMEMAP] Updating character with ID: "
                       << static_cast<int>(characterPair.first) << std::endl;
             characterPair.second->update(time);
+
         }
     } catch (const std::exception& e) {
         std::cerr << "[GAMEMAP] Error updating game map: " << e.what() << std::endl;
     }
 }
+
 
 
 void GameMap::removeCharacter(uint8_t playerId) {
@@ -384,30 +390,39 @@ Vector<uint8_t> GameMap::getMapPosition(Vector<uint8_t> position) {
 
 Vector<uint8_t> GameMap::calculateNewPosition(const Vector<uint8_t> position, Direction dir) const {
     Vector<uint8_t> zero(0, 0);
+    Vector<uint8_t> newPosition = position;
     Vector<uint8_t> deltaX(1, 0);
     Vector<uint8_t> deltaY(0, 1);
-    try {
-        switch (dir) {
-            case Direction::LEFT:
-                return position - deltaX >= zero ? position - deltaX : position;
-            case Direction::RIGHT:
-                return position + deltaX <= size ? position + deltaX : position;
-            case Direction::UP:
-                return position + deltaY <= size ? position + deltaY : position;
-            case Direction::DOWN:
-                return position - deltaY >= zero ? position - deltaY : position;
-            default:
-                return position;
-        }
-    } catch (const std::exception& e) {
-        std::cerr << "[GAMEMAP] Error calculating new position: " << e.what() << std::endl;
-        throw;
+
+    switch (dir) {
+        case Direction::LEFT:
+            if (position.x > 0) {
+                newPosition = position - deltaX;
+            }
+            break;
+        case Direction::RIGHT:
+            if (position.x < (size.x * movesPerCell) - 1) {
+                newPosition = position + deltaX;
+            }
+            break;
+        case Direction::UP:
+            if (position.y < (size.y * movesPerCell) - 1) {
+                newPosition = position + deltaY;
+            }
+            break;
+        case Direction::DOWN:
+            if (position.y > 0) {
+                newPosition = position - deltaY;
+            }
+            break;
+        default:
+            break;
     }
+
+    return newPosition;
 }
 
-bool GameMap::handleMovement(Vector<uint8_t>& position, Vector<uint8_t> mapPosition,
-                             const Vector<uint8_t>& newPosition,
-                             const Vector<uint8_t>& newMapPosition) {
+bool GameMap::handleMovement(Vector<uint8_t>& position, Vector<uint8_t> mapPosition, const Vector<uint8_t>& newPosition, const Vector<uint8_t>& newMapPosition) {
     try {
         if (newMapPosition == mapPosition) {
             std::cout << "[GAMEMAP] Same map position" << std::endl;
@@ -415,8 +430,8 @@ bool GameMap::handleMovement(Vector<uint8_t>& position, Vector<uint8_t> mapPosit
             return true;
         }
 
-        if (!isFreePosition(newMapPosition)) {
-            std::cout << "[GAMEMAP] New position is not free" << std::endl;
+        if (!isFreePosition(newMapPosition) || !isValidPosition(newPosition)) {
+            std::cout << "[GAMEMAP] New position is not free or invalid" << std::endl;
             return false;
         }
 
@@ -430,4 +445,9 @@ bool GameMap::handleMovement(Vector<uint8_t>& position, Vector<uint8_t> mapPosit
         std::cerr << "[GAMEMAP] Error handling movement: " << e.what() << std::endl;
         return false;
     }
+}
+
+
+Vector<uint8_t> GameMap::getSize() const {
+    return size;
 }

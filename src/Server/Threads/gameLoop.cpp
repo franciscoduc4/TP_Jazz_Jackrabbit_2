@@ -7,7 +7,7 @@
 GameLoopThread::GameLoopThread(std::shared_ptr<Queue<std::unique_ptr<CommandDTO>>> recvQueue,
                                QueueMonitor<std::unique_ptr<DTO>>& queueMonitor, GameMap& gameMap,
                                uint8_t gameId):
-        frameRate(0.016),  // 1 frame per 16 ms === 60 fps
+        frameRate(1),  // 1 frame per 16 ms === 60 fps
         keepRunning(false),
         commandsToProcess(10),
         recvQueue(recvQueue),
@@ -90,6 +90,12 @@ void GameLoopThread::processCommands(double deltaTime) {
                 processedCommands++;
                 std::cout << "[GAME LOOP] Command processed number: " << processedCommands
                           << std::endl;
+
+                // Asegurarse de que se actualice el estado del personaje después del comando
+                // auto character = gameMap.getCharacter(handler->getPlayerId());
+                // if (character) {
+                //     character->idle(deltaTime);
+                // }
             } else {
                 std::cout << "[GAME LOOP] No more commands to process" << std::endl;
                 break;

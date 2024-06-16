@@ -67,6 +67,8 @@ public:
 
     std::shared_ptr<Entity> getEntityAt(Vector<uint8_t> position);
 
+    Vector<uint8_t> getSize() const;
+
     std::unique_ptr<GameDTO> getGameDTO();
 
     std::shared_ptr<Character> getCharacter(uint8_t playerId);
@@ -85,6 +87,11 @@ public:
 
 
     EnemyType getEnemyType(const std::string& type);
+
+    uint8_t getMaxX() const { return size.x - movesPerCell; }
+
+    uint8_t getMaxY() const { return size.y - movesPerCell; }
+    
 };
 
 #endif  // GAME_MAP_H_

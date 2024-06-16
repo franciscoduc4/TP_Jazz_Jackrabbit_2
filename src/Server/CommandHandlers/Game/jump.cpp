@@ -5,5 +5,7 @@ JumpHandler::JumpHandler(std::unique_ptr<CommandDTO> jumpCommand):
 
 void JumpHandler::execute(GameMap& gameMap, std::atomic<bool>& keepRunning, double deltaTime) {
     std::shared_ptr<Character> character = gameMap.getCharacter(moveCommand->getPlayerId());
-    // character->jump(deltaTime);
+    if (character) {
+        character->moveUp(deltaTime);
+    }
 }
