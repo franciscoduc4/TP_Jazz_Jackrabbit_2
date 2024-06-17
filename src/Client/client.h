@@ -42,6 +42,7 @@ public:
     void sendMsg(Command& cmd, std::vector<uint8_t>& parameters);
     void move_msg(std::vector<uint8_t>& parameters);
     void shoot_msg();
+    void finish();
 };
 
 #endif  // CLIENT_H

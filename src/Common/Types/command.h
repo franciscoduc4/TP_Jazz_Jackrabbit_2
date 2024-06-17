@@ -11,6 +11,7 @@ enum class Command : char {
     MAPS_LIST,
     GAME_MODE,
     CHARACTER_TYPE,
+    GAME_UPDATE,
     START_GAME,
     SHOOT,
     SWITCH_WEAPON,
