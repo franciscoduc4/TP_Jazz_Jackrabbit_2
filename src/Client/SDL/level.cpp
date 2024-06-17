@@ -9,7 +9,7 @@
 #include <iostream>
 
 
-enum lvl { BEACH };
+enum lvl { BEACH, COLONIUS };
 
 Level::Level(int level) {
     /* std::vector<int> backVector{0, 0, 200, 160};
@@ -62,6 +62,18 @@ Level::Level(int level) {
             this->floor_height = 70;
             this->background_width = 715;
             this->background_height = 153;
+            break;
+        case COLONIUS:
+            tilesSprites = ClientConfig::getColoniusFiles();
+            beachSprites = ClientConfig::getColoniusSprites();
+            for (int i = 0; i < tilesSprites.size(); i++) {
+                this->paths[tiles_types[i]] = tilesSprites[i];
+                this->pixels_pos[tiles_types[i]] = beachSprites[i];
+            }
+            this->max_pixel_x_floor = 4525;
+            this->floor_height = 200;
+            this->background_width = 2000;
+            this->background_height = 839;
             break;
     }
 }
@@ -156,7 +168,7 @@ void Level::draw_floor(SDL2pp::Window& window, SDL2pp::Renderer& renderer, SDL2p
 
     renderer.Copy(floor, SDL2pp::Rect(this->pixels_pos[TileType::FLOOR][index_x], this->pixels_pos[TileType::FLOOR][index_y], this->pixels_pos[TileType::FLOOR][index_width], this->pixels_pos[TileType::FLOOR][index_height]), 
                         SDL2pp::Rect(0, window.GetHeight() - this->floor_height, window.GetWidth(), this->floor_height));
-    this->pixels_pos[TileType::FLOOR][index_x] += player_speed;
+    this->pixels_pos[TileType::FLOOR][index_x] += 50;
 }
 
 

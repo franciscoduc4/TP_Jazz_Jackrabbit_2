@@ -31,7 +31,7 @@ GameScreen::GameScreen(GameController& controller, uint8_t playerId):
         controller(controller),
         mainPlayerId(playerId),
         pj(1),
-        level(0),
+        level(1),
         proj(0) {}
 
 
@@ -68,10 +68,11 @@ void GameScreen::run() {
         return;
     }
     SDL2pp::Surface backgroundSurface(bg_surf);
+    backgroundSurface.SetColorKey(true, SDL_MapRGB(backgroundSurface.Get()->format, 87, 0, 203));
     SDL2pp::Texture background(renderer, backgroundSurface);
 
     std::cout << "[GAME SCREEN] Background created" << std::endl;
-
+    
     SDL_Surface* sandFloor_surf = IMG_Load(this->level.getLevelPath(TileType::FLOOR).c_str());
     if (!sandFloor_surf) {
         std::cerr << "[GAME SCREEN] Error loading floor surface: " << IMG_GetError() << std::endl;
@@ -82,7 +83,7 @@ void GameScreen::run() {
     SDL2pp::Texture sandFloor(renderer, sandFloorSurface);
 
     std::cout << "[GAME SCREEN] Floor created" << std::endl;
-
+       
     std::map<TileType, std::unique_ptr<SDL2pp::Texture>> tiles_textures = this->level.getTilesTextures(renderer);
 
     // TEXTURAS PERSONAJES

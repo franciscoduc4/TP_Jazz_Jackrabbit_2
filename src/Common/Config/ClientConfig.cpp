@@ -163,6 +163,29 @@ std::vector<std::vector<int>> ClientConfig::getBeachSprites() {
     return beachSprites;
 }
 
+//Colonius
+std::vector<std::string> ClientConfig::getColoniusFiles() {
+    YAML::Node coloniusFilesNode = getInstance()->root["COLONIUS"];
+    std::vector<std::string> coloniusFiles;
+    for (YAML::const_iterator it = coloniusFilesNode.begin();
+         it != coloniusFilesNode.end(); ++it) {
+        coloniusFiles.push_back(it->as<std::string>());
+    }
+    return coloniusFiles;
+}
+
+std::string ClientConfig::getColoniusBacksound() { return getInstance()->root["COLONIUS_BACKSOUND"].as<std::string>(); }
+
+std::vector<std::vector<int>> ClientConfig::getColoniusSprites() {
+    YAML::Node coloniusSpritesNode = getInstance()->root["COLONIUS_PIXELS"];
+    std::vector<std::vector<int>> coloniusSprites;
+    for (YAML::const_iterator it = coloniusSpritesNode.begin();
+         it != coloniusSpritesNode.end(); ++it) {
+        coloniusSprites.push_back(it->as<std::vector<int>>());
+    }
+    return coloniusSprites;
+}
+
 
 // Enemies
 // Turtle
