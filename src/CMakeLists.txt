@@ -60,7 +60,7 @@ if(CLIENT)
             Client/Controllers/GameController.cpp
             Client/Controllers/GameController.h
             Client/SDL/level.cpp)
-    target_link_libraries(jazzclient common Qt5::Widgets Qt5::Core SDL2 SDL2pp SDL2_image yaml-cpp fmt::fmt -pthread)
+    target_link_libraries(jazzclient common Qt5::Widgets Qt5::Core SDL2 SDL2pp SDL2_image SDL2_mixer yaml-cpp fmt::fmt -pthread)
     target_include_directories(jazzclient PUBLIC ${PROJECT_SOURCE_DIR}/src/Common)
     set_target_properties(jazzclient PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
 endif()

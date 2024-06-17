@@ -36,12 +36,14 @@ set(GAMEVIEW_SOURCES
         SDL/projectile.h
         SDL/interface.cpp
         SDL/interface.h
+        SDL/soundController.h
+        SDL/soundController.cpp
 )
 
 add_library(gameview ${GAMEVIEW_SOURCES})
 
 target_include_directories(gameview PRIVATE ${PROJECT_INCLUDE_DIRS})
-target_link_libraries(gameview PUBLIC SDL2pp SDL2_image)
+target_link_libraries(gameview PUBLIC SDL2pp SDL2_image SDL2_mixer)
 target_compile_definitions(gameview PUBLIC ASSETS_PATH="${VARDIR}/assets/")
 
 # Qt UI components
@@ -79,7 +81,7 @@ file(GLOB_RECURSE CLIENT_SOURCES
 
 add_executable(jazzclient ${CLIENT_SOURCES} ${UIS_HEADERS} ${CLIENT_RESOURCES_RCC})
 target_link_libraries(jazzclient PUBLIC Qt5::Widgets Qt5::Core gameview)
-target_link_libraries(jazzclient PUBLIC SDL2 SDL2_image)
+target_link_libraries(jazzclient PUBLIC SDL2 SDL2_image SDL2_mixer)
 target_link_libraries(jazzclient PUBLIC yaml-cpp)
 target_include_directories(jazzclient PRIVATE ${PROJECT_INCLUDE_DIRS})
 set_target_properties(jazzclient PROPERTIES LINK_FLAGS "-lSDL2_image")

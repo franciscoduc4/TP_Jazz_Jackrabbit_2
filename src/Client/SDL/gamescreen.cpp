@@ -8,6 +8,8 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include <SDL2pp/SDL2pp.hh>
+#include <SDL2/SDL_mixer.h>
+#include <SDL2pp/Music.hh>
 
 #include "../../Common/Config/ClientConfig.h"
 #include "../../Common/DTO/bullet.h"
@@ -44,6 +46,8 @@ std::unique_ptr<PlayerDTO> GameScreen::searchMainPlayer(std::vector<PlayerDTO>& 
 
 void GameScreen::run() {
     SDL2pp::SDL sdl(SDL_INIT_VIDEO);
+    Mix_Init(MIX_INIT_OGG);
+    Mix_OpenAudio(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT, MIX_DEFAULT_CHANNELS, 4096);Mix_OpenAudio(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT, MIX_DEFAULT_CHANNELS, 4096);
 
     int window_width = 800;
     int window_height = 500;
@@ -162,6 +166,8 @@ void GameScreen::run() {
                                              std::get<1>(fontColorKey), std::get<2>(fontColorKey)));
     SDL2pp::Texture font(renderer, fontSurface);
 
+    this->soundControl.play_backsound(); //EMPIEZA LA MUSICA DE FONDO
+    
     int walk_mov = 0;
     int count_walk = 0;
 
@@ -346,4 +352,6 @@ void GameScreen::run() {
 
         SDL_Delay(70);
     }
+    this->soundControl.free_musics();
+    Mix_CloseAudio();
 }
