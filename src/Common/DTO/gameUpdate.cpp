@@ -1,8 +1,8 @@
 #include "gameUpdate.h"
 
-GameUpdate::GameUpdate(GameInfo gameInfo) :
+GameUpdateDTO::GameUpdateDTO(GameInfo gameInfo) :
         CommandDTO(Command::GAME_UPDATE), gameInfo(std::move(gameInfo)) {}
 
-GameInfo GameUpdate::getGameInfo() const {
+GameInfo GameUpdateDTO::getGameInfo() const {
     return this->gameInfo;
 }

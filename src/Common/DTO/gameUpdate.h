@@ -1,15 +1,16 @@
 #ifndef GAMEUPDATE_H
 #define GAMEUPDATE_H
 
-#include "Types/gameInfo.h"
+#include <utility>
 
+#include "Types/gameInfo.h"
 #include "command.h"
 
-class GameUpdate : public CommandDTO {
+class GameUpdateDTO : public CommandDTO {
 private:
     GameInfo gameInfo;
 public:
-    GameUpdate(GameInfo gameInfo);
+    explicit GameUpdateDTO(GameInfo gameInfo);
     GameInfo getGameInfo() const;
 
 };

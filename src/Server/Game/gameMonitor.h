@@ -8,6 +8,7 @@
 #include <string>
 
 #include "../../Common/DTO/createGame.h"
+#include "../../Common/DTO/gameUpdate.h"
 #include "../../Common/Types/gameInfo.h"
 #include "../../Common/Types/gameMode.h"
 #include "../../Common/queueMonitor.h"
