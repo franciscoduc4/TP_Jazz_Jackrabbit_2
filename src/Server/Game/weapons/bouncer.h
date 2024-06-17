@@ -41,10 +41,6 @@ public:
     WeaponType getWeaponType() override;
 
     float getFireRate() override;
-
-    bool cooldown(float time) override;
-
-
 };
 
 #endif  // BOUNCER_H

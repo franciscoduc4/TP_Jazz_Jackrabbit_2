@@ -1,24 +1,35 @@
 #include "jumping.h"
+
 #include "../character.h"
+
 #include "dead.h"
 #include "idle.h"
 #include "intoxicated.h"
 #include "moving.h"
 #include "shooting.h"
 
-#include <iostream>
-
 std::unique_ptr<State> JumpingState::exec(Character& character, float time) {
-    return jump(character, time);
+    // Lógica de actualización específica para el estado de salto
+    // Transición al estado idle si ha aterrizado
+    return std::unique_ptr<IdleState>();
 }
 
-std::unique_ptr<State> JumpingState::shoot(Character& character, std::shared_ptr<Weapon> weapon, float time) {
+std::unique_ptr<State> JumpingState::shoot(Character& character, std::shared_ptr<Weapon> weapon,
+                                           float time) {
+    // Puede disparar mientras está en el aire
+    // Lógica para disparar
     return nullptr;
 }
 
 std::unique_ptr<State> JumpingState::move(Character& character, Direction direction, float time) {
     // Puede moverse en el aire
-    return std::make_unique<MovingState>(character, direction, time);
+    // character.setDirection(direction);
+    // if (direction > 0) {
+    //     character.moveToRight(time);
+    // } else {
+    //     character.moveToLeft(time);
+    // }
+    return nullptr;
 }
 
 std::unique_ptr<State> JumpingState::sprint(Character& character, Direction direction, float time) {
@@ -45,16 +56,14 @@ std::unique_ptr<State> JumpingState::revive(Character& character, float time) {
 }
 
 std::unique_ptr<State> JumpingState::jump(Character& character, float time) {
-    // Puede saltar mientras está en el aire
-    std::cout << "JumpingState::jump" << std::endl;
-    if (!character.isJumping()) {
-        character.jump();
-    }
+    // Ya está en el aire, no puede saltar de nuevo
     return nullptr;
 }
 
 std::unique_ptr<State> JumpingState::specialAttack(Character& character, float time) {
     // Puede realizar un ataque especial mientras está en el aire
+    //     // Puede realizar un ataque especial mientras está en el aire
+    //     return new SpecialAttackState();
     return nullptr;
 }
 
@@ -65,5 +74,5 @@ std::unique_ptr<State> JumpingState::becomeIntoxicated(Character& character, flo
 
 std::unique_ptr<State> JumpingState::stopAction() {
     // Transición al estado idle
-    return std::make_unique<IdleState>();
+    return std::unique_ptr<IdleState>();
 }

@@ -61,7 +61,6 @@ void QueueMonitor<T>::broadcast(uint8_t id, T&& event) {
         auto& vec = it->second;
         for (auto& queue: vec) {
             if (queue) {
-                std::cout << "[QM] Broadcasting event to queue" << std::endl;
                 queue->try_push(std::move(event));
             } else {
                 std::cerr << "[QM] Warning: queue is null for id: " << id << std::endl;

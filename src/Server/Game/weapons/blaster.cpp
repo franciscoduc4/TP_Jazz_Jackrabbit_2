@@ -11,10 +11,10 @@ Blaster::Blaster():
         lastTimeShot(-1) {}
 
 void Blaster::update(float time) {
-    // if (lastTimeShot != -1 && time - lastTimeShot >= fireRate) {
-    //     bullets = maxBullets;
-    //     lastTimeShot = -1;
-    // }
+    if (lastTimeShot != -1 && time - lastTimeShot >= fireRate) {
+        bullets = maxBullets;
+        lastTimeShot = -1;
+    }
 }
 
 void Blaster::shoot(std::vector<std::shared_ptr<Entity>>& shootingEntities, uint8_t xPos,
@@ -25,11 +25,9 @@ void Blaster::shoot(std::vector<std::shared_ptr<Entity>>& shootingEntities, uint
 
     if (shootingEntities.empty())
         return;
-    if (bullets > 0){
-        for (auto& entity: shootingEntities) {
-            entity->recvDamage(damage, time);
-        }
-        //revisar distancia de disparo
+
+    for (auto& entity: shootingEntities) {
+        entity->recvDamage(damage, time);
     }
 }
 
@@ -50,9 +48,3 @@ bool Blaster::shootTime(float time) {
 WeaponType Blaster::getWeaponType() { return WeaponType::BLASTER; }
 
 float Blaster::getFireRate() { return fireRate; }
-
-bool Blaster::cooldown(float time) {
-    return (time - lastTimeShot) > fireRate;
-}
-
-

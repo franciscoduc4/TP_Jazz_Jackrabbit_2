@@ -48,8 +48,3 @@ bool Freezer::shootTime(float time) {
 WeaponType Freezer::getWeaponType() { return WeaponType::FREEZER; }
 
 float Freezer::getFireRate() { return fireRate; }
-
-
-bool Freezer::cooldown(float time) {
-    return (time - lastTimeShot) > fireRate;
-}

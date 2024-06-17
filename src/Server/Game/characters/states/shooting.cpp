@@ -4,7 +4,6 @@
 
 #include "../character.h"
 
-#include "damage.h"
 #include "dead.h"
 #include "idle.h"
 #include "intoxicated.h"
@@ -12,25 +11,25 @@
 #include "moving.h"
 
 ShootingState::ShootingState(Character& character, std::shared_ptr<Weapon> weapon, float time):
-        character(character), weapon(weapon), shootCooldown(weapon->getFireRate()) {
+        character(character), weapon(weapon) {
     characterState = CharacterStateEntity::SHOOTING;
     shoot(character, weapon, time);
 }
 
 std::unique_ptr<State> ShootingState::exec(Character& character, float time) {
-    return shoot(character, weapon, time);
+    // Lógica de actualización específica para el estado de disparo
+    // Volver al estado idle después de disparar
+    return std::make_unique<IdleState>();
 }
 
 std::unique_ptr<State> ShootingState::shoot(Character& character, std::shared_ptr<Weapon> weapon,
                                             float time) {
     // Ya está disparando
-    if (!weapon->isEmpty() && (time - startTime) > shootCooldown) {
-        std::cout << "Shooting" << std::endl;
+    if (!weapon->isEmpty() && (time - startTime) > waitToShoot) {
         startTime = time;
         std::vector<std::shared_ptr<Entity>> characters = character.getTargets();
-        uint8_t x = character.getMapPosition(2).x;  // moves per cell
-        std::cout << "shooting at " << x << std::endl;
-        weapon->shoot(characters, x, time);
+        // int16_t x = character.getMatrixX();
+        // weapon->shoot(characters, x, time);
     }
     return nullptr;
 }
@@ -49,21 +48,21 @@ std::unique_ptr<State> ShootingState::sprint(Character& character, Direction dir
 
 std::unique_ptr<State> ShootingState::receiveDamage(Character& character, uint16_t dmg,
                                                     float time) {
-    // character.recvDamage(dmg, time);
-    // if (character.getHealth() <= 0) {
-    //     return std::make_unique<DeadState>(time);
-    // }
-    return std::make_unique<ReceivingDamageState>(time);
+    character.recvDamage(dmg, time);
+    if (character.getHealth() <= 0) {
+        return std::make_unique<DeadState>(time);
+    }
+    return std::unique_ptr<State>(this);
 }
 
 std::unique_ptr<State> ShootingState::die(Character& character, float time) {
-    // character.die(time);
+    character.die(time);
     return std::make_unique<DeadState>(time);
 }
 
 std::unique_ptr<State> ShootingState::revive(Character& character, float time) {
     // Lógica de reanimación
-    return nullptr;
+    return std::unique_ptr<State>(this);
 }
 
 std::unique_ptr<State> ShootingState::jump(Character& character, float time) {

@@ -29,8 +29,8 @@ void Client::start() {
 
     bool clientJoinedGame = false;
     do {
-        // LobbyInit init;
-        // clientJoinedGame = init.launchQT(this->lobbyController, (bool&)clientJoinedGame);
+        LobbyInit init;
+        clientJoinedGame = init.launchQT(this->lobbyController, (bool&)clientJoinedGame);
 
         //   if (!clientJoinedGame) {
         //       return;
@@ -38,6 +38,7 @@ void Client::start() {
         // TODO: Continue with SDL.
         // START - TESTING SKIP QT
 
+        /*
         Command cmd = (this->playerId == 0) ? Command::CREATE_GAME : Command::JOIN_GAME;
 
         LobbyMessage msg;
@@ -72,7 +73,26 @@ void Client::start() {
             return;
         }
         // END - TESTING SKIP QT
+        */
         GameScreen game(this->gameController, this->playerId);
         game.run();
     } while (clientJoinedGame);
+
+    this->finish();
+}
+
+
+void Client::finish() {
+    // Close Queues
+    this->lobbyQueue->close();
+    this->gameQueue->close();
+    this->senderQueue->close();
+    // Close Socket
+    this->receiver.stopReceiving();
+    // Stop Threads
+    this->sender.stop();
+    this->receiver.stop();
+    // Join Threads
+    this->sender.join();
+    this->receiver.join();
 }

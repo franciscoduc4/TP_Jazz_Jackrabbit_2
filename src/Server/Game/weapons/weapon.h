@@ -28,7 +28,6 @@ public:
     virtual bool shootTime(float time) = 0;
     virtual float getFireRate() = 0;
     virtual WeaponType getWeaponType() = 0;
-    virtual bool cooldown(float time) = 0;
 
 
     // virtual LoriSpecialAttack* getLoriSpecialAttack() = 0;

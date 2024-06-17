@@ -30,16 +30,12 @@ std::unique_ptr<CommandDTO> Deserializer::getCommand(bool& wasClosed, uint8_t& p
             return deserializeGamesList(wasClosed, playerId);
         case Command::START_GAME:
             return deserializeStart(wasClosed, playerId);
-        case Command::IDLE:
-            return deserializeIdle(wasClosed, playerId);
         case Command::MOVE:
             return deserializeMove(wasClosed, playerId);
         case Command::SWITCH_WEAPON:
             return deserializeSwitchWeapon(wasClosed, playerId);
         case Command::SPRINT:
             return deserializeSprint(wasClosed, playerId);
-        case Command::SHOOT:
-            return deserializeShooting(wasClosed, playerId);
         default:
             std::cout << "[SERVER DESERIALIZER] Unknown command received: " << (int)cmd
                       << std::endl;
@@ -123,11 +119,6 @@ std::unique_ptr<JoinGameDTO> Deserializer::deserializeJoinGame(bool& wasClosed, 
 std::unique_ptr<CommandDTO> Deserializer::deserializeGamesList(bool& wasClosed, uint8_t& playerId) {
     std::cout << "[SERVER DESERIALIZER] Deserialize Games List" << std::endl;
     return std::make_unique<GamesListDTO>();
-}
-
-std::unique_ptr<CommandDTO> Deserializer::deserializeIdle(bool& wasClosed, uint8_t& playerId) {
-    std::cout << "[SERVER DESERIALIZER] Deserialize Idle" << std::endl;
-    return std::make_unique<CommandDTO>(playerId, Command::IDLE);
 }
 
 std::unique_ptr<GameCommandDTO> Deserializer::deserializeMove(bool& wasClosed, uint8_t& playerId) {
