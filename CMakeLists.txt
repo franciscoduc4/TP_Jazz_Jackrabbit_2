@@ -1,3 +1,9 @@
+# =====================================================
+# | Trabajo Práctico Final | Taller de Programación 1 |
+# |    Jazz Jackrabbit 2   |    1C2024   |   FIUBA    |
+# =====================================================
+
+# Configuración del proyecto
 cmake_minimum_required(VERSION 3.16)
 
 project(TP_Jazz_Jackrabbit_2
@@ -5,11 +11,14 @@ project(TP_Jazz_Jackrabbit_2
         LANGUAGES CXX
 )
 
+# Inclusión de SDL2pp
 add_subdirectory(extlibs/libsdl2pp)
 
+# Flags de compilación
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED YES)
 
+# Opciones de compilación
 option(DEBUG "Compile in debug mode" OFF)
 if (DEBUG)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O0 -ggdb")
@@ -20,6 +29,8 @@ option(INSTALL "Apply install settings" OFF)
 option(SERVER "Build server" ON)
 option(CLIENT "Build client" ON)
 
+# ------------------------------------------------------------------------------------
+# Configuración de instalación
 if (INSTALL)
     message(STATUS "Applying install settings")
     set(CONFIG_FILE "/var/games/jazz_jackrabbit_2/configurations.yaml")
@@ -30,6 +41,9 @@ else()
     set(BINDIR ${CMAKE_BINARY_DIR})
     set(VARDIR ${CMAKE_SOURCE_DIR})
 endif()
+# ------------------------------------------------------------------------------------
+
+# Configuración de paquetes
 set(LIBDIR "/usr/local/lib")
 
 if (APPLE)
@@ -43,6 +57,8 @@ find_package(Qt5Core CONFIG REQUIRED)
 find_package(SDL2 REQUIRED)
 find_package(yaml-cpp REQUIRED)
 
+# ------------------------------------------------------------------------------------
+# Common files
 include_directories(${PROJECT_SOURCE_DIR}/src/Common)
 
 file(GLOB_RECURSE COMMON_SOURCES
@@ -50,10 +66,14 @@ file(GLOB_RECURSE COMMON_SOURCES
         ${PROJECT_SOURCE_DIR}/src/Common/*.h
 )
 
-add_library(common ${COMMON_SOURCES})
+add_library(common ${COMMON_SOURCES}
+        src/Common/DTO/gameUpdate.h)
 target_link_libraries(common yaml-cpp fmt::fmt -pthread)
 target_include_directories(common PUBLIC ${PROJECT_SOURCE_DIR}/src/Common)
 
+# ------------------------------------------------------------------------------------
+
+# Server files
 if(SERVER)
     file(GLOB_RECURSE SERVER_SOURCES
             ${PROJECT_SOURCE_DIR}/src/Server/*.cpp
@@ -66,6 +86,9 @@ if(SERVER)
     set_target_properties(jazzserver PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
 endif()
 
+# ------------------------------------------------------------------------------------
+
+# Client files
 if(CLIENT)
     set(CMAKE_AUTOUIC ON)
     set(CMAKE_AUTOMOC ON)
@@ -96,13 +119,43 @@ if(CLIENT)
     set_target_properties(jazzclient PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
 endif()
 
-file(COPY ${CMAKE_SOURCE_DIR}/src/config DESTINATION ${CMAKE_BINARY_DIR})
+# ------------------------------------------------------------------------------------
+# Tests
+if(TESTING)
+    file(GLOB_RECURSE TEST_SOURCES
+            ${PROJECT_SOURCE_DIR}/Tests/*.cpp
+    )
+    include(FetchContent)
+    FetchContent_Declare(
+            googletest
+            URL https://github.com/google/googletest/archive/refs/tags/release-1.11.0.tar.gz
+    )
+    set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
+    FetchContent_MakeAvailable(googletest)
 
+    enable_testing()
+
+    add_executable(tests ${TEST_SOURCES})
+    target_link_libraries(tests GTest::gtest_main jazzserver_lib jazzclient_lib)
+
+    include(GoogleTest)
+    gtest_discover_tests(tests)
+endif()
+
+# ------------------------------------------------------------------------------------
+
+# Enable YAML Files
+file(COPY ${CMAKE_SOURCE_DIR}/src/config DESTINATION ${CMAKE_BINARY_DIR})
+# ------------------------------------------------------------------------------------
+
+# Server Installation
 if(SERVER AND INSTALL)
     install (FILES "${CMAKE_SOURCE_DIR}/config/configurations.yaml" DESTINATION ${VARDIR})
     install(TARGETS jazzserver RUNTIME DESTINATION ${BINDIR})
 endif()
+# ------------------------------------------------------------------------------------
 
+# Client Installation
 if(CLIENT AND INSTALL)
     install(TARGETS jazzclient RUNTIME DESTINATION ${BINDIR})
     install(TARGETS SDL2pp ARCHIVE DESTINATION ${LIBDIR})
