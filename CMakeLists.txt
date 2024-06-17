@@ -147,6 +147,7 @@ endif()
 
 # Enable YAML Files
 file(COPY ${CMAKE_SOURCE_DIR}/src/config DESTINATION ${CMAKE_BINARY_DIR})
+file(COPY ${CMAKE_SOURCE_DIR}/src/maps DESTINATION ${CMAKE_BINARY_DIR})
 # ------------------------------------------------------------------------------------
 
 # Server Installation
