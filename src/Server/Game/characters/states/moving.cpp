@@ -18,11 +18,6 @@ MovingState::MovingState(Character& character, Direction direction, float time):
 }
 
 std::unique_ptr<State> MovingState::exec(Character& character, float time) {
-    // std::cout << "MovingState::exec: " << this->time - time << std::endl;
-    // if (time - this->time >= movingTime) {
-    //     std::cout << "ADENTRO IF MovingState::exec: " << this->time - time << std::endl;
-    //     return std::unique_ptr<IdleState>();
-    // }
     return move(character, direction, time);
 }
 
@@ -92,6 +87,7 @@ std::unique_ptr<State> MovingState::specialAttack(Character& character, float ti
 std::unique_ptr<State> MovingState::jump(Character& character, float time) {
     //     // Cambia al estado de salto
     //     return std::unique_ptr<JumpingState>();
+
     return nullptr;
 }
 

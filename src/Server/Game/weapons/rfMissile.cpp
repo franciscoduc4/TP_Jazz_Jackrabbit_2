@@ -48,3 +48,8 @@ bool RFMissile::shootTime(float time) {
 WeaponType RFMissile::getWeaponType() { return WeaponType::RFMISSILE; }
 
 float RFMissile::getFireRate() { return fireRate; }
+
+
+bool RFMissile::cooldown(float time) {
+    return (time - lastTimeShot) > fireRate;
+}

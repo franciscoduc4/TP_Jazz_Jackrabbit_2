@@ -89,7 +89,7 @@ void Character::update(float time) {
             return;
         }
         auto newState = std::unique_ptr<State>(state->exec(*this, time));
-        
+
         if (newState) {
             state = std::move(newState);
         }
@@ -142,6 +142,14 @@ void Character::moveDown(float time) {
     std::cout << "[CHARACTER] Character ID: " << static_cast<int>(id) << " moving down"
               << std::endl;
     auto newState = std::unique_ptr<State>(state->move(*this, Direction::DOWN, time));
+    if (newState) {
+        state = std::move(newState);
+    }
+}
+
+void Character::jump(float time){
+    std::cout << "[CHARACTER] Character ID: " << static_cast<int>(id) << " jumping" << std::endl;
+    auto newState = std::unique_ptr<State>(state->jump(*this, time));
     if (newState) {
         state = std::move(newState);
     }
@@ -251,8 +259,7 @@ void Character::moveRight() {
     pos = newPosition; // Actualizar la posición
     std::cout << "[CHARACTER] Character pos x: " << static_cast<int>(pos.x) << std::endl;
 
-    // auto newState = std::make_unique<IdleState>();
-    // state = std::move(newState);
+
 }
 
 void Character::moveLeft() {
@@ -261,57 +268,23 @@ void Character::moveLeft() {
     auto mapPosition = getMapPosition(movesPerCell);
     Vector<uint8_t> newPosition = pos - Vector<uint8_t>{movesPerCell, 0};
 
-    // Verificar que la nueva posición no sea menor que 0
     if (pos.x == 0 || newPosition.x < 0) {
         newPosition.x = 0;
-    } else if (newPosition.x > pos.x) { // En caso de underflow
+    } else if (newPosition.x > pos.x) { 
         newPosition.x = 0;
     }
 
     if (!gameMap.isValidMapPosition(newPosition)) return;
 
     gameMap.moveObject(pos, mapPosition, Direction::LEFT);
-    pos = newPosition; // Actualizar la posición
+    pos = newPosition; 
     std::cout << "[CHARACTER] Character pos x: " << static_cast<int>(pos.x) << std::endl;
     
-    // auto newState = std::make_unique<IdleState>();
-    // state = std::move(newState);
+
 }
 
-
-// void Character::moveUp() {
-//     if (isIntoxicated)
-//         return;
-
-//     auto mapPosition = getMapPosition(movesPerCell);
-//     Vector<uint8_t> newPosition = pos + Vector<uint8_t>{0, movesPerCell};
-
-//     if (!gameMap.isValidMapPosition(newPosition))
-//         return;
-
-//     gameMap.moveObject(pos, mapPosition, Direction::UP);
-//     pos = newPosition; // Actualizar la posición
-//     std::cout << "[CHARACTER] Character pos y: " << static_cast<int>(pos.y) << std::endl;
-
-//     // Cambiar al estado de salto
-//     auto newState = std::make_unique<JumpingState>();
-//     state = std::move(newState);
-// }
 void Character::moveUp() {
-    if (isIntoxicated)
-        return;
 
-    auto mapPosition = getMapPosition(movesPerCell);
-    Vector<uint8_t> newPosition = pos + Vector<uint8_t>{0, 5 * movesPerCell}; // Salto de 5 posiciones
-
-    if (!gameMap.isValidMapPosition(newPosition))
-        return;
-
-    startJump(static_cast<float>(clock()) / CLOCKS_PER_SEC);
-
-    // Cambiar al estado de salto
-    auto newState = std::make_unique<JumpingState>();
-    state = std::move(newState);
 }
 
 
@@ -326,6 +299,20 @@ void Character::moveDown() {
         return;
 
     gameMap.moveObject(pos, mapPosition, Direction::DOWN);
+}
+
+void Character::jump() { 
+    if (isIntoxicated) return;
+
+    auto mapPosition = getMapPosition(movesPerCell);
+    Vector<uint8_t> newPosition = pos + Vector<uint8_t>{0, movesPerCell};
+
+    if (!gameMap.isValidMapPosition(newPosition)) return;
+
+    gameMap.moveObject(pos, mapPosition, Direction::UP);
+    pos = newPosition; 
+    std::cout << "[CHARACTER] Character pos y: " << static_cast<int>(pos.y) << std::endl;
+
 }
 
 bool Character::characIsIntoxicated() const { return isIntoxicated; }

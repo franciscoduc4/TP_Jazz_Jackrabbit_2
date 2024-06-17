@@ -6,26 +6,19 @@
 #include "moving.h"
 #include "shooting.h"
 
+#include <iostream>
+
 std::unique_ptr<State> JumpingState::exec(Character& character, float time) {
-    character.updatePosition(static_cast<float>(clock()) / CLOCKS_PER_SEC);  // Actualiza la posición del personaje según la física del salto
-
-    if (!character.isJumping()) {  // Verifica si el personaje ha terminado de saltar
-        return std::make_unique<IdleState>();
-    }
-
-    return nullptr;
+    return jump(character, time);
 }
 
 std::unique_ptr<State> JumpingState::shoot(Character& character, std::shared_ptr<Weapon> weapon, float time) {
-    // Puede disparar mientras está en el aire
-    character.shoot(time);
     return nullptr;
 }
 
 std::unique_ptr<State> JumpingState::move(Character& character, Direction direction, float time) {
     // Puede moverse en el aire
-    character.moveInAir(direction, time);  // Función específica para movimiento en el aire
-    return nullptr;
+    return std::make_unique<MovingState>(character, direction, time);
 }
 
 std::unique_ptr<State> JumpingState::sprint(Character& character, Direction direction, float time) {
@@ -52,7 +45,11 @@ std::unique_ptr<State> JumpingState::revive(Character& character, float time) {
 }
 
 std::unique_ptr<State> JumpingState::jump(Character& character, float time) {
-    // Ya está en el aire, no puede saltar de nuevo
+    // Puede saltar mientras está en el aire
+    std::cout << "JumpingState::jump" << std::endl;
+    if (!character.isJumping()) {
+        character.jump();
+    }
     return nullptr;
 }
 

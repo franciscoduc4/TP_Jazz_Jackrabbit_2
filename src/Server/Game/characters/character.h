@@ -78,6 +78,7 @@ public:
     void sprintLeft(float time);
     void moveUp(float time);
     void moveDown(float time);
+    void jump(float time);
 
     virtual void specialAttack(float time) = 0;
 
@@ -95,6 +96,8 @@ public:
     void moveDown();
     void moveLeft();
     void moveUp();
+    void jump();
+
 
     bool characIsIntoxicated() const;
     float getIntoxicatedTime() const;
