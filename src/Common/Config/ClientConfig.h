@@ -46,6 +46,18 @@ public:
     static std::tuple<int, int, int> getInterfaceFontColourKey();
     // Rectangular Sprites
     static std::vector<std::vector<int>> getEpisodesSprites();
+    //Levels sounds and sprites
+    //Sounds
+    static std::vector<std::string> getSoundsFiles();
+    //Beach
+    static std::vector<std::string> getBeachFiles();
+    static std::string getBeachBacksound();
+    static std::vector<std::vector<int>> getBeachSprites();
+    //Colonius
+    static std::vector<std::string> getColoniusFiles();
+    static std::string getColoniusBacksound();
+    static std::vector<std::vector<int>> getColoniusSprites();
+
     // Enemies Sprites
     // Turtle
     static int getTurtleWidth();

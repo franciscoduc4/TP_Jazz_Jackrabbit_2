@@ -8,6 +8,8 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include <SDL2pp/SDL2pp.hh>
+#include <SDL2/SDL_mixer.h>
+#include <SDL2pp/Music.hh>
 
 #include "../../Common/Config/ClientConfig.h"
 #include "../../Common/DTO/bullet.h"
@@ -25,8 +27,13 @@
 
 #include "projectile.h"
 
-GameScreen::GameScreen(GameController& controller, uint8_t playerId): controller(controller), mainPlayerId(playerId), pj(1), level(0), proj(0)/*, config(ClientConfig::getInstance())*/ {
-}
+GameScreen::GameScreen(GameController& controller, uint8_t playerId):
+        controller(controller),
+        mainPlayerId(playerId),
+        pj(1),
+        level(0),
+        proj(0),
+        soundControl(0) {}
 
 /*GameScreen::GameScreen(GameController& controller):
         controller(controller), pj(1), points(0), level(0), stats(CharacterType::JAZZ) {}*/
@@ -48,6 +55,8 @@ std::unique_ptr<PlayerDTO> GameScreen::searchMainPlayer(std::vector<PlayerDTO>& 
 
 void GameScreen::run() {
     SDL2pp::SDL sdl(SDL_INIT_VIDEO);
+    Mix_Init(MIX_INIT_OGG);
+    Mix_OpenAudio(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT, MIX_DEFAULT_CHANNELS, 4096);Mix_OpenAudio(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT, MIX_DEFAULT_CHANNELS, 4096);
 
     int window_width = 800;
     int window_height = 500;
@@ -69,10 +78,11 @@ void GameScreen::run() {
         return;
     }
     SDL2pp::Surface backgroundSurface(bg_surf);
+    backgroundSurface.SetColorKey(true, SDL_MapRGB(backgroundSurface.Get()->format, 87, 0, 203));
     SDL2pp::Texture background(renderer, backgroundSurface);
 
     std::cout << "[GAME SCREEN] Background created" << std::endl;
-
+    
     SDL_Surface* sandFloor_surf = IMG_Load(this->level.getLevelPath(TileType::FLOOR).c_str());
     if (!sandFloor_surf) {
         std::cerr << "[GAME SCREEN] Error loading floor surface: " << IMG_GetError() << std::endl;
@@ -165,37 +175,9 @@ void GameScreen::run() {
     fontSurface.SetColorKey(true, SDL_MapRGB(fontSurface.Get()->format, std::get<0>(fontColorKey), std::get<1>(fontColorKey), std::get<2>(fontColorKey)));
     SDL2pp::Texture font(renderer, fontSurface);
 
-    int walk_mov = 0;
-    int count_walk = 0;
-
-    int shoot_mov = 1;
-    int count_shoot = 0;
-
-    int run_mov = 2;
-    int count_run = 0;
-
-    int jump_mov = 3;
-    int count_jump = 0;
-
-    int dash_mov = 4;
-    int count_dash = 0;
-    int dash_timer = 0;
-
-    bool is_walking = false;
-    bool is_running = false;
-    bool is_shooting = false;
-    bool is_jumping = false;
-    bool is_dashing = false;
-
-    int dir_x = 0;
-    int dir_y = 0;
-    int speed_run = 1;
-
-    int pos_x = 0;
-    int pos_y = 0;
-
-    int flip = 0;
-
+    this->soundControl.play_backsound(); //EMPIEZA LA MUSICA DE FONDO
+    
+    
     int x_screen = 0;
     int y_screen = 0;    
 
@@ -226,43 +208,21 @@ void GameScreen::run() {
 		                    break;
                     	}
 
-                  	case SDLK_LSHIFT:
-                        {
-                            /*
-                            Command run = Command::RUN;
-                            std::vector<uint8_t> elements;
-                            this->controller.sendMsg(this->mainPlayerId, move, elements);
-                            break;
-                            */
-                        }
-                    case SDLK_m:
-                    	{
-		                    //is_shooting = true;
-		                    Command shoot = Command::SHOOT;
-		                    std::vector<uint8_t> elements;
-		                    this->controller.sendMsg(this->mainPlayerId, shoot, elements);
-		                    break;
-		               	}
-
-                    case SDLK_SPACE:
-                        {
-                            /*
-                            Command jump = Command::JUMP;
-                            std::vector<uint8_t> elememts;
-                            this->controller.sendMsg(this->mainPlayerId, jump, elements);
-                            break;
-                            */
-                        }
-                    case SDLK_d:
-                        {
-                            /*
-                            Command dash = Command::DASH;
-                            std::vector<uint8_t> elememts;
-                            this->controller.sendMsg(this->mainPlayerId, dash, elements);
-                            break;
-                            */
-                        }
-
+                    case SDLK_LSHIFT: {
+                        /*
+                        Command run = Command::RUN;
+                        std::vector<uint8_t> elements;
+                        this->controller.sendMsg(this->mainPlayerId, move, elements);
+                        break;
+                        */
+                    }
+                    case SDLK_m: {
+                        Command shoot = Command::SHOOT;
+                        std::vector<uint8_t> elements;
+                        this->controller.sendMsg(this->mainPlayerId, shoot, elements);
+                        this->soundControl.play_sound_effect(SoundType::SHOOT);
+                        break;
+                    }
                 }
             } else if (event.type == SDL_KEYUP) {
                 switch (event.key.keysym.sym) {
@@ -350,4 +310,6 @@ void GameScreen::run() {
 
         SDL_Delay(70);
     }
+    this->soundControl.free_musics();
+    Mix_CloseAudio();
 }

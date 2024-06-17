@@ -17,6 +17,7 @@
 #include "level.h"
 #include "projectile.h"
 #include "interface.h"
+#include "soundController.h"
 
 class GameScreen {
     Player pj;
@@ -30,6 +31,7 @@ class GameScreen {
     Level level;
     Projectile proj;
     Interface stats;
+    SoundController soundControl;
 
     GameController& controller;
     uint8_t mainPlayerId;

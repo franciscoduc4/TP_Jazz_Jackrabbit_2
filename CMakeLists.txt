@@ -114,7 +114,7 @@ if(CLIENT)
 
     add_executable(jazzclient ${CLIENT_SOURCES} ${UIS_HEADERS} ${RESOURCES}
             src/Client/Protocol/protocol.h)
-    target_link_libraries(jazzclient common Qt5::Widgets Qt5::Core SDL2 SDL2pp SDL2_image yaml-cpp fmt::fmt -pthread)
+    target_link_libraries(jazzclient common Qt5::Widgets Qt5::Core SDL2 SDL2pp SDL2_image SDL2_mixer yaml-cpp fmt::fmt -pthread)
     target_include_directories(jazzclient PUBLIC ${PROJECT_SOURCE_DIR}/src/Common)
     set_target_properties(jazzclient PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
 endif()

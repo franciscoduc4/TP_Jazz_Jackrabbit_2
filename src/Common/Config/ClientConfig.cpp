@@ -142,6 +142,65 @@ std::vector<std::vector<int>> ClientConfig::getEpisodesSprites() {
     return episodesSprites;
 }
 
+//Sounds
+std::vector<std::string> ClientConfig::getSoundsFiles() {
+    YAML::Node soundsFilesNode = getInstance()->root["SOUNDS"];
+    std::vector<std::string> soundsFiles;
+    for (YAML::const_iterator it = soundsFilesNode.begin();
+         it != soundsFilesNode.end(); ++it) {
+        soundsFiles.push_back(it->as<std::string>());
+    }
+    return soundsFiles;
+}
+
+
+//Beach
+std::vector<std::string> ClientConfig::getBeachFiles() {
+    YAML::Node beachFilesNode = getInstance()->root["BEACH"];
+    std::vector<std::string> beachFiles;
+    for (YAML::const_iterator it = beachFilesNode.begin();
+         it != beachFilesNode.end(); ++it) {
+        beachFiles.push_back(it->as<std::string>());
+    }
+    return beachFiles;
+}
+
+std::string ClientConfig::getBeachBacksound() { return getInstance()->root["BEACH_BACKSOUND"].as<std::string>(); }
+
+std::vector<std::vector<int>> ClientConfig::getBeachSprites() {
+    YAML::Node beachSpritesNode = getInstance()->root["BEACH_PIXELS"];
+    std::vector<std::vector<int>> beachSprites;
+    for (YAML::const_iterator it = beachSpritesNode.begin();
+         it != beachSpritesNode.end(); ++it) {
+        beachSprites.push_back(it->as<std::vector<int>>());
+    }
+    return beachSprites;
+}
+
+//Colonius
+std::vector<std::string> ClientConfig::getColoniusFiles() {
+    YAML::Node coloniusFilesNode = getInstance()->root["COLONIUS"];
+    std::vector<std::string> coloniusFiles;
+    for (YAML::const_iterator it = coloniusFilesNode.begin();
+         it != coloniusFilesNode.end(); ++it) {
+        coloniusFiles.push_back(it->as<std::string>());
+    }
+    return coloniusFiles;
+}
+
+std::string ClientConfig::getColoniusBacksound() { return getInstance()->root["COLONIUS_BACKSOUND"].as<std::string>(); }
+
+std::vector<std::vector<int>> ClientConfig::getColoniusSprites() {
+    YAML::Node coloniusSpritesNode = getInstance()->root["COLONIUS_PIXELS"];
+    std::vector<std::vector<int>> coloniusSprites;
+    for (YAML::const_iterator it = coloniusSpritesNode.begin();
+         it != coloniusSpritesNode.end(); ++it) {
+        coloniusSprites.push_back(it->as<std::vector<int>>());
+    }
+    return coloniusSprites;
+}
+
+
 // Enemies
 // Turtle
 

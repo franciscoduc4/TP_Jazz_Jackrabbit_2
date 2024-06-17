@@ -9,20 +9,29 @@
 #include <iostream>
 
 
-enum lvl { BEACH };
-enum tile_type { Background, Floor, LongPlatform, SmallPlatform, Column, LeftDiagonal, RightDiagonal };
-
+enum lvl { BEACH, COLONIUS };
 
 Level::Level(int level) {
-    std::vector<int> backVector{0, 0, 200, 160};
+    /* std::vector<int> backVector{0, 0, 200, 160};
     std::vector<int> floorVector{0, 0, 485, 118};
     std::vector<int> longPlatformVector{0, 0, 160, 17};
     std::vector<int> smallPlatformVector{0, 0, 88, 17};
     std::vector<int> columnVector{0, 0, 24, 91};
     std::vector<int> leftLadderVector{0, 0, 145, 145};
     std::vector<int> rightLadderVector{0, 0, 144, 165};
+    */
+    std::vector<TileType> tiles_types{ TileType::BACKGROUND, TileType::FLOOR, TileType::LONGPLATFORM, TileType::SMALLPLATFORM, TileType::COLUMN, TileType::LEFTDIAGONAL, TileType::RIGHTDIAGONAL };
+    std::vector<std::string> tilesSprites;
+    std::vector<std::vector<int>> beachSprites;
     switch (level) {
         case BEACH:
+            tilesSprites = ClientConfig::getBeachFiles();
+            beachSprites = ClientConfig::getBeachSprites();
+            for (int i = 0; i < tilesSprites.size(); i++) {
+                this->paths[tiles_types[i]] = tilesSprites[i];
+                this->pixels_pos[tiles_types[i]] = beachSprites[i];
+            }
+            /*
             this->paths[TileType::BACKGROUND] = "../assets/scenes/BeachWorld/background.png";
             this->pixels_pos[TileType::BACKGROUND] = backVector;
             
@@ -48,11 +57,24 @@ Level::Level(int level) {
             this->paths[TileType::RIGHTDIAGONAL] = "../assets/scenes/BeachWorld/rightLadder.png";
             this->pixels_pos[TileType::RIGHTDIAGONAL] = rightLadderVector;
             this->width_height[TileType::RIGHTDIAGONAL] = {120, 120};
-
+            */
             this->max_pixel_x_floor = 2491;
             this->floor_height = 70;
             this->background_width = 715;
             this->background_height = 153;
+            break;
+        case COLONIUS:
+            tilesSprites = ClientConfig::getColoniusFiles();
+            beachSprites = ClientConfig::getColoniusSprites();
+            for (int i = 0; i < tilesSprites.size(); i++) {
+                this->paths[tiles_types[i]] = tilesSprites[i];
+                this->pixels_pos[tiles_types[i]] = beachSprites[i];
+            }
+            this->max_pixel_x_floor = 2000;
+            this->floor_height = 100;
+
+            this->background_width = 2000;
+            this->background_height = 839;
             break;
     }
 }
