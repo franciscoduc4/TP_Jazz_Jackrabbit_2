@@ -59,3 +59,7 @@ void ReceiverThread::run() {
         std::cerr << "[CLIENT RECEIVER] Error in run: " << e.what() << std::endl;
     }
 }
+
+void ReceiverThread::stopReceiving() {
+    this->protocol.close();
+}

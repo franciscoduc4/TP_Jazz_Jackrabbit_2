@@ -77,4 +77,22 @@ void Client::start() {
         GameScreen game(this->gameController, this->playerId);
         game.run();
     } while (clientJoinedGame);
+
+    this->finish();
+}
+
+
+void Client::finish() {
+    // Close Queues
+    this->lobbyQueue->close();
+    this->gameQueue->close();
+    this->senderQueue->close();
+    // Close Socket
+    this->receiver.stopReceiving();
+    // Stop Threads
+    this->sender.stop();
+    this->receiver.stop();
+    // Join Threads
+    this->sender.join();
+    this->receiver.join();
 }

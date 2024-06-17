@@ -26,6 +26,8 @@ public:
     ReceiverThread(Deserializer& deserializer, std::shared_ptr<Socket>& socket, std::atomic<bool>& was_closed);
     void run() override;
 
+    void stopReceiving();
+
 };
 
 #endif  // CLIENT_RECEIVER_THREAD_H

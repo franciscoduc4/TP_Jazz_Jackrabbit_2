@@ -81,7 +81,3 @@ void SenderThread::run() {
     }
 }
 
-SenderThread::~SenderThread() {
-    std::cout << "[CLIENT SENDER] Destructor called, joining thread" << std::endl;
-    this->join();
-}
