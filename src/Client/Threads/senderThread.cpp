@@ -66,7 +66,7 @@ void SenderThread::run() {
         while (_keep_running) {
             std::unique_ptr<CommandDTO> msg = queue->pop();
 
-            CommandDTO* cmd = dynamic_cast<CommandDTO*>(msg.get());
+            auto* cmd = dynamic_cast<CommandDTO*>(msg.get());
             this->sendCommandDTO(*cmd);
 
             if (this->was_closed.load()) {
