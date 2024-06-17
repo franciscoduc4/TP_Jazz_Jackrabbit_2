@@ -7,6 +7,9 @@
 #include <QGraphicsView>
 #include <QKeyEvent>
 #include <QVBoxLayout>
+#include <QTimer>
+#include <QPushButton>
+#include <utility>
 
 #include "../../../Common/Config/ClientConfig.h"
 #include "../../../Common/Types/character.h"
@@ -18,7 +21,7 @@ struct CharacterData {
 
     CharacterData(std::function<std::vector<Sprite>()> nameGetter,
                   std::function<std::vector<Sprite>()> characterGetter):
-            nameSpritesGetter(nameGetter), characterSpritesGetter(characterGetter) {}
+            nameSpritesGetter(std::move(nameGetter)), characterSpritesGetter(std::move(characterGetter)) {}
 };
 
 class CharacterSelectionWidget: public QWidget {
@@ -31,7 +34,15 @@ public:
     void updateCharacter(int index);
 
 protected:
+    void updateNameAnimation();
+    void updateCharacterAnimation();
+
     void keyPressEvent(QKeyEvent* event) override;
+    // void paintEvent(QPaintEvent* event) override;
+
+private slots:
+    void onLeftButtonClicked();
+    void onRightButtonClicked();
 
 private:
     QGraphicsView* nameAnimationView;
@@ -39,6 +50,12 @@ private:
     std::vector<CharacterData> characters;
     int currentCharacterIndex;
     QColor colourKey;
+    QTimer* nameAnimationTimer;
+    QTimer* characterAnimationTimer;
+    int nameAnimationFrameIndex;
+    int characterAnimationFrameIndex;
+    QPushButton* leftButton;
+    QPushButton* rightButton;
 };
 
 #endif  // CHARACTERSELECTIONWIDGET_H

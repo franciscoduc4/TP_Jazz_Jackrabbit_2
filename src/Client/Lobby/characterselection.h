@@ -27,6 +27,9 @@ public:
                                 bool& clientJoinedGame);
     ~CharacterSelection();
 
+protected:
+    void keyPressEvent(QKeyEvent* event) override;
+
 private slots:
     void on_btnChoose_clicked();
     void on_btnBack_clicked();

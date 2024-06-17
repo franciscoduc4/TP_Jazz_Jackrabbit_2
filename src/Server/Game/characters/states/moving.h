@@ -14,7 +14,6 @@ private:
     Character& character;
     Direction direction;
     float time;
-    float movingTime = 0.1f;
 
 public:
     MovingState(Character& character, Direction direction, float time);

@@ -7,9 +7,9 @@
 GameLoopThread::GameLoopThread(std::shared_ptr<Queue<std::unique_ptr<CommandDTO>>> recvQueue,
                                QueueMonitor<std::unique_ptr<DTO>>& queueMonitor, GameMap& gameMap,
                                uint8_t gameId):
-        frameRate(1),  // 1 frame per 16 ms === 60 fps
+        frameRate(2),  // 1 frame per 16 ms === 60 fps
         keepRunning(false),
-        commandsToProcess(10),
+        commandsToProcess(1),
         recvQueue(recvQueue),
         queueMonitor(queueMonitor),
         gameMap(gameMap),
@@ -49,7 +49,7 @@ void GameLoopThread::run() {
             std::cout << "[GAME LOOP] Processing duration: " << processingDuration.count()
                       << std::endl;
 
-            // adjustCommandsToProcess(processingDuration, frameRate);
+            adjustCommandsToProcess(processingDuration, frameRate);
 
             std::chrono::duration<double> frameDuration(frameRate);
             auto sleepTime = frameDuration - processingDuration;
@@ -73,29 +73,9 @@ void GameLoopThread::processCommands(double deltaTime) {
             std::unique_ptr<CommandDTO> command;
             if (recvQueue->try_pop(command)) {
                 std::cout << "[GAME LOOP] Processing command" << std::endl;
-                if (!command) {
-                    std::cerr << "[GAME LOOP] Null command received" << std::endl;
-                    continue;
-                }
-
                 auto handler = GameCommandHandler::createHandler(std::move(command));
-                if (!handler) {
-                    std::cerr << "[GAME LOOP] Failed to create handler" << std::endl;
-                    continue;
-                }
-
-                std::cout << "[GAME LOOP] Executing handler" << std::endl;
                 handler->execute(gameMap, keepRunning, deltaTime);
-
                 processedCommands++;
-                std::cout << "[GAME LOOP] Command processed number: " << processedCommands
-                          << std::endl;
-
-                // Asegurarse de que se actualice el estado del personaje después del comando
-                // auto character = gameMap.getCharacter(handler->getPlayerId());
-                // if (character) {
-                //     character->idle(deltaTime);
-                // }
             } else {
                 std::cout << "[GAME LOOP] No more commands to process" << std::endl;
                 break;
@@ -106,7 +86,6 @@ void GameLoopThread::processCommands(double deltaTime) {
         std::cerr << "[GAME LOOP] Error processing commands: " << e.what() << std::endl;
     }
 }
-
 
 void GameLoopThread::adjustCommandsToProcess(std::chrono::duration<double> processingDuration,
                                              double frameRate) {

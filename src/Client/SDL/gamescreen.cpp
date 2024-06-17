@@ -35,14 +35,22 @@ GameScreen::GameScreen(GameController& controller, uint8_t playerId):
         proj(0),
         soundControl(0) {}
 
+/*GameScreen::GameScreen(GameController& controller):
+        controller(controller), pj(1), points(0), level(0), stats(CharacterType::JAZZ) {}*/
 
 std::unique_ptr<PlayerDTO> GameScreen::searchMainPlayer(std::vector<PlayerDTO>& players) {
-    for (auto& player : players) {
-        if (player.getPlayerId() == this->mainPlayerId) {
-            return std::make_unique<PlayerDTO>(player);
+    int i = 0;
+
+    while (i < players.size()) {
+        if (players[i].getPlayerId() == this->mainPlayerId) {
+            return std::make_unique<PlayerDTO>(players[i]);
         }
+        i++;
     }
-    return nullptr;
+    if (i == 0) {
+        return nullptr;
+    }
+    return std::make_unique<PlayerDTO>(players[i - 1]);
 }
 
 void GameScreen::run() {
@@ -65,7 +73,8 @@ void GameScreen::run() {
     // TEXTURAS NIVEL
     SDL_Surface* bg_surf = IMG_Load(this->level.getLevelPath(TileType::BACKGROUND).c_str());
     if (!bg_surf) {
-        std::cerr << "[GAME SCREEN] Error loading background surface: " << IMG_GetError() << std::endl;
+        std::cerr << "[GAME SCREEN] Error loading background surface: " << IMG_GetError()
+                  << std::endl;
         return;
     }
     SDL2pp::Surface backgroundSurface(bg_surf);
@@ -84,8 +93,9 @@ void GameScreen::run() {
     SDL2pp::Texture sandFloor(renderer, sandFloorSurface);
 
     std::cout << "[GAME SCREEN] Floor created" << std::endl;
-       
-    std::map<TileType, std::unique_ptr<SDL2pp::Texture>> tiles_textures = this->level.getTilesTextures(renderer);
+
+    std::map<TileType, std::unique_ptr<SDL2pp::Texture>> tiles_textures =
+            this->level.getTilesTextures(renderer);
 
     // TEXTURAS PERSONAJES
     std::tuple<int, int, int> pjsColorKey = ClientConfig::getJazzColourKey();
@@ -95,8 +105,7 @@ void GameScreen::run() {
         return;
     }
     SDL2pp::Surface jazzSurface(jazz_surf);
-    jazzSurface.SetColorKey(true, SDL_MapRGB(jazzSurface.Get()->format, std::get<0>(pjsColorKey),
-                                             std::get<1>(pjsColorKey), std::get<2>(pjsColorKey)));
+    jazzSurface.SetColorKey(true, SDL_MapRGB(jazzSurface.Get()->format, std::get<0>(pjsColorKey), std::get<1>(pjsColorKey), std::get<2>(pjsColorKey)));
     SDL2pp::Texture jazz_sprite(renderer, jazzSurface);
 
     SDL_Surface* lori_surf = IMG_Load(this->pj.getPath(CharacterType::LORI).c_str());
@@ -105,8 +114,7 @@ void GameScreen::run() {
         return;
     }
     SDL2pp::Surface loriSurface(lori_surf);
-    loriSurface.SetColorKey(true, SDL_MapRGB(loriSurface.Get()->format, std::get<0>(pjsColorKey),
-                                             std::get<1>(pjsColorKey), std::get<2>(pjsColorKey)));
+    loriSurface.SetColorKey(true, SDL_MapRGB(loriSurface.Get()->format, std::get<0>(pjsColorKey), std::get<1>(pjsColorKey), std::get<2>(pjsColorKey)));
     SDL2pp::Texture lori_sprite(renderer, loriSurface);
 
     SDL_Surface* spaz_surf = IMG_Load(this->pj.getPath(CharacterType::SPAZ).c_str());
@@ -115,8 +123,7 @@ void GameScreen::run() {
         return;
     }
     SDL2pp::Surface spazSurface(spaz_surf);
-    spazSurface.SetColorKey(true, SDL_MapRGB(spazSurface.Get()->format, std::get<0>(pjsColorKey),
-                                             std::get<1>(pjsColorKey), std::get<2>(pjsColorKey)));
+    spazSurface.SetColorKey(true, SDL_MapRGB(spazSurface.Get()->format, std::get<0>(pjsColorKey), std::get<1>(pjsColorKey), std::get<2>(pjsColorKey)));
     SDL2pp::Texture spaz_sprite(renderer, spazSurface);
 
     std::map<CharacterType, SDL2pp::Texture*> pjs_textures;
@@ -139,7 +146,8 @@ void GameScreen::run() {
     // TEXTURAS PROJECTILES
     SDL_Surface* projectile_surf = IMG_Load("../assets/Miscellaneous/SFX.png");
     if (!projectile_surf) {
-        std::cerr << "[GAME SCREEN] Error loading projectile surface: " << IMG_GetError() << std::endl;
+        std::cerr << "[GAME SCREEN] Error loading projectile surface: " << IMG_GetError()
+                  << std::endl;
         return;
     }
     SDL2pp::Surface projectileSurface(projectile_surf);
@@ -164,15 +172,14 @@ void GameScreen::run() {
         return;
     }
     SDL2pp::Surface fontSurface(font_surf);
-    fontSurface.SetColorKey(true, SDL_MapRGB(fontSurface.Get()->format, std::get<0>(fontColorKey),
-                                             std::get<1>(fontColorKey), std::get<2>(fontColorKey)));
+    fontSurface.SetColorKey(true, SDL_MapRGB(fontSurface.Get()->format, std::get<0>(fontColorKey), std::get<1>(fontColorKey), std::get<2>(fontColorKey)));
     SDL2pp::Texture font(renderer, fontSurface);
 
     this->soundControl.play_backsound(); //EMPIEZA LA MUSICA DE FONDO
     
     
     int x_screen = 0;
-    int y_screen = 0;
+    int y_screen = 0;    
 
     std::cout << "Textures created" << std::endl;
 
@@ -186,18 +193,20 @@ void GameScreen::run() {
                 return;
             } else if (event.type == SDL_KEYDOWN) {
                 switch (event.key.keysym.sym) {
-                    case SDLK_RIGHT: {
-                        Command move = Command::MOVE;
-                        std::vector<uint8_t> par{static_cast<uint8_t>(Direction::RIGHT)};
-                        this->controller.sendMsg(this->mainPlayerId, move, par);
-                        break;
-                    }
-                    case SDLK_LEFT: {
-                        Command move = Command::MOVE;
-                        std::vector<uint8_t> elements{static_cast<uint8_t>(Direction::LEFT)};
-                        this->controller.sendMsg(this->mainPlayerId, move, elements);
-                        break;
-                    }
+                    case SDLK_RIGHT:
+                        {
+		                    Command move = Command::MOVE;
+		                    std::vector<uint8_t> par{static_cast<uint8_t>(Direction::RIGHT)};
+		                    this->controller.sendMsg(this->mainPlayerId, move, par);
+		                    break;
+                    	}
+                    case SDLK_LEFT:
+		                {
+		             		Command move = Command::MOVE;
+		                    std::vector<uint8_t> elements{static_cast<uint8_t>(Direction::LEFT)};
+		                    this->controller.sendMsg(this->mainPlayerId, move, elements);
+		                    break;
+                    	}
 
                     case SDLK_LSHIFT: {
                         /*
@@ -214,32 +223,16 @@ void GameScreen::run() {
                         this->soundControl.play_sound_effect(SoundType::SHOOT);
                         break;
                     }
-
-                    case SDLK_SPACE: {
-                        Command move = Command::MOVE;
-                        std::vector<uint8_t> elements{static_cast<uint8_t>(Direction::UP)};
-                        this->controller.sendMsg(this->mainPlayerId, move, elements);
-                        break;
-                    }
-                    case SDLK_d: {
-                        /*
-                        Command dash = Command::DASH;
-                        std::vector<uint8_t> elements;
-                        this->controller.sendMsg(this->mainPlayerId, dash, elements);
-                        break;
-                        */
-                    }
                 }
             } else if (event.type == SDL_KEYUP) {
                 switch (event.key.keysym.sym) {
-                    case SDLK_RIGHT:
-                    case SDLK_LEFT:
-                    case SDLK_LSHIFT: {
-                        Command idle = Command::IDLE;
-                        std::vector<uint8_t> elements;
-                        this->controller.sendMsg(this->mainPlayerId, idle, elements);
-                        break;
-                    }
+                    case SDLK_RIGHT: case SDLK_LEFT: case SDLK_LSHIFT:
+                        {
+                            Command idle = Command::IDLE;
+                            std::vector<uint8_t> elements;
+                            this->controller.sendMsg(this->mainPlayerId, idle, elements);
+                            break;
+                        }
                 }
             }
         }
@@ -275,22 +268,18 @@ void GameScreen::run() {
         if (!mainPlayer) {
             continue;
         }
-        std::vector<int> dir_screen = this->level.draw_background(window, renderer, background,
-                                                                  *mainPlayer /*players[0]*/);
-        this->level.draw_floor(window, renderer, sandFloor,
-                               mainPlayer->getSpeed() /*players[0].getSpeed()*/);
+        std::vector<int> dir_screen = this->level.draw_background(window, renderer, background, *mainPlayer/*players[0]*/);
+        this->level.draw_floor(window, renderer, sandFloor, mainPlayer->getSpeed()/*players[0].getSpeed()*/);
         x_screen = dir_screen[0];
         y_screen = dir_screen[1];
 
         if (players.size() > 0) {
-            this->pj.draw_players(window, renderer, pjs_textures, players, x_screen, y_screen,
-                                  this->mainPlayerId);
+            this->pj.draw_players(window, renderer, pjs_textures, players, x_screen, y_screen, this->mainPlayerId);
         }
 
         std::vector<EnemyDTO> enemiesSnapshot = snapshot->getEnemies();
         if (enemiesSnapshot.size() > 0) {
-            this->enemies.draw_enemy(window, renderer, enemy, enemiesSnapshot,
-                                     *mainPlayer /*players[0]*/, x_screen, y_screen);
+            this->enemies.draw_enemy(window, renderer, enemy, enemiesSnapshot, *mainPlayer/*players[0]*/, x_screen, y_screen);
         }
         std::cout << "[GAME SCREEN] Enemies drawn" << std::endl;
 
@@ -300,21 +289,18 @@ void GameScreen::run() {
         }
 
         std::vector<ItemDTO> itemsSnapshot = snapshot->getItems();
-        if (itemsSnapshot.size() > 0) {
-            this->points.draw_points(renderer, items, itemsSnapshot, *mainPlayer /*players[0]*/,
-                                     x_screen, y_screen);
+        if (itemsSnapshot.size() >  0) {
+            this->points.draw_points(renderer, items, itemsSnapshot, *mainPlayer/*players[0]*/, x_screen, y_screen);
         }
 
         std::vector<WeaponDTO> weapons = snapshot->getWeapons();
 
-        std::vector<TileDTO> tiles = snapshot->getTiles();
+        std::vector<TileDTO> tiles = snapshot->getTiles(); 
         if (tiles.size() > 0) {
             this->level.draw_tiles(window, renderer, tiles_textures, tiles);
         }
 
-        this->stats.draw_interface(
-                window, renderer, *pjs_textures[mainPlayer->getType() /*players[0].getType()*/],
-                mainPlayer->getType(), font, 1000 /*getPoints()*/, 3 /*getLives()*/);
+        this->stats.draw_interface(window, renderer, *pjs_textures[mainPlayer->getType()/*players[0].getType()*/], mainPlayer->getType(), font, 1000/*getPoints()*/, 3/*getLives()*/);
 
         x_screen = 0;
         y_screen = 0;

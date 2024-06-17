@@ -11,9 +11,6 @@
 class JumpingState: public State {
 public:
     JumpingState() { characterState = CharacterStateEntity::JUMPING; }
-    float elapsedTime = 0.0f;
-    float jumpDuration = 0.5f;
-    int jumpHeight = 5;
 
     std::unique_ptr<State> exec(Character& character, float time) override;
     std::unique_ptr<State> shoot(Character& character, std::shared_ptr<Weapon> weapon,

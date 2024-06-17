@@ -21,8 +21,6 @@ public:
 
     void sendMsg(uint8_t playerId, Command& cmd, std::vector<uint8_t>& parameters);
 
-    void idle_msg(uint8_t playerId);
-
     void move_msg(uint8_t playerId, std::vector<uint8_t>& parameters);
 
     void shoot_msg(uint8_t playerId);
