@@ -34,7 +34,6 @@ public:
     void sendCreateGame(const CommandDTO& cmd);
     void sendJoinGame(const CommandDTO& cmd);
     void sendStartGame(const CommandDTO& cmd);
-    ~SenderThread();
 };
 
 #endif  // CLIENT_SENDER_THREAD_H

@@ -43,6 +43,7 @@ GameMode CreateGameDTO::getGameMode() const { return mode; }
 
 std::vector<char> CreateGameDTO::getData() const {
     std::vector<char> data;
+    data.push_back(static_cast<char>(mapId));
     data.push_back(static_cast<char>(maxPlayers));
     data.push_back(static_cast<char>(characterType));
     data.push_back(static_cast<char>(gameName.size()));

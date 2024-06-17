@@ -80,13 +80,14 @@ void GameMonitor::startGame(uint8_t playerId, uint8_t gameId,
             sendQueue->push(std::move(dto));
             std::cout << "[GM] Pushed StartGameDTO to send queue" << std::endl;
             game->launch();
-            std::cout << "[GM] Game " << gameId << " launched by player " << playerId << std::endl;
+            std::cout << "[GM] Game " << (int)gameId << " launched by player " << (int)playerId
+                      << std::endl;
         } else {
-            std::cout << "[GM] Game " << gameId
+            std::cout << "[GM] Game " << (int)gameId
                       << " is either not full or already running, cannot start" << std::endl;
         }
     } else {
-        std::cout << "[GM] Game with id " << gameId << " not found, cannot start" << std::endl;
+        std::cout << "[GM] Game with id " << (int)gameId << " not found, cannot start" << std::endl;
     }
 }
 

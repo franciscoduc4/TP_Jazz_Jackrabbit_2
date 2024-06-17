@@ -19,6 +19,11 @@ private:
 public:
     static ClientConfig* getInstance();
     // Logger& getLogger();
+    // Characters from Font File
+    static std::vector<int> getGreaterThan();
+    static std::vector<int> getLessThan();
+    // Refresh Interval
+    static int getGamesListRefreshInterval();
     // Files
     static std::string getEpisodeFile();
     static std::string getCharacterSelectFile();
@@ -128,8 +133,6 @@ public:
     static std::vector<std::vector<std::pair<int, int>>> getLoriSelectSprites();
     // Delete Instance
     static void deleteInstance();
-
-
 };
 
 #endif  // __CLIENT_CONFIG_H__

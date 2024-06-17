@@ -1,14 +1,13 @@
 #ifndef LOBBYCONTROLLER_H
 #define LOBBYCONTROLLER_H
 
+#include <iostream>
+#include <memory>
+#include <unordered_map>
+#include <utility>
+
 #include "../Protocol/deserializer.h"
 #include "../Protocol/serializer.h"
-
-#include <unordered_map>
-#include <memory>
-#include <utility>
-#include <iostream>
-
 #include "DTO/createGame.h"
 #include "DTO/mapsList.h"
 #include "DTO/startGame.h"
@@ -24,10 +23,18 @@ private:
 public:
     LobbyController(Serializer& serializer, Deserializer& deserializer,
                     std::shared_ptr<Queue<std::unique_ptr<DTO>>>& lobbyQueue);
+    // UPDATES
+    bool hasGameUpdates(std::unique_ptr<DTO>& dto);
+    int processGameUpdate(std::unique_ptr<DTO>& dto);
+
+    // OUTBOUND METHODS
     void sendRequest(const LobbyMessage& msg);
-    bool recvResponse();
     void startGame(const LobbyMessage& msg);
+
+    // INBOUND METHODS
+    bool recvResponse();
     bool recvStartGame();
+    uint8_t recvCreateGame();
     std::unordered_map<uint8_t, std::string> getMaps();
     std::unordered_map<uint8_t, GameInfo>& getGamesList();
 };

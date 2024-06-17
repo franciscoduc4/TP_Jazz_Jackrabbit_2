@@ -4,7 +4,8 @@
 #include "mapselection.h"
 #include "ui_lobby.h"
 
-Lobby::Lobby(QWidget* parent, LobbyController& controller, LobbyMessage& msg, bool& clientJoinedGame):
+Lobby::Lobby(QWidget* parent, LobbyController& controller, LobbyMessage& msg,
+             bool& clientJoinedGame):
         QDialog(parent),
         ui(new Ui::Lobby),
         controller(controller),
@@ -46,7 +47,6 @@ void Lobby::on_btnJoinGame_clicked() {
 
     auto cs = new CharacterSelection(this, this->controller, this->msg, this->clientJoinedGame);
     cs->show();
-
 }
 
 

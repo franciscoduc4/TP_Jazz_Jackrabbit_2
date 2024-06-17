@@ -6,7 +6,7 @@
 #include "ui_mapselection.h"
 
 MapSelection::MapSelection(QWidget* parent, LobbyController& controller, LobbyMessage& msg,
-                               bool& clientJoinedGame):
+                           bool& clientJoinedGame):
         QDialog(parent),
         ui(new Ui::MapSelection),
         controller(controller),
@@ -28,21 +28,41 @@ MapSelection::MapSelection(QWidget* parent, LobbyController& controller, LobbyMe
         return;
     }
 
-    // Iterate over the map data
-    for (const auto& map : maps) {
-        // Create a new QRadioButton with the map name as the label
-        auto* radioButton = new QRadioButton(QString::fromStdString(map.second));
-
-        buttonGroup->addButton(radioButton, map.first);
-
-        ui->widgetScenes->layout()->addWidget(radioButton);
+    if (!ui->widgetScenes->layout()) {
+        ui->widgetScenes->setLayout(new QVBoxLayout());
     }
 
-    // Set a blurred background for the QWidget
-    auto* blurEffect = new QGraphicsBlurEffect(this);
-    ui->widgetScenes->setGraphicsEffect(blurEffect);
+    for (const auto& [id, name]: maps) {
+        QString mapName = QString::fromStdString(name);
 
-    QFile file(":/Lobby/Styles/sceneselection.qss");
+        if (mapName.endsWith(".yaml")) {
+            mapName.remove(".yaml");
+        } else if (mapName.endsWith(".yml")) {
+            mapName.remove(".yml");
+        }
+
+        auto* button = new QPushButton(mapName);
+        button->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+        button->setCheckable(true);
+
+        QFont font("Jazz Jackrabbit 2");
+        font.setPointSize(30);
+        QFontMetrics fm(font);
+        int textWidth = fm.horizontalAdvance(button->text());
+
+        while (textWidth > button->width() && font.pointSize() > 1) {
+            font.setPointSize(font.pointSize() - 1);
+            fm = QFontMetrics(font);
+            textWidth = fm.horizontalAdvance(button->text());
+        }
+
+        button->setFont(font);
+
+        buttonGroup->addButton(button, id);
+        ui->widgetScenes->layout()->addWidget(button);
+    }
+
+    QFile file(":/Lobby/Styles/mapselection.qss");
     file.open(QFile::ReadOnly);
     QString styleSheet = QLatin1String(file.readAll());
 
@@ -50,13 +70,12 @@ MapSelection::MapSelection(QWidget* parent, LobbyController& controller, LobbyMe
     ui->labelTitle->setAttribute(Qt::WA_TranslucentBackground);
 }
 
-MapSelection::~MapSelection()
-{
+MapSelection::~MapSelection() {
     delete ui;
+    std::cout << "[MAP SELECTION] Destructor called, UI deleted" << std::endl;
 }
 
-void MapSelection::on_btnChoose_clicked()
-{
+void MapSelection::on_btnChoose_clicked() {
     if (buttonGroup->checkedId() == -1) {
         QMessageBox::information(this, "Error", "Seleccione un mapa para continuar.");
     } else {
@@ -67,8 +86,7 @@ void MapSelection::on_btnChoose_clicked()
     }
 }
 
-void MapSelection::on_btnBack_clicked()
-{
+void MapSelection::on_btnBack_clicked() {
     this->msg.setMap(-1);
     this->hide();
 
