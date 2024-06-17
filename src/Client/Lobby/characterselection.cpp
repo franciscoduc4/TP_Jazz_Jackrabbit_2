@@ -19,9 +19,8 @@ CharacterSelection::CharacterSelection(QWidget* parent, LobbyController& control
         characterSelectionWidget(
                 new CharacterSelectionWidget(this, ClientConfig::getCharacterSelectColourKey())) {
     ui->setupUi(this);
-    std::cout << "[CHARACTER SELECTION] UI setup completed" << std::endl;
 
-    QVBoxLayout* layout = new QVBoxLayout(ui->widgetCharacters);
+    auto* layout = new QVBoxLayout(ui->widgetCharacters);
     layout->addWidget(characterSelectionWidget);
     std::cout << "[CHARACTER SELECTION] CharacterSelectionWidget added to layout" << std::endl;
 
@@ -80,14 +79,16 @@ void CharacterSelection::on_btnChoose_clicked() {
     std::cout << "[Character Selection] Selected character: " << static_cast<int>(this->msg.getCharacter()) << std::endl;
     this->controller.sendRequest(this->msg);
     std::cout << "[CHARACTER SELECTION] Request sent to controller" << std::endl;
-    this->controller.recvResponse();
+    // this->controller.recvResponse();
     this->hide();
     if (this->msg.getLobbyCmd() == Command::CREATE_GAME) {
+        std::cout << "[CHARACTER SELECTION] Creating game, requesting game ID" << std::endl;
         this->msg.setGameId(this->controller.recvCreateGame());
         auto wr = new WaitingRoom(this, this->controller, this->msg, this->clientJoinedGame);
         wr->show();
         std::cout << "[CHARACTER SELECTION] WaitingRoom dialog shown" << std::endl;
     } else if (this->msg.getLobbyCmd() == Command::JOIN_GAME) {
+        std::cout << "[CHARACTER SELECTION] Joining game, requesting game list" << std::endl;
         this->msg.setLobbyCmd(Command::GAMES_LIST);
         auto gl = new GameList(this, this->controller, this->msg, this->clientJoinedGame);
         gl->show();
@@ -164,4 +165,12 @@ void CharacterSelection::on_btnBack_clicked() {
 
     this->deleteLater();
     std::cout << "[CHARACTER SELECTION] Dialog marked for deletion" << std::endl;
+}
+
+void CharacterSelection::keyPressEvent(QKeyEvent* event) {
+    if (event->key() == Qt::Key_Enter || event->key() == Qt::Key_Return) {
+        on_btnChoose_clicked();
+    } else {
+        QDialog::keyPressEvent(event);
+    }
 }

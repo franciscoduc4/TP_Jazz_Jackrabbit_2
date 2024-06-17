@@ -109,6 +109,7 @@ void GameList::on_btnJoin_clicked() {
 void GameList::on_btnBack_clicked() {
     this->msg.setGameName("");
     this->msg.setGameId(-1);
+    this->msg.setLobbyCmd(Command::JOIN_GAME);
 
     this->hide();
 
