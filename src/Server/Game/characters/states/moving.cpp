@@ -14,12 +14,15 @@
 MovingState::MovingState(Character& character, Direction direction, float time):
         character(character), direction(direction), time(time) {
     characterState = CharacterStateEntity::MOVING;
+    move(character, direction, time);
 }
 
 std::unique_ptr<State> MovingState::exec(Character& character, float time) {
-    if (this->time - time >= movingTime) {
-        return std::unique_ptr<IdleState>();
-    }
+    // std::cout << "MovingState::exec: " << this->time - time << std::endl;
+    // if (time - this->time >= movingTime) {
+    //     std::cout << "ADENTRO IF MovingState::exec: " << this->time - time << std::endl;
+    //     return std::unique_ptr<IdleState>();
+    // }
     return move(character, direction, time);
 }
 
@@ -41,7 +44,7 @@ std::unique_ptr<State> MovingState::move(Character& character, Direction directi
             character.moveUp();
             break;
         case Direction::DOWN:
-            character.moveRight();
+            character.moveDown();
             break;
         case Direction::RIGHT:
             character.moveRight();
@@ -94,5 +97,5 @@ std::unique_ptr<State> MovingState::jump(Character& character, float time) {
 
 std::unique_ptr<State> MovingState::stopAction() {
     // Cambia al estado inactivo
-    return std::unique_ptr<IdleState>();
+    return std::make_unique<IdleState>();
 }

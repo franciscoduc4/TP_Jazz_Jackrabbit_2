@@ -7,7 +7,7 @@
 GameLoopThread::GameLoopThread(std::shared_ptr<Queue<std::unique_ptr<CommandDTO>>> recvQueue,
                                QueueMonitor<std::unique_ptr<DTO>>& queueMonitor, GameMap& gameMap,
                                uint8_t gameId):
-        frameRate(1),  // 1 frame per 16 ms === 60 fps
+        frameRate(0.1),  // 1 frame per 16 ms === 60 fps
         keepRunning(false),
         commandsToProcess(10),
         recvQueue(recvQueue),
@@ -31,6 +31,7 @@ void GameLoopThread::run() {
         while (keepRunning) {
             auto currentTime = std::chrono::high_resolution_clock::now();
             std::chrono::duration<double> deltaTime = currentTime - lastTime;
+            lastTime = currentTime;
 
             std::cout << "[GAME LOOP] Processing commands, deltaTime: " << deltaTime.count()
                       << std::endl;
@@ -49,16 +50,16 @@ void GameLoopThread::run() {
             std::cout << "[GAME LOOP] Processing duration: " << processingDuration.count()
                       << std::endl;
 
-            // adjustCommandsToProcess(processingDuration, frameRate);
-
             std::chrono::duration<double> frameDuration(frameRate);
             auto sleepTime = frameDuration - processingDuration;
             if (sleepTime > std::chrono::duration<double>(0)) {
                 std::cout << "[GAME LOOP] Sleeping for: " << sleepTime.count() << " seconds"
                           << std::endl;
                 std::this_thread::sleep_for(sleepTime);
+            } else {
+                std::cout << "[GAME LOOP] Frame took longer than expected, skipping sleep."
+                          << std::endl;
             }
-            lastTime = std::chrono::high_resolution_clock::now();
         }
         std::cout << "[GAME LOOP] Game loop stopped" << std::endl;
     } catch (const std::exception& e) {
@@ -69,7 +70,7 @@ void GameLoopThread::run() {
 void GameLoopThread::processCommands(double deltaTime) {
     try {
         size_t processedCommands = 0;
-        for (size_t i = 0; i < commandsToProcess; ++i) {
+        while (true) {
             std::unique_ptr<CommandDTO> command;
             if (recvQueue->try_pop(command)) {
                 std::cout << "[GAME LOOP] Processing command" << std::endl;
@@ -91,11 +92,6 @@ void GameLoopThread::processCommands(double deltaTime) {
                 std::cout << "[GAME LOOP] Command processed number: " << processedCommands
                           << std::endl;
 
-                // Asegurarse de que se actualice el estado del personaje después del comando
-                // auto character = gameMap.getCharacter(handler->getPlayerId());
-                // if (character) {
-                //     character->idle(deltaTime);
-                // }
             } else {
                 std::cout << "[GAME LOOP] No more commands to process" << std::endl;
                 break;
@@ -106,7 +102,6 @@ void GameLoopThread::processCommands(double deltaTime) {
         std::cerr << "[GAME LOOP] Error processing commands: " << e.what() << std::endl;
     }
 }
-
 
 void GameLoopThread::adjustCommandsToProcess(std::chrono::duration<double> processingDuration,
                                              double frameRate) {

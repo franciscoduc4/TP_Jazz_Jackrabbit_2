@@ -32,7 +32,7 @@ Character::Character(GameMap& gameMap, Vector<uint8_t> pos, uint8_t playerId, Ch
 }
 
 void Character::idle(float time) {
-    std::cout << "[CHARACTER] Character ID: " << static_cast<int>(id) << " idling" << std::endl;
+    //std::cout << "[CHARACTER] Character ID: " << static_cast<int>(id) << " idling" << std::endl;
     // if (!state) {
     //     std::cerr << "[CHARACTER] Error: Null state for character ID: " << static_cast<int>(id)
     //     << std::endl; return;
@@ -48,6 +48,8 @@ void Character::idle(float time) {
 
     auto newState = std::unique_ptr<State>(state->stopAction());
     if (newState) {
+        std::cout << "[CHARACTER] idle Character ID: " << static_cast<int>(id) << " idling"
+                  << std::endl;
         state = std::move(newState);
     }
 }
@@ -87,6 +89,7 @@ void Character::update(float time) {
             return;
         }
         auto newState = std::unique_ptr<State>(state->exec(*this, time));
+        
         if (newState) {
             state = std::move(newState);
         }
@@ -110,6 +113,8 @@ void Character::moveRight(float time) {
               << std::endl;
     auto newState = std::unique_ptr<State>(state->move(*this, Direction::RIGHT, time));
     if (newState) {
+        std::cout << "[CHARACTER] Character ID: " << static_cast<int>(id) << " moving right"
+                  << std::endl;
         state = std::move(newState);
     }
 }
@@ -127,6 +132,8 @@ void Character::moveUp(float time) {
     std::cout << "[CHARACTER] Character ID: " << static_cast<int>(id) << " jumping" << std::endl;
     auto newState = std::unique_ptr<State>(state->move(*this, Direction::UP, time));
     if (newState) {
+        std::cout << "[CHARACTER] Character ID: " << static_cast<int>(id) << " jumping"
+                  << std::endl;
         state = std::move(newState);
     }
 }
@@ -244,8 +251,8 @@ void Character::moveRight() {
     pos = newPosition; // Actualizar la posición
     std::cout << "[CHARACTER] Character pos x: " << static_cast<int>(pos.x) << std::endl;
 
-    auto newState = std::make_unique<IdleState>();
-    state = std::move(newState);
+    // auto newState = std::make_unique<IdleState>();
+    // state = std::move(newState);
 }
 
 void Character::moveLeft() {
@@ -266,8 +273,9 @@ void Character::moveLeft() {
     gameMap.moveObject(pos, mapPosition, Direction::LEFT);
     pos = newPosition; // Actualizar la posición
     std::cout << "[CHARACTER] Character pos x: " << static_cast<int>(pos.x) << std::endl;
-    auto newState = std::make_unique<IdleState>();
-    state = std::move(newState);
+    
+    // auto newState = std::make_unique<IdleState>();
+    // state = std::move(newState);
 }
 
 
