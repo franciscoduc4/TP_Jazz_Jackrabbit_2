@@ -26,6 +26,14 @@ INTERFACE_FONT_CK: [0, 128, 255]
 # Rectangular Sprites: [x, y, width, height]
 EPISODES_SPRITES: [[9, 9, 495, 354],[505, 9, 496, 354],[1002, 9, 531, 354],[1534, 9, 469, 354],[9, 367, 445, 353],[455, 367, 513, 353],[969, 367, 525, 353],[1495, 367, 498, 353]]
 
+# Sounds
+SOUNDS: [ "../assets/audios/playerHurt.WAV", "../assets/audios/shoot3.WAV", "../assets/audios/takePoint.WAV"]
+
+# Beach level sprites
+BEACH: ["../assets/scenes/BeachWorld/background.png", "../assets/scenes/BeachWorld/fullFloor.png", "../assets/scenes/BeachWorld/longPlatform.png", "../assets/scenes/BeachWorld/smallPlatform.png", "../assets/scenes/BeachWorld/woodLargeColumn.png", "../assets/scenes/BeachWorld/leftLadder.png", "../assets/scenes/BeachWorld/rightLadder.png"]
+BEACH_BACKSOUND: "../assets/audios/beachBackSound.wav"
+BEACH_PIXELS: [[0, 0, 200, 160], [0, 0, 485, 118], [0, 0, 160, 17], [0, 0, 88, 17], [0, 0, 24, 91], [0, 0, 145, 145], [0, 0, 144, 165]]
+
 ## Enemies
 TURTLE_WIDTH: 50
 TURTLE_HEIGHT: 50

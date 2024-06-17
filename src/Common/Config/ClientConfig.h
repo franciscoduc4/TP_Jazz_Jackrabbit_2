@@ -41,6 +41,12 @@ public:
     static std::tuple<int, int, int> getInterfaceFontColourKey();
     // Rectangular Sprites
     static std::vector<std::vector<int>> getEpisodesSprites();
+    //Sounds
+    static std::vector<std::string> getSoundsFiles();
+    //Beach
+    static std::vector<std::string> getBeachFiles();
+    static std::string getBeachBacksound();
+    static std::vector<std::vector<int>> getBeachSprites();
     // Enemies Sprites
     // Turtle
     static int getTurtleWidth();

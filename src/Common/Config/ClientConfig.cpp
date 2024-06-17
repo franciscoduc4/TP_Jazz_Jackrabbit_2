@@ -128,6 +128,42 @@ std::vector<std::vector<int>> ClientConfig::getEpisodesSprites() {
     return episodesSprites;
 }
 
+//Sounds
+std::vector<std::string> ClientConfig::getSoundsFiles() {
+    YAML::Node soundsFilesNode = getInstance()->root["SOUNDS"];
+    std::vector<std::string> soundsFiles;
+    for (YAML::const_iterator it = soundsFilesNode.begin();
+         it != soundsFilesNode.end(); ++it) {
+        soundsFiles.push_back(it->as<std::string>());
+    }
+    return soundsFiles;
+}
+
+
+//Beach
+std::vector<std::string> ClientConfig::getBeachFiles() {
+    YAML::Node beachFilesNode = getInstance()->root["BEACH"];
+    std::vector<std::string> beachFiles;
+    for (YAML::const_iterator it = beachFilesNode.begin();
+         it != beachFilesNode.end(); ++it) {
+        beachFiles.push_back(it->as<std::string>());
+    }
+    return beachFiles;
+}
+
+std::string ClientConfig::getBeachBacksound() { return getInstance()->root["BEACH_BACKSOUND"].as<std::string>(); }
+
+std::vector<std::vector<int>> ClientConfig::getBeachSprites() {
+    YAML::Node beachSpritesNode = getInstance()->root["BEACH_PIXELS"];
+    std::vector<std::vector<int>> beachSprites;
+    for (YAML::const_iterator it = beachSpritesNode.begin();
+         it != beachSpritesNode.end(); ++it) {
+        beachSprites.push_back(it->as<std::vector<int>>());
+    }
+    return beachSprites;
+}
+
+
 // Enemies
 // Turtle
 

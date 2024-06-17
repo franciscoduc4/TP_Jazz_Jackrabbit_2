@@ -240,6 +240,7 @@ void GameScreen::run() {
                         Command shoot = Command::SHOOT;
                         std::vector<uint8_t> elements;
                         this->controller.sendMsg(this->mainPlayerId, shoot, elements);
+                        this->soundControl.play_sound_effect(SoundType::SHOOT);
                         break;
                     }
 
