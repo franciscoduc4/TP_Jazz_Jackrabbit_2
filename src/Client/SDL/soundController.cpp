@@ -4,18 +4,27 @@
 #include <iterator>
 #include <iostream>
 
+enum lvl {BEACH, COLONIUS};
 
-SoundController::SoundController() {
-    /* this->sounds_paths[SoundType::BACKSOUND] = "../assets/audios/beachBackSound.wav";
-    this->sounds_paths[SoundType::PLAYERHURT] = "../assets/audios/playerHurt.WAV";
-    this->sounds_paths[SoundType::SHOOT] = "../assets/audios/shoot3.WAV";
-    this->sounds_paths[SoundType::GETPOINT] = "../assets/audios/takePoint.WAV"; */
+SoundController::SoundController(int leveltype) {
     std::vector<SoundType> soundsType{ SoundType::BACKSOUND, SoundType::PLAYERHURT, SoundType::SHOOT, SoundType::GETPOINT};
     int soundsIndex = 0;
     
-    //Beach
-    std::string beachBackSound = ClientConfig::getBeachBacksound();
-    this->sounds_paths[soundsType[soundsIndex]] = beachBackSound;
+    switch (leveltype) {
+        case BEACH:
+            {
+                //Beach
+                std::string beachBackSound = ClientConfig::getBeachBacksound();
+                this->sounds_paths[soundsType[soundsIndex]] = beachBackSound;
+                break;
+            }
+        case COLONIUS:
+            {
+                std::string coloniusBackSound = ClientConfig::getColoniusBacksound();
+                this->sounds_paths[soundsType[soundsIndex]] = coloniusBackSound;
+                break;
+            }
+    }
     soundsIndex++;
     std::vector<std::string> soundsFiles = ClientConfig::getSoundsFiles();
     for (int i = 0; i < soundsFiles.size(); i++) {
@@ -36,11 +45,8 @@ void SoundController::stop_backsound() {
 void SoundController::play_sound_effect(SoundType soundType) {
     if (!this->chunks[soundType]) {
         this->chunks[soundType] = Mix_LoadWAV(this->sounds_paths[soundType].c_str());
-        std::cout << "PASO POR ACA\n";
     }
     Mix_PlayChannel(-1, this->chunks[soundType], 0);
-    //playerHurt = Mix_LoadWAV(this->sounds_paths[SoundType::PLAYERHURT].c_str());
-    //Mix_PlayChannel(-1, playerHurt, 0);
 }
 
 void SoundController::free_musics() {

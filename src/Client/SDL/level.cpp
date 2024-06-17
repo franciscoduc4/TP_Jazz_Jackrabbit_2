@@ -19,7 +19,7 @@ Level::Level(int level) {
     std::vector<int> columnVector{0, 0, 24, 91};
     std::vector<int> leftLadderVector{0, 0, 145, 145};
     std::vector<int> rightLadderVector{0, 0, 144, 165};
-     */
+    */
     std::vector<TileType> tiles_types{ TileType::BACKGROUND, TileType::FLOOR, TileType::LONGPLATFORM, TileType::SMALLPLATFORM, TileType::COLUMN, TileType::LEFTDIAGONAL, TileType::RIGHTDIAGONAL };
     std::vector<std::string> tilesSprites;
     std::vector<std::vector<int>> beachSprites;
@@ -70,8 +70,8 @@ Level::Level(int level) {
                 this->paths[tiles_types[i]] = tilesSprites[i];
                 this->pixels_pos[tiles_types[i]] = beachSprites[i];
             }
-            this->max_pixel_x_floor = 2491;
-            this->floor_height = 70;
+            this->max_pixel_x_floor = 2000;
+            this->floor_height = 100;
 
             this->background_width = 2000;
             this->background_height = 839;

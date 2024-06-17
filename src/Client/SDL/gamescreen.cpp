@@ -31,8 +31,9 @@ GameScreen::GameScreen(GameController& controller, uint8_t playerId):
         controller(controller),
         mainPlayerId(playerId),
         pj(1),
-        level(1),
-        proj(0) {}
+        level(0),
+        proj(0),
+        soundControl(0) {}
 
 
 std::unique_ptr<PlayerDTO> GameScreen::searchMainPlayer(std::vector<PlayerDTO>& players) {
@@ -169,37 +170,7 @@ void GameScreen::run() {
 
     this->soundControl.play_backsound(); //EMPIEZA LA MUSICA DE FONDO
     
-    int walk_mov = 0;
-    int count_walk = 0;
-
-    int shoot_mov = 1;
-    int count_shoot = 0;
-
-    int run_mov = 2;
-    int count_run = 0;
-
-    int jump_mov = 3;
-    int count_jump = 0;
-
-    int dash_mov = 4;
-    int count_dash = 0;
-    int dash_timer = 0;
-
-    bool is_walking = false;
-    bool is_running = false;
-    bool is_shooting = false;
-    bool is_jumping = false;
-    bool is_dashing = false;
-
-    int dir_x = 0;
-    int dir_y = 0;
-    int speed_run = 1;
-
-    int pos_x = 0;
-    int pos_y = 0;
-
-    int flip = 0;
-
+    
     int x_screen = 0;
     int y_screen = 0;
 
@@ -237,7 +208,6 @@ void GameScreen::run() {
                         */
                     }
                     case SDLK_m: {
-                        // is_shooting = true;
                         Command shoot = Command::SHOOT;
                         std::vector<uint8_t> elements;
                         this->controller.sendMsg(this->mainPlayerId, shoot, elements);
