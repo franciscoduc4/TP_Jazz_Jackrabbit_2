@@ -35,9 +35,10 @@ BEACH_BACKSOUND: "../assets/audios/beachBackSound.wav" #HACER BACKSOUND PARA COL
 BEACH_PIXELS: [[0, 0, 200, 160], [0, 0, 485, 118], [0, 0, 160, 17], [0, 0, 88, 17], [0, 0, 24, 91], [0, 0, 145, 145], [0, 0, 144, 165]]
 
 #Colonius level sprites
-COLONIUS: ["../assets/scenes/Colonius/background.png", "../assets/scenes/Colonius/floor.png", "../assets/scenes/Colonius/longPlatform.png", "../assets/scenes/Colonius/smallPlatform.png", "../assets/scenes/Colonius/column.png", "../assets/scenes/Colonius/leftLadder.png", "../assets/scenes/Colonius/rightLadder.png"]
+#Cambiar al floor de colonius y sus pixels
+COLONIUS: ["../assets/scenes/Colonius/background.png", "../assets/scenes/BeachWorld/fullFloor.png", "../assets/scenes/Colonius/longPlatform.png", "../assets/scenes/Colonius/smallPlatform.png", "../assets/scenes/Colonius/column.png", "../assets/scenes/Colonius/leftLadder.png", "../assets/scenes/Colonius/rightLadder.png"]
 COLONIUS_BACKSOUND: "../assets/audios/beachBackSound.wav"
-COLONIUS_PIXELS: [[1200, 0, 1804, 839], [0, 0, 200, 824], [0, 0, 192, 46], [0, 0, 145, 96], [0, 0, 80, 191], [0, 0, 144, 119], [0, 0, 144, 119]]
+COLONIUS_PIXELS: [[1200, 0, 1804, 839], [0, 0, 485, 118], [0, 0, 192, 46], [0, 0, 145, 96], [0, 0, 80, 191], [0, 0, 144, 119], [0, 0, 144, 119]]
 
 
 ## Enemies
