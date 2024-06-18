@@ -30,11 +30,11 @@ void Client::start() {
     bool clientJoinedGame = false;
     do {
         LobbyInit init;
-        clientJoinedGame = init.launchQT(this->lobbyController, (bool&)clientJoinedGame);
-
-        //   if (!clientJoinedGame) {
-        //       return;
-        //   }
+        std::pair<bool, LobbyMessage> qtResult = init.launchQT(this->lobbyController, (bool&)clientJoinedGame);
+        clientJoinedGame = qtResult.first;
+        if (!clientJoinedGame) {
+            return;
+        }
         // TODO: Continue with SDL.
         // START - TESTING SKIP QT
 

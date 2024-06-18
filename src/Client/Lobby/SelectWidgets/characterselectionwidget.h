@@ -9,7 +9,13 @@
 #include <QVBoxLayout>
 #include <QTimer>
 #include <QPushButton>
+
 #include <utility>
+#include <tuple>
+#include <string>
+#include <vector>
+#include <functional>
+#include <algorithm>
 
 #include "../../../Common/Config/ClientConfig.h"
 #include "../../../Common/Types/character.h"
@@ -21,7 +27,8 @@ struct CharacterData {
 
     CharacterData(std::function<std::vector<Sprite>()> nameGetter,
                   std::function<std::vector<Sprite>()> characterGetter):
-            nameSpritesGetter(std::move(nameGetter)), characterSpritesGetter(std::move(characterGetter)) {}
+            nameSpritesGetter(std::move(nameGetter)), 
+            characterSpritesGetter(std::move(characterGetter)) {}
 };
 
 class CharacterSelectionWidget: public QWidget {
@@ -38,7 +45,6 @@ protected:
     void updateCharacterAnimation();
 
     void keyPressEvent(QKeyEvent* event) override;
-    // void paintEvent(QPaintEvent* event) override;
 
 private slots:
     void onLeftButtonClicked();

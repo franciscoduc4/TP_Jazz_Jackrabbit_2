@@ -27,6 +27,13 @@ int LobbyController::processGameUpdate(std::unique_ptr<DTO>& dto) {
     return static_cast<int>(this->selected.getCurrentPlayers());
 }
 
+bool LobbyController::canStartGame() {
+    return this->selected.getCurrentPlayers() == this->selected.getMaxPlayers();
+}
+
+GameInfo LobbyController::getSelectedGame() {
+    return this->selected;
+}
 
 // Outbound methods
 void LobbyController::sendRequest(const LobbyMessage& msg) {
@@ -43,36 +50,49 @@ void LobbyController::startGame(const LobbyMessage& msg) {
 }
 
 // Inbound methods
-bool LobbyController::recvResponse() {
+std::pair<bool, GameInfo> LobbyController::recvResponse() {
     std::unique_ptr<DTO> dto;
     try {
         dto = this->lobbyQueue->pop();
     } catch (const std::exception& e) {
         std::cerr << "Exception caught in recvResponse: " << e.what() << std::endl;
-        return false;
+        return std::make_pair(false, this->selected);
     }
     auto* cmdDTO = dynamic_cast<CommandDTO*>(dto.get());
     switch (cmdDTO->getCommand()) {
+        /**
+         * Game ID: en CREATE_GAME se obtiene desde el servidor; en JOIN_GAME,  ya existe el dato.
+         * Game Name: en ambos casos ya existe el dato.
+         * Game Map: se tiene el ID del mapa en ambos casos, se actualiza si es necesario. Solo se manda en GameInfo.
+         * Current Players: en CREATE_GAME es 1 siempre; en JOIN_GAME, se obtiene desde el servidor.
+         * Max Players: se crea o se une a un juego sabiendo este dato
+         */
         case Command::CREATE_GAME: {
-            auto* cgDTO = dynamic_cast<CreateGameDTO*>(cmdDTO);
-            // this->selected = GameInfo(cgDTO->getGameId(), cgDTO->getGameName(), cgDTO->getMaxPlayers(), cgDTO->getCurrentPlayers());
-            this->selected = GameInfo(cgDTO->getGameId(), cgDTO->getGameName(), cgDTO->getMaxPlayers(), 1);
-            break;
-        }
+                auto* cgDTO = dynamic_cast<CreateGameDTO*>(cmdDTO);
+                this->selected.updateGameId(cgDTO->getGameId());
+                break;
+            }
+        case Command::GAME_UPDATE: {
+                auto* guDTO = dynamic_cast<GameUpdateDTO*>(cmdDTO);
+                this->selected.updateCurrentPlayers(guDTO->getGameInfo().currentPlayers);
+                if (this->selected.getMapName() == "") {
+                    this->selected.updateMapName(guDTO->getGameInfo().mapName);
+                }
+                break;
+            }
         case Command::JOIN_GAME: {
-            auto* jgDTO = dynamic_cast<JoinGameDTO*>(cmdDTO);
-            // this->selected = GameInfo(jgDTO->getGameId(), jgDTO->getGameName(), jgDTO->getMaxPlayers(), jgDTO->getCurrentPlayers());
-            this->selected = GameInfo(jgDTO->getGameId(), "", 3, jgDTO->getCurrentPlayers());
-            break;
-        }
+                auto* jgDTO = dynamic_cast<JoinGameDTO*>(cmdDTO);
+                this->selected.updateCurrentPlayers(jgDTO->getCurrentPlayers());
+                break;
+            }
         case Command::MAPS_LIST:
         case Command::GAMES_LIST:
         case Command::START_GAME:
             break;
         default:
-            return false;
+            return std::make_pair(false, this->selected);
     }
-    return true;
+    return std::make_pair(true, this->selected);
 }
 
 
@@ -113,13 +133,20 @@ std::unordered_map<uint8_t, std::string> LobbyController::getMaps() {
 
 std::unordered_map<uint8_t, GameInfo>& LobbyController::getGamesList() {
     std::unique_ptr<DTO> dto;
-    GamesListDTO* gamesList;
-    try {
-        dto = this->lobbyQueue->pop();
-        gamesList = dynamic_cast<GamesListDTO*>(dto.get());
-        this->games = std::move(gamesList->getGames());
-    } catch (const std::exception& e) {
-        std::cerr << "[Lobby Controller] Exception caught in getGamesList: " << e.what() << std::endl;
+    bool result = this->lobbyQueue->try_pop(dto);
+    if (!result) {
+        return this->games;
     }
+    auto* gamesList = dynamic_cast<GamesListDTO*>(dto.get());
+    this->games = std::move(gamesList->getGames());
     return this->games;
+    // try {
+    //     dto = this->lobbyQueue->pop();
+    //     gamesList = dynamic_cast<GamesListDTO*>(dto.get());
+    //     this->games = std::move(gamesList->getGames());
+    // } catch (const std::exception& e) {
+    //     std::cerr << "[Lobby Controller] Exception caught in getGamesList: "
+    //         << e.what() << std::endl;
+    // }
+    // return this->games;
 }

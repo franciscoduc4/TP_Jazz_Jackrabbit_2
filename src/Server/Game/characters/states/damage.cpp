@@ -11,10 +11,10 @@
 #include "shooting.h"
 #include "specialAttack.h"
 
-#define CONFIG ServerConfig::getInstance()
+// #define CONFIG ServerConfig::getInstance()
 
 ReceivingDamageState::ReceivingDamageState(float startTime):
-        startTime(startTime), timeReceivingDamage(CONFIG->getCharacterDamageTime()) {
+        startTime(startTime), timeReceivingDamage(ServerConfig::getCharacterDamageTime()) {
     characterState = CharacterStateEntity::TAKING_DAMAGE;
 }
 

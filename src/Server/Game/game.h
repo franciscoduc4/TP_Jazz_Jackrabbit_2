@@ -4,6 +4,7 @@
 #include <cstdint>
 #include <map>
 #include <memory>
+#include <string>
 
 #include "../../Common/DTO/game.h"
 #include "../../Common/Types/character.h"
@@ -13,14 +14,17 @@
 #include "../CommandHandlers/Game/gameCommand.h"
 #include "../Threads/gameLoop.h"
 #include "characters/character.h"
+#include "../../Common/maps/mapsManager.h"
 
 #include "gameMap.h"
+
 
 class Game {
 private:
     uint8_t gameId;
     std::string gameName;
     uint8_t mapId;
+    std::string mapName;
     GameMode gameMode;
     uint8_t maxPlayers;
     uint8_t currentPlayers;

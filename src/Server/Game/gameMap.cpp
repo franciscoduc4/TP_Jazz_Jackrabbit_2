@@ -5,13 +5,13 @@
 
 #include "../../Common/maps/mapsManager.h"
 
-#define CONFIG ServerConfig::getInstance()
+// #define CONFIG ServerConfig::getInstance()
 
 GameMap::GameMap(Vector<uint8_t> size, uint8_t mapId):
         size(size),
         entityFactory(*this),
-        gravity(CONFIG->getGameGravity()),
-        movesPerCell(CONFIG->getGameMaxMoves()),
+        gravity(ServerConfig::getGameGravity()),
+        movesPerCell(ServerConfig::getGameMaxMoves()),
         mapId(mapId) {
     std::cout << "[GAMEMAP] GameMap created with mapId: " << static_cast<int>(mapId) << std::endl;
 }
@@ -27,8 +27,8 @@ void GameMap::loadMap(uint8_t mapId) {
         if (!config["SIZE"] || !config["SIZE"]["WIDTH"] || !config["SIZE"]["HEIGHT"]) {
             throw std::runtime_error("Invalid map size configuration in YAML file");
         }
-        size.x = config["SIZE"]["WIDTH"].as<uint8_t>();
-        size.y = config["SIZE"]["HEIGHT"].as<uint8_t>();
+        size.x = static_cast<uint8_t>(config["SIZE"]["WIDTH"].as<int>());
+        size.y = static_cast<uint8_t>(config["SIZE"]["HEIGHT"].as<int>());
         std::cout << "[GAMEMAP] Map size: Width = " << static_cast<int>(size.x)
                   << ", Height = " << static_cast<int>(size.y) << std::endl;
 
@@ -45,7 +45,7 @@ void GameMap::loadMap(uint8_t mapId) {
                         throw std::runtime_error(
                                 "Invalid enemy position configuration in YAML file");
                     }
-                    Vector<uint8_t> position = {pos[0].as<uint8_t>(), pos[1].as<uint8_t>()};
+                    Vector<uint8_t> position = {static_cast<uint8_t>(pos[0].as<int>()), static_cast<uint8_t>(pos[1].as<int>())};
                     std::cout << "[GAMEMAP] Enemy position: (" << static_cast<int>(position.x)
                               << ", " << static_cast<int>(position.y) << ")" << std::endl;
                     EnemyType type = getEnemyType(enemyType);
@@ -181,7 +181,7 @@ Vector<uint8_t> GameMap::getInitialPositionForCharacterType(CharacterType type) 
                 throw std::runtime_error("Invalid player position configuration in YAML file for " +
                                          characterTypeStr);
             }
-            return {pos[0].as<uint8_t>(), pos[1].as<uint8_t>()};
+            return {static_cast<uint8_t>(pos[0].as<int>()), static_cast<uint8_t>(pos[1].as<int>())};
         }
 
         throw std::runtime_error("Initial position for character type not found in YAML for " +
