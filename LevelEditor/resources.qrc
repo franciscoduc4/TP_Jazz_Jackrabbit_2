@@ -1,0 +1,16 @@
+<RCC>
+    <qresource prefix="/">
+        <!-- Font File -->
+        <file>../../assets/Miscellaneous/Fonts.png</file>
+        <!-- Background Images -->
+        <file>../assets/LobbyImages/WelcomeBackground.png</file>
+        <file>../assets/LobbyImages/LobbyBackground.png</file>
+        <file>../assets/LobbyImages/Background.png</file>
+        <file>../assets/LobbyImages/Continue.png</file>
+        <file>../assets/LobbyImages/Load.png</file>
+    </qresource>
+    <!-- Stylesheets -->
+    <qresource prefix="/Styles">
+        <file>editor.qss</file>
+    </qresource>
+</RCC>
