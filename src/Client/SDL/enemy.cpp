@@ -193,7 +193,7 @@ void Enemy::draw_enemy(SDL2pp::Window& window, SDL2pp::Renderer& renderer, SDL2p
             distance_main_enemy_y = y - player.getX();
             y = dir_y_screen + distance_main_enemy_y;
         }
-        std::cout << "adentro de dibujando enemigos capo" << std::endl;
+        std::cout << "renderizando enemigos" << std::endl;
         renderer.Copy(enemy, SDL2pp::Rect(it->getX(), it->getY(), it->getWidth(), it->getHeight()),
                       SDL2pp::Rect(x, y, this->width_height[e.getType()][index_width],
                                    this->width_height[e.getType()][index_height]),

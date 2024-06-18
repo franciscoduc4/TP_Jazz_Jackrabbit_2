@@ -26,7 +26,7 @@ private:
     std::map<uint8_t, std::shared_ptr<Enemy>> enemies;
     // std::map<uint8_t, std::shared_ptr<Bullet>> bullets;
     // std::map<uint8_t, std::shared_ptr<Item>> items;
-    // std::map<uint8_t, std::shared_ptr<Tile>> tiles;
+    std::vector<TileDTO> tiles;
     EntityFactory entityFactory;
     uint8_t entityCount;
     uint8_t movesPerCell;
