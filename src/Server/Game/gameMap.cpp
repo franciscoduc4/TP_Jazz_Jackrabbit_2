@@ -53,43 +53,7 @@ void GameMap::loadMap(uint8_t mapId) {
                 }
             }
         }
-        if (config["OBSTACLES"]) {
-            for (const auto& obstacle : config["OBSTACLES"]) {
-                auto obstacleType = obstacle.first.as<std::string>();
-                for (const auto& pos : obstacle.second) {
-                    if (pos.size() != 2) {
-                        throw std::runtime_error("Invalid obstacle position configuration in YAML file");
-                    }
-
-                    Vector<uint8_t> position = {pos[0].as<uint8_t>(), pos[1].as<uint8_t>()};
-                    std::cout << "[GAMEMAP] Obstacle type: " << obstacleType 
-                              << " position: (" << static_cast<int>(position.x) 
-                              << ", " << static_cast<int>(position.y) << ")" << std::endl;
-
-                    // if (obstacleType == "FULL_FLOOR") {
-                    //     TileDTO tile = {position.x, position.y};
-                    //     tiles.push_back(tile);
-                    // } else if (obstacleType == "LARGE_WOOD_FLOOR") {
-
-                    // } else if (obstacleType == "LEFT_LADDER") {
-                    //     // Lógica para añadir LEFT_LADDER
-                    // } else if (obstacleType == "LONG_PLATFORM") {
-                    //     // Lógica para añadir LONG_PLATFORM
-                    // } else if (obstacleType == "RIGHT_LADDER") {
-                    //     // Lógica para añadir RIGHT_LADDER
-                    // } else if (obstacleType == "SMALL_PLATFORM") {
-                    //     // Lógica para añadir SMALL_PLATFORM
-                    // } else if (obstacleType == "WOOD_FLOOR") {
-                    //     // Lógica para añadir WOOD_FLOOR
-                    // } else if (obstacleType == "WOOD_LARGE_COLUMN") {
-                    //     // Lógica para añadir WOOD_LARGE_COLUMN
-                    // } else {
-                    //     throw std::runtime_error("Unknown obstacle type in YAML file");
-                    // }
-                }
-            }
-        }
-        
+       
     } catch (const std::exception& e) {
         std::cerr << "[GAMEMAP] Error loading map: " << e.what() << std::endl;
         throw;
@@ -370,20 +334,20 @@ std::unique_ptr<GameDTO> GameMap::getGameDTO() {
     // BulletDTO bullet3 = {30, 30, 1, 1, 1, 1};
     // bullets.push_back(bullet3);
 
-    TileDTO tile = {5, 10};
-    tiles.push_back(tile);
+    // TileDTO tile = {5, 10};
+    // tiles.push_back(tile);
 
-    ItemDTO item = {1, 1,  ItemType::GEM};
-    items.push_back(item);
+    // ItemDTO item = {1, 1,  ItemType::GEM};
+    // items.push_back(item);
 
-    ItemDTO item2 = {1, 252,  ItemType::GOLD_COIN};
-    items.push_back(item2);
+    // ItemDTO item2 = {1, 252,  ItemType::GOLD_COIN};
+    // items.push_back(item2);
 
-    ItemDTO item3 = {252, 1,  ItemType::SILVER_COIN};
-    items.push_back(item3);
+    // ItemDTO item3 = {252, 1,  ItemType::SILVER_COIN};
+    // items.push_back(item3);
 
-    EnemyDTO enemy = {10, 230, 1, 1, 1, 1, EnemyType::TURTLE, EnemyStateEntity::ENEMY_IDLE};
-    enemies.push_back(enemy);
+    // EnemyDTO enemy = {10, 230, 1, 1, 1, 1, EnemyType::TURTLE, EnemyStateEntity::ENEMY_IDLE};
+    // enemies.push_back(enemy);
 
     // EnemyDTO enemy2 = {10, 10, 1, 1, 1, 1, EnemyType::YELLOWMON, EnemyStateEntity::ENEMY_IDLE};
     // enemies.push_back(enemy2);
