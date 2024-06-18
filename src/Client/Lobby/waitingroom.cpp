@@ -14,12 +14,16 @@ WaitingRoom::WaitingRoom(QWidget* parent, LobbyController& controller, LobbyMess
         clientJoinedGame(clientJoinedGame) {
     ui->setupUi(this);
 
-    clientJoinedGame = true; // Al llegar acá y no poder volver atrás, se asume que el cliente se unió al juego
+    this->clientJoinedGame = true; // Al llegar acá y no poder volver atrás, se asume que el cliente se unió al juego
 
     // Se crea un hilo para que el cliente pueda recibir actualizaciones de la cantidad de jugadores en la sala
     updateThread = QThread::create([this] { this->pollForUpdates(); });
     connect(this, &WaitingRoom::destroyed, updateThread, &QThread::quit);
     updateThread->start();
+
+    GameInfo selected = this->controller.getSelectedGame();
+    QString numPlayers = QString::number(selected.getCurrentPlayers());
+    ui->numPlayers->setText(numPlayers);
 
     QString gameName = QString::fromStdString(this->msg.getGameName());
     ui->labelGameName->setText(gameName);
@@ -57,9 +61,7 @@ WaitingRoom::WaitingRoom(QWidget* parent, LobbyController& controller, LobbyMess
     ui->numPlayers->setAttribute(Qt::WA_TranslucentBackground);
     ui->maxPlayers->setAttribute(Qt::WA_TranslucentBackground);
 
-    this->msg.setLobbyCmd(Command::START_GAME);
-    this->controller.sendRequest(this->msg);
-    this->controller.recvStartGame();
+    connect(this, &WaitingRoom::numPlayersUpdated, this, &WaitingRoom::updateNumPlayers);
 }
 
 void WaitingRoom::pollForUpdates() {
@@ -77,6 +79,18 @@ void WaitingRoom::pollForUpdates() {
 
 void WaitingRoom::updateNumPlayers(int numPlayers) {
     ui->numPlayers->setText(QString::number(numPlayers));
+    if (numPlayers == this->msg.getMaxPlayers()) {
+        this->msg.setLobbyCmd(Command::START_GAME);
+        this->controller.startGame(this->msg);
+        std::pair<bool, GameInfo> sgAck = this->controller.recvResponse();
+        if (!sgAck.first) {
+            QMessageBox::warning(this, "Error", "No se pudo iniciar la partida.");
+            QCoreApplication::exit(37);
+            return;
+        }
+        QCoreApplication::exit(0);
+        return;
+    }
 }
 
 WaitingRoom::~WaitingRoom() {

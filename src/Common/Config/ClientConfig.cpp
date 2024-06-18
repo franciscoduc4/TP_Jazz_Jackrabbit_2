@@ -135,7 +135,8 @@ std::tuple<int, int, int> ClientConfig::getItemsColourKey() {
 
 std::tuple<int, int, int> ClientConfig::getInterfaceFontColourKey() {
     YAML::Node interfaceFontColourKeyNode = getInstance()->root["INTERFACE_FONT_CK"];
-    return std::make_tuple(interfaceFontColourKeyNode[0].as<int>(), interfaceFontColourKeyNode[1].as<int>(),
+    return std::make_tuple(interfaceFontColourKeyNode[0].as<int>(),
+                           interfaceFontColourKeyNode[1].as<int>(),
                            interfaceFontColourKeyNode[2].as<int>());
 }
 
@@ -173,7 +174,9 @@ std::vector<std::string> ClientConfig::getBeachFiles() {
     return beachFiles;
 }
 
-std::string ClientConfig::getBeachBacksound() { return getInstance()->root["BEACH_BACKSOUND"].as<std::string>(); }
+std::string ClientConfig::getBeachBacksound() { 
+    return getInstance()->root["BEACH_BACKSOUND"].as<std::string>();
+}
 
 std::vector<std::vector<int>> ClientConfig::getBeachSprites() {
     YAML::Node beachSpritesNode = getInstance()->root["BEACH_PIXELS"];
@@ -196,7 +199,9 @@ std::vector<std::string> ClientConfig::getColoniusFiles() {
     return coloniusFiles;
 }
 
-std::string ClientConfig::getColoniusBacksound() { return getInstance()->root["COLONIUS_BACKSOUND"].as<std::string>(); }
+std::string ClientConfig::getColoniusBacksound() {
+    return getInstance()->root["COLONIUS_BACKSOUND"].as<std::string>();
+}
 
 std::vector<std::vector<int>> ClientConfig::getColoniusSprites() {
     YAML::Node coloniusSpritesNode = getInstance()->root["COLONIUS_PIXELS"];
@@ -767,8 +772,9 @@ int ClientConfig::getFireHeight() { return getInstance()->root["PROJ_HEIGHT_FIRE
 std::vector<std::vector<int>> ClientConfig::getInterfaceFontSprites() {
     YAML::Node interfaceFontSpritesNode = getInstance()->root["INTERFACE_FONT"];
     std::vector<std::vector<int>> interfaceFontSprites;
-    for (YAML::const_iterator it = interfaceFontSpritesNode.begin(); it != interfaceFontSpritesNode.end();
-         ++it) {
+    for (YAML::const_iterator it = interfaceFontSpritesNode.begin();
+        it != interfaceFontSpritesNode.end();
+        ++it) {
         interfaceFontSprites.push_back(it->as<std::vector<int>>());
     }
     return interfaceFontSprites;

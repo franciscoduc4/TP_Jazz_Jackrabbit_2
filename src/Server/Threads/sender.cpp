@@ -64,12 +64,21 @@ void SenderThread::runLobby(bool& wasClosed) {
             handler->execute(gameMonitor, std::ref(inGame), recvQueue, sendQueue);
             std::cout << "[SERVER SENDER LOBBY] Command executed" << std::endl;
 
-            auto dto = sendQueue->pop();
+            /*auto dto = sendQueue->pop();
             auto commandDTO = dynamic_cast<CommandDTO*>(dto.get());
-            dto.release();
+            // dto.release();
             std::cout << "[SERVER SENDER LOBBY] Sending command DTO" << std::endl;
             serializer.sendCommand(std::unique_ptr<CommandDTO>(commandDTO), wasClosed);
-            std::cout << "[SERVER SENDER LOBBY] Command ACK sent" << std::endl;
+            std::cout << "[SERVER SENDER LOBBY] Command ACK sent" << std::endl;*/
+
+            std::unique_ptr<DTO> dtoToSend;
+            while (sendQueue->try_pop(dtoToSend)) {
+                auto commandDTO = dynamic_cast<CommandDTO*>(dtoToSend.get());
+                dtoToSend.release();
+                std::cout << "[SERVER SENDER LOBBY] Sending DTO" << std::endl;
+                serializer.sendCommand(std::unique_ptr<CommandDTO>(commandDTO), wasClosed);
+                std::cout << "[SERVER SENDER LOBBY] DTO sent" << std::endl;
+            }
         } catch (const std::exception& e) {
             std::cerr << "[SERVER SENDER LOBBY] Exception: " << e.what() << std::endl;
             if (wasClosed) {

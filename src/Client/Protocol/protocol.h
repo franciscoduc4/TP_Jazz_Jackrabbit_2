@@ -17,6 +17,7 @@
 #include "../../Common/DTO/gamesList.h"
 #include "../../Common/DTO/startGame.h"
 #include "../../Common/DTO/createGame.h"
+#include "../../Common/DTO/gameUpdate.h"
 
 // Types
 #include "../../Common/Types/command.h"
@@ -28,6 +29,8 @@ private:
     std::shared_ptr<Socket>& socket;
     std::atomic<bool>& was_closed;
     bool closed;
+
+    GameInfo receiveGameInfo();
 public:
     ClientProtocol(std::shared_ptr<Socket>& socket, std::atomic<bool>& was_closed);
     // States

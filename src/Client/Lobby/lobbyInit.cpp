@@ -15,7 +15,9 @@ std::pair<bool, LobbyMessage> LobbyInit::launchQT(LobbyController& controller, b
 
     Welcome w(nullptr, controller, msg, clientJoinedGame);
     w.show();
-    a.exec();
+    int exitCode = a.exec();
+
+    if (exitCode == 37) return std::make_pair(false, msg);
 
     return std::make_pair(clientJoinedGame, msg);
 }

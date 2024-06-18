@@ -5,6 +5,10 @@
 #include <QThread>
 #include <QMutex>
 #include <QWaitCondition>
+#include <QMessageBox>
+
+#include <utility>
+#include <memory>
 
 #include "../../Common/Types/lobbyMessage.h"
 #include "../client.h"

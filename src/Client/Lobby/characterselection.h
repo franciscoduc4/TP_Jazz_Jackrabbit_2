@@ -9,6 +9,8 @@
 #include <QRadioButton>
 #include <QVBoxLayout>
 
+#include <utility>
+
 #include "../../Common/Config/ClientConfig.h"
 #include "../../Common/Types/lobbyMessage.h"
 #include "../client.h"
@@ -40,7 +42,6 @@ private:
     LobbyMessage& msg;
     bool& clientJoinedGame;
     CharacterSelectionWidget* characterSelectionWidget;
-    // QButtonGroup* buttonGroup;
 };
 
 #endif  // CHARACTERSELECTION_H
