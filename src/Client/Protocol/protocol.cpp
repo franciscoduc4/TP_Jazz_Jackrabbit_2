@@ -79,50 +79,75 @@ void ClientProtocol::receiveCommandDTO(std::unique_ptr<DTO>& dto) {
     }
 }
 
+GameInfo ClientProtocol::receiveGameInfo() {
+    uint8_t gameId;
+    this->socket->recvall(&gameId, sizeof(uint8_t), &closed);
+    this->was_closed.store(closed);
+    if (this->was_closed.load()) {
+        return {};
+    }
+    uint8_t nameLength;
+    this->socket->recvall(&nameLength, sizeof(uint8_t), &closed);
+    this->was_closed.store(closed);
+    if (this->was_closed.load()) {
+        std::cout << "[CLIENT RECEIVER] Connection closed, exiting receiveGameUpdate" << std::endl;
+        return {};
+    }
+    std::string name;
+    name.resize(nameLength);
+    socket->recvall(&name[0], nameLength, &closed);
+    this->was_closed.store(closed);
+    if (this->was_closed.load()) {
+        return {};
+    }
+    uint8_t maxPlayers;
+    this->socket->recvall(&maxPlayers, sizeof(uint8_t), &closed);
+    this->was_closed.store(closed);
+    if (this->was_closed.load()) {
+        return {};
+    }
+    uint8_t currentPlayers;
+    this->socket->recvall(&currentPlayers, sizeof(uint8_t), &closed);
+    this->was_closed.store(closed);
+    if (this->was_closed.load()) {
+        return {};
+    }
+    uint8_t mapId;
+    this->socket->recvall(&mapId, sizeof(uint8_t), &closed);
+    this->was_closed.store(closed);
+    if (this->was_closed.load()) {
+        return {};
+    }
+    uint8_t mapNameLength;
+    this->socket->recvall(&mapNameLength, sizeof(uint8_t), &closed);
+    this->was_closed.store(closed);
+    if (this->was_closed.load()) {
+        return {};
+    }
+    std::string mapName;
+    mapName.resize(mapNameLength);
+    socket->recvall(&mapName[0], mapNameLength, &closed);
+    this->was_closed.store(closed);
+    if (this->was_closed.load()) {
+        return {};
+    }
+    GameInfo gi(gameId, name, maxPlayers, currentPlayers, mapId);
+    return std::move(gi);
+}
+
 void ClientProtocol::receiveGamesList(std::unique_ptr<DTO>& dto) {
     try {
         uint8_t gamesAmount;
         socket->recvall(&gamesAmount, sizeof(uint8_t), &closed);
+        std::cout << "[Client Receiver | Receive Games List] Received games amount: " << static_cast<int>(gamesAmount) << std::endl;
         this->was_closed.store(closed);
         if (this->was_closed.load()) {
             return;
         }
         std::unordered_map<uint8_t, GameInfo> gamesMap;
         for (int i = 0; i < gamesAmount; i++) {
-            uint8_t gameId;
-            socket->recvall(&gameId, sizeof(uint8_t), &closed);
-            this->was_closed.store(closed);
-            if (this->was_closed.load()) {
-                return;
-            }
-            char nameLength;
-            socket->recvall(&nameLength, sizeof(char), &closed);
-            this->was_closed.store(closed);
-            if (this->was_closed.load()) {
-                return;
-            }
-            std::string name;
-            name.resize(nameLength);
-            socket->recvall(&name[0], nameLength, &closed);
-            this->was_closed.store(closed);
-            if (this->was_closed.load()) {
-                return;
-            }
-            uint8_t maxPlayers;
-            socket->recvall(&maxPlayers, sizeof(uint8_t), &closed);
-            this->was_closed.store(closed);
-            if (this->was_closed.load()) {
-                return;
-            }
-            uint8_t currentPlayers;
-            socket->recvall(&currentPlayers, sizeof(uint8_t), &closed);
-            this->was_closed.store(closed);
-            if (this->was_closed.load()) {
-                return;
-            }
-
-            GameInfo gameInfo = GameInfo(gameId, name, maxPlayers, currentPlayers);
-            gamesMap[gameId] = gameInfo;
+            GameInfo gameInfo = this->receiveGameInfo();
+            gamesMap[gameInfo.getGameId()] = gameInfo;
         }
         dto = std::make_unique<GamesListDTO>(gamesMap);
     } catch (const std::exception& e) {
@@ -168,58 +193,7 @@ void ClientProtocol::receiveMapsList(std::unique_ptr<DTO>& dto) {
 }
 
 void ClientProtocol::receiveGameUpdate(std::unique_ptr<DTO>& dto) {
-    uint8_t gameId;
-    this->socket->recvall(&gameId, sizeof(uint8_t), &closed);
-    this->was_closed.store(closed);
-    if (this->was_closed.load()) {
-        return;
-    }
-    uint8_t nameLength;
-    this->socket->recvall(&nameLength, sizeof(uint8_t), &closed);
-    this->was_closed.store(closed);
-    if (this->was_closed.load()) {
-        std::cout << "[CLIENT RECEIVER] Connection closed, exiting receiveGameUpdate" << std::endl;
-        return;
-    }
-    std::string name;
-    name.resize(nameLength);
-    socket->recvall(&name[0], nameLength, &closed);
-    this->was_closed.store(closed);
-    if (this->was_closed.load()) {
-        return;
-    }
-    uint8_t maxPlayers;
-    this->socket->recvall(&maxPlayers, sizeof(uint8_t), &closed);
-    this->was_closed.store(closed);
-    if (this->was_closed.load()) {
-        return;
-    }
-    uint8_t currentPlayers;
-    this->socket->recvall(&currentPlayers, sizeof(uint8_t), &closed);
-    this->was_closed.store(closed);
-    if (this->was_closed.load()) {
-        return;
-    }
-    uint8_t mapId;
-    this->socket->recvall(&mapId, sizeof(uint8_t), &closed);
-    this->was_closed.store(closed);
-    if (this->was_closed.load()) {
-        return;
-    }
-    uint8_t mapNameLength;
-    this->socket->recvall(&mapNameLength, sizeof(uint8_t), &closed);
-    this->was_closed.store(closed);
-    if (this->was_closed.load()) {
-        return;
-    }
-    std::string mapName;
-    mapName.resize(mapNameLength);
-    socket->recvall(&mapName[0], mapNameLength, &closed);
-    this->was_closed.store(closed);
-    if (this->was_closed.load()) {
-        return;
-    }
-    GameInfo gi(gameId, name, maxPlayers, currentPlayers, mapId);
+    GameInfo gi = this->receiveGameInfo();
     dto = std::make_unique<GameUpdateDTO>(gi);
 }
 

@@ -39,6 +39,7 @@ GameInfo LobbyController::getSelectedGame() {
 void LobbyController::sendRequest(const LobbyMessage& msg) {
     // Si es un mensaje de CREATE_GAME o JOIN_GAME, me guardo la partida que se selecciona.
     if (msg.getLobbyCmd() == Command::CREATE_GAME || msg.getLobbyCmd() == Command::JOIN_GAME) {
+        std::cout << "[Lobby Controller] Selected game updated." << std::endl;
         this->selected = GameInfo(msg.getGameId(), msg.getGameName(), msg.getMaxPlayers(), 1);
     }
     this->serializer.serializeLobbyMessage(msg);
@@ -140,13 +141,4 @@ std::unordered_map<uint8_t, GameInfo>& LobbyController::getGamesList() {
     auto* gamesList = dynamic_cast<GamesListDTO*>(dto.get());
     this->games = std::move(gamesList->getGames());
     return this->games;
-    // try {
-    //     dto = this->lobbyQueue->pop();
-    //     gamesList = dynamic_cast<GamesListDTO*>(dto.get());
-    //     this->games = std::move(gamesList->getGames());
-    // } catch (const std::exception& e) {
-    //     std::cerr << "[Lobby Controller] Exception caught in getGamesList: "
-    //         << e.what() << std::endl;
-    // }
-    // return this->games;
 }

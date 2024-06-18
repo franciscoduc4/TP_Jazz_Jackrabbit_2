@@ -135,9 +135,6 @@ std::vector<char> Serializer::serializeGamesList(const std::unique_ptr<GamesList
     buffer.insert(buffer.end(), p, p + sizeof(uint8_t));
     std::cout << "[SERVER SERIALIZE GL] Games size: " << games.size() << std::endl;
     for (const auto& [gameId, gameInfo]: games) {
-        const unsigned char* p = reinterpret_cast<const unsigned char*>(&gameId);
-        buffer.insert(buffer.end(), p, p + sizeof(uint8_t));
-
         insertGameInfoToBuffer(buffer, gameInfo);
     }
     return buffer;

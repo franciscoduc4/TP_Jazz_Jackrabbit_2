@@ -24,6 +24,10 @@ GameList::GameList(QWidget* parent, LobbyController& controller, LobbyMessage& m
     ui->centralwidget->setStyleSheet(styleSheet);
     ui->labelTitle->setAttribute(Qt::WA_TranslucentBackground);
 
+    if (this->msg.getLobbyCmd() != Command::GAMES_LIST) {
+        this->msg.setLobbyCmd(Command::GAMES_LIST);
+    }
+
     buttonGroup = new QButtonGroup(this);
     connect(buttonGroup, &QButtonGroup::idClicked, this, &GameList::onGameSelected);
 

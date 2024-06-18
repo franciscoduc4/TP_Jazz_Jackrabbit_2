@@ -29,6 +29,8 @@ private:
     std::shared_ptr<Socket>& socket;
     std::atomic<bool>& was_closed;
     bool closed;
+
+    GameInfo receiveGameInfo();
 public:
     ClientProtocol(std::shared_ptr<Socket>& socket, std::atomic<bool>& was_closed);
     // States

@@ -40,6 +40,7 @@ void Serializer::serializeLobbyMessage(const LobbyMessage& msg) {
             case Command::GAMES_LIST:
                 std::cout << "[CLIENT SERIALIZER] Pushing GamesListDTO to queue." << std::endl;
                 this->queue->push(std::make_unique<GamesListDTO>());
+                break;
             case Command::MAPS_LIST:
                 std::cout << "[CLIENT SERIALIZER] Pushing MapsListDTO to queue." << std::endl;
                 this->queue->push(std::make_unique<MapsListDTO>());
