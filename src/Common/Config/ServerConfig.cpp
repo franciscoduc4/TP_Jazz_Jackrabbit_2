@@ -1,6 +1,6 @@
 #include "ServerConfig.h"
 
-const static std::string YAML_FILE_PATH = "config/server.yaml";
+const static std::string YAML_FILE_PATH = "src/config/server.yaml";
 
 ServerConfig* ServerConfig::instance = nullptr;
 

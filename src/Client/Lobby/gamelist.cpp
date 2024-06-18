@@ -110,6 +110,7 @@ void GameList::joinGame(const uint8_t& gameId, const QString& gameName) {
 
     if (!jgAck.first || !guAck.first) {
         QMessageBox::warning(this, "Error", "No se pudo unir a la partida.");
+        QCoreApplication::exit(37);
         return;
     }
 
@@ -119,8 +120,10 @@ void GameList::joinGame(const uint8_t& gameId, const QString& gameName) {
         std::pair<bool, GameInfo> sgAck = this->controller.recvResponse();
         if (!sgAck.first) {
             QMessageBox::warning(this, "Error", "No se pudo iniciar la partida.");
+            QCoreApplication::exit(37);
             return;
         }
+        QCoreApplication::exit(0);
         return;
     }
 

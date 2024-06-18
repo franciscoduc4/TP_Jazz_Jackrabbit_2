@@ -18,7 +18,9 @@ bool LobbyInit::launchQT(LobbyController& controller, bool& clientJoinedGame) {
 
     Welcome w(nullptr, controller, msg, clientJoinedGame);
     w.show();
-    a.exec();
+    int exitCode = a.exec();
+
+    if (exitCode == 37) return false;
 
     return clientJoinedGame;
 }
