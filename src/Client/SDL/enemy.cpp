@@ -2,6 +2,10 @@
 #include "../../Common/sprite.h"
 #include "../../Common/DTO/enemy.h"
 #include "../Common/Config/ClientConfig.h"
+#include <SDL2pp/SDL2pp.hh>
+#include <SDL2/SDL.h>
+#include <SDL2/SDL_image.h>
+
 
 #include <iostream>
 
@@ -134,6 +138,17 @@ Enemy::Enemy() {
 
 std::string Enemy::getPath(EnemyType enemy_type) { return this->enemies_path[enemy_type]; }
 
+std::map<EnemyType, std::unique_ptr<SDL2pp::Texture>> Enemy::getEnemiesTextures(SDL2pp::Renderer& renderer) {
+    std::map<EnemyType, std::unique_ptr<SDL2pp::Texture>> enemies;
+    
+    SDL_Surface* enemy_surf = IMG_Load(getPath(EnemyType::TURTLE).c_str());
+    SDL2pp::Surface enemySurface(enemy_surf);
+    enemySurface.SetColorKey(true, SDL_MapRGB(enemySurface.Get()->format, 0, 128, 255));
+    enemies[EnemyType::TURTLE] = std::make_unique<SDL2pp::Texture>(renderer, enemySurface);
+
+    return enemies;
+}
+
 
 std::list<RectangularSprite>::iterator Enemy::enemy_img_coords(EnemyType enemy_type, EnemyStateEntity mov_type, int enemyId) {
     if (mov_type != last_move[enemyId]) {
@@ -153,7 +168,7 @@ std::list<RectangularSprite>::iterator Enemy::enemy_img_coords(EnemyType enemy_t
 }
 
 
-void Enemy::draw_enemy(SDL2pp::Window& window, SDL2pp::Renderer& renderer, SDL2pp::Texture& enemy, std::vector<EnemyDTO> enemies, PlayerDTO& player, int dir_x_screen, int dir_y_screen) {
+void Enemy::draw_enemy(SDL2pp::Window& window, SDL2pp::Renderer& renderer, std::map<EnemyType, std::unique_ptr<SDL2pp::Texture>>& textures_enemies, std::vector<EnemyDTO> enemies, PlayerDTO& player, int dir_x_screen, int dir_y_screen) {
 	int index_width = 0;
 	int index_height = 1;
 	int mov_type = 0;
@@ -182,7 +197,7 @@ void Enemy::draw_enemy(SDL2pp::Window& window, SDL2pp::Renderer& renderer, SDL2p
             distance_main_enemy_y = y - player.getX();
             y = dir_y_screen + distance_main_enemy_y;
         }
-        renderer.Copy(enemy, SDL2pp::Rect(it->getX(), it->getY(), it->getWidth(), it->getHeight()),
+        renderer.Copy(*textures_enemies[e.getType()], SDL2pp::Rect(it->getX(), it->getY(), it->getWidth(), it->getHeight()),
                   SDL2pp::Rect(x, y, this->width_height[e.getType()][index_width], this->width_height[e.getType()][index_height]), 0.0,
                   SDL2pp::NullOpt, this->flip);
 

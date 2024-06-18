@@ -29,16 +29,17 @@ void Client::start() {
 
     bool clientJoinedGame = false;
     do {
+        /* 
         LobbyInit init;
-        clientJoinedGame = init.launchQT(this->lobbyController, (bool&)clientJoinedGame);
-
+        std::pair<bool, LobbyMessage> qtResult = init.launchQT(this->lobbyController, (bool&)clientJoinedGame); 
+        clientJoinedGame = qtResult.first;
+        */
         //   if (!clientJoinedGame) {
         //       return;
         //   }
         // TODO: Continue with SDL.
         // START - TESTING SKIP QT
 
-        /*
         Command cmd = (this->playerId == 0) ? Command::CREATE_GAME : Command::JOIN_GAME;
 
         LobbyMessage msg;
@@ -73,7 +74,11 @@ void Client::start() {
             return;
         }
         // END - TESTING SKIP QT
-        */
+        /*         
+        CharacterType pj = qtResult.first.getCharacter();
+        uint8_t mapId = qtResult.first.getMap();
+        GameScreen game(this->gameController, this->playerId, pj, mapId);
+         */        
         GameScreen game(this->gameController, this->playerId);
         game.run();
     } while (clientJoinedGame);

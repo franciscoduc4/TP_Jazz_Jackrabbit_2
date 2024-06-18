@@ -1,6 +1,9 @@
 #include "projectile.h"
 #include "../../Common/sprite.h"
 #include "../Common/Config/ClientConfig.h"
+#include <SDL2pp/SDL2pp.hh>
+#include <SDL2/SDL.h>
+#include <SDL2/SDL_image.h>
 
 #include <SDL2pp/SDL2pp.hh>
 
@@ -40,6 +43,14 @@ Projectile::Projectile(int p_type) {
 	}
 }
 
+std::unique_ptr<SDL2pp::Texture> Projectile::getProjectilesTextures(SDL2pp::Renderer& renderer) {
+	SDL_Surface* projectile_surf = IMG_Load("../assets/Miscellaneous/SFX.png");
+    SDL2pp::Surface projectileSurface(projectile_surf);
+    projectileSurface.SetColorKey(true, SDL_MapRGB(projectileSurface.Get()->format, 0, 128, 255));
+	return std::make_unique<SDL2pp::Texture>(renderer, projectileSurface);
+}
+
+
 std::list<RectangularSprite>::iterator Projectile::img_coords(uint32_t bulletId) {
 	//Modificar que se pueda cambiar de bala
 	std::list<RectangularSprite>::iterator it = this->sprites[Normal].begin();
@@ -54,7 +65,7 @@ std::list<RectangularSprite>::iterator Projectile::img_coords(uint32_t bulletId)
 	return it;
 
 }
-void Projectile::draw_projectile(SDL2pp::Window& window, SDL2pp::Renderer& renderer, SDL2pp::Texture& projectile, std::vector<BulletDTO>& bullets) {
+void Projectile::draw_projectile(SDL2pp::Window& window, SDL2pp::Renderer& renderer, std::unique_ptr<SDL2pp::Texture>& projectile, std::vector<BulletDTO>& bullets) {
 	int proj_pixel_x;
 	int proj_pixel_w;
 	int proj_pixel_y;
@@ -81,7 +92,7 @@ void Projectile::draw_projectile(SDL2pp::Window& window, SDL2pp::Renderer& rende
 		if (this->type == RedBomb || this->type == VioletBomb) {
 			angle = 0.0;
 		}
-		renderer.Copy(projectile, SDL2pp::Rect(proj_pixel_x, proj_pixel_y, proj_pixel_w, proj_pixel_h), SDL2pp::Rect(b.getX(), b.getY(), this->draw_width, this->draw_height), angle, SDL2pp::NullOpt);
+		renderer.Copy(*projectile, SDL2pp::Rect(proj_pixel_x, proj_pixel_y, proj_pixel_w, proj_pixel_h), SDL2pp::Rect(b.getX(), b.getY(), this->draw_width, this->draw_height), angle, SDL2pp::NullOpt);
 	
 	}
 	this->init = true;

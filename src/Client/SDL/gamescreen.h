@@ -39,6 +39,8 @@ class GameScreen {
 public:
     GameScreen(GameController& controller, uint8_t playerId);
 
+    //GameScreen(GameController& controller, uint8_t playerId, CharacterType pjId, uint8_t mapId);
+
     std::unique_ptr<PlayerDTO> searchMainPlayer(std::vector<PlayerDTO>& players);
 
     void run();

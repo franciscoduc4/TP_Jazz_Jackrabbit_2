@@ -34,9 +34,10 @@ GameScreen::GameScreen(GameController& controller, uint8_t playerId):
         level(0),
         proj(0),
         soundControl(0) {}
-
-/*GameScreen::GameScreen(GameController& controller):
-        controller(controller), pj(1), points(0), level(0), stats(CharacterType::JAZZ) {}*/
+/* 
+GameScreen::GameScreen(GameController& controller, uint8_t playerId, CharacterType pjId, uint8_t mapId):
+        controller(controller), mainPlayerId(playerId),  pj(pjId), level(mapId), proj(0), soundControl(mapId) {}
+ */
 
 std::unique_ptr<PlayerDTO> GameScreen::searchMainPlayer(std::vector<PlayerDTO>& players) {
     int i = 0;
@@ -69,111 +70,25 @@ void GameScreen::run() {
     SDL2pp::Renderer renderer(window, -1, SDL_RENDERER_ACCELERATED);
 
     std::cout << "[GAME SCREEN] Renderer created" << std::endl;
-
-    // TEXTURAS NIVEL
-    SDL_Surface* bg_surf = IMG_Load(this->level.getLevelPath(TileType::BACKGROUND).c_str());
-    if (!bg_surf) {
-        std::cerr << "[GAME SCREEN] Error loading background surface: " << IMG_GetError()
-                  << std::endl;
-        return;
-    }
-    SDL2pp::Surface backgroundSurface(bg_surf);
-    backgroundSurface.SetColorKey(true, SDL_MapRGB(backgroundSurface.Get()->format, 87, 0, 203));
-    SDL2pp::Texture background(renderer, backgroundSurface);
-
-    std::cout << "[GAME SCREEN] Background created" << std::endl;
-    
-    SDL_Surface* sandFloor_surf = IMG_Load(this->level.getLevelPath(TileType::FLOOR).c_str());
-    if (!sandFloor_surf) {
-        std::cerr << "[GAME SCREEN] Error loading floor surface: " << IMG_GetError() << std::endl;
-        return;
-    }
-    SDL2pp::Surface sandFloorSurface(sandFloor_surf);
-    sandFloorSurface.SetColorKey(true, SDL_MapRGB(sandFloorSurface.Get()->format, 87, 0, 203));
-    SDL2pp::Texture sandFloor(renderer, sandFloorSurface);
-
-    std::cout << "[GAME SCREEN] Floor created" << std::endl;
-
+      
     std::map<TileType, std::unique_ptr<SDL2pp::Texture>> tiles_textures =
             this->level.getTilesTextures(renderer);
+    std::cout << "[GAME SCREEN] Level textures created" << std::endl;
 
-    // TEXTURAS PERSONAJES
-    std::tuple<int, int, int> pjsColorKey = ClientConfig::getJazzColourKey();
-    SDL_Surface* jazz_surf = IMG_Load(this->pj.getPath(CharacterType::JAZZ).c_str());
-    if (!jazz_surf) {
-        std::cerr << "[GAME SCREEN] Error loading Jazz surface: " << IMG_GetError() << std::endl;
-        return;
-    }
-    SDL2pp::Surface jazzSurface(jazz_surf);
-    jazzSurface.SetColorKey(true, SDL_MapRGB(jazzSurface.Get()->format, std::get<0>(pjsColorKey), std::get<1>(pjsColorKey), std::get<2>(pjsColorKey)));
-    SDL2pp::Texture jazz_sprite(renderer, jazzSurface);
+    std::map<CharacterType, std::unique_ptr<SDL2pp::Texture>> pjs_textures = this->pj.getPlayersTextures(renderer);
+    std::cout << "[GAME SCREEN] Players sprites created" << std::endl;
 
-    SDL_Surface* lori_surf = IMG_Load(this->pj.getPath(CharacterType::LORI).c_str());
-    if (!lori_surf) {
-        std::cerr << "[GAME SCREEN] Error loading Lori surface: " << IMG_GetError() << std::endl;
-        return;
-    }
-    SDL2pp::Surface loriSurface(lori_surf);
-    loriSurface.SetColorKey(true, SDL_MapRGB(loriSurface.Get()->format, std::get<0>(pjsColorKey), std::get<1>(pjsColorKey), std::get<2>(pjsColorKey)));
-    SDL2pp::Texture lori_sprite(renderer, loriSurface);
+    std::map<EnemyType, std::unique_ptr<SDL2pp::Texture>> enemies_textures = this->enemies.getEnemiesTextures(renderer);
+    std::cout << "[GAME SCREEN] Enemies sprites created" << std::endl;
 
-    SDL_Surface* spaz_surf = IMG_Load(this->pj.getPath(CharacterType::SPAZ).c_str());
-    if (!spaz_surf) {
-        std::cerr << "[GAME SCREEN] Error loading Spaz surface: " << IMG_GetError() << std::endl;
-        return;
-    }
-    SDL2pp::Surface spazSurface(spaz_surf);
-    spazSurface.SetColorKey(true, SDL_MapRGB(spazSurface.Get()->format, std::get<0>(pjsColorKey), std::get<1>(pjsColorKey), std::get<2>(pjsColorKey)));
-    SDL2pp::Texture spaz_sprite(renderer, spazSurface);
+    std::unique_ptr<SDL2pp::Texture> projectile = this->proj.getProjectilesTextures(renderer);
+    std::cout << "[GAME SCREEN] Projectile sprites created" << std::endl;
 
-    std::map<CharacterType, SDL2pp::Texture*> pjs_textures;
-    pjs_textures[CharacterType::JAZZ] = &jazz_sprite;
-    pjs_textures[CharacterType::LORI] = &lori_sprite;
-    pjs_textures[CharacterType::SPAZ] = &spaz_sprite;
+    std::unique_ptr<SDL2pp::Texture> items = this->points.getItemsTextures(renderer);
+    std::cout << "[GAME SCREEN] Items sprites created" << std::endl;
 
-    std::cout << "[GAME SCREEN] Players created" << std::endl;
-
-    // TEXTURA ENEMIGOS
-    SDL_Surface* enemy_surf = IMG_Load(this->enemies.getPath(EnemyType::TURTLE).c_str());
-    if (!enemy_surf) {
-        std::cerr << "[GAME SCREEN] Error loading enemy surface: " << IMG_GetError() << std::endl;
-        return;
-    }
-    SDL2pp::Surface enemySurface(enemy_surf);
-    enemySurface.SetColorKey(true, SDL_MapRGB(enemySurface.Get()->format, 0, 128, 255));
-    SDL2pp::Texture enemy(renderer, enemySurface);
-
-    // TEXTURAS PROJECTILES
-    SDL_Surface* projectile_surf = IMG_Load("../assets/Miscellaneous/SFX.png");
-    if (!projectile_surf) {
-        std::cerr << "[GAME SCREEN] Error loading projectile surface: " << IMG_GetError()
-                  << std::endl;
-        return;
-    }
-    SDL2pp::Surface projectileSurface(projectile_surf);
-    projectileSurface.SetColorKey(true, SDL_MapRGB(projectileSurface.Get()->format, 0, 128, 255));
-    SDL2pp::Texture projectile(renderer, projectileSurface);
-
-    // TEXTURAS ITEMS
-    SDL_Surface* items_surf = IMG_Load("../assets/Miscellaneous/Items&Objects.png");
-    if (!items_surf) {
-        std::cerr << "[GAME SCREEN] Error loading items surface: " << IMG_GetError() << std::endl;
-        return;
-    }
-    SDL2pp::Surface itemsSurface(items_surf);
-    itemsSurface.SetColorKey(true, SDL_MapRGB(itemsSurface.Get()->format, 0, 128, 255));
-    SDL2pp::Texture items(renderer, itemsSurface);
-
-    // TEXTURAS FONT
-    std::tuple<int, int, int> fontColorKey = ClientConfig::getInterfaceFontColourKey();
-    SDL_Surface* font_surf = IMG_Load(this->stats.getFontPath().c_str());
-    if (!font_surf) {
-        std::cerr << "[GAME SCREEN] Error loading font surface: " << IMG_GetError() << std::endl;
-        return;
-    }
-    SDL2pp::Surface fontSurface(font_surf);
-    fontSurface.SetColorKey(true, SDL_MapRGB(fontSurface.Get()->format, std::get<0>(fontColorKey), std::get<1>(fontColorKey), std::get<2>(fontColorKey)));
-    SDL2pp::Texture font(renderer, fontSurface);
+    std::unique_ptr<SDL2pp::Texture> font = this->stats.getFontTextures(renderer); 
+    std::cout << "[GAME SCREEN] Font sprites created" << std::endl;
 
     this->soundControl.play_backsound(); //EMPIEZA LA MUSICA DE FONDO
     
@@ -250,11 +165,7 @@ void GameScreen::run() {
         std::cout << "[GAME SCREEN] Received message from server" << std::endl;
 
         auto derived_ptr = static_cast<GameDTO*>(serverMsg.release());
-        if (!derived_ptr) {
-            std::cerr << "[GAME SCREEN] Failed to cast to GameDTO." << std::endl;
-            SDL_Delay(100);
-            continue;
-        }
+        
         std::unique_ptr<GameDTO> snapshot = std::unique_ptr<GameDTO>(derived_ptr);
         std::cout << "[GAME SCREEN] Snapshot created" << std::endl;
 
@@ -268,8 +179,8 @@ void GameScreen::run() {
         if (!mainPlayer) {
             continue;
         }
-        std::vector<int> dir_screen = this->level.draw_background(window, renderer, background, *mainPlayer/*players[0]*/);
-        this->level.draw_floor(window, renderer, sandFloor, mainPlayer->getSpeed()/*players[0].getSpeed()*/);
+        std::vector<int> dir_screen = this->level.draw_background(window, renderer, tiles_textures, *mainPlayer/*players[0]*/);
+        this->level.draw_floor(window, renderer, tiles_textures, mainPlayer->getSpeed()/*players[0].getSpeed()*/);
         x_screen = dir_screen[0];
         y_screen = dir_screen[1];
 
@@ -279,10 +190,9 @@ void GameScreen::run() {
 
         std::vector<EnemyDTO> enemiesSnapshot = snapshot->getEnemies();
         if (enemiesSnapshot.size() > 0) {
-            this->enemies.draw_enemy(window, renderer, enemy, enemiesSnapshot, *mainPlayer/*players[0]*/, x_screen, y_screen);
+            this->enemies.draw_enemy(window, renderer, enemies_textures, enemiesSnapshot, *mainPlayer/*players[0]*/, x_screen, y_screen);
         }
-        std::cout << "[GAME SCREEN] Enemies drawn" << std::endl;
-
+        
         std::vector<BulletDTO> bullets = snapshot->getBullets();
         if (bullets.size() > 0) {
             this->proj.draw_projectile(window, renderer, projectile, bullets);

@@ -31,9 +31,11 @@ public:
 
     std::string getPath(EnemyType enemy_type);
 
+    std::map<EnemyType, std::unique_ptr<SDL2pp::Texture>> getEnemiesTextures(SDL2pp::Renderer& renderer);
+
     std::list<RectangularSprite>::iterator enemy_img_coords(EnemyType enemy_type, EnemyStateEntity mov_type, int enemyId);
 
-    void draw_enemy(SDL2pp::Window& window, SDL2pp::Renderer& renderer, SDL2pp::Texture& enemy, std::vector<EnemyDTO> enemies, PlayerDTO& player, int dir_x_screen, int dir_y_screen);
+    void draw_enemy(SDL2pp::Window& window, SDL2pp::Renderer& renderer, std::map<EnemyType, std::unique_ptr<SDL2pp::Texture>>& textures_enemies, std::vector<EnemyDTO> enemies, PlayerDTO& player, int dir_x_screen, int dir_y_screen);
 };
 
 #endif  // CLIENT_ENEMY_H_

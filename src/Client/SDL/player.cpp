@@ -9,6 +9,9 @@
 #include <iterator>
 #include <vector>
 #include <SDL2pp/SDL2pp.hh>
+#include <SDL2/SDL.h>
+#include <SDL2/SDL_image.h>
+
 
 #include <iostream>
 
@@ -181,6 +184,28 @@ std::string Player::getPath(CharacterType character) {
 }
 
 
+std::map<CharacterType, std::unique_ptr<SDL2pp::Texture>> Player::getPlayersTextures(SDL2pp::Renderer& renderer) {
+	std::map<CharacterType, std::unique_ptr<SDL2pp::Texture>> pjs_textures;
+	
+	std::tuple<int, int, int> pjsColorKey = ClientConfig::getJazzColourKey();
+    SDL_Surface* jazz_surf = IMG_Load(getPath(CharacterType::JAZZ).c_str());
+    SDL2pp::Surface jazzSurface(jazz_surf);
+    jazzSurface.SetColorKey(true, SDL_MapRGB(jazzSurface.Get()->format, std::get<0>(pjsColorKey), std::get<1>(pjsColorKey), std::get<2>(pjsColorKey)));
+    pjs_textures[CharacterType::JAZZ] = std::make_unique<SDL2pp::Texture>(renderer, jazzSurface);
+
+    SDL_Surface* lori_surf = IMG_Load(getPath(CharacterType::LORI).c_str());
+    SDL2pp::Surface loriSurface(lori_surf);
+    loriSurface.SetColorKey(true, SDL_MapRGB(loriSurface.Get()->format, std::get<0>(pjsColorKey), std::get<1>(pjsColorKey), std::get<2>(pjsColorKey)));
+	pjs_textures[CharacterType::LORI] = std::make_unique<SDL2pp::Texture>(renderer, loriSurface);
+
+    SDL_Surface* spaz_surf = IMG_Load(getPath(CharacterType::SPAZ).c_str());
+    SDL2pp::Surface spazSurface(spaz_surf);
+    spazSurface.SetColorKey(true, SDL_MapRGB(spazSurface.Get()->format, std::get<0>(pjsColorKey), std::get<1>(pjsColorKey), std::get<2>(pjsColorKey)));
+    pjs_textures[CharacterType::SPAZ] = std::make_unique<SDL2pp::Texture>(renderer, spazSurface);
+
+	return pjs_textures;
+}
+
 std::list<RectangularSprite>::iterator Player::img_coords(CharacterType character, CharacterStateEntity mov_type, int pjId) {
 	if (mov_type != this->last_move[pjId]) {
 		this->counts[pjId][mov_type] = 0;
@@ -197,7 +222,7 @@ std::list<RectangularSprite>::iterator Player::img_coords(CharacterType characte
 	return it;
 }
 
-void Player::draw_players(SDL2pp::Window& window, SDL2pp::Renderer& renderer, std::map<CharacterType, SDL2pp::Texture*>& pjs_textures, std::vector<PlayerDTO>& players, int dir_x_screen, int dir_y_screen, uint32_t mainPlayerId) {
+void Player::draw_players(SDL2pp::Window& window, SDL2pp::Renderer& renderer, std::map<CharacterType, std::unique_ptr<SDL2pp::Texture>>& pjs_textures, std::vector<PlayerDTO>& players, int dir_x_screen, int dir_y_screen, uint32_t mainPlayerId) {
 	int i = 0;
 	int main_pj_x = 0;
 	int main_pj_y = 0;
