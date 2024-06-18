@@ -30,14 +30,12 @@
 GameScreen::GameScreen(GameController& controller, uint8_t playerId):
         controller(controller),
         mainPlayerId(playerId),
-        pj(1),
         level(0),
         proj(0),
         soundControl(0) {}
-/* 
-GameScreen::GameScreen(GameController& controller, uint8_t playerId, CharacterType pjId, uint8_t mapId):
-        controller(controller), mainPlayerId(playerId),  pj(pjId), level(mapId), proj(0), soundControl(mapId) {}
- */
+ 
+GameScreen::GameScreen(GameController& controller, uint8_t playerId, uint8_t mapId):
+        controller(controller), mainPlayerId(playerId), level(mapId), proj(0), soundControl(mapId) {}
 
 std::unique_ptr<PlayerDTO> GameScreen::searchMainPlayer(std::vector<PlayerDTO>& players) {
     int i = 0;

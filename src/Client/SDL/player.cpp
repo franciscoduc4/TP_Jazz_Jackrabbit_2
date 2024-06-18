@@ -15,13 +15,13 @@
 
 #include <iostream>
 
-Player::Player(int character) {
+Player::Player() {
 	this->width = ClientConfig::getPlayerWidth();
 	this->height = ClientConfig::getPlayerHeight();
 	this->flip = 0;
 	this->init = false;
 	
-	this->image_path[CharacterType::JAZZ] = ClientConfig::getJazzFile();//"../assets/Characters/Jazz.png";
+	this->image_path[CharacterType::JAZZ] = ClientConfig::getJazzFile();
 	
 	std::vector<std::vector<int>> idle_sprites = ClientConfig::getJazzIdleSprites();
 	for (int i = 0; i < idle_sprites.size(); i++) {

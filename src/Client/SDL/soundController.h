@@ -19,7 +19,7 @@ class SoundController {
     //Mix_Chunk *playerHurt;
 
 public:
-    SoundController(int leveltype);
+    SoundController(uint8_t leveltype);
 
     void play_backsound();
 

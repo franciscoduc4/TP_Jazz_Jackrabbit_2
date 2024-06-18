@@ -31,6 +31,8 @@ public:
     static std::string getSpazFile();
     static std::string getLoriFile();
     static std::string getTurtleFile();
+    static std::string getSchguardFile();
+    static std::string getYellowmonsFile();
     static std::string getSFXFile();
     static std::string getItemsFile();
     static std::string getInterfaceFontFile();
@@ -66,10 +68,14 @@ public:
     static std::vector<std::vector<int>> getTurtleAttackingSprites();
     static std::vector<std::vector<int>> getTurtleDyingSprites();
     // Schwartzenguard
+    static int getSchWidth();
+    static int getSchHeight();
     static std::vector<std::vector<int>> getSchwartzenguardWalkingSprites();
     static std::vector<std::vector<int>> getSchwartzenguardAttackingSprites();
     static std::vector<std::vector<int>> getSchwartzenguardDyingSprites();
     // YellowMons
+    static int getYellowMonsWidth();
+    static int getYellowMonsHeight();
     static std::vector<std::vector<int>> getYellowMonsWalkingSprites();
     static std::vector<std::vector<int>> getYellowMonsAttackingSprites();
     static std::vector<std::vector<int>> getYellowMonsDyingSprites();

@@ -12,11 +12,6 @@
 
 #include "enemyweapon.h"
 
-enum type_enemies { Turtle, Schartzen, YellowMons };
-enum actions { Walk, Attack, Death };
-
-/*Solo que caminen*/
-
 /*
 ENEMY_IDLE,              
 ENEMY_JUMPING,           
@@ -51,89 +46,47 @@ Enemy::Enemy() {
     }
 
 
-	/*
-    this->path = "../assets/Enemies/Schwartzenguard.png";
+    this->enemies_path[EnemyType::SCHWARZENGUARD] = ClientConfig::getSchguardFile();
+	
+    std::vector<int> sch_enemy_w_h{ClientConfig::getSchWidth(), ClientConfig::getSchHeight()};
+    this->width_height[EnemyType::SCHWARZENGUARD] = sch_enemy_w_h;
+	
+    std::vector<std::vector<int>> sch_walking_sprites = ClientConfig::getSchwartzenguardWalkingSprites();
+    for (int i = 0; i < sch_walking_sprites.size(); i++) {
+        this->sprites[EnemyType::SCHWARZENGUARD][EnemyStateEntity::ENEMY_WALKING].push_back(RectangularSprite(sch_walking_sprites[i]));
+    }
 
-    this->draw_width = 60;
-    this->draw_height = 100;
-    this->speed = 2;
+    std::vector<std::vector<int>> sch_attacking_sprites = ClientConfig::getSchwartzenguardAttackingSprites();
+    for (int i = 0; i < sch_attacking_sprites.size(); i++) {
+        this->sprites[EnemyType::SCHWARZENGUARD][EnemyStateEntity::ENEMY_ATTACKING].push_back(RectangularSprite(sch_attacking_sprites[i]));
+    }                
 
-    this->sprites[Walk].push_back(RectangularSprite(11, 6, 65, 56));
-    this->sprites[Walk].push_back(RectangularSprite(79, 6, 59, 56));
-    this->sprites[Walk].push_back(RectangularSprite(142, 6, 46, 56));
-    this->sprites[Walk].push_back(RectangularSprite(190, 6, 53, 56));
-    this->sprites[Walk].push_back(RectangularSprite(248, 6, 66, 56));
-    this->sprites[Walk].push_back(RectangularSprite(316, 6, 73, 56));
-    this->sprites[Walk].push_back(RectangularSprite(391, 6, 61, 56));
-    this->sprites[Walk].push_back(RectangularSprite(452, 6, 53, 56));
-    this->sprites[Walk].push_back(RectangularSprite(505, 6, 50, 56));
-    this->sprites[Walk].push_back(RectangularSprite(555, 6, 67, 56));
+    std::vector<std::vector<int>> sch_dying_sprites = ClientConfig::getSchwartzenguardDyingSprites();
+    for (int i = 0; i < sch_dying_sprites.size(); i++) {
+        this->sprites[EnemyType::SCHWARZENGUARD][EnemyStateEntity::ENEMY_DEAD].push_back(RectangularSprite(sch_dying_sprites[i]));
+    }
+    
+    
+    this->enemies_path[EnemyType::YELLOWMON] = ClientConfig::getYellowmonsFile();
+	
+    std::vector<int> yellow_enemy_w_h{ClientConfig::getYellowMonsWidth(), ClientConfig::getYellowMonsHeight()};
+    this->width_height[EnemyType::YELLOWMON] = yellow_enemy_w_h;
+	
+    std::vector<std::vector<int>> yellow_walking_sprites = ClientConfig::getYellowMonsWalkingSprites();
+    for (int i = 0; i < yellow_walking_sprites.size(); i++) {
+        this->sprites[EnemyType::YELLOWMON][EnemyStateEntity::ENEMY_WALKING].push_back(RectangularSprite(yellow_walking_sprites[i]));
+    }
 
-    this->sprites[Attack].push_back(RectangularSprite(6, 67, 65, 60));
-    this->sprites[Attack].push_back(RectangularSprite(71, 67, 65, 60));
-    this->sprites[Attack].push_back(RectangularSprite(136, 67, 77, 60));
-    this->sprites[Attack].push_back(RectangularSprite(213, 67, 96, 60));
-    this->sprites[Attack].push_back(RectangularSprite(309, 67, 91, 60));
-    this->sprites[Attack].push_back(RectangularSprite(400, 67, 98, 60));
-    this->sprites[Attack].push_back(RectangularSprite(498, 67, 98, 60));
-    this->sprites[Attack].push_back(RectangularSprite(10, 127, 95, 76));
-    this->sprites[Attack].push_back(RectangularSprite(105, 127, 85, 76));
-    this->sprites[Attack].push_back(RectangularSprite(190, 127, 93, 76));
-    this->sprites[Attack].push_back(RectangularSprite(283, 127, 72, 76));
-    this->sprites[Attack].push_back(RectangularSprite(355, 127, 72, 76));
-    this->sprites[Attack].push_back(RectangularSprite(427, 127, 74, 76));
-    this->sprites[Attack].push_back(RectangularSprite(501, 127, 64, 76));
-    this->sprites[Attack].push_back(RectangularSprite(565, 127, 60, 76));
-    this->sprites[Attack].push_back(RectangularSprite(10, 221, 85, 48));
-    this->sprites[Attack].push_back(RectangularSprite(95, 221, 61, 48));
+    std::vector<std::vector<int>> yellow_attacking_sprites = ClientConfig::getYellowMonsAttackingSprites();
+    for (int i = 0; i < yellow_attacking_sprites.size(); i++) {
+        this->sprites[EnemyType::YELLOWMON][EnemyStateEntity::ENEMY_ATTACKING].push_back(RectangularSprite(yellow_attacking_sprites[i]));
+    }                
 
+    std::vector<std::vector<int>> yellow_dying_sprites = ClientConfig::getYellowMonsDyingSprites();
+    for (int i = 0; i < yellow_dying_sprites.size(); i++) {
+        this->sprites[EnemyType::YELLOWMON][EnemyStateEntity::ENEMY_DEAD].push_back(RectangularSprite(yellow_dying_sprites[i]));
+    }
 
-    this->sprites[Dead].push_back(RectangularSprite(384, 207, 41, 61));
-    this->sprites[Dead].push_back(RectangularSprite(426, 207, 44, 61));
-    this->sprites[Dead].push_back(RectangularSprite(470, 207, 61, 61));
-    this->sprites[Dead].push_back(RectangularSprite(531, 207, 56, 61));
-    this->sprites[Dead].push_back(RectangularSprite(531, 207, 56, 61));
-    this->sprites[Dead].push_back(RectangularSprite(531, 207, 56, 61));
-    this->sprites[Dead].push_back(RectangularSprite(531, 207, 56, 61));
-    this->sprites[Dead].push_back(RectangularSprite(531, 207, 56, 61));
-	*/
-
-	/*
-    this->path = "../assets/Enemies/Enemies.png";
-
-    this->draw_width = 30;
-    this->draw_height = 50;
-    this->speed = 5;
-
-    this->sprites[Walk].push_back(RectangularSprite(14, 9, 70, 66));
-    this->sprites[Walk].push_back(RectangularSprite(93, 9, 62, 66));
-    this->sprites[Walk].push_back(RectangularSprite(161, 9, 53, 66));
-    this->sprites[Walk].push_back(RectangularSprite(214, 9, 77, 66));
-    this->sprites[Walk].push_back(RectangularSprite(300, 9, 58, 66));
-    this->sprites[Walk].push_back(RectangularSprite(365, 9, 60, 66));
-    this->sprites[Walk].push_back(RectangularSprite(430, 9, 67, 66));
-    this->sprites[Walk].push_back(RectangularSprite(505, 9, 70, 66));
-    this->sprites[Walk].push_back(RectangularSprite(593, 9, 73, 66));
-    this->sprites[Walk].push_back(RectangularSprite(675, 9, 70, 66));
-    this->sprites[Walk].push_back(RectangularSprite(750, 9, 75, 66));
-    this->sprites[Walk].push_back(RectangularSprite(830, 9, 77, 66));
-
-    this->sprites[Attack].push_back(RectangularSprite(355, 75, 45, 78));
-    this->sprites[Attack].push_back(RectangularSprite(410, 75, 60, 78));
-    this->sprites[Attack].push_back(RectangularSprite(475, 75, 62, 78));
-    this->sprites[Attack].push_back(RectangularSprite(542, 75, 60, 78));
-    this->sprites[Attack].push_back(RectangularSprite(614, 75, 70, 78));
-    this->sprites[Attack].push_back(RectangularSprite(695, 75, 46, 78));
-
-    this->sprites[Dead].push_back(RectangularSprite(917, 10, 33, 63));
-    this->sprites[Dead].push_back(RectangularSprite(953, 10, 36, 63));
-    this->sprites[Dead].push_back(RectangularSprite(990, 10, 35, 63));
-    this->sprites[Dead].push_back(RectangularSprite(1030, 10, 35, 63));
-    this->sprites[Dead].push_back(RectangularSprite(1030, 10, 35, 63));
-    this->sprites[Dead].push_back(RectangularSprite(1030, 10, 35, 63));
-    this->sprites[Dead].push_back(RectangularSprite(1030, 10, 35, 63));
-    this->sprites[Dead].push_back(RectangularSprite(1030, 10, 35, 63));
-	*/
 }
 
 std::string Enemy::getPath(EnemyType enemy_type) { return this->enemies_path[enemy_type]; }

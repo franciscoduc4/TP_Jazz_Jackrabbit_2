@@ -78,8 +78,9 @@ void Client::start() {
         CharacterType pj = qtResult.first.getCharacter();
         uint8_t mapId = qtResult.first.getMap();
         GameScreen game(this->gameController, this->playerId, pj, mapId);
-         */        
-        GameScreen game(this->gameController, this->playerId);
+         */     
+        uint8_t mapId = 0;   
+        GameScreen game(this->gameController, this->playerId, mapId);
         game.run();
     } while (clientJoinedGame);
 
