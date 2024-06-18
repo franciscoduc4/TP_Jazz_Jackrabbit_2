@@ -7,7 +7,8 @@
 #include "ui_gamelist.h"
 #include "waitingroom.h"
 
-GameList::GameList(QWidget* parent, LobbyController& controller, LobbyMessage& msg, bool& clientJoinedGame):
+GameList::GameList(QWidget* parent, LobbyController& controller, LobbyMessage& msg,
+                   bool& clientJoinedGame):
         QDialog(parent),
         ui(new Ui::GameList),
         controller(controller),
@@ -24,12 +25,16 @@ GameList::GameList(QWidget* parent, LobbyController& controller, LobbyMessage& m
     ui->centralwidget->setStyleSheet(styleSheet);
     ui->labelTitle->setAttribute(Qt::WA_TranslucentBackground);
 
+    if (this->msg.getLobbyCmd() != Command::GAMES_LIST) {
+        this->msg.setLobbyCmd(Command::GAMES_LIST);
+    }
+
     buttonGroup = new QButtonGroup(this);
     connect(buttonGroup, &QButtonGroup::idClicked, this, &GameList::onGameSelected);
 
-    timer = new QTimer(this);
-    connect(timer, &QTimer::timeout, this, &GameList::updateGameList);
-    timer->start(ClientConfig::getGamesListRefreshInterval());
+    // timer = new QTimer(this);
+    // connect(timer, &QTimer::timeout, this, &GameList::updateGameList);
+    // timer->start(ClientConfig::getGamesListRefreshInterval());
 }
 
 GameList::~GameList() { delete ui; }
@@ -39,15 +44,16 @@ void GameList::updateGameList() {
     this->controller.sendRequest(this->msg);
     // Receive available games
     std::unordered_map<uint8_t, GameInfo> gamesList = this->controller.getGamesList();
-    std::cout << "[GAME LIST] Number of games in map: " << static_cast<int>(gamesList.size()) << std::endl;
+    std::cout << "[GAME LIST] Number of games in map: " << static_cast<int>(gamesList.size())
+              << std::endl;
     QLayoutItem* item;
-    while ((item = ui->listGamesWidget->layout()->takeAt(0)) != nullptr) {
-        delete item->widget();
-        delete item;
-    }
+    // while ((item = ui->listGamesWidget->layout()->takeAt(0)) != nullptr) {
+    //     delete item->widget();
+    //     delete item;
+    // }
     buttonGroup->setExclusive(false);
     QList<QAbstractButton*> buttons = buttonGroup->buttons();
-    for (QAbstractButton* button : buttons) {
+    for (QAbstractButton* button: buttons) {
         buttonGroup->removeButton(button);
     }
     buttonGroup->setExclusive(true);
@@ -63,15 +69,16 @@ void GameList::updateGameList() {
     } else {
         ui->btnJoin->show();
 
-        for (const auto& game : gamesList) {
-            auto* button = new QPushButton(QString::fromStdString(game.second.getGameName()) + 
+        for (const auto& game: gamesList) {
+            auto* button =
+                    new QPushButton(QString::fromStdString(game.second.getGameName()) +
                                     " Map: " + QString::fromStdString(game.second.getMapName()) +
-                                    " (" + QString::number(game.second.getCurrentPlayers()) +
-                                    "/" + QString::number(game.second.getMaxPlayers()) + ")");
+                                    " (" + QString::number(game.second.getCurrentPlayers()) + "/" +
+                                    QString::number(game.second.getMaxPlayers()) + ")");
             button->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
             buttonGroup->addButton(button, game.first);
-            connect(button, &QPushButton::clicked, 
-                this, [this, game](){ this->onGameSelected(game.first); });
+            connect(button, &QPushButton::clicked, this,
+                    [this, game]() { this->onGameSelected(game.first); });
             layout->addWidget(button);
         }
     }

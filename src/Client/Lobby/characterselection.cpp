@@ -33,22 +33,20 @@ CharacterSelection::CharacterSelection(QWidget* parent, LobbyController& control
     std::cout << "[CHARACTER SELECTION] Stylesheet applied" << std::endl;
 }
 
-CharacterSelection::~CharacterSelection() {
-    delete ui;
-}
+CharacterSelection::~CharacterSelection() { delete ui; }
 
 void CharacterSelection::on_btnChoose_clicked() {
     this->msg.setCharacter(characterSelectionWidget->getSelectedCharacter());
-    std::cout << "[Character Selection] Selected character: " 
-        << static_cast<int>(this->msg.getCharacter()) << std::endl;
-    
+    std::cout << "[Character Selection] Selected character: "
+              << static_cast<int>(this->msg.getCharacter()) << std::endl;
+
     this->hide();
 
     if (this->msg.getLobbyCmd() == Command::CREATE_GAME) {
         std::cout << "[CHARACTER SELECTION] Creating game, requesting game ID" << std::endl;
         // Send Request with CREATE_GAME
         this->controller.sendRequest(this->msg);
-        // Receive Create Game 
+        // Receive Create Game
         std::pair<bool, GameInfo> cgAck = this->controller.recvResponse();
         // Receive Game Update
         std::pair<bool, GameInfo> guAck = this->controller.recvResponse();
@@ -85,6 +83,7 @@ void CharacterSelection::on_btnChoose_clicked() {
         this->msg.setLobbyCmd(Command::GAMES_LIST);
         auto gl = new GameList(this, this->controller, this->msg, this->clientJoinedGame);
         gl->show();
+        gl->updateGameList();
         std::cout << "[CHARACTER SELECTION] GameList dialog shown" << std::endl;
     } else {
         std::cout << "[CHARACTER SELECTION] Unexpected command" << std::endl;
