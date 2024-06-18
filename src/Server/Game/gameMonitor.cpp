@@ -39,10 +39,13 @@ void GameMonitor::createGame(uint8_t playerId, uint8_t mapId, GameMode gameMode,
     queueMonitor.broadcast(gameId, std::move(dto));
     std::cout << "[GM] Broadcasted CreateGameDTO" << std::endl;
 
+
+    /* GameInfo gi(gameId, gameName, maxPlayers, 1);
     GameInfo gi(gameId, gameName, maxPlayers, 1, mapId);
     auto dto2 = std::make_unique<GameUpdateDTO>(gi);
     std::cout << "[GM] Created GameUpdateDTO" << std::endl;
-    queueMonitor.broadcast(gameId, std::move(dto2));
+    queueMonitor.broadcast(gameId, std::move(dto2)); 
+    */
 }
 
 void GameMonitor::joinGame(uint8_t playerId, uint8_t gameId, CharacterType characterType,

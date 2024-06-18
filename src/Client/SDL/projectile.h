@@ -8,6 +8,7 @@
 #include <map>
 #include <list>
 #include <vector>
+#include <memory>
 
 class Projectile {
 	int type;
@@ -27,8 +28,10 @@ class Projectile {
 public:
 	explicit Projectile(int p_type);
 
+	std::unique_ptr<SDL2pp::Texture> getProjectilesTextures(SDL2pp::Renderer& renderer);
+
 	std::list<RectangularSprite>::iterator img_coords(uint32_t bulletId);
 	
-	void draw_projectile(SDL2pp::Window& window, SDL2pp::Renderer& renderer, SDL2pp::Texture& projectile, std::vector<BulletDTO>& bullets);
+	void draw_projectile(SDL2pp::Window& window, SDL2pp::Renderer& renderer, std::unique_ptr<SDL2pp::Texture>& projectile, std::vector<BulletDTO>& bullets);
 };
 #endif

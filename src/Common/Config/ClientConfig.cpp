@@ -65,6 +65,14 @@ std::string ClientConfig::getTurtleFile() {
     return getInstance()->root["TURTLE_FILE"].as<std::string>();
 }
 
+std::string ClientConfig::getSchguardFile() {
+    return getInstance()->root["SCH_GUARD_FILE"].as<std::string>();
+}
+
+std::string ClientConfig::getYellowmonsFile() {
+    return getInstance()->root["YELLOWMONS_FILE"].as<std::string>();
+}
+
 std::string ClientConfig::getSFXFile() { return getInstance()->root["SFX_FILE"].as<std::string>(); }
 
 std::string ClientConfig::getItemsFile() {
@@ -244,6 +252,11 @@ std::vector<std::vector<int>> ClientConfig::getTurtleDyingSprites() {
 }
 
 // Schwartzenguard
+
+int ClientConfig::getSchWidth() { return getInstance()->root["SCH_WIDTH"].as<int>(); }
+
+int ClientConfig::getSchHeight() { return getInstance()->root["SCH_HEIGHT"].as<int>(); }
+
 std::vector<std::vector<int>> ClientConfig::getSchwartzenguardWalkingSprites() {
     YAML::Node schwartzenguardWalkingSpritesNode =
             getInstance()->root["SCHWARTZENGUARD_WALKING_SPRITES"];
@@ -278,6 +291,10 @@ std::vector<std::vector<int>> ClientConfig::getSchwartzenguardDyingSprites() {
 }
 
 // YellowMons
+int ClientConfig::getYellowMonsWidth() { return getInstance()->root["YELLOWMONS_WIDTH"].as<int>(); }
+
+int ClientConfig::getYellowMonsHeight() { return getInstance()->root["YELLOWMONS_HEIGHT"].as<int>(); }
+
 std::vector<std::vector<int>> ClientConfig::getYellowMonsWalkingSprites() {
     YAML::Node yellowMonsWalkingSpritesNode = getInstance()->root["YELLOWMONS_WALKING_SPRITES"];
     std::vector<std::vector<int>> yellowMonsWalkingSprites;

@@ -21,11 +21,6 @@
 
 class GameScreen {
     Player pj;
-    /*
-    Enemy turtle;
-    Enemy schartz_guard;
-    Enemy yellowM;
-    */
     Enemy enemies;
     Points points;
     Level level;
@@ -38,6 +33,8 @@ class GameScreen {
 
 public:
     GameScreen(GameController& controller, uint8_t playerId);
+
+    GameScreen(GameController& controller, uint8_t playerId, uint8_t mapId);
 
     std::unique_ptr<PlayerDTO> searchMainPlayer(std::vector<PlayerDTO>& players);
 
