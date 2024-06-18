@@ -14,7 +14,7 @@ WaitingRoom::WaitingRoom(QWidget* parent, LobbyController& controller, LobbyMess
         clientJoinedGame(clientJoinedGame) {
     ui->setupUi(this);
 
-    clientJoinedGame = true; // Al llegar acá y no poder volver atrás, se asume que el cliente se unió al juego
+    this->clientJoinedGame = true; // Al llegar acá y no poder volver atrás, se asume que el cliente se unió al juego
 
     // Se crea un hilo para que el cliente pueda recibir actualizaciones de la cantidad de jugadores en la sala
     updateThread = QThread::create([this] { this->pollForUpdates(); });

@@ -6,6 +6,9 @@
 #include <QMutex>
 #include <QWaitCondition>
 
+#include <utility>
+#include <memory>
+
 #include "../../Common/Types/lobbyMessage.h"
 #include "../client.h"
 

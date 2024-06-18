@@ -25,7 +25,7 @@ Welcome::~Welcome() { delete ui; }
 
 
 void Welcome::on_btnIngresar_clicked() {
-    QString playerName = ui->inputName->text();
+    QString playerName = ui->inputName->text().trimmed();
 
     if (playerName.isEmpty()) {
         QMessageBox::warning(this, "Error", "Ingrese su nombre para ingresar.");
@@ -33,12 +33,6 @@ void Welcome::on_btnIngresar_clicked() {
     }
 
     this->msg.setPlayerName(playerName.toStdString());
-
-    /*this->hide();
-
-    Lobby lobby(this, this->controller, this->msg, this->clientJoinedGame);
-    lobby.setModal(true);
-    lobby.exec();*/
 
     auto lobby = new Lobby(this, this->controller, this->msg, this->clientJoinedGame);
     this->hide();

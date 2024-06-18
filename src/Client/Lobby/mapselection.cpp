@@ -15,8 +15,12 @@ MapSelection::MapSelection(QWidget* parent, LobbyController& controller, LobbyMe
         buttonGroup(new QButtonGroup(this)) {
     ui->setupUi(this);
 
+    if (this->msg.getLobbyCmd() != Command::MAPS_LIST) {
+        this->msg.setLobbyCmd(Command::MAPS_LIST);
+    }
+    // Send request to get maps
     this->controller.sendRequest(this->msg);
-
+    // Receive response
     std::unordered_map<uint8_t, std::string> maps = this->controller.getMaps();
 
     if (maps.empty()) {
@@ -72,11 +76,11 @@ MapSelection::MapSelection(QWidget* parent, LobbyController& controller, LobbyMe
 
 MapSelection::~MapSelection() {
     delete ui;
-    std::cout << "[MAP SELECTION] Destructor called, UI deleted" << std::endl;
 }
 
 void MapSelection::on_btnChoose_clicked() {
-    if (buttonGroup->checkedId() == -1) {
+    QAbstractButton* button = buttonGroup->checkedButton();
+    if (button == nullptr) {
         QMessageBox::information(this, "Error", "Seleccione un mapa para continuar.");
     } else {
         this->msg.setMap(buttonGroup->checkedId());

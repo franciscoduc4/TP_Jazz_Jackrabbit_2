@@ -5,11 +5,13 @@
 #include <memory>
 #include <unordered_map>
 #include <utility>
+#include <string>
 
 #include "../Protocol/deserializer.h"
 #include "../Protocol/serializer.h"
 #include "DTO/createGame.h"
 #include "DTO/mapsList.h"
+#include "DTO/gameUpdate.h"
 #include "DTO/startGame.h"
 
 class LobbyController {
@@ -26,13 +28,14 @@ public:
     // UPDATES
     bool hasGameUpdates(std::unique_ptr<DTO>& dto);
     int processGameUpdate(std::unique_ptr<DTO>& dto);
+    bool canStartGame();
 
     // OUTBOUND METHODS
     void sendRequest(const LobbyMessage& msg);
     void startGame(const LobbyMessage& msg);
 
     // INBOUND METHODS
-    bool recvResponse();
+    std::pair<bool, GameInfo> recvResponse();
     bool recvStartGame();
     uint8_t recvCreateGame();
     std::unordered_map<uint8_t, std::string> getMaps();

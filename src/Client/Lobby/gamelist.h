@@ -4,6 +4,10 @@
 #include <QButtonGroup>
 #include <QDialog>
 #include <QMessageBox>
+#include <QTimer>
+
+#include <utility>
+#include <string>
 
 #include "../../Common/Config/ClientConfig.h"
 #include "../../Common/Types/lobbyMessage.h"
@@ -39,6 +43,7 @@ private:
     QButtonGroup* buttonGroup;
     uint8_t selectedGameId;
     QString selectedGameName;
+    uint8_t selectedGameMapId;
 };
 
 #endif  // GAMELIST_H
