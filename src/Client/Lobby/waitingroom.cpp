@@ -21,6 +21,10 @@ WaitingRoom::WaitingRoom(QWidget* parent, LobbyController& controller, LobbyMess
     connect(this, &WaitingRoom::destroyed, updateThread, &QThread::quit);
     updateThread->start();
 
+    GameInfo selected = this->controller.getSelectedGame();
+    QString numPlayers = QString::number(selected.getCurrentPlayers());
+    ui->numPlayers->setText(numPlayers);
+
     QString gameName = QString::fromStdString(this->msg.getGameName());
     ui->labelGameName->setText(gameName);
     std::cout << "[WAITING ROOM] Game name set: " << gameName.toStdString() << std::endl;

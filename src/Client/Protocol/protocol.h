@@ -17,6 +17,7 @@
 #include "../../Common/DTO/gamesList.h"
 #include "../../Common/DTO/startGame.h"
 #include "../../Common/DTO/createGame.h"
+#include "../../Common/DTO/gameUpdate.h"
 
 // Types
 #include "../../Common/Types/command.h"

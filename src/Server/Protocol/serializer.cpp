@@ -73,6 +73,11 @@ void Serializer::sendCommand(const std::unique_ptr<CommandDTO> dto, bool& wasClo
 
 void Serializer::insertGameInfoToBuffer(std::vector<char>& buffer, const GameInfo& gameInfo) {
     std::cout << "[SERVER SERIALIZE] Inserting game info" << std::endl;
+
+    uint8_t gameId = gameInfo.getGameId();
+    const unsigned char* p = reinterpret_cast<const unsigned char*>(&gameId);
+    buffer.insert(buffer.end(), p, p + sizeof(uint8_t));
+
     uint8_t nameLength = gameInfo.name.length();
     const unsigned char* np = reinterpret_cast<const unsigned char*>(&nameLength);
     buffer.insert(buffer.end(), np, np + sizeof(uint8_t));
@@ -87,10 +92,16 @@ void Serializer::insertGameInfoToBuffer(std::vector<char>& buffer, const GameInf
     const unsigned char* cp = reinterpret_cast<const unsigned char*>(&currentPlayers);
     buffer.insert(buffer.end(), cp, cp + sizeof(uint8_t));
 
+    uint8_t mapId = gameInfo.mapId;
+    const unsigned char* mip = reinterpret_cast<const unsigned char*>(&mapId);
+    buffer.insert(buffer.end(), mip, mip + sizeof(uint8_t));
+
+    uint8_t mapNameLength = gameInfo.mapName.length();
+    const unsigned char* mnp = reinterpret_cast<const unsigned char*>(&mapNameLength);
+    buffer.insert(buffer.end(), mnp, mnp + sizeof(uint8_t));
+
     std::string mapName = gameInfo.mapName;
     uint8_t mapLength = mapName.length();
-    buffer.insert(buffer.end(), reinterpret_cast<const unsigned char*>(&mapLength),
-                    reinterpret_cast<const unsigned char*>(&mapLength) + sizeof(uint8_t));
     buffer.insert(buffer.end(), mapName.begin(), mapName.end());
 }
 

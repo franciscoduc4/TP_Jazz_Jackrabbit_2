@@ -16,15 +16,18 @@ void ReceiverThread::receiveDTOByType(const char& dtoTypeChar) {
     auto dtoType = static_cast<DTOType>(dtoTypeChar);
     std::unique_ptr<DTO> dto = nullptr;
     switch (dtoType) {
-        case DTOType::GAME_DTO:
+        case DTOType::GAME_DTO: {
             std::cout << "[CLIENT RECEIVER] Receiving game DTO." << std::endl;
             this->protocol.receiveGameDTO(dto);
+            this->deserializer.deserialize_gameMsg(dto);
             break;
-        case DTOType::COMMAND_DTO:
+        }
+        case DTOType::COMMAND_DTO: {
             std::cout << "[CLIENT RECEIVER] Receiving command DTO." << std::endl;
             this->protocol.receiveCommandDTO(dto);
             this->deserializer.deserialize_lobbyMsg(dto);
             break;
+        }
         default:
             std::cout << "[CLIENT RECEIVER] Unknown DTO type received." << std::endl;
             break;

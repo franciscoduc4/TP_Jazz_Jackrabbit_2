@@ -29,6 +29,7 @@ public:
     bool hasGameUpdates(std::unique_ptr<DTO>& dto);
     int processGameUpdate(std::unique_ptr<DTO>& dto);
     bool canStartGame();
+    GameInfo getSelectedGame();
 
     // OUTBOUND METHODS
     void sendRequest(const LobbyMessage& msg);

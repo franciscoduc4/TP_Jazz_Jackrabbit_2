@@ -31,6 +31,9 @@ bool LobbyController::canStartGame() {
     return this->selected.getCurrentPlayers() == this->selected.getMaxPlayers();
 }
 
+GameInfo LobbyController::getSelectedGame() {
+    return this->selected;
+}
 
 // Outbound methods
 void LobbyController::sendRequest(const LobbyMessage& msg) {
@@ -134,7 +137,7 @@ std::unordered_map<uint8_t, GameInfo>& LobbyController::getGamesList() {
     if (!result) {
         return this->games;
     }
-    GamesListDTO* gamesList = dynamic_cast<GamesListDTO*>(dto.get());
+    auto* gamesList = dynamic_cast<GamesListDTO*>(dto.get());
     this->games = std::move(gamesList->getGames());
     return this->games;
     // try {
