@@ -57,9 +57,7 @@ WaitingRoom::WaitingRoom(QWidget* parent, LobbyController& controller, LobbyMess
     ui->numPlayers->setAttribute(Qt::WA_TranslucentBackground);
     ui->maxPlayers->setAttribute(Qt::WA_TranslucentBackground);
 
-    this->msg.setLobbyCmd(Command::START_GAME);
-    this->controller.sendRequest(this->msg);
-    this->controller.recvStartGame();
+    connect(this, &WaitingRoom::numPlayersUpdated, this, &WaitingRoom::updateNumPlayers);
 }
 
 void WaitingRoom::pollForUpdates() {
@@ -77,6 +75,18 @@ void WaitingRoom::pollForUpdates() {
 
 void WaitingRoom::updateNumPlayers(int numPlayers) {
     ui->numPlayers->setText(QString::number(numPlayers));
+    if (numPlayers == maxPlayers) {
+        this->msg.setLobbyCmd(Command::START_GAME);
+        this->controller.startGame(this->msg);
+        std::pair<bool, GameInfo> sgAck = this->recvMessage();
+        if (!sgAck.first) {
+            QMessageBox::warning(this, "Error", "No se pudo iniciar la partida.");
+            QCoreApplication::exit(37);
+            return;
+        }
+        QCoreApplication::exit(0);
+        return;
+    }
 }
 
 WaitingRoom::~WaitingRoom() {
