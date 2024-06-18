@@ -1,13 +1,13 @@
 #include "rfMissile.h"
 
 #include "../../../Common/Config/ServerConfig.h"
-#define CONFIG ServerConfig::getInstance()
+// #define CONFIG ServerConfig::getInstance()
 
 RFMissile::RFMissile():
-        bullets(CONFIG->getWeaponRFMissileBullets()),
-        maxBullets(CONFIG->getWeaponRFMissileBullets()),
-        damage(CONFIG->getWeaponRFMissileDamage()),
-        fireRate(CONFIG->getWeaponRFMissileFireRate()),
+        bullets(ServerConfig::getWeaponRFMissileBullets()),
+        maxBullets(ServerConfig::getWeaponRFMissileBullets()),
+        damage(ServerConfig::getWeaponRFMissileDamage()),
+        fireRate(ServerConfig::getWeaponRFMissileFireRate()),
         lastTimeShot(-1) {}
 
 void RFMissile::update(float time) {

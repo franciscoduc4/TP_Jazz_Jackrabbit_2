@@ -2,23 +2,23 @@
 
 #include "../gameMap.h"
 
-#define CONFIG ServerConfig::getInstance()
+// #define CONFIG ServerConfig::getInstance()
 
 Character::Character(GameMap& gameMap, Vector<uint8_t> pos, uint8_t playerId, CharacterType type,
                      float horizontalSpeed, float sprintSpeed, float verticalSpeed,
                      float jumpHeight, float shootCooldownTime):
-        Entity(pos, playerId, CONFIG->getCharacterInitialHealth(), Direction::RIGHT,
+        Entity(pos, playerId, ServerConfig::getCharacterInitialHealth(), Direction::RIGHT,
                EntityType::CHARACTER),
         type(type),
         gameMap(gameMap),
-        maxHealth(CONFIG->getCharacterInitialHealth()),
-        reviveTime(CONFIG->getCharacterReviveTime()),
-        maxRevived(CONFIG->getCharacterMaxRevived()),
-        movesPerCell(CONFIG->getCharacterMaxMovesPerCell()),
+        maxHealth(ServerConfig::getCharacterInitialHealth()),
+        reviveTime(ServerConfig::getCharacterReviveTime()),
+        maxRevived(ServerConfig::getCharacterMaxRevived()),
+        movesPerCell(ServerConfig::getCharacterMaxMovesPerCell()),
         timesRevived(0),
-        respawnTime(CONFIG->getCharacterRespawnTime()),
-        damageTime(CONFIG->getCharacterDamageTime()),
-        intoxicatedTime(CONFIG->getCharacterIntoxicatedTime()),
+        respawnTime(ServerConfig::getCharacterRespawnTime()),
+        damageTime(ServerConfig::getCharacterDamageTime()),
+        intoxicatedTime(ServerConfig::getCharacterIntoxicatedTime()),
         horizontalSpeed(horizontalSpeed),
         sprintSpeed(sprintSpeed),
         verticalSpeed(verticalSpeed),

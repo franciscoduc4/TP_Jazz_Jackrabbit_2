@@ -1,13 +1,13 @@
 #include "blaster.h"
 
 #include "../../../Common/Config/ServerConfig.h"
-#define CONFIG ServerConfig::getInstance()
+// #define CONFIG ServerConfig::getInstance()
 
 Blaster::Blaster():
-        bullets(CONFIG->getWeaponBlasterBullets()),
-        maxBullets(CONFIG->getWeaponBlasterBullets()),
-        damage(CONFIG->getWeaponBlasterDamage()),
-        fireRate(CONFIG->getWeaponBlasterFireRate()),
+        bullets(ServerConfig::getWeaponBlasterBullets()),
+        maxBullets(ServerConfig::getWeaponBlasterBullets()),
+        damage(ServerConfig::getWeaponBlasterDamage()),
+        fireRate(ServerConfig::getWeaponBlasterFireRate()),
         lastTimeShot(-1) {}
 
 void Blaster::update(float time) {

@@ -59,6 +59,7 @@ void Serializer::sendCommand(const std::unique_ptr<CommandDTO> dto, bool& wasClo
                       << std::endl;
             buffer = serializeGameUpdate(
                     std::make_unique<GameUpdateDTO>(static_cast<const GameUpdateDTO&>(*dto)));
+            break;
         default:
             std::cerr << "[SERVER SERIALIZER] Unknown command, nothing to serialize" << std::endl;
             return;
@@ -70,6 +71,7 @@ void Serializer::sendCommand(const std::unique_ptr<CommandDTO> dto, bool& wasClo
 }
 
 void Serializer::insertGameInfoToBuffer(std::vector<char>& buffer, const GameInfo& gameInfo) {
+    std::cout << "[SERVER SERIALIZE] Inserting game info" << std::endl;
     uint8_t nameLength = gameInfo.name.length();
     const unsigned char* np = reinterpret_cast<const unsigned char*>(&nameLength);
     buffer.insert(buffer.end(), np, np + sizeof(uint8_t));
@@ -155,6 +157,7 @@ std::vector<char> Serializer::serializeMapsList(const std::unique_ptr<MapsListDT
 }
 
 std::vector<char> Serializer::serializeGameUpdate(const std::unique_ptr<GameUpdateDTO>& dto) {
+    std::cout << "[SERVER SERIALIZER GU] Serializing game update" << std::endl;
     std::vector<char> buffer;
     GameInfo gameInfo = dto->getGameInfo();
     insertGameInfoToBuffer(buffer, gameInfo);
