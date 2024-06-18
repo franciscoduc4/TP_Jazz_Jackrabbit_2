@@ -5,6 +5,7 @@
 #include <QThread>
 #include <QMutex>
 #include <QWaitCondition>
+#include <QMessageBox>
 
 #include <utility>
 #include <memory>

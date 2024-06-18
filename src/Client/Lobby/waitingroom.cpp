@@ -75,10 +75,10 @@ void WaitingRoom::pollForUpdates() {
 
 void WaitingRoom::updateNumPlayers(int numPlayers) {
     ui->numPlayers->setText(QString::number(numPlayers));
-    if (numPlayers == maxPlayers) {
+    if (numPlayers == this->msg.getMaxPlayers()) {
         this->msg.setLobbyCmd(Command::START_GAME);
         this->controller.startGame(this->msg);
-        std::pair<bool, GameInfo> sgAck = this->recvMessage();
+        std::pair<bool, GameInfo> sgAck = this->controller.recvResponse();
         if (!sgAck.first) {
             QMessageBox::warning(this, "Error", "No se pudo iniciar la partida.");
             QCoreApplication::exit(37);
