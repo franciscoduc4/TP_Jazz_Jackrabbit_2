@@ -8,6 +8,14 @@
         <file>../assets/LobbyImages/Background.png</file>
         <file>../assets/LobbyImages/Continue.png</file>
         <file>../assets/LobbyImages/Load.png</file>
+        <!-- Spritesheets -->
+        <file>../assets/Characters/Jazz.png</file>
+        <file>../assets/Characters/Spaz.png</file>
+        <file>../assets/Characters/Lori.png</file>
+        <file>../assets/Enemies/TurtleEnemies.png</file>
+        <file>../assets/Enemies/Schwartzenguard.png</file>
+        <file>../assets/Enemies/Enemies.png</file>
+        <file>../assets/Miscellaneous/Items&amp;Objects.png</file>
     </qresource>
     <!-- Stylesheets -->
     <qresource prefix="/Styles">

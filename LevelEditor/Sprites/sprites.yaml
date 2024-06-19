@@ -1,0 +1,49 @@
+# Elements
+FULL_FLOOR: []
+LARGE_WOOD_FLOOR: []
+LEFT_LADDER: []
+LONG_PLATFORM: []
+RIGHT_LADDER: []
+SMALL_PLATFORM: []
+WOOD_FLOOR: []
+WOOD_LARGE_COLUMN: []
+TURTLE: [12, 56, 67, 56]
+SCHWARZENGUARD: [11, 6, 65, 56]
+YELLOWMON: [14, 9, 70, 66]
+GEM: [145, 1240, 31, 30]
+GOLD_COIN: [481, 1218, 27, 27]
+SILVER_COIN: [482, 1266, 27, 26]
+FOOD: []
+JAZZ: [0, 11, 38, 52]
+LORI: [0, 10, 45, 56]
+SPAZ: [0, 9, 38, 49]
+
+# Files
+JAZZ_FILE: "assets/Characters/Jazz.png"
+SPAZ_FILE: "assets/Characters/Spaz.png"
+LORI_FILE: "assets/Characters/Lori.png"
+TURTLE_FILE: "assets/Enemies/TurtleEnemies.png"
+SCH_GUARD_FILE: "assets/Enemies/Schwartzenguard.png"
+YELLOWMONS_FILE: "assets/Enemies/Enemies.png"
+ITEMS_FILE: "assets/Miscellaneous/Items&Objects.png"
+
+# Colour Keys
+JAZZ_FILE_CK: [44, 102, 150]
+SPAZ_FILE_CK: [44, 102, 150]
+LORI_FILE_CK: [44, 102, 150]
+TURTLE_FILE_CK: [0, 128, 255]
+SCH_GUARD_FILE_CK: [0, 128, 255]
+YELLOWMONS_FILE_CK: [0, 128, 255]
+ITEMS_FILE_CK: [0, 128, 255]
+
+# Sizes
+TURTLE_WIDTH: 50
+TURTLE_HEIGHT: 50
+SCH_WIDTH: 60
+SCH_HEIGHT: 100
+YELLOWMONS_WIDTH: 30
+YELLOWMONS_HEIGHT: 50
+PLAYER_WIDTH: 50
+PLAYER_HEIGHT: 80
+ITEMS_WIDTH: 20
+ITEMS_HEIGHT: 20
