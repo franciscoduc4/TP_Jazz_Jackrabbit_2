@@ -16,7 +16,8 @@ GameList::GameList(QWidget* parent, LobbyController& controller, LobbyMessage& m
         clientJoinedGame(clientJoinedGame),
         selectedGameId(-1),
         selectedGameName(""),
-        selectedGameMapId(-1) {
+        selectedGameMapId(-1),
+        gamesList({}) {
     ui->setupUi(this);
     QFile file(":/Lobby/Styles/gameslist.qss");
     file.open(QFile::ReadOnly);
@@ -32,9 +33,9 @@ GameList::GameList(QWidget* parent, LobbyController& controller, LobbyMessage& m
     buttonGroup = new QButtonGroup(this);
     connect(buttonGroup, &QButtonGroup::idClicked, this, &GameList::onGameSelected);
 
-    // timer = new QTimer(this);
-    // connect(timer, &QTimer::timeout, this, &GameList::updateGameList);
-    // timer->start(ClientConfig::getGamesListRefreshInterval());
+    timer = new QTimer(this);
+    connect(timer, &QTimer::timeout, this, &GameList::updateGameList);
+    timer->start(ClientConfig::getGamesListRefreshInterval());
 }
 
 GameList::~GameList() { delete ui; }
@@ -43,14 +44,17 @@ void GameList::updateGameList() {
     // Fetch available games
     this->controller.sendRequest(this->msg);
     // Receive available games
-    std::unordered_map<uint8_t, GameInfo> gamesList = this->controller.getGamesList();
+    this->gamesList = this->controller.getGamesList();
     std::cout << "[GAME LIST] Number of games in map: " << static_cast<int>(gamesList.size())
               << std::endl;
-    QLayoutItem* item;
-    // while ((item = ui->listGamesWidget->layout()->takeAt(0)) != nullptr) {
-    //     delete item->widget();
-    //     delete item;
-    // }
+    if (ui->listGamesWidget->layout() != nullptr) {
+        QLayoutItem* item;
+        while ((item = ui->listGamesWidget->layout()->takeAt(0)) != nullptr) {
+            delete item->widget();
+            delete item;
+        }
+        delete ui->listGamesWidget->layout();
+    }
     buttonGroup->setExclusive(false);
     QList<QAbstractButton*> buttons = buttonGroup->buttons();
     for (QAbstractButton* button: buttons) {
@@ -71,11 +75,25 @@ void GameList::updateGameList() {
 
         for (const auto& game: gamesList) {
             auto* button =
-                    new QPushButton(QString::fromStdString(game.second.getGameName()) +
-                                    " Map: " + QString::fromStdString(game.second.getMapName()) +
-                                    " (" + QString::number(game.second.getCurrentPlayers()) + "/" +
+                    new QPushButton(QString::fromStdString("Game Name: " + game.second.getGameName()) +
+                                    " | Map: " + QString::fromStdString(game.second.getMapName()) +
+                                    " | (" + QString::number(game.second.getCurrentPlayers()) + "/" +
                                     QString::number(game.second.getMaxPlayers()) + ")");
             button->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+            button->setCheckable(true);
+
+            QFont font("Jazz Jackrabbit 2");
+            font.setPointSize(30);
+            QFontMetrics fm(font);
+            int textWidth = fm.horizontalAdvance(button->text());
+
+            while (textWidth > button->width() && font.pointSize() > 1) {
+                font.setPointSize(font.pointSize() - 1);
+                fm = QFontMetrics(font);
+                textWidth = fm.horizontalAdvance(button->text());
+            }
+
+            button->setFont(font);
             buttonGroup->addButton(button, game.first);
             connect(button, &QPushButton::clicked, this,
                     [this, game]() { this->onGameSelected(game.first); });
@@ -87,7 +105,6 @@ void GameList::updateGameList() {
 }
 
 void GameList::onGameSelected(int gameId) {
-    auto gamesList = this->controller.getGamesList();
     auto game = gamesList.find(gameId);
     if (game != gamesList.end()) {
         selectedGameId = gameId;

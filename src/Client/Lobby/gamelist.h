@@ -8,7 +8,9 @@
 
 #include <utility>
 #include <string>
+#include <unordered_map>
 
+#include "../../Common/Types/gameInfo.h"
 #include "../../Common/Config/ClientConfig.h"
 #include "../../Common/Types/lobbyMessage.h"
 #include "../client.h"
@@ -44,6 +46,7 @@ private:
     uint8_t selectedGameId;
     QString selectedGameName;
     uint8_t selectedGameMapId;
+    std::unordered_map<uint8_t, GameInfo> gamesList;
 };
 
 #endif  // GAMELIST_H
