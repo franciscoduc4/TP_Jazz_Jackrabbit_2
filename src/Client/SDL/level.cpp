@@ -9,9 +9,9 @@
 #include <iostream>
 
 
-enum lvl { BEACH, COLONIUS };
+enum lvl { BEACH, HOLIDAIUS, COLONIUS };
 
-Level::Level(int level) {
+Level::Level(uint8_t level) {
     /* std::vector<int> backVector{0, 0, 200, 160};
     std::vector<int> floorVector{0, 0, 485, 118};
     std::vector<int> longPlatformVector{0, 0, 160, 17};
@@ -63,6 +63,8 @@ Level::Level(int level) {
             this->background_width = 715;
             this->background_height = 153;
             break;
+        case HOLIDAIUS:
+            break;
         case COLONIUS:
             tilesSprites = ClientConfig::getColoniusFiles();
             beachSprites = ClientConfig::getColoniusSprites();
@@ -81,6 +83,17 @@ Level::Level(int level) {
 
 std::map<TileType, std::unique_ptr<SDL2pp::Texture>> Level::getTilesTextures(SDL2pp::Renderer& renderer)  {
     std::map<TileType, std::unique_ptr<SDL2pp::Texture>> textures;
+
+    SDL_Surface* bg_surf = IMG_Load(this->paths[TileType::BACKGROUND].c_str());
+    SDL2pp::Surface backgroundSurface(bg_surf);
+    backgroundSurface.SetColorKey(true, SDL_MapRGB(backgroundSurface.Get()->format, 87, 0, 203));
+    textures[TileType::BACKGROUND] = std::make_unique<SDL2pp::Texture>(renderer, backgroundSurface);
+
+    
+    SDL_Surface* floor_surf = IMG_Load(this->paths[TileType::FLOOR].c_str());
+    SDL2pp::Surface floorSurface(floor_surf);
+    floorSurface.SetColorKey(true, SDL_MapRGB(floorSurface.Get()->format, 87, 0, 203));
+    textures[TileType::FLOOR] =  std::make_unique<SDL2pp::Texture>(renderer, floorSurface);
 
     SDL_Surface* longPlatform_surf = IMG_Load(this->paths[TileType::LONGPLATFORM].c_str());
     SDL2pp::Surface longPlatformSurface(longPlatform_surf);
@@ -115,7 +128,7 @@ std::string Level::getLevelPath(TileType type) {
     return this->paths[type];
 }
 
-std::vector<int> Level::draw_background(SDL2pp::Window& window, SDL2pp::Renderer& renderer, SDL2pp::Texture& background, PlayerDTO& player) {
+std::vector<int> Level::draw_background(SDL2pp::Window& window, SDL2pp::Renderer& renderer, std::map<TileType, std::unique_ptr<SDL2pp::Texture>>& textures, PlayerDTO& player) {
     int index_x = 0;
     int index_y = 1;
     int index_width = 2;
@@ -123,7 +136,7 @@ std::vector<int> Level::draw_background(SDL2pp::Window& window, SDL2pp::Renderer
     int window_width = window.GetWidth();
     int window_height = window.GetHeight();
     std::vector<int> dir_screen{0, 0};
-    renderer.Copy(background,
+    renderer.Copy(*textures[TileType::BACKGROUND],
                       SDL2pp::Rect(this->pixels_pos[TileType::BACKGROUND][index_x], this->pixels_pos[TileType::BACKGROUND][index_y], this->pixels_pos[TileType::BACKGROUND][index_width], this->pixels_pos[TileType::BACKGROUND][index_height]),
                       SDL2pp::Rect(0, 0, window_width, window_height));
     uint16_t get_pos_x = player.getX() * window_width / 255;
@@ -157,7 +170,7 @@ std::vector<int> Level::draw_background(SDL2pp::Window& window, SDL2pp::Renderer
 
 }
 
-void Level::draw_floor(SDL2pp::Window& window, SDL2pp::Renderer& renderer, SDL2pp::Texture& floor, int player_speed) {
+void Level::draw_floor(SDL2pp::Window& window, SDL2pp::Renderer& renderer, std::map<TileType, std::unique_ptr<SDL2pp::Texture>>& textiles, int player_speed) {
     int index_x = 0;
     int index_y = 1;
     int index_width = 2;
@@ -167,7 +180,7 @@ void Level::draw_floor(SDL2pp::Window& window, SDL2pp::Renderer& renderer, SDL2p
         this->pixels_pos[TileType::FLOOR][index_x] = 0;
     }
 
-    renderer.Copy(floor, SDL2pp::Rect(this->pixels_pos[TileType::FLOOR][index_x], this->pixels_pos[TileType::FLOOR][index_y], this->pixels_pos[TileType::FLOOR][index_width], this->pixels_pos[TileType::FLOOR][index_height]), 
+    renderer.Copy(*textiles[TileType::FLOOR], SDL2pp::Rect(this->pixels_pos[TileType::FLOOR][index_x], this->pixels_pos[TileType::FLOOR][index_y], this->pixels_pos[TileType::FLOOR][index_width], this->pixels_pos[TileType::FLOOR][index_height]), 
                         SDL2pp::Rect(0, window.GetHeight() - this->floor_height, window.GetWidth(), this->floor_height));
     this->pixels_pos[TileType::FLOOR][index_x] += player_speed;
 }

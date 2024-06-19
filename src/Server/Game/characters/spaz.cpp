@@ -2,7 +2,7 @@
 
 // #define CONFIG ServerConfig::getInstance()
 
-Spaz::Spaz(GameMap& map, Vector<uint8_t> pos, uint8_t playerId):
+Spaz::Spaz(GameMap& map, Vector<uint32_t> pos, uint8_t playerId):
         Character(map, pos, playerId, CharacterType::SPAZ, ServerConfig::getSpazHorizontalSpeed(),
                   ServerConfig::getSpazSprintSpeed(), ServerConfig::getSpazVerticalSpeed(),
                   ServerConfig::getSpazJumpHeight(), ServerConfig::getSpazShootCooldownTime()) {}

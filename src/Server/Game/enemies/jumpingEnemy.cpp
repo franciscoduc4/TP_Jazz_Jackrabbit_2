@@ -2,7 +2,7 @@
 
 // #define CONFIG ServerConfig::getInstance()
 
-JumpingEnemy::JumpingEnemy(GameMap& map, Vector<uint8_t> pos, uint8_t id):
+JumpingEnemy::JumpingEnemy(GameMap& map, Vector<uint32_t> pos, uint8_t id):
         Enemy(map, pos, id, ServerConfig::getJumpingEnemyInitialHealth(), Direction::LEFT,
               ServerConfig::getJumpingEnemyDamage(), std::make_unique<EnemyIdle>(),
               ServerConfig::getJumpingEnemyViewDistance(), ServerConfig::getJumpingEnemyViewDistanceHit(),

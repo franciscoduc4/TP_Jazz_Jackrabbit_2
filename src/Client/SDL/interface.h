@@ -6,6 +6,7 @@
 
 #include <map>
 #include <string>
+#include <memory>
 #include <SDL2pp/SDL2pp.hh>
 
 class Interface {
@@ -21,9 +22,11 @@ public:
 
     std::string getFontPath();
 
+    std::unique_ptr<SDL2pp::Texture> getFontTextures(SDL2pp::Renderer& renderer);
+
     std::vector<RectangularSprite>::iterator icon_coords(CharacterType type);
 
-    void draw_interface(SDL2pp::Window& window, SDL2pp::Renderer& renderer, SDL2pp::Texture& iconTexture, CharacterType type, SDL2pp::Texture& font, int points, int lives);
+    void draw_interface(SDL2pp::Window& window, SDL2pp::Renderer& renderer, SDL2pp::Texture& iconTexture, CharacterType type, std::unique_ptr<SDL2pp::Texture>& font, int points, int lives);
 
 };
 

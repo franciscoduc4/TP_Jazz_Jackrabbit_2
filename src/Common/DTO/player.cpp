@@ -1,6 +1,7 @@
 #include "player.h"
 
-PlayerDTO::PlayerDTO(uint8_t playerId):
+PlayerDTO::PlayerDTO(const uint8_t& playerId):
+        GameElementDTO(ElementType::PLAYER),
         x(0),
         y(0),
         player_id(playerId),
@@ -14,27 +15,28 @@ PlayerDTO::PlayerDTO(uint8_t playerId):
         type(CharacterType::INVALID),
         state(CharacterStateEntity::IDLE) {}
 
-PlayerDTO::PlayerDTO(uint8_t x, uint8_t y, uint8_t playerId, int health, int damage, int speed,
-                     CharacterType type, CharacterStateEntity state):
+PlayerDTO::PlayerDTO(const uint32_t& x, const uint32_t& y, const uint8_t& player_id, int health, int damage, int speed,
+                     const CharacterType& type, const CharacterStateEntity& state):
+        GameElementDTO(ElementType::PLAYER),
         x(x),
         y(y),
-        player_id(playerId),
+        player_id(player_id),
         health(health),
         damage(damage),
         speed(speed),
         playerIsAlive(true),
         respawnTime(0),
         weapons(),
-        currentWeapon(currentWeapon),
+        currentWeapon(WeaponDTO(0, 0, 0, 0, 0)),
         type(type),
         state(state) {}
 
 
 uint8_t PlayerDTO::getPlayerId() const { return player_id; }
 
-uint8_t PlayerDTO::getX() const { return x; }
+uint32_t PlayerDTO::getX() const { return x; }
 
-uint8_t PlayerDTO::getY() const { return y; }
+uint32_t PlayerDTO::getY() const { return y; }
 
 int PlayerDTO::getDamage() const { return damage; }
 

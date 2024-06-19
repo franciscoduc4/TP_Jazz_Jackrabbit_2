@@ -5,7 +5,7 @@
 
 class Lori: public Character {
 public:
-    Lori(GameMap& map, Vector<uint8_t> pos, uint8_t playerId);
+    Lori(GameMap& map, Vector<uint32_t> pos, uint8_t playerId);
 
     void specialAttack(float time) override;
 };

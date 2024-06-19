@@ -20,8 +20,8 @@ public:
     static uint8_t getGameMaxMoves();
     static uint8_t getGameMaxRevived();
 
-    static uint8_t getCharacterInitialX();
-    static uint8_t getCharacterInitialY();
+    static uint32_t getCharacterInitialX();
+    static uint32_t getCharacterInitialY();
     static uint8_t getCharacterInitialHealth();
     static uint8_t getCharacterReviveTime();
     static uint8_t getCharacterMaxRevived();
@@ -63,13 +63,13 @@ public:
 
     static uint8_t getObstacleMoves();
 
-    static uint8_t getGameMapSizeX();
-    static uint8_t getGameMapSizeY();
+    static uint32_t getGameMapSizeX();
+    static uint32_t getGameMapSizeY();
 
     static void deleteInstance();
 
-    static uint8_t getWalkingEnemyInitialX();
-    static uint8_t getWalkingEnemyInitialY();
+    static uint32_t getWalkingEnemyInitialX();
+    static uint32_t getWalkingEnemyInitialY();
     static uint8_t getWalkingEnemyInitialHealth();
     static uint8_t getWalkingEnemyDamage();
     static uint8_t getWalkingEnemyMaxMoves();
@@ -83,8 +83,8 @@ public:
     static uint8_t getWalkingEnemyViewDistanceHit();
     static std::vector<uint8_t> getWalkingEnemyWalkProb();
 
-    static uint8_t getFlyingEnemyInitialX();
-    static uint8_t getFlyingEnemyInitialY();
+    static uint32_t getFlyingEnemyInitialX();
+    static uint32_t getFlyingEnemyInitialY();
     static uint8_t getFlyingEnemyInitialHealth();
     static uint8_t getFlyingEnemyDamage();
     static uint8_t getFlyingEnemyMaxMoves();
@@ -98,8 +98,8 @@ public:
     static uint8_t getFlyingEnemyViewDistanceHit();
     static std::vector<uint8_t> getFlyingEnemyFlyProb();
 
-    static uint8_t getJumpingEnemyInitialX();
-    static uint8_t getJumpingEnemyInitialY();
+    static uint32_t getJumpingEnemyInitialX();
+    static uint32_t getJumpingEnemyInitialY();
     static uint8_t getJumpingEnemyInitialHealth();
     static uint8_t getJumpingEnemyDamage();
     static uint8_t getJumpingEnemyMaxMoves();
@@ -113,8 +113,8 @@ public:
     static uint8_t getJumpingEnemyViewDistanceHit();
     static std::vector<uint8_t> getJumpingEnemyJumpProb();
 
-    static uint8_t getGameMapSizeX(const std::string& mapName);
-    static uint8_t getGameMapSizeY(const std::string& mapName);
+    static uint32_t getGameMapSizeX(const std::string& mapName);
+    static uint32_t getGameMapSizeY(const std::string& mapName);
     static uint8_t getGameMapObstacles(const std::string& mapName);
     static uint8_t getGameMapEnemies(const std::string& mapName);
     static uint8_t getGameMapGems(const std::string& mapName);

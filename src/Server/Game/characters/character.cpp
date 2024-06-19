@@ -4,7 +4,7 @@
 
 // #define CONFIG ServerConfig::getInstance()
 
-Character::Character(GameMap& gameMap, Vector<uint8_t> pos, uint8_t playerId, CharacterType type,
+Character::Character(GameMap& gameMap, Vector<uint32_t> pos, uint8_t playerId, CharacterType type,
                      float horizontalSpeed, float sprintSpeed, float verticalSpeed,
                      float jumpHeight, float shootCooldownTime):
         Entity(pos, playerId, ServerConfig::getCharacterInitialHealth(), Direction::RIGHT,
@@ -203,7 +203,7 @@ void Character::moveLeft() {
         return;
 
     auto mapPosition = getMapPosition(movesPerCell);
-    Vector<uint8_t> newPosition = pos - Vector<uint8_t>{movesPerCell, 0};
+    Vector<uint32_t> newPosition = pos - Vector<uint32_t>{movesPerCell, 0};
 
     if (!gameMap.isValidMapPosition(newPosition))
         return;
@@ -216,7 +216,7 @@ void Character::moveUp() {
         return;
 
     auto mapPosition = getMapPosition(movesPerCell);
-    Vector<uint8_t> newPosition = pos + Vector<uint8_t>{0, movesPerCell};
+    Vector<uint32_t> newPosition = pos + Vector<uint32_t>{0, movesPerCell};
 
     if (!gameMap.isValidMapPosition(newPosition))
         return;
@@ -229,7 +229,7 @@ void Character::moveDown() {
         return;
 
     auto mapPosition = getMapPosition(movesPerCell);
-    Vector<uint8_t> newPosition = pos - Vector<uint8_t>{0, movesPerCell};
+    Vector<uint32_t> newPosition = pos - Vector<uint32_t>{0, movesPerCell};
 
     if (!gameMap.isValidMapPosition(newPosition))
         return;

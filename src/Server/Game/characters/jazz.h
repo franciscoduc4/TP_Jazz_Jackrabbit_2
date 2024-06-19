@@ -6,7 +6,7 @@
 
 class Jazz: public Character {
 public:
-    Jazz(GameMap& map, Vector<uint8_t> pos, uint8_t playerId);
+    Jazz(GameMap& map, Vector<uint32_t> pos, uint8_t playerId);
 
     void specialAttack(float time) override;
 };

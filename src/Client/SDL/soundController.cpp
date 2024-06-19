@@ -6,7 +6,7 @@
 
 enum lvl {BEACH, COLONIUS};
 
-SoundController::SoundController(int leveltype) {
+SoundController::SoundController(uint8_t leveltype) {
     std::vector<SoundType> soundsType{ SoundType::BACKSOUND, SoundType::PLAYERHURT, SoundType::SHOOT, SoundType::GETPOINT};
     int soundsIndex = 0;
     

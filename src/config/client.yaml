@@ -15,6 +15,8 @@ JAZZ_FILE: "../assets/Characters/Jazz.png"
 SPAZ_FILE: "../assets/Characters/Spaz.png"
 LORI_FILE: "../assets/Characters/Lori.png"
 TURTLE_FILE: "../assets/Enemies/TurtleEnemies.png"
+SCH_GUARD_FILE: "../assets/Enemies/Schwartzenguard.png"
+YELLOWMONS_FILE: "../assets/Enemies/Enemies.png"
 SFX_FILE: "../assets/Miscellaneous/SFX.png"
 ITEMS_FILE: "../assets/Miscellaneous/Items&Objects.png"
 INTERFACE_FONT_FILE: "../assets/Miscellaneous/Fonts.png"
@@ -54,10 +56,14 @@ TURTLE_WALKING_SPRITES: [[12, 56, 67, 56], [80, 56, 69, 56], [150, 56, 68, 56], 
 TURTLE_ATTACKING_SPRITES: [[5, 120, 58, 50], [63, 120, 60, 50], [123, 120, 60, 50], [183, 120, 77, 50], [260, 120, 95, 50], [357, 120, 99, 50], [458, 120, 114, 50], [572, 120, 120, 50], [692, 120, 114, 50], [809, 120, 84, 50], [893, 120, 60, 50]]
 TURTLE_DYING_SPRITES: [[384, 9, 75, 42],[460, 9, 70, 42],[530, 9, 62, 42],[592, 9, 52, 42],[644, 9, 47, 42],[691, 9, 42, 42]]
 
+SCH_WIDTH: 60
+SCH_HEIGHT: 100
 SCHWARTZENGUARD_WALKING_SPRITES: [[11, 6, 65, 56], [79, 6, 59, 56], [142, 6, 46, 56], [190, 6, 53, 56], [248, 6, 66, 56], [316, 6, 73, 56], [391, 6, 61, 56], [452, 6, 53, 56], [505, 6, 50, 56], [555, 6, 67, 56]]
 SCHWARTZENGUARD_ATTACKING_SPRITES: [[6, 67, 65, 60], [71, 67, 65, 60], [136, 67, 77, 60], [213, 67, 96, 60], [309, 67, 91, 60], [400, 67, 98, 60], [498, 67, 98, 60], [10, 127, 95, 76], [105, 127, 85, 76], [190, 127, 93, 76], [283, 127, 72, 76], [355, 127, 72, 76], [427, 127, 74, 76], [501, 127, 64, 76], [565, 127, 60, 76], [10, 221, 85, 48], [95, 221, 61, 48]]
 SCHWARTZENGUARD_DYING_SPRITES: [[384, 207, 41, 61], [426, 207, 44, 61], [470, 207, 61, 61], [531, 207, 56, 61], [531, 207, 56, 61], [531, 207, 56, 61], [531, 207, 56, 61], [531, 207, 56, 61]]
 
+YELLOWMONS_WIDTH: 30
+YELLOWMONS_HEIGHT: 50
 YELLOWMONS_WALKING_SPRITES: [[14, 9, 70, 66], [93, 9, 62, 66], [161, 9, 53, 66], [214, 9, 77, 66], [300, 9, 58, 66], [365, 9, 60, 66], [430, 9, 67, 66], [505, 9, 70, 66], [593, 9, 73, 66], [675, 9, 70, 66], [750, 9, 75, 66], [830, 9, 77, 66]]
 YELLOWMONS_ATTACKING_SPRITES: [[355, 75, 45, 78], [410, 75, 60, 78], [475, 75, 62, 78], [542, 75, 60, 78], [614, 75, 70, 78], [695, 75, 46, 78]]
 YELLOWMONS_DYING_SPRITES: [[917, 10, 33, 63], [953, 10, 36, 63], [990, 10, 35, 63], [1030, 10, 35, 63], [1030, 10, 35, 63], [1030, 10, 35, 63], [1030, 10, 35, 63], [1030, 10, 35, 63]]

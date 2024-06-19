@@ -29,15 +29,15 @@ void Client::start() {
 
     bool clientJoinedGame = false;
     do {
+        
         LobbyInit init;
-        std::pair<bool, LobbyMessage> qtResult = init.launchQT(this->lobbyController, (bool&)clientJoinedGame);
+        std::pair<bool, LobbyMessage> qtResult = init.launchQT(this->lobbyController, (bool&)clientJoinedGame); 
         clientJoinedGame = qtResult.first;
-        if (!clientJoinedGame) {
-            return;
-        }
+        //   if (!clientJoinedGame) {
+        //       return;
+        //   }
         // TODO: Continue with SDL.
         // START - TESTING SKIP QT
-
         /*
         Command cmd = (this->playerId == 0) ? Command::CREATE_GAME : Command::JOIN_GAME;
 
@@ -72,10 +72,13 @@ void Client::start() {
             std::cerr << "Failed to receive response for create game." << std::endl;
             return;
         }
-        // END - TESTING SKIP QT
         */
-        GameScreen game(this->gameController, this->playerId);
+        // END - TESTING SKIP QT
+        CharacterType pj = qtResult.second.getCharacter();
+        uint8_t mapId = qtResult.second.getMap();  
+        GameScreen game(this->gameController, this->playerId, mapId);
         game.run();
+        clientJoinedGame = false; // Para que no cicle infinitamente.
     } while (clientJoinedGame);
 
     this->finish();

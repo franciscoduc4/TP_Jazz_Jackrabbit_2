@@ -3,6 +3,7 @@
 
 #include <memory>
 #include <atomic>
+#include <netinet/in.h>
 
 #include "../../Common/socket.h"
 
@@ -31,6 +32,10 @@ private:
     bool closed;
 
     GameInfo receiveGameInfo();
+    bool receive_uint8(uint8_t& value);
+    bool receive_uint32(uint32_t& value);
+    bool receive_char(char& value);
+    bool receive_string(const uint8_t& length, std::string& value);
 public:
     ClientProtocol(std::shared_ptr<Socket>& socket, std::atomic<bool>& was_closed);
     // States
