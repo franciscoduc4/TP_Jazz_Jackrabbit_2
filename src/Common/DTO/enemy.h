@@ -2,9 +2,11 @@
 #define ENEMY_DTO_H
 
 #include <cstdint>
+#include <memory>
 
 #include "../Types/enemy.h"
 #include "../Types/entity.h"
+#include "dto.h"
 
 #include "gameElement.h"
 
@@ -32,8 +34,10 @@ public:
     int getHealth() const;
     int getSpeed() const;
     bool isAlive() const;
-    EnemyType getType() const;
+    EnemyType getEnemyType() const;
     EnemyStateEntity getState() const;
+
+    virtual std::unique_ptr<DTO> clone() const override;
 };
 
 #endif  // ENEMY_DTO_H

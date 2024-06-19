@@ -40,8 +40,10 @@ public:
     bool isAlive() const;
     void setRespawnTime(int time);
     int getRespawnTime() const;
-    CharacterType getType() const;
+    CharacterType getCharacterType() const;
     CharacterStateEntity getState() const;
+
+    virtual std::unique_ptr<DTO> clone() const override;
 };
 
 #endif  // PLAYER_DTO_H_

@@ -11,4 +11,8 @@ uint32_t ItemDTO::getX() const { return x; }
     
 uint32_t ItemDTO::getY() const { return y; }
 
-ItemType ItemDTO::getType() const { return type; }
+ItemType ItemDTO::getItemType() const { return type; }
+
+std::unique_ptr<DTO> ItemDTO::clone() const {
+    return std::make_unique<ItemDTO>(*this);
+}

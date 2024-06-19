@@ -24,3 +24,7 @@ std::vector<char> StartGameDTO::getData() const {
     data.push_back(static_cast<char>(gameId));
     return data;
 }
+
+std::unique_ptr<DTO> StartGameDTO::clone() const {
+    return std::unique_ptr<DTO>(new StartGameDTO(*this));
+}

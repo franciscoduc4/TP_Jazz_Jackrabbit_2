@@ -96,6 +96,10 @@ void ClientProtocol::receiveCommandDTO(std::unique_ptr<DTO>& dto) {
                 }
                 dto = std::make_unique<CreateGameDTO>(gameId);
                 break;
+            case Command::JOIN_GAME:
+                std::cout << "[RECEIVER] Receiving JOIN_GAME command" << std::endl;
+                this->receiveJoinGame(dto);
+                break;
             case Command::GAMES_LIST:
                 std::cout << "[RECEIVER] Receiving GAMES_LIST command" << std::endl;
                 this->receiveGamesList(dto);
@@ -119,37 +123,21 @@ void ClientProtocol::receiveCommandDTO(std::unique_ptr<DTO>& dto) {
 
 GameInfo ClientProtocol::receiveGameInfo() {
     uint8_t gameId;
-    if (!this->receive_uint8(gameId)) {
-        return {};
-    }
+    if (!this->receive_uint8(gameId)) return {};
     uint8_t nameLength;
-    if (!this->receive_uint8(nameLength)) {
-        return {};
-    }
+    if (!this->receive_uint8(nameLength)) return {};
     std::string name;
-    if (!this->receive_string(nameLength, name)) {
-        return {};
-    }
+    if (!this->receive_string(nameLength, name)) return {};
     uint8_t maxPlayers;
-    if(!this->receive_uint8(maxPlayers)) {
-        return {};
-    }
+    if(!this->receive_uint8(maxPlayers)) return {};
     uint8_t currentPlayers;
-    if(!this->receive_uint8(currentPlayers)) {
-        return {};
-    }
+    if(!this->receive_uint8(currentPlayers)) return {};
     uint8_t mapId;
-    if(!this->receive_uint8(mapId)) {
-        return {};
-    }
+    if(!this->receive_uint8(mapId)) return {};
     uint8_t mapNameLength;
-    if(!this->receive_uint8(mapNameLength)) {
-        return {};
-    }
+    if(!this->receive_uint8(mapNameLength)) return {};
     std::string mapName;
-    if(!this->receive_string(mapNameLength, mapName)) {
-        return {};
-    }
+    if(!this->receive_string(mapNameLength, mapName)) return {};
     GameInfo gi(gameId, name, maxPlayers, currentPlayers, mapId);
     return std::move(gi);
 }
@@ -157,9 +145,7 @@ GameInfo ClientProtocol::receiveGameInfo() {
 void ClientProtocol::receiveGamesList(std::unique_ptr<DTO>& dto) {
     try {
         uint8_t gamesAmount;
-        if (!this->receive_uint8(gamesAmount)) {
-            return;
-        }
+        if (!this->receive_uint8(gamesAmount)) return;
         std::unordered_map<uint8_t, GameInfo> gamesMap;
         for (int i = 0; i < gamesAmount; i++) {
             GameInfo gameInfo = this->receiveGameInfo();
@@ -194,6 +180,14 @@ void ClientProtocol::receiveMapsList(std::unique_ptr<DTO>& dto) {
 void ClientProtocol::receiveGameUpdate(std::unique_ptr<DTO>& dto) {
     GameInfo gi = this->receiveGameInfo();
     dto = std::make_unique<GameUpdateDTO>(gi);
+}
+
+void ClientProtocol::receiveJoinGame(std::unique_ptr<DTO>& dto) {
+    uint8_t gameId;
+    if (!this->receive_uint8(gameId)) return;
+    uint8_t currentPlayers;
+    if (!this->receive_uint8(currentPlayers)) return;
+    dto = std::make_unique<JoinGameDTO>(gameId, currentPlayers);
 }
 
 void ClientProtocol::receiveGameDTO(std::unique_ptr<DTO>& dto) {

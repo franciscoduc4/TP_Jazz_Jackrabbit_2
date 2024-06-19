@@ -10,7 +10,7 @@
 #include "../../Common/DTO/startGame.h"
 #include "maps/mapsManager.h"
 
-GameMonitor::GameMonitor(QueueMonitor<std::unique_ptr<DTO>>& queueMonitor):
+GameMonitor::GameMonitor(QueueMonitor& queueMonitor):
         queueMonitor(queueMonitor), gamesListSize(0) {}
 
 void GameMonitor::createGame(uint8_t playerId, uint8_t mapId, GameMode gameMode, uint8_t maxPlayers,
@@ -34,15 +34,15 @@ void GameMonitor::createGame(uint8_t playerId, uint8_t mapId, GameMode gameMode,
                                            characterType, recvQueue, queueMonitor);
     std::cout << "[GM] Game created with id: " << gameId << std::endl;
 
-    auto dto = std::make_unique<CreateGameDTO>(gameId);
+    std::unique_ptr<DTO> dto = std::make_unique<CreateGameDTO>(gameId);
     std::cout << "[GM] Created CreateGameDTO" << std::endl;
-    queueMonitor.broadcast(gameId, std::move(dto));
+    queueMonitor.broadcast(gameId, dto);
     std::cout << "[GM] Broadcasted CreateGameDTO" << std::endl;
 
     GameInfo gi(gameId, gameName, maxPlayers, 1, mapId);
-    auto dto2 = std::make_unique<GameUpdateDTO>(gi);
+    std::unique_ptr<DTO> dto2 = std::make_unique<GameUpdateDTO>(gi);
     std::cout << "[GM] Created GameUpdateDTO" << std::endl;
-    queueMonitor.broadcast(gameId, std::move(dto2));
+    queueMonitor.broadcast(gameId, dto2);
 }
 
 void GameMonitor::joinGame(uint8_t playerId, uint8_t gameId, CharacterType characterType,
@@ -60,13 +60,14 @@ void GameMonitor::joinGame(uint8_t playerId, uint8_t gameId, CharacterType chara
             std::cout << "[GM] Player " << playerId << " added to game " << gameId << std::endl;
             GameInfo gi = game->getGameInfo();
             auto currentPlayers = gi.currentPlayers;
-            auto dto = std::make_unique<JoinGameDTO>(playerId, gameId, currentPlayers);
-            queueMonitor.broadcast(gameId, std::move(dto));
-            std::cout << "[GM] Broadcasted JoinGameDTO for gameId: " << gameId << std::endl;
+            std::unique_ptr<DTO> dto = std::make_unique<JoinGameDTO>(playerId, gameId, currentPlayers);
+            queueMonitor.broadcast(gameId, dto);
+            std::cout << "[GM] Broadcasted JoinGameDTO for gameId: " << static_cast<int>(gameId) << std::endl;
 
-            auto dto2 = std::make_unique<GameUpdateDTO>(gi);
+            std::unique_ptr<DTO> dto2 = std::make_unique<GameUpdateDTO>(gi);
             std::cout << "[GM] Created GameUpdateDTO" << std::endl;
-            queueMonitor.broadcast(gameId, std::move(dto2));
+            queueMonitor.broadcast(gameId, dto2);
+            std::cout << "[GM] Broadcasted GameUpdateDTO for gameId: " << static_cast<int>(gameId) << std::endl;
         } else {
             std::cout << "[GM] Game " << gameId << " is full, player " << playerId << " cannot join"
                       << std::endl;

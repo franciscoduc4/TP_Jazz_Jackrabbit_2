@@ -20,11 +20,11 @@ class GameMonitor {
 private:
     std::map<uint8_t, std::unique_ptr<Game>> games;
     std::mutex mtx;
-    QueueMonitor<std::unique_ptr<DTO>>& queueMonitor;
+    QueueMonitor& queueMonitor;
     uint8_t gamesListSize = 0;
 
 public:
-    explicit GameMonitor(QueueMonitor<std::unique_ptr<DTO>>& queueMonitor);
+    explicit GameMonitor(QueueMonitor& queueMonitor);
     void createGame(uint8_t playerId, uint8_t mapId, GameMode gameMode, uint8_t maxPlayers,
                     CharacterType characterType, std::string gameName,
                     std::shared_ptr<Queue<std::unique_ptr<CommandDTO>>> recvQueue,

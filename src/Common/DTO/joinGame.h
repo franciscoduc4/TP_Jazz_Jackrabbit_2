@@ -2,10 +2,12 @@
 #define JOIN_GAME_DTO_H_
 
 #include <string>
+#include <memory>
 
 #include "../Types/character.h"
 
 #include "command.h"
+#include "dto.h"
 
 class JoinGameDTO: public CommandDTO {
 private:
@@ -16,6 +18,7 @@ private:
 
 public:
     JoinGameDTO(const uint8_t& gameId, CharacterType characterType);
+    JoinGameDTO(const uint8_t& gameId, const uint8_t& currentPlayers);
     JoinGameDTO(const uint8_t& playerId, const uint8_t& gameId, CharacterType characterType);
     JoinGameDTO(const uint8_t& playerId, const uint8_t& gameId, const uint8_t& currentPlayers);
     JoinGameDTO(const uint8_t& playerId, const uint8_t& gameId, const uint8_t& currentPlayers,
@@ -26,6 +29,8 @@ public:
     uint8_t getCurrentPlayers() const;
     bool getJoined() const;
     std::vector<char> getData() const;
+
+    virtual std::unique_ptr<DTO> clone() const override;
 };
 
 #endif  // JOIN_GAME_DTO_H_

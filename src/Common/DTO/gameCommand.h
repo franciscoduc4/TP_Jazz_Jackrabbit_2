@@ -17,6 +17,8 @@ public:
     Direction getMoveType() const;
 
     std::vector<char> getData() const override;
+
+    virtual std::unique_ptr<DTO> clone() const override;
 };
 
 #endif  // MOVE_DTO_H

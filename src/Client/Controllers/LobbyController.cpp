@@ -19,11 +19,21 @@ bool LobbyController::hasGameUpdates(std::unique_ptr<DTO>& dto) {
     return this->lobbyQueue->try_pop(dto);
 }
 
-int LobbyController::processGameUpdate(std::unique_ptr<DTO>& dto) {
+int LobbyController::processGameUpdate(std::unique_ptr<CommandDTO>& dto) {
+    std::cout << "[Lobby Controller] Processing game update..." << std::endl;
+    if (!dto) {
+        return static_cast<int>(this->selected.getCurrentPlayers());
+    }
+    if (dto->getCommand() != Command::GAME_UPDATE) {
+        return static_cast<int>(this->selected.getCurrentPlayers());
+    }
     auto* gameInfoDTO = dynamic_cast<GameInfo*>(dto.get());
     if (gameInfoDTO) {
         this->selected = *gameInfoDTO;
     }
+    std::cout << "[Lobby Controller] Game updated." << std::endl;
+    std::cout << "[Lobby Controller] Current Game Players: "
+              << static_cast<int>(this->selected.getCurrentPlayers()) << std::endl;
     return static_cast<int>(this->selected.getCurrentPlayers());
 }
 

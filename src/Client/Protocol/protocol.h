@@ -19,6 +19,7 @@
 #include "../../Common/DTO/startGame.h"
 #include "../../Common/DTO/createGame.h"
 #include "../../Common/DTO/gameUpdate.h"
+#include "../../Common/DTO/joinGame.h"
 
 // Types
 #include "../../Common/Types/command.h"
@@ -51,6 +52,7 @@ public:
     void receiveGamesList(std::unique_ptr<DTO>& dto);
     void receiveMapsList(std::unique_ptr<DTO>& dto);
     void receiveGameUpdate(std::unique_ptr<DTO>& dto);
+    void receiveJoinGame(std::unique_ptr<DTO>& dto);
     void receiveCommandDTO(std::unique_ptr<DTO>& dto);
 
     // Gameplay

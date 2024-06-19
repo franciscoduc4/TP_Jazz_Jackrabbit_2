@@ -52,6 +52,10 @@ void PlayerDTO::setRespawnTime(int time) { respawnTime = time; }
 
 int PlayerDTO::getRespawnTime() const { return respawnTime; }
 
-CharacterType PlayerDTO::getType() const { return type; }
+CharacterType PlayerDTO::getCharacterType() const { return type; }
 
 CharacterStateEntity PlayerDTO::getState() const { return state; }
+
+std::unique_ptr<DTO> PlayerDTO::clone() const {
+    return std::make_unique<PlayerDTO>(*this);
+}

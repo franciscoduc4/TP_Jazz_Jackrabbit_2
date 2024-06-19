@@ -30,6 +30,7 @@ public:
     int getDamage() const;
     int getAmmo() const;
     void setAmmo(int ammo);
+    virtual std::unique_ptr<DTO> clone() const override;
 };
 
 #endif  // WEAPON_H_

@@ -13,6 +13,7 @@ ReceiverThread::ReceiverThread(Deserializer& deserializer, std::shared_ptr<Socke
 }
 
 void ReceiverThread::receiveDTOByType(const char& dtoTypeChar) {
+    std::cout << "[Client Receiver] Received a DTO" << std::endl;
     auto dtoType = static_cast<DTOType>(dtoTypeChar);
     std::unique_ptr<DTO> dto = nullptr;
     switch (dtoType) {
@@ -25,6 +26,7 @@ void ReceiverThread::receiveDTOByType(const char& dtoTypeChar) {
         case DTOType::COMMAND_DTO: {
             std::cout << "[CLIENT RECEIVER] Receiving command DTO." << std::endl;
             this->protocol.receiveCommandDTO(dto);
+            std::cout << "[CLIENT RECEIVER] Deserializing command DTO." << std::endl;
             this->deserializer.deserialize_lobbyMsg(dto);
             break;
         }

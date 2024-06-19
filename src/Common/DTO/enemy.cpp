@@ -21,5 +21,9 @@ int EnemyDTO::getHealth() const { return health; }
 int EnemyDTO::getDamage() const { return damage; }
 int EnemyDTO::getSpeed() const { return speed; }
 bool EnemyDTO::isAlive() const { return enemyIsAlive; }
-EnemyType EnemyDTO::getType() const { return type; }
+EnemyType EnemyDTO::getEnemyType() const { return type; }
 EnemyStateEntity EnemyDTO::getState() const { return state; }
+
+std::unique_ptr<DTO> EnemyDTO::clone() const {
+    return std::make_unique<EnemyDTO>(*this);
+}

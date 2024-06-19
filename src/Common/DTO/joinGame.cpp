@@ -7,6 +7,13 @@ JoinGameDTO::JoinGameDTO(const uint8_t& gameId, CharacterType characterType):
         currentPlayers(0),
         joined(false) {}
 
+JoinGameDTO::JoinGameDTO(const uint8_t& gameId, const uint8_t& currentPlayers):
+        CommandDTO(-1, Command::JOIN_GAME),
+        gameId(gameId),
+        characterType(CharacterType::INVALID),
+        currentPlayers(currentPlayers),
+        joined(false) {}
+
 JoinGameDTO::JoinGameDTO(const uint8_t& playerId, const uint8_t& gameId,
                          CharacterType characterType):
         CommandDTO(playerId, Command::JOIN_GAME),
@@ -52,4 +59,8 @@ std::vector<char> JoinGameDTO::getData() const {
     data.push_back(static_cast<char>(gameId));
     data.push_back(static_cast<char>(characterType));
     return data;
+}
+
+std::unique_ptr<DTO> JoinGameDTO::clone() const {
+    return std::make_unique<JoinGameDTO>(*this);
 }

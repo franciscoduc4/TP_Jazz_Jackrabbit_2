@@ -5,7 +5,7 @@
 #include <utility>
 
 GameLoopThread::GameLoopThread(std::shared_ptr<Queue<std::unique_ptr<CommandDTO>>> recvQueue,
-                               QueueMonitor<std::unique_ptr<DTO>>& queueMonitor, GameMap& gameMap,
+                               QueueMonitor& queueMonitor, GameMap& gameMap,
                                uint8_t gameId):
         frameRate(2),  // 1 frame per 16 ms === 60 fps
         keepRunning(false),

@@ -15,6 +15,21 @@ namespace Ui {
 }
 QT_END_NAMESPACE
 
+class GameElement {
+public:
+    GameElement(const QString& spritePath, int width, int height)
+            : width(width), height(height) {
+        QPixmap temp(spritePath);
+        QBitmap mask = temp.createMaskFromColor(QColor(255, 255, 255), Qt::MaskOutColor);
+        temp.setMask(mask);
+        sprite = temp.scaled(width, height);
+    }
+
+    QPixmap sprite;
+    int width;
+    int height;
+};
+
 class LevelEditor : public QMainWindow {
     Q_OBJECT
 

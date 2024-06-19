@@ -28,3 +28,7 @@ int WeaponDTO::getShootSpeed() const { return shootSpeed; }
 std::unique_ptr<BulletDTO> WeaponDTO::getBullet() const {
     return std::make_unique<BulletDTO>(0, 0, 0, 0, 0, 0);
 }
+
+std::unique_ptr<DTO> WeaponDTO::clone() const {
+    return std::make_unique<WeaponDTO>(*this);
+}
