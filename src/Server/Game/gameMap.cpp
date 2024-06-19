@@ -120,21 +120,37 @@ std::vector<std::shared_ptr<Entity>> GameMap::getObjectsInExplosionRange(
 
 void GameMap::moveObject(Vector<uint32_t>& position, Vector<uint32_t> mapPosition, Direction dir) {
     try {
-        auto character = std::dynamic_pointer_cast<Character>(mapGrid[mapPosition]);
+        auto it = mapGrid.find(mapPosition);
+        if (it == mapGrid.end()) {
+            std::cerr << "[GAMEMAP] Invalid character at position: (" << mapPosition.x << ", " << mapPosition.y << ")" << std::endl;
+            return;
+        }
+
+        auto character = std::dynamic_pointer_cast<Character>(it->second);
         if (!character) {
-            std::cerr << "[GAMEMAP] Invalid character" << std::endl;
+            std::cerr << "[GAMEMAP] Character at (" << mapPosition.x << ", " << mapPosition.y << ") is invalid" << std::endl;
             return;
         }
 
         Vector<uint32_t> newPosition = calculateNewPosition(position, dir);
         Vector<uint32_t> newMapPosition = getMapPosition(newPosition);
+        if (!isValidMapPosition(newMapPosition)) {
+            std::cerr << "[GAMEMAP] New map position (" << newMapPosition.x << ", " << newMapPosition.y << ") is invalid" << std::endl;
+            return;
+        }
+
         if (!handleMovement(position, mapPosition, newPosition, newMapPosition)) {
-            character->interact(mapGrid[newMapPosition]);
+            if (mapGrid.find(newMapPosition) != mapGrid.end()) {
+                character->interact(mapGrid[newMapPosition]);
+            } else {
+                std::cerr << "[GAMEMAP] New map position (" << newMapPosition.x << ", " << newMapPosition.y << ") is empty" << std::endl;
+            }
         }
     } catch (const std::exception& e) {
         std::cerr << "[GAMEMAP] Error moving object: " << e.what() << std::endl;
     }
 }
+
 
 bool GameMap::isFreePosition(Vector<uint32_t> position) {
     return mapGrid.find(position) == mapGrid.end();
@@ -235,9 +251,13 @@ void GameMap::addEnemy(EnemyType type, Vector<uint32_t> position) {
     }
 }
 
+// bool GameMap::isValidMapPosition(Vector<uint32_t> mapPosition) {
+//     return mapPosition.x >= 0 && mapPosition.x <= size.x && mapPosition.y >= 0 &&
+//            mapPosition.y <= size.y;
+// }
+
 bool GameMap::isValidMapPosition(Vector<uint32_t> mapPosition) {
-    return mapPosition.x >= 0 && mapPosition.x <= size.x && mapPosition.y >= 0 &&
-           mapPosition.y <= size.y;
+    return mapPosition.x < size.x && mapPosition.y < size.y;
 }
 
 bool GameMap::isValidPosition(Vector<uint32_t> position) {
@@ -310,12 +330,33 @@ std::unique_ptr<GameDTO> GameMap::getGameDTO() {
     std::vector<WeaponDTO> weapons;
     std::vector<TileDTO> tiles;
 
+    // TileDTO tile = {0, 10};
+    // tiles.push_back(tile);
+
     try {
+        for (const auto& character: characters) {
+            playersDTO.push_back(character.second->getDTO());
+            std::cout << "[GAMEMAP] Character added to DTO" << std::endl;
+        }
         for (const auto& [pos, entity]: mapGrid) {
-            if (entity->getType() == EntityType::CHARACTER) {
-                auto character = std::dynamic_pointer_cast<Character>(entity);
-                playersDTO.push_back(character->getDTO());
-                std::cout << "[GAMEMAP] Character added to DTO" << std::endl;
+            switch (entity->getType()) {
+                case EntityType::ENEMY:
+                    enemies.push_back(std::dynamic_pointer_cast<Enemy>(entity)->getDTO());
+                    break;
+                // case EntityType::BULLET:
+                //     bullets.push_back(std::dynamic_pointer_cast<Bullet>(entity)->getDTO());
+                //     break;
+                // case EntityType::ITEM:
+                //     items.push_back(std::dynamic_pointer_cast<Item>(entity)->getDTO());
+                //     break;
+                // case EntityType::WEAPON:
+                //     weapons.push_back(std::dynamic_pointer_cast<Weapon>(entity)->getDTO());
+                //     break;
+                // case EntityType::TILE:
+                //      tiles.push_back(std::dynamic_pointer_cast<Tile>(entity)->getDTO());
+                //      break;
+                default:
+                    break;
             }
         }
         std::cout << "[GAMEMAP] playersDTO size: " << playersDTO.size() << std::endl;
@@ -352,37 +393,44 @@ void GameMap::printMapGrid() const {
 }
 
 Vector<uint32_t> GameMap::getMapPosition(Vector<uint32_t> position) {
-    return {static_cast<uint8_t>(position.x / movesPerCell),
-            static_cast<uint8_t>(position.y / movesPerCell)};
+    return {position.x / movesPerCell,
+            position.y / movesPerCell};
 }
 
 Vector<uint32_t> GameMap::calculateNewPosition(const Vector<uint32_t> position, Direction dir) const {
     try {
+        Vector<uint32_t> newPosition = position;
         switch (dir) {
             case Direction::LEFT:
-                return position.x - movesPerCell >= 0 ?
-                               position - Vector<uint32_t>{movesPerCell, 0} :
-                               position;
+                if (position.x >= movesPerCell) {
+                    newPosition.x -= movesPerCell;
+                }
+                break;
             case Direction::RIGHT:
-                return position.x + movesPerCell <= size.x * movesPerCell ?
-                               position + Vector<uint32_t>{movesPerCell, 0} :
-                               position;
+                if (position.x + movesPerCell < size.x * movesPerCell) {
+                    newPosition.x += movesPerCell;
+                }
+                break;
             case Direction::UP:
-                return position.y + movesPerCell <= size.y * movesPerCell ?
-                               position + Vector<uint32_t>{0, movesPerCell} :
-                               position;
+                if (position.y + movesPerCell < size.y * movesPerCell) {
+                    newPosition.y += movesPerCell;
+                }
+                break;
             case Direction::DOWN:
-                return position.y - movesPerCell >= 0 ?
-                               position - Vector<uint32_t>{0, movesPerCell} :
-                               position;
+                if (position.y >= movesPerCell) {
+                    newPosition.y -= movesPerCell;
+                }
+                break;
             default:
-                return position;
+                break;
         }
+        return newPosition;
     } catch (const std::exception& e) {
         std::cerr << "[GAMEMAP] Error calculating new position: " << e.what() << std::endl;
         throw;
     }
 }
+
 
 bool GameMap::handleMovement(Vector<uint32_t>& position, Vector<uint32_t> mapPosition,
                              const Vector<uint32_t>& newPosition,
@@ -390,17 +438,31 @@ bool GameMap::handleMovement(Vector<uint32_t>& position, Vector<uint32_t> mapPos
     try {
         if (newMapPosition == mapPosition) {
             std::cout << "[GAMEMAP] Same map position" << std::endl;
-            return true;
-        } else if (isFreePosition(newMapPosition)) {
-            std::cout << "[GAMEMAP] Moving object to new position" << std::endl;
-            mapGrid[newMapPosition] = mapGrid[mapPosition];
-            mapGrid.erase(mapPosition);
-            std::cout << "[GAMEMAP] Object at old position is nullptr: "
-                      << (mapGrid.find(mapPosition) == mapGrid.end()) << std::endl;
-            std::cout << "[GAMEMAP] Object old position: " << position << std::endl;
             position = newPosition;
-            std::cout << "[GAMEMAP] Object new position: " << position << std::endl;
             return true;
+        }
+
+        auto oldIt = mapGrid.find(mapPosition);
+        if (oldIt == mapGrid.end()) {
+            std::cerr << "[GAMEMAP] Old position (" << mapPosition.x << ", " << mapPosition.y << ") does not exist" << std::endl;
+            return false;
+        }
+
+        auto entity = oldIt->second;
+        if (!entity) {
+            std::cerr << "[GAMEMAP] Entity at old position (" << mapPosition.x << ", " << mapPosition.y << ") is null" << std::endl;
+            return false;
+        }
+
+        if (isFreePosition(newMapPosition)) {
+            std::cout << "[GAMEMAP] Moving object to new position" << std::endl;
+            mapGrid[newMapPosition] = entity;
+            mapGrid.erase(mapPosition);
+            std::cout << "[GAMEMAP] Object moved from (" << mapPosition.x << ", " << mapPosition.y << ") to (" << newMapPosition.x << ", " << newMapPosition.y << ")" << std::endl;
+            position = newPosition;
+            return true;
+        } else {
+            std::cerr << "[GAMEMAP] New position (" << newMapPosition.x << ", " << newMapPosition.y << ") is not free" << std::endl;
         }
     } catch (const std::exception& e) {
         std::cerr << "[GAMEMAP] Error handling movement: " << e.what() << std::endl;

@@ -10,4 +10,4 @@ FlyingEnemy::FlyingEnemy(GameMap& map, Vector<uint32_t> pos, uint8_t id):
               ServerConfig::getFlyingEnemyFlyProb()) {}
 
 
-EnemyType FlyingEnemy::getEnemyType() { return EnemyType::YELLOWMON; }
+EnemyType FlyingEnemy::getEnemyType() const { return EnemyType::YELLOWMON; }

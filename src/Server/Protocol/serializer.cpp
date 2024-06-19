@@ -175,7 +175,8 @@ std::vector<char> Serializer::serializeGameUpdate(const std::unique_ptr<GameUpda
 }
 
 // -------------------------- GAME -----------------------------------
-void Serializer::insertPositionIntoBuffer(std::vector<char>& buffer, const uint32_t& x, const uint32_t& y) {
+void Serializer::insertPositionIntoBuffer(std::vector<char>& buffer, const uint32_t& x,
+                                          const uint32_t& y) {
     uint32_t x_network = htonl(x);
     const auto* xp = reinterpret_cast<const unsigned char*>(&x_network);
     buffer.insert(buffer.end(), xp, xp + sizeof(uint32_t));
@@ -196,16 +197,20 @@ std::vector<char> Serializer::serializePlayerDTO(const std::unique_ptr<PlayerDTO
     buffer.push_back(static_cast<char>(dto->getPlayerId()));
     std::cout << "[SERVER SERIALIZER PLAYER] Serializing player id: " << (int)dto->getPlayerId()
               << std::endl;
-    Serializer::insert_int_into_buffer(buffer, dto->getDamage());
+    // Serializer::insert_int_into_buffer(buffer, dto->getDamage());
+    buffer.push_back(static_cast<char>(dto->getDamage()));
     std::cout << "[SERVER SERIALIZER PLAYER] Serializing player damage: " << dto->getDamage()
               << std::endl;
-    Serializer::insert_int_into_buffer(buffer, dto->getHealth());
+    // Serializer::insert_int_into_buffer(buffer, dto->getHealth());
+    buffer.push_back(static_cast<char>(dto->getHealth()));
     std::cout << "[SERVER SERIALIZER PLAYER] Serializing player health: " << dto->getHealth()
               << std::endl;
-    Serializer::insert_int_into_buffer(buffer, dto->getSpeed());
+    // Serializer::insert_int_into_buffer(buffer, dto->getSpeed());
+    buffer.push_back(static_cast<char>(dto->getSpeed()));
     std::cout << "[SERVER SERIALIZER PLAYER] Serializing player speed: " << dto->getSpeed()
               << std::endl;
-    Serializer::insert_int_into_buffer(buffer, dto->getRespawnTime());
+    // Serializer::insert_int_into_buffer(buffer, dto->getRespawnTime());
+    buffer.push_back(static_cast<char>(dto->getRespawnTime()));
     std::cout << "[SERVER SERIALIZER PLAYER] Serializing player respawn time: "
               << dto->getRespawnTime() << std::endl;
     Serializer::insertPositionIntoBuffer(buffer, dto->getX(), dto->getY());
@@ -221,9 +226,15 @@ std::vector<char> Serializer::serializePlayerDTO(const std::unique_ptr<PlayerDTO
 std::vector<char> Serializer::serializeEnemyDTO(const std::unique_ptr<EnemyDTO>& dto) {
     std::vector<char> buffer;
     buffer.push_back(static_cast<char>(dto->getEnemyId()));
-    Serializer::insert_int_into_buffer(buffer, dto->getDamage());
-    Serializer::insert_int_into_buffer(buffer, dto->getHealth());
-    Serializer::insert_int_into_buffer(buffer, dto->getSpeed());
+    // Serializer::insert_int_into_buffer(buffer, dto->getDamage());
+    buffer.push_back(static_cast<char>(dto->getDamage()));
+
+    // Serializer::insert_int_into_buffer(buffer, dto->getHealth());
+    buffer.push_back(static_cast<char>(dto->getHealth()));
+
+    // Serializer::insert_int_into_buffer(buffer, dto->getSpeed());
+    buffer.push_back(static_cast<char>(dto->getSpeed()));
+
     Serializer::insertPositionIntoBuffer(buffer, dto->getX(), dto->getY());
     buffer.push_back(static_cast<char>(dto->getType()));
     buffer.push_back(static_cast<char>(dto->getState()));

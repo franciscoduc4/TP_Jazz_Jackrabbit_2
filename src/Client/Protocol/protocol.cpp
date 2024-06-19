@@ -222,17 +222,17 @@ std::vector<PlayerDTO> ClientProtocol::receivePlayers() {
             if (!this->receive_uint8(aux)) return {};
             auto playerId = static_cast<uint8_t>(aux);
 
-            if (!this->receive_uint32(aux32)) return {};
-            int damage = static_cast<int>(aux32);
+            if (!this->receive_uint8(aux)) return {};
+            uint8_t damage = static_cast<uint8_t>(aux);
 
-            if (!this->receive_uint32(aux32)) return {};
-            int health = static_cast<int>(aux32);
+            if (!this->receive_uint8(aux)) return {};
+            uint8_t health = static_cast<uint8_t>(aux);
 
-            if (!this->receive_uint32(aux32)) return {};
-            int speed = static_cast<int>(aux32);
+            if (!this->receive_uint8(aux)) return {};
+            uint8_t speed = static_cast<uint8_t>(aux);
 
-            if (!this->receive_uint32(aux32)) return {};
-            // int getRespawnTime = static_cast<int>(aux32);
+            if (!this->receive_uint8(aux)) return {};
+            uint8_t getRespawnTime = static_cast<uint8_t>(aux);
 
             if (!this->receive_uint32(aux32)) return {};
             uint32_t x = aux32;
@@ -267,14 +267,14 @@ std::vector<EnemyDTO> ClientProtocol::receiveEnemies() {
             if (!this->receive_uint8(aux)) return {};
             auto enemyId = static_cast<uint8_t>(aux);
 
-            if (!this->receive_uint32(aux32)) return {};
-            int enemy_damage = static_cast<int>(aux32);
+            if (!this->receive_uint8(aux)) return {};
+            uint8_t enemy_damage = static_cast<uint8_t>(aux);
 
-            if (!this->receive_uint32(aux32)) return {};
-            int enemy_health = static_cast<int>(aux32);
+            if (!this->receive_uint8(aux)) return {};
+            uint8_t enemy_health = static_cast<uint8_t>(aux);
 
-            if (!this->receive_uint32(aux32)) return {};
-            int enemy_speed = static_cast<int>(aux32);
+            if (!this->receive_uint8(aux)) return {};
+            uint8_t enemy_speed = static_cast<uint8_t>(aux);
             std::cout << "[CLIENT RECEIVER ENEMY] Speed: " << enemy_speed << std::endl;
 
             if (!this->receive_uint32(aux32)) return {};

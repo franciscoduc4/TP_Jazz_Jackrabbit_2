@@ -187,6 +187,7 @@ void GameScreen::run() {
         }
 
         std::vector<EnemyDTO> enemiesSnapshot = snapshot->getEnemies();
+        std::cout << "Enemies size: " << enemiesSnapshot.size() << std::endl;
         if (enemiesSnapshot.size() > 0) {
             this->enemies.draw_enemy(window, renderer, enemies_textures, enemiesSnapshot, *mainPlayer/*players[0]*/, x_screen, y_screen);
         }
@@ -212,7 +213,7 @@ void GameScreen::run() {
 
         x_screen = 0;
         y_screen = 0;
-
+        
         renderer.Present();
         std::cout << "[GAME SCREEN] Frame presented" << std::endl;
 

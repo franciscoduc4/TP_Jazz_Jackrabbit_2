@@ -15,7 +15,7 @@ class WalkingEnemy: public Enemy {
 public:
     WalkingEnemy(GameMap& map, Vector<uint32_t> pos, uint8_t id);
 
-    EnemyType getEnemyType() override;
+    EnemyType getEnemyType() const override;
 };
 
 #endif  // WALKING_ENEMY_H

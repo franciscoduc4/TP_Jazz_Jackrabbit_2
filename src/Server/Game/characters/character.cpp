@@ -30,6 +30,18 @@ Character::Character(GameMap& gameMap, Vector<uint32_t> pos, uint8_t playerId, C
               << std::endl;
 }
 
+void Character::idle(float time) {
+
+    auto newState = std::unique_ptr<State>(state->stopAction());
+    if (newState) {
+        std::cout << "[CHARACTER] idle Character ID: " << static_cast<int>(id) << " idling"
+                  << std::endl;
+        state = std::move(newState);
+    }
+}
+
+
+
 void Character::recvDamage(uint8_t dmg, float time) {
     std::cout << "[CHARACTER] Character ID: " << static_cast<int>(id)
               << " receiving damage: " << static_cast<int>(dmg) << std::endl;
@@ -47,21 +59,32 @@ void Character::recvDamage(uint8_t dmg, float time) {
 
 void Character::update(float time) {
     std::cout << "[CHARACTER] Updating character ID: " << static_cast<int>(id) << std::endl;
-    if (isIntoxicated) {
-        intoxicatedTime -= time;
-        if (intoxicatedTime <= 0) {
-            isIntoxicated = false;
-            intoxicatedTime = 0;
-            std::cout << "[CHARACTER] Character ID: " << static_cast<int>(id)
-                      << " no longer intoxicated" << std::endl;
+    try {
+        if (isIntoxicated) {
+            intoxicatedTime -= time;
+            if (intoxicatedTime <= 0) {
+                isIntoxicated = false;
+                intoxicatedTime = 0;
+                std::cout << "[CHARACTER] Character ID: " << static_cast<int>(id)
+                          << " no longer intoxicated" << std::endl;
+            }
         }
-    }
-    auto newState = std::unique_ptr<State>(state->exec(*this, time));
-    if (newState) {
-        state = std::move(newState);
+
+        if (!state) {
+            std::cerr << "[CHARACTER] Null state for character ID: " << static_cast<int>(id)
+                      << std::endl;
+            return;
+        }
+        auto newState = std::unique_ptr<State>(state->exec(*this, time));
+
+        if (newState) {
+            state = std::move(newState);
+        }
+    } catch (const std::exception& e) {
+        std::cerr << "[CHARACTER] Error updating character ID: " << static_cast<int>(id) << ": "
+                  << e.what() << std::endl;
     }
 }
-
 void Character::shoot(float time) {
     std::cout << "[CHARACTER] Character ID: " << static_cast<int>(id) << " shooting" << std::endl;
     auto newState = std::unique_ptr<State>(state->shoot(*this, std::move(currentWeapon), time));
@@ -192,10 +215,24 @@ void Character::moveRight() {
         return;
 
     auto mapPosition = getMapPosition(movesPerCell);
-    std::cout << "[CHARACTER] Character ID: " << static_cast<int>(id) << " moving right"
-              << " map position: " << mapPosition << std::endl;
+    Vector<uint32_t> newPos = pos + Vector<uint32_t>{movesPerCell, 0};
 
-    gameMap.moveObject(pos, mapPosition, Direction::RIGHT);
+    if (newPos.x >= gameMap.getMaxXPos()){
+        newPos = Vector<uint32_t>{gameMap.getMaxXPos(), pos.y};
+    }
+
+
+    if (!gameMap.isValidMapPosition(newPos))
+        return;
+
+    //gameMap.moveObject(pos, mapPosition, Direction::RIGHT);
+    pos = newPos;
+
+    // std::cout << "[CHARACTER] Character ID: " << static_cast<int>(id) << " moved right"
+    //           << " map position x: " << int(mapPosition.x) << std::endl;
+
+    std::cout << "[CHARACTER] Character ID: " << static_cast<int>(id) << " new x : "
+              << int(pos.x) << std::endl;
 }
 
 void Character::moveLeft() {
@@ -203,12 +240,21 @@ void Character::moveLeft() {
         return;
 
     auto mapPosition = getMapPosition(movesPerCell);
-    Vector<uint32_t> newPosition = pos - Vector<uint32_t>{movesPerCell, 0};
+    Vector<uint32_t> newPos = pos - Vector<uint32_t>{movesPerCell, 0};
 
-    if (!gameMap.isValidMapPosition(newPosition))
+    if (newPos.x <= 0){
+        newPos = Vector<uint32_t>{0, pos.y};
+    }
+
+    if (!gameMap.isValidMapPosition(newPos))
         return;
 
-    gameMap.moveObject(pos, mapPosition, Direction::LEFT);
+    //gameMap.moveObject(pos, mapPosition, Direction::LEFT);
+    pos = newPos;
+    // std::cout << "[CHARACTER] Character ID: " << static_cast<int>(id) << " moved left"
+    //           << " map position x: " << int(mapPosition.x) << std::endl;
+    std::cout << "[CHARACTER] Character ID: " << static_cast<int>(id) << " new x : "
+              << int(pos.x) << std::endl;
 }
 
 void Character::moveUp() {

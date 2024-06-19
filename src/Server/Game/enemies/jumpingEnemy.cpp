@@ -10,4 +10,4 @@ JumpingEnemy::JumpingEnemy(GameMap& map, Vector<uint32_t> pos, uint8_t id):
               ServerConfig::getJumpingEnemyJumpProb(), {}) {}
 
 
-EnemyType JumpingEnemy::getEnemyType() { return EnemyType::SCHWARZENGUARD; }
+EnemyType JumpingEnemy::getEnemyType() const { return EnemyType::SCHWARZENGUARD; }

@@ -90,6 +90,7 @@ public:
     void moveLeft();
     void moveUp();
 
+    void idle(float time);
     bool characIsIntoxicated() const;
     float getIntoxicatedTime() const;
 
