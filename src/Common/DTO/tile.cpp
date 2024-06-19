@@ -1,10 +1,10 @@
 #include "tile.h"
 
-TileDTO::TileDTO(uint16_t x, uint16_t y) : 
-    x(x), y(y) {}
+TileDTO::TileDTO(const uint32_t& x, const uint32_t& y) :
+        GameElementDTO(ElementType::TILE), x(x), y(y) {}
 
-uint16_t TileDTO::getX() const { return x; }
+uint32_t TileDTO::getX() const { return x; }
 
-uint16_t TileDTO::getY() const { return y; }
+uint32_t TileDTO::getY() const { return y; }
 
 

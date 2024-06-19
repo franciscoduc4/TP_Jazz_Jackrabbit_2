@@ -27,14 +27,14 @@ uint8_t ServerConfig::getGameMaxRevived() {
     return static_cast<uint8_t>(maxRevived);
 }
 
-uint8_t ServerConfig::getCharacterInitialX() {
+uint32_t ServerConfig::getCharacterInitialX() {
     int initialX = getInstance()->root["CHARACTER"]["INITIAL_X"].as<int>();
-    return static_cast<uint8_t>(initialX);
+    return static_cast<uint32_t>(initialX);
 }
 
-uint8_t ServerConfig::getCharacterInitialY() {
+uint32_t ServerConfig::getCharacterInitialY() {
     int initialY = getInstance()->root["CHARACTER"]["INITIAL_Y"].as<int>();
-    return static_cast<uint8_t>(initialY);
+    return static_cast<uint32_t>(initialY);
 }
 
 uint8_t ServerConfig::getCharacterInitialHealth() {
@@ -205,14 +205,14 @@ void ServerConfig::deleteInstance() {
     }
 }
 
-uint8_t ServerConfig::getWalkingEnemyInitialX() {
+uint32_t ServerConfig::getWalkingEnemyInitialX() {
     int walkingEnemyInitialX = getInstance()->root["ENEMY"]["WALKING"]["INITIAL_X"].as<int>();
-    return static_cast<uint8_t>(walkingEnemyInitialX);
+    return static_cast<uint32_t>(walkingEnemyInitialX);
 }
 
-uint8_t ServerConfig::getWalkingEnemyInitialY() {
+uint32_t ServerConfig::getWalkingEnemyInitialY() {
     int walkingEnemyInitialY = getInstance()->root["ENEMY"]["WALKING"]["INITIAL_Y"].as<int>();
-    return static_cast<uint8_t>(walkingEnemyInitialY);
+    return static_cast<uint32_t>(walkingEnemyInitialY);
 }
 
 uint8_t ServerConfig::getWalkingEnemyMaxMovesPerCell() {
@@ -274,14 +274,14 @@ std::vector<uint8_t> ServerConfig::getWalkingEnemyWalkProb() {
 }
 
 
-uint8_t ServerConfig::getFlyingEnemyInitialX() {
+uint32_t ServerConfig::getFlyingEnemyInitialX() {
     int flyingEnemyInitialX = getInstance()->root["ENEMY"]["FLYING"]["INITIAL_X"].as<int>();
-    return static_cast<uint8_t>(flyingEnemyInitialX);
+    return static_cast<uint32_t>(flyingEnemyInitialX);
 }
 
-uint8_t ServerConfig::getFlyingEnemyInitialY() {
+uint32_t ServerConfig::getFlyingEnemyInitialY() {
     int flyingEnemyInitialY = getInstance()->root["ENEMY"]["FLYING"]["INITIAL_Y"].as<int>();
-    return static_cast<uint8_t>(flyingEnemyInitialY);
+    return static_cast<uint32_t>(flyingEnemyInitialY);
 }
 
 uint8_t ServerConfig::getFlyingEnemyMaxMovesPerCell() {
@@ -348,14 +348,14 @@ std::vector<uint8_t> ServerConfig::getFlyingEnemyFlyProb() {
 }
 
 
-uint8_t ServerConfig::getJumpingEnemyInitialX() {
+uint32_t ServerConfig::getJumpingEnemyInitialX() {
     int jumpingEnemyInitialX = getInstance()->root["ENEMY"]["JUMPING"]["INITIAL_X"].as<int>();
-    return static_cast<uint8_t>(jumpingEnemyInitialX);
+    return static_cast<uint32_t>(jumpingEnemyInitialX);
 }
 
-uint8_t ServerConfig::getJumpingEnemyInitialY() {
+uint32_t ServerConfig::getJumpingEnemyInitialY() {
     int jumpingEnemyInitialY = getInstance()->root["ENEMY"]["JUMPING"]["INITIAL_Y"].as<int>();
-    return static_cast<uint8_t>(jumpingEnemyInitialY);
+    return static_cast<uint32_t>(jumpingEnemyInitialY);
 }
 
 uint8_t ServerConfig::getJumpingEnemyMaxMovesPerCell() {
@@ -421,14 +421,14 @@ std::vector<uint8_t> ServerConfig::getJumpingEnemyJumpProb() {
     return jumpProb;
 }
 
-uint8_t ServerConfig::getGameMapSizeX(const std::string& mapName) {
+uint32_t ServerConfig::getGameMapSizeX(const std::string& mapName) {
     int gameMapSizeX = getInstance()->root["GAMEMAP"][mapName]["SIZE_X"].as<int>();
-    return static_cast<uint8_t>(gameMapSizeX);
+    return static_cast<uint32_t>(gameMapSizeX);
 }
 
-uint8_t ServerConfig::getGameMapSizeY(const std::string& mapName) {
+uint32_t ServerConfig::getGameMapSizeY(const std::string& mapName) {
     int gameMapSizeY = getInstance()->root["GAMEMAP"][mapName]["SIZE_Y"].as<int>();
-    return static_cast<uint8_t>(gameMapSizeY);
+    return static_cast<uint32_t>(gameMapSizeY);
 }
 
 uint8_t ServerConfig::getGameMapObstacles(const std::string& mapName) {

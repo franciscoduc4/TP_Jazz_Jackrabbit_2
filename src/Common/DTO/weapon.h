@@ -20,8 +20,7 @@ private:
 
 
 public:
-    WeaponDTO();
-    WeaponDTO(const uint8_t weaponId, const uint32_t x, const uint32_t y, int damage, int ammo);
+    WeaponDTO(const uint8_t& weaponId, const uint32_t& x, const uint32_t& y, int damage, int ammo);
     uint32_t getX() const;
     uint32_t getY() const;
     uint8_t getWeaponId() const;

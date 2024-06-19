@@ -8,7 +8,7 @@
 
 #include <arpa/inet.h>
 
-Serializer::Serializer(std::shared_ptr<Socket> socket): socket(socket) {
+Serializer::Serializer(std::shared_ptr<Socket> socket): socket(std::move(socket)) {
     std::cout << "[SERVER SERIALIZER] Serializer initialized" << std::endl;
 }
 
@@ -16,7 +16,7 @@ void Serializer::sendId(uint8_t playerId, bool& wasClosed) {
     try {
         std::cout << "[SERVER SERIALIZER] Sending id" << std::endl;
         std::cout << "[SERVER SERIALIZER] Id to send: " << (int)playerId << std::endl;
-        const unsigned char* p = reinterpret_cast<const unsigned char*>(&playerId);
+        const auto* p = reinterpret_cast<const unsigned char*>(&playerId);
         socket->sendall(p, sizeof(uint8_t), &wasClosed);
         std::cout << "[SERVER SERIALIZER] Id sent" << std::endl;
     } catch (const std::exception& e) {
@@ -24,7 +24,8 @@ void Serializer::sendId(uint8_t playerId, bool& wasClosed) {
     }
 }
 
-void Serializer::sendCommand(const std::unique_ptr<CommandDTO> dto, bool& wasClosed) {
+// ------------------------ LOBBY ------------------------
+void Serializer::sendCommand(const std::unique_ptr<CommandDTO>& dto, bool& wasClosed) {
     DTOType type = dto->getType();
     socket->sendall(&type, sizeof(char), &wasClosed);
     std::cout << "[SERVER SERIALIZER] Sent dto type: " << (int)type << std::endl;
@@ -37,19 +38,19 @@ void Serializer::sendCommand(const std::unique_ptr<CommandDTO> dto, bool& wasClo
     switch (command) {
         case Command::CREATE_GAME:
             buffer = serializeCreateGame(
-                    std::make_unique<CreateGameDTO>(static_cast<const CreateGameDTO&>(*dto)));
+                    std::make_unique<CreateGameDTO>(dynamic_cast<const CreateGameDTO&>(*dto)));
             break;
         case Command::JOIN_GAME:
             buffer = serializeJoinGame(
-                    std::make_unique<JoinGameDTO>(static_cast<const JoinGameDTO&>(*dto)));
+                    std::make_unique<JoinGameDTO>(dynamic_cast<const JoinGameDTO&>(*dto)));
             break;
         case Command::GAMES_LIST:
             buffer = serializeGamesList(
-                    std::make_unique<GamesListDTO>(static_cast<const GamesListDTO&>(*dto)));
+                    std::make_unique<GamesListDTO>(dynamic_cast<const GamesListDTO&>(*dto)));
             break;
         case Command::MAPS_LIST:
             buffer = serializeMapsList(
-                    std::make_unique<MapsListDTO>(static_cast<const MapsListDTO&>(*dto)));
+                    std::make_unique<MapsListDTO>(dynamic_cast<const MapsListDTO&>(*dto)));
             break;
         case Command::START_GAME:
             std::cout << "[SERVER SERIALIZER] Start game command, no additional data to send"
@@ -59,7 +60,7 @@ void Serializer::sendCommand(const std::unique_ptr<CommandDTO> dto, bool& wasClo
             std::cout << "[SERVER SERIALIZER] Game update command. Preparing to send GameInfo."
                       << std::endl;
             buffer = serializeGameUpdate(
-                    std::make_unique<GameUpdateDTO>(static_cast<const GameUpdateDTO&>(*dto)));
+                    std::make_unique<GameUpdateDTO>(dynamic_cast<const GameUpdateDTO&>(*dto)));
             break;
         default:
             std::cerr << "[SERVER SERIALIZER] Unknown command, nothing to serialize" << std::endl;
@@ -75,40 +76,39 @@ void Serializer::insertGameInfoToBuffer(std::vector<char>& buffer, const GameInf
     std::cout << "[SERVER SERIALIZE] Inserting game info" << std::endl;
 
     uint8_t gameId = gameInfo.getGameId();
-    const unsigned char* p = reinterpret_cast<const unsigned char*>(&gameId);
+    const auto* p = reinterpret_cast<const unsigned char*>(&gameId);
     buffer.insert(buffer.end(), p, p + sizeof(uint8_t));
 
     uint8_t nameLength = gameInfo.name.length();
-    const unsigned char* np = reinterpret_cast<const unsigned char*>(&nameLength);
+    const auto* np = reinterpret_cast<const unsigned char*>(&nameLength);
     buffer.insert(buffer.end(), np, np + sizeof(uint8_t));
 
     buffer.insert(buffer.end(), gameInfo.name.begin(), gameInfo.name.end());
 
     uint8_t maxPlayers = gameInfo.maxPlayers;
-    const unsigned char* mp = reinterpret_cast<const unsigned char*>(&maxPlayers);
+    const auto* mp = reinterpret_cast<const unsigned char*>(&maxPlayers);
     buffer.insert(buffer.end(), mp, mp + sizeof(uint8_t));
 
     uint8_t currentPlayers = gameInfo.currentPlayers;
-    const unsigned char* cp = reinterpret_cast<const unsigned char*>(&currentPlayers);
+    const auto* cp = reinterpret_cast<const unsigned char*>(&currentPlayers);
     buffer.insert(buffer.end(), cp, cp + sizeof(uint8_t));
 
     uint8_t mapId = gameInfo.mapId;
-    const unsigned char* mip = reinterpret_cast<const unsigned char*>(&mapId);
+    const auto* mip = reinterpret_cast<const unsigned char*>(&mapId);
     buffer.insert(buffer.end(), mip, mip + sizeof(uint8_t));
 
     uint8_t mapNameLength = gameInfo.mapName.length();
-    const unsigned char* mnp = reinterpret_cast<const unsigned char*>(&mapNameLength);
+    const auto* mnp = reinterpret_cast<const unsigned char*>(&mapNameLength);
     buffer.insert(buffer.end(), mnp, mnp + sizeof(uint8_t));
 
     std::string mapName = gameInfo.mapName;
-    uint8_t mapLength = mapName.length();
     buffer.insert(buffer.end(), mapName.begin(), mapName.end());
 }
 
 std::vector<char> Serializer::serializeCreateGame(const std::unique_ptr<CreateGameDTO>& dto) {
     std::vector<char> buffer;
     uint8_t gameId = dto->getGameId();
-    const unsigned char* p = reinterpret_cast<const unsigned char*>(&gameId);
+    const auto* p = reinterpret_cast<const unsigned char*>(&gameId);
     std::cout << "[SERVER SERIALIZE CG] Game id: " << gameId << std::endl;
     buffer.insert(buffer.end(), p, p + sizeof(uint8_t));
     return buffer;
@@ -117,7 +117,7 @@ std::vector<char> Serializer::serializeCreateGame(const std::unique_ptr<CreateGa
 std::vector<char> Serializer::serializeJoinGame(const std::unique_ptr<JoinGameDTO>& dto) {
     std::vector<char> buffer;
     uint8_t gameId = dto->getGameId();
-    const unsigned char* p1 = reinterpret_cast<const unsigned char*>(&gameId);
+    const auto* p1 = reinterpret_cast<const unsigned char*>(&gameId);
     buffer.insert(buffer.end(), p1, p1 + sizeof(uint8_t));
     uint8_t currentPlayers = dto->getCurrentPlayers();
     buffer.push_back(static_cast<char>(currentPlayers));
@@ -131,7 +131,7 @@ std::vector<char> Serializer::serializeGamesList(const std::unique_ptr<GamesList
     std::vector<char> buffer;
     auto games = dto->getGames();
     uint8_t gamesSize = games.size();
-    const unsigned char* p = reinterpret_cast<const unsigned char*>(&gamesSize);
+    const auto* p = reinterpret_cast<const unsigned char*>(&gamesSize);
     buffer.insert(buffer.end(), p, p + sizeof(uint8_t));
     std::cout << "[SERVER SERIALIZE GL] Games size: " << games.size() << std::endl;
     for (const auto& [gameId, gameInfo]: games) {
@@ -140,7 +140,7 @@ std::vector<char> Serializer::serializeGamesList(const std::unique_ptr<GamesList
     return buffer;
 }
 
-std::vector<char> Serializer::serializeMapsList(const std::unique_ptr<MapsListDTO> dto) {
+std::vector<char> Serializer::serializeMapsList(const std::unique_ptr<MapsListDTO>& dto) {
     std::vector<char> buffer;
     auto maps = dto->getMapsMap();
     uint8_t mapsSize = maps.size();
@@ -149,12 +149,12 @@ std::vector<char> Serializer::serializeMapsList(const std::unique_ptr<MapsListDT
     std::cout << "[SERVER SERIALIZE ML] Inserted maps size: " << (int)maps.size() << std::endl;
 
     for (const auto& [mapId, name]: maps) {
-        const unsigned char* p = reinterpret_cast<const unsigned char*>(&mapId);
+        const auto* p = reinterpret_cast<const unsigned char*>(&mapId);
         buffer.insert(buffer.end(), p, p + sizeof(uint8_t));
         std::cout << "[SERVER SERIALIZE ML] Inserted map ID: " << (int)mapId << std::endl;
 
         uint8_t nameLength = name.length();
-        const unsigned char* np = reinterpret_cast<const unsigned char*>(&nameLength);
+        const auto* np = reinterpret_cast<const unsigned char*>(&nameLength);
         buffer.insert(buffer.end(), np, np + sizeof(uint8_t));
         std::cout << "[SERVER SERIALIZE ML] Inserted name length: " << (int)nameLength << std::endl;
 
@@ -173,7 +173,18 @@ std::vector<char> Serializer::serializeGameUpdate(const std::unique_ptr<GameUpda
     return buffer;
 }
 
-std::vector<char> Serializer::serializePlayerDTO(const std::unique_ptr<PlayerDTO> dto) {
+// -------------------------- GAME -----------------------------------
+void Serializer::insertPositionIntoBuffer(std::vector<char>& buffer, const uint32_t& x, const uint32_t& y) {
+    uint32_t x_network = htonl(x);
+    const auto* xp = reinterpret_cast<const unsigned char*>(&x_network);
+    buffer.insert(buffer.end(), xp, xp + sizeof(uint32_t));
+
+    uint32_t y_network = htonl(y);
+    const auto* yp = reinterpret_cast<const unsigned char*>(&y_network);
+    buffer.insert(buffer.end(), yp, yp + sizeof(uint32_t));
+}
+
+std::vector<char> Serializer::serializePlayerDTO(const std::unique_ptr<PlayerDTO>& dto) {
     std::vector<char> buffer;
     buffer.push_back(static_cast<char>(dto->getPlayerId()));
     std::cout << "[SERVER SERIALIZER PLAYER] Serializing player id: " << (int)dto->getPlayerId()
@@ -190,12 +201,7 @@ std::vector<char> Serializer::serializePlayerDTO(const std::unique_ptr<PlayerDTO
     buffer.push_back(static_cast<char>(dto->getRespawnTime()));
     std::cout << "[SERVER SERIALIZER PLAYER] Serializing player respawn time: "
               << dto->getRespawnTime() << std::endl;
-    buffer.push_back(static_cast<char>(dto->getX()));
-    std::cout << "[SERVER SERIALIZER PLAYER] Serializing player x: " << (int)dto->getX()
-              << std::endl;
-    buffer.push_back(static_cast<char>(dto->getY()));
-    std::cout << "[SERVER SERIALIZER PLAYER] Serializing player y: " << (int)dto->getY()
-              << std::endl;
+    Serializer::insertPositionIntoBuffer(buffer, dto->getX(), dto->getY());
     buffer.push_back(static_cast<char>(dto->getType()));
     std::cout << "[SERVER SERIALIZER PLAYER] Serializing player type: " << (int)dto->getType()
               << std::endl;
@@ -205,14 +211,13 @@ std::vector<char> Serializer::serializePlayerDTO(const std::unique_ptr<PlayerDTO
     return buffer;
 }
 
-std::vector<char> Serializer::serializeEnemyDTO(const std::unique_ptr<EnemyDTO> dto) {
+std::vector<char> Serializer::serializeEnemyDTO(const std::unique_ptr<EnemyDTO>& dto) {
     std::vector<char> buffer;
     buffer.push_back(static_cast<char>(dto->getEnemyId()));
     buffer.push_back(static_cast<char>(dto->getDamage()));
     buffer.push_back(static_cast<char>(dto->getHealth()));
     buffer.push_back(static_cast<char>(dto->getSpeed()));
-    buffer.push_back(static_cast<char>(dto->getX()));
-    buffer.push_back(static_cast<char>(dto->getY()));
+    Serializer::insertPositionIntoBuffer(buffer, dto->getX(), dto->getY());
     buffer.push_back(static_cast<char>(dto->getType()));
     buffer.push_back(static_cast<char>(dto->getState()));
     std::cout << "[SERVER SERIALIZER ENEMY] Serialized enemy with id: " << (int)dto->getEnemyId()
@@ -220,45 +225,41 @@ std::vector<char> Serializer::serializeEnemyDTO(const std::unique_ptr<EnemyDTO> 
     return buffer;
 }
 
-std::vector<char> Serializer::serializeBulletDTO(const std::unique_ptr<BulletDTO> dto) {
+std::vector<char> Serializer::serializeBulletDTO(const std::unique_ptr<BulletDTO>& dto) {
     std::vector<char> buffer;
     buffer.push_back(static_cast<char>(dto->getBulletId()));
     buffer.push_back(static_cast<char>(dto->getDamage()));
     buffer.push_back(static_cast<char>(dto->getSpeed()));
-    buffer.push_back(static_cast<char>(dto->getX()));
-    buffer.push_back(static_cast<char>(dto->getY()));
+    Serializer::insertPositionIntoBuffer(buffer, dto->getX(), dto->getY());
     std::cout << "[SERVER SERIALIZER BULLET] Serialized bullet with id: " << (int)dto->getBulletId()
               << std::endl;
     return buffer;
 }
 
-std::vector<char> Serializer::serializeItemDTO(const std::unique_ptr<ItemDTO> dto) {
+std::vector<char> Serializer::serializeItemDTO(const std::unique_ptr<ItemDTO>& dto) {
     std::vector<char> buffer;
-    buffer.push_back(static_cast<char>(dto->getX()));
-    buffer.push_back(static_cast<char>(dto->getY()));
+    Serializer::insertPositionIntoBuffer(buffer, dto->getX(), dto->getY());
     buffer.push_back(static_cast<char>(ItemType::GEM));
     std::cout << "[SERVER SERIALIZER ITEM] Serialized item at position: (" << (int)dto->getX()
               << ", " << (int)dto->getY() << ")" << std::endl;
     return buffer;
 }
 
-std::vector<char> Serializer::serializeTileDTO(const std::unique_ptr<TileDTO> dto) {
+std::vector<char> Serializer::serializeTileDTO(const std::unique_ptr<TileDTO>& dto) {
     std::vector<char> buffer;
-    buffer.push_back(static_cast<char>(dto->getX()));
-    buffer.push_back(static_cast<char>(dto->getY()));
+    Serializer::insertPositionIntoBuffer(buffer, dto->getX(), dto->getY());
     std::cout << "[SERVER SERIALIZER TILE] Serialized tile at position: (" << (int)dto->getX()
               << ", " << (int)dto->getY() << ")" << std::endl;
     return buffer;
 }
 
-std::vector<char> Serializer::serializeWeaponDTO(const std::unique_ptr<WeaponDTO> dto) {
+std::vector<char> Serializer::serializeWeaponDTO(const std::unique_ptr<WeaponDTO>& dto) {
     std::vector<char> buffer;
     buffer.push_back(static_cast<char>(dto->getWeaponId()));
     buffer.push_back(static_cast<char>(dto->getDamage()));
     buffer.push_back(static_cast<char>(dto->getAmmo()));
     buffer.push_back(static_cast<char>(dto->getShootSpeed()));
-    buffer.push_back(static_cast<char>(dto->getX()));
-    buffer.push_back(static_cast<char>(dto->getY()));
+    Serializer::insertPositionIntoBuffer(buffer, dto->getX(), dto->getY());
     std::vector<char> bullet = serializeBulletDTO(dto->getBullet());
     buffer.insert(buffer.end(), bullet.begin(), bullet.end());
     std::cout << "[SERVER SERIALIZER WEAPON] Serialized weapon with id: " << (int)dto->getWeaponId()
@@ -266,7 +267,7 @@ std::vector<char> Serializer::serializeWeaponDTO(const std::unique_ptr<WeaponDTO
     return buffer;
 }
 
-void Serializer::sendGameDTO(const std::unique_ptr<GameDTO> dto, bool& wasClosed) {
+void Serializer::sendGameDTO(const std::unique_ptr<GameDTO>& dto, bool& wasClosed) {
     std::cout << "[SERVER SERIALIZER] Sending game DTO" << std::endl;
     char gamedto = static_cast<char>(DTOType::GAME_DTO);
     socket->sendall(&gamedto, sizeof(char), &wasClosed);

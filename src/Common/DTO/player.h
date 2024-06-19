@@ -26,10 +26,10 @@ private:
     CharacterStateEntity state;
 
 public:
-    explicit PlayerDTO(uint8_t playerId);
+    explicit PlayerDTO(const uint8_t& playerId);
 
-    PlayerDTO(uint32_t x, uint32_t y, uint8_t player_id, int health, int damage, int speed,
-              CharacterType type, CharacterStateEntity state);
+    PlayerDTO(const uint32_t& x, const uint32_t& y, const uint8_t& player_id, int health, int damage, int speed,
+              const CharacterType& type, const CharacterStateEntity& state);
     uint8_t getPlayerId() const;
     uint32_t getX() const;
     uint32_t getY() const;

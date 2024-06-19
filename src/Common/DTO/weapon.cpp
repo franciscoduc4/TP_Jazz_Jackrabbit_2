@@ -1,6 +1,7 @@
 #include "weapon.h"
 
-WeaponDTO::WeaponDTO(uint8_t weaponId, uint32_t x, uint32_t y, int damage, int ammo):
+WeaponDTO::WeaponDTO(const uint8_t& weaponId, const uint32_t& x, const uint32_t& y, int damage, int ammo):
+        GameElementDTO(ElementType::WEAPON),
         weaponId(weaponId),
         x(x),
         y(y),

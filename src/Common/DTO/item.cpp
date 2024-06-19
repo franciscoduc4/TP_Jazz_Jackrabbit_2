@@ -1,13 +1,14 @@
 #include "item.h"
 
-ItemDTO::ItemDTO(uint16_t x, uint16_t y, ItemType type): 
+ItemDTO::ItemDTO(const uint32_t& x, const uint32_t& y, const ItemType& type) :
+        GameElementDTO(ElementType::ITEM),
         x(x),
         y(y),
         type(type){}
 
 
-uint16_t ItemDTO::getX() const { return x; }
+uint32_t ItemDTO::getX() const { return x; }
     
-uint16_t ItemDTO::getY() const { return y; }
+uint32_t ItemDTO::getY() const { return y; }
 
 ItemType ItemDTO::getType() const { return type; }

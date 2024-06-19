@@ -1,7 +1,8 @@
 #include "bullet.h"
 
-BulletDTO::BulletDTO(uint16_t x, uint16_t y, uint8_t bullet_id, int damage, int speed,
+BulletDTO::BulletDTO(const uint32_t& x, const uint32_t& y, const uint8_t& bullet_id, int damage, int speed,
                      int shooterId):
+        GameElementDTO(ElementType::BULLET),
         x(x),
         y(y),
         bullet_id(bullet_id),
@@ -12,9 +13,9 @@ BulletDTO::BulletDTO(uint16_t x, uint16_t y, uint8_t bullet_id, int damage, int 
 
 uint8_t BulletDTO::getBulletId() const { return bullet_id; }
 
-uint16_t BulletDTO::getX() const { return x; }
+uint32_t BulletDTO::getX() const { return x; }
 
-uint16_t BulletDTO::getY() const { return y; }
+uint32_t BulletDTO::getY() const { return y; }
 
 int BulletDTO::getDamage() const { return damage; }
 
