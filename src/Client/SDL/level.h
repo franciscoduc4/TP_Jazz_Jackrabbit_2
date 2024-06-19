@@ -20,7 +20,7 @@ class Level {
     int background_height;
 
 public:
-    explicit Level(int level);
+    explicit Level(uint8_t level);
 
     std::map<TileType, std::unique_ptr<SDL2pp::Texture>> getTilesTextures(SDL2pp::Renderer& renderer);
 

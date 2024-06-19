@@ -9,9 +9,9 @@
 #include <iostream>
 
 
-enum lvl { BEACH, COLONIUS };
+enum lvl { BEACH, HOLIDAIUS, COLONIUS };
 
-Level::Level(int level) {
+Level::Level(uint8_t level) {
     /* std::vector<int> backVector{0, 0, 200, 160};
     std::vector<int> floorVector{0, 0, 485, 118};
     std::vector<int> longPlatformVector{0, 0, 160, 17};
@@ -62,6 +62,8 @@ Level::Level(int level) {
             this->floor_height = 70;
             this->background_width = 715;
             this->background_height = 153;
+            break;
+        case HOLIDAIUS:
             break;
         case COLONIUS:
             tilesSprites = ClientConfig::getColoniusFiles();

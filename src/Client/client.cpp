@@ -74,12 +74,8 @@ void Client::start() {
         }
         */
         // END - TESTING SKIP QT
-        /*         
-        CharacterType pj = qtResult.first.getCharacter();
-        uint8_t mapId = qtResult.first.getMap();
-        GameScreen game(this->gameController, this->playerId, pj, mapId);
-         */     
-        uint8_t mapId = 0;   
+        CharacterType pj = qtResult.second.getCharacter();
+        uint8_t mapId = qtResult.second.getMap();  
         GameScreen game(this->gameController, this->playerId, mapId);
         game.run();
         clientJoinedGame = false; // Para que no cicle infinitamente.
