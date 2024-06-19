@@ -58,7 +58,7 @@ protected:
     float shootCooldown = 0.0f;
 
 public:
-    Character(GameMap& gameMap, Vector<uint8_t> pos, uint8_t playerId, CharacterType type,
+    Character(GameMap& gameMap, Vector<uint32_t> pos, uint8_t playerId, CharacterType type,
               float horizontalSpeed, float sprintSpeed, float verticalSpeed, float jumpHeight,
               float shootCooldownTime);
 

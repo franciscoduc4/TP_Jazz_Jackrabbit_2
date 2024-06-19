@@ -18,7 +18,7 @@ class Weapon {
 public:
     virtual void update(float time) = 0;
 
-    virtual void shoot(std::vector<std::shared_ptr<Entity>>& shootingEntities, uint8_t xPos,
+    virtual void shoot(std::vector<std::shared_ptr<Entity>>& shootingEntities, uint32_t xPos,
                        float time) = 0;
     virtual void reload() = 0;
     virtual bool isEmpty() = 0;

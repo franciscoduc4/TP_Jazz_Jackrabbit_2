@@ -1,6 +1,6 @@
 #include "weapon.h"
 
-WeaponDTO::WeaponDTO(uint8_t weaponId, uint8_t x, uint8_t y, int damage, int ammo):
+WeaponDTO::WeaponDTO(uint8_t weaponId, uint32_t x, uint32_t y, int damage, int ammo):
         weaponId(weaponId),
         x(x),
         y(y),
@@ -9,9 +9,9 @@ WeaponDTO::WeaponDTO(uint8_t weaponId, uint8_t x, uint8_t y, int damage, int amm
         damage(damage),
         ammo(ammo) {}
 
-uint8_t WeaponDTO::getX() const { return x; }
+uint32_t WeaponDTO::getX() const { return x; }
 
-uint8_t WeaponDTO::getY() const { return y; }
+uint32_t WeaponDTO::getY() const { return y; }
 
 
 int WeaponDTO::getDamage() const { return damage; }

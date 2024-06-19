@@ -5,7 +5,7 @@
 
 class Spaz: public Character {
 public:
-    Spaz(GameMap& map, Vector<uint8_t> pos, uint8_t playerId);
+    Spaz(GameMap& map, Vector<uint32_t> pos, uint8_t playerId);
 
     void specialAttack(float time) override;
 };

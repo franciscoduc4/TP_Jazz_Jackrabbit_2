@@ -12,8 +12,8 @@
 
 class PlayerDTO: public GameElementDTO {
 private:
-    uint8_t x;
-    uint8_t y;
+    uint32_t x;
+    uint32_t y;
     uint8_t player_id;
     int health;
     int damage;
@@ -28,11 +28,11 @@ private:
 public:
     explicit PlayerDTO(uint8_t playerId);
 
-    PlayerDTO(uint8_t x, uint8_t y, uint8_t player_id, int health, int damage, int speed,
+    PlayerDTO(uint32_t x, uint32_t y, uint8_t player_id, int health, int damage, int speed,
               CharacterType type, CharacterStateEntity state);
     uint8_t getPlayerId() const;
-    uint8_t getX() const;
-    uint8_t getY() const;
+    uint32_t getX() const;
+    uint32_t getY() const;
     int getDamage() const;
     int getHealth() const;
     int getSpeed() const;

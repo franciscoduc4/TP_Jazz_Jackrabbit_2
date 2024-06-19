@@ -14,7 +14,7 @@ PlayerDTO::PlayerDTO(uint8_t playerId):
         type(CharacterType::INVALID),
         state(CharacterStateEntity::IDLE) {}
 
-PlayerDTO::PlayerDTO(uint8_t x, uint8_t y, uint8_t playerId, int health, int damage, int speed,
+PlayerDTO::PlayerDTO(uint32_t x, uint32_t y, uint8_t playerId, int health, int damage, int speed,
                      CharacterType type, CharacterStateEntity state):
         x(x),
         y(y),
@@ -32,9 +32,9 @@ PlayerDTO::PlayerDTO(uint8_t x, uint8_t y, uint8_t playerId, int health, int dam
 
 uint8_t PlayerDTO::getPlayerId() const { return player_id; }
 
-uint8_t PlayerDTO::getX() const { return x; }
+uint32_t PlayerDTO::getX() const { return x; }
 
-uint8_t PlayerDTO::getY() const { return y; }
+uint32_t PlayerDTO::getY() const { return y; }
 
 int PlayerDTO::getDamage() const { return damage; }
 

@@ -13,7 +13,7 @@
 class FlyingEnemy: public Enemy {
 
 public:
-    FlyingEnemy(GameMap& map, Vector<uint8_t> pos, uint8_t id);
+    FlyingEnemy(GameMap& map, Vector<uint32_t> pos, uint8_t id);
 
     EnemyType getEnemyType() override;
 };

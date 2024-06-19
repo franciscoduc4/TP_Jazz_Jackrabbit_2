@@ -16,7 +16,7 @@ void Bouncer::update(float time) {
         lastTimeShot = -1;
     }
 }
-void Bouncer::shoot(std::vector<std::shared_ptr<Entity>>& shootingEntities, uint8_t xPos,
+void Bouncer::shoot(std::vector<std::shared_ptr<Entity>>& shootingEntities, uint32_t xPos,
                     float time) {
     lastTimeShot = time;
     bullets--;

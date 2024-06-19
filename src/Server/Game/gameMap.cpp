@@ -7,7 +7,7 @@
 
 // #define CONFIG ServerConfig::getInstance()
 
-GameMap::GameMap(Vector<uint8_t> size, uint8_t mapId):
+GameMap::GameMap(Vector<uint32_t> size, uint8_t mapId):
         size(size),
         entityFactory(*this),
         gravity(ServerConfig::getGameGravity()),
@@ -45,7 +45,7 @@ void GameMap::loadMap(uint8_t mapId) {
                         throw std::runtime_error(
                                 "Invalid enemy position configuration in YAML file");
                     }
-                    Vector<uint8_t> position = {static_cast<uint8_t>(pos[0].as<int>()), static_cast<uint8_t>(pos[1].as<int>())};
+                    Vector<uint32_t> position = {static_cast<uint8_t>(pos[0].as<int>()), static_cast<uint8_t>(pos[1].as<int>())};
                     std::cout << "[GAMEMAP] Enemy position: (" << static_cast<int>(position.x)
                               << ", " << static_cast<int>(position.y) << ")" << std::endl;
                     EnemyType type = getEnemyType(enemyType);
@@ -74,20 +74,20 @@ EnemyType GameMap::getEnemyType(const std::string& type) {
     }
 }
 
-std::vector<std::shared_ptr<Entity>> GameMap::getObjectsInShootRange(Vector<uint8_t> mapPosition,
+std::vector<std::shared_ptr<Entity>> GameMap::getObjectsInShootRange(Vector<uint32_t> mapPosition,
                                                                      Direction dir) {
     std::vector<std::shared_ptr<Entity>> entities;
     try {
         if (dir == Direction::LEFT) {
             for (int8_t i = mapPosition.x - 1; i >= 0; i--) {
-                Vector<uint8_t> pos = {static_cast<uint8_t>(i), mapPosition.y};
+                Vector<uint32_t> pos = {static_cast<uint8_t>(i), mapPosition.y};
                 if (mapGrid.find(pos) != mapGrid.end()) {
                     entities.push_back(mapGrid[pos]);
                 }
             }
         } else if (dir == Direction::RIGHT) {
             for (uint8_t i = mapPosition.x + 1; i < size.x; i++) {
-                Vector<uint8_t> pos = {i, mapPosition.y};
+                Vector<uint32_t> pos = {i, mapPosition.y};
                 if (mapGrid.find(pos) != mapGrid.end()) {
                     entities.push_back(mapGrid[pos]);
                 }
@@ -100,12 +100,12 @@ std::vector<std::shared_ptr<Entity>> GameMap::getObjectsInShootRange(Vector<uint
 }
 
 std::vector<std::shared_ptr<Entity>> GameMap::getObjectsInExplosionRange(
-        Vector<uint8_t> mapPosition, uint8_t radius) {
+        Vector<uint32_t> mapPosition, uint8_t radius) {
     std::vector<std::shared_ptr<Entity>> entities;
     try {
         for (int8_t i = mapPosition.x - radius; i <= mapPosition.x + radius; i++) {
             for (int8_t j = mapPosition.y - radius; j <= mapPosition.y + radius; j++) {
-                Vector<uint8_t> pos = {static_cast<uint8_t>(i), static_cast<uint8_t>(j)};
+                Vector<uint32_t> pos = {static_cast<uint8_t>(i), static_cast<uint8_t>(j)};
                 if (mapGrid.find(pos) != mapGrid.end()) {
                     entities.push_back(mapGrid[pos]);
                 }
@@ -118,7 +118,7 @@ std::vector<std::shared_ptr<Entity>> GameMap::getObjectsInExplosionRange(
     return entities;
 }
 
-void GameMap::moveObject(Vector<uint8_t>& position, Vector<uint8_t> mapPosition, Direction dir) {
+void GameMap::moveObject(Vector<uint32_t>& position, Vector<uint32_t> mapPosition, Direction dir) {
     try {
         auto character = std::dynamic_pointer_cast<Character>(mapGrid[mapPosition]);
         if (!character) {
@@ -126,8 +126,8 @@ void GameMap::moveObject(Vector<uint8_t>& position, Vector<uint8_t> mapPosition,
             return;
         }
 
-        Vector<uint8_t> newPosition = calculateNewPosition(position, dir);
-        Vector<uint8_t> newMapPosition = getMapPosition(newPosition);
+        Vector<uint32_t> newPosition = calculateNewPosition(position, dir);
+        Vector<uint32_t> newMapPosition = getMapPosition(newPosition);
         if (!handleMovement(position, mapPosition, newPosition, newMapPosition)) {
             character->interact(mapGrid[newMapPosition]);
         }
@@ -136,13 +136,13 @@ void GameMap::moveObject(Vector<uint8_t>& position, Vector<uint8_t> mapPosition,
     }
 }
 
-bool GameMap::isFreePosition(Vector<uint8_t> position) {
+bool GameMap::isFreePosition(Vector<uint32_t> position) {
     return mapGrid.find(position) == mapGrid.end();
 }
 
-void GameMap::addEntityToMap(std::shared_ptr<Entity> entity, Vector<uint8_t> position) {
+void GameMap::addEntityToMap(std::shared_ptr<Entity> entity, Vector<uint32_t> position) {
     try {
-        Vector<uint8_t> mapPosition = entity->getMapPosition(movesPerCell);
+        Vector<uint32_t> mapPosition = entity->getMapPosition(movesPerCell);
         std::cout << "[GAMEMAP] Adding entity at position: (" << static_cast<int>(mapPosition.x)
                   << ", " << static_cast<int>(mapPosition.y) << ")" << std::endl;
         if (isFreePosition(mapPosition)) {
@@ -156,7 +156,7 @@ void GameMap::addEntityToMap(std::shared_ptr<Entity> entity, Vector<uint8_t> pos
     }
 }
 
-Vector<uint8_t> GameMap::getInitialPositionForCharacterType(CharacterType type) {
+Vector<uint32_t> GameMap::getInitialPositionForCharacterType(CharacterType type) {
     try {
         std::string filePath = MapsManager::getMapFileNameById(mapId);
         YAML::Node config = YAML::LoadFile(filePath);
@@ -195,7 +195,7 @@ Vector<uint8_t> GameMap::getInitialPositionForCharacterType(CharacterType type) 
 
 std::shared_ptr<Character> GameMap::addCharacter(uint8_t playerId, CharacterType type) {
     try {
-        Vector<uint8_t> initPosition = getInitialPositionForCharacterType(type);
+        Vector<uint32_t> initPosition = getInitialPositionForCharacterType(type);
 
         if (!isValidMapPosition(initPosition)) {
             std::cerr << "[GAMEMAP] Invalid initial position for character" << std::endl;
@@ -220,7 +220,7 @@ std::shared_ptr<Character> GameMap::addCharacter(uint8_t playerId, CharacterType
     }
 }
 
-void GameMap::addEnemy(EnemyType type, Vector<uint8_t> position) {
+void GameMap::addEnemy(EnemyType type, Vector<uint32_t> position) {
     try {
         if (!isValidMapPosition(position)) {
             throw std::runtime_error("Invalid position for enemy");
@@ -235,19 +235,19 @@ void GameMap::addEnemy(EnemyType type, Vector<uint8_t> position) {
     }
 }
 
-bool GameMap::isValidMapPosition(Vector<uint8_t> mapPosition) {
+bool GameMap::isValidMapPosition(Vector<uint32_t> mapPosition) {
     return mapPosition.x >= 0 && mapPosition.x <= size.x && mapPosition.y >= 0 &&
            mapPosition.y <= size.y;
 }
 
-bool GameMap::isValidPosition(Vector<uint8_t> position) {
+bool GameMap::isValidPosition(Vector<uint32_t> position) {
     return position.x >= 0 && position.x <= size.x * movesPerCell && position.y >= 0 &&
            position.y <= size.y * movesPerCell;
 }
 
-Vector<uint8_t> GameMap::getAvailablePosition() {
+Vector<uint32_t> GameMap::getAvailablePosition() {
     try {
-        Vector<uint8_t> pos;
+        Vector<uint32_t> pos;
         do {
             pos = {static_cast<uint8_t>(rand() % size.x), static_cast<uint8_t>(rand() % size.y)};
         } while (mapGrid.find(pos) != mapGrid.end() && isValidPosition(pos));
@@ -280,7 +280,7 @@ void GameMap::removeCharacter(uint8_t playerId) {
     }
 }
 
-void GameMap::removeEnemy(Vector<uint8_t> position) {
+void GameMap::removeEnemy(Vector<uint32_t> position) {
     try {
         mapGrid.erase(position);
         std::cout << "[GAMEMAP] Removed enemy at position: (" << static_cast<int>(position.x)
@@ -290,7 +290,7 @@ void GameMap::removeEnemy(Vector<uint8_t> position) {
     }
 }
 
-std::shared_ptr<Entity> GameMap::getEntityAt(Vector<uint8_t> mapPosition) {
+std::shared_ptr<Entity> GameMap::getEntityAt(Vector<uint32_t> mapPosition) {
     try {
         if (isValidPosition(mapPosition) && mapGrid.find(mapPosition) != mapGrid.end()) {
             return mapGrid[mapPosition];
@@ -351,29 +351,29 @@ void GameMap::printMapGrid() const {
     }
 }
 
-Vector<uint8_t> GameMap::getMapPosition(Vector<uint8_t> position) {
+Vector<uint32_t> GameMap::getMapPosition(Vector<uint32_t> position) {
     return {static_cast<uint8_t>(position.x / movesPerCell),
             static_cast<uint8_t>(position.y / movesPerCell)};
 }
 
-Vector<uint8_t> GameMap::calculateNewPosition(const Vector<uint8_t> position, Direction dir) const {
+Vector<uint32_t> GameMap::calculateNewPosition(const Vector<uint32_t> position, Direction dir) const {
     try {
         switch (dir) {
             case Direction::LEFT:
                 return position.x - movesPerCell >= 0 ?
-                               position - Vector<uint8_t>{movesPerCell, 0} :
+                               position - Vector<uint32_t>{movesPerCell, 0} :
                                position;
             case Direction::RIGHT:
                 return position.x + movesPerCell <= size.x * movesPerCell ?
-                               position + Vector<uint8_t>{movesPerCell, 0} :
+                               position + Vector<uint32_t>{movesPerCell, 0} :
                                position;
             case Direction::UP:
                 return position.y + movesPerCell <= size.y * movesPerCell ?
-                               position + Vector<uint8_t>{0, movesPerCell} :
+                               position + Vector<uint32_t>{0, movesPerCell} :
                                position;
             case Direction::DOWN:
                 return position.y - movesPerCell >= 0 ?
-                               position - Vector<uint8_t>{0, movesPerCell} :
+                               position - Vector<uint32_t>{0, movesPerCell} :
                                position;
             default:
                 return position;
@@ -384,9 +384,9 @@ Vector<uint8_t> GameMap::calculateNewPosition(const Vector<uint8_t> position, Di
     }
 }
 
-bool GameMap::handleMovement(Vector<uint8_t>& position, Vector<uint8_t> mapPosition,
-                             const Vector<uint8_t>& newPosition,
-                             const Vector<uint8_t>& newMapPosition) {
+bool GameMap::handleMovement(Vector<uint32_t>& position, Vector<uint32_t> mapPosition,
+                             const Vector<uint32_t>& newPosition,
+                             const Vector<uint32_t>& newMapPosition) {
     try {
         if (newMapPosition == mapPosition) {
             std::cout << "[GAMEMAP] Same map position" << std::endl;
