@@ -78,15 +78,18 @@ void ClientProtocol::receiveDTOType(char& dtoType) {
 
 void ClientProtocol::receiveCommandDTO(std::unique_ptr<DTO>& dto) {
     try {
+        std::cout << "[RECEIVER] Receiving command DTO" << std::endl;
         char lobbyTypeChar;
         if (!this->receive_char(lobbyTypeChar)) {
             return;
         }
         switch (static_cast<Command>(lobbyTypeChar)) {
             case Command::START_GAME:
+                std::cout << "[RECEIVER] Receiving START_GAME command" << std::endl;
                 dto = std::make_unique<StartGameDTO>();
                 break;
             case Command::CREATE_GAME:
+                std::cout << "[RECEIVER] Receiving CREATE_GAME command" << std::endl;
                 uint8_t gameId;
                 if (!this->receive_uint8(gameId)) {
                     return;
@@ -94,12 +97,15 @@ void ClientProtocol::receiveCommandDTO(std::unique_ptr<DTO>& dto) {
                 dto = std::make_unique<CreateGameDTO>(gameId);
                 break;
             case Command::GAMES_LIST:
+                std::cout << "[RECEIVER] Receiving GAMES_LIST command" << std::endl;
                 this->receiveGamesList(dto);
                 break;
             case Command::MAPS_LIST:
+                std::cout << "[RECEIVER] Receiving MAPS_LIST command" << std::endl;
                 this->receiveMapsList(dto);
                 break;
             case Command::GAME_UPDATE:
+                std::cout << "[RECEIVER] Receiving GAME_UPDATE command" << std::endl;
                 this->receiveGameUpdate(dto);
                 break;
             default:

@@ -40,10 +40,12 @@ void LobbyController::sendRequest(const LobbyMessage& msg) {
         std::cout << "[Lobby Controller] Selected game updated." << std::endl;
         this->selected = GameInfo(msg.getGameId(), msg.getGameName(), msg.getMaxPlayers(), 1);
     }
+    std::cout << "[Lobby Controller] Sending request of type: " << static_cast<int>(msg.getLobbyCmd()) << std::endl;
     this->serializer.serializeLobbyMessage(msg);
 }
 
 void LobbyController::startGame(const LobbyMessage& msg) {
+    std::cout << "[Lobby Controller] Starting game..." << std::endl;
     std::unique_ptr<CommandDTO> startGameDTO = std::make_unique<StartGameDTO>(msg.getGameId());
     this->serializer.sendMsg(startGameDTO);
 }
@@ -67,11 +69,13 @@ std::pair<bool, GameInfo> LobbyController::recvResponse() {
          * desde el servidor. Max Players: se crea o se une a un juego sabiendo este dato
          */
         case Command::CREATE_GAME: {
+            std::cout << "[Lobby Controller] Received CREATE_GAME response." << std::endl;
             auto* cgDTO = dynamic_cast<CreateGameDTO*>(cmdDTO);
             this->selected.updateGameId(cgDTO->getGameId());
             break;
         }
         case Command::GAME_UPDATE: {
+            std::cout << "[Lobby Controller] Received GAME_UPDATE response." << std::endl;
             auto* guDTO = dynamic_cast<GameUpdateDTO*>(cmdDTO);
             this->selected.updateCurrentPlayers(guDTO->getGameInfo().currentPlayers);
             if (this->selected.getMapName() == "") {
@@ -80,6 +84,7 @@ std::pair<bool, GameInfo> LobbyController::recvResponse() {
             break;
         }
         case Command::JOIN_GAME: {
+            std::cout << "[Lobby Controller] Received JOIN_GAME response." << std::endl;
             auto* jgDTO = dynamic_cast<JoinGameDTO*>(cmdDTO);
             this->selected.updateCurrentPlayers(jgDTO->getCurrentPlayers());
             break;
@@ -87,6 +92,7 @@ std::pair<bool, GameInfo> LobbyController::recvResponse() {
         case Command::MAPS_LIST:
         case Command::GAMES_LIST:
         case Command::START_GAME:
+            std::cout << "[Lobby Controller] Received MAPS_LIST/GAMES_LIST/START_GAME response." << std::endl;
             break;
         default:
             return std::make_pair(false, this->selected);
@@ -120,6 +126,7 @@ uint8_t LobbyController::recvCreateGame() {
 }
 
 std::unordered_map<uint8_t, std::string> LobbyController::getMaps() {
+    std::cout << "[Lobby Controller] Getting maps..." << std::endl;
     try {
         std::unique_ptr<DTO> dto = this->lobbyQueue->pop();
         auto* mapsList = dynamic_cast<MapsListDTO*>(dto.get());
@@ -131,6 +138,7 @@ std::unordered_map<uint8_t, std::string> LobbyController::getMaps() {
 }
 
 std::unordered_map<uint8_t, GameInfo>& LobbyController::getGamesList() {
+    std::cout << "[Lobby Controller] Getting games list..." << std::endl;
     std::unique_ptr<DTO> dto = this->lobbyQueue->pop();
     auto* gamesList = dynamic_cast<GamesListDTO*>(dto.get());
     this->games = std::move(gamesList->getGames());

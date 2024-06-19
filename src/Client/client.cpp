@@ -82,6 +82,7 @@ void Client::start() {
         uint8_t mapId = 0;   
         GameScreen game(this->gameController, this->playerId, mapId);
         game.run();
+        clientJoinedGame = false; // Para que no cicle infinitamente.
     } while (clientJoinedGame);
 
     this->finish();
