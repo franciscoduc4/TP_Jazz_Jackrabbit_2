@@ -41,6 +41,8 @@ public:
     WeaponType getWeaponType() override;
 
     float getFireRate() override;
+
+    bool cooldown(float time) override;
 };
 
 #endif  // BLASTER_H

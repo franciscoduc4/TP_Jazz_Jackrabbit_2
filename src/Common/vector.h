@@ -41,7 +41,11 @@ struct Vector {
         return (x < other.x) || (x == other.x && y < other.y);
     }
 
+    bool operator>(const Vector& other) const { return other < *this; }
+
     bool operator<=(const Vector& other) const { return *this < other || *this == other; }
+
+    bool operator>=(const Vector& other) const { return *this > other || *this == other; }
 
     double distance(const Vector& other) const {
         T dx = x - other.x;

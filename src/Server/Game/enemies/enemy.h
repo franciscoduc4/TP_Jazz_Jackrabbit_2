@@ -5,6 +5,7 @@
 #include <memory>
 #include <vector>
 
+#include "../../../Common/DTO/enemy.h"
 #include "../../../Common/Types/enemy.h"
 #include "../../../Common/vector.h"
 #include "../characters/character.h"
@@ -46,6 +47,8 @@ public:
 
     std::shared_ptr<Character> getClosestCharacter(
             std::vector<std::shared_ptr<Character>> characters);
+
+    EnemyDTO getDTO() const;
 };
 
 #endif  // ENEMY_H_

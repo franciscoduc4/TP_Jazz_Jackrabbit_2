@@ -1,20 +1,20 @@
 #include "blaster.h"
 
 #include "../../../Common/Config/ServerConfig.h"
-// #define CONFIG ServerConfig::getInstance()
+#define CONFIG ServerConfig::getInstance()
 
 Blaster::Blaster():
-        bullets(ServerConfig::getWeaponBlasterBullets()),
-        maxBullets(ServerConfig::getWeaponBlasterBullets()),
-        damage(ServerConfig::getWeaponBlasterDamage()),
-        fireRate(ServerConfig::getWeaponBlasterFireRate()),
+        bullets(CONFIG->getWeaponBlasterBullets()),
+        maxBullets(CONFIG->getWeaponBlasterBullets()),
+        damage(CONFIG->getWeaponBlasterDamage()),
+        fireRate(CONFIG->getWeaponBlasterFireRate()),
         lastTimeShot(-1) {}
 
 void Blaster::update(float time) {
-    if (lastTimeShot != -1 && time - lastTimeShot >= fireRate) {
-        bullets = maxBullets;
-        lastTimeShot = -1;
-    }
+    // if (lastTimeShot != -1 && time - lastTimeShot >= fireRate) {
+    //     bullets = maxBullets;
+    //     lastTimeShot = -1;
+    // }
 }
 
 void Blaster::shoot(std::vector<std::shared_ptr<Entity>>& shootingEntities, uint8_t xPos,
@@ -25,9 +25,11 @@ void Blaster::shoot(std::vector<std::shared_ptr<Entity>>& shootingEntities, uint
 
     if (shootingEntities.empty())
         return;
-
-    for (auto& entity: shootingEntities) {
-        entity->recvDamage(damage, time);
+    if (bullets > 0){
+        for (auto& entity: shootingEntities) {
+            entity->recvDamage(damage, time);
+        }
+        //revisar distancia de disparo
     }
 }
 
@@ -48,3 +50,9 @@ bool Blaster::shootTime(float time) {
 WeaponType Blaster::getWeaponType() { return WeaponType::BLASTER; }
 
 float Blaster::getFireRate() { return fireRate; }
+
+bool Blaster::cooldown(float time) {
+    return (time - lastTimeShot) > fireRate;
+}
+
+

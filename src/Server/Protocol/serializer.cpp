@@ -135,7 +135,28 @@ std::vector<char> Serializer::serializeGamesList(const std::unique_ptr<GamesList
     buffer.insert(buffer.end(), p, p + sizeof(uint8_t));
     std::cout << "[SERVER SERIALIZE GL] Games size: " << games.size() << std::endl;
     for (const auto& [gameId, gameInfo]: games) {
-        insertGameInfoToBuffer(buffer, gameInfo);
+        const unsigned char* p = reinterpret_cast<const unsigned char*>(&gameId);
+        buffer.insert(buffer.end(), p, p + sizeof(uint8_t));
+
+        uint8_t nameLength = gameInfo.name.length();
+        const unsigned char* np = reinterpret_cast<const unsigned char*>(&nameLength);
+        buffer.insert(buffer.end(), np, np + sizeof(uint8_t));
+
+        buffer.insert(buffer.end(), gameInfo.name.begin(), gameInfo.name.end());
+
+        uint8_t maxPlayers = gameInfo.maxPlayers;
+        const unsigned char* mp = reinterpret_cast<const unsigned char*>(&maxPlayers);
+        buffer.insert(buffer.end(), mp, mp + sizeof(uint8_t));
+
+        uint8_t currentPlayers = gameInfo.currentPlayers;
+        const unsigned char* cp = reinterpret_cast<const unsigned char*>(&currentPlayers);
+        buffer.insert(buffer.end(), cp, cp + sizeof(uint8_t));
+
+        std::string mapName = gameInfo.mapName;
+        uint8_t mapLength = mapName.length();
+        buffer.insert(buffer.end(), reinterpret_cast<const unsigned char*>(&mapLength),
+                      reinterpret_cast<const unsigned char*>(&mapLength) + sizeof(uint8_t));
+        buffer.insert(buffer.end(), mapName.begin(), mapName.end());
     }
     return buffer;
 }

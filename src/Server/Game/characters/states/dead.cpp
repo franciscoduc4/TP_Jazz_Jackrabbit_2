@@ -5,10 +5,10 @@
 #include "../../../../Common/Config/ServerConfig.h"
 
 #include "idle.h"
-// #define CONFIG ServerConfig::getInstance()
+#define CONFIG ServerConfig::getInstance()
 
 DeadState::DeadState(float deathTime):
-        startTime(deathTime), reviveTime(ServerConfig::getCharacterReviveTime()) {
+        startTime(deathTime), reviveTime(CONFIG->getCharacterReviveTime()) {
     characterState = CharacterStateEntity::DEAD;
 }
 

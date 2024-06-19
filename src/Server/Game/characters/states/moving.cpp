@@ -30,12 +30,16 @@ std::unique_ptr<State> MovingState::shoot(Character& character, std::shared_ptr<
 }
 
 std::unique_ptr<State> MovingState::move(Character& character, Direction direction, float time) {
+    if (direction != this->direction) {
+        this->direction = direction;
+        return nullptr;
+    }
     switch (direction) {
         case Direction::UP:
             character.moveUp();
             break;
         case Direction::DOWN:
-            character.moveRight();
+            character.moveDown();
             break;
         case Direction::RIGHT:
             character.moveRight();
@@ -83,10 +87,11 @@ std::unique_ptr<State> MovingState::specialAttack(Character& character, float ti
 std::unique_ptr<State> MovingState::jump(Character& character, float time) {
     //     // Cambia al estado de salto
     //     return std::unique_ptr<JumpingState>();
+
     return nullptr;
 }
 
 std::unique_ptr<State> MovingState::stopAction() {
     // Cambia al estado inactivo
-    return std::unique_ptr<IdleState>();
+    return std::make_unique<IdleState>();
 }

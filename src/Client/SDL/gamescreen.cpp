@@ -96,7 +96,13 @@ void GameScreen::run() {
 
     std::cout << "Textures created" << std::endl;
 
+    const int frameDelay = 1000 / 30;
+    Uint32 frameStart;
+    int frameTime;
+
     while (true) {
+        frameStart = SDL_GetTicks();
+
         SDL_Event event;
         std::cout << "[GAME SCREEN] Waiting for event" << std::endl;
         while (SDL_PollEvent(&event)) {
@@ -216,7 +222,13 @@ void GameScreen::run() {
         renderer.Present();
         std::cout << "[GAME SCREEN] Frame presented" << std::endl;
 
-        SDL_Delay(70);
+        frameTime = SDL_GetTicks() - frameStart;
+
+        if (frameDelay > frameTime) {
+            SDL_Delay(frameDelay - frameTime);
+        }
+
+        //SDL_Delay(70);
     }
     this->soundControl.free_musics();
     Mix_CloseAudio();

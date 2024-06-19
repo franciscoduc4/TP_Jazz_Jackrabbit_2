@@ -1,13 +1,13 @@
 #include "bouncer.h"
 
 #include "../../../Common/Config/ServerConfig.h"
-// #define CONFIG ServerConfig::getInstance()
+#define CONFIG ServerConfig::getInstance()
 
 Bouncer::Bouncer():
-        bullets(ServerConfig::getWeaponBouncerBullets()),
-        maxBullets(ServerConfig::getWeaponBouncerBullets()),
-        damage(ServerConfig::getWeaponBouncerDamage()),
-        fireRate(ServerConfig::getWeaponBouncerFireRate()),
+        bullets(CONFIG->getWeaponBouncerBullets()),
+        maxBullets(CONFIG->getWeaponBouncerBullets()),
+        damage(CONFIG->getWeaponBouncerDamage()),
+        fireRate(CONFIG->getWeaponBouncerFireRate()),
         lastTimeShot(-1) {}
 
 void Bouncer::update(float time) {
@@ -47,3 +47,8 @@ bool Bouncer::shootTime(float time) {
 WeaponType Bouncer::getWeaponType() { return WeaponType::BOUNCER; }
 
 float Bouncer::getFireRate() { return fireRate; }
+
+
+bool Bouncer::cooldown(float time) {
+    return (time - lastTimeShot) > fireRate;
+}
