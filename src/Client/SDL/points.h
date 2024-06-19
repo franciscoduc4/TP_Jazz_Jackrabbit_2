@@ -34,7 +34,7 @@ public:
 
     std::unique_ptr<SDL2pp::Texture> getItemsTextures(SDL2pp::Renderer& renderer);
 
-    void draw_points(SDL2pp::Renderer& renderer, std::unique_ptr<SDL2pp::Texture>& points, std::vector<ItemDTO> pointsdto, PlayerDTO& player, int dir_x_screen, int dir_y_screen);
+    void draw_points(SDL2pp::Window& window, SDL2pp::Renderer& renderer, std::unique_ptr<SDL2pp::Texture>& points, std::vector<ItemDTO> pointsdto, PlayerDTO& player, int dir_x_screen, int dir_y_screen);
 
     std::list<RectangularSprite>::iterator actual_sprite_coord(ItemType typepoint);
 

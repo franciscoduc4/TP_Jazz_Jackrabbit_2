@@ -7,7 +7,7 @@
 
 
 #include <iostream>
-
+#include <cmath>
 
 enum lvl { BEACH, HOLIDAIUS, COLONIUS };
 
@@ -139,12 +139,11 @@ std::vector<int> Level::draw_background(SDL2pp::Window& window, SDL2pp::Renderer
     renderer.Copy(*textures[TileType::BACKGROUND],
                       SDL2pp::Rect(this->pixels_pos[TileType::BACKGROUND][index_x], this->pixels_pos[TileType::BACKGROUND][index_y], this->pixels_pos[TileType::BACKGROUND][index_width], this->pixels_pos[TileType::BACKGROUND][index_height]),
                       SDL2pp::Rect(0, 0, window_width, window_height));
-    uint16_t get_pos_x = player.getX() * window_width / 255;
-    uint16_t get_pos_y = player.getY() * window_height / 255;
+    uint32_t get_pos_x = player.getX();
+    uint32_t get_pos_y = player.getY();
     int get_speed = player.getSpeed();
         
-    if (get_pos_x > window_width / 4 * 2 ||
-        (get_pos_x < window_width / 4 && get_speed < 0)) {
+    if (get_pos_x > window_width / 2) {
         if (pixels_pos[TileType::BACKGROUND][index_x] + get_speed > this->background_width - pixels_pos[TileType::BACKGROUND][index_width]) {
             pixels_pos[TileType::BACKGROUND][index_x] = 0;
         } else if (pixels_pos[TileType::BACKGROUND][index_x] < 0) {
@@ -152,11 +151,10 @@ std::vector<int> Level::draw_background(SDL2pp::Window& window, SDL2pp::Renderer
         } else {
             pixels_pos[TileType::BACKGROUND][index_x] += get_speed;
         }
-        dir_screen[0] = window_width / 4 * 2;
+        dir_screen[0] = window_width / 2;
     }
 
-    if (get_pos_y > window_height / 4 * 2 ||
-        (get_pos_y < window_height / 4 && get_speed < 0)) {
+    if (get_pos_y > window_height / 2) {
         if (pixels_pos[TileType::BACKGROUND][index_y] + get_speed > this->background_height - pixels_pos[TileType::BACKGROUND][index_height]) {
             pixels_pos[TileType::BACKGROUND][index_y] = 0;
         } else if (pixels_pos[TileType::BACKGROUND][index_y] < 0) {
@@ -164,7 +162,7 @@ std::vector<int> Level::draw_background(SDL2pp::Window& window, SDL2pp::Renderer
         } else {
             pixels_pos[TileType::BACKGROUND][index_y] += get_speed;
         }
-        dir_screen[1] = window_height / 4 * 2;
+        dir_screen[1] = window_height / 2;
     }
     return dir_screen;
 
@@ -186,7 +184,7 @@ void Level::draw_floor(SDL2pp::Window& window, SDL2pp::Renderer& renderer, std::
 }
 
 
-void Level::draw_tiles(SDL2pp::Window& window, SDL2pp::Renderer& renderer, std::map<TileType, std::unique_ptr<SDL2pp::Texture>>& tiles_textures, std::vector<TileDTO>& tiles) {
+void Level::draw_tiles(SDL2pp::Window& window, SDL2pp::Renderer& renderer, std::map<TileType, std::unique_ptr<SDL2pp::Texture>>& tiles_textures, std::vector<TileDTO>& tiles, PlayerDTO& player) {
     int index_x = 0;
     int index_y = 1;
     int index_width = 2;
@@ -195,11 +193,16 @@ void Level::draw_tiles(SDL2pp::Window& window, SDL2pp::Renderer& renderer, std::
     int index_draw_width = 0;
     int index_draw_height = 1;
     for (auto t: tiles) {
-        //TileType type = t.getType();
-        //renderer.Copy(*tiles_textures[TileType::LONGPLATFORM/*type*/], SDL2pp::Rect(pixels_pos[TileType::LONGPLATFORM/*type*/][index_x], pixels_pos[TileType::LONGPLATFORM/*type*/][index_y], pixels_pos[TileType::LONGPLATFORM/*type*/][index_width], pixels_pos[TileType::LONGPLATFORM/*type*/][index_height]), SDL2pp::Rect(t.getX(), t.getY(), this->width_height[TileType::LONGPLATFORM/*type*/][index_draw_width], this->width_height[TileType::LONGPLATFORM/*type*/][index_draw_height]));
-        //renderer.Copy(*tiles_textures[TileType::SMALLPLATFORM/*type*/], SDL2pp::Rect(pixels_pos[TileType::SMALLPLATFORM/*type*/][index_x], pixels_pos[TileType::SMALLPLATFORM/*type*/][index_y], pixels_pos[TileType::SMALLPLATFORM/*type*/][index_width], pixels_pos[TileType::SMALLPLATFORM/*type*/][index_height]), SDL2pp::Rect(t.getX(), t.getY(), this->width_height[TileType::SMALLPLATFORM/*type*/][index_draw_width], this->width_height[TileType::SMALLPLATFORM/*type*/][index_draw_height]));
-        //renderer.Copy(*tiles_textures[TileType::COLUMN/*type*/], SDL2pp::Rect(pixels_pos[TileType::COLUMN/*type*/][index_x], pixels_pos[TileType::COLUMN/*type*/][index_y], pixels_pos[TileType::COLUMN/*type*/][index_width], pixels_pos[TileType::COLUMN/*type*/][index_height]), SDL2pp::Rect(t.getX(), t.getY(), this->width_height[TileType::COLUMN/*type*/][index_draw_width], this->width_height[TileType::COLUMN/*type*/][index_draw_height]));
-        //renderer.Copy(*tiles_textures[TileType::LEFTDIAGONAL/*type*/], SDL2pp::Rect(pixels_pos[TileType::LEFTDIAGONAL/*type*/][index_x], pixels_pos[TileType::LEFTDIAGONAL/*type*/][index_y], pixels_pos[TileType::LEFTDIAGONAL/*type*/][index_width], pixels_pos[TileType::LEFTDIAGONAL/*type*/][index_height]), SDL2pp::Rect(t.getX(), t.getY(), this->width_height[TileType::LEFTDIAGONAL/*type*/][index_draw_width], this->width_height[TileType::LEFTDIAGONAL/*type*/][index_draw_height]));
-        renderer.Copy(*tiles_textures[TileType::RIGHTDIAGONAL/*type*/], SDL2pp::Rect(pixels_pos[TileType::RIGHTDIAGONAL/*type*/][index_x], pixels_pos[TileType::RIGHTDIAGONAL/*type*/][index_y], pixels_pos[TileType::RIGHTDIAGONAL/*type*/][index_width], pixels_pos[TileType::RIGHTDIAGONAL/*type*/][index_height]), SDL2pp::Rect(t.getX(), t.getY(), this->width_height[TileType::RIGHTDIAGONAL/*type*/][index_draw_width], this->width_height[TileType::RIGHTDIAGONAL/*type*/][index_draw_height]));
+        int distance_tile_player_x = player.getX() - t.getX();
+        int distance_tile_player_y = player.getY() - t.getY();
+
+        if (abs(distance_tile_player_x) <= window.GetWidth() / 2  && abs(distance_tile_player_y) <= window.GetHeight() / 2) {
+            //TileType type = t.getType();
+            //renderer.Copy(*tiles_textures[TileType::LONGPLATFORM/*type*/], SDL2pp::Rect(pixels_pos[TileType::LONGPLATFORM/*type*/][index_x], pixels_pos[TileType::LONGPLATFORM/*type*/][index_y], pixels_pos[TileType::LONGPLATFORM/*type*/][index_width], pixels_pos[TileType::LONGPLATFORM/*type*/][index_height]), SDL2pp::Rect(t.getX(), t.getY(), this->width_height[TileType::LONGPLATFORM/*type*/][index_draw_width], this->width_height[TileType::LONGPLATFORM/*type*/][index_draw_height]));
+            //renderer.Copy(*tiles_textures[TileType::SMALLPLATFORM/*type*/], SDL2pp::Rect(pixels_pos[TileType::SMALLPLATFORM/*type*/][index_x], pixels_pos[TileType::SMALLPLATFORM/*type*/][index_y], pixels_pos[TileType::SMALLPLATFORM/*type*/][index_width], pixels_pos[TileType::SMALLPLATFORM/*type*/][index_height]), SDL2pp::Rect(t.getX(), t.getY(), this->width_height[TileType::SMALLPLATFORM/*type*/][index_draw_width], this->width_height[TileType::SMALLPLATFORM/*type*/][index_draw_height]));
+            //renderer.Copy(*tiles_textures[TileType::COLUMN/*type*/], SDL2pp::Rect(pixels_pos[TileType::COLUMN/*type*/][index_x], pixels_pos[TileType::COLUMN/*type*/][index_y], pixels_pos[TileType::COLUMN/*type*/][index_width], pixels_pos[TileType::COLUMN/*type*/][index_height]), SDL2pp::Rect(t.getX(), t.getY(), this->width_height[TileType::COLUMN/*type*/][index_draw_width], this->width_height[TileType::COLUMN/*type*/][index_draw_height]));
+            //renderer.Copy(*tiles_textures[TileType::LEFTDIAGONAL/*type*/], SDL2pp::Rect(pixels_pos[TileType::LEFTDIAGONAL/*type*/][index_x], pixels_pos[TileType::LEFTDIAGONAL/*type*/][index_y], pixels_pos[TileType::LEFTDIAGONAL/*type*/][index_width], pixels_pos[TileType::LEFTDIAGONAL/*type*/][index_height]), SDL2pp::Rect(t.getX(), t.getY(), this->width_height[TileType::LEFTDIAGONAL/*type*/][index_draw_width], this->width_height[TileType::LEFTDIAGONAL/*type*/][index_draw_height]));
+            renderer.Copy(*tiles_textures[TileType::RIGHTDIAGONAL/*type*/], SDL2pp::Rect(pixels_pos[TileType::RIGHTDIAGONAL/*type*/][index_x], pixels_pos[TileType::RIGHTDIAGONAL/*type*/][index_y], pixels_pos[TileType::RIGHTDIAGONAL/*type*/][index_width], pixels_pos[TileType::RIGHTDIAGONAL/*type*/][index_height]), SDL2pp::Rect(t.getX(), t.getY(), this->width_height[TileType::RIGHTDIAGONAL/*type*/][index_draw_width], this->width_height[TileType::RIGHTDIAGONAL/*type*/][index_draw_height]));
+        }
     }
 }

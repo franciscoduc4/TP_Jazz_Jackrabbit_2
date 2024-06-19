@@ -150,10 +150,11 @@ void Enemy::draw_enemy(SDL2pp::Window& window, SDL2pp::Renderer& renderer, std::
             distance_main_enemy_y = y - player.getX();
             y = dir_y_screen + distance_main_enemy_y;
         }
-        renderer.Copy(*textures_enemies[e.getType()], SDL2pp::Rect(it->getX(), it->getY(), it->getWidth(), it->getHeight()),
+        if (abs(distance_main_enemy_x) <= window.GetWidth() / 2 && abs(distance_main_enemy_y) <= window.GetHeight() / 2) {
+           renderer.Copy(*textures_enemies[e.getType()], SDL2pp::Rect(it->getX(), it->getY(), it->getWidth(), it->getHeight()),
                   SDL2pp::Rect(x, y, this->width_height[e.getType()][index_width], this->width_height[e.getType()][index_height]), 0.0,
                   SDL2pp::NullOpt, this->flip);
-
+        }
     }
     this->init = true;
 }
