@@ -21,8 +21,9 @@
 class Serializer {
 private:
     std::shared_ptr<Socket> socket;
-    static void insertGameInfoToBuffer(std::vector<char>& buffer, const GameInfo& gameInfo);
+    static void insertGameInfoIntoBuffer(std::vector<char>& buffer, const GameInfo& gameInfo);
     static void insertPositionIntoBuffer(std::vector<char>& buffer, const uint32_t& x, const uint32_t& y);
+    static void insert_int_into_buffer(std::vector<char>& buffer, const int& value);
 public:
     // Lobby
     static std::vector<char> serializeCreateGame(const std::unique_ptr<CreateGameDTO>& dto);
