@@ -205,7 +205,7 @@ void GameScreen::run() {
         
         std::vector<BulletDTO> bullets = snapshot->getBullets();
         if (bullets.size() > 0) {
-            this->proj.draw_projectile(window, renderer, projectile, bullets);
+            this->proj.draw_projectile(window, renderer, projectile, bullets, *mainPlayer, x_screen, y_screen, pos_x, pos_y);
         }
 
         std::vector<ItemDTO> itemsSnapshot = snapshot->getItems();
