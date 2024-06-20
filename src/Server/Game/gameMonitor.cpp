@@ -15,7 +15,6 @@ GameMonitor::GameMonitor(QueueMonitor& queueMonitor):
 
 void GameMonitor::createGame(uint8_t playerId, uint8_t mapId, GameMode gameMode, uint8_t maxPlayers,
                              CharacterType characterType, std::string gameName,
-                             std::shared_ptr<Queue<std::unique_ptr<CommandDTO>>> recvQueue,
                              std::shared_ptr<Queue<std::unique_ptr<DTO>>> sendQueue) {
     std::cout << "[GM] Attempting to lock mutex in createGame" << std::endl;
     std::lock_guard<std::mutex> lock(mtx);
@@ -30,8 +29,20 @@ void GameMonitor::createGame(uint8_t playerId, uint8_t mapId, GameMode gameMode,
     uint8_t gameId = games.size();
     queueMonitor.assignGameIdToQueues(gameId, sendQueue);
     std::cout << "[GM] Assigned id to queue for gameId: " << gameId << std::endl;
-    games[gameId] = std::make_unique<Game>(gameId, gameName, mapId, playerId, gameMode, maxPlayers,
-                                           characterType, recvQueue, queueMonitor);
+
+    auto it = playersRecvQueues.find(playerId);
+    if (it != playersRecvQueues.end()) {
+        // Move the shared_ptr from the players map to the games map
+        auto playerQueue = std::move(it->second);
+        playersRecvQueues.erase(it);
+
+        games[playerId] = std::make_unique<Game>(gameId, gameName, mapId, playerId, gameMode, maxPlayers,
+                                                 characterType, std::move(playerQueue), queueMonitor);
+    } else {
+        std::cerr << "[GM] Player " << playerId << " not found in playersRecvQueues" << std::endl;
+        return;
+    }
+
     std::cout << "[GM] Game created with id: " << gameId << std::endl;
 
     std::unique_ptr<DTO> dto = std::make_unique<CreateGameDTO>(gameId);
@@ -172,4 +183,12 @@ void GameMonitor::endAllGames() {
     }
     games.clear();
     std::cout << "[GM] Cleared all games" << std::endl;
+}
+void GameMonitor::addPlayerRecvQueue(uint8_t playerId,
+                                     std::shared_ptr<Queue<std::unique_ptr<CommandDTO>>> recvQueue) {
+    std::cout << "[GM] Attempting to lock mutex in addPlayerRecvQueue" << std::endl;
+    std::lock_guard<std::mutex> lock(mtx);
+    std::cout << "[GM] Mutex locked in addPlayerRecvQueue" << std::endl;
+    playersRecvQueues[playerId] = recvQueue;
+    std::cout << "[GM] Added player " << playerId << " to playersRecvQueues" << std::endl;
 }

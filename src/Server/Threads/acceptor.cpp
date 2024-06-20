@@ -16,8 +16,10 @@ void AcceptorThread::run() {
             if (!isAlive) {
                 break;
             }
-            auto player = std::make_unique<Player>(playerSocket, gameMonitor, queueMonitor,
+
+            auto player = std::make_unique<Player>(std::move(playerSocket), gameMonitor, queueMonitor,
                                                    static_cast<uint8_t>(players.size()));
+            gameMonitor.addPlayerRecvQueue(player->getPlayerId(), player->getRecvQueue());
             players.emplace_back(std::move(player));
             removeDeadPlayers();
         } catch (const std::exception& e) {

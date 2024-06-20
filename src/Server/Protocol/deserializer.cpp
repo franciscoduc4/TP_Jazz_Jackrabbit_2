@@ -6,36 +6,31 @@
 
 #include <arpa/inet.h>
 
-#include "../../Common/Types/character.h"
-#include "../../Common/Types/direction.h"
-#include "../../Common/Types/gameMode.h"
-#include "../../Common/Types/weapon.h"
-#include "../../Common/maps/mapsManager.h"
+Deserializer::Deserializer(const std::shared_ptr<Socket>& socket, std::atomic<bool>& keepPlaying, std::atomic<bool>& inGame) :
+        socket(socket), keepPlaying(keepPlaying), inGame(inGame), wasClosed(false) {}
 
-Deserializer::Deserializer(std::shared_ptr<Socket> socket): socket(socket) {}
-
-std::unique_ptr<CommandDTO> Deserializer::getCommand(bool& wasClosed, uint8_t& playerId) {
+std::unique_ptr<CommandDTO> Deserializer::getCommand(uint8_t& playerId) {
     char cmd = 0;
     socket->recvall(&cmd, sizeof(char), &wasClosed);
     std::cout << "[SERVER DESERIALIZER] Received command: " << (int)cmd << std::endl;
-    Command command = static_cast<Command>(cmd);
+    auto command = static_cast<Command>(cmd);
     switch (command) {
         case Command::CREATE_GAME:
-            return deserializeCreateGame(wasClosed, playerId);
+            return deserializeCreateGame(playerId);
         case Command::MAPS_LIST:
-            return deserializeMapsList(wasClosed, playerId);
+            return deserializeMapsList(playerId);
         case Command::JOIN_GAME:
-            return deserializeJoinGame(wasClosed, playerId);
+            return deserializeJoinGame(playerId);
         case Command::GAMES_LIST:
-            return deserializeGamesList(wasClosed, playerId);
+            return deserializeGamesList(playerId);
         case Command::START_GAME:
-            return deserializeStart(wasClosed, playerId);
+            return deserializeStart(playerId);
         case Command::MOVE:
-            return deserializeMove(wasClosed, playerId);
+            return deserializeMove(playerId);
         case Command::SWITCH_WEAPON:
-            return deserializeSwitchWeapon(wasClosed, playerId);
+            return deserializeSwitchWeapon(playerId);
         case Command::SPRINT:
-            return deserializeSprint(wasClosed, playerId);
+            return deserializeSprint(playerId);
         default:
             std::cout << "[SERVER DESERIALIZER] Unknown command received: " << (int)cmd
                       << std::endl;
@@ -43,8 +38,7 @@ std::unique_ptr<CommandDTO> Deserializer::getCommand(bool& wasClosed, uint8_t& p
     }
 }
 
-std::unique_ptr<CreateGameDTO> Deserializer::deserializeCreateGame(bool& wasClosed,
-                                                                   uint8_t& playerId) {
+std::unique_ptr<CreateGameDTO> Deserializer::deserializeCreateGame(uint8_t& playerId) {
     uint8_t mapId;
     socket->recvall(&mapId, sizeof(uint8_t), &wasClosed);
     if (wasClosed) {
@@ -93,82 +87,87 @@ std::unique_ptr<CreateGameDTO> Deserializer::deserializeCreateGame(bool& wasClos
                                            std::string(nameBuffer.begin(), nameBuffer.end()));
 }
 
-std::unique_ptr<MapsListDTO> Deserializer::deserializeMapsList(bool& wasClosed, uint8_t& playerId) {
+bool Deserializer::receive_uint8(uint8_t& value) {
+    socket->recvall(&value, sizeof(uint8_t), &wasClosed);
+    this->keepPlaying.store(!wasClosed);
+    this->inGame.store(!wasClosed);
+    if (wasClosed) {
+        std::cerr << "[SERVER DESERIALIZER] Connection was closed while receiving uint8_t"
+                  << std::endl;
+    }
+    return !wasClosed;
+}
+
+bool Deserializer::receive_char(char& value) {
+    socket->recvall(&value, sizeof(char), &wasClosed);
+    this->keepPlaying.store(!wasClosed);
+    this->inGame.store(!wasClosed);
+    if (wasClosed) {
+        std::cerr << "[SERVER DESERIALIZER] Connection was closed while receiving char"
+                  << std::endl;
+    }
+    return !wasClosed;
+}
+
+bool Deserializer::receive_vector_char(std::vector<char>& buffer) {
+    socket->recvall(buffer.data(), buffer.size(), &wasClosed);
+    this->keepPlaying.store(!wasClosed);
+    this->inGame.store(!wasClosed);
+    if (wasClosed) {
+        std::cerr << "[SERVER DESERIALIZER] Connection was closed while receiving vector<char>"
+                  << std::endl;
+    }
+    return !wasClosed;
+}
+
+std::unique_ptr<MapsListDTO> Deserializer::deserializeMapsList(uint8_t& playerId) {
     std::cout << "[SERVER DESERIALIZER] Deserialize Maps List" << std::endl;
     return std::make_unique<MapsListDTO>();
 }
 
-std::unique_ptr<JoinGameDTO> Deserializer::deserializeJoinGame(bool& wasClosed, uint8_t& playerId) {
+std::unique_ptr<JoinGameDTO> Deserializer::deserializeJoinGame(uint8_t& playerId) {
     uint8_t gameId;
-    socket->recvall(&gameId, sizeof(uint8_t), &wasClosed);
-    if (wasClosed) {
-        std::cerr << "[SERVER DESERIALIZER] Connection was closed while receiving gameId"
-                  << std::endl;
-        return nullptr;
-    }
-    CharacterType characterType;
-    socket->recvall(&characterType, sizeof(char), &wasClosed);
-    if (wasClosed) {
-        std::cerr << "[SERVER DESERIALIZER] Connection was closed while receiving characterType"
-                  << std::endl;
-        return nullptr;
-    }
+    if (!receive_uint8(gameId)) return nullptr;
+    char characterTypeChar;
+    if (!this->receive_char(characterTypeChar)) return nullptr;
+    auto characterType = static_cast<CharacterType>(characterTypeChar);
     return std::make_unique<JoinGameDTO>(playerId, gameId, characterType);
 }
 
-std::unique_ptr<CommandDTO> Deserializer::deserializeGamesList(bool& wasClosed, uint8_t& playerId) {
+std::unique_ptr<CommandDTO> Deserializer::deserializeGamesList(uint8_t& playerId) {
     std::cout << "[SERVER DESERIALIZER] Deserialize Games List" << std::endl;
     return std::make_unique<GamesListDTO>();
 }
 
-std::unique_ptr<GameCommandDTO> Deserializer::deserializeMove(bool& wasClosed, uint8_t& playerId) {
-    Direction direction;
+std::unique_ptr<GameCommandDTO> Deserializer::deserializeMove(uint8_t& playerId) {
+    char directionChar;
+    if (!this->receive_char(directionChar)) return nullptr;
+    auto direction = static_cast<Direction>(directionChar);
     socket->recvall(&direction, sizeof(char), &wasClosed);
-    std::cout << "[SERVER DESERIALIZER MOVE] Received direction: " << (int)direction << std::endl;
-    if (wasClosed) {
-        std::cerr << "[SERVER DESERIALIZER MOVE] Connection was closed while receiving direction"
-                  << std::endl;
-        return nullptr;
-    }
     return std::make_unique<GameCommandDTO>(playerId, direction, Command::MOVE);
 }
 
-std::unique_ptr<StartGameDTO> Deserializer::deserializeStart(bool& wasClosed, uint8_t& playerId) {
+std::unique_ptr<StartGameDTO> Deserializer::deserializeStart(uint8_t& playerId) {
     uint8_t gameId;
-    socket->recvall(&gameId, sizeof(uint8_t), &wasClosed);
-    std::cout << "[SERVER DESERIALIZER] Game id: " << gameId << std::endl;
-    if (wasClosed) {
-        std::cerr << "[SERVER DESERIALIZER] Connection was closed while receiving gameId"
-                  << std::endl;
-        return nullptr;
-    }
+    if (!this->receive_uint8(gameId)) return nullptr;
     return std::make_unique<StartGameDTO>(playerId, gameId);
 }
 
-std::unique_ptr<CommandDTO> Deserializer::deserializeShooting(bool& wasClosed, uint8_t& playerId) {
+std::unique_ptr<CommandDTO> Deserializer::deserializeShooting(uint8_t& playerId) {
     std::cout << "[SERVER DESERIALIZER] Deserialize Shooting" << std::endl;
     return std::make_unique<CommandDTO>(playerId, Command::SHOOT);
 }
 
-std::unique_ptr<CommandDTO> Deserializer::deserializeSwitchWeapon(bool& wasClosed,
-                                                                  uint8_t& playerId) {
-    WeaponType weaponType;
-    socket->recvall(&weaponType, sizeof(char), &wasClosed);
-    if (wasClosed) {
-        std::cerr << "[SERVER DESERIALIZER] Connection was closed while receiving weaponType"
-                  << std::endl;
-        return nullptr;
-    }
+std::unique_ptr<CommandDTO> Deserializer::deserializeSwitchWeapon(uint8_t& playerId) {
+    char weaponTypeChar;
+    if (!this->receive_char(weaponTypeChar)) return nullptr;
+    auto weaponType = static_cast<WeaponType>(weaponTypeChar);
     return std::make_unique<SwitchWeaponDTO>(playerId, weaponType);
 }
 
-std::unique_ptr<CommandDTO> Deserializer::deserializeSprint(bool& wasClosed, uint8_t& playerId) {
-    Direction direction;
-    socket->recvall(&direction, sizeof(char), &wasClosed);
-    if (wasClosed) {
-        std::cerr << "[SERVER DESERIALIZER] Connection was closed while receiving direction"
-                  << std::endl;
-        return nullptr;
-    }
+std::unique_ptr<CommandDTO> Deserializer::deserializeSprint(uint8_t& playerId) {
+    char directionChar;
+    if (!this->receive_char(directionChar)) return nullptr;
+    auto direction = static_cast<Direction>(directionChar);
     return std::make_unique<GameCommandDTO>(playerId, direction, Command::MOVE);
 }

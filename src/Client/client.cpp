@@ -29,17 +29,16 @@ void Client::start() {
 
     bool clientJoinedGame = false;
     do {
-        
-        // LobbyInit init;
-        // std::pair<bool, LobbyMessage> qtResult = init.launchQT(this->lobbyController, (bool&)clientJoinedGame); 
-        // clientJoinedGame = qtResult.first;
-        //   if (!clientJoinedGame) {
-        //       return;
-        //   }
+        LobbyInit init;
+        std::pair<bool, LobbyMessage> qtResult = init.launchQT(this->lobbyController, (bool&)clientJoinedGame);
+        clientJoinedGame = qtResult.first;
+        if (!clientJoinedGame) {
+              return;
+        }
         // TODO: Continue with SDL.
         // START - TESTING SKIP QT
         
-        Command cmd = (this->playerId == 0) ? Command::CREATE_GAME : Command::JOIN_GAME;
+        /*Command cmd = (this->playerId == 0) ? Command::CREATE_GAME : Command::JOIN_GAME;
 
         LobbyMessage msg;
         msg.setCharacter(CharacterType::JAZZ);
@@ -78,7 +77,7 @@ void Client::start() {
         } else {
             std::cerr << "Failed to receive response for create game." << std::endl;
             return;
-        }
+        }*/
         
         // END - TESTING SKIP QT
         //CharacterType pj = qtResult.second.getCharacter();

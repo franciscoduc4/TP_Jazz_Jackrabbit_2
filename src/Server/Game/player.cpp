@@ -6,18 +6,44 @@
 Player::Player(std::shared_ptr<Socket> socket, GameMonitor& gameMonitor,
                QueueMonitor& queueMonitor, uint8_t playerId):
         playerId(playerId),
-        socket(socket),
-        sender(socket, std::ref(keepPlaying), std::ref(inGame), gameMonitor, playerId) {
+        socket(std::move(socket)),
+        sendQueue(std::make_shared<Queue<std::unique_ptr<DTO>>>()),
+        recvQueue(std::make_shared<Queue<std::unique_ptr<CommandDTO>>>()),
+        sender(this->socket, keepPlaying, inGame, gameMonitor, playerId, this->sendQueue),
+        receiver(this->socket, keepPlaying, inGame, playerId, this->recvQueue){
     sender.start();
+    receiver.start();
+}
+
+void Player::closeQueues() {
+    sendQueue->close();
+    recvQueue->close();
+}
+
+void Player::stopThreads() {
+    sender.stop();
+    receiver.stop();
+    sender.join();
+    receiver.join();
+}
+
+void Player::closeSocket() {
+    socket->shutdown(SHUT_RDWR);
+    socket->close();
 }
 
 void Player::disconnect() {
-    keepPlaying = false;
-    inGame = false;
-    socket->shutdown(SHUT_RDWR);
-    socket->close();
-    sender.stop();
-    sender.join();
+    keepPlaying.store(false);
+    inGame.store(false);
+    this->closeQueues();
+    this->stopThreads();
+    this->closeSocket();
 }
 
-bool Player::isPlaying() const { return keepPlaying; }
+bool Player::isPlaying() const { return keepPlaying.load(); }
+
+uint8_t Player::getPlayerId() const { return playerId; }
+
+std::shared_ptr<Queue<std::unique_ptr<CommandDTO>>> Player::getRecvQueue() {
+    return recvQueue;
+}

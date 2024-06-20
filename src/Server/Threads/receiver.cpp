@@ -7,35 +7,38 @@
 #include "../../Common/DTO/lobby.h"
 #include "../CommandHandlers/Game/gameCommand.h"
 
-ReceiverThread::ReceiverThread(std::shared_ptr<Socket> socket, std::atomic<bool>& keepPlaying,
+ReceiverThread::ReceiverThread(const std::shared_ptr<Socket>& socket, std::atomic<bool>& keepPlaying,
                                std::atomic<bool>& inGame, uint8_t playerId,
-                               std::shared_ptr<Queue<std::unique_ptr<CommandDTO>>> recvQueue):
+                               const std::shared_ptr<Queue<std::unique_ptr<CommandDTO>>>& recvQueue):
         playerId(playerId),
-        serializer(socket),
-        deserializer(socket),
+        serializer(socket, keepPlaying, inGame),
+        deserializer(socket, keepPlaying, inGame),
         keepPlaying(keepPlaying),
         inGame(inGame),
-        wasClosed(false),
         recvQueue(recvQueue) {
     std::cout << "[SERVER RECEIVER] ReceiverThread initialized" << std::endl;
 }
 
+void ReceiverThread::runGame() {
+    std::cout << "[SERVER RECEIVER] Waiting to receive command" << std::endl;
+    std::unique_ptr<CommandDTO> commandDTO = deserializer.getCommand(playerId);
+    if (commandDTO) {
+        std::cout << "[SERVER RECEIVER] Command received, pushing to recvQueue"
+                  << std::endl;
+        recvQueue->push(std::move(commandDTO));
+    } else {
+        std::cout << "[SERVER RECEIVER] No command received (null commandDTO)" << std::endl;
+    }
+}
+
 void ReceiverThread::run() {
     std::cout << "[SERVER RECEIVER] Receiver thread started" << std::endl;
-    while (inGame) {
+    while (inGame.load()) {
         try {
-            std::cout << "[SERVER RECEIVER] Waiting to receive command" << std::endl;
-            std::unique_ptr<CommandDTO> commandDTO = deserializer.getCommand(wasClosed, playerId);
-            if (commandDTO) {
-                std::cout << "[SERVER RECEIVER] Command received, pushing to recvQueue"
-                          << std::endl;
-                recvQueue->push(std::move(commandDTO));
-            } else {
-                std::cout << "[SERVER RECEIVER] No command received (null commandDTO)" << std::endl;
-            }
+            this->runGame();
         } catch (const std::exception& e) {
             std::cerr << "[SERVER RECEIVER] Exception: " << e.what() << std::endl;
-            if (wasClosed) {
+            if (!inGame.load() || !keepPlaying.load()) {
                 std::cout << "[SERVER RECEIVER] Socket was closed, exiting receiver thread"
                           << std::endl;
                 return;

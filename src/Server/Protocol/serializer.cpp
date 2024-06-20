@@ -9,16 +9,27 @@
 
 #include <arpa/inet.h>
 
-Serializer::Serializer(std::shared_ptr<Socket> socket): socket(std::move(socket)) {
+Serializer::Serializer(const std::shared_ptr<Socket>& socket, std::atomic<bool>& keepPlaying, std::atomic<bool>& inGame) :
+        socket(socket), keepPlaying(keepPlaying), inGame(inGame), wasClosed(false) {
     std::cout << "[SERVER SERIALIZER] Serializer initialized" << std::endl;
 }
 
-void Serializer::sendId(uint8_t playerId, bool& wasClosed) {
+void Serializer::clientClosed() {
+    std::cerr << "[SERVER SERIALIZER] Client closed connection" << std::endl;
+    this->keepPlaying.store(false);
+    this->inGame.store(false);
+}
+
+void Serializer::sendId(uint8_t playerId) {
     try {
         std::cout << "[SERVER SERIALIZER] Sending id" << std::endl;
         std::cout << "[SERVER SERIALIZER] Id to send: " << (int)playerId << std::endl;
         const auto* p = reinterpret_cast<const unsigned char*>(&playerId);
         socket->sendall(p, sizeof(uint8_t), &wasClosed);
+        if (wasClosed) {
+            this->clientClosed();
+            return;
+        }
         std::cout << "[SERVER SERIALIZER] Id sent" << std::endl;
     } catch (const std::exception& e) {
         std::cerr << "[SERVER SERIALIZER] Error in sendId: " << e.what() << std::endl;
@@ -26,15 +37,23 @@ void Serializer::sendId(uint8_t playerId, bool& wasClosed) {
 }
 
 // ------------------------ LOBBY ------------------------
-void Serializer::sendCommand(const std::unique_ptr<CommandDTO>& dto, bool& wasClosed) {
+void Serializer::sendCommand(const std::unique_ptr<CommandDTO>& dto) {
     std::cout << "[SERVER SERIALIZER] Sending DTO Type" << std::endl;
     DTOType type = dto->getType();
     socket->sendall(&type, sizeof(char), &wasClosed);
+    if (wasClosed) {
+        this->clientClosed();
+        return;
+    }
     std::cout << "[SERVER SERIALIZER] Sent dto type: " << (int)type << std::endl;
 
     std::cout << "[SERVER SERIALIZER] Sending command" << std::endl;
     Command command = dto->getCommand();
     socket->sendall(&command, sizeof(char), &wasClosed);
+    if (wasClosed) {
+        this->clientClosed();
+        return;
+    }
     std::cout << "[SERVER SERIALIZER] Sent command: " << (int)command << std::endl;
     std::vector<char> buffer;
 
@@ -79,6 +98,10 @@ void Serializer::sendCommand(const std::unique_ptr<CommandDTO>& dto, bool& wasCl
     }
     if (!buffer.empty()) {
         socket->sendall(buffer.data(), buffer.size(), &wasClosed);
+        if (wasClosed) {
+            this->clientClosed();
+            return;
+        }
         std::cout << "[SERVER SERIALIZER] Sent buffer of size: " << buffer.size() << std::endl;
     } else {
         std::cout << "[SERVER SERIALIZER] Buffer is empty, nothing to send" << std::endl;
@@ -302,10 +325,14 @@ std::vector<char> Serializer::serializeWeaponDTO(const std::unique_ptr<WeaponDTO
     return buffer;
 }
 
-void Serializer::sendGameDTO(const std::unique_ptr<GameDTO>& dto, bool& wasClosed) {
+void Serializer::sendGameDTO(const std::unique_ptr<GameDTO>& dto) {
     std::cout << "[SERVER SERIALIZER] Sending game DTO" << std::endl;
     char gamedto = static_cast<char>(DTOType::GAME_DTO);
     socket->sendall(&gamedto, sizeof(char), &wasClosed);
+    if (wasClosed) {
+        this->clientClosed();
+        return;
+    }
     std::vector<char> buffer;
 
     std::cout << "[SERVER SERIALIZER] Sending players" << std::endl;
@@ -373,5 +400,9 @@ void Serializer::sendGameDTO(const std::unique_ptr<GameDTO>& dto, bool& wasClose
     }
 
     socket->sendall(buffer.data(), buffer.size(), &wasClosed);
+    if (wasClosed) {
+        this->clientClosed();
+        return;
+    }
     std::cout << "[SERVER SERIALIZER] Sent game DTO buffer of size: " << buffer.size() << std::endl;
 }

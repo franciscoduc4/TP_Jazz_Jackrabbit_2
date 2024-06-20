@@ -43,13 +43,16 @@ void ReceiverThread::run() {
         this->deserializer.setPlayerId(playerId);
 
         while (!this->was_closed.load() && _keep_running) {
+            std::cout << "[CLIENT RECEIVER] Waiting for DTO type." << std::endl;
             try {
                 char dtoTypeChar;
                 this->protocol.receiveDTOType(dtoTypeChar);
                 if (this->was_closed.load()) {
                     return;
                 }
+                std::cout << "[CLIENT RECEIVER] Received DTO type: " << static_cast<int>(dtoTypeChar) << std::endl;
                 if (!DTOValidator::validateDTOType(dtoTypeChar)) {
+                    std::cerr << "[CLIENT RECEIVER] Invalid DTO type received." << std::endl;
                     continue;
                 }
                 this->receiveDTOByType(dtoTypeChar);

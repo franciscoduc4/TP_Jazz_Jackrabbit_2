@@ -14,7 +14,6 @@
 class LobbyCommandHandler {
 public:
     virtual void execute(GameMonitor& gameMonitor, std::atomic<bool>& inGame,
-                         std::shared_ptr<Queue<std::unique_ptr<CommandDTO>>> recvQueue,
                          std::shared_ptr<Queue<std::unique_ptr<DTO>>> sendQueue) = 0;
     static std::unique_ptr<LobbyCommandHandler> createHandler(std::unique_ptr<CommandDTO> command);
 };
