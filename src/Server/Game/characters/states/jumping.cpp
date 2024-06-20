@@ -8,46 +8,50 @@
 
 #include <iostream>
 
-std::unique_ptr<State> JumpingState::exec(Character& character, float time) {
-    if (character.hasLanded()) {
-        return std::make_unique<IdleState>();
-    }
-    return jump(character, time);
+JumpingState::JumpingState(Character& character) : character(character) {
+    characterState = CharacterStateEntity::JUMPING;
 }
 
-std::unique_ptr<State> JumpingState::shoot(Character& character, std::shared_ptr<Weapon> weapon, float time) {
+std::unique_ptr<State> JumpingState::exec(float time) {
+    if (character.hasLanded()) {
+        return std::make_unique<IdleState>(character);
+    }
+    return jump(time);
+}
+
+std::unique_ptr<State> JumpingState::shoot(const std::shared_ptr<Weapon>& weapon, float time) {
     return nullptr;
 }
 
-std::unique_ptr<State> JumpingState::move(Character& character, Direction direction, float time) {
+std::unique_ptr<State> JumpingState::move(Direction direction, float time) {
     // Puede moverse en el aire
-    return std::make_unique<MovingState>(character, direction, time);
+    return std::make_unique<MovingState>(character, direction);
 }
 
-std::unique_ptr<State> JumpingState::sprint(Character& character, Direction direction, float time) {
+std::unique_ptr<State> JumpingState::sprint(Direction direction, float time) {
     // No puede correr mientras está en el aire
     return nullptr;
 }
 
-std::unique_ptr<State> JumpingState::receiveDamage(Character& character, uint16_t dmg, float time) {
+std::unique_ptr<State> JumpingState::receiveDamage(uint8_t dmg, float time) {
     character.recvDamage(dmg, time);
     if (character.getHealth() <= 0) {
-        return std::make_unique<DeadState>(time);
+        return std::make_unique<DeadState>(character, time);
     }
     return nullptr;
 }
 
-std::unique_ptr<State> JumpingState::die(Character& character, float time) {
+std::unique_ptr<State> JumpingState::die(float time) {
     character.die(time);
-    return std::make_unique<DeadState>(time);
+    return std::make_unique<DeadState>(character, time);
 }
 
-std::unique_ptr<State> JumpingState::revive(Character& character, float time) {
+std::unique_ptr<State> JumpingState::revive(float time) {
     // Lógica de reanimación
     return nullptr;
 }
 
-std::unique_ptr<State> JumpingState::jump(Character& character, float time) {
+std::unique_ptr<State> JumpingState::jump(float time) {
     // Puede saltar mientras está en el aire
     std::cout << "JumpingState::jump" << std::endl;
     if (!character.isJumping()) {
@@ -59,17 +63,17 @@ std::unique_ptr<State> JumpingState::jump(Character& character, float time) {
     return nullptr;
 }
 
-std::unique_ptr<State> JumpingState::specialAttack(Character& character, float time) {
+std::unique_ptr<State> JumpingState::specialAttack(float time) {
     // Puede realizar un ataque especial mientras está en el aire
     return nullptr;
 }
 
-std::unique_ptr<State> JumpingState::becomeIntoxicated(Character& character, float duration) {
+std::unique_ptr<State> JumpingState::becomeIntoxicated(float duration) {
     // Puede intoxicarse mientras está en el aire
-    return std::make_unique<IntoxicatedState>(duration);
+    return std::make_unique<IntoxicatedState>(character, duration);
 }
 
 std::unique_ptr<State> JumpingState::stopAction() {
     // Transición al estado idle
-    return std::make_unique<IdleState>();
+    return std::make_unique<IdleState>(character);
 }

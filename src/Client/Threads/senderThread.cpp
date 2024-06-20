@@ -76,7 +76,7 @@ void SenderThread::run() {
             std::unique_ptr<CommandDTO> msg = queue->pop();
             std::cout << "[CLIENT SENDER] Popped message from queue" << std::endl;
 
-            CommandDTO* cmd = dynamic_cast<CommandDTO*>(msg.get());
+            auto* cmd = dynamic_cast<CommandDTO*>(msg.get());
             if (cmd) {
                 this->sendCommandDTO(*cmd);
             } else {

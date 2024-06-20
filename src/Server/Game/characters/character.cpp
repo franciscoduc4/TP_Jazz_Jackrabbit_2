@@ -2,31 +2,29 @@
 
 #include "../gameMap.h"
 
-#define CONFIG ServerConfig::getInstance()
 
 Character::Character(GameMap& gameMap, Vector<uint8_t> pos, uint8_t playerId, CharacterType type,
                      float horizontalSpeed, float sprintSpeed, float verticalSpeed,
                      float jumpHeight, float shootCooldownTime):
-        Entity(pos, playerId, CONFIG->getCharacterInitialHealth(), Direction::RIGHT,
+        Entity(pos, playerId, ServerConfig::getCharacterInitialHealth(), Direction::RIGHT,
                EntityType::CHARACTER),
         type(type),
         gameMap(gameMap),
-        mapSize(gameMap.getSize()),
-        maxHealth(CONFIG->getCharacterInitialHealth()),
-        reviveTime(CONFIG->getCharacterReviveTime()),
-        maxRevived(CONFIG->getCharacterMaxRevived()),
-        movesPerCell(CONFIG->getCharacterMaxMovesPerCell()),
+        maxHealth(ServerConfig::getCharacterInitialHealth()),
+        reviveTime(ServerConfig::getCharacterReviveTime()),
+        maxRevived(ServerConfig::getCharacterMaxRevived()),
+        movesPerCell(ServerConfig::getCharacterMaxMovesPerCell()),
         timesRevived(0),
-        respawnTime(CONFIG->getCharacterRespawnTime()),
-        damageTime(CONFIG->getCharacterDamageTime()),
-        intoxicatedTime(CONFIG->getCharacterIntoxicatedTime()),
+        respawnTime(ServerConfig::getCharacterRespawnTime()),
+        damageTime(ServerConfig::getCharacterDamageTime()),
+        intoxicatedTime(ServerConfig::getCharacterIntoxicatedTime()),
         horizontalSpeed(horizontalSpeed),
         sprintSpeed(sprintSpeed),
         verticalSpeed(verticalSpeed),
         jumpHeight(jumpHeight),
         shootCooldownTime(shootCooldownTime),
         currentWeapon(std::make_unique<Blaster>()),
-        state(std::make_unique<IdleState>()) {
+        state(std::make_unique<IdleState>(*this)) {
     std::cout << "[CHARACTER] Character created with ID: " << static_cast<int>(playerId)
               << std::endl;
     currentWeapon = std::make_unique<Blaster>();
@@ -52,7 +50,7 @@ void Character::recvDamage(uint8_t dmg, float time) {
                   << std::endl;
         return;
     }
-    auto newState = std::unique_ptr<State>(state->receiveDamage(*this, dmg, time));
+    auto newState = std::unique_ptr<State>(state->receiveDamage(dmg, time));
     if (newState) {
         state = std::move(newState);
     }
@@ -76,7 +74,7 @@ void Character::update(float time) {
                       << std::endl;
             return;
         }
-        auto newState = std::unique_ptr<State>(state->exec(*this, time));
+        auto newState = std::unique_ptr<State>(state->exec(time));
 
         if (newState) {
             state = std::move(newState);
@@ -96,7 +94,7 @@ void Character::shoot(float time) {
         // std::cerr << "[CHARACTER] Error: currentWeapon is null" << std::endl;
         // return;
     }
-    auto newState = std::unique_ptr<State>(state->shoot(*this, std::move(currentWeapon), time));
+    auto newState = std::unique_ptr<State>(state->shoot(std::move(currentWeapon), time));
     if (newState) {
         state = std::move(newState);
     }
@@ -106,7 +104,7 @@ void Character::shoot(float time) {
 void Character::moveRight(float time) {
     std::cout << "[CHARACTER] Character ID: " << static_cast<int>(id) << " moving right"
               << std::endl;
-    auto newState = std::unique_ptr<State>(state->move(*this, Direction::RIGHT, time));
+    auto newState = std::unique_ptr<State>(state->move(Direction::RIGHT, time));
     if (newState) {
         std::cout << "[CHARACTER] Character ID: " << static_cast<int>(id) << " moving right"
                   << std::endl;
@@ -117,7 +115,7 @@ void Character::moveRight(float time) {
 void Character::moveLeft(float time) {
     std::cout << "[CHARACTER] Character ID: " << static_cast<int>(id) << " moving left"
               << std::endl;
-    auto newState = std::unique_ptr<State>(state->move(*this, Direction::LEFT, time));
+    auto newState = std::unique_ptr<State>(state->move(Direction::LEFT, time));
     if (newState) {
         state = std::move(newState);
     }
@@ -125,7 +123,7 @@ void Character::moveLeft(float time) {
 
 void Character::moveUp(float time) {
     std::cout << "[CHARACTER] Character ID: " << static_cast<int>(id) << " jumping" << std::endl;
-    auto newState = std::unique_ptr<State>(state->move(*this, Direction::UP, time));
+    auto newState = std::unique_ptr<State>(state->move(Direction::UP, time));
     if (newState) {
         std::cout << "[CHARACTER] Character ID: " << static_cast<int>(id) << " jumping"
                   << std::endl;
@@ -136,7 +134,7 @@ void Character::moveUp(float time) {
 void Character::moveDown(float time) {
     std::cout << "[CHARACTER] Character ID: " << static_cast<int>(id) << " moving down"
               << std::endl;
-    auto newState = std::unique_ptr<State>(state->move(*this, Direction::DOWN, time));
+    auto newState = std::unique_ptr<State>(state->move(Direction::DOWN, time));
     if (newState) {
         state = std::move(newState);
     }
@@ -144,7 +142,7 @@ void Character::moveDown(float time) {
 
 void Character::jump(float time) {
     std::cout << "[CHARACTER] Character ID: " << static_cast<int>(id) << " jumping" << std::endl;
-    auto newState = std::unique_ptr<State>(state->jump(*this, time));
+    auto newState = std::unique_ptr<State>(state->jump(time));
     if (newState) {
         state = std::move(newState);
     }
@@ -155,7 +153,7 @@ void Character::becomeIntoxicated(float duration) {
               << " becoming intoxicated for duration: " << duration << std::endl;
     isIntoxicated = true;
     intoxicatedTime = duration;
-    auto newState = std::unique_ptr<State>(state->becomeIntoxicated(*this, duration));
+    auto newState = std::unique_ptr<State>(state->becomeIntoxicated(duration));
     if (newState) {
         state = std::move(newState);
     }
@@ -165,7 +163,7 @@ void Character::die(float respawnTime) {
     std::cout << "[CHARACTER] Character ID: " << static_cast<int>(id)
               << " dying, respawn time: " << respawnTime << std::endl;
     isDead = true;
-    auto newState = std::unique_ptr<State>(state->die(*this, respawnTime));
+    auto newState = std::unique_ptr<State>(state->die(respawnTime));
     if (newState) {
         state = std::move(newState);
     }
@@ -185,7 +183,7 @@ void Character::revive(float time) {
         return;
     }
     timesRevived--;
-    auto newState = std::unique_ptr<State>(state->revive(*this, time));
+    auto newState = std::unique_ptr<State>(state->revive(time));
     if (newState) {
         state = std::move(newState);
     }
@@ -195,7 +193,7 @@ void Character::revive(float time) {
 
 std::vector<std::shared_ptr<Entity>> Character::getTargets() {
     std::vector<std::shared_ptr<Entity>> targets;
-    gameMap.getObjectsInShootRange({pos.x / movesPerCell, pos.y / movesPerCell}, dir);
+    gameMap.getObjectsInShootRange({static_cast<unsigned char>(pos.x / movesPerCell), static_cast<unsigned char>(pos.y / movesPerCell)}, dir);
     std::cout << "[CHARACTER] targets size: " << targets.size() << std::endl;
     return targets;
 }

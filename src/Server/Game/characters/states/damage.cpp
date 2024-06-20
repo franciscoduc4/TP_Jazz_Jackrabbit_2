@@ -11,83 +11,79 @@
 #include "shooting.h"
 #include "specialAttack.h"
 
-#define CONFIG ServerConfig::getInstance()
-
-ReceivingDamageState::ReceivingDamageState(float startTime):
-        startTime(startTime), timeReceivingDamage(CONFIG->getCharacterDamageTime()) {
+ReceivingDamageState::ReceivingDamageState(Character& character, float startTime, uint8_t damage):
+        startTime(startTime),
+        timeReceivingDamage(ServerConfig::getCharacterDamageTime()),
+        damage(damage),
+        character(character) {
     characterState = CharacterStateEntity::TAKING_DAMAGE;
 }
 
-std::unique_ptr<State> ReceivingDamageState::exec(Character& character, float time) {
+std::unique_ptr<State> ReceivingDamageState::exec(float time) {
     if (isReceivingDamage(time)) {
         return nullptr;
     }
-    return std::unique_ptr<IdleState>();
+    return std::make_unique<IdleState>(character);
 }
 
-std::unique_ptr<State> ReceivingDamageState::shoot(Character& character,
-                                                   std::shared_ptr<Weapon> weapon, float time) {
+std::unique_ptr<State> ReceivingDamageState::shoot(const std::shared_ptr<Weapon>& weapon, float time) {
     if (isReceivingDamage(time)) {
         return nullptr;
     }
     return std::make_unique<ShootingState>(character, weapon, time);
 }
 
-std::unique_ptr<State> ReceivingDamageState::move(Character& character, Direction direction,
-                                                  float time) {
+std::unique_ptr<State> ReceivingDamageState::move(Direction direction, float time) {
     if (isReceivingDamage(time)) {
         return nullptr;
     }
-    return std::make_unique<MovingState>(character, direction, time);
+    return std::make_unique<MovingState>(character, direction);
 }
 
-std::unique_ptr<State> ReceivingDamageState::sprint(Character& character, Direction direction,
-                                                    float time) {
+std::unique_ptr<State> ReceivingDamageState::sprint(Direction direction, float time) {
     if (isReceivingDamage(time)) {
         return nullptr;
     }
-    return std::make_unique<MovingState>(character, direction, time);
+    return std::make_unique<MovingState>(character, direction);
 }
 
-std::unique_ptr<State> ReceivingDamageState::receiveDamage(Character& character, uint16_t dmg,
-                                                           float time) {
+std::unique_ptr<State> ReceivingDamageState::receiveDamage(uint8_t dmg, float time) {
     damage = dmg;
     startTime = time;
     return nullptr;
 }
 
-std::unique_ptr<State> ReceivingDamageState::die(Character& character, float respawnTime) {
-    return std::make_unique<DeadState>(respawnTime);
+std::unique_ptr<State> ReceivingDamageState::die(float respawnTime) {
+    return std::make_unique<DeadState>(character, respawnTime);
 }
 
-std::unique_ptr<State> ReceivingDamageState::becomeIntoxicated(Character& character,
-                                                               float duration) {
+std::unique_ptr<State> ReceivingDamageState::becomeIntoxicated(float duration) {
     if (isReceivingDamage(duration)) {
         return nullptr;
     }
-    return std::make_unique<IntoxicatedState>(duration);
+    return std::make_unique<IntoxicatedState>(character, duration);
 }
 
-std::unique_ptr<State> ReceivingDamageState::jump(Character& character, float time) {
+std::unique_ptr<State> ReceivingDamageState::jump(float time) {
     if (isReceivingDamage(time)) {
         return nullptr;
     }
-    return std::make_unique<JumpingState>();
+    return std::make_unique<JumpingState>(character);
 }
 
-std::unique_ptr<State> ReceivingDamageState::specialAttack(Character& character, float time) {
+std::unique_ptr<State> ReceivingDamageState::specialAttack(float time) {
     if (isReceivingDamage(time)) {
         return nullptr;
     }
-    return std::make_unique<SpecialAttackState>(time);
+    return std::make_unique<SpecialAttackState>(character, time);
 }
 
 std::unique_ptr<State> ReceivingDamageState::stopAction() { return nullptr; }
 
-std::unique_ptr<State> ReceivingDamageState::revive(Character& character, float time) {
+std::unique_ptr<State> ReceivingDamageState::revive(float time) {
     return nullptr;
 }
 
-bool ReceivingDamageState::isReceivingDamage(float time) {
+bool ReceivingDamageState::isReceivingDamage(float time) const {
     return (time - startTime) < timeReceivingDamage;
 }

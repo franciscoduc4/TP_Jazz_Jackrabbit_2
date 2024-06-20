@@ -29,7 +29,7 @@ class Character: public Entity {
 protected:
     CharacterType type;
     GameMap& gameMap;
-    const Vector<uint8_t>& mapSize;  // Referencia al tamaño del mapa
+    // const Vector<uint8_t>& mapSize;  // Referencia al tamaño del mapa
 
     uint8_t maxHealth;
     float reviveTime;
