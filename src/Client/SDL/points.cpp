@@ -52,17 +52,17 @@ std::list<RectangularSprite>::iterator Points::actual_sprite_coord(ItemType type
     return it;
 }
 
-void Points::draw_points(SDL2pp::Renderer& renderer, std::unique_ptr<SDL2pp::Texture>& points, std::vector<ItemDTO> pointsdto, PlayerDTO& player, int dir_x_screen, int dir_y_screen) {
+void Points::draw_points(SDL2pp::Window& window, SDL2pp::Renderer& renderer, std::unique_ptr<SDL2pp::Texture>& points, std::vector<ItemDTO> pointsdto, PlayerDTO& player, int dir_x_screen, int dir_y_screen) {
    	int index_x = 0;
    	int index_y = 1;
-   	int x;
-    int y;
-    int distance_main_item_x;
-    int distance_main_item_y;
+   	uint32_t x;
+    uint32_t y;
+    int distance_main_item_x = 0;
+    int distance_main_item_y = 0;
     for (auto p : pointsdto) {
-   		std::list<RectangularSprite>::iterator it = actual_sprite_coord(p.getItemType());
+   		  std::list<RectangularSprite>::iterator it = actual_sprite_coord(p.getItemType());
         x = p.getX();
-		y = p.getY();
+		    y = p.getY();
 		
         if (dir_x_screen != 0) { 
             distance_main_item_x = x - player.getX();
@@ -73,10 +73,13 @@ void Points::draw_points(SDL2pp::Renderer& renderer, std::unique_ptr<SDL2pp::Tex
             y = dir_y_screen + distance_main_item_y;
         }
 		
-        renderer.Copy(*points, SDL2pp::Rect(it->getX(), it->getY(), it->getWidth(), it->getHeight()),
+        if (abs(distance_main_item_x) <= window.GetWidth() && abs(distance_main_item_y) <= window.GetHeight()) {
+            renderer.Copy(*points, SDL2pp::Rect(it->getX(), it->getY(), it->getWidth(), it->getHeight()),
                       SDL2pp::Rect(x, y, this->draw_width, this->draw_height),
                       0.0, SDL2pp::NullOpt, 0);
-        this->counts[static_cast<int>(p.getItemType())]++;
+        }
+        this->counts[static_cast<int>(p.getType())]++;
+        //this->counts[static_cast<int>(p.getItemType())]++;
    	}
 }
 
