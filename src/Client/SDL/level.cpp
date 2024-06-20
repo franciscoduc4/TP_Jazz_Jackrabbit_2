@@ -147,7 +147,9 @@ std::vector<int> Level::draw_background(SDL2pp::Window& window, SDL2pp::Renderer
     uint32_t get_pos_x = player.getX();
     uint32_t get_pos_y = player.getY();
     int get_speed = player.getSpeed();
-        
+
+    std::cout << "EL VALOR DE LA POS_X DEL PLAYER ES: " << get_pos_x << '\n';    
+    
     if (get_pos_x > window_width / 2) {
         if (pixels_pos[TileType::BACKGROUND][index_x] + get_speed > this->width_height[TileType::BACKGROUND][index_draw_width] - pixels_pos[TileType::BACKGROUND][index_width]) {
             pixels_pos[TileType::BACKGROUND][index_x] = 0;
@@ -203,8 +205,8 @@ void Level::draw_tiles(SDL2pp::Window& window, SDL2pp::Renderer& renderer, std::
     int distance_tile_player_y = 0;
 
     for (auto t: tiles) {
-        int x = t.getX();
-        int y = t.getY();
+        uint32_t x = t.getX();
+        uint32_t y = t.getY();
         
         if (dir_x_screen != 0) { 
             distance_tile_player_x = x - player.getX();

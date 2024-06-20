@@ -125,13 +125,13 @@ void Enemy::draw_enemy(SDL2pp::Window& window, SDL2pp::Renderer& renderer, std::
 	int index_width = 0;
 	int index_height = 1;
 	int mov_type = 0;
-    int x; 
-    int y;
+    uint32_t x; 
+    uint32_t y;
     int distance_main_enemy_x = 0;
     int distance_main_enemy_y = 0;
     for (auto e : enemies) {
         EnemyStateEntity mov_type = e.getState();
-		int enemyId = e.getEnemyId();
+		uint32_t enemyId = e.getEnemyId();
         if (!this->init) {
             this->last_move[enemyId] = mov_type;
 			this->counts[enemyId][EnemyStateEntity::ENEMY_WALKING] = 0;

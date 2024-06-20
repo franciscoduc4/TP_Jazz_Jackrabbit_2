@@ -310,6 +310,21 @@ std::unique_ptr<GameDTO> GameMap::getGameDTO() {
     std::vector<WeaponDTO> weapons;
     std::vector<TileDTO> tiles;
 
+    BulletDTO bullet(30, 30, 1, 1, 1, 1);
+    bullets.push_back(bullet);
+
+    TileDTO tile(5, 10);
+    tiles.push_back(tile);
+
+    ItemDTO item(1, 1, ItemType::GEM);
+    items.push_back(item);
+
+    ItemDTO item2(1, 252, ItemType::GOLD_COIN);
+    items.push_back(item2);
+
+    EnemyDTO enemy(10, 230, 1, 1, 1, 1, EnemyType::TURTLE, EnemyStateEntity::ENEMY_WALKING);
+    enemies.push_back(enemy);
+
     try {
         for (const auto& [pos, entity]: mapGrid) {
             if (entity->getType() == EntityType::CHARACTER) {

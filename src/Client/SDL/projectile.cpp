@@ -71,12 +71,14 @@ void Projectile::draw_projectile(SDL2pp::Window& window, SDL2pp::Renderer& rende
 	int proj_pixel_y;
 	int proj_pixel_h;		
 
+	uint32_t x;
+	uint32_t y;
 	int distance_main_bullet_x = 0;
 	int distance_main_bullet_y = 0;
 	double angle = 180.0;
 	std::list<RectangularSprite>::iterator it2;
 	for (auto b : bullets) {
-		int bulletId = b.getBulletId();
+		uint8_t bulletId = b.getBulletId();
 		auto it = this->counts.find(bulletId);
 		if (it == this->counts.end()) {
 			this->counts[bulletId] = 0;
@@ -97,8 +99,8 @@ void Projectile::draw_projectile(SDL2pp::Window& window, SDL2pp::Renderer& rende
 		if (this->type == RedBomb || this->type == VioletBomb) {
 			angle = 0.0;
 		}
-		int x = b.getX();
-		int y = b.getY();
+		x = b.getX();
+		y = b.getY();
 
 		if (dir_x_screen != 0) { 
             distance_main_bullet_x = x - player.getX();
