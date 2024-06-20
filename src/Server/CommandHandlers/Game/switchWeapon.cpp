@@ -6,5 +6,5 @@ SwitchWeaponHandler::SwitchWeaponHandler(std::unique_ptr<SwitchWeaponDTO> switch
 void SwitchWeaponHandler::execute(GameMap& gameMap, std::atomic<bool>& keepRunning,
                                   double deltaTime) {
     std::shared_ptr<Character> character = gameMap.getCharacter(switchWeaponCommand->getPlayerId());
-    character->switchWeapon(switchWeaponCommand->getWeaponType());
+    //     character->switchWeapon(switchWeaponCommand->getWeaponType());
 }

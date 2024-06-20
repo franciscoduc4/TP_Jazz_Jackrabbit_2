@@ -4,6 +4,7 @@
 #include <memory>
 #include <string>
 
+#include "../../Common/Config/ServerConfig.h"
 #include "../../Common/DTO/command.h"
 #include "../../Common/DTO/game.h"
 #include "../../Common/Types/gameInfo.h"
@@ -17,7 +18,7 @@
 
 class GameLoopThread: public Thread {
 private:
-    double frameRate;
+    float frameRate;
     bool exponentialIncrease = true;
     const size_t exponentialThreshold = 100;
     std::atomic<bool> keepRunning;

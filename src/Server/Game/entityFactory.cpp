@@ -38,15 +38,15 @@ std::shared_ptr<Enemy> EntityFactory::createEnemy(uint8_t enemyId, EnemyType typ
 }
 
 std::shared_ptr<Character> EntityFactory::createJazz(uint8_t playerId, Vector<uint32_t> position) {
-    return std::make_shared<Jazz>(gameMap, position, playerId);
+    return std::make_shared<Jazz>(playerId, position);
 }
 
 std::shared_ptr<Character> EntityFactory::createSpaz(uint8_t playerId, Vector<uint32_t> position) {
-    return std::make_shared<Spaz>(gameMap, position, playerId);
+    return std::make_shared<Spaz>(playerId, position);
 }
 
 std::shared_ptr<Character> EntityFactory::createLori(uint8_t playerId, Vector<uint32_t> position) {
-    return std::make_shared<Lori>(gameMap, position, playerId);
+    return std::make_shared<Lori>(playerId, position);
 }
 
 std::shared_ptr<Enemy> EntityFactory::createWalker(uint8_t enemyId, Vector<uint32_t> position) {

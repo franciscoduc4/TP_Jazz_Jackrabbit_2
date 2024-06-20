@@ -35,7 +35,8 @@ private:
 
 
     bool handleMovement(Vector<uint32_t>& position, Vector<uint32_t> mapPosition,
-                        const Vector<uint32_t>& newPosition, const Vector<uint32_t>& newMapPosition);
+                        const Vector<uint32_t>& newPosition,
+                        const Vector<uint32_t>& newMapPosition);
 
 
 public:
@@ -88,7 +89,7 @@ public:
 
     uint32_t getMaxXPos() { return size.x - static_cast<uint32_t>(movesPerCell); }
 
-    uint32_t getMaxYPos() { return size.y - static_cast<uint32_t>(movesPerCell); } //Revisar
+    uint32_t getMaxYPos() { return size.y - static_cast<uint32_t>(movesPerCell); }  // Revisar
 };
 
 #endif  // GAME_MAP_H_

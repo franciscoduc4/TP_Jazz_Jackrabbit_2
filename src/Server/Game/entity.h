@@ -13,7 +13,7 @@
 
 class Entity {
 protected:
-    Vector<uint32_t> pos;
+    Vector<uint32_t> position;
     uint8_t id;
     uint8_t health;
     uint8_t initialHealth;
@@ -22,7 +22,7 @@ protected:
     bool isDead = false;
 
 public:
-    Entity(Vector<uint32_t> pos, uint8_t id, uint8_t health, Direction dir, EntityType type);
+    Entity(Vector<uint32_t> position, uint8_t id, uint8_t health, Direction dir, EntityType type);
 
     Vector<uint32_t> getPosition() const;
 

@@ -27,6 +27,10 @@ uint8_t ServerConfig::getGameMaxRevived() {
     return static_cast<uint8_t>(maxRevived);
 }
 
+float ServerConfig::getGameFrameRate() {
+    return getInstance()->root["GAME"]["FRAME_RATE"].as<float>();
+}
+
 uint32_t ServerConfig::getCharacterInitialX() {
     int initialX = getInstance()->root["CHARACTER"]["INITIAL_X"].as<int>();
     return static_cast<uint32_t>(initialX);
@@ -72,8 +76,25 @@ uint8_t ServerConfig::getCharacterMaxMovesPerCell() {
     return static_cast<uint8_t>(maxMovesPerCell);
 }
 
+float ServerConfig::getCharacterSpeed() {
+    return getInstance()->root["CHARACTER"]["SPEED"].as<float>();
+}
+
+float ServerConfig::getCharacterAcceleration() {
+    return getInstance()->root["CHARACTER"]["ACCELERATION"].as<float>();
+}
+
+float ServerConfig::getCharacterSprintSpeed() {
+    return getInstance()->root["CHARACTER"]["SPRINT_SPEED"].as<float>();
+}
+
+float ServerConfig::getCharacterJumpStrength() {
+    return getInstance()->root["CHARACTER"]["JUMP_STRENGTH"].as<float>();
+}
+
 uint8_t ServerConfig::getJazzShootCooldownTime() {
-    int jazzShootCooldownTime = getInstance()->root["CHARACTER"]["JAZZ"]["SHOOT_COOLDOWN_TIME"].as<int>();
+    int jazzShootCooldownTime =
+            getInstance()->root["CHARACTER"]["JAZZ"]["SHOOT_COOLDOWN_TIME"].as<int>();
     return static_cast<uint8_t>(jazzShootCooldownTime);
 }
 
@@ -94,7 +115,8 @@ uint8_t ServerConfig::getJazzJumpHeight() {
 }
 
 uint8_t ServerConfig::getLoriShootCooldownTime() {
-    int loriShootCooldownTime = getInstance()->root["CHARACTER"]["LORI"]["SHOOT_COOLDOWN_TIME"].as<int>();
+    int loriShootCooldownTime =
+            getInstance()->root["CHARACTER"]["LORI"]["SHOOT_COOLDOWN_TIME"].as<int>();
     return static_cast<uint8_t>(loriShootCooldownTime);
 }
 
@@ -116,7 +138,8 @@ uint8_t ServerConfig::getLoriJumpHeight() {
 }
 
 uint8_t ServerConfig::getSpazShootCooldownTime() {
-    int spazShootCooldownTime = getInstance()->root["CHARACTER"]["SPAZ"]["SHOOT_COOLDOWN_TIME"].as<int>();
+    int spazShootCooldownTime =
+            getInstance()->root["CHARACTER"]["SPAZ"]["SHOOT_COOLDOWN_TIME"].as<int>();
     return static_cast<uint8_t>(spazShootCooldownTime);
 }
 
@@ -216,12 +239,14 @@ uint32_t ServerConfig::getWalkingEnemyInitialY() {
 }
 
 uint8_t ServerConfig::getWalkingEnemyMaxMovesPerCell() {
-    int walkingEnemyMaxMovesPerCell = getInstance()->root["ENEMY"]["WALKING"]["MAX_MOVES_PER_CELL"].as<int>();
+    int walkingEnemyMaxMovesPerCell =
+            getInstance()->root["ENEMY"]["WALKING"]["MAX_MOVES_PER_CELL"].as<int>();
     return static_cast<uint8_t>(walkingEnemyMaxMovesPerCell);
 }
 
 uint8_t ServerConfig::getWalkingEnemyInitialHealth() {
-    int walkingEnemyInitialHealth = getInstance()->root["ENEMY"]["WALKING"]["INITIAL_HEALTH"].as<int>();
+    int walkingEnemyInitialHealth =
+            getInstance()->root["ENEMY"]["WALKING"]["INITIAL_HEALTH"].as<int>();
     return static_cast<uint8_t>(walkingEnemyInitialHealth);
 }
 
@@ -251,17 +276,20 @@ uint8_t ServerConfig::getWalkingEnemyHitDistance() {
 }
 
 uint8_t ServerConfig::getWalkingEnemyHitDistanceY() {
-    int walkingEnemyHitDistanceY = getInstance()->root["ENEMY"]["WALKING"]["HIT_DISTANCE_Y"].as<int>();
+    int walkingEnemyHitDistanceY =
+            getInstance()->root["ENEMY"]["WALKING"]["HIT_DISTANCE_Y"].as<int>();
     return static_cast<uint8_t>(walkingEnemyHitDistanceY);
 }
 
 uint8_t ServerConfig::getWalkingEnemyViewDistance() {
-    int walkingEnemyViewDistance = getInstance()->root["ENEMY"]["WALKING"]["VIEW_DISTANCE"].as<int>();
+    int walkingEnemyViewDistance =
+            getInstance()->root["ENEMY"]["WALKING"]["VIEW_DISTANCE"].as<int>();
     return static_cast<uint8_t>(walkingEnemyViewDistance);
 }
 
 uint8_t ServerConfig::getWalkingEnemyViewDistanceHit() {
-    int walkingEnemyViewDistanceHit = getInstance()->root["ENEMY"]["WALKING"]["VIEW_DISTANCE_HIT"].as<int>();
+    int walkingEnemyViewDistanceHit =
+            getInstance()->root["ENEMY"]["WALKING"]["VIEW_DISTANCE_HIT"].as<int>();
     return static_cast<uint8_t>(walkingEnemyViewDistanceHit);
 }
 
@@ -285,12 +313,14 @@ uint32_t ServerConfig::getFlyingEnemyInitialY() {
 }
 
 uint8_t ServerConfig::getFlyingEnemyMaxMovesPerCell() {
-    int flyingEnemyMaxMovesPerCell = getInstance()->root["ENEMY"]["FLYING"]["MAX_MOVES_PER_CELL"].as<int>();
+    int flyingEnemyMaxMovesPerCell =
+            getInstance()->root["ENEMY"]["FLYING"]["MAX_MOVES_PER_CELL"].as<int>();
     return static_cast<uint8_t>(flyingEnemyMaxMovesPerCell);
 }
 
 uint8_t ServerConfig::getFlyingEnemyInitialHealth() {
-    int flyingEnemyInitialHealth = getInstance()->root["ENEMY"]["FLYING"]["INITIAL_HEALTH"].as<int>();
+    int flyingEnemyInitialHealth =
+            getInstance()->root["ENEMY"]["FLYING"]["INITIAL_HEALTH"].as<int>();
     return static_cast<uint8_t>(flyingEnemyInitialHealth);
 }
 
@@ -325,7 +355,8 @@ uint8_t ServerConfig::getFlyingEnemyHitDistance() {
 }
 
 uint8_t ServerConfig::getFlyingEnemyHitDistanceY() {
-    int flyingEnemyHitDistanceY = getInstance()->root["ENEMY"]["FLYING"]["HIT_DISTANCE_Y"].as<int>();
+    int flyingEnemyHitDistanceY =
+            getInstance()->root["ENEMY"]["FLYING"]["HIT_DISTANCE_Y"].as<int>();
     return static_cast<uint8_t>(flyingEnemyHitDistanceY);
 }
 
@@ -335,7 +366,8 @@ uint8_t ServerConfig::getFlyingEnemyViewDistance() {
 }
 
 uint8_t ServerConfig::getFlyingEnemyViewDistanceHit() {
-    int flyingEnemyViewDistanceHit = getInstance()->root["ENEMY"]["FLYING"]["VIEW_DISTANCE_HIT"].as<int>();
+    int flyingEnemyViewDistanceHit =
+            getInstance()->root["ENEMY"]["FLYING"]["VIEW_DISTANCE_HIT"].as<int>();
     return static_cast<uint8_t>(flyingEnemyViewDistanceHit);
 }
 
@@ -359,12 +391,14 @@ uint32_t ServerConfig::getJumpingEnemyInitialY() {
 }
 
 uint8_t ServerConfig::getJumpingEnemyMaxMovesPerCell() {
-    int jumpingEnemyMaxMovesPerCell = getInstance()->root["ENEMY"]["JUMPING"]["MAX_MOVES_PER_CELL"].as<int>();
+    int jumpingEnemyMaxMovesPerCell =
+            getInstance()->root["ENEMY"]["JUMPING"]["MAX_MOVES_PER_CELL"].as<int>();
     return static_cast<uint8_t>(jumpingEnemyMaxMovesPerCell);
 }
 
 uint8_t ServerConfig::getJumpingEnemyInitialHealth() {
-    int jumpingEnemyInitialHealth = getInstance()->root["ENEMY"]["JUMPING"]["INITIAL_HEALTH"].as<int>();
+    int jumpingEnemyInitialHealth =
+            getInstance()->root["ENEMY"]["JUMPING"]["INITIAL_HEALTH"].as<int>();
     return static_cast<uint8_t>(jumpingEnemyInitialHealth);
 }
 
@@ -399,17 +433,20 @@ uint8_t ServerConfig::getJumpingEnemyHitDistance() {
 }
 
 uint8_t ServerConfig::getJumpingEnemyHitDistanceY() {
-    int jumpingEnemyHitDistanceY = getInstance()->root["ENEMY"]["JUMPING"]["HIT_DISTANCE_Y"].as<int>();
+    int jumpingEnemyHitDistanceY =
+            getInstance()->root["ENEMY"]["JUMPING"]["HIT_DISTANCE_Y"].as<int>();
     return static_cast<uint8_t>(jumpingEnemyHitDistanceY);
 }
 
 uint8_t ServerConfig::getJumpingEnemyViewDistance() {
-    int jumpingEnemyViewDistance = getInstance()->root["ENEMY"]["JUMPING"]["VIEW_DISTANCE"].as<int>();
+    int jumpingEnemyViewDistance =
+            getInstance()->root["ENEMY"]["JUMPING"]["VIEW_DISTANCE"].as<int>();
     return static_cast<uint8_t>(jumpingEnemyViewDistance);
 }
 
 uint8_t ServerConfig::getJumpingEnemyViewDistanceHit() {
-    int jumpingEnemyViewDistanceHit = getInstance()->root["ENEMY"]["JUMPING"]["VIEW_DISTANCE_HIT"].as<int>();
+    int jumpingEnemyViewDistanceHit =
+            getInstance()->root["ENEMY"]["JUMPING"]["VIEW_DISTANCE_HIT"].as<int>();
     return static_cast<uint8_t>(jumpingEnemyViewDistanceHit);
 }
 

@@ -61,6 +61,10 @@ void SenderThread::runLobby(bool& wasClosed) {
             std::cout << "[SERVER SENDER LOBBY] Command received" << std::endl;
 
             auto handler = LobbyCommandHandler::createHandler(std::move(command));
+            if (handler == nullptr) {
+                std::cerr << "[SERVER SENDER LOBBY] Invalid command" << std::endl;
+                continue;
+            }
             handler->execute(gameMonitor, std::ref(inGame), recvQueue, sendQueue);
             std::cout << "[SERVER SENDER LOBBY] Command executed" << std::endl;
 

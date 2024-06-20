@@ -213,6 +213,8 @@ std::vector<char> Serializer::serializePlayerDTO(const std::unique_ptr<PlayerDTO
     buffer.push_back(static_cast<char>(dto->getRespawnTime()));
     std::cout << "[SERVER SERIALIZER PLAYER] Serializing player respawn time: "
               << dto->getRespawnTime() << std::endl;
+    std::cout << "[SERVER SERIALIZER PLAYER] Serializing player position: (" << dto->getX() << ", "
+              << dto->getY() << ")" << std::endl;
     Serializer::insertPositionIntoBuffer(buffer, dto->getX(), dto->getY());
     buffer.push_back(static_cast<char>(dto->getType()));
     std::cout << "[SERVER SERIALIZER PLAYER] Serializing player type: " << (int)dto->getType()

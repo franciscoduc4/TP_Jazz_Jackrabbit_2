@@ -19,6 +19,7 @@ public:
     static float getGameGravity();
     static uint8_t getGameMaxMoves();
     static uint8_t getGameMaxRevived();
+    static float getGameFrameRate();
 
     static uint32_t getCharacterInitialX();
     static uint32_t getCharacterInitialY();
@@ -29,6 +30,11 @@ public:
     static uint8_t getCharacterRespawnTime();
     static uint8_t getCharacterDamageTime();
     static uint8_t getCharacterIntoxicatedTime();
+    static float getCharacterSpeed();
+    static float getCharacterAcceleration();
+    static float getCharacterSprintSpeed();
+    static float getCharacterJumpStrength();
+
 
     static uint8_t getJazzShootCooldownTime();
     static float getJazzHorizontalSpeed();

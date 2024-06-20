@@ -7,9 +7,9 @@
 
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
-#include <SDL2pp/SDL2pp.hh>
 #include <SDL2/SDL_mixer.h>
 #include <SDL2pp/Music.hh>
+#include <SDL2pp/SDL2pp.hh>
 
 #include "../../Common/Config/ClientConfig.h"
 #include "../../Common/DTO/bullet.h"
@@ -28,14 +28,14 @@
 #include "projectile.h"
 
 GameScreen::GameScreen(GameController& controller, uint8_t playerId):
+        controller(controller), mainPlayerId(playerId), level(0), proj(0), soundControl(0) {}
+
+GameScreen::GameScreen(GameController& controller, uint8_t playerId, uint8_t mapId):
         controller(controller),
         mainPlayerId(playerId),
-        level(0),
+        level(mapId),
         proj(0),
-        soundControl(0) {}
- 
-GameScreen::GameScreen(GameController& controller, uint8_t playerId, uint8_t mapId):
-        controller(controller), mainPlayerId(playerId), level(mapId), proj(0), soundControl(mapId) {}
+        soundControl(mapId) {}
 
 std::unique_ptr<PlayerDTO> GameScreen::searchMainPlayer(std::vector<PlayerDTO>& players) {
     int i = 0;
@@ -55,7 +55,8 @@ std::unique_ptr<PlayerDTO> GameScreen::searchMainPlayer(std::vector<PlayerDTO>& 
 void GameScreen::run() {
     SDL2pp::SDL sdl(SDL_INIT_VIDEO);
     Mix_Init(MIX_INIT_OGG);
-    Mix_OpenAudio(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT, MIX_DEFAULT_CHANNELS, 4096);Mix_OpenAudio(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT, MIX_DEFAULT_CHANNELS, 4096);
+    Mix_OpenAudio(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT, MIX_DEFAULT_CHANNELS, 4096);
+    Mix_OpenAudio(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT, MIX_DEFAULT_CHANNELS, 4096);
 
     int window_width = 800;
     int window_height = 500;
@@ -68,15 +69,17 @@ void GameScreen::run() {
     SDL2pp::Renderer renderer(window, -1, SDL_RENDERER_ACCELERATED);
 
     std::cout << "[GAME SCREEN] Renderer created" << std::endl;
-      
+
     std::map<TileType, std::unique_ptr<SDL2pp::Texture>> tiles_textures =
             this->level.getTilesTextures(renderer);
     std::cout << "[GAME SCREEN] Level textures created" << std::endl;
 
-    std::map<CharacterType, std::unique_ptr<SDL2pp::Texture>> pjs_textures = this->pj.getPlayersTextures(renderer);
+    std::map<CharacterType, std::unique_ptr<SDL2pp::Texture>> pjs_textures =
+            this->pj.getPlayersTextures(renderer);
     std::cout << "[GAME SCREEN] Players sprites created" << std::endl;
 
-    std::map<EnemyType, std::unique_ptr<SDL2pp::Texture>> enemies_textures = this->enemies.getEnemiesTextures(renderer);
+    std::map<EnemyType, std::unique_ptr<SDL2pp::Texture>> enemies_textures =
+            this->enemies.getEnemiesTextures(renderer);
     std::cout << "[GAME SCREEN] Enemies sprites created" << std::endl;
 
     std::unique_ptr<SDL2pp::Texture> projectile = this->proj.getProjectilesTextures(renderer);
@@ -85,14 +88,14 @@ void GameScreen::run() {
     std::unique_ptr<SDL2pp::Texture> items = this->points.getItemsTextures(renderer);
     std::cout << "[GAME SCREEN] Items sprites created" << std::endl;
 
-    std::unique_ptr<SDL2pp::Texture> font = this->stats.getFontTextures(renderer); 
+    std::unique_ptr<SDL2pp::Texture> font = this->stats.getFontTextures(renderer);
     std::cout << "[GAME SCREEN] Font sprites created" << std::endl;
 
-    this->soundControl.play_backsound(); //EMPIEZA LA MUSICA DE FONDO
-    
-    
+    this->soundControl.play_backsound();  // EMPIEZA LA MUSICA DE FONDO
+
+
     int x_screen = 0;
-    int y_screen = 0;    
+    int y_screen = 0;
 
     std::cout << "Textures created" << std::endl;
 
@@ -106,21 +109,24 @@ void GameScreen::run() {
                 return;
             } else if (event.type == SDL_KEYDOWN) {
                 switch (event.key.keysym.sym) {
-                    case SDLK_RIGHT:
-                        {
-		                    Command move = Command::MOVE;
-		                    std::vector<uint8_t> par{static_cast<uint8_t>(Direction::RIGHT)};
-		                    this->controller.sendMsg(this->mainPlayerId, move, par);
-		                    break;
-                    	}
-                    case SDLK_LEFT:
-		                {
-		             		Command move = Command::MOVE;
-		                    std::vector<uint8_t> elements{static_cast<uint8_t>(Direction::LEFT)};
-		                    this->controller.sendMsg(this->mainPlayerId, move, elements);
-		                    break;
-                    	}
-
+                    case SDLK_RIGHT: {
+                        Command move = Command::MOVE;
+                        std::vector<uint8_t> par{static_cast<uint8_t>(Direction::RIGHT)};
+                        this->controller.sendMsg(this->mainPlayerId, move, par);
+                        break;
+                    }
+                    case SDLK_LEFT: {
+                        Command move = Command::MOVE;
+                        std::vector<uint8_t> elements{static_cast<uint8_t>(Direction::LEFT)};
+                        this->controller.sendMsg(this->mainPlayerId, move, elements);
+                        break;
+                    }
+                    case SDLK_UP: {
+                        Command move = Command::MOVE;
+                        std::vector<uint8_t> elements{static_cast<uint8_t>(Direction::UP)};
+                        this->controller.sendMsg(this->mainPlayerId, move, elements);
+                        break;
+                    }
                     case SDLK_LSHIFT: {
                         /*
                         Command run = Command::RUN;
@@ -139,13 +145,14 @@ void GameScreen::run() {
                 }
             } else if (event.type == SDL_KEYUP) {
                 switch (event.key.keysym.sym) {
-                    case SDLK_RIGHT: case SDLK_LEFT: case SDLK_LSHIFT:
-                        {
-                            Command idle = Command::IDLE;
-                            std::vector<uint8_t> elements;
-                            this->controller.sendMsg(this->mainPlayerId, idle, elements);
-                            break;
-                        }
+                    case SDLK_RIGHT:
+                    case SDLK_LEFT:
+                    case SDLK_LSHIFT: {
+                        Command idle = Command::IDLE;
+                        std::vector<uint8_t> elements;
+                        this->controller.sendMsg(this->mainPlayerId, idle, elements);
+                        break;
+                    }
                 }
             }
         }
@@ -163,7 +170,7 @@ void GameScreen::run() {
         std::cout << "[GAME SCREEN] Received message from server" << std::endl;
 
         auto derived_ptr = static_cast<GameDTO*>(serverMsg.release());
-        
+
         std::unique_ptr<GameDTO> snapshot = std::unique_ptr<GameDTO>(derived_ptr);
         std::cout << "[GAME SCREEN] Snapshot created" << std::endl;
 
@@ -177,43 +184,50 @@ void GameScreen::run() {
         if (!mainPlayer) {
             continue;
         }
-        std::vector<int> dir_screen = this->level.draw_background(window, renderer, tiles_textures, *mainPlayer/*players[0]*/);
-        this->level.draw_floor(window, renderer, tiles_textures, mainPlayer->getSpeed()/*players[0].getSpeed()*/);
+        std::vector<int> dir_screen = this->level.draw_background(window, renderer, tiles_textures,
+                                                                  *mainPlayer /*players[0]*/);
+        this->level.draw_floor(window, renderer, tiles_textures,
+                               mainPlayer->getSpeed() /*players[0].getSpeed()*/);
         x_screen = dir_screen[0];
         y_screen = dir_screen[1];
 
         if (players.size() > 0) {
-            this->pj.draw_players(window, renderer, pjs_textures, players, x_screen, y_screen, this->mainPlayerId);
+            this->pj.draw_players(window, renderer, pjs_textures, players, x_screen, y_screen,
+                                  this->mainPlayerId);
         }
 
         std::vector<EnemyDTO> enemiesSnapshot = snapshot->getEnemies();
         std::cout << "Enemies size: " << enemiesSnapshot.size() << std::endl;
         if (enemiesSnapshot.size() > 0) {
-            this->enemies.draw_enemy(window, renderer, enemies_textures, enemiesSnapshot, *mainPlayer/*players[0]*/, x_screen, y_screen);
+            this->enemies.draw_enemy(window, renderer, enemies_textures, enemiesSnapshot,
+                                     *mainPlayer /*players[0]*/, x_screen, y_screen);
         }
-        
+
         std::vector<BulletDTO> bullets = snapshot->getBullets();
         if (bullets.size() > 0) {
             this->proj.draw_projectile(window, renderer, projectile, bullets);
         }
 
         std::vector<ItemDTO> itemsSnapshot = snapshot->getItems();
-        if (itemsSnapshot.size() >  0) {
-            this->points.draw_points(renderer, items, itemsSnapshot, *mainPlayer/*players[0]*/, x_screen, y_screen);
+        if (itemsSnapshot.size() > 0) {
+            this->points.draw_points(renderer, items, itemsSnapshot, *mainPlayer /*players[0]*/,
+                                     x_screen, y_screen);
         }
 
         std::vector<WeaponDTO> weapons = snapshot->getWeapons();
 
-        std::vector<TileDTO> tiles = snapshot->getTiles(); 
+        std::vector<TileDTO> tiles = snapshot->getTiles();
         if (tiles.size() > 0) {
             this->level.draw_tiles(window, renderer, tiles_textures, tiles);
         }
 
-        this->stats.draw_interface(window, renderer, *pjs_textures[mainPlayer->getType()/*players[0].getType()*/], mainPlayer->getType(), font, 1000/*getPoints()*/, 3/*getLives()*/);
+        this->stats.draw_interface(
+                window, renderer, *pjs_textures[mainPlayer->getType() /*players[0].getType()*/],
+                mainPlayer->getType(), font, 1000 /*getPoints()*/, 3 /*getLives()*/);
 
         x_screen = 0;
         y_screen = 0;
-        
+
         renderer.Present();
         std::cout << "[GAME SCREEN] Frame presented" << std::endl;
 
