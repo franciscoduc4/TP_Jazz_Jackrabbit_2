@@ -3,14 +3,13 @@
 #include <sys/socket.h>
 
 
-Player::Player(std::shared_ptr<Socket> socket, GameMonitor& gameMonitor,
-               QueueMonitor& queueMonitor, uint8_t playerId):
+Player::Player(std::shared_ptr<Socket> socket, GameMonitor& gameMonitor, uint8_t playerId):
         playerId(playerId),
         socket(std::move(socket)),
         sendQueue(std::make_shared<Queue<std::unique_ptr<DTO>>>()),
         recvQueue(std::make_shared<Queue<std::unique_ptr<CommandDTO>>>()),
-        sender(this->socket, keepPlaying, inGame, gameMonitor, playerId, this->sendQueue),
-        receiver(this->socket, keepPlaying, inGame, playerId, this->recvQueue){
+        sender(this->socket, keepPlaying, inGame,  playerId, this->sendQueue),
+        receiver(this->socket, keepPlaying, inGame, playerId, gameMonitor, this->recvQueue, this->sendQueue){
     sender.start();
     receiver.start();
 }

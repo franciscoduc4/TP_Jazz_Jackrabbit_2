@@ -14,8 +14,8 @@ GameMonitor::GameMonitor(QueueMonitor& queueMonitor):
         queueMonitor(queueMonitor), gamesListSize(0) {}
 
 void GameMonitor::createGame(uint8_t playerId, uint8_t mapId, GameMode gameMode, uint8_t maxPlayers,
-                             CharacterType characterType, std::string gameName,
-                             std::shared_ptr<Queue<std::unique_ptr<DTO>>> sendQueue) {
+                             CharacterType characterType, const std::string& gameName,
+                             const std::shared_ptr<Queue<std::unique_ptr<DTO>>>& sendQueue) {
     std::cout << "[GM] Attempting to lock mutex in createGame" << std::endl;
     std::lock_guard<std::mutex> lock(mtx);
     std::cout << "[GM] Mutex locked in createGame" << std::endl;
@@ -57,7 +57,7 @@ void GameMonitor::createGame(uint8_t playerId, uint8_t mapId, GameMode gameMode,
 }
 
 void GameMonitor::joinGame(uint8_t playerId, uint8_t gameId, CharacterType characterType,
-                           std::shared_ptr<Queue<std::unique_ptr<DTO>>> sendQueue) {
+                           const std::shared_ptr<Queue<std::unique_ptr<DTO>>>& sendQueue) {
     std::cout << "[GM] Attempting to lock mutex in joinGame" << std::endl;
     std::lock_guard<std::mutex> lock(mtx);
     std::cout << "[GM] Mutex locked in joinGame" << std::endl;
@@ -90,7 +90,7 @@ void GameMonitor::joinGame(uint8_t playerId, uint8_t gameId, CharacterType chara
 }
 
 void GameMonitor::startGame(uint8_t playerId, uint8_t gameId,
-                            std::shared_ptr<Queue<std::unique_ptr<DTO>>> sendQueue) {
+                            const std::shared_ptr<Queue<std::unique_ptr<DTO>>>& sendQueue) {
     std::cout << "[GM] Attempting to lock mutex in startGame" << std::endl;
     std::lock_guard<std::mutex> lock(mtx);
     std::cout << "[GM] Mutex locked in startGame" << std::endl;
@@ -113,7 +113,7 @@ void GameMonitor::startGame(uint8_t playerId, uint8_t gameId,
     }
 }
 
-void GameMonitor::gamesList(std::shared_ptr<Queue<std::unique_ptr<DTO>>> sendQueue) {
+void GameMonitor::gamesList(const std::shared_ptr<Queue<std::unique_ptr<DTO>>>& sendQueue) {
     std::cout << "[GM] Attempting to lock mutex in gamesList" << std::endl;
     std::lock_guard<std::mutex> lock(mtx);
     std::cout << "[GM] Mutex locked in gamesList" << std::endl;
@@ -129,7 +129,7 @@ void GameMonitor::gamesList(std::shared_ptr<Queue<std::unique_ptr<DTO>>> sendQue
     std::cout << "[GM] Pushed GamesListDTO to send queue" << std::endl;
 }
 
-void GameMonitor::mapsList(std::shared_ptr<Queue<std::unique_ptr<DTO>>> sendQueue) {
+void GameMonitor::mapsList(const std::shared_ptr<Queue<std::unique_ptr<DTO>>>& sendQueue) {
     std::cout << "[GM] Attempting to lock mutex in mapsList" << std::endl;
     std::lock_guard<std::mutex> lock(mtx);
     std::cout << "[Game Monitor] Getting maps list" << std::endl;
@@ -185,7 +185,7 @@ void GameMonitor::endAllGames() {
     std::cout << "[GM] Cleared all games" << std::endl;
 }
 void GameMonitor::addPlayerRecvQueue(uint8_t playerId,
-                                     std::shared_ptr<Queue<std::unique_ptr<CommandDTO>>> recvQueue) {
+                                     const std::shared_ptr<Queue<std::unique_ptr<CommandDTO>>>& recvQueue) {
     std::cout << "[GM] Attempting to lock mutex in addPlayerRecvQueue" << std::endl;
     std::lock_guard<std::mutex> lock(mtx);
     std::cout << "[GM] Mutex locked in addPlayerRecvQueue" << std::endl;

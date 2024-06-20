@@ -20,7 +20,6 @@ private:
     std::shared_ptr<Socket> socket;
     std::atomic<bool>& keepPlaying;
     std::atomic<bool>& inGame;
-    GameMonitor& gameMonitor;
     uint8_t playerId;
     std::shared_ptr<Queue<std::unique_ptr<DTO>>> sendQueue;
     Serializer serializer;
@@ -29,7 +28,7 @@ private:
 
 public:
     SenderThread(const std::shared_ptr<Socket>& socket, std::atomic<bool>& keepPlaying,
-                 std::atomic<bool>& inGame, GameMonitor& gameMonitor, uint8_t playerId,
+                 std::atomic<bool>& inGame, uint8_t playerId,
                  const std::shared_ptr<Queue<std::unique_ptr<DTO>>>& sendQueue);
 
     void run() override;

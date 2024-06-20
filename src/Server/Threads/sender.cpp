@@ -2,17 +2,13 @@
 
 #include <iostream>
 #include <memory>
-#include <utility>
-
-#include "../CommandHandlers/Lobby/lobbyCommand.h"
 
 SenderThread::SenderThread(const std::shared_ptr<Socket>& socket, std::atomic<bool>& keepPlaying,
-                           std::atomic<bool>& inGame, GameMonitor& gameMonitor, uint8_t playerId,
+                           std::atomic<bool>& inGame, uint8_t playerId,
                            const std::shared_ptr<Queue<std::unique_ptr<DTO>>>& sendQueue) :
         socket(socket),
         keepPlaying(keepPlaying),
         inGame(inGame),
-        gameMonitor(gameMonitor),
         playerId(playerId),
         sendQueue(sendQueue),
         serializer(socket, keepPlaying, inGame),
@@ -48,26 +44,12 @@ void SenderThread::run() {
 void SenderThread::runLobby() {
     while (keepPlaying.load() && !inGame.load()) {
         try {
-            std::cout << "[SERVER SENDER LOBBY] Waiting for command" << std::endl;
-            std::unique_ptr<CommandDTO> command = deserializer.getCommand(playerId);
-            if (command == nullptr) {
-                std::cout << "[SERVER SENDER LOBBY] No command received, continuing" << std::endl;
-                continue;
-            }
-            std::cout << "[SERVER SENDER LOBBY] Command received" << std::endl;
-
-            auto handler = LobbyCommandHandler::createHandler(std::move(command));
-            handler->execute(gameMonitor, std::ref(inGame), sendQueue);
-            std::cout << "[SERVER SENDER LOBBY] Command executed" << std::endl;
-
-            std::unique_ptr<DTO> dtoToSend;
-            while (sendQueue->try_pop(dtoToSend)) {
-                auto* commandDTO = dynamic_cast<CommandDTO*>(dtoToSend.get());
-                dtoToSend.release();
-                std::cout << "[SERVER SENDER LOBBY] Sending DTO" << std::endl;
-                serializer.sendCommand(std::unique_ptr<CommandDTO>(commandDTO));
-                std::cout << "[SERVER SENDER LOBBY] DTO sent" << std::endl;
-            }
+            std::unique_ptr<DTO> dtoToSend = sendQueue->pop();
+            auto* commandDTO = dynamic_cast<CommandDTO*>(dtoToSend.get());
+            dtoToSend.release();
+            std::cout << "[SERVER SENDER LOBBY] Sending DTO" << std::endl;
+            serializer.sendCommand(std::unique_ptr<CommandDTO>(commandDTO));
+            std::cout << "[SERVER SENDER LOBBY] DTO sent" << std::endl;
         } catch (const std::exception& e) {
             std::cerr << "[SERVER SENDER LOBBY] Exception: " << e.what() << std::endl;
             if (!keepPlaying.load()) {
@@ -77,5 +59,4 @@ void SenderThread::runLobby() {
         }
     }
     std::cout << "[SERVER SENDER LOBBY] Out of lobby" << std::endl;
-    inGame.store(true);
 }

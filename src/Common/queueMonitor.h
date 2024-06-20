@@ -17,12 +17,12 @@ private:
 
 public:
     std::shared_ptr<Queue<std::unique_ptr<DTO>>> createQueue(uint8_t id);
-    void closeQueue(uint8_t id, std::shared_ptr<Queue<std::unique_ptr<DTO>>> queue);
-    void removeQueue(uint8_t id, std::shared_ptr<Queue<std::unique_ptr<DTO>>> queue);
+    void closeQueue(uint8_t id, const std::shared_ptr<Queue<std::unique_ptr<DTO>>>& queue);
+    void removeQueue(uint8_t id, const std::shared_ptr<Queue<std::unique_ptr<DTO>>>& queue);
     void closeQueues(uint8_t id);
     void removeQueues(uint8_t id);
     void broadcast(uint8_t id, const std::unique_ptr<DTO>& event);
-    void assignGameIdToQueues(uint8_t gameId, std::shared_ptr<Queue<std::unique_ptr<DTO>>> queue);
+    void assignGameIdToQueues(uint8_t gameId, const std::shared_ptr<Queue<std::unique_ptr<DTO>>>& queue);
 };
 
 #endif  // QUEUE_MANAGER_H
