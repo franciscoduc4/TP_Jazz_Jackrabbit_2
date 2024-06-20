@@ -9,6 +9,9 @@
 #include <iostream>
 
 std::unique_ptr<State> JumpingState::exec(Character& character, float time) {
+    if (character.hasLanded()) {
+        return std::make_unique<IdleState>();
+    }
     return jump(character, time);
 }
 
@@ -50,6 +53,9 @@ std::unique_ptr<State> JumpingState::jump(Character& character, float time) {
     if (!character.isJumping()) {
         character.jump();
     }
+    // if (character.hasLanded()) {
+    //     return std::make_unique<IdleState>();
+    // }
     return nullptr;
 }
 

@@ -8,7 +8,7 @@ Blaster::Blaster():
         maxBullets(CONFIG->getWeaponBlasterBullets()),
         damage(CONFIG->getWeaponBlasterDamage()),
         fireRate(CONFIG->getWeaponBlasterFireRate()),
-        lastTimeShot(-1) {}
+        lastTimeShot(fireRate * -1) {}
 
 void Blaster::update(float time) {
     // if (lastTimeShot != -1 && time - lastTimeShot >= fireRate) {
@@ -22,6 +22,7 @@ void Blaster::shoot(std::vector<std::shared_ptr<Entity>>& shootingEntities, uint
     lastTimeShot = time;
     bullets--;
     bulletsShot++;
+    std::cout << "[BLASTER] Shooting at " << xPos << std::endl;
 
     if (shootingEntities.empty())
         return;
@@ -29,8 +30,9 @@ void Blaster::shoot(std::vector<std::shared_ptr<Entity>>& shootingEntities, uint
         for (auto& entity: shootingEntities) {
             entity->recvDamage(damage, time);
         }
-        //revisar distancia de disparo
+        
     }
+    std::cout << "[BLASTER] Bullets post shot: " << (int)bullets << std::endl;
 }
 
 void Blaster::reload() { bullets = maxBullets; }

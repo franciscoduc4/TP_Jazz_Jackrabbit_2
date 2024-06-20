@@ -29,22 +29,10 @@ Character::Character(GameMap& gameMap, Vector<uint8_t> pos, uint8_t playerId, Ch
         state(std::make_unique<IdleState>()) {
     std::cout << "[CHARACTER] Character created with ID: " << static_cast<int>(playerId)
               << std::endl;
+    currentWeapon = std::make_unique<Blaster>();
 }
 
 void Character::idle(float time) {
-    // std::cout << "[CHARACTER] Character ID: " << static_cast<int>(id) << " idling" << std::endl;
-    //  if (!state) {
-    //      std::cerr << "[CHARACTER] Error: Null state for character ID: " << static_cast<int>(id)
-    //      << std::endl; return;
-    //  }
-
-    // auto newState = std::unique_ptr<State>(state->exec(*this, time));
-    // if (newState) {
-    //     std::cout << "[CHARACTER] State changed to new state" << std::endl;
-    //     state = std::move(newState);
-    // } else {
-    //     std::cout << "[CHARACTER] State remains the same" << std::endl;
-    // }
 
     auto newState = std::unique_ptr<State>(state->stopAction());
     if (newState) {
@@ -93,6 +81,7 @@ void Character::update(float time) {
         if (newState) {
             state = std::move(newState);
         }
+
     } catch (const std::exception& e) {
         std::cerr << "[CHARACTER] Error updating character ID: " << static_cast<int>(id) << ": "
                   << e.what() << std::endl;
@@ -102,10 +91,16 @@ void Character::update(float time) {
 
 void Character::shoot(float time) {
     std::cout << "[CHARACTER] Character ID: " << static_cast<int>(id) << " shooting" << std::endl;
+    if (!currentWeapon) {
+        currentWeapon = std::make_unique<Blaster>();
+        // std::cerr << "[CHARACTER] Error: currentWeapon is null" << std::endl;
+        // return;
+    }
     auto newState = std::unique_ptr<State>(state->shoot(*this, std::move(currentWeapon), time));
     if (newState) {
         state = std::move(newState);
     }
+
 }
 
 void Character::moveRight(float time) {
@@ -201,6 +196,7 @@ void Character::revive(float time) {
 std::vector<std::shared_ptr<Entity>> Character::getTargets() {
     std::vector<std::shared_ptr<Entity>> targets;
     gameMap.getObjectsInShootRange({pos.x / movesPerCell, pos.y / movesPerCell}, dir);
+    std::cout << "[CHARACTER] targets size: " << targets.size() << std::endl;
     return targets;
 }
 
@@ -300,6 +296,8 @@ void Character::moveDown() {
 }
 
 void Character::jump() {
+    initialYJump = pos.y;
+
     if (isIntoxicated || jumping)
         return;
 
@@ -311,7 +309,14 @@ void Character::jump() {
 
     gameMap.moveObject(pos, mapPosition, Direction::UP);
     pos = newPosition;
+    jumping = true;
     std::cout << "[CHARACTER] Character pos y: " << static_cast<int>(pos.y) << std::endl;
+}
+
+bool Character::hasLanded() {
+    if (pos.y == initialYJump && !jumping)
+        return true;
+    return false;
 }
 
 bool Character::characIsIntoxicated() const { return isIntoxicated; }

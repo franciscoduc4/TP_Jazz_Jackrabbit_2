@@ -18,19 +18,20 @@ ShootingState::ShootingState(Character& character, std::shared_ptr<Weapon> weapo
 }
 
 std::unique_ptr<State> ShootingState::exec(Character& character, float time) {
+    std::cout << "Shooting state" << std::endl;
     return shoot(character, weapon, time);
 }
 
 std::unique_ptr<State> ShootingState::shoot(Character& character, std::shared_ptr<Weapon> weapon,
                                             float time) {
-    // Ya está disparando
+
     if (!weapon->isEmpty() && (time - startTime) > shootCooldown) {
-        std::cout << "Shooting" << std::endl;
         startTime = time;
         std::vector<std::shared_ptr<Entity>> characters = character.getTargets();
         uint8_t x = character.getMapPosition(2).x;  // moves per cell
         std::cout << "shooting at " << x << std::endl;
         weapon->shoot(characters, x, time);
+        return std::unique_ptr<ShootingState>();
     }
     return nullptr;
 }
@@ -49,10 +50,7 @@ std::unique_ptr<State> ShootingState::sprint(Character& character, Direction dir
 
 std::unique_ptr<State> ShootingState::receiveDamage(Character& character, uint16_t dmg,
                                                     float time) {
-    // character.recvDamage(dmg, time);
-    // if (character.getHealth() <= 0) {
-    //     return std::make_unique<DeadState>(time);
-    // }
+
     return std::make_unique<ReceivingDamageState>(time);
 }
 

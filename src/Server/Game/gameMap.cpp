@@ -75,9 +75,9 @@ EnemyType GameMap::getEnemyType(const std::string& type) {
     }
 }
 
-std::vector<std::shared_ptr<Entity>> GameMap::getObjectsInShootRange(Vector<uint8_t> mapPosition,
-                                                                     Direction dir) {
+std::vector<std::shared_ptr<Entity>> GameMap::getObjectsInShootRange(Vector<uint8_t> mapPosition, Direction dir) {
     std::vector<std::shared_ptr<Entity>> entities;
+    std::cout << "[GAMEMAP] Getting objects in shoot range" << std::endl;
     try {
         if (dir == Direction::LEFT) {
             for (int8_t i = mapPosition.x - 1; i >= 0; i--) {
@@ -97,8 +97,10 @@ std::vector<std::shared_ptr<Entity>> GameMap::getObjectsInShootRange(Vector<uint
     } catch (const std::exception& e) {
         std::cerr << "[GAMEMAP] Error getting objects in shoot range: " << e.what() << std::endl;
     }
+    std::cout << "[GAMEMAP] Objects in shoot range size: " << entities.size() << std::endl;
     return entities;
 }
+
 
 std::vector<std::shared_ptr<Entity>> GameMap::getObjectsInExplosionRange(
         Vector<uint8_t> mapPosition, uint8_t radius) {
@@ -121,6 +123,11 @@ std::vector<std::shared_ptr<Entity>> GameMap::getObjectsInExplosionRange(
 
 void GameMap::moveObject(Vector<uint8_t>& position, Vector<uint8_t> mapPosition, Direction dir) {
     try {
+        if (mapGrid.find(mapPosition) == mapGrid.end()) {
+            std::cerr << "[GAMEMAP] Error: Character not found at mapPosition" << std::endl;
+            return;
+        }
+
         auto character = std::dynamic_pointer_cast<Character>(mapGrid[mapPosition]);
         if (!character) {
             std::cerr << "[GAMEMAP] Invalid character" << std::endl;
@@ -132,15 +139,19 @@ void GameMap::moveObject(Vector<uint8_t>& position, Vector<uint8_t> mapPosition,
         std::cout << "[GAMEMAP] Object's old position: " << position << std::endl;
 
         if (!handleMovement(position, mapPosition, newPosition, newMapPosition)) {
-            character->interact(mapGrid[newMapPosition]);
+            if (mapGrid.find(newMapPosition) != mapGrid.end()) {
+                character->interact(mapGrid[newMapPosition]);
+            } else {
+                std::cerr << "[GAMEMAP] Error: No entity to interact with at newMapPosition" << std::endl;
+            }
         }
         std::cout << "[GAMEMAP] Object's new position: " << position << std::endl;
-
 
     } catch (const std::exception& e) {
         std::cerr << "[GAMEMAP] Error moving object: " << e.what() << std::endl;
     }
 }
+
 
 
 bool GameMap::isFreePosition(Vector<uint8_t> position) {

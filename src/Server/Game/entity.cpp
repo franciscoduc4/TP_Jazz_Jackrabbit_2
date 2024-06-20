@@ -26,9 +26,12 @@ Vector<uint8_t> Entity::getMapPosition(uint8_t movesPerCell) const {
 
 void Entity::recvDamage(uint8_t damage, float time) {
     health -= damage;
+    std::cout << "[ENTITY] Received damage: " << (int)damage << std::endl;
+
     if (health <= 0) {
         die(time);
     }
+    std::cout << "[ENTITY] Health post damage: " << (int)health << std::endl;
 }
 
 bool Entity::getIsDead() const { return isDead; }

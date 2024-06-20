@@ -60,7 +60,7 @@ protected:
 
     float jumpStartTime = 0.0f;
     float jumpDuration = 0.5f;
-    int initialY = pos.y;
+    uint8_t initialYJump = 0;
 
 public:
     Character(GameMap& gameMap, Vector<uint8_t> pos, uint8_t playerId, CharacterType type,
@@ -109,6 +109,8 @@ public:
     PlayerDTO getDTO() const;
 
     bool isJumping() { return jumping; }
+    bool hasLanded();
+ 
 };
 
 #endif  // PLAYER_CHARACTER_H

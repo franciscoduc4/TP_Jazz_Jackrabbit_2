@@ -18,7 +18,13 @@ std::unique_ptr<State> IdleState::exec(Character& character, float time) {
 }
 std::unique_ptr<State> IdleState::shoot(Character& character, std::shared_ptr<Weapon> weapon,
                                         float time) {
-    if (weapon->isEmpty() || !weapon->shootTime(time)) {
+
+    if (!weapon) {
+        std::cerr << "[IDLE STATE] Error: weapon is null" << std::endl;
+        return nullptr;
+    }
+
+    if (weapon->isEmpty() || !weapon->cooldown(time)) {
         return nullptr;
     }
     return std::make_unique<ShootingState>(character, weapon, time);
@@ -29,8 +35,7 @@ std::unique_ptr<State> IdleState::move(Character& character, Direction direction
 }
 
 std::unique_ptr<State> IdleState::sprint(Character& character, Direction direction, float time) {
-    // character.sprint(time);
-    // return std::unique_ptr<MovingState>(character, direction, time)(character.getDirection());
+
     return nullptr;
 }
 
