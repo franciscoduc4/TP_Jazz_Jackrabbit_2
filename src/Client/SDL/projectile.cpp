@@ -65,73 +65,51 @@ std::list<RectangularSprite>::iterator Projectile::img_coords(uint32_t bulletId)
 	return it;
 
 }
-void Projectile::draw_projectile(SDL2pp::Window& window, SDL2pp::Renderer& renderer, std::unique_ptr<SDL2pp::Texture>& projectile, std::vector<BulletDTO>& bullets) {
+void Projectile::draw_projectile(SDL2pp::Window& window, SDL2pp::Renderer& renderer, std::unique_ptr<SDL2pp::Texture>& projectile, std::vector<BulletDTO>& bullets, PlayerDTO& player, int dir_x_screen, int dir_y_screen) {
 	int proj_pixel_x;
 	int proj_pixel_w;
 	int proj_pixel_y;
 	int proj_pixel_h;		
 
+	int distance_main_bullet_x = 0;
+	int distance_main_bullet_y = 0;
+	double angle = 180.0;
+	std::list<RectangularSprite>::iterator it2;
 	for (auto b : bullets) {
-		if (!this->init) {
-			this->counts[b.getBulletId()] = 0;
+		int bulletId = b.getBulletId();
+		auto it = this->counts.find(bulletId);
+		if (it == this->counts.end()) {
+			this->counts[bulletId] = 0;
 		}
-		if (this->counts[b.getBulletId()] == 0) {
+		if (this->counts[bulletId] == 0) {
 			proj_pixel_x = this->x_fire;
 			proj_pixel_w = this->width_fire;
 			proj_pixel_y = this->y_fire;
 			proj_pixel_h = this->height_fire;
-			this->counts[b.getBulletId()]++;
+			this->counts[bulletId]++;
 		} else {
-			std::list<RectangularSprite>::iterator it2 = img_coords(b.getBulletId()); 
+			it2 = img_coords(bulletId); 
 			proj_pixel_x = it2->getX();
 			proj_pixel_w = it2->getWidth();	
 			proj_pixel_y = it2->getY();
 			proj_pixel_h = it2->getHeight();	
 		}	
-		double angle = 180.0;
 		if (this->type == RedBomb || this->type == VioletBomb) {
 			angle = 0.0;
 		}
-		renderer.Copy(*projectile, SDL2pp::Rect(proj_pixel_x, proj_pixel_y, proj_pixel_w, proj_pixel_h), SDL2pp::Rect(b.getX(), b.getY(), this->draw_width, this->draw_height), angle, SDL2pp::NullOpt);
-	
+		int x = b.getX();
+		int y = b.getY();
+
+		if (dir_x_screen != 0) { 
+            distance_main_bullet_x = x - player.getX();
+            x = dir_x_screen + distance_main_bullet_x;
+        }
+        if (dir_y_screen != 0) {
+            distance_main_bullet_y = y - player.getX();
+            y = dir_y_screen + distance_main_bullet_y;
+        }
+		if (abs(distance_main_bullet_x) <= window.GetWidth() && abs(distance_main_bullet_y) <= window.GetHeight()) {
+			renderer.Copy(*projectile, SDL2pp::Rect(proj_pixel_x, proj_pixel_y, proj_pixel_w, proj_pixel_h), SDL2pp::Rect(x, y, this->draw_width, this->draw_height), angle, SDL2pp::NullOpt);
+		}
 	}
-	this->init = true;
-	/*
-	int proj_pixel_x;
-	int proj_pixel_w;
-	int proj_pixel_y;
-	int proj_pixel_h;		
-	if (this->count == 0) {
-		proj_pixel_x = this->x_fire;
-		proj_pixel_w = this->width_fire;
-		proj_pixel_y = this->y_fire;
-		proj_pixel_h = this->height_fire;
-		this->count++;
-	} else {
-		std::list<RectangularSprite>::iterator it2 = img_coords(); 
-		proj_pixel_x = it2->getX();
-		proj_pixel_w = it2->getWidth();	
-		proj_pixel_y = it2->getY();
-		proj_pixel_h = it2->getHeight();	
-	}		
-	int proj_speed = 20;
-	if (this->flip == 1) {
-		proj_speed = -20;
-	}
-	double angle = 180.0;
-	if (this->type == RedBomb || this->type == VioletBomb) {
-		angle = 0.0;
-	}
-	renderer.Copy(projectile, SDL2pp::Rect(proj_pixel_x, proj_pixel_y, proj_pixel_w, proj_pixel_h), SDL2pp::Rect(this->x, this->y, 20, 10), angle, SDL2pp::NullOpt, this->flip);
-		
-	this->x += proj_speed;
-		
-	if (this->x < 0 || this->x > window.GetWidth() || this->y < 0 || this->y > window.GetHeight()) {
-		return false;
-	}
-	return true;
-	*/
 }
-
-
-

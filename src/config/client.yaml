@@ -38,16 +38,18 @@ EPISODES_SPRITES: [[9, 9, 495, 354],[505, 9, 496, 354],[1002, 9, 531, 354],[1534
 # Sounds
 SOUNDS: [ "../assets/audios/playerHurt.WAV", "../assets/audios/shoot3.WAV", "../assets/audios/takePoint.WAV"]
 
+#Orden de los tiles es: background, floor, longPlatform, smallPlatform, Column, LeftDiagonal/LeftLadder, RightDiagonal/RightLadder
 # Beach level sprites
 BEACH: ["../assets/scenes/BeachWorld/background.png", "../assets/scenes/BeachWorld/fullFloor.png", "../assets/scenes/BeachWorld/longPlatform.png", "../assets/scenes/BeachWorld/smallPlatform.png", "../assets/scenes/BeachWorld/woodLargeColumn.png", "../assets/scenes/BeachWorld/leftLadder.png", "../assets/scenes/BeachWorld/rightLadder.png"]
 BEACH_BACKSOUND: "../assets/audios/beachBackSound.wav" #HACER BACKSOUND PARA COLONIUS
 BEACH_PIXELS: [[0, 0, 200, 160], [0, 0, 485, 118], [0, 0, 160, 17], [0, 0, 88, 17], [0, 0, 24, 91], [0, 0, 145, 145], [0, 0, 144, 165]]
+BEACH_WIDTHS_HEIGHTS: [[715, 153], [500, 70], [150, 30], [70, 30], [30, 100], [120, 120], [120, 120]]
 
 #Colonius level sprites
 COLONIUS: ["../assets/scenes/Colonius/background.png", "../assets/scenes/Colonius/fullFloor.png", "../assets/scenes/Colonius/longPlatform.png", "../assets/scenes/Colonius/smallPlatform.png", "../assets/scenes/Colonius/column.png", "../assets/scenes/Colonius/leftLadder.png", "../assets/scenes/Colonius/rightLadder.png"]
 COLONIUS_BACKSOUND: "../assets/audios/coloniusBackSound.wav"
 COLONIUS_PIXELS: [[1200, 0, 1804, 839], [0, 0, 400, 150], [0, 0, 192, 46], [0, 0, 145, 96], [0, 0, 80, 191], [0, 0, 144, 119], [0, 0, 144, 119]]
-
+COLONIUS_WIDTHS_HEIGHT: [[2000, 839], [500, 100], [150, 30], [60, 40], [20, 120], [150, 150], [150, 150]]
 
 ## Enemies
 TURTLE_WIDTH: 50

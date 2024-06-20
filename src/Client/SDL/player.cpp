@@ -247,7 +247,7 @@ void Player::draw_players(SDL2pp::Window& window, SDL2pp::Renderer& renderer, st
 		std::list<RectangularSprite>::iterator it = img_coords(p.getType(), mov_type, pjId);
 		int x = p.getX();
 		int y = p.getY();
-		if (p.getPlayerId() == mainPlayer.getPlayerId()) { //i == 0 es el player que ejecuto el codigo, cambiar por playerId
+		if (p.getPlayerId() == mainPlayer.getPlayerId()) { 
 			if (dir_x_screen != 0) {
 				main_pj_x = x;
 				x = dir_x_screen;
@@ -269,7 +269,7 @@ void Player::draw_players(SDL2pp::Window& window, SDL2pp::Renderer& renderer, st
 			}
 		}
 
-		if (abs(distance_main_secondary_x) <= window.GetWidth() / 2 && abs(distance_main_secondary_y) <= window.GetHeight() / 2) {
+		if (abs(distance_main_secondary_x) <= window.GetWidth() && abs(distance_main_secondary_y) <= window.GetHeight()) {
 			renderer.Copy(*pjs_textures[p.getType()], SDL2pp::Rect(it->getX(), it->getY(), it->getWidth(), it->getHeight()),
                       SDL2pp::Rect(x, y, this->width, this->height), 0.0, SDL2pp::NullOpt, flip);
 		}
