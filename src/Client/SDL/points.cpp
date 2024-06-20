@@ -75,7 +75,7 @@ void Points::draw_points(SDL2pp::Window& window, SDL2pp::Renderer& renderer, std
             y = dir_y_screen + distance_main_item_y;
         }
 		
-        if (abs(distance_main_item_x + this->draw_width) <= window.GetWidth() / 2 && abs(distance_main_item_y + this->draw_height) <= window.GetHeight() / 2) {
+        if (abs(distance_main_item_x) <= window.GetWidth() && abs(distance_main_item_y) <= window.GetHeight()) {
             renderer.Copy(*points, SDL2pp::Rect(it->getX(), it->getY(), it->getWidth(), it->getHeight()),
                       SDL2pp::Rect(x, y, this->draw_width, this->draw_height),
                       0.0, SDL2pp::NullOpt, 0);

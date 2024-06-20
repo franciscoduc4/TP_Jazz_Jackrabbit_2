@@ -269,7 +269,7 @@ void Player::draw_players(SDL2pp::Window& window, SDL2pp::Renderer& renderer, st
 			}
 		}
 
-		if (abs(distance_main_secondary_x) <= window.GetWidth() / 2 && abs(distance_main_secondary_y) <= window.GetHeight() / 2) {
+		if (abs(distance_main_secondary_x) <= window.GetWidth() && abs(distance_main_secondary_y) <= window.GetHeight()) {
 			renderer.Copy(*pjs_textures[p.getType()], SDL2pp::Rect(it->getX(), it->getY(), it->getWidth(), it->getHeight()),
                       SDL2pp::Rect(x, y, this->width, this->height), 0.0, SDL2pp::NullOpt, flip);
 		}

@@ -151,7 +151,7 @@ void Enemy::draw_enemy(SDL2pp::Window& window, SDL2pp::Renderer& renderer, std::
             y = dir_y_screen + distance_main_enemy_y;
         }
         std::cout << "EL VALOR DE DISTANCE_MAIN_ENEMY_X ES " << distance_main_enemy_x << " Y EL VALOR DE DISTANCE_MAIN_ENEMY_Y ES " << distance_main_enemy_y << '\n';
-        if (abs(distance_main_enemy_x + this->width_height[e.getType()][index_width])  <= window.GetWidth() / 2 && abs(distance_main_enemy_y + this->width_height[e.getType()][index_height]) <= window.GetHeight() / 2) {
+        if (abs(distance_main_enemy_x)  <= window.GetWidth() && abs(distance_main_enemy_y) <= window.GetHeight()) {
            renderer.Copy(*textures_enemies[e.getType()], SDL2pp::Rect(it->getX(), it->getY(), it->getWidth(), it->getHeight()),
                   SDL2pp::Rect(x, y, this->width_height[e.getType()][index_width], this->width_height[e.getType()][index_height]), 0.0,
                   SDL2pp::NullOpt, this->flip);

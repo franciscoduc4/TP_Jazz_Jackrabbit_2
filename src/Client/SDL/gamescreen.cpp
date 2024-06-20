@@ -217,7 +217,7 @@ void GameScreen::run() {
 
         std::vector<TileDTO> tiles = snapshot->getTiles(); 
         if (tiles.size() > 0) {
-            this->level.draw_tiles(window, renderer, tiles_textures, tiles, *mainPlayer, pos_x, pos_y);
+            this->level.draw_tiles(window, renderer, tiles_textures, tiles, *mainPlayer, x_screen, y_screen, pos_x, pos_y);
         }
 
         this->stats.draw_interface(window, renderer, *pjs_textures[mainPlayer->getType()/*players[0].getType()*/], mainPlayer->getType(), font, 1000/*getPoints()*/, 3/*getLives()*/);
