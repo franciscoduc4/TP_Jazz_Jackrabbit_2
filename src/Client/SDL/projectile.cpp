@@ -76,7 +76,7 @@ void Projectile::draw_projectile(SDL2pp::Window& window, SDL2pp::Renderer& rende
 	double angle = 180.0;
 	std::list<RectangularSprite>::iterator it2;
 	for (auto b : bullets) {
-		int bulletId = 0;//b.getBulletId();
+		uint32_t bulletId = 0;//b.getBulletId();
 		auto it = this->counts.find(b.getBulletId());
 		if (it == this->counts.end()) {
 			this->counts[bulletId] = 0;

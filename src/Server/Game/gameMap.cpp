@@ -331,8 +331,8 @@ std::unique_ptr<GameDTO> GameMap::getGameDTO() {
     // BulletDTO bullet2 = {20, 20, 1, 1, 1, 1};
 
     // bullets.push_back(bullet2);
-    // BulletDTO bullet3 = {30, 30, 1, 1, 1, 1};
-    // bullets.push_back(bullet3);
+    BulletDTO bullet3 = {30, 30, 1, 1, 1, 1};
+    bullets.push_back(bullet3);
 
     TileDTO tile = {5, 10};
     tiles.push_back(tile);

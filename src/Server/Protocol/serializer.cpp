@@ -248,6 +248,7 @@ std::vector<char> Serializer::serializeBulletDTO(const std::unique_ptr<BulletDTO
     buffer.push_back(static_cast<char>(dto->getSpeed()));
     buffer.push_back(static_cast<char>(dto->getX()));
     buffer.push_back(static_cast<char>(dto->getY()));
+    buffer.push_back(static_cast<char>(dto->getShooterId()));
     std::cout << "[SERVER SERIALIZER BULLET] Serialized bullet with id: " << (int)dto->getBulletId()
               << std::endl;
     return buffer;
