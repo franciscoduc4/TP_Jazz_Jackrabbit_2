@@ -152,9 +152,8 @@ void Enemy::draw_enemy(SDL2pp::Window& window, SDL2pp::Renderer& renderer, std::
         }
 
         if (abs(distance_main_enemy_x)  <= window.GetWidth() && abs(distance_main_enemy_y) <= window.GetHeight()) {
-           renderer.Copy(*textures_enemies[e.getType()], SDL2pp::Rect(it->getX(), it->getY(), it->getWidth(), it->getHeight()),
-                  SDL2pp::Rect(x, y, this->width_height[e.getType()][index_width], this->width_height[e.getType()][index_height]), 0.0,
-                  SDL2pp::NullOpt, this->flip);
+           renderer.Copy(*textures_enemies[e.getEnemyType()], SDL2pp::Rect(it->getX(), it->getY(), it->getWidth(), it->getHeight()),
+                  SDL2pp::Rect(x, y, this->width_height[e.getEnemyType()][index_width], this->width_height[e.getEnemyType()][index_height]), 0.0, SDL2pp::NullOpt, this->flip);
         }
 
     }
