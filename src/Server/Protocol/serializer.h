@@ -5,6 +5,7 @@
 #include <memory>
 #include <string>
 #include <vector>
+#include <atomic>
 
 #include "../../Common/DTO/command.h"
 #include "../../Common/DTO/createGame.h"
@@ -21,9 +22,15 @@
 class Serializer {
 private:
     std::shared_ptr<Socket> socket;
+    std::atomic<bool>& keepPlaying;
+    std::atomic<bool>& inGame;
+    bool wasClosed;
+
     static void insertGameInfoIntoBuffer(std::vector<char>& buffer, const GameInfo& gameInfo);
     static void insertPositionIntoBuffer(std::vector<char>& buffer, const uint32_t& x, const uint32_t& y);
     static void insert_int_into_buffer(std::vector<char>& buffer, const int& value);
+
+    void clientClosed();
 public:
     // Lobby
     static std::vector<char> serializeCreateGame(const std::unique_ptr<CreateGameDTO>& dto);
@@ -39,11 +46,10 @@ public:
     static std::vector<char> serializeWeaponDTO(const std::unique_ptr<WeaponDTO>& dto);
     static std::vector<char> serializeTileDTO(const std::unique_ptr<TileDTO>& dto);
 
-    Serializer() {}
-    explicit Serializer(std::shared_ptr<Socket> socket);
-    void sendId(uint8_t id, bool& wasClosed);
-    void sendCommand(const std::unique_ptr<CommandDTO>& dto, bool& wasClosed);
-    void sendGameDTO(const std::unique_ptr<GameDTO>& dto, bool& wasClosed);
+    Serializer(const std::shared_ptr<Socket>& socket, std::atomic<bool>& keepPlaying, std::atomic<bool>& inGame);
+    void sendId(uint8_t id);
+    void sendCommand(const std::unique_ptr<CommandDTO>& dto);
+    void sendGameDTO(const std::unique_ptr<GameDTO>& dto);
 };
 
 

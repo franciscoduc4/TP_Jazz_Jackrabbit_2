@@ -24,3 +24,7 @@ int BulletDTO::getSpeed() const { return speed; }
 bool BulletDTO::isAlive() const { return bulletIsAlive; }
 
 int BulletDTO::getShooterId() const { return shooterId; }
+
+std::unique_ptr<DTO> BulletDTO::clone() const {
+    return std::make_unique<BulletDTO>(*this);
+}

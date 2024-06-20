@@ -11,15 +11,15 @@ WaitingRoom::WaitingRoom(QWidget* parent, LobbyController& controller, LobbyMess
         ui(new Ui::WaitingRoom),
         controller(controller),
         msg(msg),
-        clientJoinedGame(clientJoinedGame) {
+        clientJoinedGame(clientJoinedGame),
+        recvQueue() {
     ui->setupUi(this);
 
     this->clientJoinedGame = true; // Al llegar acá y no poder volver atrás, se asume que el cliente se unió al juego
 
-    // Se crea un hilo para que el cliente pueda recibir actualizaciones de la cantidad de jugadores en la sala
-    updateThread = QThread::create([this] { this->pollForUpdates(); });
-    connect(this, &WaitingRoom::destroyed, updateThread, &QThread::quit);
-    updateThread->start();
+    connect(&updateTimer, &QTimer::timeout, this, &WaitingRoom::fetchUpdates);
+
+    updateTimer.start(1000);
 
     GameInfo selected = this->controller.getSelectedGame();
     QString numPlayers = QString::number(selected.getCurrentPlayers());
@@ -64,22 +64,24 @@ WaitingRoom::WaitingRoom(QWidget* parent, LobbyController& controller, LobbyMess
     connect(this, &WaitingRoom::numPlayersUpdated, this, &WaitingRoom::updateNumPlayers);
 }
 
-void WaitingRoom::pollForUpdates() {
-    while (true) {
-        QMutexLocker locker(&mutex);
-        std::unique_ptr<DTO> updateDto;
-        if (controller.hasGameUpdates(updateDto)) {
-            int numPlayers = controller.processGameUpdate(updateDto);
-            emit numPlayersUpdated(numPlayers);
-        } else {
-            condition.wait(&mutex);
-        }
+void WaitingRoom::fetchUpdates() {
+    std::unique_ptr<DTO> updateDto;
+    if (controller.hasGameUpdates(updateDto)) {
+        std::cout << "[WAITING ROOM] Received update" << std::endl;
+        int numPlayers;
+        auto* cmdDto = dynamic_cast<CommandDTO*>(updateDto.get());
+        updateDto.release();
+        std::unique_ptr<CommandDTO> cmdDtoPtr(cmdDto);
+        numPlayers = controller.processGameUpdate(cmdDtoPtr);
+        emit numPlayersUpdated(numPlayers);
+    } else {
+        std::cout << "[WAITING ROOM] No updates received" << std::endl;
     }
 }
 
 void WaitingRoom::updateNumPlayers(int numPlayers) {
     ui->numPlayers->setText(QString::number(numPlayers));
-    if (numPlayers == this->msg.getMaxPlayers()) {
+    if (this->controller.canStartGame()) {
         this->msg.setLobbyCmd(Command::START_GAME);
         this->controller.startGame(this->msg);
         std::pair<bool, GameInfo> sgAck = this->controller.recvResponse();
@@ -94,7 +96,5 @@ void WaitingRoom::updateNumPlayers(int numPlayers) {
 }
 
 WaitingRoom::~WaitingRoom() {
-    updateThread->quit();
-    updateThread->wait();
     delete ui;
 }

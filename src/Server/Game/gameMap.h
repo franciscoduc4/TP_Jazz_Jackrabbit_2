@@ -85,6 +85,10 @@ public:
 
 
     EnemyType getEnemyType(const std::string& type);
+
+    uint32_t getMaxXPos() { return size.x - static_cast<uint32_t>(movesPerCell); }
+
+    uint32_t getMaxYPos() { return size.y - static_cast<uint32_t>(movesPerCell); } //Revisar
 };
 
 #endif  // GAME_MAP_H_

@@ -226,5 +226,6 @@ void Level::draw_tiles(SDL2pp::Window& window, SDL2pp::Renderer& renderer, std::
             //renderer.Copy(*tiles_textures[TileType::LEFTDIAGONAL/*type*/], SDL2pp::Rect(pixels_pos[TileType::LEFTDIAGONAL/*type*/][index_x], pixels_pos[TileType::LEFTDIAGONAL/*type*/][index_y], pixels_pos[TileType::LEFTDIAGONAL/*type*/][index_width], pixels_pos[TileType::LEFTDIAGONAL/*type*/][index_height]), SDL2pp::Rect(t.getX(), t.getY(), this->width_height[TileType::LEFTDIAGONAL/*type*/][index_draw_width], this->width_height[TileType::LEFTDIAGONAL/*type*/][index_draw_height]));
             renderer.Copy(*tiles_textures[TileType::RIGHTDIAGONAL/*type*/], SDL2pp::Rect(pixels_pos[TileType::RIGHTDIAGONAL/*type*/][index_x], pixels_pos[TileType::RIGHTDIAGONAL/*type*/][index_y], pixels_pos[TileType::RIGHTDIAGONAL/*type*/][index_width], pixels_pos[TileType::RIGHTDIAGONAL/*type*/][index_height]), SDL2pp::Rect(x, y, this->width_height[TileType::RIGHTDIAGONAL/*type*/][index_draw_width], this->width_height[TileType::RIGHTDIAGONAL/*type*/][index_draw_height]));
         } 
+
     }
 }

@@ -138,7 +138,7 @@ void Enemy::draw_enemy(SDL2pp::Window& window, SDL2pp::Renderer& renderer, std::
 			this->counts[enemyId][EnemyStateEntity::ENEMY_ATTACKING] = 0;
 			this->counts[enemyId][EnemyStateEntity::ENEMY_DEAD] = 0;
 		}	
-    	std::list<RectangularSprite>::iterator it = enemy_img_coords(e.getType(), mov_type, enemyId);
+    	std::list<RectangularSprite>::iterator it = enemy_img_coords(e.getEnemyType(), mov_type, enemyId);
         x = e.getX();
 		y = e.getY();
 		
@@ -150,11 +150,13 @@ void Enemy::draw_enemy(SDL2pp::Window& window, SDL2pp::Renderer& renderer, std::
             distance_main_enemy_y = y - player.getY();
             y = dir_y_screen + distance_main_enemy_y;
         }
+
         if (abs(distance_main_enemy_x)  <= window.GetWidth() && abs(distance_main_enemy_y) <= window.GetHeight()) {
            renderer.Copy(*textures_enemies[e.getType()], SDL2pp::Rect(it->getX(), it->getY(), it->getWidth(), it->getHeight()),
                   SDL2pp::Rect(x, y, this->width_height[e.getType()][index_width], this->width_height[e.getType()][index_height]), 0.0,
                   SDL2pp::NullOpt, this->flip);
         }
+
     }
     this->init = true;
 }

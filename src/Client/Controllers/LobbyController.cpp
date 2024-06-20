@@ -19,11 +19,23 @@ bool LobbyController::hasGameUpdates(std::unique_ptr<DTO>& dto) {
     return this->lobbyQueue->try_pop(dto);
 }
 
-int LobbyController::processGameUpdate(std::unique_ptr<DTO>& dto) {
-    auto* gameInfoDTO = dynamic_cast<GameInfo*>(dto.get());
-    if (gameInfoDTO) {
-        this->selected = *gameInfoDTO;
+int LobbyController::processGameUpdate(std::unique_ptr<CommandDTO>& dto) {
+    std::cout << "[Lobby Controller] Processing game update..." << std::endl;
+    if (!dto) {
+        return static_cast<int>(this->selected.getCurrentPlayers());
     }
+    if (dto->getCommand() != Command::GAME_UPDATE) {
+        return static_cast<int>(this->selected.getCurrentPlayers());
+    }
+    auto* gameUpdateDto = dynamic_cast<GameUpdateDTO*>(dto.get());
+    if (gameUpdateDto) {
+        if (gameUpdateDto->getGameInfo().getGameId() == this->selected.getGameId()) {
+            this->selected = gameUpdateDto->getGameInfo();
+        }
+    }
+    std::cout << "[Lobby Controller] Game updated." << std::endl;
+    std::cout << "[Lobby Controller] Current Game Players: "
+              << static_cast<int>(this->selected.getCurrentPlayers()) << std::endl;
     return static_cast<int>(this->selected.getCurrentPlayers());
 }
 
@@ -39,6 +51,12 @@ void LobbyController::sendRequest(const LobbyMessage& msg) {
     if (msg.getLobbyCmd() == Command::CREATE_GAME || msg.getLobbyCmd() == Command::JOIN_GAME) {
         std::cout << "[Lobby Controller] Selected game updated." << std::endl;
         this->selected = GameInfo(msg.getGameId(), msg.getGameName(), msg.getMaxPlayers(), 1);
+        std::cout << "[Lobby Controller] Command is Create: " << (msg.getLobbyCmd() == Command::CREATE_GAME)
+                  << " or is it Join: " << (msg.getLobbyCmd() == Command::JOIN_GAME) << "?" << std::endl;
+
+        std::cout << "SELECTED: gameid -> " << static_cast<int>(this->selected.getGameId()) << " name: "
+                << this->selected.getGameName() << " Max Players: " << static_cast<int>(this->selected.getMaxPlayers())
+                << " current >>> " << static_cast<int>(this->selected.getCurrentPlayers()) << std::endl;
     }
     std::cout << "[Lobby Controller] Sending request of type: " << static_cast<int>(msg.getLobbyCmd()) << std::endl;
     this->serializer.serializeLobbyMessage(msg);
@@ -78,7 +96,7 @@ std::pair<bool, GameInfo> LobbyController::recvResponse() {
             std::cout << "[Lobby Controller] Received GAME_UPDATE response." << std::endl;
             auto* guDTO = dynamic_cast<GameUpdateDTO*>(cmdDTO);
             this->selected.updateCurrentPlayers(guDTO->getGameInfo().currentPlayers);
-            if (this->selected.getMapName() == "") {
+            if (this->selected.getMapName().empty()) {
                 this->selected.updateMapName(guDTO->getGameInfo().mapName);
             }
             break;

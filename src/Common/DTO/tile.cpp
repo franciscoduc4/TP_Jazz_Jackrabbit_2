@@ -7,4 +7,6 @@ uint32_t TileDTO::getX() const { return x; }
 
 uint32_t TileDTO::getY() const { return y; }
 
-
+std::unique_ptr<DTO> TileDTO::clone() const {
+    return std::make_unique<TileDTO>(*this);
+}

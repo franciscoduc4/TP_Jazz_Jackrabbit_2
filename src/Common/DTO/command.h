@@ -3,6 +3,7 @@
 
 #include <cstdint>
 #include <vector>
+#include <memory>
 
 #include "../Types/command.h"
 
@@ -32,6 +33,8 @@ public:
     DTOType getType() const;
 
     virtual std::vector<char> getData() const;
+
+    virtual std::unique_ptr<DTO> clone() const override;
 
     virtual ~CommandDTO() = default;
 };

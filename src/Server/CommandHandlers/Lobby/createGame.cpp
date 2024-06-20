@@ -16,7 +16,6 @@ CreateGameHandler::CreateGameHandler(std::unique_ptr<CreateGameDTO> command):
         command(std::move(command)) {}
 
 void CreateGameHandler::execute(GameMonitor& gameMonitor, std::atomic<bool>& inGame,
-                                std::shared_ptr<Queue<std::unique_ptr<CommandDTO>>> recvQueue,
                                 std::shared_ptr<Queue<std::unique_ptr<DTO>>> sendQueue) {
     uint8_t playerId = command->getPlayerId();
     uint8_t mapId = command->getMapId();
@@ -25,7 +24,6 @@ void CreateGameHandler::execute(GameMonitor& gameMonitor, std::atomic<bool>& inG
     CharacterType characterType = command->getCharacterType();
     std::string gameName = command->getGameName();
 
-    gameMonitor.createGame(playerId, mapId, gameMode, maxPlayers, characterType, gameName,
-                           recvQueue, sendQueue);
+    gameMonitor.createGame(playerId, mapId, gameMode, maxPlayers, characterType, gameName, sendQueue);
     std::cout << "[CG HANDLER] Game created" << std::endl;
 }

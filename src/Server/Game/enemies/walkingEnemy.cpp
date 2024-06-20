@@ -10,4 +10,4 @@ WalkingEnemy::WalkingEnemy(GameMap& map, Vector<uint32_t> pos, uint8_t id):
               ServerConfig::getWalkingEnemyWalkProb(), {}, {}) {}
 
 
-EnemyType WalkingEnemy::getEnemyType() { return EnemyType::TURTLE; }
+EnemyType WalkingEnemy::getEnemyType() const { return EnemyType::TURTLE; }

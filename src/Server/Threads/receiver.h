@@ -17,13 +17,18 @@ private:
     Deserializer deserializer;
     std::atomic<bool>& keepPlaying;
     std::atomic<bool>& inGame;
-    bool wasClosed;
+    GameMonitor& gameMonitor;
     std::shared_ptr<Queue<std::unique_ptr<CommandDTO>>> recvQueue;
+    std::shared_ptr<Queue<std::unique_ptr<DTO>>> sendQueue;
+
+    void runLobby();
+    void runGame();
 
 public:
-    ReceiverThread(std::shared_ptr<Socket> socket, std::atomic<bool>& keepPlaying,
-                   std::atomic<bool>& inGame, uint8_t playerId,
-                   std::shared_ptr<Queue<std::unique_ptr<CommandDTO>>> recvQueue);
+    ReceiverThread(const std::shared_ptr<Socket>& socket, std::atomic<bool>& keepPlaying,
+                   std::atomic<bool>& inGame, uint8_t playerId, GameMonitor& gameMonitor,
+                   const std::shared_ptr<Queue<std::unique_ptr<CommandDTO>>>& recvQueue,
+                   const std::shared_ptr<Queue<std::unique_ptr<DTO>>>& sendQueue);
     void run() override;
 };
 

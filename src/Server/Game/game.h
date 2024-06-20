@@ -35,7 +35,7 @@ public:
     explicit Game(uint8_t gameId, std::string gameName, uint8_t mapId, uint8_t playerId,
                   GameMode gameMode, uint8_t maxPlayers, CharacterType characterType,
                   std::shared_ptr<Queue<std::unique_ptr<CommandDTO>>> recvQueue,
-                  QueueMonitor<std::unique_ptr<DTO>>& queueMonitor);
+                  QueueMonitor& queueMonitor);
 
 
     uint8_t getGameId() const;

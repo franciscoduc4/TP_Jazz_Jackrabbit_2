@@ -43,6 +43,8 @@ public:
 
     GameMode getGameMode() const;
 
+    virtual std::unique_ptr<DTO> clone() const override;
+
     virtual ~CreateGameDTO() {}
 };
 

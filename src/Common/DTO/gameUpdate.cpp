@@ -6,3 +6,7 @@ GameUpdateDTO::GameUpdateDTO(GameInfo gameInfo) :
 GameInfo GameUpdateDTO::getGameInfo() const {
     return this->gameInfo;
 }
+
+std::unique_ptr<DTO> GameUpdateDTO::clone() const {
+    return std::make_unique<GameUpdateDTO>(*this);
+}

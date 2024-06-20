@@ -59,11 +59,10 @@ void Points::draw_points(SDL2pp::Window& window, SDL2pp::Renderer& renderer, std
     uint32_t y;
     int distance_main_item_x = 0;
     int distance_main_item_y = 0;
-    int i = 0;
     for (auto p : pointsdto) {
-   		std::list<RectangularSprite>::iterator it = actual_sprite_coord(p.getType());
+   		  std::list<RectangularSprite>::iterator it = actual_sprite_coord(p.getItemType());
         x = p.getX();
-		y = p.getY();
+		    y = p.getY();
 		
         if (dir_x_screen != 0) { 
             distance_main_item_x = x - player.getX();
@@ -80,7 +79,7 @@ void Points::draw_points(SDL2pp::Window& window, SDL2pp::Renderer& renderer, std
                       0.0, SDL2pp::NullOpt, 0);
         }
         this->counts[static_cast<int>(p.getType())]++;
-        i++;
+        //this->counts[static_cast<int>(p.getItemType())]++;
    	}
 }
 

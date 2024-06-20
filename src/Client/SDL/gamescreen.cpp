@@ -192,6 +192,7 @@ void GameScreen::run() {
         }
 
         std::vector<EnemyDTO> enemiesSnapshot = snapshot->getEnemies();
+        std::cout << "Enemies size: " << enemiesSnapshot.size() << std::endl;
         if (enemiesSnapshot.size() > 0) {
             this->enemies.draw_enemy(window, renderer, enemies_textures, enemiesSnapshot, *mainPlayer/*players[0]*/, x_screen, y_screen);
         }
@@ -213,11 +214,12 @@ void GameScreen::run() {
             this->level.draw_tiles(window, renderer, tiles_textures, tiles, *mainPlayer, x_screen, y_screen);
         }
 
-        this->stats.draw_interface(window, renderer, *pjs_textures[mainPlayer->getType()/*players[0].getType()*/], mainPlayer->getType(), font, 1000/*getPoints()*/, 3/*getLives()*/);
+        this->stats.draw_interface(window, renderer, *pjs_textures[mainPlayer->getCharacterType()/*players[0].getItemType()*/],
+                mainPlayer->getCharacterType(), font, 1000/*getPoints()*/, 3/*getLives()*/);
 
         x_screen = 0;
         y_screen = 0;
-
+        
         renderer.Present();
         std::cout << "[GAME SCREEN] Frame presented" << std::endl;
 

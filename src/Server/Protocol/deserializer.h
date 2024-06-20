@@ -4,6 +4,7 @@
 #include <memory>
 #include <string>
 #include <vector>
+#include <atomic>
 
 #include "../../Common/DTO/command.h"
 #include "../../Common/DTO/createGame.h"
@@ -19,29 +20,31 @@
 class Deserializer {
 private:
     std::shared_ptr<Socket> socket;
+    std::atomic<bool>& keepPlaying;
+    std::atomic<bool>& inGame;
+    bool wasClosed;
 
-    std::unique_ptr<CreateGameDTO> deserializeCreateGame(bool& wasClosed, uint8_t& playerId);
+    // Receive Types
+    bool receive_uint8(uint8_t& value);
+    bool receive_char(char& value);
+    bool receive_vector_char(std::vector<char>& buffer);
+    // Lobby
+    std::unique_ptr<CreateGameDTO> deserializeCreateGame(uint8_t& playerId);
+    static std::unique_ptr<MapsListDTO> deserializeMapsList(uint8_t& playerId);
+    std::unique_ptr<JoinGameDTO> deserializeJoinGame(uint8_t& playerId);
+    static std::unique_ptr<CommandDTO> deserializeGamesList(uint8_t& playerId);
 
-    std::unique_ptr<MapsListDTO> deserializeMapsList(bool& wasClosed, uint8_t& playerId);
-
-    std::unique_ptr<JoinGameDTO> deserializeJoinGame(bool& wasClosed, uint8_t& playerId);
-
-    std::unique_ptr<CommandDTO> deserializeGamesList(bool& wasClosed, uint8_t& playerId);
-
-    std::unique_ptr<GameCommandDTO> deserializeMove(bool& wasClosed, uint8_t& playerId);
-
-    std::unique_ptr<StartGameDTO> deserializeStart(bool& wasClosed, uint8_t& playerId);
-
-    std::unique_ptr<CommandDTO> deserializeShooting(bool& wasClosed, uint8_t& playerId);
-
-    std::unique_ptr<CommandDTO> deserializeSwitchWeapon(bool& wasClosed, uint8_t& playerId);
-
-    std::unique_ptr<CommandDTO> deserializeSprint(bool& wasClosed, uint8_t& playerId);
+    // Game
+    std::unique_ptr<GameCommandDTO> deserializeMove(uint8_t& playerId);
+    std::unique_ptr<StartGameDTO> deserializeStart(uint8_t& playerId);
+    std::unique_ptr<CommandDTO> deserializeShooting(uint8_t& playerId);
+    std::unique_ptr<CommandDTO> deserializeSwitchWeapon(uint8_t& playerId);
+    std::unique_ptr<CommandDTO> deserializeSprint(uint8_t& playerId);
 
 
 public:
-    explicit Deserializer(std::shared_ptr<Socket> socket);
+    Deserializer(const std::shared_ptr<Socket>& socket, std::atomic<bool>& keepPlaying, std::atomic<bool>& inGame);
 
-    std::unique_ptr<CommandDTO> getCommand(bool& wasClosed, uint8_t& playerId);
+    std::unique_ptr<CommandDTO> getCommand(uint8_t& playerId);
 };
 #endif  // SERVER_DESERIALIZER_H_
