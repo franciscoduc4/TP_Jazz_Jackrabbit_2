@@ -128,18 +128,15 @@ void Character::moveUp(float time) {
     }
 }
 
+void Character::moveDown() {
+    std::cout << "[CHARACTER] Character ID: " << static_cast<int>(id) << " moving down"
+              << std::endl;
+}
+
 void Character::moveDown(float time) {
     std::cout << "[CHARACTER] Character ID: " << static_cast<int>(id) << " moving down"
               << std::endl;
     auto newState = std::unique_ptr<State>(state->move(Direction::DOWN, time));
-    if (newState) {
-        state = std::move(newState);
-    }
-}
-
-void Character::jump(float time) {
-    std::cout << "[CHARACTER] Character ID: " << static_cast<int>(id) << " jumping" << std::endl;
-    auto newState = std::unique_ptr<State>(state->jump(time));
     if (newState) {
         state = std::move(newState);
     }
@@ -288,20 +285,22 @@ void Character::moveUp() {
     gameMap.moveObject(pos, mapPosition, Direction::UP);
 }
 
-void Character::jump() {
+void Character::jump(float time) {
     initialYJump = pos.y;
 
-    if (isIntoxicated || jumping)
+    if (isIntoxicated || jumping) {
+        Vector<uint32_t> mapPosition = getMapPosition(movesPerCell);
 
-    auto mapPosition = getMapPosition(movesPerCell);
-    Vector<uint32_t> newPosition = pos - Vector<uint32_t>{0, movesPerCell};
+        Vector<uint32_t> newPosition = pos - Vector<uint32_t>{0, movesPerCell};
 
-    if (!gameMap.isValidMapPosition(newPosition))
-        return;
+        if (!gameMap.isValidMapPosition(newPosition)) {
+            return;
+        }
 
-    gameMap.moveObject(pos, mapPosition, Direction::UP);
-    pos = newPosition;
-    jumping = true;
+        gameMap.moveObject(pos, mapPosition, Direction::UP);
+        pos = newPosition;
+        jumping = true;
+    }
     std::cout << "[CHARACTER] Character pos y: " << static_cast<int>(pos.y) << std::endl;
 }
 

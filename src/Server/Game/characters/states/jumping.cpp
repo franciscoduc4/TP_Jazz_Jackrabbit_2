@@ -55,7 +55,7 @@ std::unique_ptr<State> JumpingState::jump(float time) {
     // Puede saltar mientras está en el aire
     std::cout << "JumpingState::jump" << std::endl;
     if (!character.isJumping()) {
-        character.jump();
+        character.jump(time);
     }
     // if (character.hasLanded()) {
     //     return std::make_unique<IdleState>();
