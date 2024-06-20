@@ -20,8 +20,8 @@
 
 class GameMap {
 private:
-    Vector<uint8_t> size;
-    std::map<Vector<uint8_t>, std::shared_ptr<Entity>> mapGrid;
+    Vector<uint32_t> size;
+    std::map<Vector<uint32_t>, std::shared_ptr<Entity>> mapGrid;
     std::map<uint8_t, std::shared_ptr<Character>> characters;
     std::map<uint8_t, std::shared_ptr<Enemy>> enemies;
     // std::map<uint8_t, std::shared_ptr<Bullet>> bullets;
@@ -35,66 +35,64 @@ private:
     uint8_t mapId;
 
 
-    Vector<uint8_t> calculateNewPosition(const Vector<uint8_t> position, Direction dir) const;
+    Vector<uint32_t> calculateNewPosition(const Vector<uint32_t> position, Direction dir) const;
 
 
-    bool handleMovement(Vector<uint8_t>& position, Vector<uint8_t> mapPosition,
-                        const Vector<uint8_t>& newPosition, const Vector<uint8_t>& newMapPosition);
+    bool handleMovement(Vector<uint32_t>& position, Vector<uint32_t> mapPosition,
+                        const Vector<uint32_t>& newPosition, const Vector<uint32_t>& newMapPosition);
 
 
 public:
-    explicit GameMap(Vector<uint8_t> size, uint8_t mapId);
+    explicit GameMap(Vector<uint32_t> size, uint8_t mapId);
 
     void loadMap(uint8_t mapId);
 
-    std::vector<std::shared_ptr<Entity>> getObjectsInShootRange(Vector<uint8_t> mapPosition,
+    std::vector<std::shared_ptr<Entity>> getObjectsInShootRange(Vector<uint32_t> mapPosition,
                                                                 Direction dir);
 
-    std::vector<std::shared_ptr<Entity>> getObjectsInExplosionRange(Vector<uint8_t> mapPosition,
+    std::vector<std::shared_ptr<Entity>> getObjectsInExplosionRange(Vector<uint32_t> mapPosition,
                                                                     uint8_t radius);
 
-    void moveObject(Vector<uint8_t>& position, Vector<uint8_t> mapPosition, Direction dir);
+    void moveObject(Vector<uint32_t>& position, Vector<uint32_t> mapPosition, Direction dir);
 
-    Vector<uint8_t> getAvailablePosition();
+    Vector<uint32_t> getAvailablePosition();
 
-    void addEntityToMap(std::shared_ptr<Entity> entity, Vector<uint8_t> position);
+    void addEntityToMap(std::shared_ptr<Entity> entity, Vector<uint32_t> position);
 
     std::shared_ptr<Character> addCharacter(uint8_t playerId, CharacterType type);
 
-    void addEnemy(EnemyType type, Vector<uint8_t> position);
+    void addEnemy(EnemyType type, Vector<uint32_t> position);
 
     void update(float time);
 
     void removeCharacter(uint8_t playerId);
 
-    void removeEnemy(Vector<uint8_t> position);
+    void removeEnemy(Vector<uint32_t> position);
 
-    std::shared_ptr<Entity> getEntityAt(Vector<uint8_t> position);
-
-    Vector<uint8_t> getSize() const;
+    std::shared_ptr<Entity> getEntityAt(Vector<uint32_t> position);
 
     std::unique_ptr<GameDTO> getGameDTO();
 
     std::shared_ptr<Character> getCharacter(uint8_t playerId);
 
-    bool isFreePosition(Vector<uint8_t> position);
+    bool isFreePosition(Vector<uint32_t> position);
 
-    bool isValidMapPosition(Vector<uint8_t> mapPosition);
+    bool isValidMapPosition(Vector<uint32_t> mapPosition);
 
-    bool isValidPosition(Vector<uint8_t> position);
+    bool isValidPosition(Vector<uint32_t> position);
 
     void printMapGrid() const;
 
-    Vector<uint8_t> getMapPosition(Vector<uint8_t> position);
+    Vector<uint32_t> getMapPosition(Vector<uint32_t> position);
 
-    Vector<uint8_t> getInitialPositionForCharacterType(CharacterType type);
+    Vector<uint32_t> getInitialPositionForCharacterType(CharacterType type);
 
 
     EnemyType getEnemyType(const std::string& type);
 
-    uint8_t getMaxX() const { return size.x - movesPerCell; }
+    uint32_t getMaxXPos() { return size.x - static_cast<uint32_t>(movesPerCell); }
 
-    uint8_t getMaxY() const { return size.y - movesPerCell; }
+    uint32_t getMaxYPos() { return size.y - static_cast<uint32_t>(movesPerCell); } //Revisar
 };
 
 #endif  // GAME_MAP_H_

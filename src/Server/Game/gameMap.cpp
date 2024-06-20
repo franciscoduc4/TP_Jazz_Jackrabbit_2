@@ -5,13 +5,13 @@
 
 #include "../../Common/maps/mapsManager.h"
 
-#define CONFIG ServerConfig::getInstance()
+// #define CONFIG ServerConfig::getInstance()
 
-GameMap::GameMap(Vector<uint8_t> size, uint8_t mapId):
+GameMap::GameMap(Vector<uint32_t> size, uint8_t mapId):
         size(size),
         entityFactory(*this),
-        gravity(CONFIG->getGameGravity()),
-        movesPerCell(CONFIG->getGameMaxMoves()),
+        gravity(ServerConfig::getGameGravity()),
+        movesPerCell(ServerConfig::getGameMaxMoves()),
         mapId(mapId) {
     std::cout << "[GAMEMAP] GameMap created with mapId: " << static_cast<int>(mapId) << std::endl;
 }
@@ -27,8 +27,8 @@ void GameMap::loadMap(uint8_t mapId) {
         if (!config["SIZE"] || !config["SIZE"]["WIDTH"] || !config["SIZE"]["HEIGHT"]) {
             throw std::runtime_error("Invalid map size configuration in YAML file");
         }
-        size.x = config["SIZE"]["WIDTH"].as<uint8_t>();
-        size.y = config["SIZE"]["HEIGHT"].as<uint8_t>();
+        size.x = static_cast<uint32_t>(config["SIZE"]["WIDTH"].as<int>());
+        size.y = static_cast<uint32_t>(config["SIZE"]["HEIGHT"].as<int>());
         std::cout << "[GAMEMAP] Map size: Width = " << static_cast<int>(size.x)
                   << ", Height = " << static_cast<int>(size.y) << std::endl;
 
@@ -45,7 +45,7 @@ void GameMap::loadMap(uint8_t mapId) {
                         throw std::runtime_error(
                                 "Invalid enemy position configuration in YAML file");
                     }
-                    Vector<uint8_t> position = {pos[0].as<uint8_t>(), pos[1].as<uint8_t>()};
+                    Vector<uint32_t> position = {static_cast<uint8_t>(pos[0].as<int>()), static_cast<uint8_t>(pos[1].as<int>())};
                     std::cout << "[GAMEMAP] Enemy position: (" << static_cast<int>(position.x)
                               << ", " << static_cast<int>(position.y) << ")" << std::endl;
                     EnemyType type = getEnemyType(enemyType);
@@ -53,7 +53,6 @@ void GameMap::loadMap(uint8_t mapId) {
                 }
             }
         }
-       
     } catch (const std::exception& e) {
         std::cerr << "[GAMEMAP] Error loading map: " << e.what() << std::endl;
         throw;
@@ -75,20 +74,21 @@ EnemyType GameMap::getEnemyType(const std::string& type) {
     }
 }
 
-std::vector<std::shared_ptr<Entity>> GameMap::getObjectsInShootRange(Vector<uint8_t> mapPosition, Direction dir) {
+std::vector<std::shared_ptr<Entity>> GameMap::getObjectsInShootRange(Vector<uint32_t> mapPosition,
+                                                                     Direction dir) {
     std::vector<std::shared_ptr<Entity>> entities;
     std::cout << "[GAMEMAP] Getting objects in shoot range" << std::endl;
     try {
         if (dir == Direction::LEFT) {
             for (int8_t i = mapPosition.x - 1; i >= 0; i--) {
-                Vector<uint8_t> pos = {static_cast<uint8_t>(i), mapPosition.y};
+                Vector<uint32_t> pos = {static_cast<uint8_t>(i), mapPosition.y};
                 if (mapGrid.find(pos) != mapGrid.end()) {
                     entities.push_back(mapGrid[pos]);
                 }
             }
         } else if (dir == Direction::RIGHT) {
             for (uint8_t i = mapPosition.x + 1; i < size.x; i++) {
-                Vector<uint8_t> pos = {i, mapPosition.y};
+                Vector<uint32_t> pos = {i, mapPosition.y};
                 if (mapGrid.find(pos) != mapGrid.end()) {
                     entities.push_back(mapGrid[pos]);
                 }
@@ -101,14 +101,13 @@ std::vector<std::shared_ptr<Entity>> GameMap::getObjectsInShootRange(Vector<uint
     return entities;
 }
 
-
 std::vector<std::shared_ptr<Entity>> GameMap::getObjectsInExplosionRange(
-        Vector<uint8_t> mapPosition, uint8_t radius) {
+        Vector<uint32_t> mapPosition, uint8_t radius) {
     std::vector<std::shared_ptr<Entity>> entities;
     try {
         for (int8_t i = mapPosition.x - radius; i <= mapPosition.x + radius; i++) {
             for (int8_t j = mapPosition.y - radius; j <= mapPosition.y + radius; j++) {
-                Vector<uint8_t> pos = {static_cast<uint8_t>(i), static_cast<uint8_t>(j)};
+                Vector<uint32_t> pos = {static_cast<uint8_t>(i), static_cast<uint8_t>(j)};
                 if (mapGrid.find(pos) != mapGrid.end()) {
                     entities.push_back(mapGrid[pos]);
                 }
@@ -121,31 +120,36 @@ std::vector<std::shared_ptr<Entity>> GameMap::getObjectsInExplosionRange(
     return entities;
 }
 
-void GameMap::moveObject(Vector<uint8_t>& position, Vector<uint8_t> mapPosition, Direction dir) {
+void GameMap::moveObject(Vector<uint32_t>& position, Vector<uint32_t> mapPosition, Direction dir) {
     try {
-        if (mapGrid.find(mapPosition) == mapGrid.end()) {
-            std::cerr << "[GAMEMAP] Error: Character not found at mapPosition" << std::endl;
+        auto it = mapGrid.find(mapPosition);
+        if (it == mapGrid.end()) {
+            std::cerr << "[GAMEMAP] Invalid character at position: (" << mapPosition.x << ", " << mapPosition.y << ")" << std::endl;
             return;
         }
 
-        auto character = std::dynamic_pointer_cast<Character>(mapGrid[mapPosition]);
+        auto character = std::dynamic_pointer_cast<Character>(it->second);
         if (!character) {
-            std::cerr << "[GAMEMAP] Invalid character" << std::endl;
+            std::cerr << "[GAMEMAP] Character at (" << mapPosition.x << ", " << mapPosition.y << ") is invalid" << std::endl;
             return;
         }
 
-        Vector<uint8_t> newPosition = calculateNewPosition(position, dir);
-        Vector<uint8_t> newMapPosition = getMapPosition(newPosition);
-        std::cout << "[GAMEMAP] Object's old position: " << position << std::endl;
+        Vector<uint32_t> newPosition = calculateNewPosition(position, dir);
+        Vector<uint32_t> newMapPosition = getMapPosition(newPosition);
+        if (!isValidMapPosition(newMapPosition)) {
+            std::cerr << "[GAMEMAP] New map position (" << newMapPosition.x << ", " << newMapPosition.y << ") is invalid" << std::endl;
+            return;
+        }
 
         if (!handleMovement(position, mapPosition, newPosition, newMapPosition)) {
             if (mapGrid.find(newMapPosition) != mapGrid.end()) {
                 character->interact(mapGrid[newMapPosition]);
             } else {
-                std::cerr << "[GAMEMAP] Error: No entity to interact with at newMapPosition" << std::endl;
+                std::cerr << "[GAMEMAP] New map position (" << newMapPosition.x << ", " << newMapPosition.y << ") is empty" << std::endl;
             }
         }
         std::cout << "[GAMEMAP] Object's new position: " << position << std::endl;
+
 
     } catch (const std::exception& e) {
         std::cerr << "[GAMEMAP] Error moving object: " << e.what() << std::endl;
@@ -153,14 +157,13 @@ void GameMap::moveObject(Vector<uint8_t>& position, Vector<uint8_t> mapPosition,
 }
 
 
-
-bool GameMap::isFreePosition(Vector<uint8_t> position) {
+bool GameMap::isFreePosition(Vector<uint32_t> position) {
     return mapGrid.find(position) == mapGrid.end();
 }
 
-void GameMap::addEntityToMap(std::shared_ptr<Entity> entity, Vector<uint8_t> position) {
+void GameMap::addEntityToMap(std::shared_ptr<Entity> entity, Vector<uint32_t> position) {
     try {
-        Vector<uint8_t> mapPosition = entity->getMapPosition(movesPerCell);
+        Vector<uint32_t> mapPosition = entity->getMapPosition(movesPerCell);
         std::cout << "[GAMEMAP] Adding entity at position: (" << static_cast<int>(mapPosition.x)
                   << ", " << static_cast<int>(mapPosition.y) << ")" << std::endl;
         if (isFreePosition(mapPosition)) {
@@ -174,7 +177,7 @@ void GameMap::addEntityToMap(std::shared_ptr<Entity> entity, Vector<uint8_t> pos
     }
 }
 
-Vector<uint8_t> GameMap::getInitialPositionForCharacterType(CharacterType type) {
+Vector<uint32_t> GameMap::getInitialPositionForCharacterType(CharacterType type) {
     try {
         std::string filePath = MapsManager::getMapFileNameById(mapId);
         YAML::Node config = YAML::LoadFile(filePath);
@@ -199,7 +202,7 @@ Vector<uint8_t> GameMap::getInitialPositionForCharacterType(CharacterType type) 
                 throw std::runtime_error("Invalid player position configuration in YAML file for " +
                                          characterTypeStr);
             }
-            return {pos[0].as<uint8_t>(), pos[1].as<uint8_t>()};
+            return {static_cast<uint8_t>(pos[0].as<int>()), static_cast<uint8_t>(pos[1].as<int>())};
         }
 
         throw std::runtime_error("Initial position for character type not found in YAML for " +
@@ -213,7 +216,7 @@ Vector<uint8_t> GameMap::getInitialPositionForCharacterType(CharacterType type) 
 
 std::shared_ptr<Character> GameMap::addCharacter(uint8_t playerId, CharacterType type) {
     try {
-        Vector<uint8_t> initPosition = getInitialPositionForCharacterType(type);
+        Vector<uint32_t> initPosition = getInitialPositionForCharacterType(type);
 
         if (!isValidMapPosition(initPosition)) {
             std::cerr << "[GAMEMAP] Invalid initial position for character" << std::endl;
@@ -238,7 +241,7 @@ std::shared_ptr<Character> GameMap::addCharacter(uint8_t playerId, CharacterType
     }
 }
 
-void GameMap::addEnemy(EnemyType type, Vector<uint8_t> position) {
+void GameMap::addEnemy(EnemyType type, Vector<uint32_t> position) {
     try {
         if (!isValidMapPosition(position)) {
             throw std::runtime_error("Invalid position for enemy");
@@ -253,20 +256,23 @@ void GameMap::addEnemy(EnemyType type, Vector<uint8_t> position) {
     }
 }
 
-bool GameMap::isValidMapPosition(Vector<uint8_t> mapPosition) {
-    return mapPosition.x >= 0 && mapPosition.x < size.x && mapPosition.y >= 0 &&
-           mapPosition.y < size.y;
+// bool GameMap::isValidMapPosition(Vector<uint32_t> mapPosition) {
+//     return mapPosition.x >= 0 && mapPosition.x <= size.x && mapPosition.y >= 0 &&
+//            mapPosition.y <= size.y;
+// }
+
+bool GameMap::isValidMapPosition(Vector<uint32_t> mapPosition) {
+    return mapPosition.x < size.x && mapPosition.y < size.y;
 }
 
-bool GameMap::isValidPosition(Vector<uint8_t> position) {
-    return position.x >= 0 && position.x < size.x * movesPerCell && position.y >= 0 &&
-           position.y < size.y * movesPerCell;
+bool GameMap::isValidPosition(Vector<uint32_t> position) {
+    return position.x >= 0 && position.x <= size.x * movesPerCell && position.y >= 0 &&
+           position.y <= size.y * movesPerCell;
 }
 
-
-Vector<uint8_t> GameMap::getAvailablePosition() {
+Vector<uint32_t> GameMap::getAvailablePosition() {
     try {
-        Vector<uint8_t> pos;
+        Vector<uint32_t> pos;
         do {
             pos = {static_cast<uint8_t>(rand() % size.x), static_cast<uint8_t>(rand() % size.y)};
         } while (mapGrid.find(pos) != mapGrid.end() && isValidPosition(pos));
@@ -280,20 +286,13 @@ Vector<uint8_t> GameMap::getAvailablePosition() {
 void GameMap::update(float time) {
     std::cout << "[GAMEMAP] Updating game map" << std::endl;
     try {
-        for (const auto& characterPair: characters) {
-            if (!characterPair.second) {
-                std::cerr << "[GAMEMAP] Null character in map" << std::endl;
-                continue;
-            }
-            std::cout << "[GAMEMAP] Updating character with ID: "
-                      << static_cast<int>(characterPair.first) << std::endl;
-            characterPair.second->update(time);
+        for (const auto& character: characters) {
+            character.second->update(time);
         }
     } catch (const std::exception& e) {
         std::cerr << "[GAMEMAP] Error updating game map: " << e.what() << std::endl;
     }
 }
-
 
 void GameMap::removeCharacter(uint8_t playerId) {
     try {
@@ -306,7 +305,7 @@ void GameMap::removeCharacter(uint8_t playerId) {
     }
 }
 
-void GameMap::removeEnemy(Vector<uint8_t> position) {
+void GameMap::removeEnemy(Vector<uint32_t> position) {
     try {
         mapGrid.erase(position);
         std::cout << "[GAMEMAP] Removed enemy at position: (" << static_cast<int>(position.x)
@@ -316,7 +315,7 @@ void GameMap::removeEnemy(Vector<uint8_t> position) {
     }
 }
 
-std::shared_ptr<Entity> GameMap::getEntityAt(Vector<uint8_t> mapPosition) {
+std::shared_ptr<Entity> GameMap::getEntityAt(Vector<uint32_t> mapPosition) {
     try {
         if (isValidPosition(mapPosition) && mapGrid.find(mapPosition) != mapGrid.end()) {
             return mapGrid[mapPosition];
@@ -329,7 +328,6 @@ std::shared_ptr<Entity> GameMap::getEntityAt(Vector<uint8_t> mapPosition) {
 }
 
 std::unique_ptr<GameDTO> GameMap::getGameDTO() {
-    std::cout << "[GAMEMAP] Creating GameDTO" << std::endl;
     std::vector<PlayerDTO> playersDTO;
     std::vector<EnemyDTO> enemies;
     std::vector<BulletDTO> bullets;
@@ -337,59 +335,35 @@ std::unique_ptr<GameDTO> GameMap::getGameDTO() {
     std::vector<WeaponDTO> weapons;
     std::vector<TileDTO> tiles;
 
-    // BulletDTO bullet = {1, 1, 1, 1, 1, 1};
-    // bullets.push_back(bullet);
-    // BulletDTO bullet2 = {20, 20, 1, 1, 1, 1};
-
-    // bullets.push_back(bullet2);
-    // BulletDTO bullet3 = {30, 30, 1, 1, 1, 1};
-    // bullets.push_back(bullet3);
-
-    // TileDTO tile = {5, 10};
-    // tiles.push_back(tile);
-
-    // ItemDTO item = {1, 1,  ItemType::GEM};
-    // items.push_back(item);
-
-    // ItemDTO item2 = {1, 252,  ItemType::GOLD_COIN};
-    // items.push_back(item2);
-
-    // ItemDTO item3 = {252, 1,  ItemType::SILVER_COIN};
-    // items.push_back(item3);
-
-    // EnemyDTO enemy = {10, 230, 1, 1, 1, 1, EnemyType::TURTLE, EnemyStateEntity::ENEMY_IDLE};
-    // enemies.push_back(enemy);
-
-    // EnemyDTO enemy2 = {10, 10, 1, 1, 1, 1, EnemyType::YELLOWMON, EnemyStateEntity::ENEMY_IDLE};
-    // enemies.push_back(enemy2);
-
-    // EnemyDTO enemy3 = {230, 10, 1, 1, 1, 1, EnemyType::SCHWARZENGUARD, EnemyStateEntity::ENEMY_IDLE};
-    // enemies.push_back(enemy3);
-
     try {
         for (const auto& character: characters) {
             playersDTO.push_back(character.second->getDTO());
             std::cout << "[GAMEMAP] Character added to DTO" << std::endl;
         }
-        // for (const auto& [pos, entity]: mapGrid) {
-        //     switch (entity->getType()) {
-        //         case EntityType::CHARACTER:
-        //             playersDTO.push_back(std::dynamic_pointer_cast<Character>(entity)->getDTO());
-        //             break;
-        // case EntityType::ENEMY:
-        //     enemies.push_back(std::dynamic_pointer_cast<Enemy>(entity)->getDTO());
-        //     break;
-        // case EntityType::BULLET:
-        //     bullets.push_back(std::dynamic_pointer_cast<Bullet>(entity)->getDTO());
-        //     break;
-        // case EntityType::ITEM:
-        //     items.push_back(std::dynamic_pointer_cast<Item>(entity)->getDTO());
-        //     break;
-        // case EntityType::TILE:
-        //     tiles.push_back(std::dynamic_pointer_cast<Tile>(entity)->getDTO());
-        //     break;
-        // default:
-        //     break;
+        for (const auto& [pos, entity]: mapGrid) {
+            switch (entity->getType()) {
+                case EntityType::ENEMY:
+                    enemies.push_back(std::dynamic_pointer_cast<Enemy>(entity)->getDTO());
+                    break;
+                // case EntityType::BULLET:
+                //     bullets.push_back(std::dynamic_pointer_cast<Bullet>(entity)->getDTO());
+                //     break;
+                // case EntityType::ITEM:
+                //     items.push_back(std::dynamic_pointer_cast<Item>(entity)->getDTO());
+                //     break;
+                // case EntityType::WEAPON:
+                //     weapons.push_back(std::dynamic_pointer_cast<Weapon>(entity)->getDTO());
+                //     break;
+                // case EntityType::TILE:
+                //      tiles.push_back(std::dynamic_pointer_cast<Tile>(entity)->getDTO());
+                //      break;
+                default:
+                    break;
+            }
+        }
+        std::cout << "[GAMEMAP] playersDTO size: " << playersDTO.size() << std::endl;
+
+        return std::make_unique<GameDTO>(playersDTO, enemies, bullets, items, weapons, tiles);
     } catch (const std::exception& e) {
         std::cerr << "[GAMEMAP] Error creating GameDTO: " << e.what() << std::endl;
         throw;
@@ -424,48 +398,49 @@ void GameMap::printMapGrid() const {
     }
 }
 
-Vector<uint8_t> GameMap::getMapPosition(Vector<uint8_t> position) {
-    return {static_cast<uint8_t>(position.x / movesPerCell),
-            static_cast<uint8_t>(position.y / movesPerCell)};
+Vector<uint32_t> GameMap::getMapPosition(Vector<uint32_t> position) {
+    return {position.x / movesPerCell,
+            position.y / movesPerCell};
 }
 
-Vector<uint8_t> GameMap::calculateNewPosition(const Vector<uint8_t> position, Direction dir) const {
-    Vector<uint8_t> zero(0, 0);
-    Vector<uint8_t> newPosition = position;
-    Vector<uint8_t> deltaX(1, 0);
-    Vector<uint8_t> deltaY(0, 1);
-
-    switch (dir) {
-        case Direction::LEFT:
-            if (position.x > 0) {
-                newPosition = position - deltaX;
-            }
-            break;
-        case Direction::RIGHT:
-            if (position.x < (size.x * movesPerCell) - 1) {
-                newPosition = position + deltaX;
-            }
-            break;
-        case Direction::UP:
-            if (position.y < (size.y * movesPerCell) - 1) {
-                newPosition = position + deltaY;
-            }
-            break;
-        case Direction::DOWN:
-            if (position.y > 0) {
-                newPosition = position - deltaY;
-            }
-            break;
-        default:
-            break;
+Vector<uint32_t> GameMap::calculateNewPosition(const Vector<uint32_t> position, Direction dir) const {
+    try {
+        Vector<uint32_t> newPosition = position;
+        switch (dir) {
+            case Direction::LEFT:
+                if (position.x >= movesPerCell) {
+                    newPosition.x -= movesPerCell;
+                }
+                break;
+            case Direction::RIGHT:
+                if (position.x + movesPerCell < size.x * movesPerCell) {
+                    newPosition.x += movesPerCell;
+                }
+                break;
+            case Direction::UP:
+                if (position.y + movesPerCell < size.y * movesPerCell) {
+                    newPosition.y += movesPerCell;
+                }
+                break;
+            case Direction::DOWN:
+                if (position.y >= movesPerCell) {
+                    newPosition.y -= movesPerCell;
+                }
+                break;
+            default:
+                break;
+        }
+        return newPosition;
+    } catch (const std::exception& e) {
+        std::cerr << "[GAMEMAP] Error calculating new position: " << e.what() << std::endl;
+        throw;
     }
-
-    return newPosition;
 }
 
-bool GameMap::handleMovement(Vector<uint8_t>& position, Vector<uint8_t> mapPosition,
-                             const Vector<uint8_t>& newPosition,
-                             const Vector<uint8_t>& newMapPosition) {
+
+bool GameMap::handleMovement(Vector<uint32_t>& position, Vector<uint32_t> mapPosition,
+                             const Vector<uint32_t>& newPosition,
+                             const Vector<uint32_t>& newMapPosition) {
     try {
         if (newMapPosition == mapPosition) {
             std::cout << "[GAMEMAP] Same map position" << std::endl;
@@ -473,22 +448,30 @@ bool GameMap::handleMovement(Vector<uint8_t>& position, Vector<uint8_t> mapPosit
             return true;
         }
 
-        if (!isFreePosition(newMapPosition) || !isValidPosition(newPosition)) {
-            std::cout << "[GAMEMAP] New position is not free or invalid" << std::endl;
+        auto oldIt = mapGrid.find(mapPosition);
+        if (oldIt == mapGrid.end()) {
+            std::cerr << "[GAMEMAP] Old position (" << mapPosition.x << ", " << mapPosition.y << ") does not exist" << std::endl;
             return false;
         }
 
-        std::cout << "[GAMEMAP] Moving object to new map position" << std::endl;
-        mapGrid[newMapPosition] = mapGrid[mapPosition];
-        mapGrid.erase(mapPosition);
-        position = newPosition;
+        auto entity = oldIt->second;
+        if (!entity) {
+            std::cerr << "[GAMEMAP] Entity at old position (" << mapPosition.x << ", " << mapPosition.y << ") is null" << std::endl;
+            return false;
+        }
 
-        return true;
+        if (isFreePosition(newMapPosition)) {
+            std::cout << "[GAMEMAP] Moving object to new position" << std::endl;
+            mapGrid[newMapPosition] = entity;
+            mapGrid.erase(mapPosition);
+            std::cout << "[GAMEMAP] Object moved from (" << mapPosition.x << ", " << mapPosition.y << ") to (" << newMapPosition.x << ", " << newMapPosition.y << ")" << std::endl;
+            position = newPosition;
+            return true;
+        } else {
+            std::cerr << "[GAMEMAP] New position (" << newMapPosition.x << ", " << newMapPosition.y << ") is not free" << std::endl;
+        }
     } catch (const std::exception& e) {
         std::cerr << "[GAMEMAP] Error handling movement: " << e.what() << std::endl;
-        return false;
     }
+    return false;
 }
-
-
-Vector<uint8_t> GameMap::getSize() const { return size; }

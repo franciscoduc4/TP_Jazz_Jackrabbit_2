@@ -5,7 +5,6 @@ MoveHandler::MoveHandler(std::unique_ptr<GameCommandDTO> moveCommand):
         moveCommand(std::move(moveCommand)) {}
 
 void MoveHandler::execute(GameMap& gameMap, std::atomic<bool>& keepRunning, double deltaTime) {
-    std::cout << "[MOVE HANDLER] Executing move command" << std::endl;
     std::shared_ptr<Character> character = gameMap.getCharacter(moveCommand->getPlayerId());
     switch (moveCommand->getMoveType()) {
         case Direction::UP:

@@ -24,7 +24,7 @@ public:
 
     void update(float time) override;
 
-    void shoot(std::vector<std::shared_ptr<Entity>>& shootingEntities, uint8_t xPos,
+    void shoot(std::vector<std::shared_ptr<Entity>>& shootingEntities, uint32_t xPos,
                float time) override;
 
     void reload() override;
@@ -42,8 +42,6 @@ public:
     WeaponType getWeaponType() override;
 
     float getFireRate() override;
-
-    bool cooldown(float time) override;
 };
 
 #endif  // RFMISSILE_H

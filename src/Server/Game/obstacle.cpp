@@ -1,10 +1,10 @@
 #include "obstacle.h"
 
 #include "../../Common/Config/ServerConfig.h"
-#define CONFIG ServerConfig::getInstance()
+// #define CONFIG ServerConfig::getInstance()
 
 Obstacle::Obstacle(int16_t x, int16_t y, int16_t id):
-        moves(CONFIG->getObstacleMoves()), x(x * moves), y(y * moves), id(id) {}
+        moves(ServerConfig::getObstacleMoves()), x(x * moves), y(y * moves), id(id) {}
 
 int16_t Obstacle::getX() { return x; }
 

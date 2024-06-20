@@ -5,11 +5,11 @@
 #include <utility>
 
 GameLoopThread::GameLoopThread(std::shared_ptr<Queue<std::unique_ptr<CommandDTO>>> recvQueue,
-                               QueueMonitor<std::unique_ptr<DTO>>& queueMonitor, GameMap& gameMap,
+                               QueueMonitor& queueMonitor, GameMap& gameMap,
                                uint8_t gameId):
         frameRate(1),  // 1 frame per 16 ms === 60 fps
         keepRunning(false),
-        commandsToProcess(10),
+        commandsToProcess(1),
         recvQueue(recvQueue),
         queueMonitor(queueMonitor),
         gameMap(gameMap),
@@ -50,16 +50,16 @@ void GameLoopThread::run() {
             std::cout << "[GAME LOOP] Processing duration: " << processingDuration.count()
                       << std::endl;
 
+            //adjustCommandsToProcess(processingDuration, frameRate);
+
             std::chrono::duration<double> frameDuration(frameRate);
             auto sleepTime = frameDuration - processingDuration;
             if (sleepTime > std::chrono::duration<double>(0)) {
                 std::cout << "[GAME LOOP] Sleeping for: " << sleepTime.count() << " seconds"
                           << std::endl;
                 std::this_thread::sleep_for(sleepTime);
-            } else {
-                std::cout << "[GAME LOOP] Frame took longer than expected, skipping sleep."
-                          << std::endl;
             }
+            //lastTime = std::chrono::high_resolution_clock::now();
         }
         std::cout << "[GAME LOOP] Game loop stopped" << std::endl;
     } catch (const std::exception& e) {

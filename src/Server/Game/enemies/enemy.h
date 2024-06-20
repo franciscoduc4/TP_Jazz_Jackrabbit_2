@@ -5,8 +5,8 @@
 #include <memory>
 #include <vector>
 
-#include "../../../Common/DTO/enemy.h"
 #include "../../../Common/Types/enemy.h"
+#include "../../../Common/DTO/enemy.h"
 #include "../../../Common/vector.h"
 #include "../characters/character.h"
 #include "../entity.h"
@@ -23,12 +23,13 @@ protected:
     uint8_t viewDistanceHit;
     uint8_t movesPerCell;
     uint8_t hitDistance;
+    uint8_t speed;
     std::vector<uint8_t> walkProb;
     std::vector<uint8_t> jumpProb;
     std::vector<uint8_t> flyProb;
 
 public:
-    Enemy(GameMap& map, Vector<uint8_t> pos, uint8_t id, uint8_t health, Direction dir, uint8_t dmg,
+    Enemy(GameMap& map, const Vector<uint32_t>& pos, uint8_t id, uint8_t health, Direction dir, uint8_t dmg,
           std::unique_ptr<EnemyState> initialState, uint8_t viewDistance, uint8_t viewDistanceHit,
           uint8_t movesPerCell, uint8_t hitDistance, std::vector<uint8_t> walkProb,
           std::vector<uint8_t> jumpProb, std::vector<uint8_t> flyProb);
@@ -43,12 +44,12 @@ public:
 
     std::unique_ptr<EnemyState>& getState();
 
-    virtual EnemyType getEnemyType() = 0;
+    virtual EnemyType getEnemyType() const = 0;
+
+    EnemyDTO getDTO() const;
 
     std::shared_ptr<Character> getClosestCharacter(
             std::vector<std::shared_ptr<Character>> characters);
-
-    EnemyDTO getDTO() const;
 };
 
 #endif  // ENEMY_H_

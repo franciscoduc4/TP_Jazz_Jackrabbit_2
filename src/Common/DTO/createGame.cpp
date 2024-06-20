@@ -6,7 +6,12 @@
 
 
 CreateGameDTO::CreateGameDTO(const uint8_t& gameId):
-        gameId(gameId), CommandDTO(Command::CREATE_GAME) {}
+        CommandDTO(Command::CREATE_GAME),
+        mapId(-1),
+        maxPlayers(-1),
+        characterType(CharacterType::INVALID),
+        gameId(gameId),
+        mode() {}
 
 CreateGameDTO::CreateGameDTO(uint8_t mapId, uint8_t maxPlayers, CharacterType characterType,
                              std::string gameName):
@@ -14,7 +19,8 @@ CreateGameDTO::CreateGameDTO(uint8_t mapId, uint8_t maxPlayers, CharacterType ch
         mapId(mapId),
         maxPlayers(maxPlayers),
         characterType(characterType),
-        gameName(std::move(gameName)) {
+        gameName(std::move(gameName)),
+        gameId(-1) {
     this->mode = (maxPlayers == 1) ? GameMode::SINGLE_PLAYER : GameMode::PARTY_MODE;
 }
 
@@ -24,7 +30,8 @@ CreateGameDTO::CreateGameDTO(const uint8_t& playerId, uint8_t mapId, uint8_t max
         mapId(mapId),
         maxPlayers(maxPlayers),
         characterType(characterType),
-        gameName(std::move(gameName)) {
+        gameName(std::move(gameName)),
+        gameId(-1) {
     this->mode = (maxPlayers == 1) ? GameMode::SINGLE_PLAYER : GameMode::PARTY_MODE;
 }
 
@@ -49,4 +56,9 @@ std::vector<char> CreateGameDTO::getData() const {
     data.push_back(static_cast<char>(gameName.size()));
     data.insert(data.end(), gameName.begin(), gameName.end());
     return data;
+}
+
+
+std::unique_ptr<DTO> CreateGameDTO::clone() const {
+    return std::unique_ptr<DTO>(new CreateGameDTO(*this));
 }

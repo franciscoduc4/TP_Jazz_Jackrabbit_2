@@ -1,13 +1,13 @@
 #include "freezer.h"
 
 #include "../../../Common/Config/ServerConfig.h"
-#define CONFIG ServerConfig::getInstance()
+// #define CONFIG ServerConfig::getInstance()
 
 Freezer::Freezer():
-        bullets(CONFIG->getWeaponFreezerBullets()),
-        maxBullets(CONFIG->getWeaponFreezerBullets()),
-        damage(CONFIG->getWeaponFreezerDamage()),
-        fireRate(CONFIG->getWeaponFreezerFireRate()),
+        bullets(ServerConfig::getWeaponFreezerBullets()),
+        maxBullets(ServerConfig::getWeaponFreezerBullets()),
+        damage(ServerConfig::getWeaponFreezerDamage()),
+        fireRate(ServerConfig::getWeaponFreezerFireRate()),
         lastTimeShot(-1) {}
 
 void Freezer::update(float time) {
@@ -17,7 +17,7 @@ void Freezer::update(float time) {
     }
 }
 
-void Freezer::shoot(std::vector<std::shared_ptr<Entity>>& shootingEntities, uint8_t xPos,
+void Freezer::shoot(std::vector<std::shared_ptr<Entity>>& shootingEntities, uint32_t xPos,
                     float time) {
     lastTimeShot = time;
     bullets--;
@@ -48,8 +48,3 @@ bool Freezer::shootTime(float time) {
 WeaponType Freezer::getWeaponType() { return WeaponType::FREEZER; }
 
 float Freezer::getFireRate() { return fireRate; }
-
-
-bool Freezer::cooldown(float time) {
-    return (time - lastTimeShot) > fireRate;
-}

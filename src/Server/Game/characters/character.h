@@ -29,7 +29,6 @@ class Character: public Entity {
 protected:
     CharacterType type;
     GameMap& gameMap;
-    // const Vector<uint8_t>& mapSize;  // Referencia al tamaño del mapa
 
     uint8_t maxHealth;
     float reviveTime;
@@ -63,7 +62,7 @@ protected:
     uint8_t initialYJump = 0;
 
 public:
-    Character(GameMap& gameMap, Vector<uint8_t> pos, uint8_t playerId, CharacterType type,
+    Character(GameMap& gameMap, Vector<uint32_t> pos, uint8_t playerId, CharacterType type,
               float horizontalSpeed, float sprintSpeed, float verticalSpeed, float jumpHeight,
               float shootCooldownTime);
 
@@ -96,7 +95,6 @@ public:
     void moveDown();
     void moveLeft();
     void moveUp();
-    void jump();
 
 
     bool characIsIntoxicated() const;
@@ -110,7 +108,7 @@ public:
 
     bool isJumping() { return jumping; }
     bool hasLanded();
- 
+
 };
 
 #endif  // PLAYER_CHARACTER_H

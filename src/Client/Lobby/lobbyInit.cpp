@@ -1,13 +1,10 @@
 #include <QApplication>
 
-#include "../../Common/Types/lobbyMessage.h"
-#include "../client.h"
-
 #include "welcome.h"
 
 LobbyInit::LobbyInit() {}
 
-bool LobbyInit::launchQT(LobbyController& controller, bool& clientJoinedGame) {
+std::pair<bool, LobbyMessage> LobbyInit::launchQT(LobbyController& controller, bool& clientJoinedGame) {
     LobbyMessage msg;
 
     int argc = 0;
@@ -18,7 +15,9 @@ bool LobbyInit::launchQT(LobbyController& controller, bool& clientJoinedGame) {
 
     Welcome w(nullptr, controller, msg, clientJoinedGame);
     w.show();
-    a.exec();
+    int exitCode = a.exec();
 
-    return clientJoinedGame;
+    if (exitCode == 37) return std::make_pair(false, msg);
+
+    return std::make_pair(clientJoinedGame, msg);
 }

@@ -24,3 +24,7 @@ std::vector<WeaponDTO> GameDTO::getWeapons() const { return weapons; }
 std::vector<TileDTO> GameDTO::getTiles() const { return tiles; }
 
 DTOType GameDTO::getType() const { return type; }
+
+std::unique_ptr<DTO> GameDTO::clone() const {
+    return std::make_unique<GameDTO>(*this);
+}

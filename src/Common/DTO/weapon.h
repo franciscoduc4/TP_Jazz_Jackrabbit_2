@@ -11,8 +11,8 @@
 class WeaponDTO: public GameElementDTO {
 private:
     uint8_t weaponId;
-    uint8_t x;
-    uint8_t y;
+    uint32_t x;
+    uint32_t y;
     int shootSpeed;
     BulletDTO bullet;
     int damage;
@@ -20,10 +20,9 @@ private:
 
 
 public:
-    WeaponDTO();
-    WeaponDTO(const uint8_t weaponId, const uint8_t x, const uint8_t y, int damage, int ammo);
-    uint8_t getX() const;
-    uint8_t getY() const;
+    WeaponDTO(const uint8_t& weaponId, const uint32_t& x, const uint32_t& y, int damage, int ammo);
+    uint32_t getX() const;
+    uint32_t getY() const;
     uint8_t getWeaponId() const;
     Sprite getSprite() const;
     int getShootSpeed() const;
@@ -31,6 +30,7 @@ public:
     int getDamage() const;
     int getAmmo() const;
     void setAmmo(int ammo);
+    virtual std::unique_ptr<DTO> clone() const override;
 };
 
 #endif  // WEAPON_H_

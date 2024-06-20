@@ -1,7 +1,8 @@
 #include "enemy.h"
 
-EnemyDTO::EnemyDTO(uint16_t x, uint16_t y, uint8_t enemy_id, int health, int damage, int speed,
-                   EnemyType type, EnemyStateEntity state):
+EnemyDTO::EnemyDTO(const uint32_t& x, const uint32_t& y, const uint8_t& enemy_id, uint8_t health, uint8_t damage, uint8_t speed,
+                   const EnemyType& type, const EnemyStateEntity& state):
+        GameElementDTO(ElementType::ENEMY),
         x(x),
         y(y),
         enemy_id(enemy_id),
@@ -13,12 +14,16 @@ EnemyDTO::EnemyDTO(uint16_t x, uint16_t y, uint8_t enemy_id, int health, int dam
 
 
 uint8_t EnemyDTO::getEnemyId() const { return enemy_id; }
-uint16_t EnemyDTO::getX() const { return x; }
-uint16_t EnemyDTO::getY() const { return y; }
+uint32_t EnemyDTO::getX() const { return x; }
+uint32_t EnemyDTO::getY() const { return y; }
 
-int EnemyDTO::getHealth() const { return health; }
-int EnemyDTO::getDamage() const { return damage; }
-int EnemyDTO::getSpeed() const { return speed; }
+uint8_t EnemyDTO::getHealth() const { return health; }
+uint8_t EnemyDTO::getDamage() const { return damage; }
+uint8_t EnemyDTO::getSpeed() const { return speed; }
 bool EnemyDTO::isAlive() const { return enemyIsAlive; }
-EnemyType EnemyDTO::getType() const { return type; }
+EnemyType EnemyDTO::getEnemyType() const { return type; }
 EnemyStateEntity EnemyDTO::getState() const { return state; }
+
+std::unique_ptr<DTO> EnemyDTO::clone() const {
+    return std::make_unique<EnemyDTO>(*this);
+}

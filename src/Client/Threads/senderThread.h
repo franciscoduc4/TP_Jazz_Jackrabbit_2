@@ -3,8 +3,8 @@
 
 #include <atomic>
 #include <memory>
-#include <unordered_map>
 #include <vector>
+#include <unordered_map>
 
 #include <arpa/inet.h>
 
@@ -26,15 +26,13 @@ private:
 
     void sendCommandDTO(const CommandDTO& cmd);
     void sendAditionalData(const CommandDTO& cmd);
-
 public:
     SenderThread(std::shared_ptr<Queue<std::unique_ptr<CommandDTO>>>& queue,
-                 std::shared_ptr<Socket>& socket, std::atomic<bool>& was_closed);
+        std::shared_ptr<Socket>& socket, std::atomic<bool>& was_closed);
     void run() override;
     void sendCreateGame(const CommandDTO& cmd);
     void sendJoinGame(const CommandDTO& cmd);
     void sendStartGame(const CommandDTO& cmd);
-    ~SenderThread();
 };
 
 #endif  // CLIENT_SENDER_THREAD_H

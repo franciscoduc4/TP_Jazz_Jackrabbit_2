@@ -29,16 +29,16 @@ void Client::start() {
 
     bool clientJoinedGame = false;
     do {
-        // LobbyInit init;
-        // clientJoinedGame = init.launchQT(this->lobbyController, (bool&)clientJoinedGame);
-
-        //   if (!clientJoinedGame) {
-        //       return;
-        //   }
+        LobbyInit init;
+        std::pair<bool, LobbyMessage> qtResult = init.launchQT(this->lobbyController, (bool&)clientJoinedGame);
+        clientJoinedGame = qtResult.first;
+        if (!clientJoinedGame) {
+              return;
+        }
         // TODO: Continue with SDL.
         // START - TESTING SKIP QT
-
-        Command cmd = (this->playerId == 0) ? Command::CREATE_GAME : Command::JOIN_GAME;
+        
+        /*Command cmd = (this->playerId == 0) ? Command::CREATE_GAME : Command::JOIN_GAME;
 
         LobbyMessage msg;
         msg.setCharacter(CharacterType::JAZZ);
@@ -54,12 +54,19 @@ void Client::start() {
 
         this->lobbyController.sendRequest(msg);
         std::cout << "Request sent." << std::endl;
-        bool responseReceived = this->lobbyController.recvResponse();
+        std::pair<bool, GameInfo> response = this->lobbyController.recvResponse();
+        bool responseReceived = response.first;
+        GameInfo gameInfo = response.second;
         std::cout << "Response received: " << responseReceived << std::endl;
+
+        std::pair<bool, GameInfo> sResponse = this->lobbyController.recvResponse();
+        bool sResponseReceived = sResponse.first;
+        GameInfo sGameInfo = sResponse.second;
+
         LobbyMessage msg2;
         msg2.setLobbyCmd(Command::START_GAME);
         msg2.setGameId(0);
-        if (responseReceived) {
+        if (responseReceived && sResponseReceived) {
             this->lobbyController.startGame(msg2);
             bool gameStartAck = this->lobbyController.recvStartGame();
             std::cout << "Game start ack: " << gameStartAck << std::endl;
@@ -70,9 +77,31 @@ void Client::start() {
         } else {
             std::cerr << "Failed to receive response for create game." << std::endl;
             return;
-        }
+        }*/
+        
         // END - TESTING SKIP QT
-        GameScreen game(this->gameController, this->playerId);
+        //CharacterType pj = qtResult.second.getCharacter();
+        //uint8_t mapId = qtResult.second.getMap();  
+        GameScreen game(this->gameController, this->playerId, 0);
         game.run();
+        clientJoinedGame = false; // Para que no cicle infinitamente.
     } while (clientJoinedGame);
+
+    this->finish();
+}
+
+
+void Client::finish() {
+    // Close Queues
+    this->lobbyQueue->close();
+    this->gameQueue->close();
+    this->senderQueue->close();
+    // Close Socket
+    this->receiver.stopReceiving();
+    // Stop Threads
+    this->sender.stop();
+    this->receiver.stop();
+    // Join Threads
+    this->sender.join();
+    this->receiver.join();
 }

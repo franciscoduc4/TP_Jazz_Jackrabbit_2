@@ -2,7 +2,7 @@
 
 #include "../gameMap.h"
 
-Enemy::Enemy(GameMap& gameMap, Vector<uint8_t> pos, uint8_t id, uint8_t health, Direction dir,
+Enemy::Enemy(GameMap& gameMap, const Vector<uint32_t>& pos, uint8_t id, uint8_t health, Direction dir,
              uint8_t dmg, std::unique_ptr<EnemyState> initialState, uint8_t viewDistance,
              uint8_t viewDistanceHit, uint8_t movesPerCell, uint8_t hitDistance,
              std::vector<uint8_t> walkProb, std::vector<uint8_t> jumpProb,
@@ -15,6 +15,7 @@ Enemy::Enemy(GameMap& gameMap, Vector<uint8_t> pos, uint8_t id, uint8_t health, 
         viewDistanceHit(viewDistanceHit),
         movesPerCell(movesPerCell),
         hitDistance(hitDistance),
+        speed(1),
         walkProb(walkProb),
         jumpProb(jumpProb),
         flyProb(flyProb) {}
@@ -81,13 +82,8 @@ std::shared_ptr<Character> Enemy::getClosestCharacter(
 
 std::unique_ptr<EnemyState>& Enemy::getState() { return state; }
 
+
+
 EnemyDTO Enemy::getDTO() const {
-    return EnemyDTO{pos.x,
-                    pos.y,
-                    id,
-                    health,
-                    0,
-                    0,
-                    EnemyType::SCHWARZENGUARD,
-                    EnemyStateEntity::ENEMY_ATTACKING};
+    return EnemyDTO{pos.x, pos.y, id, health, dmg, speed, EnemyType::TURTLE/*getEnemyType()*/, EnemyStateEntity::ENEMY_WALKING};
 }

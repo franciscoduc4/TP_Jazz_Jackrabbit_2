@@ -1,13 +1,13 @@
 #include "rfMissile.h"
 
 #include "../../../Common/Config/ServerConfig.h"
-#define CONFIG ServerConfig::getInstance()
+// #define CONFIG ServerConfig::getInstance()
 
 RFMissile::RFMissile():
-        bullets(CONFIG->getWeaponRFMissileBullets()),
-        maxBullets(CONFIG->getWeaponRFMissileBullets()),
-        damage(CONFIG->getWeaponRFMissileDamage()),
-        fireRate(CONFIG->getWeaponRFMissileFireRate()),
+        bullets(ServerConfig::getWeaponRFMissileBullets()),
+        maxBullets(ServerConfig::getWeaponRFMissileBullets()),
+        damage(ServerConfig::getWeaponRFMissileDamage()),
+        fireRate(ServerConfig::getWeaponRFMissileFireRate()),
         lastTimeShot(-1) {}
 
 void RFMissile::update(float time) {
@@ -17,7 +17,7 @@ void RFMissile::update(float time) {
     }
 }
 
-void RFMissile::shoot(std::vector<std::shared_ptr<Entity>>& shootingEntities, uint8_t xPos,
+void RFMissile::shoot(std::vector<std::shared_ptr<Entity>>& shootingEntities, uint32_t xPos,
                       float time) {
     lastTimeShot = time;
     bullets--;
@@ -48,8 +48,3 @@ bool RFMissile::shootTime(float time) {
 WeaponType RFMissile::getWeaponType() { return WeaponType::RFMISSILE; }
 
 float RFMissile::getFireRate() { return fireRate; }
-
-
-bool RFMissile::cooldown(float time) {
-    return (time - lastTimeShot) > fireRate;
-}

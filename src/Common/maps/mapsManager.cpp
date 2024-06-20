@@ -2,7 +2,7 @@
 
 #include <iostream>
 
-const static std::string MAPS_DIR = "../src/maps";  // Ajusta la ruta relativa aquí
+const static std::string MAPS_DIR = "../src/maps";
 
 MapsManager* MapsManager::instance = nullptr;
 

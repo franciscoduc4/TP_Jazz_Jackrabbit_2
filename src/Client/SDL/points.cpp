@@ -6,6 +6,8 @@
 #include <list>
 
 #include <SDL2pp/SDL2pp.hh>
+#include <SDL2/SDL.h>
+#include <SDL2/SDL_image.h>
 
 Points::Points() {
     this->draw_width = ClientConfig::getItemsWidth();
@@ -32,6 +34,13 @@ Points::Points() {
 }
 
 
+std::unique_ptr<SDL2pp::Texture> Points::getItemsTextures(SDL2pp::Renderer& renderer) {
+    SDL_Surface* items_surf = IMG_Load("../assets/Miscellaneous/Items&Objects.png");
+    SDL2pp::Surface itemsSurface(items_surf);
+    itemsSurface.SetColorKey(true, SDL_MapRGB(itemsSurface.Get()->format, 0, 128, 255));
+    return std::make_unique<SDL2pp::Texture>(renderer, itemsSurface);
+}
+
 std::list<RectangularSprite>::iterator Points::actual_sprite_coord(ItemType typepoint) {
     std::list<RectangularSprite>::iterator it = this->sprites[typepoint].begin();
     for (int i = 0; i < this->counts[static_cast<int>(typepoint)]; i++) {
@@ -43,7 +52,7 @@ std::list<RectangularSprite>::iterator Points::actual_sprite_coord(ItemType type
     return it;
 }
 
-void Points::draw_points(SDL2pp::Renderer& renderer, SDL2pp::Texture& points, std::vector<ItemDTO> pointsdto, PlayerDTO& player, int dir_x_screen, int dir_y_screen) {
+void Points::draw_points(SDL2pp::Renderer& renderer, std::unique_ptr<SDL2pp::Texture>& points, std::vector<ItemDTO> pointsdto, PlayerDTO& player, int dir_x_screen, int dir_y_screen) {
    	int index_x = 0;
    	int index_y = 1;
    	int x;
@@ -51,7 +60,7 @@ void Points::draw_points(SDL2pp::Renderer& renderer, SDL2pp::Texture& points, st
     int distance_main_item_x;
     int distance_main_item_y;
     for (auto p : pointsdto) {
-   		std::list<RectangularSprite>::iterator it = actual_sprite_coord(p.getType());
+   		std::list<RectangularSprite>::iterator it = actual_sprite_coord(p.getItemType());
         x = p.getX();
 		y = p.getY();
 		
@@ -64,10 +73,10 @@ void Points::draw_points(SDL2pp::Renderer& renderer, SDL2pp::Texture& points, st
             y = dir_y_screen + distance_main_item_y;
         }
 		
-        renderer.Copy(points, SDL2pp::Rect(it->getX(), it->getY(), it->getWidth(), it->getHeight()),
+        renderer.Copy(*points, SDL2pp::Rect(it->getX(), it->getY(), it->getWidth(), it->getHeight()),
                       SDL2pp::Rect(x, y, this->draw_width, this->draw_height),
                       0.0, SDL2pp::NullOpt, 0);
-        this->counts[static_cast<int>(p.getType())]++;
+        this->counts[static_cast<int>(p.getItemType())]++;
    	}
 }
 

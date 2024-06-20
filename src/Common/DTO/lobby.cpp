@@ -29,6 +29,8 @@ LobbyDTO::LobbyDTO(LobbyState state) {
     gamesList = GamesListDTO();
 }
 
+DTOType LobbyDTO::getType() const { return type; }
+
 bool LobbyDTO::getGameCreated() const { return gameCreated; }
 
 bool LobbyDTO::getGameJoined() const { return gameJoined; }
@@ -38,3 +40,7 @@ bool LobbyDTO::getGameStarted() const { return gameStarted; }
 void LobbyDTO::setGamesList(GamesListDTO gamesList) { this->gamesList = gamesList; }
 
 GamesListDTO LobbyDTO::getGamesList() const { return gamesList; }
+
+std::unique_ptr<DTO> LobbyDTO::clone() const {
+    return std::make_unique<LobbyDTO>(*this);
+}

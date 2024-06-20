@@ -1,0 +1,54 @@
+QWidget {
+    border-image: url(:/assets/LobbyImages/Continue.png) 0 0 0 0 stretch stretch;
+}
+
+QPushButton {
+    text-align: center;
+    background-color: transparent;
+    border-image: none;
+    border: 1px solid white;
+    border-radius: 10px;
+    color: white;
+    outline: 2px solid white;
+}
+
+QPushButton:hover {
+    color: #FF8F17;
+    outline: 2px solid #FF8F17;
+}
+
+QPushButton:checked {
+    color: #C7FF00;
+    border: 1px solid #C7FF00;
+    outline: 2px solid #C7FF00;
+}
+
+QPushButton#btnBack, QPushButton#btnChoose {
+    outline: 0px solid #FFA400;
+    border: 0px solid white;
+}
+
+QPushButton#btnChoose:hover {
+    color: #FFA400;
+}
+
+QPushButton#btnBack:hover {
+    color: #228B22;
+}
+
+QLineEdit {
+    background-color: white;
+    border-image: none;
+    color: black;
+}
+
+QLabel {
+    background-color: white;
+    border-image: none;
+}
+
+QWidget#widgetScenes {
+    background-color: rgba(0, 0, 0, 0);
+    background-image: blur(5px);
+    border-image: none;
+}

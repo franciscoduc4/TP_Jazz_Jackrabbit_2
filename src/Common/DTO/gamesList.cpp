@@ -10,3 +10,6 @@ GamesListDTO::GamesListDTO(std::unordered_map<uint8_t, GameInfo> games):
 
 std::unordered_map<uint8_t, GameInfo> GamesListDTO::getGames() const { return games; }
 
+std::unique_ptr<DTO> GamesListDTO::clone() const {
+    return std::make_unique<GamesListDTO>(*this);
+}

@@ -1,5 +1,7 @@
 <RCC>
     <qresource prefix="/">
+        <!-- Font File -->
+        <file>../../assets/Miscellaneous/Fonts.png</file>
         <!-- Spritesheets -->
         <file>../../assets/Miscellaneous/CharacterSelect.png</file>
         <file>../../assets/Miscellaneous/EpisodeSelect.png</file>
@@ -12,7 +14,7 @@
         <!-- Stylesheets -->
         <file>Lobby/Styles/welcome.qss</file>
         <file>Lobby/Styles/lobby.qss</file>
-        <file>Lobby/Styles/sceneselection.qss</file>
+        <file>Lobby/Styles/mapselection.qss</file>
         <file>Lobby/Styles/creategame.qss</file>
         <file>Lobby/Styles/characterselection.qss</file>
         <file>Lobby/Styles/gameslist.qss</file>

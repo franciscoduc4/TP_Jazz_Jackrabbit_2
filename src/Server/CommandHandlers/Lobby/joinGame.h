@@ -17,7 +17,6 @@ public:
     explicit JoinGameHandler(std::unique_ptr<JoinGameDTO> command);
 
     virtual void execute(GameMonitor& gameMonitor, std::atomic<bool>& inGame,
-                         std::shared_ptr<Queue<std::unique_ptr<CommandDTO>>> recvQueue,
                          std::shared_ptr<Queue<std::unique_ptr<DTO>>> sendQueue);
 };
 

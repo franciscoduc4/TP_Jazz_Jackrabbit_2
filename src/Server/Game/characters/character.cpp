@@ -2,8 +2,9 @@
 
 #include "../gameMap.h"
 
+// #define CONFIG ServerConfig::getInstance()
 
-Character::Character(GameMap& gameMap, Vector<uint8_t> pos, uint8_t playerId, CharacterType type,
+Character::Character(GameMap& gameMap, Vector<uint32_t> pos, uint8_t playerId, CharacterType type,
                      float horizontalSpeed, float sprintSpeed, float verticalSpeed,
                      float jumpHeight, float shootCooldownTime):
         Entity(pos, playerId, ServerConfig::getCharacterInitialHealth(), Direction::RIGHT,
@@ -79,14 +80,11 @@ void Character::update(float time) {
         if (newState) {
             state = std::move(newState);
         }
-
     } catch (const std::exception& e) {
         std::cerr << "[CHARACTER] Error updating character ID: " << static_cast<int>(id) << ": "
                   << e.what() << std::endl;
     }
 }
-
-
 void Character::shoot(float time) {
     std::cout << "[CHARACTER] Character ID: " << static_cast<int>(id) << " shooting" << std::endl;
     if (!currentWeapon) {
@@ -98,7 +96,6 @@ void Character::shoot(float time) {
     if (newState) {
         state = std::move(newState);
     }
-
 }
 
 void Character::moveRight(float time) {
@@ -236,24 +233,24 @@ void Character::moveRight() {
         return;
 
     auto mapPosition = getMapPosition(movesPerCell);
-    Vector<uint8_t> newPosition = pos + Vector<uint8_t>{movesPerCell, 0};
+    Vector<uint32_t> newPos = pos + Vector<uint32_t>{movesPerCell, 0};
 
-    // Verificar que la nueva posición no exceda los límites del mapa
-
-    if (newPosition.x > gameMap.getMaxX()) {
-        newPosition.x = gameMap.getMaxX();
+    if (newPos.x >= gameMap.getMaxXPos()){
+        newPos = Vector<uint32_t>{gameMap.getMaxXPos(), pos.y};
     }
 
-    if (newPosition.x >= 255) {
-        newPosition.x = 255;
-    }
 
-    if (!gameMap.isValidMapPosition(newPosition))
+    if (!gameMap.isValidMapPosition(newPos))
         return;
 
-    gameMap.moveObject(pos, mapPosition, Direction::RIGHT);
-    pos = newPosition;  // Actualizar la posición
-    std::cout << "[CHARACTER] Character pos x: " << static_cast<int>(pos.x) << std::endl;
+    //gameMap.moveObject(pos, mapPosition, Direction::RIGHT);
+    pos = newPos;
+
+    // std::cout << "[CHARACTER] Character ID: " << static_cast<int>(id) << " moved right"
+    //           << " map position x: " << int(mapPosition.x) << std::endl;
+
+    std::cout << "[CHARACTER] Character ID: " << static_cast<int>(id) << " new x : "
+              << int(pos.x) << std::endl;
 }
 
 void Character::moveLeft() {
@@ -261,46 +258,43 @@ void Character::moveLeft() {
         return;
 
     auto mapPosition = getMapPosition(movesPerCell);
-    Vector<uint8_t> newPosition = pos - Vector<uint8_t>{movesPerCell, 0};
+    Vector<uint32_t> newPos = pos - Vector<uint32_t>{movesPerCell, 0};
 
-    if (pos.x == 0 || newPosition.x < 0) {
-        newPosition.x = 0;
-    } else if (newPosition.x > pos.x) {
-        newPosition.x = 0;
+    if (newPos.x <= 0){
+        newPos = Vector<uint32_t>{0, pos.y};
     }
 
-    if (!gameMap.isValidMapPosition(newPosition))
+    if (!gameMap.isValidMapPosition(newPos))
         return;
 
-    gameMap.moveObject(pos, mapPosition, Direction::LEFT);
-    pos = newPosition;
-    std::cout << "[CHARACTER] Character pos x: " << static_cast<int>(pos.x) << std::endl;
+    //gameMap.moveObject(pos, mapPosition, Direction::LEFT);
+    pos = newPos;
+    // std::cout << "[CHARACTER] Character ID: " << static_cast<int>(id) << " moved left"
+    //           << " map position x: " << int(mapPosition.x) << std::endl;
+    std::cout << "[CHARACTER] Character ID: " << static_cast<int>(id) << " new x : "
+              << int(pos.x) << std::endl;
 }
 
-void Character::moveUp() {}
-
-
-void Character::moveDown() {
+void Character::moveUp() {
     if (isIntoxicated)
         return;
 
     auto mapPosition = getMapPosition(movesPerCell);
-    Vector<uint8_t> newPosition = pos - Vector<uint8_t>{0, movesPerCell};
+    Vector<uint32_t> newPosition = pos + Vector<uint32_t>{0, movesPerCell};
 
     if (!gameMap.isValidMapPosition(newPosition))
         return;
 
-    gameMap.moveObject(pos, mapPosition, Direction::DOWN);
+    gameMap.moveObject(pos, mapPosition, Direction::UP);
 }
 
 void Character::jump() {
     initialYJump = pos.y;
 
     if (isIntoxicated || jumping)
-        return;
 
     auto mapPosition = getMapPosition(movesPerCell);
-    Vector<uint8_t> newPosition = pos - Vector<uint8_t>{0, movesPerCell};
+    Vector<uint32_t> newPosition = pos - Vector<uint32_t>{0, movesPerCell};
 
     if (!gameMap.isValidMapPosition(newPosition))
         return;
@@ -324,12 +318,12 @@ float Character::getIntoxicatedTime() const { return intoxicatedTime; }
 CharacterType Character::getCharacterType() { return type; }
 
 PlayerDTO Character::getDTO() const {
-    return PlayerDTO{getMapPosition(movesPerCell).x,
-                     getMapPosition(movesPerCell).y,
+    return PlayerDTO{pos.x,
+                     pos.y,
                      id,
                      health,
                      static_cast<uint8_t>(0),
                      static_cast<uint8_t>(0),
                      type,
-                     state->getCharacterState()};
+                     CharacterStateEntity::IDLE};
 }
