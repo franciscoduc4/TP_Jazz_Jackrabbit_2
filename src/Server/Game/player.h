@@ -29,8 +29,7 @@ private:
     void closeSocket();
 
 public:
-    Player(std::shared_ptr<Socket> socket, GameMonitor& gameMonitor,
-           QueueMonitor& queueMonitor, uint8_t playerId);
+    Player(std::shared_ptr<Socket> socket, GameMonitor& gameMonitor, uint8_t playerId);
     void disconnect();
     bool isPlaying() const;
     uint8_t getPlayerId() const;

@@ -15,7 +15,7 @@ std::shared_ptr<Queue<std::unique_ptr<DTO>>> QueueMonitor::createQueue(uint8_t i
     return queue;
 }
 
-void QueueMonitor::closeQueue(uint8_t id, std::shared_ptr<Queue<std::unique_ptr<DTO>>> queue) {
+void QueueMonitor::closeQueue(uint8_t id, const std::shared_ptr<Queue<std::unique_ptr<DTO>>>& queue) {
     std::lock_guard<std::mutex> lock(mtx);
     auto& vec = queues[id];
     auto it = std::find(vec.begin(), vec.end(), queue);
@@ -24,7 +24,7 @@ void QueueMonitor::closeQueue(uint8_t id, std::shared_ptr<Queue<std::unique_ptr<
     }
 }
 
-void QueueMonitor::removeQueue(uint8_t id, std::shared_ptr<Queue<std::unique_ptr<DTO>>> queue) {
+void QueueMonitor::removeQueue(uint8_t id, const std::shared_ptr<Queue<std::unique_ptr<DTO>>>& queue) {
     std::lock_guard<std::mutex> lock(mtx);
     auto& vec = queues[id];
     auto it = std::find(vec.begin(), vec.end(), queue);
@@ -67,7 +67,7 @@ void QueueMonitor::broadcast(uint8_t id, const std::unique_ptr<DTO>& event) {
     }
 }
 
-void QueueMonitor::assignGameIdToQueues(uint8_t gameId, std::shared_ptr<Queue<std::unique_ptr<DTO>>> queue) {
+void QueueMonitor::assignGameIdToQueues(uint8_t gameId, const std::shared_ptr<Queue<std::unique_ptr<DTO>>>& queue) {
     std::lock_guard<std::mutex> lock(mtx);
     auto& vec = queues[gameId];
     if (!queue) {
