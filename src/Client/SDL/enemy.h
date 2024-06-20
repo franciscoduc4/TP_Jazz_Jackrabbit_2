@@ -35,7 +35,7 @@ public:
 
     std::list<RectangularSprite>::iterator enemy_img_coords(EnemyType enemy_type, EnemyStateEntity mov_type, int enemyId);
 
-    void draw_enemy(SDL2pp::Window& window, SDL2pp::Renderer& renderer, std::map<EnemyType, std::unique_ptr<SDL2pp::Texture>>& textures_enemies, std::vector<EnemyDTO> enemies, PlayerDTO& player, int dir_x_screen, int dir_y_screen);
+    void draw_enemy(SDL2pp::Window& window, SDL2pp::Renderer& renderer, std::map<EnemyType, std::unique_ptr<SDL2pp::Texture>>& textures_enemies, std::vector<EnemyDTO> enemies, PlayerDTO& player, int dir_x_screen, int dir_y_screen, int pos_x, int pos_y);
 };
 
 #endif  // CLIENT_ENEMY_H_

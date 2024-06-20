@@ -222,12 +222,12 @@ std::list<RectangularSprite>::iterator Player::img_coords(CharacterType characte
 	return it;
 }
 
-void Player::draw_players(SDL2pp::Window& window, SDL2pp::Renderer& renderer, std::map<CharacterType, std::unique_ptr<SDL2pp::Texture>>& pjs_textures, std::vector<PlayerDTO>& players, int dir_x_screen, int dir_y_screen, uint32_t mainPlayerId) {
+void Player::draw_players(SDL2pp::Window& window, SDL2pp::Renderer& renderer, std::map<CharacterType, std::unique_ptr<SDL2pp::Texture>>& pjs_textures, std::vector<PlayerDTO>& players, int dir_x_screen, int dir_y_screen, PlayerDTO& mainPlayer, int pos_x, int pos_y) {
 	int i = 0;
-	int main_pj_x = 0;
-	int main_pj_y = 0;
-	int distance_main_secondary_x;
-	int distance_main_secondary_y;
+	int main_pj_x = pos_x; //mainPlayer.getX();
+	int main_pj_y = pos_y; //mainPlayer.getY();
+	int distance_main_secondary_x = 0;
+	int distance_main_secondary_y = 0;
 	for (auto p: players) {
 		CharacterStateEntity mov_type = p.getState();
 		int pjId = p.getPlayerId();
@@ -245,16 +245,18 @@ void Player::draw_players(SDL2pp::Window& window, SDL2pp::Renderer& renderer, st
 
 		}	
 		std::list<RectangularSprite>::iterator it = img_coords(p.getType(), mov_type, pjId);
-		int x = p.getX() * window.GetWidth() / 255;
-		int y = static_cast<int>(p.getY());
-		if (p.getPlayerId() == mainPlayerId) { //i == 0 es el player que ejecuto el codigo, cambiar por playerId
+		int x = pos_x;//p.getX();
+		int y = pos_y;//p.getY();
+		if (p.getPlayerId() == mainPlayer.getPlayerId()) { //i == 0 es el player que ejecuto el codigo, cambiar por playerId
 			if (dir_x_screen != 0) {
 				main_pj_x = x;
 				x = dir_x_screen;
+				distance_main_secondary_x = 0;
 			}
 			if (dir_y_screen != 0) {
 				main_pj_y = y;
 				y = dir_y_screen;
+				distance_main_secondary_y = 0;
 			}
 		} else {
 			if (dir_x_screen != 0) { 
@@ -267,9 +269,10 @@ void Player::draw_players(SDL2pp::Window& window, SDL2pp::Renderer& renderer, st
 			}
 		}
 
-		renderer.Copy(*pjs_textures[p.getType()], SDL2pp::Rect(it->getX(), it->getY(), it->getWidth(), it->getHeight()),
+		if (abs(distance_main_secondary_x) <= window.GetWidth() / 2 && abs(distance_main_secondary_y) <= window.GetHeight() / 2) {
+			renderer.Copy(*pjs_textures[p.getType()], SDL2pp::Rect(it->getX(), it->getY(), it->getWidth(), it->getHeight()),
                       SDL2pp::Rect(x, y, this->width, this->height), 0.0, SDL2pp::NullOpt, flip);
-        
+		}
 		i++;
 	}
 	this->init = true;

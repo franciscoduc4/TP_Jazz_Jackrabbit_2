@@ -121,14 +121,14 @@ std::list<RectangularSprite>::iterator Enemy::enemy_img_coords(EnemyType enemy_t
 }
 
 
-void Enemy::draw_enemy(SDL2pp::Window& window, SDL2pp::Renderer& renderer, std::map<EnemyType, std::unique_ptr<SDL2pp::Texture>>& textures_enemies, std::vector<EnemyDTO> enemies, PlayerDTO& player, int dir_x_screen, int dir_y_screen) {
+void Enemy::draw_enemy(SDL2pp::Window& window, SDL2pp::Renderer& renderer, std::map<EnemyType, std::unique_ptr<SDL2pp::Texture>>& textures_enemies, std::vector<EnemyDTO> enemies, PlayerDTO& player, int dir_x_screen, int dir_y_screen, int pos_x, int pos_y) {
 	int index_width = 0;
 	int index_height = 1;
 	int mov_type = 0;
     int x; 
     int y;
-    int distance_main_enemy_x;
-    int distance_main_enemy_y;
+    int distance_main_enemy_x = 0;
+    int distance_main_enemy_y = 0;
     for (auto e : enemies) {
         EnemyStateEntity mov_type = e.getState();
 		int enemyId = e.getEnemyId();
@@ -139,21 +139,23 @@ void Enemy::draw_enemy(SDL2pp::Window& window, SDL2pp::Renderer& renderer, std::
 			this->counts[enemyId][EnemyStateEntity::ENEMY_DEAD] = 0;
 		}	
     	std::list<RectangularSprite>::iterator it = enemy_img_coords(e.getType(), mov_type, enemyId);
-        x = e.getX();
-		y = e.getY();
+        x = 100;//e.getX();
+		y = 50;//e.getY();
 		
         if (dir_x_screen != 0) { 
-            distance_main_enemy_x = x - player.getX();
+            distance_main_enemy_x = x - pos_x;//player.getX() - x;
             x = dir_x_screen + distance_main_enemy_x;
         }
         if (dir_y_screen != 0) {
-            distance_main_enemy_y = y - player.getX();
+            distance_main_enemy_y = y - pos_y;//player.getY() - y;
             y = dir_y_screen + distance_main_enemy_y;
         }
-        renderer.Copy(*textures_enemies[e.getType()], SDL2pp::Rect(it->getX(), it->getY(), it->getWidth(), it->getHeight()),
+        std::cout << "EL VALOR DE DISTANCE_MAIN_ENEMY_X ES " << distance_main_enemy_x << " Y EL VALOR DE DISTANCE_MAIN_ENEMY_Y ES " << distance_main_enemy_y << '\n';
+        if (abs(distance_main_enemy_x + this->width_height[e.getType()][index_width])  <= window.GetWidth() / 2 && abs(distance_main_enemy_y + this->width_height[e.getType()][index_height]) <= window.GetHeight() / 2) {
+           renderer.Copy(*textures_enemies[e.getType()], SDL2pp::Rect(it->getX(), it->getY(), it->getWidth(), it->getHeight()),
                   SDL2pp::Rect(x, y, this->width_height[e.getType()][index_width], this->width_height[e.getType()][index_height]), 0.0,
                   SDL2pp::NullOpt, this->flip);
-
+        }
     }
     this->init = true;
 }

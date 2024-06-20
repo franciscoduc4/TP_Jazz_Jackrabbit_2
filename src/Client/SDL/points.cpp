@@ -42,6 +42,7 @@ std::unique_ptr<SDL2pp::Texture> Points::getItemsTextures(SDL2pp::Renderer& rend
 }
 
 std::list<RectangularSprite>::iterator Points::actual_sprite_coord(ItemType typepoint) {
+    std::cout << "EL VALOR DEL ITEM ES " << static_cast<int>(typepoint) << '\n';
     std::list<RectangularSprite>::iterator it = this->sprites[typepoint].begin();
     for (int i = 0; i < this->counts[static_cast<int>(typepoint)]; i++) {
         ++it;
@@ -52,31 +53,35 @@ std::list<RectangularSprite>::iterator Points::actual_sprite_coord(ItemType type
     return it;
 }
 
-void Points::draw_points(SDL2pp::Renderer& renderer, std::unique_ptr<SDL2pp::Texture>& points, std::vector<ItemDTO> pointsdto, PlayerDTO& player, int dir_x_screen, int dir_y_screen) {
+void Points::draw_points(SDL2pp::Window& window, SDL2pp::Renderer& renderer, std::unique_ptr<SDL2pp::Texture>& points, std::vector<ItemDTO> pointsdto, PlayerDTO& player, int dir_x_screen, int dir_y_screen, int pos_x, int pos_y) {
    	int index_x = 0;
    	int index_y = 1;
-   	int x;
-    int y;
-    int distance_main_item_x;
-    int distance_main_item_y;
+   	uint32_t x;
+    uint32_t y;
+    int distance_main_item_x = 0;
+    int distance_main_item_y = 0;
+    int i = 0;
     for (auto p : pointsdto) {
    		std::list<RectangularSprite>::iterator it = actual_sprite_coord(p.getType());
-        x = p.getX();
-		y = p.getY();
+        x = (i == 0) ? 300 : 100;//p.getX();
+		y = 300;//p.getY();
 		
         if (dir_x_screen != 0) { 
-            distance_main_item_x = x - player.getX();
+            distance_main_item_x = x - pos_x/*player.getX()*/;
             x = dir_x_screen + distance_main_item_x;
         }
         if (dir_y_screen != 0) {
-            distance_main_item_y = y - player.getX();
+            distance_main_item_y = y - pos_y/*player.getX()*/;
             y = dir_y_screen + distance_main_item_y;
         }
 		
-        renderer.Copy(*points, SDL2pp::Rect(it->getX(), it->getY(), it->getWidth(), it->getHeight()),
+        if (abs(distance_main_item_x + this->draw_width) <= window.GetWidth() / 2 && abs(distance_main_item_y + this->draw_height) <= window.GetHeight() / 2) {
+            renderer.Copy(*points, SDL2pp::Rect(it->getX(), it->getY(), it->getWidth(), it->getHeight()),
                       SDL2pp::Rect(x, y, this->draw_width, this->draw_height),
                       0.0, SDL2pp::NullOpt, 0);
+        }
         this->counts[static_cast<int>(p.getType())]++;
+        i++;
    	}
 }
 

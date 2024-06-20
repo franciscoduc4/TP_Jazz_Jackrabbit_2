@@ -100,12 +100,14 @@ void GameScreen::run() {
     Uint32 frameStart;
     int frameTime;
 
-    while (true) {
-        frameStart = SDL_GetTicks();
+    int pos_x = 0;
+    int pos_y = 0;
 
+    while (true) {
         SDL_Event event;
         std::cout << "[GAME SCREEN] Waiting for event" << std::endl;
         while (SDL_PollEvent(&event)) {
+            frameStart = SDL_GetTicks();
 
             if (event.type == SDL_QUIT) {
                 std::cout << "[GAME SCREEN] SDL_QUIT event received, exiting run loop" << std::endl;
@@ -117,14 +119,18 @@ void GameScreen::run() {
 		                    Command move = Command::MOVE;
 		                    std::vector<uint8_t> par{static_cast<uint8_t>(Direction::RIGHT)};
 		                    this->controller.sendMsg(this->mainPlayerId, move, par);
-		                    break;
+		                    pos_x++;
+                            break;
                     	}
                     case SDLK_LEFT:
 		                {
 		             		Command move = Command::MOVE;
 		                    std::vector<uint8_t> elements{static_cast<uint8_t>(Direction::LEFT)};
 		                    this->controller.sendMsg(this->mainPlayerId, move, elements);
-		                    break;
+		                    if (pos_x > 0) {
+                                pos_x--;
+                            }
+                            break;
                     	}
 
                     case SDLK_LSHIFT: {
@@ -183,18 +189,18 @@ void GameScreen::run() {
         if (!mainPlayer) {
             continue;
         }
-        std::vector<int> dir_screen = this->level.draw_background(window, renderer, tiles_textures, *mainPlayer/*players[0]*/);
-        this->level.draw_floor(window, renderer, tiles_textures, mainPlayer->getSpeed()/*players[0].getSpeed()*/);
+        std::vector<int> dir_screen = this->level.draw_background(window, renderer, tiles_textures, *mainPlayer/*players[0]*/, pos_x, pos_y);
+        this->level.draw_floor(window, renderer, tiles_textures, mainPlayer->getSpeed());
         x_screen = dir_screen[0];
         y_screen = dir_screen[1];
 
         if (players.size() > 0) {
-            this->pj.draw_players(window, renderer, pjs_textures, players, x_screen, y_screen, this->mainPlayerId);
+            this->pj.draw_players(window, renderer, pjs_textures, players, x_screen, y_screen, *mainPlayer, pos_x, pos_y);
         }
 
         std::vector<EnemyDTO> enemiesSnapshot = snapshot->getEnemies();
         if (enemiesSnapshot.size() > 0) {
-            this->enemies.draw_enemy(window, renderer, enemies_textures, enemiesSnapshot, *mainPlayer/*players[0]*/, x_screen, y_screen);
+            this->enemies.draw_enemy(window, renderer, enemies_textures, enemiesSnapshot, *mainPlayer/*players[0]*/, x_screen, y_screen, pos_x, pos_y);
         }
         
         std::vector<BulletDTO> bullets = snapshot->getBullets();
@@ -204,14 +210,14 @@ void GameScreen::run() {
 
         std::vector<ItemDTO> itemsSnapshot = snapshot->getItems();
         if (itemsSnapshot.size() >  0) {
-            this->points.draw_points(renderer, items, itemsSnapshot, *mainPlayer/*players[0]*/, x_screen, y_screen);
+            this->points.draw_points(window, renderer, items, itemsSnapshot, *mainPlayer/*players[0]*/, x_screen, y_screen, pos_x, pos_y);
         }
 
         std::vector<WeaponDTO> weapons = snapshot->getWeapons();
 
         std::vector<TileDTO> tiles = snapshot->getTiles(); 
         if (tiles.size() > 0) {
-            this->level.draw_tiles(window, renderer, tiles_textures, tiles);
+            this->level.draw_tiles(window, renderer, tiles_textures, tiles, *mainPlayer, pos_x, pos_y);
         }
 
         this->stats.draw_interface(window, renderer, *pjs_textures[mainPlayer->getType()/*players[0].getType()*/], mainPlayer->getType(), font, 1000/*getPoints()*/, 3/*getLives()*/);
@@ -227,7 +233,6 @@ void GameScreen::run() {
         if (frameDelay > frameTime) {
             SDL_Delay(frameDelay - frameTime);
         }
-
         //SDL_Delay(70);
     }
     this->soundControl.free_musics();

@@ -257,7 +257,7 @@ std::vector<char> Serializer::serializeItemDTO(const std::unique_ptr<ItemDTO> dt
     std::vector<char> buffer;
     buffer.push_back(static_cast<char>(dto->getX()));
     buffer.push_back(static_cast<char>(dto->getY()));
-    buffer.push_back(static_cast<char>(ItemType::GEM));
+    buffer.push_back(static_cast<char>(dto->getType()));
     std::cout << "[SERVER SERIALIZER ITEM] Serialized item at position: (" << (int)dto->getX()
               << ", " << (int)dto->getY() << ")" << std::endl;
     return buffer;

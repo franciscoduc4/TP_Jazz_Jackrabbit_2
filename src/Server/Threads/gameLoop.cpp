@@ -50,7 +50,7 @@ void GameLoopThread::run() {
             std::cout << "[GAME LOOP] Processing duration: " << processingDuration.count()
                       << std::endl;
 
-            adjustCommandsToProcess(processingDuration, frameRate);
+            //adjustCommandsToProcess(processingDuration, frameRate);
 
             std::chrono::duration<double> frameDuration(frameRate);
             auto sleepTime = frameDuration - processingDuration;
@@ -62,7 +62,7 @@ void GameLoopThread::run() {
                 std::cout << "[GAME LOOP] Frame took longer than expected, skipping sleep."
                           << std::endl;
             }
-            lastTime = std::chrono::high_resolution_clock::now();
+            //lastTime = std::chrono::high_resolution_clock::now();
         }
         std::cout << "[GAME LOOP] Game loop stopped" << std::endl;
     } catch (const std::exception& e) {
