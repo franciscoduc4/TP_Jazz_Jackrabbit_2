@@ -209,7 +209,8 @@ void GameScreen::run() {
             this->level.draw_tiles(window, renderer, tiles_textures, tiles);
         }
 
-        this->stats.draw_interface(window, renderer, *pjs_textures[mainPlayer->getType()/*players[0].getType()*/], mainPlayer->getType(), font, 1000/*getPoints()*/, 3/*getLives()*/);
+        this->stats.draw_interface(window, renderer, *pjs_textures[mainPlayer->getCharacterType()/*players[0].getItemType()*/],
+                mainPlayer->getCharacterType(), font, 1000/*getPoints()*/, 3/*getLives()*/);
 
         x_screen = 0;
         y_screen = 0;

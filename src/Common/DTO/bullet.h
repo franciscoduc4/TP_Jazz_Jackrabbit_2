@@ -1,7 +1,9 @@
 #ifndef BULLET_DTO_H_
 #define BULLET_DTO_H_
 
+#include <memory>
 
+#include "dto.h"
 #include "gameElement.h"
 
 class BulletDTO: public GameElementDTO {
@@ -23,6 +25,8 @@ public:
     int getSpeed() const;
     bool isAlive() const;
     int getShooterId() const;
+
+    virtual std::unique_ptr<DTO> clone() const override;
 };
 
 #endif  // BULLET_DTO_H_

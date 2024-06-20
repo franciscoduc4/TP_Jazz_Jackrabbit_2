@@ -11,3 +11,7 @@ std::vector<char> GameCommandDTO::getData() const {
     data.push_back(static_cast<char>(moveType));
     return data;
 }
+
+std::unique_ptr<DTO> GameCommandDTO::clone() const {
+    return std::make_unique<GameCommandDTO>(*this);
+}

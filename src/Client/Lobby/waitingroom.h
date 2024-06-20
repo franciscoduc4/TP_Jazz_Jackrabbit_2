@@ -2,15 +2,15 @@
 #define WAITINGROOM_H
 
 #include <QDialog>
-#include <QThread>
-#include <QMutex>
-#include <QWaitCondition>
+#include <QTimer>
 #include <QMessageBox>
 
 #include <utility>
 #include <memory>
 
 #include "../../Common/Types/lobbyMessage.h"
+#include "../../Common/DTO/command.h"
+#include "../../Common/queue.h"
 #include "../client.h"
 
 namespace Ui {
@@ -26,7 +26,7 @@ signals:
 
 private slots:
     void updateNumPlayers(int numPlayers);
-    void pollForUpdates();
+    void fetchUpdates();
 
 public:
     explicit WaitingRoom(QWidget *parent, LobbyController& controller, LobbyMessage& msg, bool& clientJoinedGame);
@@ -37,9 +37,8 @@ private:
     LobbyController& controller;
     LobbyMessage& msg;
     bool& clientJoinedGame;
-    QThread* updateThread;
-    QMutex mutex;
-    QWaitCondition condition;
+    QTimer updateTimer;  // Replace QThread, QMutex, and QWaitCondition with QTimer
+    Queue<std::unique_ptr<CommandDTO>> recvQueue;
 };
 
 #endif // WAITINGROOM_H

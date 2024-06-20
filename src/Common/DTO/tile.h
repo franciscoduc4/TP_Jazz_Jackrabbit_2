@@ -14,6 +14,7 @@ public:
     TileDTO(const uint32_t& x, const uint32_t& y);
     uint32_t getX() const;
     uint32_t getY() const;
+    virtual std::unique_ptr<DTO> clone() const override;
 
 };
 

@@ -1,14 +1,14 @@
 #include "lobbyCommand.h"
 
 #include "../../../Common/DTO/createGame.h"
-#include "../../../Common/DTO/mapsList.h"
 #include "../../../Common/DTO/joinGame.h"
+#include "../../../Common/DTO/mapsList.h"
 #include "../../../Common/DTO/startGame.h"
 
 #include "createGame.h"
-#include "mapsListHandler.h"
 #include "gamesList.h"
 #include "joinGame.h"
+#include "mapsListHandler.h"
 #include "startGame.h"
 
 std::unique_ptr<LobbyCommandHandler> LobbyCommandHandler::createHandler(

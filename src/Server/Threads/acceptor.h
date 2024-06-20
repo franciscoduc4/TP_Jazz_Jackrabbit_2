@@ -23,7 +23,7 @@ class AcceptorThread: public Thread {
 private:
     std::shared_ptr<Socket> serverSocket;
     std::atomic<bool> isAlive{true};
-    QueueMonitor<std::unique_ptr<DTO>> queueMonitor;
+    QueueMonitor queueMonitor;
     GameMonitor gameMonitor;
     std::vector<std::unique_ptr<Player>> players;
 

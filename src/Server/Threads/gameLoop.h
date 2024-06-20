@@ -23,13 +23,13 @@ private:
     std::atomic<bool> keepRunning;
     size_t commandsToProcess;
     std::shared_ptr<Queue<std::unique_ptr<CommandDTO>>> recvQueue;
-    QueueMonitor<std::unique_ptr<DTO>>& queueMonitor;
+    QueueMonitor& queueMonitor;
     GameMap& gameMap;
     uint8_t gameId;
 
 public:
     GameLoopThread(std::shared_ptr<Queue<std::unique_ptr<CommandDTO>>> recvQueue,
-                   QueueMonitor<std::unique_ptr<DTO>>& queueMonitor, GameMap& gameMap,
+                   QueueMonitor& queueMonitor, GameMap& gameMap,
                    uint8_t gameId);
 
     void run() override;

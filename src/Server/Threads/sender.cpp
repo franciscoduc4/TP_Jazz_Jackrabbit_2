@@ -73,7 +73,11 @@ void SenderThread::runLobby(bool& wasClosed) {
 
             std::unique_ptr<DTO> dtoToSend;
             while (sendQueue->try_pop(dtoToSend)) {
-                auto commandDTO = dynamic_cast<CommandDTO*>(dtoToSend.get());
+                auto* commandDTO = dynamic_cast<CommandDTO*>(dtoToSend.get());
+                if (commandDTO == nullptr) {
+                    std::cerr << "[SERVER SENDER LOBBY] Invalid DTO" << std::endl;
+                    continue;
+                }
                 dtoToSend.release();
                 std::cout << "[SERVER SENDER LOBBY] Sending DTO" << std::endl;
                 serializer.sendCommand(std::unique_ptr<CommandDTO>(commandDTO), wasClosed);

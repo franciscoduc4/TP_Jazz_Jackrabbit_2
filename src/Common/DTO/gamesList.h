@@ -18,6 +18,8 @@ public:
 
     std::unordered_map<uint8_t, GameInfo> getGames() const;
 
+    virtual std::unique_ptr<DTO> clone() const override;
+
     ~GamesListDTO() {}
 };
 

@@ -17,3 +17,7 @@ std::vector<char> CommandDTO::getData() const {
     std::vector<char> data;
     return data;
 }
+
+std::unique_ptr<DTO> CommandDTO::clone() const {
+    return std::make_unique<CommandDTO>(*this);
+}

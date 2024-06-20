@@ -60,7 +60,7 @@ void Points::draw_points(SDL2pp::Renderer& renderer, std::unique_ptr<SDL2pp::Tex
     int distance_main_item_x;
     int distance_main_item_y;
     for (auto p : pointsdto) {
-   		std::list<RectangularSprite>::iterator it = actual_sprite_coord(p.getType());
+   		std::list<RectangularSprite>::iterator it = actual_sprite_coord(p.getItemType());
         x = p.getX();
 		y = p.getY();
 		
@@ -76,7 +76,7 @@ void Points::draw_points(SDL2pp::Renderer& renderer, std::unique_ptr<SDL2pp::Tex
         renderer.Copy(*points, SDL2pp::Rect(it->getX(), it->getY(), it->getWidth(), it->getHeight()),
                       SDL2pp::Rect(x, y, this->draw_width, this->draw_height),
                       0.0, SDL2pp::NullOpt, 0);
-        this->counts[static_cast<int>(p.getType())]++;
+        this->counts[static_cast<int>(p.getItemType())]++;
    	}
 }
 

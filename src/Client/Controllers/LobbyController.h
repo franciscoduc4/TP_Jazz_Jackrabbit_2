@@ -3,15 +3,15 @@
 
 #include <iostream>
 #include <memory>
+#include <string>
 #include <unordered_map>
 #include <utility>
-#include <string>
 
 #include "../Protocol/deserializer.h"
 #include "../Protocol/serializer.h"
 #include "DTO/createGame.h"
-#include "DTO/mapsList.h"
 #include "DTO/gameUpdate.h"
+#include "DTO/mapsList.h"
 #include "DTO/startGame.h"
 
 class LobbyController {
@@ -27,7 +27,7 @@ public:
                     std::shared_ptr<Queue<std::unique_ptr<DTO>>>& lobbyQueue);
     // UPDATES
     bool hasGameUpdates(std::unique_ptr<DTO>& dto);
-    int processGameUpdate(std::unique_ptr<DTO>& dto);
+    int processGameUpdate(std::unique_ptr<CommandDTO>& dto);
     bool canStartGame();
     GameInfo getSelectedGame();
 

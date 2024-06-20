@@ -122,6 +122,7 @@ void GameList::joinGame(const uint8_t& gameId, const QString& gameName) {
     this->msg.setGameName(gameName.toStdString());
     this->msg.setMap(selectedGameMapId);
     this->msg.setLobbyCmd(Command::JOIN_GAME);
+    this->msg.setMaxPlayers(gamesList[gameId].getMaxPlayers());
 
     this->hide();
 
@@ -160,7 +161,7 @@ void GameList::on_btnJoin_clicked() {
 
     if (selectedButton) {
         selectedGameId = buttonGroup->id(selectedButton);
-        selectedGameName = selectedButton->text();
+        selectedGameName = QString::fromStdString(gamesList[selectedGameId].getGameName());
         joinGame(selectedGameId, selectedGameName);
     } else {
         QMessageBox::information(this, "Error", "Seleccione un juego para unirse.");
