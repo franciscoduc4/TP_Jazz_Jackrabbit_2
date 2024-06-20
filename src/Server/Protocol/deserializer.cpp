@@ -90,7 +90,6 @@ std::unique_ptr<CreateGameDTO> Deserializer::deserializeCreateGame(uint8_t& play
 bool Deserializer::receive_uint8(uint8_t& value) {
     socket->recvall(&value, sizeof(uint8_t), &wasClosed);
     this->keepPlaying.store(!wasClosed);
-    this->inGame.store(!wasClosed);
     if (wasClosed) {
         std::cerr << "[SERVER DESERIALIZER] Connection was closed while receiving uint8_t"
                   << std::endl;
@@ -101,7 +100,6 @@ bool Deserializer::receive_uint8(uint8_t& value) {
 bool Deserializer::receive_char(char& value) {
     socket->recvall(&value, sizeof(char), &wasClosed);
     this->keepPlaying.store(!wasClosed);
-    this->inGame.store(!wasClosed);
     if (wasClosed) {
         std::cerr << "[SERVER DESERIALIZER] Connection was closed while receiving char"
                   << std::endl;
@@ -112,7 +110,6 @@ bool Deserializer::receive_char(char& value) {
 bool Deserializer::receive_vector_char(std::vector<char>& buffer) {
     socket->recvall(buffer.data(), buffer.size(), &wasClosed);
     this->keepPlaying.store(!wasClosed);
-    this->inGame.store(!wasClosed);
     if (wasClosed) {
         std::cerr << "[SERVER DESERIALIZER] Connection was closed while receiving vector<char>"
                   << std::endl;

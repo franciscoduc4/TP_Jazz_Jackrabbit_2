@@ -81,7 +81,7 @@ void WaitingRoom::fetchUpdates() {
 
 void WaitingRoom::updateNumPlayers(int numPlayers) {
     ui->numPlayers->setText(QString::number(numPlayers));
-    if (numPlayers == this->msg.getMaxPlayers()) {
+    if (this->controller.canStartGame()) {
         this->msg.setLobbyCmd(Command::START_GAME);
         this->controller.startGame(this->msg);
         std::pair<bool, GameInfo> sgAck = this->controller.recvResponse();

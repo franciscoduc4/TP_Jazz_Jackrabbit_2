@@ -124,8 +124,6 @@ void GameList::joinGame(const uint8_t& gameId, const QString& gameName) {
     this->msg.setLobbyCmd(Command::JOIN_GAME);
     this->msg.setMaxPlayers(gamesList[gameId].getMaxPlayers());
 
-    this->hide();
-
     // Send Join Game
     this->controller.sendRequest(this->msg);
     // Receive Join Game
@@ -151,6 +149,8 @@ void GameList::joinGame(const uint8_t& gameId, const QString& gameName) {
         QCoreApplication::exit(0);
         return;
     }
+
+    this->hide();
 
     auto wr = new WaitingRoom(this, this->controller, this->msg, this->clientJoinedGame);
     wr->show();

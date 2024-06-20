@@ -9,6 +9,7 @@
 class StartGameDTO: public CommandDTO {
 private:
     uint8_t gameId;
+    bool gameIdSet;
 
 public:
     StartGameDTO();

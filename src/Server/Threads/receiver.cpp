@@ -63,7 +63,7 @@ void ReceiverThread::run() {
         }
     }
     std::cout << "[SERVER RECEIVER] Running Game..." << std::endl;
-    while (inGame.load()) {
+    while (keepPlaying.load() && inGame.load()) {
         try {
             this->runGame();
         } catch (const std::exception& e) {
