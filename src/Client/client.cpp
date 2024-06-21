@@ -84,7 +84,9 @@ void Client::start() {
         //uint8_t mapId = qtResult.second.getMap();  
         GameScreen game(this->gameController, this->playerId, 0);
         game.run();
-        clientJoinedGame = false; // Para que no cicle infinitamente.
+        // FinalStats stats = game.getStats();
+        FinalStats stats;
+        init.displayStats(stats, (bool&)clientJoinedGame);
     } while (clientJoinedGame);
 
     this->finish();
