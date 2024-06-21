@@ -11,31 +11,38 @@
 #include "moving.h"
 #include "shooting.h"
 
-MovingState::MovingState(Character& character, Direction direction, float time):
-        character(character), direction(direction), time(time) {
+MovingState::MovingState(Character& character, Direction direction):
+        character(character), direction(direction) {
     characterState = CharacterStateEntity::MOVING;
-    move(character, direction, time);
 }
 
-std::unique_ptr<State> MovingState::exec(Character& character, float time) {
-    return move(character, direction, time);
+std::unique_ptr<State> MovingState::exec(float time) {
+    return move(direction, time);
 }
 
-std::unique_ptr<State> MovingState::shoot(Character& character, std::shared_ptr<Weapon> weapon,
+std::unique_ptr<State> MovingState::shoot(const std::shared_ptr<Weapon>& weapon,
                                           float time) {
+    if (time - lastTimeMoved >= waitingMoveTime) {
+        return nullptr;
+    }
+
     if (weapon->isEmpty()) {
         return std::unique_ptr<IdleState>();
     }
     return std::make_unique<ShootingState>(character, weapon, time);
 }
 
-std::unique_ptr<State> MovingState::move(Character& character, Direction direction, float time) {
-    switch (direction) {
+std::unique_ptr<State> MovingState::move(Direction direction2, float time) {
+    // if (direction2 != this->direction2) {
+    //     this->direction2 = direction2;
+    //     return nullptr;
+    // }
+    switch (direction2) {
         case Direction::UP:
             character.moveUp();
             break;
         case Direction::DOWN:
-            character.moveRight();
+            character.moveDown();
             break;
         case Direction::RIGHT:
             character.moveRight();
@@ -50,43 +57,45 @@ std::unique_ptr<State> MovingState::move(Character& character, Direction directi
 }
 
 
-std::unique_ptr<State> MovingState::sprint(Character& character, Direction direction, float time) {
+std::unique_ptr<State> MovingState::sprint(Direction direction2, float time) {
     // Cambia al estado de sprint
-    return std::unique_ptr<MovingState>();
+    // return std::unique_ptr<MovingState>(character, direction2);
+    return nullptr;
 }
 
-std::unique_ptr<State> MovingState::receiveDamage(Character& character, uint16_t damage,
+std::unique_ptr<State> MovingState::receiveDamage(uint8_t damage,
                                                   float time) {
     // Maneja la recepción de daño
-    return std::make_unique<ReceivingDamageState>(time);
+    return std::make_unique<ReceivingDamageState>(character, time, damage);
 }
 
-std::unique_ptr<State> MovingState::die(Character& character, float respawnTime) {
+std::unique_ptr<State> MovingState::die(float respawnTime) {
     // Cambia al estado de muerte
-    return std::make_unique<DeadState>(respawnTime);
+    return std::make_unique<DeadState>(character, respawnTime);
 }
 
-std::unique_ptr<State> MovingState::revive(Character& character, float time) {
+std::unique_ptr<State> MovingState::revive(float time) {
     // Lógica de reanimación
     return nullptr;
 }
 
-std::unique_ptr<State> MovingState::becomeIntoxicated(Character& character, float duration) {
+std::unique_ptr<State> MovingState::becomeIntoxicated(float duration) {
     // Cambia al estado de intoxicación
-    return std::make_unique<IntoxicatedState>(duration);
+    return std::make_unique<IntoxicatedState>(character, duration);
 }
 
-std::unique_ptr<State> MovingState::specialAttack(Character& character, float time) {
+std::unique_ptr<State> MovingState::specialAttack(float time) {
     // Cambia al estado de ataque especial
     return nullptr;
 }
-std::unique_ptr<State> MovingState::jump(Character& character, float time) {
+std::unique_ptr<State> MovingState::jump(float time) {
     //     // Cambia al estado de salto
     //     return std::unique_ptr<JumpingState>();
+
     return nullptr;
 }
 
 std::unique_ptr<State> MovingState::stopAction() {
     // Cambia al estado inactivo
-    return std::unique_ptr<IdleState>();
+    return std::make_unique<IdleState>(character);
 }

@@ -6,10 +6,11 @@
 Game::Game(uint8_t gameId, std::string gameName, uint8_t mapId, uint8_t playerId, GameMode gameMode,
            uint8_t maxPlayers, CharacterType characterType,
            std::shared_ptr<Queue<std::unique_ptr<CommandDTO>>> recvQueue,
-           QueueMonitor<std::unique_ptr<DTO>>& queueMonitor):
+           QueueMonitor& queueMonitor):
         gameId(gameId),
         gameName(std::move(gameName)),
         mapId(mapId),
+        mapName(MapsManager::getMapNameById(mapId)),
         gameMode(gameMode),
         maxPlayers(gameMode == GameMode::PARTY_MODE ? maxPlayers : 1),
         gameMap({255, 255}, mapId),
@@ -59,7 +60,7 @@ GameInfo Game::getGameInfo() {
     std::cout << "[GAME] getGameInfo called, returning gameId: " << gameId
               << ", gameName: " << gameName << ", maxPlayers: " << (int)maxPlayers
               << ", currentPlayers: " << (int)currentPlayers << std::endl;
-    return {gameId, gameName, maxPlayers, currentPlayers};
+    return {gameId, gameName, maxPlayers, currentPlayers, mapId};
 }
 
 void Game::launch() {

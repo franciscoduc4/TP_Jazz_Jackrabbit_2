@@ -29,7 +29,6 @@ Lobby::Lobby(QWidget* parent, LobbyController& controller, LobbyMessage& msg,
 Lobby::~Lobby() { delete ui; }
 
 void Lobby::on_btnCreateGame_clicked() {
-    // this->msg.setLobbyCmd(Command::CREATE_GAME);
     this->msg.setLobbyCmd(Command::MAPS_LIST);
 
     this->hide();

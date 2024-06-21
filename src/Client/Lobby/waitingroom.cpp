@@ -11,20 +11,26 @@ WaitingRoom::WaitingRoom(QWidget* parent, LobbyController& controller, LobbyMess
         ui(new Ui::WaitingRoom),
         controller(controller),
         msg(msg),
-        clientJoinedGame(clientJoinedGame) {
+        clientJoinedGame(clientJoinedGame),
+        recvQueue() {
     ui->setupUi(this);
-    std::cout << "[WAITING ROOM] UI setup completed" << std::endl;
 
-    std::cout << "[WAITING ROOM] Initializing WaitingRoom" << std::endl;
+    this->clientJoinedGame = true; // Al llegar acá y no poder volver atrás, se asume que el cliente se unió al juego
+
+    connect(&updateTimer, &QTimer::timeout, this, &WaitingRoom::fetchUpdates);
+
+    updateTimer.start(1000);
+
+    GameInfo selected = this->controller.getSelectedGame();
+    QString numPlayers = QString::number(selected.getCurrentPlayers());
+    ui->numPlayers->setText(numPlayers);
+
     QString gameName = QString::fromStdString(this->msg.getGameName());
     ui->labelGameName->setText(gameName);
     std::cout << "[WAITING ROOM] Game name set: " << gameName.toStdString() << std::endl;
 
-    if (this->msg.getLobbyCmd() == Command::CREATE_GAME) {
-        QString maxPlayers = QString::number(this->msg.getMaxPlayers());
-        ui->maxPlayers->setText(maxPlayers);
-        std::cout << "[WAITING ROOM] Max players set: " << maxPlayers.toStdString() << std::endl;
-    }
+    QString maxPlayers = QString::number(this->msg.getMaxPlayers());
+    ui->maxPlayers->setText(maxPlayers);
 
     QFont font = ui->labelGameName->font();
     QFontMetrics fm(font);
@@ -41,15 +47,11 @@ WaitingRoom::WaitingRoom(QWidget* parent, LobbyController& controller, LobbyMess
     }
 
     ui->labelGameName->setFont(font);
-    std::cout << "[WAITING ROOM] Adjusted font size for game name" << std::endl;
 
     QFile file(":/Lobby/Styles/waitingroom.qss");
     if (file.open(QFile::ReadOnly)) {
         QString styleSheet = QLatin1String(file.readAll());
         ui->centralwidget->setStyleSheet(styleSheet);
-        std::cout << "[WAITING ROOM] Applied stylesheet" << std::endl;
-    } else {
-        std::cerr << "[WAITING ROOM] Failed to open stylesheet" << std::endl;
     }
 
     ui->labelTitle->setAttribute(Qt::WA_TranslucentBackground);
@@ -58,19 +60,34 @@ WaitingRoom::WaitingRoom(QWidget* parent, LobbyController& controller, LobbyMess
     ui->labelSlash->setAttribute(Qt::WA_TranslucentBackground);
     ui->numPlayers->setAttribute(Qt::WA_TranslucentBackground);
     ui->maxPlayers->setAttribute(Qt::WA_TranslucentBackground);
-    std::cout << "[WAITING ROOM] Set translucent background for labels" << std::endl;
 
+    connect(this, &WaitingRoom::numPlayersUpdated, this, &WaitingRoom::updateNumPlayers);
+}
 
-    this->msg.setLobbyCmd(Command::START_GAME);
-    std::cout << "[WAITING ROOM] Lobby command set to START_GAME" << std::endl;
-    this->controller.sendRequest(this->msg);
-    std::cout << "[WAITING ROOM] Sent request to controller" << std::endl;
-    this->controller.recvStartGame();
-    std::cout << "[WAITING ROOM] Received start game command from controller" << std::endl;
-    clientJoinedGame = true;
+void WaitingRoom::fetchUpdates() {
+    std::unique_ptr<DTO> updateDto;
+    if (controller.hasGameUpdates(updateDto)) {
+        std::cout << "[WAITING ROOM] Received update" << std::endl;
+        int numPlayers;
+        bool startGameReceived = false;
+        auto* cmdDto = dynamic_cast<CommandDTO*>(updateDto.get());
+        updateDto.release();
+        std::unique_ptr<CommandDTO> cmdDtoPtr(cmdDto);
+        std::tie(startGameReceived, numPlayers) = controller.processGameUpdate(cmdDtoPtr);
+        emit numPlayersUpdated(startGameReceived, numPlayers);
+    } else {
+        std::cout << "[WAITING ROOM] No updates received" << std::endl;
+    }
+}
+
+void WaitingRoom::updateNumPlayers(bool startGameReceived, int numPlayers) {
+    ui->numPlayers->setText(QString::number(numPlayers));
+    if (startGameReceived) {
+        QCoreApplication::exit(0);
+        return;
+    }
 }
 
 WaitingRoom::~WaitingRoom() {
     delete ui;
-    std::cout << "[WAITING ROOM] Destructor called, UI deleted" << std::endl;
 }

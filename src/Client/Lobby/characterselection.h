@@ -9,6 +9,8 @@
 #include <QRadioButton>
 #include <QVBoxLayout>
 
+#include <utility>
+
 #include "../../Common/Config/ClientConfig.h"
 #include "../../Common/Types/lobbyMessage.h"
 #include "../client.h"
@@ -27,6 +29,9 @@ public:
                                 bool& clientJoinedGame);
     ~CharacterSelection();
 
+protected:
+    void keyPressEvent(QKeyEvent* event) override;
+
 private slots:
     void on_btnChoose_clicked();
     void on_btnBack_clicked();
@@ -37,7 +42,6 @@ private:
     LobbyMessage& msg;
     bool& clientJoinedGame;
     CharacterSelectionWidget* characterSelectionWidget;
-    // QButtonGroup* buttonGroup;
 };
 
 #endif  // CHARACTERSELECTION_H

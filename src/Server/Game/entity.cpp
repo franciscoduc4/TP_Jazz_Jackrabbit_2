@@ -1,7 +1,7 @@
 #include "entity.h"
 
 
-Entity::Entity(Vector<uint8_t> pos, uint8_t id, uint8_t health, Direction dir, EntityType type):
+Entity::Entity(Vector<uint32_t> pos, uint8_t id, uint8_t health, Direction dir, EntityType type):
         pos(pos),
         id(id),
         health(health),
@@ -10,7 +10,7 @@ Entity::Entity(Vector<uint8_t> pos, uint8_t id, uint8_t health, Direction dir, E
         type(type),
         isDead(false) {}
 
-Vector<uint8_t> Entity::getPosition() const { return pos; }
+Vector<uint32_t> Entity::getPosition() const { return pos; }
 
 uint8_t Entity::getId() const { return id; }
 
@@ -18,7 +18,7 @@ Direction Entity::getDirection() const { return dir; }
 
 uint8_t Entity::getHealth() const { return health; }
 
-Vector<uint8_t> Entity::getMapPosition(uint8_t movesPerCell) const {
+Vector<uint32_t> Entity::getMapPosition(uint8_t movesPerCell) const {
     std::cout << "[ENTITY] Position: " << pos << " movesPerCell: " << (int)movesPerCell
               << std::endl;
     return {static_cast<uint8_t>(pos.x / movesPerCell), static_cast<uint8_t>(pos.y / movesPerCell)};
@@ -26,16 +26,19 @@ Vector<uint8_t> Entity::getMapPosition(uint8_t movesPerCell) const {
 
 void Entity::recvDamage(uint8_t damage, float time) {
     health -= damage;
+    std::cout << "[ENTITY] Received damage: " << (int)damage << std::endl;
+
     if (health <= 0) {
         die(time);
     }
+    std::cout << "[ENTITY] Health post damage: " << (int)health << std::endl;
 }
 
 bool Entity::getIsDead() const { return isDead; }
 
 void Entity::die(float time) { isDead = true; }
 
-void Entity::setPosition(Vector<uint8_t> newPosition) { pos = newPosition; }
+void Entity::setPosition(Vector<uint32_t> newPosition) { pos = newPosition; }
 
 void Entity::setDirection(Direction newDir) { dir = newDir; }
 

@@ -8,7 +8,7 @@
 #include <utility>
 #include <vector>
 
-#include "yaml-cpp/yaml.h"  // Assuming you have yaml-cpp installed
+#include "yaml-cpp/yaml.h"
 
 class MapsManager {
 private:

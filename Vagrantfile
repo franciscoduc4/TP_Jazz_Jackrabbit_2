@@ -6,7 +6,7 @@ Vagrant.configure("2") do |config|
 
   # Provisión de la repo
   config.vm.synced_folder ".", "/home/vagrant/jazz_jackrabbit_2", type: "rsync",
-  rsync__exclude: ["build/", "cmake-build-debug/"]
+  rsync__exclude: ["build/", "cmake-build-debug/", "clion-build/"]
   # Provisión del archivo de tipografía.
   config.vm.provision "file", source: "./assets/Miscellaneous/Jazz-Jackrabbit-2.ttf", destination: "/home/vagrant/Jazz-Jackrabbit-2.ttf"
 
@@ -22,12 +22,8 @@ Vagrant.configure("2") do |config|
     sudo apt-get install -y libjpeg-dev libpng-dev libfreetype-dev libopusfile-dev libflac-dev libxmp-dev libfluidsynth-dev libwavpack-dev cmake libmodplug-dev
     sudo apt-get install -y libsdl2-dev libsdl2-image-dev libsdl2-ttf-dev libsdl2-mixer-dev libsdl2-gfx-dev
 
-    export SDL2_DIR=/usr/lib/x86_64-linux-gnu/cmake/SDL2
-
-    cd /home/vagrant/jazz_jackrabbit_2/extlibs/libsdl2pp
-    mkdir -p build && cd build
-    cmake ..
-    make -j$(nproc)
+    # Remove CMakeCache.txt
+    find /home/vagrant/jazz_jackrabbit_2 -name CMakeCache.txt -type f -exec rm {} \;
 
     # Instalación de tipografía.
     mkdir -p /home/vagrant/.local/share/fonts

@@ -17,25 +17,24 @@
 #include "level.h"
 #include "projectile.h"
 #include "interface.h"
+#include "soundController.h"
 
 class GameScreen {
     Player pj;
-    /*
-    Enemy turtle;
-    Enemy schartz_guard;
-    Enemy yellowM;
-    */
     Enemy enemies;
     Points points;
     Level level;
     Projectile proj;
     Interface stats;
+    SoundController soundControl;
 
     GameController& controller;
     uint8_t mainPlayerId;
 
 public:
     GameScreen(GameController& controller, uint8_t playerId);
+
+    GameScreen(GameController& controller, uint8_t playerId, uint8_t mapId);
 
     std::unique_ptr<PlayerDTO> searchMainPlayer(std::vector<PlayerDTO>& players);
 

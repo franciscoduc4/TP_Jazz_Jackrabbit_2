@@ -18,3 +18,7 @@ std::unordered_map<int, std::string> MapsListDTO::getMaps() const {
     }
     return maps;
 }
+
+std::unique_ptr<DTO> MapsListDTO::clone() const {
+    return std::unique_ptr<DTO>(new MapsListDTO(*this));
+}

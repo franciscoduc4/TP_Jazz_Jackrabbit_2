@@ -4,12 +4,14 @@
 #include <cstdint>
 #include <utility>
 #include <vector>
+#include <memory>
 
 #include "../Types/dto.h"
 #include "../Types/elements.h"
+#include "dto.h"
 
 
-class GameElementDTO {
+class GameElementDTO : public DTO {
 private:
     ElementType type;
 
@@ -17,6 +19,8 @@ private:
     uint16_t x;
     uint16_t y;
     bool isVisible;
+
+    DTOType dtoType = DTOType::GAME_ELEMENT_DTO;
 
 
 public:
@@ -26,7 +30,7 @@ public:
 
     GameElementDTO(uint8_t& playerId, ElementType element);
 
-
+    DTOType getType() const;
     ElementType getElementType() const;
 
     int getPlayerId() const;
@@ -34,6 +38,8 @@ public:
     std::pair<uint16_t, uint16_t> getPosition();
 
     bool getVisibility();
+
+    virtual std::unique_ptr<DTO> clone() const override;
 
     virtual ~GameElementDTO();
 };

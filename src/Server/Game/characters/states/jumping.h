@@ -9,20 +9,21 @@
 #include "state.h"
 
 class JumpingState: public State {
+private:
+    Character& character;
 public:
-    JumpingState() { characterState = CharacterStateEntity::JUMPING; }
+    explicit JumpingState(Character& character);
 
-    std::unique_ptr<State> exec(Character& character, float time) override;
-    std::unique_ptr<State> shoot(Character& character, std::shared_ptr<Weapon> weapon,
-                                 float time) override;
-    std::unique_ptr<State> move(Character& character, Direction direction, float time) override;
-    std::unique_ptr<State> sprint(Character& character, Direction direction, float time) override;
-    std::unique_ptr<State> receiveDamage(Character& character, uint16_t dmg, float time) override;
-    std::unique_ptr<State> die(Character& character, float time) override;
-    std::unique_ptr<State> revive(Character& character, float time) override;
-    std::unique_ptr<State> jump(Character& character, float time) override;
-    std::unique_ptr<State> specialAttack(Character& character, float time) override;
-    std::unique_ptr<State> becomeIntoxicated(Character& character, float duration) override;
+    std::unique_ptr<State> exec(float time) override;
+    std::unique_ptr<State> shoot(const std::shared_ptr<Weapon>& weapon, float time) override;
+    std::unique_ptr<State> move(Direction direction, float time) override;
+    std::unique_ptr<State> sprint(Direction direction, float time) override;
+    std::unique_ptr<State> receiveDamage(uint8_t dmg, float time) override;
+    std::unique_ptr<State> die(float time) override;
+    std::unique_ptr<State> revive(float time) override;
+    std::unique_ptr<State> jump(float time) override;
+    std::unique_ptr<State> specialAttack(float time) override;
+    std::unique_ptr<State> becomeIntoxicated(float duration) override;
     std::unique_ptr<State> stopAction() override;
 };
 

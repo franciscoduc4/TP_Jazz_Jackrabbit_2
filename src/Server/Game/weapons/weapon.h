@@ -18,7 +18,7 @@ class Weapon {
 public:
     virtual void update(float time) = 0;
 
-    virtual void shoot(std::vector<std::shared_ptr<Entity>>& shootingEntities, uint8_t xPos,
+    virtual void shoot(std::vector<std::shared_ptr<Entity>>& shootingEntities, uint32_t xPos,
                        float time) = 0;
     virtual void reload() = 0;
     virtual bool isEmpty() = 0;
@@ -28,6 +28,7 @@ public:
     virtual bool shootTime(float time) = 0;
     virtual float getFireRate() = 0;
     virtual WeaponType getWeaponType() = 0;
+    virtual bool cooldown(float time) = 0;
 
 
     // virtual LoriSpecialAttack* getLoriSpecialAttack() = 0;

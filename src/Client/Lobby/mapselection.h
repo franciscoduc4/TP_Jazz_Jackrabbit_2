@@ -9,6 +9,9 @@
 #include <QMessageBox>
 #include <QVBoxLayout>
 
+#include <string>
+#include <unordered_map>
+
 #include "../Controllers/LobbyController.h"
 #include "Types/lobbyMessage.h"
 

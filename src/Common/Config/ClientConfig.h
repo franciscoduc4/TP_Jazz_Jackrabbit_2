@@ -3,6 +3,8 @@
 
 #include <string>
 #include <vector>
+#include <tuple>
+#include <utility>
 #include <unistd.h>
 
 #include "../logger.h"
@@ -19,6 +21,11 @@ private:
 public:
     static ClientConfig* getInstance();
     // Logger& getLogger();
+    // Characters from Font File
+    static std::vector<int> getGreaterThan();
+    static std::vector<int> getLessThan();
+    // Refresh Interval
+    static int getGamesListRefreshInterval();
     // Files
     static std::string getEpisodeFile();
     static std::string getCharacterSelectFile();
@@ -26,6 +33,8 @@ public:
     static std::string getSpazFile();
     static std::string getLoriFile();
     static std::string getTurtleFile();
+    static std::string getSchguardFile();
+    static std::string getYellowmonsFile();
     static std::string getSFXFile();
     static std::string getItemsFile();
     static std::string getInterfaceFontFile();
@@ -41,6 +50,18 @@ public:
     static std::tuple<int, int, int> getInterfaceFontColourKey();
     // Rectangular Sprites
     static std::vector<std::vector<int>> getEpisodesSprites();
+    //Levels sounds and sprites
+    //Sounds
+    static std::vector<std::string> getSoundsFiles();
+    //Beach
+    static std::vector<std::string> getBeachFiles();
+    static std::string getBeachBacksound();
+    static std::vector<std::vector<int>> getBeachSprites();
+    //Colonius
+    static std::vector<std::string> getColoniusFiles();
+    static std::string getColoniusBacksound();
+    static std::vector<std::vector<int>> getColoniusSprites();
+
     // Enemies Sprites
     // Turtle
     static int getTurtleWidth();
@@ -49,10 +70,14 @@ public:
     static std::vector<std::vector<int>> getTurtleAttackingSprites();
     static std::vector<std::vector<int>> getTurtleDyingSprites();
     // Schwartzenguard
+    static int getSchWidth();
+    static int getSchHeight();
     static std::vector<std::vector<int>> getSchwartzenguardWalkingSprites();
     static std::vector<std::vector<int>> getSchwartzenguardAttackingSprites();
     static std::vector<std::vector<int>> getSchwartzenguardDyingSprites();
     // YellowMons
+    static int getYellowMonsWidth();
+    static int getYellowMonsHeight();
     static std::vector<std::vector<int>> getYellowMonsWalkingSprites();
     static std::vector<std::vector<int>> getYellowMonsAttackingSprites();
     static std::vector<std::vector<int>> getYellowMonsDyingSprites();
@@ -128,8 +153,6 @@ public:
     static std::vector<std::vector<std::pair<int, int>>> getLoriSelectSprites();
     // Delete Instance
     static void deleteInstance();
-
-
 };
 
 #endif  // __CLIENT_CONFIG_H__

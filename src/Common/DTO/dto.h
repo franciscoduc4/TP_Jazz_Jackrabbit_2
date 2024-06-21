@@ -6,6 +6,7 @@
 class DTO {
 public:
     virtual DTOType getType() const = 0;
+    virtual std::unique_ptr<DTO> clone() const = 0;
     virtual ~DTO() = default;
 };
 

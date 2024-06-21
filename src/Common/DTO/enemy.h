@@ -2,38 +2,42 @@
 #define ENEMY_DTO_H
 
 #include <cstdint>
+#include <memory>
 
 #include "../Types/enemy.h"
 #include "../Types/entity.h"
+#include "dto.h"
 
 #include "gameElement.h"
 
 class EnemyDTO: public GameElementDTO {
 private:
-    uint16_t x;
-    uint16_t y;
+    uint32_t x;
+    uint32_t y;
     uint8_t enemy_id;
-    int health;
-    int damage;
-    int speed;
+    uint8_t health;
+    uint8_t damage;
+    uint8_t speed;
     bool enemyIsAlive;
-    int respawnTime;
+    uint8_t respawnTime;
     EnemyType type;
     EnemyStateEntity state;
 
 
 public:
-    EnemyDTO(uint16_t x, uint16_t y, uint8_t enemy_id, int health, int damage, int speed,
-             EnemyType type, EnemyStateEntity state);
+    EnemyDTO(const uint32_t& x, const uint32_t& y, const uint8_t& enemy_id, uint8_t health, uint8_t damage, uint8_t speed,
+             const EnemyType& type, const EnemyStateEntity& state);
     uint8_t getEnemyId() const;
-    uint16_t getX() const;
-    uint16_t getY() const;
-    int getDamage() const;
-    int getHealth() const;
-    int getSpeed() const;
+    uint32_t getX() const;
+    uint32_t getY() const;
+    uint8_t getDamage() const;
+    uint8_t getHealth() const;
+    uint8_t getSpeed() const;
     bool isAlive() const;
-    EnemyType getType() const;
+    EnemyType getEnemyType() const;
     EnemyStateEntity getState() const;
+
+    virtual std::unique_ptr<DTO> clone() const override;
 };
 
 #endif  // ENEMY_DTO_H

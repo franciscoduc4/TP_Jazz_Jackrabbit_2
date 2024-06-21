@@ -1,6 +1,13 @@
 # Log File
 LOG_FILE: "logs/client.log"
 
+# Refresh Times
+GAMES_LIST_REFRESH_INTERVAL: 5000
+
+# Characters From Font File
+LESS_THAN: [126, 50, 16, 14]
+GREATER_THAN: [193, 50, 16, 14]
+
 # Sprites Files
 EPISODES_FILE: "assets/Miscellaneous/EpisodeSelect.png"
 CHARACTERS_SELECT_FILE: "assets/Miscellaneous/CharacterSelect.png"
@@ -8,6 +15,8 @@ JAZZ_FILE: "../assets/Characters/Jazz.png"
 SPAZ_FILE: "../assets/Characters/Spaz.png"
 LORI_FILE: "../assets/Characters/Lori.png"
 TURTLE_FILE: "../assets/Enemies/TurtleEnemies.png"
+SCH_GUARD_FILE: "../assets/Enemies/Schwartzenguard.png"
+YELLOWMONS_FILE: "../assets/Enemies/Enemies.png"
 SFX_FILE: "../assets/Miscellaneous/SFX.png"
 ITEMS_FILE: "../assets/Miscellaneous/Items&Objects.png"
 INTERFACE_FONT_FILE: "../assets/Miscellaneous/Fonts.png"
@@ -26,6 +35,20 @@ INTERFACE_FONT_CK: [0, 128, 255]
 # Rectangular Sprites: [x, y, width, height]
 EPISODES_SPRITES: [[9, 9, 495, 354],[505, 9, 496, 354],[1002, 9, 531, 354],[1534, 9, 469, 354],[9, 367, 445, 353],[455, 367, 513, 353],[969, 367, 525, 353],[1495, 367, 498, 353]]
 
+# Sounds
+SOUNDS: [ "../assets/audios/playerHurt.WAV", "../assets/audios/shoot3.WAV", "../assets/audios/takePoint.WAV"]
+
+# Beach level sprites
+BEACH: ["../assets/scenes/BeachWorld/background.png", "../assets/scenes/BeachWorld/fullFloor.png", "../assets/scenes/BeachWorld/longPlatform.png", "../assets/scenes/BeachWorld/smallPlatform.png", "../assets/scenes/BeachWorld/woodLargeColumn.png", "../assets/scenes/BeachWorld/leftLadder.png", "../assets/scenes/BeachWorld/rightLadder.png"]
+BEACH_BACKSOUND: "../assets/audios/beachBackSound.wav" #HACER BACKSOUND PARA COLONIUS
+BEACH_PIXELS: [[0, 0, 200, 160], [0, 0, 485, 118], [0, 0, 160, 17], [0, 0, 88, 17], [0, 0, 24, 91], [0, 0, 145, 145], [0, 0, 144, 165]]
+
+#Colonius level sprites
+COLONIUS: ["../assets/scenes/Colonius/background.png", "../assets/scenes/Colonius/fullFloor.png", "../assets/scenes/Colonius/longPlatform.png", "../assets/scenes/Colonius/smallPlatform.png", "../assets/scenes/Colonius/column.png", "../assets/scenes/Colonius/leftLadder.png", "../assets/scenes/Colonius/rightLadder.png"]
+COLONIUS_BACKSOUND: "../assets/audios/coloniusBackSound.wav"
+COLONIUS_PIXELS: [[1200, 0, 1804, 839], [0, 0, 400, 150], [0, 0, 192, 46], [0, 0, 145, 96], [0, 0, 80, 191], [0, 0, 144, 119], [0, 0, 144, 119]]
+
+
 ## Enemies
 TURTLE_WIDTH: 50
 TURTLE_HEIGHT: 50
@@ -33,10 +56,14 @@ TURTLE_WALKING_SPRITES: [[12, 56, 67, 56], [80, 56, 69, 56], [150, 56, 68, 56], 
 TURTLE_ATTACKING_SPRITES: [[5, 120, 58, 50], [63, 120, 60, 50], [123, 120, 60, 50], [183, 120, 77, 50], [260, 120, 95, 50], [357, 120, 99, 50], [458, 120, 114, 50], [572, 120, 120, 50], [692, 120, 114, 50], [809, 120, 84, 50], [893, 120, 60, 50]]
 TURTLE_DYING_SPRITES: [[384, 9, 75, 42],[460, 9, 70, 42],[530, 9, 62, 42],[592, 9, 52, 42],[644, 9, 47, 42],[691, 9, 42, 42]]
 
+SCH_WIDTH: 60
+SCH_HEIGHT: 100
 SCHWARTZENGUARD_WALKING_SPRITES: [[11, 6, 65, 56], [79, 6, 59, 56], [142, 6, 46, 56], [190, 6, 53, 56], [248, 6, 66, 56], [316, 6, 73, 56], [391, 6, 61, 56], [452, 6, 53, 56], [505, 6, 50, 56], [555, 6, 67, 56]]
 SCHWARTZENGUARD_ATTACKING_SPRITES: [[6, 67, 65, 60], [71, 67, 65, 60], [136, 67, 77, 60], [213, 67, 96, 60], [309, 67, 91, 60], [400, 67, 98, 60], [498, 67, 98, 60], [10, 127, 95, 76], [105, 127, 85, 76], [190, 127, 93, 76], [283, 127, 72, 76], [355, 127, 72, 76], [427, 127, 74, 76], [501, 127, 64, 76], [565, 127, 60, 76], [10, 221, 85, 48], [95, 221, 61, 48]]
 SCHWARTZENGUARD_DYING_SPRITES: [[384, 207, 41, 61], [426, 207, 44, 61], [470, 207, 61, 61], [531, 207, 56, 61], [531, 207, 56, 61], [531, 207, 56, 61], [531, 207, 56, 61], [531, 207, 56, 61]]
 
+YELLOWMONS_WIDTH: 30
+YELLOWMONS_HEIGHT: 50
 YELLOWMONS_WALKING_SPRITES: [[14, 9, 70, 66], [93, 9, 62, 66], [161, 9, 53, 66], [214, 9, 77, 66], [300, 9, 58, 66], [365, 9, 60, 66], [430, 9, 67, 66], [505, 9, 70, 66], [593, 9, 73, 66], [675, 9, 70, 66], [750, 9, 75, 66], [830, 9, 77, 66]]
 YELLOWMONS_ATTACKING_SPRITES: [[355, 75, 45, 78], [410, 75, 60, 78], [475, 75, 62, 78], [542, 75, 60, 78], [614, 75, 70, 78], [695, 75, 46, 78]]
 YELLOWMONS_DYING_SPRITES: [[917, 10, 33, 63], [953, 10, 36, 63], [990, 10, 35, 63], [1030, 10, 35, 63], [1030, 10, 35, 63], [1030, 10, 35, 63], [1030, 10, 35, 63], [1030, 10, 35, 63]]
@@ -45,7 +72,7 @@ YELLOWMONS_DYING_SPRITES: [[917, 10, 33, 63], [953, 10, 36, 63], [990, 10, 35, 6
 PLAYER_WIDTH: 50
 PLAYER_HEIGHT: 80
 
-JAZZ_IDLE: [[0, 11, 38, 52], [40, 11, 39, 52], [79, 11, 40, 52], [121, 11, 39, 52], [160, 11, 43, 52], [203, 11, 46, 52], [250, 11, 50, 52], [300, 11, 50, 52], [350, 11, 50, 52], [400, 11, 44, 52], [445, 11, 43, 52], [488, 11, 45, 52], [533, 11, 44, 52], [577, 11, 55, 52], [622, 11, 45, 52], [667, 11, 46, 52]]
+JAZZ_IDLE: [[0, 11, 38, 52], [40, 11, 39, 52], [79, 11, 40, 52], [121, 11, 39, 52], [160, 11, 43, 52], [203, 11, 46, 52], [250, 11, 50, 52], [300, 11, 50, 52], [350, 11, 50, 52], [400, 11, 44, 52], [445, 11, 43, 52], [488, 11, 45, 52], [533, 11, 44, 52], [577, 11, 45, 52], [622, 11, 45, 52], [667, 11, 46, 52], [0, 62, 47, 51], [47, 62, 49, 51], [96, 62, 52, 51], [148, 62, 44, 51], [192, 62, 40, 51], [232, 62, 40, 51], [272, 62, 40, 51], [312, 62, 40, 51]]
 JAZZ_WALKING: [[0, 790, 57, 46], [57, 790, 57, 46], [114, 790, 57, 46], [171, 790, 57, 46], [228, 790, 57, 46], [285, 790, 57, 46], [342, 790, 57, 46]]
 JAZZ_RUNNING: [[0, 853, 67, 39], [67, 853, 67, 39], [201, 853, 67, 39], [268, 853, 67, 39], [335, 853, 67, 39], [402, 853, 67, 39], [469, 853, 67, 39]]
 JAZZ_SHOOTING: [[0, 557, 47, 57], [51, 557, 45, 57], [101, 557, 36, 57], [143, 557, 37, 57], [185, 557, 36, 57], [226, 557, 39, 57], [265, 557, 54, 57]]
@@ -57,7 +84,7 @@ JAZZ_TAKING_DAMAGE: [[0, 3011, 42, 62], [42, 3011, 40, 62], [82, 3011, 40, 62], 
 JAZZ_DEAD: [[0, 3090, 50, 74], [50, 3090, 45, 74], [95, 3090, 80, 74], [175, 3090, 85, 74], [270, 3090, 90, 74], [370, 3090, 90, 74], [468, 3090, 95, 74], [568, 3090, 92, 74], [665, 3090, 90, 74], [760, 3090, 75, 74], [0, 3166, 48, 64], [48, 3166, 50, 64], [98, 3166, 60, 64], [158, 3166, 66, 64], [230, 3166, 66, 64], [300, 3166, 62, 64], [370, 3166, 72, 64], [450, 3166, 84, 64], [540, 3166, 80, 64], [625, 3166, 65, 64]]
 JAZZ_ICON: [[0, 3246, 40, 43], [50, 3246, 42, 43], [92, 3246, 40, 43], [132, 3246, 40, 43], [172, 3246, 40, 43]]
 
-LORI_IDLE: [[0, 12, 45, 44], [45, 12, 44, 44], [89, 12, 46, 44], [135, 12, 43, 44], [178, 12, 55, 44], [223, 12, 42, 44], [265, 12, 43, 44], [308, 12, 54, 44], [352, 12, 45, 44], [397, 12, 45, 44], [442, 12, 46, 44], [488, 12, 49, 44]]
+LORI_IDLE: [[0, 10, 45, 56], [45, 12, 44, 56], [89, 12, 46, 56], [135, 12, 43, 56], [178, 12, 45, 56], [223, 12, 42, 56], [265, 12, 43, 56], [308, 12, 44, 56], [352, 12, 45, 56], [397, 12, 45, 56], [442, 12, 46, 56], [488, 12, 49, 56]]
 LORI_WALKING: [[0, 556, 51, 51], [51, 556, 51, 51], [153, 556, 51, 51], [204, 556, 51, 51], [255, 556, 51, 51], [306, 556, 51, 51], [357, 556, 51, 51]]
 LORI_RUNNING: [[0, 626, 55, 42], [55, 626, 55, 42], [165, 626, 55, 42], [220, 626, 55, 42], [275, 626, 66, 42], [330, 626, 66, 42], [385, 626, 66, 42]]
 LORI_SHOOTING: [[0, 341, 48, 56], [50, 341, 43, 56], [100, 341, 38, 56], [140, 341, 37, 56], [180, 341, 40, 56], [220, 341, 40, 56]]

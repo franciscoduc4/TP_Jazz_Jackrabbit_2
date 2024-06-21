@@ -10,7 +10,6 @@
 
 #include "../../Common/DTO/createGame.h"
 #include "../../Common/DTO/dto.h"
-#include "../../Common/DTO/move.h"
 #include "../../Common/DTO/startGame.h"
 #include "../../Common/queue.h"
 #include "../../Common/socket.h"
@@ -34,7 +33,6 @@ public:
     void sendCreateGame(const CommandDTO& cmd);
     void sendJoinGame(const CommandDTO& cmd);
     void sendStartGame(const CommandDTO& cmd);
-    ~SenderThread();
 };
 
 #endif  // CLIENT_SENDER_THREAD_H

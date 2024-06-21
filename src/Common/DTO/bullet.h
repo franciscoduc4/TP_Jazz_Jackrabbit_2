@@ -1,13 +1,15 @@
 #ifndef BULLET_DTO_H_
 #define BULLET_DTO_H_
 
+#include <memory>
 
+#include "dto.h"
 #include "gameElement.h"
 
 class BulletDTO: public GameElementDTO {
 private:
-    uint16_t x;
-    uint16_t y;
+    uint32_t x;
+    uint32_t y;
     uint8_t bullet_id;
     int damage;
     int speed;
@@ -15,14 +17,16 @@ private:
     int shooterId;
 
 public:
-    BulletDTO(uint16_t x, uint16_t y, uint8_t bullet_id, int damage, int speed, int shooterId);
+    BulletDTO(const uint32_t& x, const uint32_t& y, const uint8_t& bullet_id, int damage, int speed, int shooterId);
     uint8_t getBulletId() const;
-    uint16_t getX() const;
-    uint16_t getY() const;
+    uint32_t getX() const;
+    uint32_t getY() const;
     int getDamage() const;
     int getSpeed() const;
     bool isAlive() const;
     int getShooterId() const;
+
+    virtual std::unique_ptr<DTO> clone() const override;
 };
 
 #endif  // BULLET_DTO_H_

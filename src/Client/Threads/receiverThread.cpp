@@ -2,575 +2,60 @@
 
 #include <iostream>
 #include <memory>
-#include <unordered_map>
 #include <vector>
 
 #include <netinet/in.h>
 
-#include "../../Common/Types/command.h"
-#include "../../Common/Types/entity.h"
 
 ReceiverThread::ReceiverThread(Deserializer& deserializer, std::shared_ptr<Socket>& socket,
                                std::atomic<bool>& was_closed):
-        deserializer(deserializer), socket(socket), was_closed(was_closed), closed(false) {
-    std::cout << "[RECEIVER] ReceiverThread initialized" << std::endl;
+        deserializer(deserializer), socket(socket), was_closed(was_closed), protocol(socket, was_closed) {
 }
 
-void ReceiverThread::receiveCommandDTO() {
-    try {
-        char lobbyTypeChar;
-        socket->recvall(&lobbyTypeChar, sizeof(char), &closed);
-        std::cout << "[RECEIVER] Received command: " << static_cast<int>(lobbyTypeChar)
-                  << std::endl;
-        this->was_closed.store(closed);
-        if (this->was_closed.load()) {
-            std::cout << "[RECEIVER] Connection closed, exiting receiveCommandDTO" << std::endl;
-            return;
+void ReceiverThread::receiveDTOByType(const char& dtoTypeChar) {
+    std::cout << "[Client Receiver] Received a DTO" << std::endl;
+    auto dtoType = static_cast<DTOType>(dtoTypeChar);
+    std::unique_ptr<DTO> dto = nullptr;
+    switch (dtoType) {
+        case DTOType::GAME_DTO: {
+            std::cout << "[CLIENT RECEIVER] Receiving game DTO." << std::endl;
+            this->protocol.receiveGameDTO(dto);
+            this->deserializer.deserialize_gameMsg(dto);
+            break;
         }
-        std::unique_ptr<DTO> dto = nullptr;
-        switch (static_cast<Command>(lobbyTypeChar)) {
-            case Command::START_GAME:
-                dto = std::make_unique<StartGameDTO>();
-                this->deserializer.deserialize_lobbyMsg(dto);
-                std::cout << "[RECEIVER] START_GAME command deserialized" << std::endl;
-                break;
-            case Command::CREATE_GAME:
-                uint8_t gameId;
-                this->socket->recvall(&gameId, sizeof(uint8_t), &closed);
-                std::cout << "[RECEIVER] Received game id: " << static_cast<int>(gameId)
-                          << std::endl;
-                this->was_closed.store(closed);
-                if (this->was_closed.load()) {
-                    std::cout << "[RECEIVER] Connection closed, exiting receiveCommandDTO"
-                              << std::endl;
-                    return;
-                }
-                dto = std::make_unique<CreateGameDTO>(gameId);
-                this->deserializer.deserialize_lobbyMsg(dto);
-                std::cout << "[RECEIVER] CREATE_GAME command deserialized" << std::endl;
-                break;
-            case Command::GAMES_LIST:
-                this->receiveGamesList();
-                break;
-            case Command::MAPS_LIST:
-                this->receiveMapsList();
-                break;
-            default:
-                std::cout << "[RECEIVER] Unknown command received" << std::endl;
-                break;
+        case DTOType::COMMAND_DTO: {
+            std::cout << "[CLIENT RECEIVER] Receiving command DTO." << std::endl;
+            this->protocol.receiveCommandDTO(dto);
+            std::cout << "[CLIENT RECEIVER] Deserializing command DTO." << std::endl;
+            this->deserializer.deserialize_lobbyMsg(dto);
+            break;
         }
-    } catch (const std::exception& e) {
-        std::cerr << "[RECEIVER] Error in receiveCommandDTO: " << e.what() << std::endl;
-    }
-}
-
-std::vector<PlayerDTO> ReceiverThread::receivePlayers() {
-    std::vector<PlayerDTO> players;
-    try {
-        uint8_t cant_jugadores;
-        this->socket->recvall(&cant_jugadores, sizeof(uint8_t), &closed);
-        std::cout << "[CLIENT RECEIVER] Number of players: " << static_cast<int>(cant_jugadores)
-                  << std::endl;
-
-        uint8_t aux;
-        for (uint8_t i = 0; i < cant_jugadores; i++) {
-            this->socket->recvall(&aux, sizeof(uint8_t), &closed);
-            uint8_t playerId = static_cast<uint8_t>(aux);
-            std::cout << "[CLIENT RECEIVER PLAYER] Player ID: " << static_cast<int>(playerId)
-                      << std::endl;
-
-            this->socket->recvall(&aux, sizeof(uint8_t), &closed);
-            int damage = static_cast<int>(aux);
-            std::cout << "[CLIENT RECEIVER PLAYER] Damage: " << damage << std::endl;
-
-            this->socket->recvall(&aux, sizeof(uint8_t), &closed);
-            int health = static_cast<int>(aux);
-            std::cout << "[CLIENT RECEIVER PLAYER] Health: " << health << std::endl;
-
-            this->socket->recvall(&aux, sizeof(uint8_t), &closed);
-            int speed = static_cast<int>(aux);
-            std::cout << "[CLIENT RECEIVER PLAYER] Speed: " << speed << std::endl;
-
-            this->socket->recvall(&aux, sizeof(uint8_t), &closed);
-            int getRespawnTime = static_cast<int>(aux);
-            std::cout << "[CLIENT RECEIVER PLAYER] Respawn time: " << getRespawnTime << std::endl;
-
-            this->socket->recvall(&aux, sizeof(uint8_t), &closed);
-            uint8_t x = static_cast<uint8_t>(aux);
-            std::cout << "[CLIENT RECEIVER PLAYER] X: " << static_cast<int>(x) << std::endl;
-
-            this->socket->recvall(&aux, sizeof(uint8_t), &closed);
-            uint8_t y = static_cast<uint8_t>(aux);
-            std::cout << "[CLIENT RECEIVER PLAYER] Y: " << static_cast<int>(y) << std::endl;
-
-            this->socket->recvall(&aux, sizeof(uint8_t), &closed);
-            CharacterType pj_type = static_cast<CharacterType>(aux);
-            std::cout << "[CLIENT RECEIVER PLAYER] Character type: " << static_cast<int>(pj_type)
-                      << std::endl;
-
-            this->socket->recvall(&aux, sizeof(uint8_t), &closed);
-            CharacterStateEntity state = static_cast<CharacterStateEntity>(aux);
-            std::cout << "[CLIENT RECEIVER PLAYER] Character state: " << static_cast<int>(state)
-                      << std::endl;
-
-            WeaponDTO weapon(0, 0, 0, 0, 0);
-            PlayerDTO player(x, y, playerId, health, damage, speed, pj_type, state);
-            players.push_back(player);
-        }
-    } catch (const std::exception& e) {
-        std::cerr << "[CLIENT RECEIVER] Error in receivePlayers: " << e.what() << std::endl;
-    }
-    return players;
-}
-
-std::vector<EnemyDTO> ReceiverThread::receiveEnemies() {
-    std::vector<EnemyDTO> enemies;
-    try {
-        uint8_t cant_enemies;
-        this->socket->recvall(&cant_enemies, sizeof(uint8_t), &closed);
-        std::cout << "[CLIENT RECEIVER] Number of enemies: " << static_cast<int>(cant_enemies)
-                  << std::endl;
-
-        uint8_t aux;
-        for (uint8_t i = 0; i < cant_enemies; i++) {
-            this->socket->recvall(&aux, sizeof(uint8_t), &closed);
-            uint8_t enemyId = static_cast<uint8_t>(aux);
-            std::cout << "[CLIENT RECEIVER ENEMY] Enemy ID: " << static_cast<int>(enemyId)
-                      << std::endl;
-
-            this->socket->recvall(&aux, sizeof(uint8_t), &closed);
-            int enemy_damage = static_cast<int>(aux);
-            std::cout << "[CLIENT RECEIVER ENEMY] Damage: " << enemy_damage << std::endl;
-
-            this->socket->recvall(&aux, sizeof(uint8_t), &closed);
-            int enemy_health = static_cast<int>(aux);
-            std::cout << "[CLIENT RECEIVER ENEMY] Health: " << enemy_health << std::endl;
-
-            this->socket->recvall(&aux, sizeof(uint8_t), &closed);
-            int enemy_speed = static_cast<int>(aux);
-            std::cout << "[CLIENT RECEIVER ENEMY] Speed: " << enemy_speed << std::endl;
-
-            this->socket->recvall(&aux, sizeof(uint8_t), &closed);
-            uint8_t enemy_x = static_cast<uint8_t>(aux);
-            std::cout << "[CLIENT RECEIVER ENEMY] X: " << static_cast<int>(enemy_x) << std::endl;
-
-            this->socket->recvall(&aux, sizeof(uint8_t), &closed);
-            uint8_t enemy_y = static_cast<uint8_t>(aux);
-            std::cout << "[CLIENT RECEIVER ENEMY] Y: " << static_cast<int>(enemy_y) << std::endl;
-
-            this->socket->recvall(&aux, sizeof(uint8_t), &closed);
-            EnemyType enemy_type = static_cast<EnemyType>(aux);
-            std::cout << "[CLIENT RECEIVER ENEMY] Type: " << static_cast<int>(enemy_type)
-                      << std::endl;
-
-            this->socket->recvall(&aux, sizeof(uint8_t), &closed);
-            EnemyStateEntity enemy_state = static_cast<EnemyStateEntity>(aux);
-            std::cout << "[CLIENT RECEIVER ENEMY] State: " << static_cast<int>(enemy_state)
-                      << std::endl;
-
-            EnemyDTO enemy(enemy_x, enemy_y, enemyId, enemy_health, enemy_damage, enemy_speed,
-                           enemy_type, enemy_state);
-            enemies.push_back(enemy);
-        }
-    } catch (const std::exception& e) {
-        std::cerr << "[CLIENT RECEIVER] Error in receiveEnemies: " << e.what() << std::endl;
-    }
-    return enemies;
-}
-
-std::vector<BulletDTO> ReceiverThread::receiveBullets() {
-    std::vector<BulletDTO> bullets;
-    try {
-        uint8_t cant_bullets;
-        this->socket->recvall(&cant_bullets, sizeof(uint8_t), &closed);
-        std::cout << "[CLIENT RECEIVER] Number of bullets: " << static_cast<int>(cant_bullets)
-                  << std::endl;
-
-        uint8_t aux;
-        for (uint8_t i = 0; i < cant_bullets; i++) {
-            this->socket->recvall(&aux, sizeof(uint8_t), &closed);
-            uint8_t bulletId = static_cast<uint8_t>(aux);
-            std::cout << "[CLIENT RECEIVER BULLET] Bullet ID: " << static_cast<int>(bulletId)
-                      << std::endl;
-
-            this->socket->recvall(&aux, sizeof(uint8_t), &closed);
-            int bullet_damage = static_cast<int>(aux);
-            std::cout << "[CLIENT RECEIVER BULLET] Damage: " << bullet_damage << std::endl;
-
-            this->socket->recvall(&aux, sizeof(uint8_t), &closed);
-            int bullet_speed = static_cast<int>(aux);
-            std::cout << "[CLIENT RECEIVER BULLET] Speed: " << bullet_speed << std::endl;
-
-            this->socket->recvall(&aux, sizeof(uint8_t), &closed);
-            uint8_t bullet_x = static_cast<uint8_t>(aux);
-            std::cout << "[CLIENT RECEIVER BULLET] X: " << static_cast<int>(bullet_x) << std::endl;
-
-            this->socket->recvall(&aux, sizeof(uint8_t), &closed);
-            uint8_t bullet_y = static_cast<uint8_t>(aux);
-            std::cout << "[CLIENT RECEIVER BULLET] Y: " << static_cast<int>(bullet_y) << std::endl;
-
-            this->socket->recvall(&aux, sizeof(uint8_t), &closed);
-            int shooterId = static_cast<int>(aux);
-            std::cout << "[CLIENT RECEIVER BULLET] Shooter ID: " << shooterId << std::endl;
-
-            BulletDTO bullet(bullet_x, bullet_y, bulletId, bullet_damage, bullet_speed, shooterId);
-            bullets.push_back(bullet);
-        }
-    } catch (const std::exception& e) {
-        std::cerr << "[CLIENT RECEIVER] Error in receiveBullets: " << e.what() << std::endl;
-    }
-    return bullets;
-}
-
-std::vector<ItemDTO> ReceiverThread::receiveItems() {
-    std::vector<ItemDTO> items;
-    try {
-        uint8_t cant_items;
-        this->socket->recvall(&cant_items, sizeof(uint8_t), &closed);
-        std::cout << "[CLIENT RECEIVER] Number of items: " << static_cast<int>(cant_items)
-                  << std::endl;
-
-        uint8_t aux;
-        for (uint8_t i = 0; i < cant_items; i++) {
-            this->socket->recvall(&aux, sizeof(uint8_t), &closed);
-            uint8_t item_x = static_cast<uint8_t>(aux);
-            std::cout << "[CLIENT RECEIVER ITEM] X: " << static_cast<int>(item_x) << std::endl;
-
-            this->socket->recvall(&aux, sizeof(uint8_t), &closed);
-            uint8_t item_y = static_cast<uint8_t>(aux);
-            std::cout << "[CLIENT RECEIVER ITEM] Y: " << static_cast<int>(item_y) << std::endl;
-
-            this->socket->recvall(&aux, sizeof(uint8_t), &closed);
-            ItemType item_type = static_cast<ItemType>(aux);
-            std::cout << "[CLIENT RECEIVER ITEM] Type: " << static_cast<int>(item_type)
-                      << std::endl;
-
-            ItemDTO item(item_x, item_y, item_type);
-            items.push_back(item);
-        }
-    } catch (const std::exception& e) {
-        std::cerr << "[CLIENT RECEIVER] Error in receiveItems: " << e.what() << std::endl;
-    }
-    return items;
-}
-
-std::vector<WeaponDTO> ReceiverThread::receiveWeapons() {
-    std::vector<WeaponDTO> weapons;
-    try {
-        uint8_t cant_weapons;
-        this->socket->recvall(&cant_weapons, sizeof(uint8_t), &closed);
-        std::cout << "[CLIENT RECEIVER] Number of weapons: " << static_cast<int>(cant_weapons)
-                  << std::endl;
-
-        uint8_t aux;
-        for (uint8_t i = 0; i < cant_weapons; i++) {
-            this->socket->recvall(&aux, sizeof(uint8_t), &closed);
-            uint8_t weaponId = static_cast<uint8_t>(aux);
-            std::cout << "[CLIENT RECEIVER WEAPON] Weapon ID: " << static_cast<int>(weaponId)
-                      << std::endl;
-
-            this->socket->recvall(&aux, sizeof(uint8_t), &closed);
-            int weapon_damage = static_cast<int>(aux);
-            std::cout << "[CLIENT RECEIVER WEAPON] Damage: " << weapon_damage << std::endl;
-
-            this->socket->recvall(&aux, sizeof(uint8_t), &closed);
-            int weapon_ammo = static_cast<int>(aux);
-            std::cout << "[CLIENT RECEIVER WEAPON] Ammo: " << weapon_ammo << std::endl;
-
-            this->socket->recvall(&aux, sizeof(uint8_t), &closed);
-            int shoot_speed = static_cast<int>(aux);
-            std::cout << "[CLIENT RECEIVER WEAPON] Shoot speed: " << shoot_speed << std::endl;
-
-            this->socket->recvall(&aux, sizeof(uint8_t), &closed);
-            uint8_t weapon_x = static_cast<uint8_t>(aux);
-            std::cout << "[CLIENT RECEIVER WEAPON] X: " << static_cast<int>(weapon_x) << std::endl;
-
-            this->socket->recvall(&aux, sizeof(uint8_t), &closed);
-            uint8_t weapon_y = static_cast<uint8_t>(aux);
-            std::cout << "[CLIENT RECEIVER WEAPON] Y: " << static_cast<int>(weapon_y) << std::endl;
-
-            this->socket->recvall(&aux, sizeof(uint8_t), &closed);
-            uint8_t bulletId = static_cast<uint8_t>(aux);
-            std::cout << "[CLIENT RECEIVER WEAPON] Bullet ID: " << static_cast<int>(bulletId)
-                      << std::endl;
-
-            this->socket->recvall(&aux, sizeof(uint8_t), &closed);
-            int bullet_damage = static_cast<int>(aux);
-            std::cout << "[CLIENT RECEIVER WEAPON] Bullet damage: " << bullet_damage << std::endl;
-
-            this->socket->recvall(&aux, sizeof(uint8_t), &closed);
-            int bullet_speed = static_cast<int>(aux);
-            std::cout << "[CLIENT RECEIVER WEAPON] Bullet speed: " << bullet_speed << std::endl;
-
-            this->socket->recvall(&aux, sizeof(uint8_t), &closed);
-            uint8_t bullet_x = static_cast<uint8_t>(aux);
-            std::cout << "[CLIENT RECEIVER WEAPON] Bullet X: " << static_cast<int>(bullet_x)
-                      << std::endl;
-
-            this->socket->recvall(&aux, sizeof(uint8_t), &closed);
-            uint8_t bullet_y = static_cast<uint8_t>(aux);
-            std::cout << "[CLIENT RECEIVER WEAPON] Bullet Y: " << static_cast<int>(bullet_y)
-                      << std::endl;
-
-            this->socket->recvall(&aux, sizeof(uint8_t), &closed);
-            int shooterId = static_cast<int>(aux);
-            std::cout << "[CLIENT RECEIVER WEAPON] Shooter ID: " << shooterId << std::endl;
-
-            WeaponDTO weapon(weaponId, weapon_x, weapon_y, weapon_damage, weapon_ammo);
-            weapons.push_back(weapon);
-        }
-    } catch (const std::exception& e) {
-        std::cerr << "[CLIENT RECEIVER] Error in receiveWeapons: " << e.what() << std::endl;
-    }
-    return weapons;
-}
-
-std::vector<TileDTO> ReceiverThread::receiveTiles() {
-    std::vector<TileDTO> tiles;
-    try {
-        uint8_t cant_tiles;
-        this->socket->recvall(&cant_tiles, sizeof(uint8_t), &closed);
-        std::cout << "[CLIENT RECEIVER] Number of tiles: " << static_cast<int>(cant_tiles)
-                  << std::endl;
-
-        uint8_t aux;
-        for (uint8_t i = 0; i < cant_tiles; i++) {
-            this->socket->recvall(&aux, sizeof(uint8_t), &closed);
-            uint8_t tile_x = static_cast<uint8_t>(aux);
-            std::cout << "[CLIENT RECEIVER TILE] X: " << static_cast<int>(tile_x) << std::endl;
-
-            this->socket->recvall(&aux, sizeof(uint8_t), &closed);
-            uint8_t tile_y = static_cast<uint8_t>(aux);
-            std::cout << "[CLIENT RECEIVER TILE] Y: " << static_cast<int>(tile_y) << std::endl;
-
-            TileDTO tile(tile_x, tile_y);
-            tiles.push_back(tile);
-        }
-    } catch (const std::exception& e) {
-        std::cerr << "[CLIENT RECEIVER] Error in receiveTiles: " << e.what() << std::endl;
-    }
-    return tiles;
-}
-
-void ReceiverThread::receiveGameDTO() {
-    try {
-        std::vector<PlayerDTO> players = receivePlayers();
-        std::vector<EnemyDTO> enemies = receiveEnemies();
-        std::vector<BulletDTO> bullets = receiveBullets();
-        std::vector<ItemDTO> items = receiveItems();
-        std::vector<WeaponDTO> weapons = receiveWeapons();
-        std::vector<TileDTO> tiles = receiveTiles();
-
-        std::unique_ptr<DTO> game =
-                std::make_unique<GameDTO>(players, enemies, bullets, items, weapons, tiles);
-        this->deserializer.deserialize_gameMsg(game);
-        std::cout << "[CLIENT RECEIVER] Game DTO received and deserialized" << std::endl;
-    } catch (const std::exception& e) {
-        std::cerr << "[CLIENT RECEIVER] Error in receiveGameDTO: " << e.what() << std::endl;
-    }
-}
-
-void ReceiverThread::receiveGamesList() {
-    try {
-        uint8_t gamesAmount;
-        socket->recvall(&gamesAmount, sizeof(uint8_t), &closed);
-        std::cout << "[CLIENT RECEIVER] Number of games: " << static_cast<int>(gamesAmount)
-                  << std::endl;
-
-        this->was_closed.store(closed);
-        if (this->was_closed.load()) {
-            std::cout << "[CLIENT RECEIVER] Connection closed, exiting receiveGamesList"
-                      << std::endl;
-            return;
-        }
-        std::unordered_map<uint8_t, GameInfo> gamesMap;
-        for (int i = 0; i < gamesAmount; i++) {
-            uint8_t gameId;
-            socket->recvall(&gameId, sizeof(uint8_t), &closed);
-            std::cout << "[CLIENT RECEIVER] Game ID: " << static_cast<int>(gameId) << std::endl;
-
-            this->was_closed.store(closed);
-            if (this->was_closed.load()) {
-                std::cout << "[CLIENT RECEIVER] Connection closed, exiting receiveGamesList"
-                          << std::endl;
-                return;
-            }
-            char nameLength;
-            socket->recvall(&nameLength, sizeof(char), &closed);
-            std::cout << "[CLIENT RECEIVER] Game name length: " << static_cast<int>(nameLength)
-                      << std::endl;
-
-            this->was_closed.store(closed);
-            if (this->was_closed.load()) {
-                std::cout << "[CLIENT RECEIVER] Connection closed, exiting receiveGamesList"
-                          << std::endl;
-                return;
-            }
-            std::string name;
-            name.resize(nameLength);
-            socket->recvall(&name[0], nameLength, &closed);
-            std::cout << "[CLIENT RECEIVER] Game name: " << name << std::endl;
-
-            this->was_closed.store(closed);
-            if (this->was_closed.load()) {
-                std::cout << "[CLIENT RECEIVER] Connection closed, exiting receiveGamesList"
-                          << std::endl;
-                return;
-            }
-            uint8_t maxPlayers;
-            socket->recvall(&maxPlayers, sizeof(uint8_t), &closed);
-            std::cout << "[CLIENT RECEIVER] Max players: " << static_cast<int>(maxPlayers)
-                      << std::endl;
-
-            this->was_closed.store(closed);
-            if (this->was_closed.load()) {
-                std::cout << "[CLIENT RECEIVER] Connection closed, exiting receiveGamesList"
-                          << std::endl;
-                return;
-            }
-            uint8_t currentPlayers;
-            socket->recvall(&currentPlayers, sizeof(uint8_t), &closed);
-            std::cout << "[CLIENT RECEIVER] Current players: " << static_cast<int>(currentPlayers)
-                      << std::endl;
-
-            this->was_closed.store(closed);
-            if (this->was_closed.load()) {
-                std::cout << "[CLIENT RECEIVER] Connection closed, exiting receiveGamesList"
-                          << std::endl;
-                return;
-            }
-
-            GameInfo gameInfo = GameInfo(gameId, name, maxPlayers, currentPlayers);
-            gamesMap[gameId] = gameInfo;
-        }
-        std::unique_ptr<DTO> message = std::make_unique<GamesListDTO>(gamesMap);
-        this->deserializer.deserialize_lobbyMsg(message);
-        std::cout << "[CLIENT RECEIVER] Games list received and deserialized" << std::endl;
-    } catch (const std::exception& e) {
-        std::cerr << "[CLIENT RECEIVER] Error in receiveGamesList: " << e.what() << std::endl;
-    }
-}
-void ReceiverThread::receiveMapsList() {
-    try {
-        uint8_t mapsAmount;
-        socket->recvall(&mapsAmount, sizeof(uint8_t), &closed);
-        std::cout << "[CLIENT RECEIVER] Received maps amount: " << static_cast<int>(mapsAmount)
-                  << std::endl;
-        this->was_closed.store(closed);
-        if (this->was_closed.load()) {
-            std::cout << "[CLIENT RECEIVER] Connection closed, exiting receiveMapsList"
-                      << std::endl;
-            return;
-        }
-        std::unordered_map<uint8_t, std::string> mapsMap;
-        for (int i = 0; i < mapsAmount; i++) {
-            uint8_t mapId;
-            socket->recvall(&mapId, sizeof(uint8_t), &closed);
-            std::cout << "[CLIENT RECEIVER] Received map ID: " << static_cast<int>(mapId)
-                      << std::endl;
-            this->was_closed.store(closed);
-            if (this->was_closed.load()) {
-                std::cout << "[CLIENT RECEIVER] Connection closed, exiting receiveMapsList"
-                          << std::endl;
-                return;
-            }
-            uint8_t nameLength;
-            socket->recvall(&nameLength, sizeof(uint8_t), &closed);
-            std::cout << "[CLIENT RECEIVER] Received name length: " << static_cast<int>(nameLength)
-                      << std::endl;
-            this->was_closed.store(closed);
-            if (this->was_closed.load()) {
-                std::cout << "[CLIENT RECEIVER] Connection closed, exiting receiveMapsList"
-                          << std::endl;
-                return;
-            }
-            std::string name;
-            name.resize(nameLength);
-            socket->recvall(&name[0], nameLength, &closed);
-            std::cout << "[CLIENT RECEIVER] Received map name: " << name << std::endl;
-            this->was_closed.store(closed);
-            if (this->was_closed.load()) {
-                std::cout << "[CLIENT RECEIVER] Connection closed, exiting receiveMapsList"
-                          << std::endl;
-                return;
-            }
-            mapsMap[mapId] = name;
-        }
-        std::unique_ptr<DTO> message = std::make_unique<MapsListDTO>(mapsMap);
-        this->deserializer.deserialize_lobbyMsg(message);
-        std::cout << "[CLIENT RECEIVER] Maps list received and deserialized" << std::endl;
-    } catch (const std::exception& e) {
-        std::cerr << "[CLIENT RECEIVER] Error in receiveMapsList: " << e.what() << std::endl;
-    }
-}
-
-void ReceiverThread::receiveLobbyDTO() {
-    try {
-        char lobbyTypeChar;
-        socket->recvall(&lobbyTypeChar, sizeof(char), &closed);
-        std::cout << "[CLIENT RECEIVER] Received lobby type: " << static_cast<int>(lobbyTypeChar)
-                  << std::endl;
-
-        this->was_closed.store(closed);
-        if (this->was_closed.load()) {
-            std::cout << "[CLIENT RECEIVER] Connection closed, exiting receiveLobbyDTO"
-                      << std::endl;
-            return;
-        }
-        if (!DTOValidator::validateLobbyState(lobbyTypeChar)) {
-            std::cout << "[CLIENT RECEIVER] Invalid lobby state received, ignoring" << std::endl;
-            return;
-        }
-        auto lobbyState = static_cast<LobbyState>(lobbyTypeChar);
-        if (lobbyState == LobbyState::GAMES_LIST) {
-            this->receiveGamesList();
-        }
-    } catch (const std::exception& e) {
-        std::cerr << "[CLIENT RECEIVER] Error in receiveLobbyDTO: " << e.what() << std::endl;
+        default:
+            std::cout << "[CLIENT RECEIVER] Unknown DTO type received." << std::endl;
+            break;
     }
 }
 
 void ReceiverThread::run() {
     try {
         uint8_t playerId;
-        socket->recvall(&playerId, sizeof(uint8_t), &closed);
-        std::cout << "[CLIENT RECEIVER] Player ID: " << static_cast<int>(playerId) << std::endl;
+        this->protocol.receivePlayerId(playerId);
         this->deserializer.setPlayerId(playerId);
 
         while (!this->was_closed.load() && _keep_running) {
+            std::cout << "[CLIENT RECEIVER] Waiting for DTO type." << std::endl;
             try {
                 char dtoTypeChar;
-                socket->recvall(&dtoTypeChar, sizeof(char), &closed);
-                std::cout << "[CLIENT RECEIVER] Received DTO type: "
-                          << static_cast<int>(dtoTypeChar) << std::endl;
-
-                this->was_closed.store(closed);
+                this->protocol.receiveDTOType(dtoTypeChar);
                 if (this->was_closed.load()) {
-                    std::cout << "[CLIENT RECEIVER] Connection closed, exiting run loop"
-                              << std::endl;
                     return;
                 }
+                std::cout << "[CLIENT RECEIVER] Received DTO type: " << static_cast<int>(dtoTypeChar) << std::endl;
                 if (!DTOValidator::validateDTOType(dtoTypeChar)) {
-                    std::cout << "[CLIENT RECEIVER] Invalid DTO type received, ignoring"
-                              << std::endl;
+                    std::cerr << "[CLIENT RECEIVER] Invalid DTO type received." << std::endl;
                     continue;
                 }
-                auto dtoType = static_cast<DTOType>(dtoTypeChar);
-                std::cout << "[CLIENT RECEIVER] DTO type post cast: " << static_cast<int>(dtoType)
-                          << std::endl;
-                switch (dtoType) {
-                    case DTOType::GAME_DTO:
-                        std::cout << "[CLIENT RECEIVER] Receiving game DTO." << std::endl;
-                        this->receiveGameDTO();
-                        break;
-                    case DTOType::COMMAND_DTO:
-                        std::cout << "[CLIENT RECEIVER] Receiving command DTO." << std::endl;
-                        this->receiveCommandDTO();
-                        break;
-                    default:
-                        std::cout << "[CLIENT RECEIVER] Unknown DTO type received." << std::endl;
-                        break;
-                }
+                this->receiveDTOByType(dtoTypeChar);
             } catch (const std::exception& e) {
                 if (!this->was_closed.load() || _keep_running) {
                     std::cerr << "[CLIENT RECEIVER] ReceiverThread error: " << e.what()
@@ -581,4 +66,8 @@ void ReceiverThread::run() {
     } catch (const std::exception& e) {
         std::cerr << "[CLIENT RECEIVER] Error in run: " << e.what() << std::endl;
     }
+}
+
+void ReceiverThread::stopReceiving() {
+    this->protocol.close();
 }

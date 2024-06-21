@@ -44,6 +44,8 @@ public:
     std::vector<TileDTO> getTiles() const;
 
     DTOType getType() const;
+
+    virtual std::unique_ptr<DTO> clone() const override;
 };
 
 #endif  // GAME_DTO_H

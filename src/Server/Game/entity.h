@@ -13,7 +13,7 @@
 
 class Entity {
 protected:
-    Vector<uint8_t> pos;
+    Vector<uint32_t> pos;
     uint8_t id;
     uint8_t health;
     uint8_t initialHealth;
@@ -22,9 +22,9 @@ protected:
     bool isDead = false;
 
 public:
-    Entity(Vector<uint8_t> pos, uint8_t id, uint8_t health, Direction dir, EntityType type);
+    Entity(Vector<uint32_t> pos, uint8_t id, uint8_t health, Direction dir, EntityType type);
 
-    Vector<uint8_t> getPosition() const;
+    Vector<uint32_t> getPosition() const;
 
     uint8_t getId() const;
 
@@ -32,7 +32,7 @@ public:
 
     uint8_t getHealth() const;
 
-    Vector<uint8_t> getMapPosition(uint8_t movesPerCell) const;
+    Vector<uint32_t> getMapPosition(uint8_t movesPerCell) const;
 
     bool getIsDead() const;
 
@@ -40,7 +40,7 @@ public:
 
     virtual void die(float time);
 
-    void setPosition(Vector<uint8_t> newPosition);
+    void setPosition(Vector<uint32_t> newPosition);
 
     void setDirection(Direction newDir);
 
@@ -49,7 +49,7 @@ public:
     uint8_t getDistanceTo(std::shared_ptr<Entity> other) const;
 
     void heal(uint8_t healQnt);
-
+    
     EntityType getType() const;
 };
 
