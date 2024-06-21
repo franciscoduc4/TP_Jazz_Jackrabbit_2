@@ -84,7 +84,7 @@ void GameLoopThread::processCommands(double deltaTime) {
                     std::cerr << "[GAME LOOP] Failed to create handler" << std::endl;
                     continue;
                 }
-
+                
                 std::cout << "[GAME LOOP] Executing handler" << std::endl;
                 handler->execute(gameMap, keepRunning, deltaTime);
 

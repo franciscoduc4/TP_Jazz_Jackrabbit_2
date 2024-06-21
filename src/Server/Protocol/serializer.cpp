@@ -85,6 +85,7 @@ void Serializer::sendCommand(const std::unique_ptr<CommandDTO>& dto) {
         case Command::START_GAME:
             std::cout << "[SERVER SERIALIZER] Start game command, no additional data to send"
                       << std::endl;
+            inGame.store(true);
             break;
         case Command::GAME_UPDATE:
             std::cout << "[SERVER SERIALIZER] Game update command. Preparing to send GameInfo."

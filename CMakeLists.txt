@@ -122,26 +122,26 @@ endif()
 
 # ------------------------------------------------------------------------------------
 # Level Editor
-set(CMAKE_AUTOUIC ON)
-set(CMAKE_AUTOMOC ON)
-set(CMAKE_AUTORCC ON)
+#set(CMAKE_AUTOUIC ON)
+#set(CMAKE_AUTOMOC ON)
+#set(CMAKE_AUTORCC ON)
 
-file(GLOB_RECURSE LEVELEDITOR_SOURCES
-        ${PROJECT_SOURCE_DIR}/LevelEditor/*.cpp
-        ${PROJECT_SOURCE_DIR}/LevelEditor/*.h
-)
+#file(GLOB_RECURSE LEVELEDITOR_SOURCES
+#        ${PROJECT_SOURCE_DIR}/LevelEditor/*.cpp
+#        ${PROJECT_SOURCE_DIR}/LevelEditor/*.h
+#)
 
-set(UI_FILES
-        ${PROJECT_SOURCE_DIR}/LevelEditor/leveleditor.ui
-)
+#set(UI_FILES
+#        ${PROJECT_SOURCE_DIR}/LevelEditor/leveleditor.ui
+#)
 
-qt5_wrap_ui(UIS_HEADERS ${UI_FILES})
-qt5_add_resources(RESOURCES ${PROJECT_SOURCE_DIR}/LevelEditor/resources.qrc)
+#qt5_wrap_ui(UIS_HEADERS ${UI_FILES})
+#qt5_add_resources(RESOURCES ${PROJECT_SOURCE_DIR}/LevelEditor/resources.qrc)
 
-add_executable(leveleditor ${LEVELEDITOR_SOURCES} ${UIS_HEADERS} ${RESOURCES})
-target_link_libraries(leveleditor common Qt5::Widgets Qt5::Core yaml-cpp fmt::fmt -pthread)
-target_include_directories(leveleditor PUBLIC ${PROJECT_SOURCE_DIR}/src/Common)
-set_target_properties(leveleditor PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
+#add_executable(leveleditor ${LEVELEDITOR_SOURCES} ${UIS_HEADERS} ${RESOURCES})
+#target_link_libraries(leveleditor common Qt5::Widgets Qt5::Core yaml-cpp fmt::fmt -pthread)
+#target_include_directories(leveleditor PUBLIC ${PROJECT_SOURCE_DIR}/src/Common)
+#set_target_properties(leveleditor PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
 
 # ------------------------------------------------------------------------------------
 # Tests
