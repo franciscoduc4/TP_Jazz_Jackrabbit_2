@@ -61,32 +61,43 @@ void Character::recvDamage(uint8_t dmg, float time) {
 }
 
 void Character::update(float time) {
+    // std::cout << "[CHARACTER] Updating character ID: " << static_cast<int>(id) << std::endl;
+    // try {
+    //     if (isIntoxicated) {
+    //         intoxicatedTime -= time;
+    //         if (intoxicatedTime <= 0) {
+    //             isIntoxicated = false;
+    //             intoxicatedTime = 0;
+    //             std::cout << "[CHARACTER] Character ID: " << static_cast<int>(id)
+    //                       << " no longer intoxicated" << std::endl;
+    //         }
+    //     }
+
+    //     if (!state) {
+    //         std::cerr << "[CHARACTER] Null state for character ID: " << static_cast<int>(id)
+    //                   << std::endl;
+    //         return;
+    //     }
+    //     auto newState = std::unique_ptr<State>(state->exec(time));
+
+    //     if (newState) {
+    //         state = std::move(newState);
+    //     }
+    // } catch (const std::exception& e) {
+    //     std::cerr << "[CHARACTER] Error updating character ID: " << static_cast<int>(id) << ": "
+    //               << e.what() << std::endl;
+    // }
+
     std::cout << "[CHARACTER] Updating character ID: " << static_cast<int>(id) << std::endl;
-    try {
-        if (isIntoxicated) {
-            intoxicatedTime -= time;
-            if (intoxicatedTime <= 0) {
-                isIntoxicated = false;
-                intoxicatedTime = 0;
-                std::cout << "[CHARACTER] Character ID: " << static_cast<int>(id)
-                          << " no longer intoxicated" << std::endl;
-            }
-        }
-
-        if (!state) {
-            std::cerr << "[CHARACTER] Null state for character ID: " << static_cast<int>(id)
-                      << std::endl;
-            return;
-        }
-        auto newState = std::unique_ptr<State>(state->exec(time));
-
-        if (newState) {
-            state = std::move(newState);
-        }
-    } catch (const std::exception& e) {
-        std::cerr << "[CHARACTER] Error updating character ID: " << static_cast<int>(id) << ": "
-                  << e.what() << std::endl;
+    if (!state) {
+        std::cerr << "[CHARACTER] Null state for character ID: " << static_cast<int>(id) << std::endl;
+        return;
     }
+    auto newState = std::unique_ptr<State>(state->exec(time));
+    if (newState) {
+        state = std::move(newState);
+    }
+
 }
 void Character::shoot(float time) {
     std::cout << "[CHARACTER] Character ID: " << static_cast<int>(id) << " shooting" << std::endl;
@@ -104,7 +115,9 @@ void Character::shoot(float time) {
 void Character::moveRight(float time) {
     std::cout << "[CHARACTER] Character ID: " << static_cast<int>(id) << " moving right"
               << std::endl;
-    auto newState = std::unique_ptr<State>(state->move(Direction::RIGHT, time));
+    //auto newState = std::unique_ptr<State>(state->move(Direction::RIGHT, time));
+    auto newState = std::make_unique<MovingState>(*this, Direction::RIGHT);
+
     if (newState) {
         std::cout << "[CHARACTER] Character ID: " << static_cast<int>(id) << " moving right"
                   << std::endl;
@@ -115,7 +128,9 @@ void Character::moveRight(float time) {
 void Character::moveLeft(float time) {
     std::cout << "[CHARACTER] Character ID: " << static_cast<int>(id) << " moving left"
               << std::endl;
-    auto newState = std::unique_ptr<State>(state->move(Direction::LEFT, time));
+    //auto newState = std::unique_ptr<State>(state->move(Direction::LEFT, time));
+    auto newState = std::make_unique<MovingState>(*this, Direction::LEFT);
+
     if (newState) {
         state = std::move(newState);
     }
@@ -246,10 +261,8 @@ void Character::moveRight() {
     gameMap.moveObject(pos, mapPosition, Direction::RIGHT);
     pos = newPos;
 
-    // std::cout << "[CHARACTER] Character ID: " << static_cast<int>(id) << " moved right"
-    //           << " map position x: " << int(mapPosition.x) << std::endl;
 
-    std::cout << "[CHARACTER] Character ID: " << static_cast<int>(id) << " new x : "
+    std::cout << "[CHARACTER] NEW POS Character ID: " << static_cast<int>(id) << " new x : "
               << int(pos.x) << std::endl;
 }
 
@@ -267,11 +280,10 @@ void Character::moveLeft() {
     if (!gameMap.isValidMapPosition(newPos))
         return;
 
-    //gameMap.moveObject(pos, mapPosition, Direction::LEFT);
+    gameMap.moveObject(pos, mapPosition, Direction::LEFT);
     pos = newPos;
-    // std::cout << "[CHARACTER] Character ID: " << static_cast<int>(id) << " moved left"
-    //           << " map position x: " << int(mapPosition.x) << std::endl;
-    std::cout << "[CHARACTER] Character ID: " << static_cast<int>(id) << " new x : "
+
+    std::cout << "[CHARACTER] NEW POS Character ID: " << static_cast<int>(id) << " new x : "
               << int(pos.x) << std::endl;
 }
 

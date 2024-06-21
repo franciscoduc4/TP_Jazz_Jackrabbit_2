@@ -8,6 +8,8 @@ public:
     FullFloor(GameMap& gameMap, Vector<uint32_t> position);
 
      void update(double deltaTime) override;
+
+    ObstacleType getObstacleType() const { return ObstacleType::FULL_FLOOR; }
 };
 
 #endif // FULLFLOOR_H

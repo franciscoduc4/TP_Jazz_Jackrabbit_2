@@ -8,6 +8,8 @@ public:
     Food(GameMap& gameMap, Vector<uint32_t> position);
 
     void update(double deltaTime) override;
+
+    ItemType getItemType() const  { return ItemType::FOOD;}
 };
 
 #endif // FOOD_H

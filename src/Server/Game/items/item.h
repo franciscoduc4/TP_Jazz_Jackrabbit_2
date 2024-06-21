@@ -4,14 +4,20 @@
 #include "../entity.h"
 #include "../../../Common/vector.h"
 #include "../../../Common/Types/item.h"
+#include "../../../Common/DTO/item.h"
 
 class GameMap;
-
 class Item : public Entity {
+private:
+    Vector<uint32_t> position;
 public:
     Item(GameMap& gameMap, Vector<uint32_t> position);
 
-    virtual void update(double deltaTime) override = 0;
+    void update(double deltaTime) override;
+
+    ItemDTO getDTO();
+
+    virtual ItemType getItemType() const = 0;
 };
 
 #endif // ITEM_H

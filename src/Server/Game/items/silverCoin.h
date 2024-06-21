@@ -8,6 +8,9 @@ public:
     SilverCoin(GameMap& gameMap, Vector<uint32_t> position);
 
     void update(double deltaTime) override;
+
+    ItemType getItemType() const { return ItemType::SILVER_COIN;}
+    
 };
 
 #endif // SILVERCOIN_H

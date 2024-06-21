@@ -1,7 +1,13 @@
 
 #include "obstacle.h"
 
-Obstacle::Obstacle(GameMap& gameMap, Vector<uint32_t> position) : Entity{{0,0}, 0, 0, Direction::UP, EntityType::OBSTACLE} {}
+Obstacle::Obstacle(GameMap& gameMap, Vector<uint32_t> position)
+    : Entity(position, 0, 1, Direction::UP, EntityType::OBSTACLE), position(position) {}
 
-// No es necesario implementar update aquí, ya que es una clase abstracta.
+void Obstacle::update(double deltaTime) {
+    // Do nothing
+}
 
+TileDTO Obstacle::getDTO() {
+    return TileDTO{position.x, position.y, getObstacleType()};
+}

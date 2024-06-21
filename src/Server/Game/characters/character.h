@@ -22,6 +22,8 @@
 #include "states/shooting.h"
 #include "states/specialAttack.h"
 #include "states/state.h"
+#include "states/moving.h"
+
 
 class GameMap;
 

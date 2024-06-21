@@ -10,10 +10,14 @@
 #include "../../Common/DTO/game.h"
 #include "../../Common/Types/character.h"
 #include "../../Common/Types/direction.h"
+#include "../../Common/Types/obstacles.h"
+#include "../../Common/Types/item.h"
 #include "../../Common/Types/enemy.h"
 #include "../../Common/vector.h"
 #include "characters/character.h"
 #include "enemies/enemy.h"
+#include "items/item.h"
+#include "obstacles/obstacle.h"
 
 #include "entity.h"
 #include "entityFactory.h"
@@ -24,9 +28,9 @@ private:
     std::map<Vector<uint32_t>, std::shared_ptr<Entity>> mapGrid;
     std::map<uint8_t, std::shared_ptr<Character>> characters;
     std::map<uint8_t, std::shared_ptr<Enemy>> enemies;
-    // std::map<uint8_t, std::shared_ptr<Bullet>> bullets;
-    // std::map<uint8_t, std::shared_ptr<Item>> items;
-    std::vector<TileDTO> tiles;
+    std::map<uint8_t, std::shared_ptr<Item>> items;
+    std::map<uint8_t, std::shared_ptr<Obstacle>> obstacles;
+
     EntityFactory entityFactory;
     uint8_t entityCount;
     uint8_t movesPerCell;
@@ -88,7 +92,9 @@ public:
     Vector<uint32_t> getInitialPositionForCharacterType(CharacterType type);
 
 
-    EnemyType getEnemyType(const std::string& type);
+    EnemyType getEnemyType(const std::string& typeStr);
+    ObstacleType getObstacleType(const std::string& typeStr);
+    ItemType getItemType(const std::string& typeStr);
 
     uint32_t getMaxXPos() { return size.x - static_cast<uint32_t>(movesPerCell); }
 

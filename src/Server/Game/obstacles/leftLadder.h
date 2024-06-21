@@ -8,6 +8,8 @@ public:
     LeftLadder(GameMap& gameMap, Vector<uint32_t> position);
 
      void update(double deltaTime) override;
+
+    ObstacleType getObstacleType() const { return ObstacleType::LEFT_LADDER; }
 };
 
 #endif // LEFTLADDER_H

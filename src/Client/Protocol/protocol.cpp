@@ -454,10 +454,10 @@ std::vector<TileDTO> ClientProtocol::receiveTiles() {
     try {
         uint32_t cant_tiles;
         if (!this->receive_uint32(cant_tiles)) return {};
-        std::cout << "[CLIENT RECEIVER] Number of tiles: " << static_cast<int>(cant_tiles)
-                  << std::endl;
+        std::cout << "[CLIENT RECEIVER] Number of tiles: " << static_cast<int>(cant_tiles) << std::endl;
 
         uint32_t aux32;
+        uint8_t aux8;  // Cambia esto para recibir el tipo de ObstacleType
         for (uint32_t i = 0; i < cant_tiles; i++) {
             if (!this->receive_uint32(aux32)) return {};
             uint32_t tile_x = aux32;
@@ -467,7 +467,11 @@ std::vector<TileDTO> ClientProtocol::receiveTiles() {
             uint32_t tile_y = aux32;
             std::cout << "[CLIENT RECEIVER TILE] Y: " << static_cast<int>(tile_y) << std::endl;
 
-            TileDTO tile(tile_x, tile_y);
+            if (!this->receive_uint8(aux8)) return {}; // Recibe el tipo de tile como uint8_t
+            ObstacleType tile_type = static_cast<ObstacleType>(aux8);
+            std::cout << "[CLIENT RECEIVER TILE] Type: " << static_cast<int>(tile_type) << std::endl;
+
+            TileDTO tile(tile_x, tile_y, tile_type);
             tiles.push_back(tile);
         }
     } catch (const std::exception& e) {
@@ -475,4 +479,6 @@ std::vector<TileDTO> ClientProtocol::receiveTiles() {
     }
     return tiles;
 }
+
+
 

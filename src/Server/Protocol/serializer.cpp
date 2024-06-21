@@ -307,10 +307,17 @@ std::vector<char> Serializer::serializeItemDTO(const std::unique_ptr<ItemDTO>& d
 std::vector<char> Serializer::serializeTileDTO(const std::unique_ptr<TileDTO>& dto) {
     std::vector<char> buffer;
     Serializer::insertPositionIntoBuffer(buffer, dto->getX(), dto->getY());
+
+    // Serializar el tipo de ObstacleType
+    ObstacleType type = dto->getObstacleType();
+    buffer.push_back(static_cast<char>(type));
+    
     std::cout << "[SERVER SERIALIZER TILE] Serialized tile at position: (" << (int)dto->getX()
-              << ", " << (int)dto->getY() << ")" << std::endl;
+              << ", " << (int)dto->getY() << "), Type: " << static_cast<int>(type) << std::endl;
+    
     return buffer;
 }
+
 
 std::vector<char> Serializer::serializeWeaponDTO(const std::unique_ptr<WeaponDTO>& dto) {
     std::vector<char> buffer;

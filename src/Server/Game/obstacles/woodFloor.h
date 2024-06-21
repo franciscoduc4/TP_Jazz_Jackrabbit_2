@@ -8,6 +8,8 @@ public:
     WoodFloor(GameMap& gameMap, Vector<uint32_t> position);
 
      void update(double deltaTime) override;
+
+    ObstacleType getObstacleType() const { return ObstacleType::WOOD_FLOOR; }
 };
 
 #endif // WOODFLOOR_H

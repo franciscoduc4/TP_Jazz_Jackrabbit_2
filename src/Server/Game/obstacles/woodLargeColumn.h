@@ -8,6 +8,8 @@ public:
     WoodLargeColumn(GameMap& gameMap, Vector<uint32_t> position);
 
     void update(double deltaTime) override;
+
+    ObstacleType getObstacleType() const { return ObstacleType::WOOD_LARGE_COLUMN; }
 };
 
 #endif // WOODLARGECOLUMN_H

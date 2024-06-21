@@ -36,6 +36,24 @@ void GameMap::loadMap(uint8_t mapId) {
             throw std::runtime_error("Map size must be positive non-zero values");
         }
 
+        // Cargar obstáculos
+        if (config["OBSTACLES"]) {
+            uint8_t obstacleId = 0;
+            for (const auto& obstacle : config["OBSTACLES"]) {
+                std::string obstacleType = obstacle.first.as<std::string>();
+                for (const auto& pos : obstacle.second) {
+                    Vector<uint32_t> position = {static_cast<uint32_t>(pos[0].as<int>()), static_cast<uint32_t>(pos[1].as<int>())};
+                    ObstacleType type = getObstacleType(obstacleType); 
+                    std::shared_ptr<Obstacle> obstaclePtr = entityFactory.createObstacle(type, position);
+                    if (obstaclePtr) {
+                        obstacles[obstacleId++] = obstaclePtr;
+                        std::cout << "[GAMEMAP] Obstacle start position set for obstacleType: " << obstacleType
+                                  << " at (" << position.x << ", " << position.y << ")" << std::endl;
+                    }
+                }
+            }
+        }
+
         if (config["ENEMIES"]) {
             for (const auto& enemy: config["ENEMIES"]) {
                 auto enemyType = enemy.first.as<std::string>();
@@ -53,25 +71,56 @@ void GameMap::loadMap(uint8_t mapId) {
                 }
             }
         }
+        // Cargar ítems
+        if (config["ITEMS"]) {
+            uint8_t itemId = 0;
+            for (const auto& item : config["ITEMS"]) {
+                std::string itemTypeStr = item.first.as<std::string>();
+                ItemType itemType = getItemType(itemTypeStr); // Asegúrate de tener esta función
+                for (const auto& pos : item.second) {
+                    Vector<uint32_t> position = {static_cast<uint32_t>(pos[0].as<int>()), static_cast<uint32_t>(pos[1].as<int>())};
+                    std::shared_ptr<Item> itemPtr = entityFactory.createItem(itemType, position);
+                    if (itemPtr) {
+                        items[itemId++] = itemPtr;
+                        std::cout << "[GAMEMAP] Item start position set for itemType: " << itemTypeStr
+                                  << " at (" << position.x << ", " << position.y << ")" << std::endl;
+                    }
+                }
+            }
+        }
+        
     } catch (const std::exception& e) {
         std::cerr << "[GAMEMAP] Error loading map: " << e.what() << std::endl;
         throw;
     }
 }
 
-EnemyType GameMap::getEnemyType(const std::string& type) {
-    try {
-        if (type == "TURTLES")
-            return EnemyType::TURTLE;
-        if (type == "SCHWARZENGUARDS")
-            return EnemyType::SCHWARZENGUARD;
-        if (type == "YELLOWMONS")
-            return EnemyType::YELLOWMON;
-        throw std::runtime_error("Unknown enemy type");
-    } catch (const std::exception& e) {
-        std::cerr << "[GAMEMAP] Error getting enemy type: " << e.what() << std::endl;
-        throw;
-    }
+
+ObstacleType GameMap::getObstacleType(const std::string& typeStr) {
+    if (typeStr == "FULL_FLOOR") return ObstacleType::FULL_FLOOR;
+    if (typeStr == "LARGE_WOOD_FLOOR") return ObstacleType::LARGE_WOOD_FLOOR;
+    if (typeStr == "LEFT_LADDER") return ObstacleType::LEFT_LADDER;
+    if (typeStr == "LONG_PLATFORM") return ObstacleType::LONG_PLATFORM;
+    if (typeStr == "RIGHT_LADDER") return ObstacleType::RIGHT_LADDER;
+    if (typeStr == "SMALL_PLATFORM") return ObstacleType::SMALL_PLATFORM;
+    if (typeStr == "WOOD_FLOOR") return ObstacleType::WOOD_FLOOR;
+    if (typeStr == "WOOD_LARGE_COLUMN") return ObstacleType::WOOD_LARGE_COLUMN;
+    throw std::runtime_error("Unknown obstacle type: " + typeStr);
+}
+
+EnemyType GameMap::getEnemyType(const std::string& typeStr) {
+    if (typeStr == "TURTLES") return EnemyType::TURTLE;
+    if (typeStr == "YELLOWMONS") return EnemyType::YELLOWMON;
+    if (typeStr == "SCHWARZENGUARDS") return EnemyType::SCHWARZENGUARD;
+    throw std::runtime_error("Unknown enemy type: " + typeStr);
+}
+
+ItemType GameMap::getItemType(const std::string& typeStr) {
+    if (typeStr == "FOOD") return ItemType::FOOD;
+    if (typeStr == "GEMS") return ItemType::GEM;
+    if (typeStr == "SILVER_COINS") return ItemType::SILVER_COIN;
+    if (typeStr == "GOLD_COINS") return ItemType::GOLD_COIN;
+    throw std::runtime_error("Unknown item type: " + typeStr);
 }
 
 std::vector<std::shared_ptr<Entity>> GameMap::getObjectsInShootRange(Vector<uint32_t> mapPosition,
@@ -141,15 +190,15 @@ void GameMap::moveObject(Vector<uint32_t>& position, Vector<uint32_t> mapPositio
             return;
         }
 
-        if (!handleMovement(position, mapPosition, newPosition, newMapPosition)) {
-            if (mapGrid.find(newMapPosition) != mapGrid.end()) {
-                character->interact(mapGrid[newMapPosition]);
-            } else {
-                std::cerr << "[GAMEMAP] New map position (" << newMapPosition.x << ", " << newMapPosition.y << ") is empty" << std::endl;
-            }
+        if (mapGrid.find(newMapPosition) == mapGrid.end()) {
+            mapGrid[newMapPosition] = it->second;
+            mapGrid.erase(it);
+            character->setPosition(newPosition);
+            std::cout << "[GAMEMAP] Object moved from (" << mapPosition.x << ", " << mapPosition.y << ") to (" 
+            << newMapPosition.x << ", " << newMapPosition.y << ")" << std::endl;
+        } else {
+            character->interact(mapGrid[newMapPosition]);
         }
-        std::cout << "[GAMEMAP] Object's new position: " << position << std::endl;
-
 
     } catch (const std::exception& e) {
         std::cerr << "[GAMEMAP] Error moving object: " << e.what() << std::endl;
@@ -326,48 +375,55 @@ std::shared_ptr<Entity> GameMap::getEntityAt(Vector<uint32_t> mapPosition) {
 
 std::unique_ptr<GameDTO> GameMap::getGameDTO() {
     std::vector<PlayerDTO> playersDTO;
-    std::vector<EnemyDTO> enemies;
-    std::vector<BulletDTO> bullets;
-    std::vector<ItemDTO> items;
-    std::vector<WeaponDTO> weapons;
-    std::vector<TileDTO> tiles;
+    std::vector<EnemyDTO> enemiesDTO;
+    std::vector<BulletDTO> bulletsDTO;
+    std::vector<ItemDTO> itemsDTO;
+    std::vector<WeaponDTO> weaponsDTO;
+    std::vector<TileDTO> tilesDTO;
 
     try {
-        for (const auto& character: characters) {
-            playersDTO.push_back(character.second->getDTO());
-            std::cout << "[GAMEMAP] Character added to DTO" << std::endl;
+        // Recopilar información de los jugadores
+        for (const auto& [playerId, character] : characters) {
+            playersDTO.push_back(character->getDTO());
+            std::cout << "[GAMEMAP] Character added to DTO with ID: " << static_cast<int>(playerId) << std::endl;
         }
-        for (const auto& [pos, entity]: mapGrid) {
+
+        // Recopilar información de los enemigos, ítems, armas, balas y tiles
+        for (const auto& [pos, entity] : mapGrid) {
             switch (entity->getType()) {
                 case EntityType::ENEMY:
-                    enemies.push_back(std::dynamic_pointer_cast<Enemy>(entity)->getDTO());
+                    enemiesDTO.push_back(std::dynamic_pointer_cast<Enemy>(entity)->getDTO());
                     break;
-                // case EntityType::BULLET:
-                //     bullets.push_back(std::dynamic_pointer_cast<Bullet>(entity)->getDTO());
-                //     break;
-                // case EntityType::ITEM:
-                //     items.push_back(std::dynamic_pointer_cast<Item>(entity)->getDTO());
-                //     break;
+                case EntityType::ITEM:
+                    itemsDTO.push_back(std::dynamic_pointer_cast<Item>(entity)->getDTO());
+                    break;
                 // case EntityType::WEAPON:
-                //     weapons.push_back(std::dynamic_pointer_cast<Weapon>(entity)->getDTO());
+                //     weaponsDTO.push_back(std::dynamic_pointer_cast<Weapon>(entity)->getDTO());
                 //     break;
-                // case EntityType::TILE:
-                //      tiles.push_back(std::dynamic_pointer_cast<Tile>(entity)->getDTO());
-                //      break;
+                // case EntityType::BULLET:
+                //     bulletsDTO.push_back(std::dynamic_pointer_cast<Bullet>(entity)->getDTO());
+                //     break;
+                case EntityType::TILE:
+                    tilesDTO.push_back(std::dynamic_pointer_cast<Obstacle>(entity)->getDTO());
+                    break;
                 default:
+                    std::cerr << "[GAMEMAP] Unknown entity type at position: (" << pos.x << ", " << pos.y << ")" << std::endl;
                     break;
             }
         }
-        std::cout << "[GAMEMAP] playersDTO size: " << playersDTO.size() << std::endl;
 
-        return std::make_unique<GameDTO>(playersDTO, enemies, bullets, items, weapons, tiles);
+        std::cout << "[GAMEMAP] playersDTO size: " << playersDTO.size() << std::endl;
+        std::cout << "[GAMEMAP] enemiesDTO size: " << enemiesDTO.size() << std::endl;
+        std::cout << "[GAMEMAP] itemsDTO size: " << itemsDTO.size() << std::endl;
+        std::cout << "[GAMEMAP] weaponsDTO size: " << weaponsDTO.size() << std::endl;
+        std::cout << "[GAMEMAP] bulletsDTO size: " << bulletsDTO.size() << std::endl;
+        std::cout << "[GAMEMAP] tilesDTO size: " << tilesDTO.size() << std::endl;
+
+        return std::make_unique<GameDTO>(playersDTO, enemiesDTO, bulletsDTO, itemsDTO, weaponsDTO, tilesDTO);
     } catch (const std::exception& e) {
         std::cerr << "[GAMEMAP] Error creating GameDTO: " << e.what() << std::endl;
         throw;
     }
-    std::cout << "[GAMEMAP] playersDTO size: " << playersDTO.size() << std::endl;
-
-    return std::make_unique<GameDTO>(playersDTO, enemies, bullets, items, weapons, tiles);
 }
 
 std::shared_ptr<Character> GameMap::getCharacter(uint8_t playerId) {

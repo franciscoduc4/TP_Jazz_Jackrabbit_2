@@ -8,6 +8,8 @@ public:
     LongPlatform(GameMap& gameMap, Vector<uint32_t> position);
 
      void update(double deltaTime) override;
+
+    ObstacleType getObstacleType() const { return ObstacleType::LONG_PLATFORM; }
 };
 
 #endif // LONGPLATFORM_H

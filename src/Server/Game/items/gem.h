@@ -8,6 +8,8 @@ public:
     Gem(GameMap& gameMap, Vector<uint32_t> position);
 
     void update(double deltaTime) override;
+
+    ItemType getItemType() const { return ItemType::GEM;}
 };
 
 #endif // GEM_H

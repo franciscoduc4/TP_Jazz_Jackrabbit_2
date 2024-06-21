@@ -17,6 +17,7 @@ MovingState::MovingState(Character& character, Direction direction):
 }
 
 std::unique_ptr<State> MovingState::exec(float time) {
+    std::cout << "[MOVE] MovingState::exec" << std::endl;
     return move(direction, time);
 }
 
@@ -37,6 +38,7 @@ std::unique_ptr<State> MovingState::move(Direction direction2, float time) {
     //     this->direction2 = direction2;
     //     return nullptr;
     // }
+    std::cout << "[MOVE] moving direction: " << static_cast<int>(direction2) << std::endl;
     switch (direction2) {
         case Direction::UP:
             character.moveUp();
