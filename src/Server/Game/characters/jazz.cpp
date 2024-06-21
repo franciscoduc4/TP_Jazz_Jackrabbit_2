@@ -10,3 +10,6 @@ Jazz::Jazz(GameMap& map, Vector<uint32_t> pos, uint8_t playerId):
 void Jazz::specialAttack(float time) {
     // Implement Jazz's special attack logic here
 }
+
+void Jazz::update(double deltaTime) {
+}

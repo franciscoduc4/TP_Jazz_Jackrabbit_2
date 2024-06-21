@@ -31,6 +31,9 @@ Character::Character(GameMap& gameMap, Vector<uint32_t> pos, uint8_t playerId, C
     currentWeapon = std::make_unique<Blaster>();
 }
 
+void Character::update(double time){
+}
+
 void Character::idle(float time) {
 
     auto newState = std::unique_ptr<State>(state->stopAction());

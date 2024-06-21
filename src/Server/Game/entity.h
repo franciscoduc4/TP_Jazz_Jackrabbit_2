@@ -23,6 +23,7 @@ protected:
 
 public:
     Entity(Vector<uint32_t> pos, uint8_t id, uint8_t health, Direction dir, EntityType type);
+    
 
     Vector<uint32_t> getPosition() const;
 
@@ -51,6 +52,11 @@ public:
     void heal(uint8_t healQnt);
     
     EntityType getType() const;
+
+    virtual void update(double deltaTime) = 0; 
+
+
+
 };
 
 #endif  // ENTITY_H

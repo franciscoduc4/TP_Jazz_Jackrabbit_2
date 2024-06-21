@@ -16,6 +16,8 @@ public:
     JumpingEnemy(GameMap& map, Vector<uint32_t> pos, uint8_t id);
 
     EnemyType getEnemyType() const override;
+
+    void update(double deltaTime) override;
 };
 
 #endif  // JUMPING_ENEMY_H

@@ -36,6 +36,8 @@ public:
 
     void update(std::vector<std::shared_ptr<Character>> characters, float time);
 
+    void update(double deltaTime) override;
+
     void recvDamage(uint8_t dmg, float time) override;
 
     void attack(std::vector<std::shared_ptr<Character>> characters, float time);

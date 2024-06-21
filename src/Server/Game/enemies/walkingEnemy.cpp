@@ -11,3 +11,9 @@ WalkingEnemy::WalkingEnemy(GameMap& map, Vector<uint32_t> pos, uint8_t id):
 
 
 EnemyType WalkingEnemy::getEnemyType() const { return EnemyType::TURTLE; }
+
+void WalkingEnemy::update(double deltaTime) {
+}
+
+
+

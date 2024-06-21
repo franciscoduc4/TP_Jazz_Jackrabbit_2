@@ -11,3 +11,5 @@ FlyingEnemy::FlyingEnemy(GameMap& map, Vector<uint32_t> pos, uint8_t id):
 
 
 EnemyType FlyingEnemy::getEnemyType() const { return EnemyType::YELLOWMON; }
+void FlyingEnemy::update(double deltaTime) {
+}

@@ -1,0 +1,15 @@
+#ifndef OBSTACLES_TYPE_H
+#define OBSTACLES_TYPE_H
+
+enum class ObstacleType : char {
+    FULL_FLOOR,
+    LARGE_WOOD_FLOOR,
+    LEFT_LADDER,
+    LONG_PLATFORM,
+    RIGHT_LADDER,
+    SMALL_PLATFORM,
+    WOOD_FLOOR,
+    WOOD_LARGE_COLUMN
+};
+
+#endif // OBSTACLES_TYPE_H

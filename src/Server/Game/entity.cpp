@@ -1,6 +1,5 @@
 #include "entity.h"
 
-
 Entity::Entity(Vector<uint32_t> pos, uint8_t id, uint8_t health, Direction dir, EntityType type):
         pos(pos),
         id(id),
@@ -9,6 +8,7 @@ Entity::Entity(Vector<uint32_t> pos, uint8_t id, uint8_t health, Direction dir, 
         dir(dir),
         type(type),
         isDead(false) {}
+
 
 Vector<uint32_t> Entity::getPosition() const { return pos; }
 

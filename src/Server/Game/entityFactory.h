@@ -1,16 +1,20 @@
 #ifndef ENTITY_FACTORY_H_
 #define ENTITY_FACTORY_H_
 
-#include <cstdint>
 #include <memory>
-
-#include "../../Common/Types/character.h"
-#include "../../Common/Types/enemy.h"
+#include <string>
 #include "../../Common/vector.h"
+#include "entity.h"
+#include "characters/character.h"
+#include "enemies/enemy.h"
+#include "items/item.h"
+#include "obstacles/obstacle.h"
 
 class Character;
 class Enemy;
 class GameMap;
+class Item;
+class Obstacle;
 
 class EntityFactory {
 private:
@@ -35,6 +39,10 @@ public:
                                                Vector<uint32_t> position);
 
     std::shared_ptr<Enemy> createEnemy(uint8_t enemyId, EnemyType type, Vector<uint32_t> position);
+
+    std::shared_ptr<Item> createItem(ItemType type, Vector<uint32_t> position);
+
+    std::shared_ptr<Obstacle> createObstacle(ObstacleType type, Vector<uint32_t> position);
 };
 
 

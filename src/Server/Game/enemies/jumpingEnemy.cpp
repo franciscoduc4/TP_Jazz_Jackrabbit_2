@@ -11,3 +11,6 @@ JumpingEnemy::JumpingEnemy(GameMap& map, Vector<uint32_t> pos, uint8_t id):
 
 
 EnemyType JumpingEnemy::getEnemyType() const { return EnemyType::SCHWARZENGUARD; }
+
+void JumpingEnemy::update(double deltaTime) {
+}

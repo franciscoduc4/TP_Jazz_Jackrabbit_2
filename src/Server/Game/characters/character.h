@@ -71,6 +71,8 @@ public:
     void update(float time);
     void shoot(float time);
 
+    void update(double deltaTime);
+
     void moveRight(float time);
     void sprintRight(float time);
     void moveLeft(float time);
