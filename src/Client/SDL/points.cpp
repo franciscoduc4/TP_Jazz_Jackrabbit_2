@@ -31,6 +31,12 @@ Points::Points() {
     }
     this->counts.push_back(0);
 
+    std::vector<std::vector<int>> carrot_sprites = ClientConfig::getCarrotSprites();
+    for (int i = 0; i < carrot_sprites.size(); i++) {
+        this->sprites[ItemType::FOOD].push_back(RectangularSprite(carrot_sprites[i]));
+    }
+    this->counts.push_back(0);
+
 }
 
 

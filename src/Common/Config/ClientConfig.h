@@ -128,6 +128,7 @@ public:
     static std::vector<std::vector<int>> getRedGemSprites();
     static std::vector<std::vector<int>> getGoldCoinSprites();
     static std::vector<std::vector<int>> getSilverCoinSprites();
+    static std::vector<std::vector<int>> getCarrotSprites();
     // Projectiles
     static int getProjWidth();
     static int getProjHeight();
