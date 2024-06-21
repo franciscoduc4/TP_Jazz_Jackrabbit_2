@@ -148,8 +148,7 @@ std::unique_ptr<CommandDTO> Deserializer::deserializeIdle(uint8_t& playerId) {
 std::unique_ptr<GameCommandDTO> Deserializer::deserializeMove(uint8_t& playerId) {
     char directionChar;
     if (!this->receive_char(directionChar)) return nullptr;
-    auto direction = static_cast<Direction>(directionChar);
-    socket->recvall(&direction, sizeof(char), &wasClosed);
+    Direction direction = static_cast<Direction>(directionChar);
     return std::make_unique<GameCommandDTO>(playerId, direction, Command::MOVE);
 }
 

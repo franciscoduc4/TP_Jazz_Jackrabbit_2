@@ -240,7 +240,7 @@ void Character::moveRight() {
     if (!gameMap.isValidMapPosition(newPos))
         return;
 
-    //gameMap.moveObject(pos, mapPosition, Direction::RIGHT);
+    gameMap.moveObject(pos, mapPosition, Direction::RIGHT);
     pos = newPos;
 
     // std::cout << "[CHARACTER] Character ID: " << static_cast<int>(id) << " moved right"
@@ -324,5 +324,5 @@ PlayerDTO Character::getDTO() const {
                      static_cast<uint8_t>(0),
                      static_cast<uint8_t>(0),
                      type,
-                     CharacterStateEntity::IDLE};
+                     state->getCharacterState()};
 }
