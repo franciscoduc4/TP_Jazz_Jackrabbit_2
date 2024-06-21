@@ -5,13 +5,14 @@
 
 GameLoopThread::GameLoopThread(std::shared_ptr<Queue<std::unique_ptr<CommandDTO>>> recvQueue,
                                QueueMonitor& queueMonitor, GameMap& gameMap,
-                               uint8_t gameId)
-        : frameRate(0.016),  // 1 frame per 16 ms === 60 fps
-          keepRunning(false),
-          recvQueue(recvQueue),
-          queueMonitor(queueMonitor),
-          gameMap(gameMap),
-          gameId(gameId) {
+                               uint8_t gameId):
+        frameRate(0.06),  // 1 frame per 16 ms === 60 fps
+        keepRunning(false),
+        commandsToProcess(10),
+        recvQueue(recvQueue),
+        queueMonitor(queueMonitor),
+        gameMap(gameMap),
+        gameId(gameId) {
     std::cout << "[GAME LOOP] GameLoopThread initialized with gameId: " << static_cast<int>(gameId)
               << std::endl;
 }

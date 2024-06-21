@@ -724,6 +724,17 @@ std::vector<std::vector<int>> ClientConfig::getSilverCoinSprites() {
     return silverCoinSprites;
 }
 
+std::vector<std::vector<int>> ClientConfig::getCarrotSprites() {
+    YAML::Node carrotSpritesNode = getInstance()->root["CARROT_SPRITES"];
+    std::vector<std::vector<int>> carrotSprites;
+    for (YAML::const_iterator it = carrotSpritesNode.begin(); it != carrotSpritesNode.end();
+         ++it) {
+        carrotSprites.push_back(it->as<std::vector<int>>());
+    }
+    return carrotSprites;
+}
+
+
 // Projectiles
 int ClientConfig::getProjWidth() { return getInstance()->root["PROJ_WIDTH"].as<int>(); }
 
