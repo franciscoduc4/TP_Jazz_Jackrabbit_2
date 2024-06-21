@@ -57,12 +57,10 @@ public:
     static std::vector<std::string> getBeachFiles();
     static std::string getBeachBacksound();
     static std::vector<std::vector<int>> getBeachSprites();
-    static std::vector<std::vector<int>> getBeachWidthHeightSprites();
     //Colonius
     static std::vector<std::string> getColoniusFiles();
     static std::string getColoniusBacksound();
     static std::vector<std::vector<int>> getColoniusSprites();
-    static std::vector<std::vector<int>> getColoniusWidthHeightSprites();
 
     // Enemies Sprites
     // Turtle

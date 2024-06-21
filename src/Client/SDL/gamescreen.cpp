@@ -96,15 +96,10 @@ void GameScreen::run() {
 
     std::cout << "Textures created" << std::endl;
 
-    const int frameDelay = 1000 / 30;
-    Uint32 frameStart;
-    int frameTime;
-
     while (true) {
         SDL_Event event;
         std::cout << "[GAME SCREEN] Waiting for event" << std::endl;
         while (SDL_PollEvent(&event)) {
-            frameStart = SDL_GetTicks();
 
             if (event.type == SDL_QUIT) {
                 std::cout << "[GAME SCREEN] SDL_QUIT event received, exiting run loop" << std::endl;
@@ -183,12 +178,12 @@ void GameScreen::run() {
             continue;
         }
         std::vector<int> dir_screen = this->level.draw_background(window, renderer, tiles_textures, *mainPlayer/*players[0]*/);
-        this->level.draw_floor(window, renderer, tiles_textures, mainPlayer->getSpeed());
+        this->level.draw_floor(window, renderer, tiles_textures, mainPlayer->getSpeed()/*players[0].getSpeed()*/);
         x_screen = dir_screen[0];
         y_screen = dir_screen[1];
 
         if (players.size() > 0) {
-            this->pj.draw_players(window, renderer, pjs_textures, players, x_screen, y_screen, *mainPlayer);
+            this->pj.draw_players(window, renderer, pjs_textures, players, x_screen, y_screen, this->mainPlayerId);
         }
 
         std::vector<EnemyDTO> enemiesSnapshot = snapshot->getEnemies();
@@ -199,19 +194,19 @@ void GameScreen::run() {
         
         std::vector<BulletDTO> bullets = snapshot->getBullets();
         if (bullets.size() > 0) {
-            this->proj.draw_projectile(window, renderer, projectile, bullets, *mainPlayer, x_screen, y_screen);
+            this->proj.draw_projectile(window, renderer, projectile, bullets);
         }
 
         std::vector<ItemDTO> itemsSnapshot = snapshot->getItems();
         if (itemsSnapshot.size() >  0) {
-            this->points.draw_points(window, renderer, items, itemsSnapshot, *mainPlayer/*players[0]*/, x_screen, y_screen);
+            this->points.draw_points(renderer, items, itemsSnapshot, *mainPlayer/*players[0]*/, x_screen, y_screen);
         }
 
         std::vector<WeaponDTO> weapons = snapshot->getWeapons();
 
         std::vector<TileDTO> tiles = snapshot->getTiles(); 
         if (tiles.size() > 0) {
-            this->level.draw_tiles(window, renderer, tiles_textures, tiles, *mainPlayer, x_screen, y_screen);
+            this->level.draw_tiles(window, renderer, tiles_textures, tiles);
         }
 
         this->stats.draw_interface(window, renderer, *pjs_textures[mainPlayer->getCharacterType()/*players[0].getItemType()*/],
@@ -223,12 +218,7 @@ void GameScreen::run() {
         renderer.Present();
         std::cout << "[GAME SCREEN] Frame presented" << std::endl;
 
-        frameTime = SDL_GetTicks() - frameStart;
-
-        if (frameDelay > frameTime) {
-            SDL_Delay(frameDelay - frameTime);
-        }
-        //SDL_Delay(70);
+        SDL_Delay(70);
     }
     this->soundControl.free_musics();
     Mix_CloseAudio();
