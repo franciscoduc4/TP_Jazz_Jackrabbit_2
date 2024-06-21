@@ -69,27 +69,20 @@ void WaitingRoom::fetchUpdates() {
     if (controller.hasGameUpdates(updateDto)) {
         std::cout << "[WAITING ROOM] Received update" << std::endl;
         int numPlayers;
+        bool startGameReceived = false;
         auto* cmdDto = dynamic_cast<CommandDTO*>(updateDto.get());
         updateDto.release();
         std::unique_ptr<CommandDTO> cmdDtoPtr(cmdDto);
-        numPlayers = controller.processGameUpdate(cmdDtoPtr);
-        emit numPlayersUpdated(numPlayers);
+        std::tie(startGameReceived, numPlayers) = controller.processGameUpdate(cmdDtoPtr);
+        emit numPlayersUpdated(startGameReceived, numPlayers);
     } else {
         std::cout << "[WAITING ROOM] No updates received" << std::endl;
     }
 }
 
-void WaitingRoom::updateNumPlayers(int numPlayers) {
+void WaitingRoom::updateNumPlayers(bool startGameReceived, int numPlayers) {
     ui->numPlayers->setText(QString::number(numPlayers));
-    if (this->controller.canStartGame()) {
-        this->msg.setLobbyCmd(Command::START_GAME);
-        this->controller.startGame(this->msg);
-        std::pair<bool, GameInfo> sgAck = this->controller.recvResponse();
-        if (!sgAck.first) {
-            QMessageBox::warning(this, "Error", "No se pudo iniciar la partida.");
-            QCoreApplication::exit(37);
-            return;
-        }
+    if (startGameReceived) {
         QCoreApplication::exit(0);
         return;
     }

@@ -47,3 +47,7 @@ bool Bouncer::shootTime(float time) {
 WeaponType Bouncer::getWeaponType() { return WeaponType::BOUNCER; }
 
 float Bouncer::getFireRate() { return fireRate; }
+
+bool Bouncer::cooldown(float time) {
+    return (time - lastTimeShot) > fireRate;
+}

@@ -25,9 +25,10 @@ Character::Character(GameMap& gameMap, Vector<uint32_t> pos, uint8_t playerId, C
         jumpHeight(jumpHeight),
         shootCooldownTime(shootCooldownTime),
         currentWeapon(std::make_unique<Blaster>()),
-        state(std::make_unique<IdleState>()) {
+        state(std::make_unique<IdleState>(*this)) {
     std::cout << "[CHARACTER] Character created with ID: " << static_cast<int>(playerId)
               << std::endl;
+    currentWeapon = std::make_unique<Blaster>();
 }
 
 void Character::idle(float time) {
@@ -41,7 +42,6 @@ void Character::idle(float time) {
 }
 
 
-
 void Character::recvDamage(uint8_t dmg, float time) {
     std::cout << "[CHARACTER] Character ID: " << static_cast<int>(id)
               << " receiving damage: " << static_cast<int>(dmg) << std::endl;
@@ -51,7 +51,7 @@ void Character::recvDamage(uint8_t dmg, float time) {
                   << std::endl;
         return;
     }
-    auto newState = std::unique_ptr<State>(state->receiveDamage(*this, dmg, time));
+    auto newState = std::unique_ptr<State>(state->receiveDamage(dmg, time));
     if (newState) {
         state = std::move(newState);
     }
@@ -75,7 +75,7 @@ void Character::update(float time) {
                       << std::endl;
             return;
         }
-        auto newState = std::unique_ptr<State>(state->exec(*this, time));
+        auto newState = std::unique_ptr<State>(state->exec(time));
 
         if (newState) {
             state = std::move(newState);
@@ -87,7 +87,12 @@ void Character::update(float time) {
 }
 void Character::shoot(float time) {
     std::cout << "[CHARACTER] Character ID: " << static_cast<int>(id) << " shooting" << std::endl;
-    auto newState = std::unique_ptr<State>(state->shoot(*this, std::move(currentWeapon), time));
+    if (!currentWeapon) {
+        currentWeapon = std::make_unique<Blaster>();
+        // std::cerr << "[CHARACTER] Error: currentWeapon is null" << std::endl;
+        // return;
+    }
+    auto newState = std::unique_ptr<State>(state->shoot(std::move(currentWeapon), time));
     if (newState) {
         state = std::move(newState);
     }
@@ -96,8 +101,10 @@ void Character::shoot(float time) {
 void Character::moveRight(float time) {
     std::cout << "[CHARACTER] Character ID: " << static_cast<int>(id) << " moving right"
               << std::endl;
-    auto newState = std::unique_ptr<State>(state->move(*this, Direction::RIGHT, time));
+    auto newState = std::unique_ptr<State>(state->move(Direction::RIGHT, time));
     if (newState) {
+        std::cout << "[CHARACTER] Character ID: " << static_cast<int>(id) << " moving right"
+                  << std::endl;
         state = std::move(newState);
     }
 }
@@ -105,24 +112,31 @@ void Character::moveRight(float time) {
 void Character::moveLeft(float time) {
     std::cout << "[CHARACTER] Character ID: " << static_cast<int>(id) << " moving left"
               << std::endl;
-    auto newState = std::unique_ptr<State>(state->move(*this, Direction::LEFT, time));
+    auto newState = std::unique_ptr<State>(state->move(Direction::LEFT, time));
     if (newState) {
         state = std::move(newState);
     }
 }
 
 void Character::moveUp(float time) {
-    std::cout << "[CHARACTER] Character ID: " << static_cast<int>(id) << " moving up" << std::endl;
-    auto newState = std::unique_ptr<State>(state->move(*this, Direction::UP, time));
+    std::cout << "[CHARACTER] Character ID: " << static_cast<int>(id) << " jumping" << std::endl;
+    auto newState = std::unique_ptr<State>(state->move(Direction::UP, time));
     if (newState) {
+        std::cout << "[CHARACTER] Character ID: " << static_cast<int>(id) << " jumping"
+                  << std::endl;
         state = std::move(newState);
     }
+}
+
+void Character::moveDown() {
+    std::cout << "[CHARACTER] Character ID: " << static_cast<int>(id) << " moving down"
+              << std::endl;
 }
 
 void Character::moveDown(float time) {
     std::cout << "[CHARACTER] Character ID: " << static_cast<int>(id) << " moving down"
               << std::endl;
-    auto newState = std::unique_ptr<State>(state->move(*this, Direction::DOWN, time));
+    auto newState = std::unique_ptr<State>(state->move(Direction::DOWN, time));
     if (newState) {
         state = std::move(newState);
     }
@@ -133,7 +147,7 @@ void Character::becomeIntoxicated(float duration) {
               << " becoming intoxicated for duration: " << duration << std::endl;
     isIntoxicated = true;
     intoxicatedTime = duration;
-    auto newState = std::unique_ptr<State>(state->becomeIntoxicated(*this, duration));
+    auto newState = std::unique_ptr<State>(state->becomeIntoxicated(duration));
     if (newState) {
         state = std::move(newState);
     }
@@ -143,7 +157,7 @@ void Character::die(float respawnTime) {
     std::cout << "[CHARACTER] Character ID: " << static_cast<int>(id)
               << " dying, respawn time: " << respawnTime << std::endl;
     isDead = true;
-    auto newState = std::unique_ptr<State>(state->die(*this, respawnTime));
+    auto newState = std::unique_ptr<State>(state->die(respawnTime));
     if (newState) {
         state = std::move(newState);
     }
@@ -163,7 +177,7 @@ void Character::revive(float time) {
         return;
     }
     timesRevived--;
-    auto newState = std::unique_ptr<State>(state->revive(*this, time));
+    auto newState = std::unique_ptr<State>(state->revive(time));
     if (newState) {
         state = std::move(newState);
     }
@@ -173,7 +187,8 @@ void Character::revive(float time) {
 
 std::vector<std::shared_ptr<Entity>> Character::getTargets() {
     std::vector<std::shared_ptr<Entity>> targets;
-    // map.getObjectsInShootRange({pos.x / maxMoves, pos.y / maxMoves}, dir);
+    gameMap.getObjectsInShootRange({static_cast<unsigned char>(pos.x / movesPerCell), static_cast<unsigned char>(pos.y / movesPerCell)}, dir);
+    std::cout << "[CHARACTER] targets size: " << targets.size() << std::endl;
     return targets;
 }
 
@@ -270,17 +285,29 @@ void Character::moveUp() {
     gameMap.moveObject(pos, mapPosition, Direction::UP);
 }
 
-void Character::moveDown() {
-    if (isIntoxicated)
-        return;
+void Character::jump(float time) {
+    initialYJump = pos.y;
 
-    auto mapPosition = getMapPosition(movesPerCell);
-    Vector<uint32_t> newPosition = pos - Vector<uint32_t>{0, movesPerCell};
+    if (isIntoxicated || jumping) {
+        Vector<uint32_t> mapPosition = getMapPosition(movesPerCell);
 
-    if (!gameMap.isValidMapPosition(newPosition))
-        return;
+        Vector<uint32_t> newPosition = pos - Vector<uint32_t>{0, movesPerCell};
 
-    gameMap.moveObject(pos, mapPosition, Direction::DOWN);
+        if (!gameMap.isValidMapPosition(newPosition)) {
+            return;
+        }
+
+        gameMap.moveObject(pos, mapPosition, Direction::UP);
+        pos = newPosition;
+        jumping = true;
+    }
+    std::cout << "[CHARACTER] Character pos y: " << static_cast<int>(pos.y) << std::endl;
+}
+
+bool Character::hasLanded() {
+    if (pos.y == initialYJump && !jumping)
+        return true;
+    return false;
 }
 
 bool Character::characIsIntoxicated() const { return isIntoxicated; }

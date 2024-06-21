@@ -67,6 +67,11 @@ void GameList::updateGameList() {
     if (gamesList.empty()) {
         auto* label = new QLabel("No hay partidas disponibles para que te unas");
         label->setAlignment(Qt::AlignCenter);
+        label->setAttribute(Qt::WA_TranslucentBackground);
+        QFont font("Jazz Jackrabbit 2", 30);
+        label->setFont(font);
+        label->setWordWrap(true);
+        label->setStyleSheet("QLabel { color : red; }");
         layout->addWidget(label);
 
         ui->btnJoin->hide();

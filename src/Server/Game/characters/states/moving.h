@@ -13,23 +13,22 @@ class MovingState: public State {
 private:
     Character& character;
     Direction direction;
-    float time;
+    float waitingMoveTime = 0.1f;
+    float lastTimeMoved = 0.1f * -1;
 
 public:
-    MovingState(Character& character, Direction direction, float time);
+    MovingState(Character& character, Direction direction);
 
-    std::unique_ptr<State> exec(Character& character, float time) override;
-    std::unique_ptr<State> shoot(Character& character, std::shared_ptr<Weapon> weapon,
-                                 float time) override;
-    std::unique_ptr<State> move(Character& character, Direction direction, float time) override;
-    std::unique_ptr<State> sprint(Character& character, Direction direction, float time) override;
-    std::unique_ptr<State> receiveDamage(Character& character, uint16_t damage,
-                                         float time) override;
-    std::unique_ptr<State> die(Character& character, float respawnTime) override;
-    std::unique_ptr<State> revive(Character& character, float time) override;
-    std::unique_ptr<State> becomeIntoxicated(Character& character, float duration) override;
-    std::unique_ptr<State> jump(Character& character, float time) override;
-    std::unique_ptr<State> specialAttack(Character& character, float time) override;
+    std::unique_ptr<State> exec(float time) override;
+    std::unique_ptr<State> shoot(const std::shared_ptr<Weapon>& weapon, float time) override;
+    std::unique_ptr<State> move(Direction direction2, float time) override;
+    std::unique_ptr<State> sprint(Direction direction2, float time) override;
+    std::unique_ptr<State> receiveDamage(uint8_t dmg, float time) override;
+    std::unique_ptr<State> die(float time) override;
+    std::unique_ptr<State> revive(float time) override;
+    std::unique_ptr<State> jump(float time) override;
+    std::unique_ptr<State> specialAttack(float time) override;
+    std::unique_ptr<State> becomeIntoxicated(float duration) override;
     std::unique_ptr<State> stopAction() override;
 };
 

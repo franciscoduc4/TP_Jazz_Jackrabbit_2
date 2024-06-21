@@ -23,6 +23,10 @@ private:
     Vector<uint32_t> size;
     std::map<Vector<uint32_t>, std::shared_ptr<Entity>> mapGrid;
     std::map<uint8_t, std::shared_ptr<Character>> characters;
+    std::map<uint8_t, std::shared_ptr<Enemy>> enemies;
+    // std::map<uint8_t, std::shared_ptr<Bullet>> bullets;
+    // std::map<uint8_t, std::shared_ptr<Item>> items;
+    std::vector<TileDTO> tiles;
     EntityFactory entityFactory;
     uint8_t entityCount;
     uint8_t movesPerCell;

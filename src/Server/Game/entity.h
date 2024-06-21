@@ -49,7 +49,7 @@ public:
     uint8_t getDistanceTo(std::shared_ptr<Entity> other) const;
 
     void heal(uint8_t healQnt);
-
+    
     EntityType getType() const;
 };
 

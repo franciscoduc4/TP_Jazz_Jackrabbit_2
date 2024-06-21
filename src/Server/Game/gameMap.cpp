@@ -27,8 +27,8 @@ void GameMap::loadMap(uint8_t mapId) {
         if (!config["SIZE"] || !config["SIZE"]["WIDTH"] || !config["SIZE"]["HEIGHT"]) {
             throw std::runtime_error("Invalid map size configuration in YAML file");
         }
-        size.x = static_cast<uint8_t>(config["SIZE"]["WIDTH"].as<int>());
-        size.y = static_cast<uint8_t>(config["SIZE"]["HEIGHT"].as<int>());
+        size.x = static_cast<uint32_t>(config["SIZE"]["WIDTH"].as<int>());
+        size.y = static_cast<uint32_t>(config["SIZE"]["HEIGHT"].as<int>());
         std::cout << "[GAMEMAP] Map size: Width = " << static_cast<int>(size.x)
                   << ", Height = " << static_cast<int>(size.y) << std::endl;
 
@@ -77,6 +77,7 @@ EnemyType GameMap::getEnemyType(const std::string& type) {
 std::vector<std::shared_ptr<Entity>> GameMap::getObjectsInShootRange(Vector<uint32_t> mapPosition,
                                                                      Direction dir) {
     std::vector<std::shared_ptr<Entity>> entities;
+    std::cout << "[GAMEMAP] Getting objects in shoot range" << std::endl;
     try {
         if (dir == Direction::LEFT) {
             for (int8_t i = mapPosition.x - 1; i >= 0; i--) {
@@ -96,6 +97,7 @@ std::vector<std::shared_ptr<Entity>> GameMap::getObjectsInShootRange(Vector<uint
     } catch (const std::exception& e) {
         std::cerr << "[GAMEMAP] Error getting objects in shoot range: " << e.what() << std::endl;
     }
+    std::cout << "[GAMEMAP] Objects in shoot range size: " << entities.size() << std::endl;
     return entities;
 }
 
@@ -146,6 +148,9 @@ void GameMap::moveObject(Vector<uint32_t>& position, Vector<uint32_t> mapPositio
                 std::cerr << "[GAMEMAP] New map position (" << newMapPosition.x << ", " << newMapPosition.y << ") is empty" << std::endl;
             }
         }
+        std::cout << "[GAMEMAP] Object's new position: " << position << std::endl;
+
+
     } catch (const std::exception& e) {
         std::cerr << "[GAMEMAP] Error moving object: " << e.what() << std::endl;
     }
@@ -330,25 +335,6 @@ std::unique_ptr<GameDTO> GameMap::getGameDTO() {
     std::vector<WeaponDTO> weapons;
     std::vector<TileDTO> tiles;
 
-    BulletDTO bullet(30, 30, 1, 1, 1, 1);
-    bullets.push_back(bullet);
-
-    TileDTO tile(5, 10);
-    tiles.push_back(tile);
-
-    ItemDTO item(1, 1, ItemType::GEM);
-    items.push_back(item);
-
-    ItemDTO item2(1, 252, ItemType::GOLD_COIN);
-    items.push_back(item2);
-
-    EnemyDTO enemy(10, 230, 1, 1, 1, 1, EnemyType::TURTLE, EnemyStateEntity::ENEMY_WALKING);
-    enemies.push_back(enemy);
-
-    // TileDTO tile = {0, 10};
-    // tiles.push_back(tile);
-
-
     try {
         for (const auto& character: characters) {
             playersDTO.push_back(character.second->getDTO());
@@ -382,9 +368,13 @@ std::unique_ptr<GameDTO> GameMap::getGameDTO() {
         std::cerr << "[GAMEMAP] Error creating GameDTO: " << e.what() << std::endl;
         throw;
     }
+    std::cout << "[GAMEMAP] playersDTO size: " << playersDTO.size() << std::endl;
+
+    return std::make_unique<GameDTO>(playersDTO, enemies, bullets, items, weapons, tiles);
 }
 
 std::shared_ptr<Character> GameMap::getCharacter(uint8_t playerId) {
+    std::cout << "[GAMEMAP] Getting character with ID " << (int)(playerId) << std::endl;
     try {
         return characters.at(playerId);
     } catch (const std::exception& e) {

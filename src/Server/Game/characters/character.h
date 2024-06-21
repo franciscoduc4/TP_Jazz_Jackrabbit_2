@@ -57,11 +57,16 @@ protected:
     bool isIntoxicated = false;
     float shootCooldown = 0.0f;
 
+    float jumpStartTime = 0.0f;
+    float jumpDuration = 0.5f;
+    uint8_t initialYJump = 0;
+
 public:
     Character(GameMap& gameMap, Vector<uint32_t> pos, uint8_t playerId, CharacterType type,
               float horizontalSpeed, float sprintSpeed, float verticalSpeed, float jumpHeight,
               float shootCooldownTime);
 
+    void idle(float time);
     void recvDamage(uint8_t damage, float time) override;
     void update(float time);
     void shoot(float time);
@@ -72,6 +77,7 @@ public:
     void sprintLeft(float time);
     void moveUp(float time);
     void moveDown(float time);
+    void jump(float time);
 
     virtual void specialAttack(float time) = 0;
 
@@ -90,7 +96,7 @@ public:
     void moveLeft();
     void moveUp();
 
-    void idle(float time);
+
     bool characIsIntoxicated() const;
     float getIntoxicatedTime() const;
 
@@ -99,6 +105,10 @@ public:
     CharacterType getCharacterType();
 
     PlayerDTO getDTO() const;
+
+    bool isJumping() { return jumping; }
+    bool hasLanded();
+
 };
 
 #endif  // PLAYER_CHARACTER_H
