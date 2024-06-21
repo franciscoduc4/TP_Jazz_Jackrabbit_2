@@ -1,11 +1,28 @@
 #include "SpritesManager.h"
 
 SpritesManager* SpritesManager::instance = nullptr;
+QMap<QString, QPixmap> SpritesManager::sprites;
+QMap<QString, int> SpritesManager::widths;
+QMap<QString, int> SpritesManager::heights;
 
 SpritesManager::SpritesManager() {
     root = YAML::LoadFile("Sprites/sprites.yaml");
-}
+    for (YAML::const_iterator it = root.begin(); it != root.end(); ++it) {
+        QString name = QString::fromStdString(it->first.as<std::string>());
+        auto sprite = it->second["SPRITE"].as<std::vector<int>>();
+        QString path = QString::fromStdString(it->second["PATH"].as<std::string>());
+        auto colour_key = it->second["COLOUR_KEY"].as<std::vector<int>>();
+        widths[name] = it->second["WIDTH"].as<int>();
+        heights[name] = it->second["HEIGHT"].as<int>();
 
+        QPixmap pixmap(path);
+        if (!sprite.empty()) {
+            pixmap = pixmap.copy(sprite[0], sprite[1], sprite[2], sprite[3]);
+        }
+        pixmap.setMask(pixmap.createMaskFromColor(QColor(colour_key[0], colour_key[1], colour_key[2]), Qt::MaskInColor));
+        sprites[name] = pixmap;
+    }
+}
 SpritesManager* SpritesManager::getInstance() {
     if (!instance) {
         instance = new SpritesManager();
@@ -13,76 +30,8 @@ SpritesManager* SpritesManager::getInstance() {
     return instance;
 }
 
-std::vector<int> SpritesManager::getFullFloor() {
-    return getInstance()->root["FULL_FLOOR"].as<std::vector<int>>();
-}
-
-std::vector<int> SpritesManager::getLargeWoodFloor() {
-    return getInstance()->root["LARGE_WOOD_FLOOR"].as<std::vector<int>>();
-}
-
-std::vector<std::vector<int>> SpritesManager::getLeftLadder() {
-    return getInstance()->root["LEFT_LADDER"].as<std::vector<std::vector<int>>>();
-}
-
-std::vector<std::vector<int>> SpritesManager::getLongPlatform() {
-    return getInstance()->root["LONG_PLATFORM"].as<std::vector<std::vector<int>>>();
-}
-
-std::vector<std::vector<int>> SpritesManager::getRightLadder() {
-    return getInstance()->root["RIGHT_LADDER"].as<std::vector<std::vector<int>>>();
-}
-
-std::vector<std::vector<int>> SpritesManager::getSmallPlatform() {
-    return getInstance()->root["SMALL_PLATFORM"].as<std::vector<std::vector<int>>>();
-}
-
-std::vector<std::vector<int>> SpritesManager::getWoodFloor() {
-    return getInstance()->root["WOOD_FLOOR"].as<std::vector<std::vector<int>>>();
-}
-
-std::vector<std::vector<int>> SpritesManager::getWoodLargeColumn() {
-    return getInstance()->root["WOOD_LARGE_COLUMN"].as<std::vector<std::vector<int>>>();
-}
-
-std::vector<std::vector<int>> SpritesManager::getTurtle() {
-    return getInstance()->root["TURTLE"].as<std::vector<std::vector<int>>>();
-}
-
-std::vector<std::vector<int>> SpritesManager::getSchwarzenguard() {
-    return getInstance()->root["SCHWARZENGUARD"].as<std::vector<std::vector<int>>>();
-}
-
-std::vector<std::vector<int>> SpritesManager::getYellowmon() {
-    return getInstance()->root["YELLOWMON"].as<std::vector<std::vector<int>>>();
-}
-
-std::vector<std::vector<int>> SpritesManager::getGem() {
-    return getInstance()->root["GEM"].as<std::vector<std::vector<int>>>();
-}
-
-std::vector<std::vector<int>> SpritesManager::getGoldCoin() {
-    return getInstance()->root["GOLD_COIN"].as<std::vector<std::vector<int>>>();
-}
-
-std::vector<std::vector<int>> SpritesManager::getSilverCoin() {
-    return getInstance()->root["SILVER_COIN"].as<std::vector<std::vector<int>>>();
-}
-
-std::vector<std::vector<int>> SpritesManager::getFood() {
-    return getInstance()->root["FOOD"].as<std::vector<std::vector<int>>>();
-}
-
-std::vector<std::vector<int>> SpritesManager::getJazz() {
-    return getInstance()->root["JAZZ"].as<std::vector<std::vector<int>>>();
-}
-
-std::vector<std::vector<int>> SpritesManager::getLori() {
-    return getInstance()->root["LORI"].as<std::vector<std::vector<int>>>();
-}
-
-std::vector<std::vector<int>> SpritesManager::getSpaz() {
-    return getInstance()->root["SPAZ"].as<std::vector<std::vector<int>>>();
+QPixmap SpritesManager::get(const QString& name) {
+    return sprites[name].scaled(widths[name], heights[name], Qt::KeepAspectRatio);
 }
 
 void SpritesManager::deleteInstance() {

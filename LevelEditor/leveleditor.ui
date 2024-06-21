@@ -20,40 +20,17 @@
       <x>520</x>
       <y>80</y>
       <width>256</width>
-      <height>351</height>
+      <height>431</height>
      </rect>
+    </property>
+    <property name="dragDropMode">
+     <enum>QAbstractItemView::DragOnly</enum>
     </property>
     <column>
      <property name="text">
-      <string notr="true">1</string>
+      <string notr="true">Elements</string>
      </property>
     </column>
-   </widget>
-   <widget class="QPushButton" name="btnAdd">
-    <property name="geometry">
-     <rect>
-      <x>600</x>
-      <y>440</y>
-      <width>100</width>
-      <height>32</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Add Element</string>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="btnDel">
-    <property name="geometry">
-     <rect>
-      <x>600</x>
-      <y>480</y>
-      <width>100</width>
-      <height>32</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Delete Element</string>
-    </property>
    </widget>
    <widget class="QLineEdit" name="mapName">
     <property name="geometry">

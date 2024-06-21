@@ -16,6 +16,17 @@
         <file>../assets/Enemies/Schwartzenguard.png</file>
         <file>../assets/Enemies/Enemies.png</file>
         <file>../assets/Miscellaneous/Items&amp;Objects.png</file>
+        <!-- Obstacles -->
+        <file>../assets/scenes/BeachWorld/background.png</file>
+        <file>../assets/scenes/BeachWorld/fullFloor.png</file>
+        <file>../assets/scenes/BeachWorld/largeWoodFloor.png</file>
+        <file>../assets/scenes/BeachWorld/leftLadder.png</file>
+        <file>../assets/scenes/BeachWorld/longPlatform.png</file>
+        <file>../assets/scenes/BeachWorld/rightLadder.png</file>
+        <file>../assets/scenes/BeachWorld/sandFloor.png</file>
+        <file>../assets/scenes/BeachWorld/smallPlatform.png</file>
+        <file>../assets/scenes/BeachWorld/woodfloor.png</file>
+        <file>../assets/scenes/BeachWorld/woodLargeColumn.png</file>
     </qresource>
     <!-- Stylesheets -->
     <qresource prefix="/Styles">
