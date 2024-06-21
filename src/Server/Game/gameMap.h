@@ -66,6 +66,8 @@ public:
     std::shared_ptr<Character> addCharacter(uint8_t playerId, CharacterType type);
 
     void addEnemy(EnemyType type, Vector<uint32_t> position);
+    void addObstacle(ObstacleType type, Vector<uint32_t> position);
+    void addItem(ItemType type, Vector<uint32_t> position);
 
     void update(float time);
 

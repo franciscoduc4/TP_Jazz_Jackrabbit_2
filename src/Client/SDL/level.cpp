@@ -218,7 +218,7 @@ void Level::draw_tiles(SDL2pp::Window& window, SDL2pp::Renderer& renderer, std::
 		
         
         if (abs(distance_tile_player_x) <= window.GetWidth()  && abs(distance_tile_player_y) <= window.GetHeight()) {
-            //TileType type = t.getType();
+            TileType type = t.getType();
             //renderer.Copy(*tiles_textures[TileType::LONGPLATFORM/*type*/], SDL2pp::Rect(pixels_pos[TileType::LONGPLATFORM/*type*/][index_x], pixels_pos[TileType::LONGPLATFORM/*type*/][index_y], pixels_pos[TileType::LONGPLATFORM/*type*/][index_width], pixels_pos[TileType::LONGPLATFORM/*type*/][index_height]), SDL2pp::Rect(t.getX(), t.getY(), this->width_height[TileType::LONGPLATFORM/*type*/][index_draw_width], this->width_height[TileType::LONGPLATFORM/*type*/][index_draw_height]));
             //renderer.Copy(*tiles_textures[TileType::SMALLPLATFORM/*type*/], SDL2pp::Rect(pixels_pos[TileType::SMALLPLATFORM/*type*/][index_x], pixels_pos[TileType::SMALLPLATFORM/*type*/][index_y], pixels_pos[TileType::SMALLPLATFORM/*type*/][index_width], pixels_pos[TileType::SMALLPLATFORM/*type*/][index_height]), SDL2pp::Rect(t.getX(), t.getY(), this->width_height[TileType::SMALLPLATFORM/*type*/][index_draw_width], this->width_height[TileType::SMALLPLATFORM/*type*/][index_draw_height]));
             //renderer.Copy(*tiles_textures[TileType::COLUMN/*type*/], SDL2pp::Rect(pixels_pos[TileType::COLUMN/*type*/][index_x], pixels_pos[TileType::COLUMN/*type*/][index_y], pixels_pos[TileType::COLUMN/*type*/][index_width], pixels_pos[TileType::COLUMN/*type*/][index_height]), SDL2pp::Rect(t.getX(), t.getY(), this->width_height[TileType::COLUMN/*type*/][index_draw_width], this->width_height[TileType::COLUMN/*type*/][index_draw_height]));
