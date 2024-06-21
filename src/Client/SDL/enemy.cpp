@@ -125,7 +125,7 @@ void Enemy::draw_enemy(SDL2pp::Window& window, SDL2pp::Renderer& renderer, std::
 	int index_width = 0;
 	int index_height = 1;
 	int mov_type = 0;
-    int x; 
+    int x;
     int y;
     int distance_main_enemy_x;
     int distance_main_enemy_y;
