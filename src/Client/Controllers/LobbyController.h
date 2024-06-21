@@ -27,7 +27,7 @@ public:
                     std::shared_ptr<Queue<std::unique_ptr<DTO>>>& lobbyQueue);
     // UPDATES
     bool hasGameUpdates(std::unique_ptr<DTO>& dto);
-    int processGameUpdate(std::unique_ptr<CommandDTO>& dto);
+    std::pair<bool, int> processGameUpdate(std::unique_ptr<CommandDTO>& dto);
     bool canStartGame();
     GameInfo getSelectedGame();
 

@@ -22,10 +22,10 @@ class WaitingRoom : public QDialog
     Q_OBJECT
 
 signals:
-    void numPlayersUpdated(int numPlayers);
+    void numPlayersUpdated(bool startGameReceived, int numPlayers);
 
 private slots:
-    void updateNumPlayers(int numPlayers);
+    void updateNumPlayers(bool startGameReceived, int numPlayers);
     void fetchUpdates();
 
 public:

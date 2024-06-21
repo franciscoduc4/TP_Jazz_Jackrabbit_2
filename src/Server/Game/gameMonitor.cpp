@@ -98,8 +98,9 @@ void GameMonitor::startGame(uint8_t playerId, uint8_t gameId,
     if (it != games.end()) {
         auto& [id, game] = *it;
         if (game->isFull() && !game->isRunning()) {
-            auto dto = std::make_unique<StartGameDTO>(gameId);
-            sendQueue->push(std::move(dto));
+            std::unique_ptr<DTO> dto = std::make_unique<StartGameDTO>(gameId);
+            // sendQueue->push(std::move(dto));
+            queueMonitor.broadcast(gameId, dto);
             std::cout << "[GM] Pushed StartGameDTO to send queue" << std::endl;
             game->launch();
             std::cout << "[GM] Game " << (int)gameId << " launched by player " << (int)playerId

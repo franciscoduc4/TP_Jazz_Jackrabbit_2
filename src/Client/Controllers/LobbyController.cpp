@@ -19,13 +19,19 @@ bool LobbyController::hasGameUpdates(std::unique_ptr<DTO>& dto) {
     return this->lobbyQueue->try_pop(dto);
 }
 
-int LobbyController::processGameUpdate(std::unique_ptr<CommandDTO>& dto) {
+std::pair<bool, int> LobbyController::processGameUpdate(std::unique_ptr<CommandDTO>& dto) {
     std::cout << "[Lobby Controller] Processing game update..." << std::endl;
     if (!dto) {
-        return static_cast<int>(this->selected.getCurrentPlayers());
+        return std::make_pair(false,
+                static_cast<int>(this->selected.getCurrentPlayers()));
+    }
+    if (dto->getCommand() == Command::START_GAME) {
+        std::cout << "[Lobby Controller] Game started." << std::endl;
+        return std::make_pair(true, static_cast<int>(this->selected.getCurrentPlayers()));
     }
     if (dto->getCommand() != Command::GAME_UPDATE) {
-        return static_cast<int>(this->selected.getCurrentPlayers());
+        return std::make_pair(false,
+                static_cast<int>(this->selected.getCurrentPlayers()));
     }
     auto* gameUpdateDto = dynamic_cast<GameUpdateDTO*>(dto.get());
     if (gameUpdateDto) {
@@ -33,10 +39,7 @@ int LobbyController::processGameUpdate(std::unique_ptr<CommandDTO>& dto) {
             this->selected = gameUpdateDto->getGameInfo();
         }
     }
-    std::cout << "[Lobby Controller] Game updated." << std::endl;
-    std::cout << "[Lobby Controller] Current Game Players: "
-              << static_cast<int>(this->selected.getCurrentPlayers()) << std::endl;
-    return static_cast<int>(this->selected.getCurrentPlayers());
+    return std::make_pair(false, static_cast<int>(this->selected.getCurrentPlayers()));
 }
 
 bool LobbyController::canStartGame() {
