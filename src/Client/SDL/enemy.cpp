@@ -99,6 +99,16 @@ std::map<EnemyType, std::unique_ptr<SDL2pp::Texture>> Enemy::getEnemiesTextures(
     enemySurface.SetColorKey(true, SDL_MapRGB(enemySurface.Get()->format, 0, 128, 255));
     enemies[EnemyType::TURTLE] = std::make_unique<SDL2pp::Texture>(renderer, enemySurface);
 
+    SDL_Surface* sch_surf = IMG_Load(getPath(EnemyType::SCHWARZENGUARD).c_str());
+    SDL2pp::Surface schSurface(sch_surf);
+    schSurface.SetColorKey(true, SDL_MapRGB(schSurface.Get()->format, 0, 128, 255));
+    enemies[EnemyType::SCHWARZENGUARD] = std::make_unique<SDL2pp::Texture>(renderer, schSurface);
+
+    SDL_Surface* yellowMon_surf = IMG_Load(getPath(EnemyType::YELLOWMON).c_str());
+    SDL2pp::Surface yellowMonSurface(yellowMon_surf);
+    yellowMonSurface.SetColorKey(true, SDL_MapRGB(yellowMonSurface.Get()->format, 0, 128, 255));
+    enemies[EnemyType::YELLOWMON] = std::make_unique<SDL2pp::Texture>(renderer, yellowMonSurface);
+
     return enemies;
 }
 
