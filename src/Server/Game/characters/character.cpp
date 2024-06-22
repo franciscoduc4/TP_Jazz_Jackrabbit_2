@@ -258,7 +258,7 @@ void Character::moveRight() {
     if (!gameMap.isValidMapPosition(newPos))
         return;
 
-    gameMap.moveObject(pos, mapPosition, Direction::RIGHT);
+    //gameMap.moveObject(pos, mapPosition, Direction::RIGHT);
     pos = newPos;
 
 
@@ -280,7 +280,7 @@ void Character::moveLeft() {
     if (!gameMap.isValidMapPosition(newPos))
         return;
 
-    gameMap.moveObject(pos, mapPosition, Direction::LEFT);
+    //gameMap.moveObject(pos, mapPosition, Direction::LEFT);
     pos = newPos;
 
     std::cout << "[CHARACTER] NEW POS Character ID: " << static_cast<int>(id) << " new x : "
@@ -354,7 +354,7 @@ void Character::collectItem(const std::shared_ptr<Item>& item) {
             break;
     }
 
-    gameMap.removeItem(item->getPosition());
+    //gameMap.removeItem(item->getPosition());
 }
 
 

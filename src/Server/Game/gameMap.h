@@ -30,6 +30,7 @@ private:
     std::map<uint8_t, std::shared_ptr<Enemy>> enemies;
     std::map<uint8_t, std::shared_ptr<Item>> items;
     std::map<uint8_t, std::shared_ptr<Obstacle>> obstacles;
+    std::map<CharacterType, Vector<uint32_t>> initialPositions;
 
     EntityFactory entityFactory;
     uint8_t entityCount;
@@ -63,8 +64,7 @@ public:
 
     void addEntityToMap(std::shared_ptr<Entity> entity, Vector<uint32_t> position);
 
-    std::shared_ptr<Character> addCharacter(uint8_t playerId, CharacterType type);
-
+    void addCharacter(uint8_t playerId, CharacterType type);
     void addEnemy(EnemyType type, Vector<uint32_t> position);
     void addObstacle(ObstacleType type, Vector<uint32_t> position);
     void addItem(ItemType type, Vector<uint32_t> position);
@@ -93,12 +93,12 @@ public:
 
     Vector<uint32_t> getMapPosition(Vector<uint32_t> position);
 
-    Vector<uint32_t> getInitialPositionForCharacterType(CharacterType type);
 
 
     EnemyType getEnemyType(const std::string& typeStr);
     ObstacleType getObstacleType(const std::string& typeStr);
     ItemType getItemType(const std::string& typeStr);
+    CharacterType getCharacterType(const std::string& typeStr);
 
     uint32_t getMaxXPos() { return size.x - static_cast<uint32_t>(movesPerCell); }
 

@@ -84,6 +84,17 @@ void GameMap::loadMap(uint8_t mapId) {
             }
         }
 
+        // Cargar posiciones iniciales de los personajes
+        if (config["PLAYERS"]) {
+            for (const auto& player : config["PLAYERS"]) {
+                std::string playerType = player.first.as<std::string>();
+                Vector<uint32_t> position = {static_cast<uint32_t>(player.second[0][0].as<int>()), static_cast<uint32_t>(player.second[0][1].as<int>())};
+                CharacterType type = getCharacterType(playerType);
+                initialPositions[type] = position;
+                std::cout << "[GAMEMAP] Initial position for character " << playerType << ": (" << position.x << ", " << position.y << ")" << std::endl;
+            }
+        }
+
     } catch (const std::exception& e) {
         std::cerr << "[GAMEMAP] Error loading map: " << e.what() << std::endl;
         throw;
@@ -127,6 +138,13 @@ ItemType GameMap::getItemType(const std::string& typeStr) {
     if (typeStr == "GOLD_COINS")
         return ItemType::GOLD_COIN;
     throw std::runtime_error("Unknown item type: " + typeStr);
+}
+
+CharacterType GameMap::getCharacterType(const std::string& typeStr) {
+    if (typeStr == "JAZZ") return CharacterType::JAZZ;
+    if (typeStr == "LORI") return CharacterType::LORI;
+    if (typeStr == "SPAZ") return CharacterType::SPAZ;
+    throw std::runtime_error("Unknown character type: " + typeStr);
 }
 
 std::vector<std::shared_ptr<Entity>> GameMap::getObjectsInShootRange(Vector<uint32_t> mapPosition,
@@ -235,70 +253,39 @@ void GameMap::addEntityToMap(std::shared_ptr<Entity> entity, Vector<uint32_t> po
         std::cerr << "[GAMEMAP] Error adding entity to map: " << e.what() << std::endl;
     }
 }
-
-Vector<uint32_t> GameMap::getInitialPositionForCharacterType(CharacterType type) {
+void GameMap::addCharacter(uint8_t playerId, CharacterType type) {
     try {
-        std::string filePath = MapsManager::getMapFileNameById(mapId);
-        YAML::Node config = YAML::LoadFile(filePath);
-
-        std::string characterTypeStr;
-        switch (type) {
-            case CharacterType::JAZZ:
-                characterTypeStr = "JAZZ";
-                break;
-            case CharacterType::SPAZ:
-                characterTypeStr = "SPAZ";
-                break;
-            case CharacterType::LORI:
-                characterTypeStr = "LORI";
-                break;
-            default:
-                throw std::runtime_error("Unknown character type");
+        auto it = initialPositions.find(type);
+        if (it == initialPositions.end()) {
+            std::cerr << "[GAMEMAP] Initial position for character type not found" << std::endl;
+            return;
         }
-
-        for (const auto& pos: config["PLAYERS"][characterTypeStr]) {
-            if (pos.size() != 2) {
-                throw std::runtime_error("Invalid player position configuration in YAML file for " +
-                                         characterTypeStr);
-            }
-            return {static_cast<uint8_t>(pos[0].as<int>()), static_cast<uint8_t>(pos[1].as<int>())};
-        }
-
-        throw std::runtime_error("Initial position for character type not found in YAML for " +
-                                 characterTypeStr);
-    } catch (const std::exception& e) {
-        std::cerr << "[GAMEMAP] Error getting initial position for character type: " << e.what()
-                  << std::endl;
-        throw;
-    }
-}
-
-std::shared_ptr<Character> GameMap::addCharacter(uint8_t playerId, CharacterType type) {
-    try {
-        Vector<uint32_t> initPosition = getInitialPositionForCharacterType(type);
+        
+        Vector<uint32_t> initPosition = it->second;
+        std::cout << "[ADD CHARACTER] Initial position for character: (" << static_cast<int>(initPosition.x)
+                  << ", " << static_cast<int>(initPosition.y) << ")" << std::endl;
 
         if (!isValidMapPosition(initPosition)) {
             std::cerr << "[GAMEMAP] Invalid initial position for character" << std::endl;
-            return nullptr;
+            return;
         }
 
         auto character = entityFactory.createCharacter(playerId, type, initPosition);
         if (!character) {
             std::cerr << "[GAMEMAP] Failed to create character" << std::endl;
-            return nullptr;
+            return;
         }
 
         characters[playerId] = character;
         addEntityToMap(character, initPosition);
         entityCount++;
-        std::cout << "[GAMEMAP] Character with ID " << static_cast<int>(playerId) << " added"
-                  << std::endl;
-        return character;
+        std::cout << "[GAMEMAP] Character with ID " << static_cast<int>(playerId) << " added" << std::endl;
     } catch (const std::exception& e) {
         std::cerr << "[GAMEMAP] Error adding character: " << e.what() << std::endl;
-        return nullptr;
+        return;
     }
 }
+
 
 void GameMap::addEnemy(EnemyType type, Vector<uint32_t> position) {
     try {

@@ -13,7 +13,7 @@ Game::Game(uint8_t gameId, std::string gameName, uint8_t mapId, uint8_t playerId
         mapName(MapsManager::getMapNameById(mapId)),
         gameMode(gameMode),
         maxPlayers(gameMode == GameMode::PARTY_MODE ? maxPlayers : 1),
-        gameMap({255, 255}, mapId),
+        gameMap({}, mapId),
         currentPlayers(1),
         gameLoop(recvQueue, queueMonitor, gameMap, gameId) {
     std::cout << "[GAME] Game created with id: " << (int)gameId << " and name: " << this->gameName
