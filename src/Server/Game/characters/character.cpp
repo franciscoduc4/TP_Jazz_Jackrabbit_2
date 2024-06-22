@@ -104,11 +104,20 @@ void Character::shoot(float time) {
     if (!currentWeapon) {
         currentWeapon = std::make_unique<Blaster>();
     }
+
     auto newState = std::unique_ptr<State>(state->shoot(std::move(currentWeapon), time));
+    std::cout << "[CHARACTER SHOOT] Character state before shooting: "
+              << static_cast<int>(state->getCharacterState()) << std::endl;
+
     if (newState) {
         state = std::move(newState);
+        std::cout << "[CHARACTER] Character state after shooting: "
+                  << static_cast<int>(state->getCharacterState()) << std::endl;
+    } else {
+        std::cerr << "[CHARACTER SHOOT] No new state returned from shoot()" << std::endl;
     }
 }
+
 
 void Character::handleCollision(std::shared_ptr<Enemy> enemy) {
     std::cout << "[CHARACTER] Character ID: " << static_cast<int>(id) << " collided with Enemy ID: " << static_cast<int>(enemy->getId()) << std::endl;

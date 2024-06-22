@@ -7,5 +7,4 @@ void ShootHandler::execute(GameMap& gameMap, std::atomic<bool>& keepRunning, dou
     std::cout << "[SHOOT GAME HANDLER] Executing shoot command" << std::endl;
     std::shared_ptr<Character> character = gameMap.getCharacter(shootCommand->getPlayerId());
     character->shoot(deltaTime);
-    // game.addBullet(bullet);
 }

@@ -18,15 +18,17 @@ std::unique_ptr<State> IdleState::exec(float time) {
 }
 std::unique_ptr<State> IdleState::shoot(const std::shared_ptr<Weapon>& weapon,
                                         float time) {
-
+                                       
+    std::cout << "[IDLE STATE SHOOT] Shooting" << std::endl;                            
     if (!weapon) {
         std::cerr << "[IDLE STATE] Error: weapon is null" << std::endl;
         return nullptr;
     }
 
-    if (weapon->isEmpty() || !weapon->cooldown(time)) {
-        return nullptr;
-    }
+    // if (weapon->isEmpty() || !weapon->cooldown(time)) {
+    //     std::cout << "[IDLE STATE] Weapon is empty or in cooldown" << std::endl;
+    //     return nullptr;
+    // }
     return std::make_unique<ShootingState>(character, weapon, time);
 }
 
