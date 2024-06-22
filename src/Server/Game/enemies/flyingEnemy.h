@@ -18,6 +18,8 @@ public:
     EnemyType getEnemyType() const override;
 
     void update(double deltaTime) override;
+
+    uint8_t getDamage() const override { return ServerConfig::getFlyingEnemyDamage(); }
 };
 
 #endif  // FLYING_ENEMY_H

@@ -69,7 +69,10 @@ public:
     void addObstacle(ObstacleType type, Vector<uint32_t> position);
     void addItem(ItemType type, Vector<uint32_t> position);
 
+
     void handleCharacterItemCollision(std::shared_ptr<Character> character, std::shared_ptr<Item> item);
+    void handleCharacterEnemyCollision(std::shared_ptr<Character> character, std::shared_ptr<Enemy> enemy);
+    void handleCharacterObstacleCollision(std::shared_ptr<Character> character, std::shared_ptr<Obstacle> obstacle);
 
     void update(float time);
 

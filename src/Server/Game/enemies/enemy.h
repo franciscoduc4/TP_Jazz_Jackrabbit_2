@@ -50,6 +50,8 @@ public:
 
     EnemyDTO getDTO() const;
 
+    virtual uint8_t getDamage() const = 0;
+
     std::shared_ptr<Character> getClosestCharacter(
             std::vector<std::shared_ptr<Character>> characters);
 };

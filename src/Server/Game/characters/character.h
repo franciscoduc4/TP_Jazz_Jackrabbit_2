@@ -24,11 +24,13 @@
 #include "states/state.h"
 #include "states/moving.h"
 #include "../items/item.h"
-
+#include <memory>
 
 class GameMap;
+class Enemy;
+class Obstacle;
 
-class Character: public Entity {
+class Character: public Entity, public std::enable_shared_from_this<Character> {
 protected:
     CharacterType type;
     GameMap& gameMap;
@@ -75,6 +77,8 @@ public:
     void shoot(float time);
 
     void update(double deltaTime);
+    void handleCollision(std::shared_ptr<Enemy> enemy);
+    void handleObstacleCollision(std::shared_ptr<Obstacle> obstacle);
 
     void moveRight(float time);
     void sprintRight(float time);

@@ -19,6 +19,8 @@ public:
 
     void update(double deltaTime) override;
 
+    uint8_t getDamage() const override { return ServerConfig::getWalkingEnemyDamage(); }
+
 };
 
 #endif  // WALKING_ENEMY_H
