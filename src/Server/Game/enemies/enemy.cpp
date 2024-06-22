@@ -85,7 +85,7 @@ std::unique_ptr<EnemyState>& Enemy::getState() { return state; }
 
 
 EnemyDTO Enemy::getDTO() const {
-    return EnemyDTO{pos.x, pos.y, id, health, dmg, speed, EnemyType::TURTLE/*getEnemyType()*/, EnemyStateEntity::ENEMY_WALKING};
+    return EnemyDTO{pos.x, pos.y, id, health, dmg, speed, getEnemyType(), EnemyStateEntity::ENEMY_WALKING};
 }
 
 void Enemy::update(double deltaTime) {

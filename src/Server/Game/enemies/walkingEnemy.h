@@ -18,6 +18,7 @@ public:
     EnemyType getEnemyType() const override;
 
     void update(double deltaTime) override;
+
 };
 
 #endif  // WALKING_ENEMY_H
