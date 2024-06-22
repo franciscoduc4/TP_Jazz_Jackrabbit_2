@@ -149,7 +149,7 @@ void GameScreen::run() {
                 }
             } else if (event.type == SDL_KEYUP) {
                 switch (event.key.keysym.sym) {
-                    case SDLK_RIGHT: case SDLK_LEFT: case SDLK_LSHIFT: case SDLK_m: case SDLK_SPACE:
+                    case SDLK_RIGHT: case SDLK_LEFT: case SDLK_LSHIFT:
                         {
                             Command idle = Command::IDLE;
                             std::vector<uint8_t> elements;

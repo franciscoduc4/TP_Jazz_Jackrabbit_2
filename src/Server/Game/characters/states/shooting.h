@@ -15,6 +15,7 @@ private:
     std::shared_ptr<Weapon> weapon;
     float startTime = -1;
     float shootCooldown;
+    float shootLoop;
 
 public:
     ShootingState(Character& character, const std::shared_ptr<Weapon>& weapon, float time);

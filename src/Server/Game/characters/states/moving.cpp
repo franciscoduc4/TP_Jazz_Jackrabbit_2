@@ -93,8 +93,8 @@ std::unique_ptr<State> MovingState::specialAttack(float time) {
 std::unique_ptr<State> MovingState::jump(float time) {
     //     // Cambia al estado de salto
     //     return std::unique_ptr<JumpingState>();
-
-    return nullptr;
+    character.jump();
+    return std::make_unique<JumpingState>(character);
 }
 
 std::unique_ptr<State> MovingState::stopAction() {

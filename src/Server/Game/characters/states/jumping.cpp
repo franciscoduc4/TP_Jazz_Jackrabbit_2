@@ -25,7 +25,24 @@ std::unique_ptr<State> JumpingState::shoot(const std::shared_ptr<Weapon>& weapon
 
 std::unique_ptr<State> JumpingState::move(Direction direction, float time) {
     // Puede moverse en el aire
-    return std::make_unique<MovingState>(character, direction);
+    switch (direction) {
+        case Direction::UP:
+            character.moveUp();
+            break;
+        case Direction::DOWN:
+            character.moveDown();
+            break;
+        case Direction::RIGHT:
+            character.moveRight();
+            break;
+        case Direction::LEFT:
+            character.moveLeft();
+            break;
+        default:
+            break;
+    }
+    return nullptr;
+    //return std::make_unique<MovingState>(character, direction);
 }
 
 std::unique_ptr<State> JumpingState::sprint(Direction direction, float time) {
@@ -54,12 +71,13 @@ std::unique_ptr<State> JumpingState::revive(float time) {
 std::unique_ptr<State> JumpingState::jump(float time) {
     // Puede saltar mientras está en el aire
     std::cout << "JumpingState::jump" << std::endl;
-    if (!character.isJumping()) {
-        character.jump(time);
-    }
+    //if (!character.isJumping()) {
+    //    character.jump(time);
+    //}
     // if (character.hasLanded()) {
     //     return std::make_unique<IdleState>();
     // }
+    character.jump();
     return nullptr;
 }
 

@@ -12,7 +12,7 @@
 #include "moving.h"
 
 ShootingState::ShootingState(Character& character, const std::shared_ptr<Weapon>& weapon, float time):
-        character(character), weapon(weapon), shootCooldown(weapon->getFireRate()), startTime(time) {
+        character(character), weapon(weapon), shootCooldown(weapon->getFireRate()), shootLoop(shootCooldown) {
     characterState = CharacterStateEntity::SHOOTING;
 }
 
@@ -32,10 +32,11 @@ std::unique_ptr<State> ShootingState::shoot(const std::shared_ptr<Weapon>& weapo
     //    weapon->shoot(characters, x, time);
     //    return std::unique_ptr<ShootingState>();
     //}
-    
-    if (time - startTime > 0.5) {
+    if (shootLoop <= 0.0) {
+        shootLoop = shootCooldown;
         return std::make_unique<IdleState>(character);
     }
+    shootLoop -= shootCooldown / 7;
     return nullptr;
 }
 

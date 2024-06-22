@@ -6,7 +6,7 @@
 
 Character::Character(GameMap& gameMap, Vector<uint32_t> pos, uint8_t playerId, CharacterType type,
                      float horizontalSpeed, float sprintSpeed, float verticalSpeed,
-                     float jumpHeight, float shootCooldownTime):
+                     uint32_t jumpHeight, float shootCooldownTime):
         Entity(pos, playerId, ServerConfig::getCharacterInitialHealth(), Direction::RIGHT,
                EntityType::CHARACTER),
         type(type),
@@ -304,24 +304,24 @@ void Character::jump(float time) {
     auto newState = std::unique_ptr<State>(state->jump(time));
     if (newState) {
         state = std::move(newState);
-    }
-
-    initialYJump = pos.y;
-
-    if (isIntoxicated || !jumping) {
-        Vector<uint32_t> mapPosition = getMapPosition(movesPerCell);
-
-        Vector<uint32_t> newPosition = pos - Vector<uint32_t>{0, movesPerCell};
-
-        if (!gameMap.isValidMapPosition(newPosition)) {
-            return;
-        }
-
-        gameMap.moveObject(pos, mapPosition, Direction::UP);
-        pos = newPosition;
+        initialYJump = pos.y;
         jumping = true;
     }
+    
+}
+
+void Character::jump() {
+    Vector<uint32_t> mapPosition = getMapPosition(movesPerCell);
+    Vector<uint32_t> newPosition = pos - Vector<uint32_t>{0, movesPerCell};
+
+    if (!gameMap.isValidMapPosition(newPosition)) {
+        return;
+    }
+
+    gameMap.moveObject(pos, mapPosition, Direction::UP);
+    pos = newPosition;
     std::cout << "[CHARACTER] Character pos y: " << static_cast<int>(pos.y) << std::endl;
+    
 }
 
 bool Character::hasLanded() {

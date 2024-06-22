@@ -51,6 +51,7 @@ std::unique_ptr<State> IdleState::die(float time) {
 std::unique_ptr<State> IdleState::revive(float time) { return nullptr; }
 
 std::unique_ptr<State> IdleState::jump(float time) {
+    character.jump();
     return std::make_unique<JumpingState>(character);
 }
 

@@ -35,7 +35,7 @@ protected:
     uint8_t maxHealth;
     float reviveTime;
     uint8_t maxRevived;
-    uint8_t movesPerCell;
+    uint32_t movesPerCell;
     uint8_t timesRevived;
 
     float respawnTime;
@@ -49,23 +49,24 @@ protected:
     float verticalSpeed;
     float sprintSpeed;
     float horizontalSpeed;
-    float jumpHeight;
+    uint32_t jumpHeight;
 
     std::unique_ptr<Weapon> currentWeapon;
     std::unique_ptr<State> state;
 
     bool jumping = false;
+    bool isFalling = false;
 
     bool isIntoxicated = false;
     float shootCooldown = 0.0f;
 
     float jumpStartTime = 0.0f;
     float jumpDuration = 0.5f;
-    uint8_t initialYJump = 0;
+    uint32_t initialYJump = 0;
 
 public:
     Character(GameMap& gameMap, Vector<uint32_t> pos, uint8_t playerId, CharacterType type,
-              float horizontalSpeed, float sprintSpeed, float verticalSpeed, float jumpHeight,
+              float horizontalSpeed, float sprintSpeed, float verticalSpeed, uint32_t jumpHeight,
               float shootCooldownTime);
 
     void idle(float time);
@@ -99,6 +100,7 @@ public:
     void moveDown();
     void moveLeft();
     void moveUp();
+    void jump();
 
 
     bool characIsIntoxicated() const;
