@@ -34,10 +34,6 @@ std::unique_ptr<State> MovingState::shoot(const std::shared_ptr<Weapon>& weapon,
 }
 
 std::unique_ptr<State> MovingState::move(Direction direction2, float time) {
-    // if (direction2 != this->direction2) {
-    //     this->direction2 = direction2;
-    //     return nullptr;
-    // }
     std::cout << "[MOVE] moving direction: " << static_cast<int>(direction2) << std::endl;
     switch (direction2) {
         case Direction::UP:
@@ -55,8 +51,12 @@ std::unique_ptr<State> MovingState::move(Direction direction2, float time) {
         default:
             break;
     }
+    // if (character.isOnGround() && direction2 == Direction::DOWN) {
+    //     return std::make_unique<IdleState>(character);
+    // }
     return nullptr;
 }
+
 
 
 std::unique_ptr<State> MovingState::sprint(Direction direction2, float time) {

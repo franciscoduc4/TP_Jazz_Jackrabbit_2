@@ -60,6 +60,26 @@ void Character::recvDamage(uint8_t dmg, float time) {
     }
 }
 
+// void Character::update(float time) {
+//     std::cout << "[CHARACTER] Updating character ID: " << static_cast<int>(id) << std::endl;
+//     if (!state) {
+//         std::cerr << "[CHARACTER] Null state for character ID: " << static_cast<int>(id) << std::endl;
+//         return;
+//     }
+//     if (!isOnGround() && !jumping) {
+//         // Si el personaje no está en el suelo y no está saltando, aplicar gravedad
+//         // auto newState = std::make_unique<MovingState>(*this, Direction::DOWN);
+//         // if (newState) {
+//         //     state = std::move(newState);
+//         // }
+//     } else {
+//         auto newState = std::unique_ptr<State>(state->exec(time));
+//         if (newState) {
+//             state = std::move(newState);
+//         }
+//     }
+// }
+
 void Character::update(float time) {
     // std::cout << "[CHARACTER] Updating character ID: " << static_cast<int>(id) << std::endl;
     // try {
@@ -99,6 +119,7 @@ void Character::update(float time) {
     }
 
 }
+
 void Character::shoot(float time) {
     std::cout << "[CHARACTER] Character ID: " << static_cast<int>(id) << " shooting" << std::endl;
     if (!currentWeapon) {
@@ -180,8 +201,32 @@ void Character::moveUp(float time) {
 }
 
 void Character::moveDown() {
-    std::cout << "[CHARACTER] Character ID: " << static_cast<int>(id) << " moving down"
-              << std::endl;
+    // std::cout << "[CHARACTER] Character ID: " << static_cast<int>(id) << " moving down" << std::endl;
+    // Vector<uint32_t> newPos = pos + Vector<uint32_t>{0, movesPerCell};
+    // if (newPos.y >= gameMap.getMaxYPos()) {
+    //     newPos = Vector<uint32_t>{pos.x, gameMap.getMaxYPos()};
+    // }
+    // if (!gameMap.isValidMapPosition(newPos))
+    //     return;
+
+    // auto entityAtNewPos = gameMap.getEntityAt(newPos);
+    // if (entityAtNewPos) {
+    //     if (entityAtNewPos->getType() == EntityType::ENEMY) {
+    //         gameMap.handleCharacterEnemyCollision(shared_from_this(), std::dynamic_pointer_cast<Enemy>(entityAtNewPos));
+    //         return;
+    //     } else if (entityAtNewPos->getType() == EntityType::OBSTACLE) {
+    //         gameMap.handleCharacterObstacleCollision(shared_from_this(), std::dynamic_pointer_cast<Obstacle>(entityAtNewPos));
+    //         return;
+    //     }
+    // }
+    // pos = newPos;
+    // std::cout << "[CHARACTER] NEW POS Character ID: " << static_cast<int>(id) << " new y: " << int(pos.y) << std::endl;
+
+    // // Check for item collision after moving
+    // entityAtNewPos = gameMap.getEntityAt(newPos);
+    // if (entityAtNewPos && entityAtNewPos->getType() == EntityType::ITEM) {
+    //     gameMap.handleCharacterItemCollision(shared_from_this(), std::dynamic_pointer_cast<Item>(entityAtNewPos));
+    // }
 }
 
 void Character::moveDown(float time) {
@@ -401,6 +446,16 @@ bool Character::hasLanded() {
         return true;
     return false;
 }
+
+bool Character::isOnGround() const {
+    Vector<uint32_t> belowPos = pos + Vector<uint32_t>{0, movesPerCell};
+    if (belowPos.y >= gameMap.getMaxYPos()) {
+        return true; // Si está en el límite inferior del mapa, consideramos que está en el suelo
+    }
+    auto entityBelow = gameMap.getEntityAt(belowPos);
+    return entityBelow != nullptr;
+}
+
 
 bool Character::characIsIntoxicated() const { return isIntoxicated; }
 
