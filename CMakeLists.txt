@@ -138,9 +138,9 @@ if (LEVEL_EDITOR)
     )
 
     qt5_wrap_ui(UIS_HEADERS ${UI_FILES_2})
-    qt5_add_resources(RESOURCES ${PROJECT_SOURCE_DIR}/LevelEditor/resources.qrc)
+    qt5_add_resources(RESOURCES_LE ${PROJECT_SOURCE_DIR}/LevelEditor/resourcesLE.qrc)
 
-    add_executable(leveleditor ${LEVELEDITOR_SOURCES} ${UIS_HEADERS} ${RESOURCES})
+    add_executable(leveleditor ${LEVELEDITOR_SOURCES} ${UIS_HEADERS} ${RESOURCES_LE})
     target_include_directories(leveleditor PRIVATE ${CMAKE_CURRENT_BINARY_DIR})
     target_link_libraries(leveleditor common Qt5::Widgets Qt5::Core yaml-cpp fmt::fmt -pthread)
     target_include_directories(leveleditor PUBLIC ${PROJECT_SOURCE_DIR}/src/Common)
