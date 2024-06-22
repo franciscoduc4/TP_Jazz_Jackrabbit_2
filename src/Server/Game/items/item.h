@@ -11,13 +11,15 @@ class Item : public Entity {
 private:
     Vector<uint32_t> position;
 public:
-    Item(GameMap& gameMap, Vector<uint32_t> position);
+    Item(GameMap& gameMap, Vector<uint32_t> position, uint32_t width, uint32_t height);
 
     void update(double deltaTime) override;
 
     ItemDTO getDTO();
 
     virtual ItemType getItemType() const = 0;
+
+    
 };
 
 #endif // ITEM_H

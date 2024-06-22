@@ -66,10 +66,13 @@ protected:
     float jumpDuration = 0.5f;
     uint8_t initialYJump = 0;
 
+    uint32_t width;
+    uint32_t height; 
+
 public:
     Character(GameMap& gameMap, Vector<uint32_t> pos, uint8_t playerId, CharacterType type,
               float horizontalSpeed, float sprintSpeed, float verticalSpeed, float jumpHeight,
-              float shootCooldownTime);
+              float shootCooldownTime, uint32_t width, uint32_t height);
 
     void idle(float time);
     void recvDamage(uint8_t damage, float time) override;

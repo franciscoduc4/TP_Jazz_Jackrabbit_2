@@ -5,11 +5,14 @@
 
 class Column : public Obstacle {
 public:
-    Column(GameMap& gameMap, Vector<uint32_t> position);
+    Column(GameMap& gameMap, Vector<uint32_t> position, uint32_t width, uint32_t height);
 
     void update(double deltaTime) override;
 
     ObstacleType getObstacleType() const { return ObstacleType::COLUMN; }
+
+    uint32_t getWidth() const { return 30; }
+    uint32_t getHeight() const { return 100; }
 };
 
 #endif // Column_H

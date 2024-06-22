@@ -5,7 +5,7 @@
 
 class Gem : public Item {
 public:
-    Gem(GameMap& gameMap, Vector<uint32_t> position);
+    Gem(GameMap& gameMap, Vector<uint32_t> position, uint32_t width, uint32_t height);
 
     void update(double deltaTime) override;
 

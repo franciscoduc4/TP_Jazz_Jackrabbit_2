@@ -15,6 +15,7 @@ GameMap::GameMap(Vector<uint32_t> size, uint8_t mapId):
         mapId(mapId) {
     std::cout << "[GAMEMAP] GameMap created with mapId: " << static_cast<int>(mapId) << std::endl;
 }
+
 void GameMap::loadMap(uint8_t mapId) {
     try {
         std::string filePath = MapsManager::getMapFileNameById(mapId);
@@ -42,11 +43,12 @@ void GameMap::loadMap(uint8_t mapId) {
                 for (const auto& pos: obstacle.second) {
                     Vector<uint32_t> position = {static_cast<uint32_t>(pos[0].as<int>()),
                                                  static_cast<uint32_t>(pos[1].as<int>())};
+                    uint32_t width = static_cast<uint32_t>(pos[2].as<int>());
+                    uint32_t height = static_cast<uint32_t>(pos[3].as<int>());
                     ObstacleType type = getObstacleType(obstacleType);
-                    addObstacle(type, position);
+                    addObstacle(type, position, width, height);
                     std::cout << "[GAMEMAP] Obstacle start position set for obstacleType: "
-                              << obstacleType << " at (" << position.x << ", " << position.y << ")"
-                              << std::endl;
+                              << obstacleType << " at (" << position.x << ", " << position.y << "), width: " << width << ", height: " << height << std::endl;
                 }
             }
         }
@@ -56,16 +58,17 @@ void GameMap::loadMap(uint8_t mapId) {
                 std::string enemyType = enemy.first.as<std::string>();
                 std::cout << "[GAMEMAP] Enemy type: " << enemyType << std::endl;
                 for (const auto& pos: enemy.second) {
-                    if (pos.size() != 2) {
-                        throw std::runtime_error(
-                                "Invalid enemy position configuration in YAML file");
+                    if (pos.size() != 4) {
+                        throw std::runtime_error("Invalid enemy position configuration in YAML file");
                     }
                     Vector<uint32_t> position = {static_cast<uint32_t>(pos[0].as<int>()),
                                                  static_cast<uint32_t>(pos[1].as<int>())};
+                    uint32_t width = static_cast<uint32_t>(pos[2].as<int>());
+                    uint32_t height = static_cast<uint32_t>(pos[3].as<int>());
                     EnemyType type = getEnemyType(enemyType);
-                    addEnemy(type, position);
+                    addEnemy(type, position, width, height);
                     std::cout << "[GAMEMAP] Enemy position: (" << static_cast<int>(position.x)
-                              << ", " << static_cast<int>(position.y) << ")" << std::endl;
+                              << ", " << static_cast<int>(position.y) << "), width: " << width << ", height: " << height << std::endl;
                 }
             }
         }
@@ -77,9 +80,11 @@ void GameMap::loadMap(uint8_t mapId) {
                 for (const auto& pos: item.second) {
                     Vector<uint32_t> position = {static_cast<uint32_t>(pos[0].as<int>()),
                                                  static_cast<uint32_t>(pos[1].as<int>())};
-                    addItem(itemType, position);
+                    uint32_t width = static_cast<uint32_t>(pos[2].as<int>());
+                    uint32_t height = static_cast<uint32_t>(pos[3].as<int>());
+                    addItem(itemType, position, width, height);
                     std::cout << "[GAMEMAP] Item start position set for itemType: " << itemTypeStr
-                              << " at (" << position.x << ", " << position.y << ")" << std::endl;
+                              << " at (" << position.x << ", " << position.y << "), width: " << width << ", height: " << height << std::endl;
                 }
             }
         }
@@ -90,10 +95,13 @@ void GameMap::loadMap(uint8_t mapId) {
                 std::string playerType = player.first.as<std::string>();
                 Vector<uint32_t> position = {static_cast<uint32_t>(player.second[0][0].as<int>()),
                                              static_cast<uint32_t>(player.second[0][1].as<int>())};
+                uint32_t width = static_cast<uint32_t>(player.second[0][2].as<int>());
+                uint32_t height = static_cast<uint32_t>(player.second[0][3].as<int>());
                 CharacterType type = getCharacterType(playerType);
                 initialPositions[type] = position;
+                initialSizes[type] = {width, height};  // Guardar ancho y alto de los personajes
                 std::cout << "[GAMEMAP] Initial position for character " << playerType << ": ("
-                          << position.x << ", " << position.y << ")" << std::endl;
+                          << position.x << ", " << position.y << "), width: " << width << ", height: " << height << std::endl;
             }
         }
 
@@ -258,6 +266,7 @@ void GameMap::addEntityToMap(std::shared_ptr<Entity> entity, Vector<uint32_t> po
         std::cerr << "[GAMEMAP] Error adding entity to map: " << e.what() << std::endl;
     }
 }
+
 void GameMap::addCharacter(uint8_t playerId, CharacterType type) {
     try {
         auto it = initialPositions.find(type);
@@ -267,16 +276,17 @@ void GameMap::addCharacter(uint8_t playerId, CharacterType type) {
         }
 
         Vector<uint32_t> initPosition = it->second;
+        Vector<uint32_t> initSize = initialSizes[type]; // Obtener el tamaño inicial del personaje
         std::cout << "[ADD CHARACTER] Initial position for character: ("
                   << static_cast<int>(initPosition.x) << ", " << static_cast<int>(initPosition.y)
-                  << ")" << std::endl;
+                  << "), width: " << initSize.x << ", height: " << initSize.y << std::endl;
 
         if (!isValidMapPosition(initPosition)) {
             std::cerr << "[GAMEMAP] Invalid initial position for character" << std::endl;
             return;
         }
 
-        auto character = entityFactory.createCharacter(playerId, type, initPosition);
+        auto character = entityFactory.createCharacter(playerId, type, initPosition, initSize.x, initSize.y);
         if (!character) {
             std::cerr << "[GAMEMAP] Failed to create character" << std::endl;
             return;
@@ -294,14 +304,14 @@ void GameMap::addCharacter(uint8_t playerId, CharacterType type) {
 }
 
 
-void GameMap::addEnemy(EnemyType type, Vector<uint32_t> position) {
+void GameMap::addEnemy(EnemyType type, Vector<uint32_t> position, uint32_t width, uint32_t height) {
     try {
         if (!isValidMapPosition(position)) {
             throw std::runtime_error("Invalid position for enemy");
         }
-        auto enemy = entityFactory.createEnemy(entityCount, type, position);
+        auto enemy = entityFactory.createEnemy(entityCount, type, position, width, height);
         std::cout << "[GAMEMAP] Adding enemy at position: (" << static_cast<int>(position.x) << ", "
-                  << static_cast<int>(position.y) << ")" << std::endl;
+                  << static_cast<int>(position.y) << "), width: " << width << ", height: " << height << std::endl;
         entityCount++;
         addEntityToMap(enemy, position);
     } catch (const std::exception& e) {
@@ -309,14 +319,14 @@ void GameMap::addEnemy(EnemyType type, Vector<uint32_t> position) {
     }
 }
 
-void GameMap::addObstacle(ObstacleType type, Vector<uint32_t> position) {
+void GameMap::addObstacle(ObstacleType type, Vector<uint32_t> position, uint32_t width, uint32_t height) {
     try {
         if (!isValidMapPosition(position)) {
             throw std::runtime_error("Invalid position for obstacle");
         }
-        auto obstacle = entityFactory.createObstacle(type, position);
+        auto obstacle = entityFactory.createObstacle(type, position, width, height);
         std::cout << "[GAMEMAP] Adding obstacle at position: (" << static_cast<int>(position.x)
-                  << ", " << static_cast<int>(position.y) << ")" << std::endl;
+                  << ", " << static_cast<int>(position.y) << "), width: " << width << ", height: " << height << std::endl;
 
         addEntityToMap(obstacle, position);
         entityCount++;
@@ -325,14 +335,14 @@ void GameMap::addObstacle(ObstacleType type, Vector<uint32_t> position) {
     }
 }
 
-void GameMap::addItem(ItemType type, Vector<uint32_t> position) {
+void GameMap::addItem(ItemType type, Vector<uint32_t> position, uint32_t width, uint32_t height) {
     try {
         if (!isValidMapPosition(position)) {
             throw std::runtime_error("Invalid position for item");
         }
-        auto item = entityFactory.createItem(type, position);
+        auto item = entityFactory.createItem(type, position, width, height);
         std::cout << "[GAMEMAP] Adding item at position: (" << static_cast<int>(position.x) << ", "
-                  << static_cast<int>(position.y) << ")" << std::endl;
+                  << static_cast<int>(position.y) << "), width: " << width << ", height: " << height << std::endl;
         addEntityToMap(item, position);
         entityCount++;
     } catch (const std::exception& e) {
@@ -398,6 +408,11 @@ void GameMap::update(float time) {
     } catch (const std::exception& e) {
         std::cerr << "[GAMEMAP] Error updating game map: " << e.what() << std::endl;
     }
+}
+
+bool GameMap::checkCollision(const Vector<uint32_t>& pos1, const Vector<uint32_t>& size1, const Vector<uint32_t>& pos2, const Vector<uint32_t>& size2) {
+    return (pos1.x < pos2.x + size2.x && pos1.x + size1.x > pos2.x &&
+            pos1.y < pos2.y + size2.y && pos1.y + size1.y > pos2.y);
 }
 
 

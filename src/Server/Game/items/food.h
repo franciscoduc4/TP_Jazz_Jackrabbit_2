@@ -5,7 +5,7 @@
 
 class Food : public Item {
 public:
-    Food(GameMap& gameMap, Vector<uint32_t> position);
+    Food(GameMap& gameMap, Vector<uint32_t> position, uint32_t width, uint32_t height);
 
     void update(double deltaTime) override;
 

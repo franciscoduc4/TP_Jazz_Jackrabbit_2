@@ -6,7 +6,7 @@ Enemy::Enemy(GameMap& gameMap, const Vector<uint32_t>& pos, uint8_t id, uint8_t 
              uint8_t dmg, std::unique_ptr<EnemyState> initialState, uint8_t viewDistance,
              uint8_t viewDistanceHit, uint8_t movesPerCell, uint8_t hitDistance,
              std::vector<uint8_t> walkProb, std::vector<uint8_t> jumpProb,
-             std::vector<uint8_t> flyProb):
+             std::vector<uint8_t> flyProb, uint32_t width, uint32_t height):
         Entity(pos, id, health, dir, EntityType::ENEMY),
         gameMap(gameMap),
         dmg(dmg),
@@ -18,7 +18,9 @@ Enemy::Enemy(GameMap& gameMap, const Vector<uint32_t>& pos, uint8_t id, uint8_t 
         speed(1),
         walkProb(walkProb),
         jumpProb(jumpProb),
-        flyProb(flyProb) {}
+        flyProb(flyProb),
+        width(width),
+        height(height) {}
 
 void Enemy::update(std::vector<std::shared_ptr<Character>> characters, float time) {
     std::unique_ptr<EnemyState> newState = state->update(time);

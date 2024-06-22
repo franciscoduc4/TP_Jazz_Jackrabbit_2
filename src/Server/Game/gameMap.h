@@ -31,6 +31,7 @@ private:
     std::map<uint8_t, std::shared_ptr<Item>> items;
     std::map<uint8_t, std::shared_ptr<Obstacle>> obstacles;
     std::map<CharacterType, Vector<uint32_t>> initialPositions;
+    std::map<CharacterType, Vector<uint32_t>> initialSizes;
 
     EntityFactory entityFactory;
     uint8_t entityCount;
@@ -65,14 +66,16 @@ public:
     void addEntityToMap(std::shared_ptr<Entity> entity, Vector<uint32_t> position);
 
     void addCharacter(uint8_t playerId, CharacterType type);
-    void addEnemy(EnemyType type, Vector<uint32_t> position);
-    void addObstacle(ObstacleType type, Vector<uint32_t> position);
-    void addItem(ItemType type, Vector<uint32_t> position);
+    void addEnemy(EnemyType type, Vector<uint32_t> position, uint32_t width, uint32_t height);
+    void addObstacle(ObstacleType type, Vector<uint32_t> position, uint32_t width, uint32_t height);
+    void addItem(ItemType type, Vector<uint32_t> position, uint32_t width, uint32_t height);
 
 
     void handleCharacterItemCollision(std::shared_ptr<Character> character, std::shared_ptr<Item> item);
     void handleCharacterEnemyCollision(std::shared_ptr<Character> character, std::shared_ptr<Enemy> enemy);
     void handleCharacterObstacleCollision(std::shared_ptr<Character> character, std::shared_ptr<Obstacle> obstacle);
+
+    bool checkCollision(const Vector<uint32_t>& pos1, const Vector<uint32_t>& size1, const Vector<uint32_t>& pos2, const Vector<uint32_t>& size2);
 
     void update(float time);
 

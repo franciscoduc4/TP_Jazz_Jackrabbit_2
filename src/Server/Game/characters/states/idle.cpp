@@ -14,9 +14,9 @@ IdleState::IdleState(Character& character) : character(character){ characterStat
 
 std::unique_ptr<State> IdleState::exec(float time) {
     std::cout << "[IDLE] Executing idle state for character ID: " << static_cast<int>(character.getId()) << std::endl;
-    // if (!character.isOnGround()) {
-    //     return std::make_unique<MovingState>(character, Direction::DOWN);
-    // }
+    if (!character.isOnGround()) {
+        return std::make_unique<MovingState>(character, Direction::DOWN);
+    }
     return nullptr;
 }
 

@@ -5,7 +5,7 @@
 
 class SilverCoin : public Item {
 public:
-    SilverCoin(GameMap& gameMap, Vector<uint32_t> position);
+    SilverCoin(GameMap& gameMap, Vector<uint32_t> position, uint32_t width, uint32_t height);
 
     void update(double deltaTime) override;
 

@@ -1,5 +1,5 @@
 #include "item.h"
-Item::Item(GameMap& gameMap, Vector<uint32_t> position)
+Item::Item(GameMap& gameMap, Vector<uint32_t> position, uint32_t width, uint32_t height)
     : Entity(position, 0, 1, Direction::UP, EntityType::ITEM), position(position) {}
 
     

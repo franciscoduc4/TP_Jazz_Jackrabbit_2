@@ -51,9 +51,9 @@ std::unique_ptr<State> MovingState::move(Direction direction2, float time) {
         default:
             break;
     }
-    // if (character.isOnGround() && direction2 == Direction::DOWN) {
-    //     return std::make_unique<IdleState>(character);
-    // }
+    if (character.isOnGround() && direction2 == Direction::DOWN) {
+        return std::make_unique<IdleState>(character);
+    }
     return nullptr;
 }
 
