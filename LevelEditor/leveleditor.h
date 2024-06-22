@@ -30,6 +30,7 @@ public:
 
 private slots:
     void onSaveClicked();
+    void onClearClicked();
 
 private:
     Ui::LevelEditor *ui;

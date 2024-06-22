@@ -9,6 +9,8 @@
 CanvasWidget::CanvasWidget(QWidget *parent) : QWidget(parent) {
     setFixedSize(1000, 1000);
     setAcceptDrops(true);
+    backgroundImage = QPixmap(":/assets/scenes/BeachWorld/background.png");
+    backgroundImage = backgroundImage.scaled(width(), height(), Qt::KeepAspectRatioByExpanding);
     qDebug() << "CanvasWidget created";
 }
 
@@ -55,6 +57,9 @@ void CanvasWidget::dropEvent(QDropEvent *event) {
 
 void CanvasWidget::paintEvent(QPaintEvent *event) {
     QPainter painter(this);
+
+    painter.drawPixmap(0, 0, backgroundImage);
+
     painter.setPen(Qt::black);
     painter.drawRect(rect().adjusted(0, 0, -1, -1));
 
@@ -82,4 +87,10 @@ void CanvasWidget::mouseMoveEvent(QMouseEvent *event) {
 
 void CanvasWidget::mouseReleaseEvent(QMouseEvent *event) {
     currentDraggedElement = nullptr;
+}
+
+void CanvasWidget::clearElements() {
+    qDeleteAll(droppedElements);
+    droppedElements.clear();
+    update();
 }

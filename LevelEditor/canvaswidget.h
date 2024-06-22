@@ -34,6 +34,7 @@ private:
     QVector<DroppedElement*> droppedElements;
     DroppedElement* currentDraggedElement = nullptr;
     QPoint dragOffset;
+    QPixmap backgroundImage;
 };
 
 #endif // CANVASWIDGET_H

@@ -2,15 +2,27 @@ QWidget#centralwidget {
     border-image: url(:/assets/LobbyImages/Background.png) 0 0 0 0 stretch stretch;
 }
 
-QPushButton {
+QPushButton#btnSave {
     background-color: transparent;
     border-image: none;
     border: none;
     color: white;
 }
 
-QPushButton:hover {
-    background-color: #1e1e1e;
+QPushButton#btnSave:hover {
+    color: #00A35B;
+}
+
+QPushButton#btnClear {
+    background-color: black;
+    border-image: none;
+    border: none;
+    color: #E3000B;
+}
+
+QPushButton#btnClear:hover {
+    background-color: #E3000B;
+    color: white;
 }
 
 QLabel {

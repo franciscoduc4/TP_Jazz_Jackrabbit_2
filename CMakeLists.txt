@@ -26,8 +26,8 @@ endif()
 
 option(TESTING "Build internal testing suite" OFF)
 option(INSTALL "Apply install settings" OFF)
-option(SERVER "Build server" OFF)
-option(CLIENT "Build client" OFF)
+option(SERVER "Build server" ON)
+option(CLIENT "Build client" ON)
 option(LEVEL_EDITOR "Build Level Editor" ON)
 
 # ------------------------------------------------------------------------------------

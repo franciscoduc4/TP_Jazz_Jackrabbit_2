@@ -37,6 +37,7 @@ LevelEditor::LevelEditor(QWidget* parent)
 
     connect(canvasWidget, &CanvasWidget::dropped, this, &LevelEditor::handleDropEvent);
     connect(ui->elementsTree, &QTreeWidget::itemSelectionChanged, this, &LevelEditor::onSelectionChanged);
+    connect(ui->btnClear, &QPushButton::clicked, this, &LevelEditor::onClearClicked);
     qDebug() << "Level Editor Created";
 }
 
@@ -170,6 +171,15 @@ void LevelEditor::createYAML(const QString& mapName) {
         QTextStream stream(&file);
         stream << out.c_str();
         file.close();
+    }
+}
+
+void LevelEditor::onClearClicked() {
+    elementData.clear();
+
+    auto *canvasWidget = qobject_cast<CanvasWidget*>(ui->gridLayout->itemAt(0)->widget());
+    if (canvasWidget) {
+        canvasWidget->clearElements();
     }
 }
 
