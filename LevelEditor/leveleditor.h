@@ -22,8 +22,8 @@ class LevelEditor : public QMainWindow {
 
 public:
     explicit LevelEditor(QWidget* parent = nullptr);
-    void dragEnterEvent(QDragEnterEvent* event) override;
-    void dropEvent(QDropEvent* event) override;
+    void handleDropEvent(QDropEvent* event);
+    void closeEvent(QCloseEvent* event) override;
     ~LevelEditor();
 
 private slots:
@@ -34,14 +34,39 @@ private:
     QPixmap mapCanvas;
     std::unordered_map<QString, std::vector<QPoint>> elementData;
 
+    std::unordered_map<QString, QString> elementNames = {
+            {"Full Floor", "FULL_FLOOR"},
+            {"Large Wood Floor", "LARGE_WOOD_FLOOR"},
+            {"Left Ladder", "LEFT_LADDER"},
+            {"Long Platform", "LONG_PLATFORM"},
+            {"Right Ladder", "RIGHT_LADDER"},
+            {"Small Platform", "SMALL_PLATFORM"},
+            {"Wood Floor", "WOOD_FLOOR"},
+            {"Wood Large Column", "WOOD_LARGE_COLUMN"},
+            {"Turtle", "TURTLES"},
+            {"SchwarzenGuard", "SCHWARZENGUARDS"},
+            {"Yellowmon", "YELLOWMONS"},
+            {"Gem", "GEMS"},
+            {"Gold Coin", "GOLD_COINS"},
+            {"Silver Coin", "SILVER_COINS"},
+            {"Food", "FOOD"},
+            {"Jazz", "JAZZ"},
+            {"Spaz", "SPAZ"},
+            {"Lori", "LORI"}
+    };
+
     enum class ElementCategory {
         OBSTACLE,
         ENEMY,
-        GEM,
-        GOLD_COIN,
-        SILVER_COIN,
-        FOOD,
+        ITEM,
         PLAYER
+    };
+
+    std::unordered_map<ElementCategory, QString> categoryNames = {
+            {ElementCategory::OBSTACLE, "OBSTACLES"},
+            {ElementCategory::ENEMY, "ENEMIES"},
+            {ElementCategory::ITEM, "ITEMS"},
+            {ElementCategory::PLAYER, "PLAYERS"}
     };
 
     std::unordered_map<QString, ElementCategory> elementCategories = {
@@ -56,14 +81,67 @@ private:
             {"TURTLE", ElementCategory::ENEMY},
             {"SCHWARZENGUARD", ElementCategory::ENEMY},
             {"YELLOWMON", ElementCategory::ENEMY},
-            {"GEM", ElementCategory::GEM},
-            {"GOLD_COIN", ElementCategory::GOLD_COIN},
-            {"SILVER_COIN", ElementCategory::SILVER_COIN},
-            {"FOOD", ElementCategory::FOOD},
+            {"GEM", ElementCategory::ITEM},
+            {"GOLD_COIN", ElementCategory::ITEM},
+            {"SILVER_COIN", ElementCategory::ITEM},
+            {"FOOD", ElementCategory::ITEM},
             {"JAZZ", ElementCategory::PLAYER},
             {"SPAZ", ElementCategory::PLAYER},
             {"LORI", ElementCategory::PLAYER}
     };
+
+    std::unordered_map<QString, QPixmap> elementSprites = {
+            {"FULL_FLOOR", SpritesManager::get("FULL_FLOOR")},
+            {"LARGE_WOOD_FLOOR", SpritesManager::get("LARGE_WOOD_FLOOR")},
+            {"LEFT_LADDER", SpritesManager::get("LEFT_LADDER")},
+            {"LONG_PLATFORM", SpritesManager::get("LONG_PLATFORM")},
+            {"RIGHT_LADDER", SpritesManager::get("RIGHT_LADDER")},
+            {"SMALL_PLATFORM", SpritesManager::get("SMALL_PLATFORM")},
+            {"WOOD_FLOOR", SpritesManager::get("WOOD_FLOOR")},
+            {"WOOD_LARGE_COLUMN", SpritesManager::get("WOOD_LARGE_COLUMN")},
+            {"TURTLE", SpritesManager::get("TURTLE")},
+            {"SCHWARZENGUARD", SpritesManager::get("SCHWARZENGUARD")},
+            {"YELLOWMON", SpritesManager::get("YELLOWMON")},
+            {"GEM", SpritesManager::get("GEM")},
+            {"GOLD_COIN", SpritesManager::get("GOLD_COIN")},
+            {"SILVER_COIN", SpritesManager::get("SILVER_COIN")},
+            {"FOOD", SpritesManager::get("FOOD")},
+            {"JAZZ", SpritesManager::get("JAZZ")},
+            {"SPAZ", SpritesManager::get("SPAZ")},
+            {"LORI", SpritesManager::get("LORI")}
+    };
+
+    std::unordered_map<ElementCategory, std::unordered_map<QString, std::vector<QPoint>>>
+            elementPositions = {
+            {ElementCategory::OBSTACLE, {
+                    {"FULL_FLOOR", {}},
+                    {"LARGE_WOOD_FLOOR", {}},
+                    {"LEFT_LADDER", {}},
+                    {"LONG_PLATFORM", {}},
+                    {"RIGHT_LADDER", {}},
+                    {"SMALL_PLATFORM", {}},
+                    {"WOOD_FLOOR", {}},
+                    {"WOOD_LARGE_COLUMN", {}}
+                                                }},
+            {ElementCategory::ENEMY, {
+                    {"TURTLES", {}},
+                    {"SCHWARZENGUARDS", {}},
+                    {"YELLOWMONS", {}}
+                                             }},
+            {ElementCategory::ITEM, {
+                    {"GEMS", {}},
+                    {"GOLD_COINS", {}},
+                    {"SILVER_COINS", {}},
+                    {"FOOD", {}}
+                                            }},
+            {ElementCategory::PLAYER, {
+                    {"JAZZ", {}},
+                    {"SPAZ", {}},
+                    {"LORI", {}}
+                                              }}
+    };
+
+    void createYAML(const QString& mapName);
 };
 
 #endif // LEVELEDITOR_H

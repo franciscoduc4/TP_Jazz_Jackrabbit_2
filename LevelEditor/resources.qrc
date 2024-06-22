@@ -1,7 +1,5 @@
 <RCC>
     <qresource prefix="/">
-        <!-- Font File -->
-        <file>../../assets/Miscellaneous/Fonts.png</file>
         <!-- Background Images -->
         <file>../assets/LobbyImages/WelcomeBackground.png</file>
         <file>../assets/LobbyImages/LobbyBackground.png</file>
@@ -15,7 +13,7 @@
         <file>../assets/Enemies/TurtleEnemies.png</file>
         <file>../assets/Enemies/Schwartzenguard.png</file>
         <file>../assets/Enemies/Enemies.png</file>
-        <file>../assets/Miscellaneous/Items&amp;Objects.png</file>
+        <file>../assets/Miscellaneous/ItemsObjects.png</file>
         <!-- Obstacles -->
         <file>../assets/scenes/BeachWorld/background.png</file>
         <file>../assets/scenes/BeachWorld/fullFloor.png</file>
@@ -27,9 +25,7 @@
         <file>../assets/scenes/BeachWorld/smallPlatform.png</file>
         <file>../assets/scenes/BeachWorld/woodfloor.png</file>
         <file>../assets/scenes/BeachWorld/woodLargeColumn.png</file>
-    </qresource>
-    <!-- Stylesheets -->
-    <qresource prefix="/Styles">
-        <file>editor.qss</file>
+        <!-- Stylesheets -->
+        <file>Styles/editor.qss</file>
     </qresource>
 </RCC>

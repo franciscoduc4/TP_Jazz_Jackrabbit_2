@@ -38,13 +38,13 @@ SMALL_PLATFORM:
 WOOD_FLOOR:
   SPRITE: [ ]
   PATH: "assets/scenes/BeachWorld/woodfloor.png"
-  COLOUR_KEY: []
+  COLOUR_KEY: [87, 0, 203]
   WIDTH: 100
   HEIGHT: 70
 WOOD_LARGE_COLUMN:
   SPRITE: [ ]
   PATH: "assets/scenes/BeachWorld/woodLargeColumn.png"
-  COLOUR_KEY: []
+  COLOUR_KEY: [87, 0, 203]
   WIDTH: 50
   HEIGHT: 1000
 TURTLE:
@@ -67,25 +67,25 @@ YELLOWMON:
   HEIGHT: 50
 GEM:
   SPRITE: [145, 1240, 31, 30]
-  PATH: "assets/Miscellaneous/Items&Objects.png"
+  PATH: "assets/Miscellaneous/ItemsObjects.png"
   COLOUR_KEY: [0, 128, 255]
   WIDTH: 20
   HEIGHT: 20
 GOLD_COIN:
   SPRITE: [481, 1218, 27, 27]
-  PATH: "assets/Miscellaneous/Items&Objects.png"
+  PATH: "assets/Miscellaneous/ItemsObjects.png"
   COLOUR_KEY: [0, 128, 255]
   WIDTH: 20
   HEIGHT: 20
 SILVER_COIN:
   SPRITE: [482, 1266, 27, 26]
-  PATH: "assets/Miscellaneous/Items&Objects.png"
+  PATH: "assets/Miscellaneous/ItemsObjects.png"
   COLOUR_KEY: [0, 128, 255]
   WIDTH: 20
   HEIGHT: 20
 FOOD:
   SPRITE: [24, 892, 19, 22]
-  PATH: "assets/Miscellaneous/Items&Objects.png"
+  PATH: "assets/Miscellaneous/ItemsObjects.png"
   COLOUR_KEY: [0, 128, 255]
   WIDTH: 20
   HEIGHT: 20

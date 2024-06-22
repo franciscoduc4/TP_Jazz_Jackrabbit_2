@@ -1,4 +1,4 @@
-QWidget {
+QWidget#centralwidget {
     border-image: url(:/assets/LobbyImages/Background.png) 0 0 0 0 stretch stretch;
 }
 
@@ -9,20 +9,27 @@ QPushButton {
     color: white;
 }
 
+QPushButton:hover {
+    background-color: #1e1e1e;
+}
+
 QLabel {
     background-color: white;
     border-image: none;
-    color: #00A35B;
+    color: white;
 }
 
 QTreeWidget {
-    background-color: white;
     border-image: none;
-    color: #00A35B;
 }
 
 QGridLayout {
     background-color: white;
     border-image: none;
-    color: #00A35B;
+}
+
+QLineEdit {
+    background-color: white;
+    border-image: none;
+    color: black;
 }
