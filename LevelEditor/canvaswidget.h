@@ -5,6 +5,7 @@
 #include <QDropEvent>
 #include <QMouseEvent>
 #include <QVector>
+#include <QMimeData>
 
 class
         DroppedElement; // Forward declaration
@@ -18,12 +19,17 @@ public:
 
     void clearElements();
 
+signals:
+    void dropped(QDropEvent* event);
+
 protected:
     void dropEvent(QDropEvent *event) override;
     void paintEvent(QPaintEvent *event) override;
     void mousePressEvent(QMouseEvent *event) override;
     void mouseMoveEvent(QMouseEvent *event) override;
     void mouseReleaseEvent(QMouseEvent *event) override;
+    void dragEnterEvent(QDragEnterEvent *event) override;
+    void dragMoveEvent(QDragMoveEvent *event) override;
 
 private:
     QVector<DroppedElement*> droppedElements;

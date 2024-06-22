@@ -6,6 +6,7 @@
 #include <QtCore>
 #include <QPixmap>
 #include <unordered_map>
+#include <list>
 
 #include <yaml-cpp/yaml.h>
 
@@ -24,6 +25,7 @@ public:
     explicit LevelEditor(QWidget* parent = nullptr);
     void handleDropEvent(QDropEvent* event);
     void closeEvent(QCloseEvent* event) override;
+    void onSelectionChanged();
     ~LevelEditor();
 
 private slots:
@@ -34,15 +36,31 @@ private:
     QPixmap mapCanvas;
     std::unordered_map<QString, std::vector<QPoint>> elementData;
 
+    std::list<QString> elements = {
+            "Jazz",
+            "Spaz",
+            "Lori",
+            "Turtle",
+            "Schwartzenguard",
+            "Yellowmon",
+            "Gem",
+            "Gold Coin",
+            "Silver Coin",
+            "Food",
+            "Full Floor",
+            "Large Wood Floor",
+            "Left Ladder",
+            "Long Platform",
+            "Right Ladder",
+            "Small Platform",
+            "Wood Floor",
+            "Wood Large Column"
+    };
+
     std::unordered_map<QString, QString> elementNames = {
-            {"Full Floor", "FULL_FLOOR"},
-            {"Large Wood Floor", "LARGE_WOOD_FLOOR"},
-            {"Left Ladder", "LEFT_LADDER"},
-            {"Long Platform", "LONG_PLATFORM"},
-            {"Right Ladder", "RIGHT_LADDER"},
-            {"Small Platform", "SMALL_PLATFORM"},
-            {"Wood Floor", "WOOD_FLOOR"},
-            {"Wood Large Column", "WOOD_LARGE_COLUMN"},
+            {"Jazz", "JAZZ"},
+            {"Spaz", "SPAZ"},
+            {"Lori", "LORI"},
             {"Turtle", "TURTLES"},
             {"Schwartzenguard", "SCHWARZENGUARDS"},
             {"Yellowmon", "YELLOWMONS"},
@@ -50,9 +68,14 @@ private:
             {"Gold Coin", "GOLD_COINS"},
             {"Silver Coin", "SILVER_COINS"},
             {"Food", "FOOD"},
-            {"Jazz", "JAZZ"},
-            {"Spaz", "SPAZ"},
-            {"Lori", "LORI"}
+            {"Full Floor", "FULL_FLOOR"},
+            {"Large Wood Floor", "LARGE_WOOD_FLOOR"},
+            {"Left Ladder", "LEFT_LADDER"},
+            {"Long Platform", "LONG_PLATFORM"},
+            {"Right Ladder", "RIGHT_LADDER"},
+            {"Small Platform", "SMALL_PLATFORM"},
+            {"Wood Floor", "WOOD_FLOOR"},
+            {"Wood Large Column", "WOOD_LARGE_COLUMN"}
     };
 
     enum class ElementCategory {
@@ -78,12 +101,12 @@ private:
             {"SMALL_PLATFORM", ElementCategory::OBSTACLE},
             {"WOOD_FLOOR", ElementCategory::OBSTACLE},
             {"WOOD_LARGE_COLUMN", ElementCategory::OBSTACLE},
-            {"TURTLE", ElementCategory::ENEMY},
-            {"SCHWARZENGUARD", ElementCategory::ENEMY},
-            {"YELLOWMON", ElementCategory::ENEMY},
-            {"GEM", ElementCategory::ITEM},
-            {"GOLD_COIN", ElementCategory::ITEM},
-            {"SILVER_COIN", ElementCategory::ITEM},
+            {"TURTLES", ElementCategory::ENEMY},
+            {"SCHWARZENGUARDS", ElementCategory::ENEMY},
+            {"YELLOWMONS", ElementCategory::ENEMY},
+            {"GEMS", ElementCategory::ITEM},
+            {"GOLD_COINS", ElementCategory::ITEM},
+            {"SILVER_COINS", ElementCategory::ITEM},
             {"FOOD", ElementCategory::ITEM},
             {"JAZZ", ElementCategory::PLAYER},
             {"SPAZ", ElementCategory::PLAYER},

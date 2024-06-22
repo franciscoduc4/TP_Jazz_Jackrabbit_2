@@ -1,6 +1,7 @@
 #include "canvaswidget.h"
 
 #include <QPainter>
+#include <QDebug>
 
 #include "SpritesManager.h"
 #include "droppedElement.h"
@@ -8,6 +9,7 @@
 CanvasWidget::CanvasWidget(QWidget *parent) : QWidget(parent) {
     setFixedSize(1000, 1000);
     setAcceptDrops(true);
+    qDebug() << "CanvasWidget created";
 }
 
 CanvasWidget::~CanvasWidget() {
@@ -16,25 +18,54 @@ CanvasWidget::~CanvasWidget() {
     }
 }
 
-void CanvasWidget::dropEvent(QDropEvent *event) {
-    QPoint dropPos = event->pos();
-    // Get elementType and sprite from your drag and drop data or SpritesManager
-    QString elementType =  event->mimeData()->text();
-    QPixmap sprite = SpritesManager::get(elementType);
-    // Create the DroppedElement with all the necessary information
-    DroppedElement *newElement = new DroppedElement(elementType, dropPos, sprite, this);
-    newElement->show();
-    droppedElements.append(newElement);
+void CanvasWidget::dragEnterEvent(QDragEnterEvent *event) {
+    qDebug() << "Drag enter event";
     event->acceptProposedAction();
+}
+
+void CanvasWidget::dragMoveEvent(QDragMoveEvent *event) {
+    qDebug() << "Drag move event";
+    event->acceptProposedAction();
+}
+
+void CanvasWidget::dropEvent(QDropEvent *event) {
+    qDebug() << "Drop event";
+    const QMimeData *mimeData = event->mimeData();
+    qDebug() << "Format --> " << mimeData->formats();
+    if (mimeData->hasFormat("application/x-dnditemdata")) {
+        qDebug() << "Dropped";
+        QByteArray itemData = mimeData->data("application/x-dnditemdata");
+        QDataStream dataStream(&itemData, QIODevice::ReadOnly);
+
+        QString elementType;
+        QPixmap sprite;
+
+        dataStream >> elementType >> sprite;
+
+        // Get the position where the item was dropped
+        QPoint position = event->pos();
+
+        auto *newElement = new DroppedElement(elementType, position, sprite, this);
+        newElement->show();
+        droppedElements.append(newElement);
+        event->acceptProposedAction();
+
+        emit dropped(event);
+    }
 }
 
 void CanvasWidget::paintEvent(QPaintEvent *event) {
     QPainter painter(this);
     painter.setPen(Qt::black);
     painter.drawRect(rect().adjusted(0, 0, -1, -1));
+
+    // Draw each dropped element
+    for (DroppedElement* element : droppedElements) {
+        painter.drawPixmap(element->pos(), element->getSprite());
+    }
 }
 
-void CanvasWidget::mousePressEvent(QMouseEvent *event) override {
+void CanvasWidget::mousePressEvent(QMouseEvent *event) {
     for (DroppedElement* element : droppedElements) {
         if (element->geometry().contains(event->pos())) {
             currentDraggedElement = element;
@@ -44,13 +75,13 @@ void CanvasWidget::mousePressEvent(QMouseEvent *event) override {
     }
 }
 
-void CanvasWidget::mouseMoveEvent(QMouseEvent *event) override {
+void CanvasWidget::mouseMoveEvent(QMouseEvent *event) {
     if (currentDraggedElement) {
         QPoint newPos = event->pos() - dragOffset;
         currentDraggedElement->move(newPos);
     }
 }
 
-void CanvasWidget::mouseReleaseEvent(QMouseEvent *event) override {
+void CanvasWidget::mouseReleaseEvent(QMouseEvent *event) {
     currentDraggedElement = nullptr;
 }

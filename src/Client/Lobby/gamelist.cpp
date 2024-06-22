@@ -30,9 +30,6 @@ GameList::GameList(QWidget* parent, LobbyController& controller, LobbyMessage& m
         this->msg.setLobbyCmd(Command::GAMES_LIST);
     }
 
-    buttonGroup = new QButtonGroup(this);
-    connect(buttonGroup, &QButtonGroup::idClicked, this, &GameList::onGameSelected);
-
     timer = new QTimer(this);
     connect(timer, &QTimer::timeout, this, &GameList::updateGameList);
     timer->start(ClientConfig::getGamesListRefreshInterval());

@@ -1,8 +1,9 @@
 #include "droppedElement.h"
 #include <QPainter>
+#include <utility>
 
-DroppedElement::DroppedElement(const QString& elementType, const QPoint& position, const QPixmap& sprite, QWidget* parent)
-        : QWidget(parent), m_elementType(elementType), m_position(position), m_sprite(sprite)
+DroppedElement::DroppedElement(QString  elementType, const QPoint& position, const QPixmap& sprite, QWidget* parent)
+        : QWidget(parent), m_elementType(std::move(elementType)), m_position(position), m_sprite(sprite)
 {
     // Set the position and size of the widget
     setGeometry(m_position.x(), m_position.y(), m_sprite.width(), m_sprite.height());
@@ -19,4 +20,8 @@ QPoint DroppedElement::position() const {
 
 QString DroppedElement::elementType() const {
     return m_elementType;
+}
+
+QPixmap DroppedElement::getSprite() const {
+    return m_sprite;
 }

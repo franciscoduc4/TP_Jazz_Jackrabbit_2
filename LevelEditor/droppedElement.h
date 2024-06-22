@@ -9,10 +9,11 @@ class DroppedElement : public QWidget {
     Q_OBJECT
 
 public:
-    DroppedElement(const QString& elementType, const QPoint& position, const QPixmap& sprite, QWidget* parent = nullptr);
+    DroppedElement(QString  elementType, const QPoint& position, const QPixmap& sprite, QWidget* parent = nullptr);
 
     QPoint position() const;
     QString elementType() const;
+    QPixmap getSprite() const;
 
 protected:
     void paintEvent(QPaintEvent* event) override;
