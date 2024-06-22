@@ -7,8 +7,7 @@
 #include <QVector>
 #include <QMimeData>
 
-class
-        DroppedElement; // Forward declaration
+class DroppedElement;
 
 class CanvasWidget : public QWidget {
     Q_OBJECT

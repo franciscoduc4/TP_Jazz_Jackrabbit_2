@@ -42,7 +42,6 @@ void CanvasWidget::dropEvent(QDropEvent *event) {
 
         dataStream >> elementType >> sprite;
 
-        // Get the position where the item was dropped
         QPoint position = event->pos();
 
         auto *newElement = new DroppedElement(elementType, position, sprite, this);
@@ -59,7 +58,6 @@ void CanvasWidget::paintEvent(QPaintEvent *event) {
     painter.setPen(Qt::black);
     painter.drawRect(rect().adjusted(0, 0, -1, -1));
 
-    // Draw each dropped element
     for (DroppedElement* element : droppedElements) {
         painter.drawPixmap(element->pos(), element->getSprite());
     }

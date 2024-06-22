@@ -1,0 +1,45 @@
+SIZE:
+  WIDTH: 1000
+  HEIGHT: 1000
+PLAYERS:
+  SPAZ:
+    []
+  LORI:
+    - [322, 77]
+  JAZZ:
+    - [56, 47]
+ITEMS:
+  FOOD:
+    - [294, 220]
+  SILVER_COINS:
+    []
+  GOLD_COINS:
+    - [221, 133]
+    - [304, 209]
+  GEMS:
+    - [203, 204]
+ENEMIES:
+  SCHWARZENGUARDS:
+    []
+  YELLOWMONS:
+    []
+  TURTLES:
+    - [250, 137]
+OBSTACLES:
+  WOOD_FLOOR:
+    - [181, 401]
+  SMALL_PLATFORM:
+    - [141, 347]
+    - [393, 291]
+  RIGHT_LADDER:
+    - [323, 326]
+  LONG_PLATFORM:
+    []
+  LEFT_LADDER:
+    - [242, 322]
+  LARGE_WOOD_FLOOR:
+    []
+  WOOD_LARGE_COLUMN:
+    []
+  FULL_FLOOR:
+    - [4, 439]

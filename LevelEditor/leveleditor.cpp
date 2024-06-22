@@ -14,13 +14,11 @@ LevelEditor::LevelEditor(QWidget* parent)
         : QMainWindow(parent), ui(new Ui::LevelEditor) {
     ui->setupUi(this);
 
-    // Populate the QTreeWidget
     for (const auto& element : elements) {
         auto* item = new QTreeWidgetItem(ui->elementsTree);
         item->setText(0, element);
     }
 
-    // Enable drag and drop for the QTreeWidget
     ui->elementsTree->setDragEnabled(true);
     ui->elementsTree->viewport()->setAcceptDrops(true);
     ui->elementsTree->setDropIndicatorShown(true);
@@ -31,15 +29,12 @@ LevelEditor::LevelEditor(QWidget* parent)
     ui->centralwidget->setStyleSheet(styleSheet);
     ui->labelMapName->setAttribute(Qt::WA_TranslucentBackground);
 
-    // Connect the save button click event
     connect(ui->btnSave, &QPushButton::clicked, this, &LevelEditor::onSaveClicked);
 
-    // Replace the gridLayoutWidget with an instance of CanvasWidget
     auto *canvasWidget = new CanvasWidget(this);
     ui->gridLayout->addWidget(canvasWidget);
     ui->gridLayoutWidget->setStyleSheet("border: 1px solid white;");
 
-    // Connect the dropped signal from CanvasWidget to a slot in LevelEditor
     connect(canvasWidget, &CanvasWidget::dropped, this, &LevelEditor::handleDropEvent);
     connect(ui->elementsTree, &QTreeWidget::itemSelectionChanged, this, &LevelEditor::onSelectionChanged);
     qDebug() << "Level Editor Created";
@@ -59,7 +54,14 @@ void LevelEditor::onSelectionChanged() {
 
         QString elementType = item->text(0);
         QString elementName = elementNames[elementType];
-        QPixmap sprite = SpritesManager::get(elementName); // Set this to the desired sprite
+        QPixmap sprite = SpritesManager::get(elementName);
+
+        // Scale the sprite
+        int gridWidth = ui->gridLayoutWidget->width();
+        int newWidth = (gridWidth * sprite.width()) / 1000;
+        int gridHeight = ui->gridLayoutWidget->height();
+        int newHeight = (gridHeight * sprite.height()) / 1000;
+        sprite = sprite.scaled(newWidth, newHeight, Qt::KeepAspectRatio);
 
         dataStream << elementType << sprite;
 
@@ -69,7 +71,6 @@ void LevelEditor::onSelectionChanged() {
         auto *drag = new QDrag(this);
         drag->setMimeData(mimeData);
         drag->setPixmap(sprite);
-        // drag->setHotSpot(QPoint(sprite.width()/2, sprite.height()/2));
 
         drag->exec(Qt::CopyAction | Qt::MoveAction);
     }
@@ -86,7 +87,6 @@ void LevelEditor::handleDropEvent(QDropEvent* event) {
 
         stream >> elementType >> sprite;
 
-        // Get drop position and convert to game map coordinates
         QPoint dropPos = event->pos();
 
         qDebug() << "Drop Pos: " << dropPos.x() << " " << dropPos.y();
@@ -96,7 +96,6 @@ void LevelEditor::handleDropEvent(QDropEvent* event) {
 
         qDebug() << "Map X: " << mapX << " Map Y: " << mapY;
 
-        // Store element position for saving
         elementData[elementType].emplace_back(mapX, mapY);
         qDebug() << "Element Data Size: " << elementData.size();
     }
@@ -141,14 +140,12 @@ void LevelEditor::createYAML(const QString& mapName) {
     YAML::Emitter out;
     out << YAML::BeginMap;
 
-    // Add the size of the map
     out << YAML::Key << "SIZE";
     out << YAML::Value << YAML::BeginMap;
     out << YAML::Key << "WIDTH" << YAML::Value << 1000;
     out << YAML::Key << "HEIGHT" << YAML::Value << 1000;
     out << YAML::EndMap;
 
-    // Add the elements for each category
     for (const auto& category : elementPositions) {
         out << YAML::Key << categoryNames[category.first].toStdString();
         out << YAML::Value << YAML::BeginMap;
@@ -168,7 +165,6 @@ void LevelEditor::createYAML(const QString& mapName) {
 
     out << YAML::EndMap;
 
-    // Save the YAML string to a file
     QFile file(mapName);
     if (file.open(QIODevice::WriteOnly | QIODevice::Text)) {
         QTextStream stream(&file);
