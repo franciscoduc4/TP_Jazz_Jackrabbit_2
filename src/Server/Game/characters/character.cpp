@@ -1,7 +1,7 @@
 #include "character.h"
 
 #include "../gameMap.h"
-
+#include <algorithm>
 // #define CONFIG ServerConfig::getInstance()
 
 Character::Character(GameMap& gameMap, Vector<uint32_t> pos, uint8_t playerId, CharacterType type,
@@ -330,6 +330,33 @@ bool Character::characIsIntoxicated() const { return isIntoxicated; }
 float Character::getIntoxicatedTime() const { return intoxicatedTime; }
 
 CharacterType Character::getCharacterType() { return type; }
+
+void Character::collectItem(const std::shared_ptr<Item>& item) {
+    switch (item->getItemType()) {
+        case ItemType::FOOD:
+            // health = std::min(maxHealth, health + item->getValue());
+            // std::cout << "[CHARACTER] Collected food. Health increased to: " << static_cast<int>(health) << std::endl;
+            break;
+        case ItemType::GEM:
+            // score += item->getValue();
+            // std::cout << "[CHARACTER] Collected gem. Score increased to: " << static_cast<int>(score) << std::endl;
+            break;
+        case ItemType::SILVER_COIN:
+            // score += item->getValue();
+            // std::cout << "[CHARACTER] Collected silver coin. Score increased to: " << static_cast<int>(score) << std::endl;
+            break;
+        case ItemType::GOLD_COIN:
+            // score += item->getValue();
+            std::cout << "[CHARACTER] Collected gold coin" << std::endl;
+            break;
+        default:
+            std::cerr << "[CHARACTER] Unknown item type collected." << std::endl;
+            break;
+    }
+
+    gameMap.removeItem(item->getPosition());
+}
+
 
 PlayerDTO Character::getDTO() const {
     return PlayerDTO{pos.x,

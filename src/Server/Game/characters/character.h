@@ -23,6 +23,7 @@
 #include "states/specialAttack.h"
 #include "states/state.h"
 #include "states/moving.h"
+#include "../items/item.h"
 
 
 class GameMap;
@@ -89,6 +90,7 @@ public:
     void die(float respawnTime) override;
     void revive(float time);
 
+    void collectItem(const std::shared_ptr<Item>& item);
     void heal(uint8_t amount);
 
     std::vector<std::shared_ptr<Entity>> getTargets();

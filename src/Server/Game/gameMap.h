@@ -69,11 +69,13 @@ public:
     void addObstacle(ObstacleType type, Vector<uint32_t> position);
     void addItem(ItemType type, Vector<uint32_t> position);
 
+    void handleCharacterItemCollision(std::shared_ptr<Character> character, std::shared_ptr<Item> item);
+
     void update(float time);
 
     void removeCharacter(uint8_t playerId);
-
     void removeEnemy(Vector<uint32_t> position);
+    void removeItem(Vector<uint32_t> position);
 
     std::shared_ptr<Entity> getEntityAt(Vector<uint32_t> position);
 
