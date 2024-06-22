@@ -33,6 +33,11 @@ std::unique_ptr<CommandDTO> Deserializer::getCommand(uint8_t& playerId) {
             return deserializeSwitchWeapon(playerId);
         case Command::SPRINT:
             return deserializeSprint(playerId);
+        case Command::SHOOT:
+            return deserializeShooting(playerId);
+        case Command::JUMP:
+            std::cout << "DESERIALIZE UN JUMP\n";
+            return deserializeJumping(playerId);
         default:
             std::cout << "[SERVER DESERIALIZER] Unknown command received: " << (int)cmd
                       << std::endl;
@@ -175,4 +180,8 @@ std::unique_ptr<CommandDTO> Deserializer::deserializeSprint(uint8_t& playerId) {
     if (!this->receive_char(directionChar)) return nullptr;
     auto direction = static_cast<Direction>(directionChar);
     return std::make_unique<GameCommandDTO>(playerId, direction, Command::MOVE);
+}
+
+std::unique_ptr<CommandDTO> Deserializer::deserializeJumping(uint8_t& playerId) {
+    return std::make_unique<CommandDTO>(playerId, Command::JUMP);
 }

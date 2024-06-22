@@ -25,6 +25,8 @@ public:
 
     void move_msg(uint8_t playerId, std::vector<uint8_t>& parameters);
 
+    void jump_msg(uint8_t playerId);
+
     void shoot_msg(uint8_t playerId);
 
     std::unique_ptr<DTO> getServerMsg();

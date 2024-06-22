@@ -301,9 +301,14 @@ void Character::moveUp() {
 }
 
 void Character::jump(float time) {
+    auto newState = std::unique_ptr<State>(state->jump(time));
+    if (newState) {
+        state = std::move(newState);
+    }
+
     initialYJump = pos.y;
 
-    if (isIntoxicated || jumping) {
+    if (isIntoxicated || !jumping) {
         Vector<uint32_t> mapPosition = getMapPosition(movesPerCell);
 
         Vector<uint32_t> newPosition = pos - Vector<uint32_t>{0, movesPerCell};

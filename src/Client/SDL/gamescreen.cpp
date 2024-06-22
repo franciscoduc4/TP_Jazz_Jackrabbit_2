@@ -141,10 +141,15 @@ void GameScreen::run() {
                         this->soundControl.play_sound_effect(SoundType::SHOOT);
                         break;
                     }
+                    case SDLK_SPACE: {
+                        Command jump = Command::JUMP;
+                        std::vector<uint8_t> elements;
+                        this->controller.sendMsg(this->mainPlayerId, jump, elements);
+                    }
                 }
             } else if (event.type == SDL_KEYUP) {
                 switch (event.key.keysym.sym) {
-                    case SDLK_RIGHT: case SDLK_LEFT: case SDLK_LSHIFT:
+                    case SDLK_RIGHT: case SDLK_LEFT: case SDLK_LSHIFT: case SDLK_m: case SDLK_SPACE:
                         {
                             Command idle = Command::IDLE;
                             std::vector<uint8_t> elements;

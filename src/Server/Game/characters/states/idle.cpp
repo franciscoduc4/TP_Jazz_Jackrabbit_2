@@ -24,9 +24,9 @@ std::unique_ptr<State> IdleState::shoot(const std::shared_ptr<Weapon>& weapon,
         return nullptr;
     }
 
-    if (weapon->isEmpty() || !weapon->cooldown(time)) {
-        return nullptr;
-    }
+    //if (weapon->isEmpty() || !weapon->cooldown(time)) {
+    //    return nullptr;
+    //}
     return std::make_unique<ShootingState>(character, weapon, time);
 }
 

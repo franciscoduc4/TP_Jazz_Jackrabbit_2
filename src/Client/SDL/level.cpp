@@ -12,21 +12,29 @@
 enum lvl { BEACH, HOLIDAIUS, COLONIUS };
 
 Level::Level(uint8_t level) {
-    /* std::vector<int> backVector{0, 0, 200, 160};
-    std::vector<int> floorVector{0, 0, 485, 118};
-    std::vector<int> longPlatformVector{0, 0, 160, 17};
-    std::vector<int> smallPlatformVector{0, 0, 88, 17};
-    std::vector<int> columnVector{0, 0, 24, 91};
-    std::vector<int> leftLadderVector{0, 0, 145, 145};
-    std::vector<int> rightLadderVector{0, 0, 144, 165};
-    */
     std::vector<ObstacleType> tiles_types{ ObstacleType::BACKGROUND, ObstacleType::FULL_FLOOR, ObstacleType::LONG_PLATFORM, 
     ObstacleType::SMALL_PLATFORM, ObstacleType::COLUMN, ObstacleType::LEFT_LADDER, ObstacleType::RIGHT_LADDER };
     std::vector<std::string> tilesSprites;
     std::vector<std::vector<int>> beachSprites;
     std::vector<std::vector<int>> widthsHeights; 
     switch (level) {
-        case BEACH:
+        case HOLIDAIUS:
+            break;
+        case COLONIUS:
+            tilesSprites = ClientConfig::getColoniusFiles();
+            beachSprites = ClientConfig::getColoniusSprites();
+            widthsHeights = ClientConfig::getColoniusWidthHeightSprites();
+            for (int i = 0; i < tilesSprites.size(); i++) {
+                this->paths[tiles_types[i]] = tilesSprites[i];
+                this->pixels_pos[tiles_types[i]] = beachSprites[i];
+                this->width_height[tiles_types[i]] = widthsHeights[i];
+            }
+            //this->max_pixel_x_floor = 2000;
+            //this->floor_height = 100;
+            //this->background_width = 2000;
+            //this->background_height = 839;
+            break;
+        default:
             tilesSprites = ClientConfig::getBeachFiles();
             beachSprites = ClientConfig::getBeachSprites();
             widthsHeights = ClientConfig::getBeachWidthHeightSprites();
@@ -35,53 +43,13 @@ Level::Level(uint8_t level) {
                 this->pixels_pos[tiles_types[i]] = beachSprites[i];
                 this->width_height[tiles_types[i]] = widthsHeights[i];
             }
-            /*
-            this->paths[ObstacleType::BACKGROUND] = "../assets/scenes/BeachWorld/background.png";
-            this->pixels_pos[ObstacleType::BACKGROUND] = backVector;
-            
-            this->paths[ObstacleType::FULL_FLOOR] = "../assets/scenes/BeachWorld/fullFloor.png";
-            this->pixels_pos[ObstacleType::FULL_FLOOR] = floorVector;
-
-            this->paths[ObstacleType::LONG_PLATFORM] = "../assets/scenes/BeachWorld/longPlatform.png";
-            this->pixels_pos[ObstacleType::LONG_PLATFORM] = longPlatformVector;
-            this->width_height[ObstacleType::LONG_PLATFORM] = {150, 30};
-
-            this->paths[ObstacleType::SMALL_PLATFORM] = "../assets/scenes/BeachWorld/smallPlatform.png";
-            this->pixels_pos[ObstacleType::SMALL_PLATFORM] = smallPlatformVector;
-            this->width_height[ObstacleType::SMALL_PLATFORM] = {70, 30};
-
-            this->paths[ObstacleType::COLUMN] = "../assets/scenes/BeachWorld/woodLargeColumn.png";
-            this->pixels_pos[ObstacleType::COLUMN] = columnVector;
-            this->width_height[ObstacleType::COLUMN] = {30, 100};
-
-            this->paths[ObstacleType::LEFT_LADDER] = "../assets/scenes/BeachWorld/leftLadder.png";
-            this->pixels_pos[ObstacleType::LEFT_LADDER] = leftLadderVector;
-            this->width_height[ObstacleType::LEFT_LADDER] = {120, 120};
-
-            this->paths[ObstacleType::RIGHT_LADDER] = "../assets/scenes/BeachWorld/rightLadder.png";
-            this->pixels_pos[ObstacleType::RIGHT_LADDER] = rightLadderVector;
-            this->width_height[ObstacleType::RIGHT_LADDER] = {120, 120};
-            */
-            this->max_pixel_x_floor = 2491;
-            this->floor_height = 70;
-            this->background_width = 715;
-            this->background_height = 153;
+            //this->max_pixel_x_floor = 2491;
+            //this->floor_height = 70;
+            //this->background_width = 715;
+            //this->background_height = 153;
             break;
-        case HOLIDAIUS:
-            break;
-        case COLONIUS:
-            tilesSprites = ClientConfig::getColoniusFiles();
-            beachSprites = ClientConfig::getColoniusSprites();
-            for (int i = 0; i < tilesSprites.size(); i++) {
-                this->paths[tiles_types[i]] = tilesSprites[i];
-                this->pixels_pos[tiles_types[i]] = beachSprites[i];
-            }
-            this->max_pixel_x_floor = 2000;
-            this->floor_height = 100;
+        
 
-            this->background_width = 2000;
-            this->background_height = 839;
-            break;
     }
 }
 

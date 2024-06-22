@@ -12,7 +12,7 @@
 #include "moving.h"
 
 ShootingState::ShootingState(Character& character, const std::shared_ptr<Weapon>& weapon, float time):
-        character(character), weapon(weapon), shootCooldown(weapon->getFireRate()) {
+        character(character), weapon(weapon), shootCooldown(weapon->getFireRate()), startTime(time) {
     characterState = CharacterStateEntity::SHOOTING;
 }
 
@@ -24,13 +24,17 @@ std::unique_ptr<State> ShootingState::exec(float time) {
 std::unique_ptr<State> ShootingState::shoot(const std::shared_ptr<Weapon>& weapon,
                                             float time) {
 
-    if (!weapon->isEmpty() && (time - startTime) > shootCooldown) {
-        startTime = time;
-        std::vector<std::shared_ptr<Entity>> characters = character.getTargets();
-        uint8_t x = character.getMapPosition(2).x;  // moves per cell
-        std::cout << "shooting at " << x << std::endl;
-        weapon->shoot(characters, x, time);
-        return std::unique_ptr<ShootingState>();
+    //if (!weapon->isEmpty() && (time - startTime) > shootCooldown) {
+    //    startTime = time;
+    //    std::vector<std::shared_ptr<Entity>> characters = character.getTargets();
+    //    uint8_t x = character.getMapPosition(2).x;  // moves per cell
+    //    std::cout << "shooting at " << x << std::endl;
+    //    weapon->shoot(characters, x, time);
+    //    return std::unique_ptr<ShootingState>();
+    //}
+    
+    if (time - startTime > 0.5) {
+        return std::make_unique<IdleState>(character);
     }
     return nullptr;
 }

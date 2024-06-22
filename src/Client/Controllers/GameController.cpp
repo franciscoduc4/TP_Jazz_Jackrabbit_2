@@ -18,6 +18,9 @@ void GameController::sendMsg(uint8_t playerId, Command& cmd, std::vector<uint8_t
         case Command::SHOOT:
             shoot_msg(playerId);
             break;
+        case Command::JUMP:
+            jump_msg(playerId);
+            break;
     }
 }
 
@@ -36,6 +39,11 @@ void GameController::shoot_msg(uint8_t playerId) {
 void GameController::idle_msg(uint8_t playerId) {
 	std::unique_ptr<CommandDTO> idle = std::make_unique<GameCommandDTO>(playerId, Direction::UP, Command::IDLE);
 	this->serializer.sendMsg(idle);
+}
+
+void GameController::jump_msg(uint8_t playerId) {
+    std::unique_ptr<CommandDTO> jump = std::make_unique<CommandDTO>(playerId, Command::JUMP);
+    this->serializer.sendMsg(jump);
 }
 
 std::unique_ptr<DTO> GameController::getServerMsg() {

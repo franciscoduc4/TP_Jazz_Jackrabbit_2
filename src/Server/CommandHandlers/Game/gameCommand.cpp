@@ -26,6 +26,7 @@ std::unique_ptr<GameCommandHandler> GameCommandHandler::createHandler(
         }
 
         case Command::JUMP: {
+            std::cout << "SE CREO EL JUMPHANDLER\n";
             return std::make_unique<JumpHandler>(std::unique_ptr<CommandDTO>(command.release()));
         }
         case Command::SWITCH_WEAPON: {

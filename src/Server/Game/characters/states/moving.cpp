@@ -23,13 +23,13 @@ std::unique_ptr<State> MovingState::exec(float time) {
 
 std::unique_ptr<State> MovingState::shoot(const std::shared_ptr<Weapon>& weapon,
                                           float time) {
-    if (time - lastTimeMoved >= waitingMoveTime) {
-        return nullptr;
-    }
+    //if (time - lastTimeMoved >= waitingMoveTime) {
+    //    return nullptr;
+    //}
 
-    if (weapon->isEmpty()) {
-        return std::unique_ptr<IdleState>();
-    }
+    //if (weapon->isEmpty()) {
+    //    return std::unique_ptr<IdleState>();
+    //}
     return std::make_unique<ShootingState>(character, weapon, time);
 }
 
