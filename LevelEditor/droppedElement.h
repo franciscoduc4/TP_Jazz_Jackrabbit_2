@@ -9,20 +9,18 @@ class DroppedElement : public QWidget {
     Q_OBJECT
 
 public:
-    DroppedElement(const QString& elementType, const QPixmap& sprite, QWidget* parent = nullptr) : QWidget(parent) {
-        this->elementType = elementType;
-        this->sprite = sprite;
-    }
+    DroppedElement(const QString& elementType, const QPoint& position, const QPixmap& sprite, QWidget* parent = nullptr);
 
-    void paintEvent(QPaintEvent* event) override {
-        QPainter painter(this);
-        painter.drawPixmap(0, 0, sprite);
-    }
+    QPoint position() const;
+    QString elementType() const;
+
+protected:
+    void paintEvent(QPaintEvent* event) override;
 
 private:
-    QString elementType;
-    QPixmap sprite;
+    QString m_elementType;
+    QPixmap m_sprite;
+    QPoint m_position;
 };
-
 
 #endif  // DROPPEDELEMENT_H

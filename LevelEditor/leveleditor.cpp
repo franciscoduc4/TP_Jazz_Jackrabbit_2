@@ -1,12 +1,13 @@
 #include "leveleditor.h"
 
+#include <QDebug>
 #include <QDrag>
 #include <QMimeData>
 #include <QPainter>
 #include <iostream>
 
+#include "canvaswidget.h"
 #include "droppedElement.h"
-#include "dropwidget.h"
 #include "ui_leveleditor.h"
 
 LevelEditor::LevelEditor(QWidget* parent)
@@ -34,51 +35,64 @@ LevelEditor::LevelEditor(QWidget* parent)
     // Connect the save button click event
     connect(ui->btnSave, &QPushButton::clicked, this, &LevelEditor::onSaveClicked);
 
-    // Replace the gridLayoutWidget with an instance of DropWidget
-    auto *dropWidget = new DropWidget(this);
-    ui->gridLayoutWidget->layout()->addWidget(dropWidget);
+    // Replace the gridLayoutWidget with an instance of CanvasWidget
+    auto *canvasWidget = new CanvasWidget(this);
+    ui->gridLayoutWidget->layout()->addWidget(canvasWidget);
     ui->gridLayoutWidget->setStyleSheet("border: 1px solid white;");
 
-    // Connect the dropped signal from DropWidget to a slot in LevelEditor
-    connect(dropWidget, &DropWidget::dropped, this, &LevelEditor::handleDropEvent);
+    // Connect the dropped signal from CanvasWidget to a slot in LevelEditor
+    connect(canvasWidget, &CanvasWidget::dropped, this, &LevelEditor::handleDropEvent);
 }
 
 LevelEditor::~LevelEditor() {
     delete ui;
 }
 
+
 void LevelEditor::handleDropEvent(QDropEvent* event) {
     QByteArray encoded = event->mimeData()->data("application/x-qabstractitemmodeldatalist");
     QDataStream stream(&encoded, QIODevice::ReadOnly);
+    qDebug() << "Handle Drop Event";
     while (!stream.atEnd()) {
         int row, col;
         QMap<int, QVariant> roleDataMap;
         stream >> row >> col >> roleDataMap;
 
+        qDebug() << "Row: " << row << " Col: " << col;
+
         QString elementType = roleDataMap[Qt::DisplayRole].toString();
 
-        // Calculate cell size based on grid layout dimensions
-        int cellWidth = ui->gridLayoutWidget->width() / ui->gridLayout->columnCount();
-        int cellHeight = ui->gridLayoutWidget->height() / ui->gridLayout->rowCount();
+        qDebug() << "Element Type: " << elementType;
 
-        // Get drop position and convert to game map coordinates
+        float scaleX = 1000.0f / ui->gridLayoutWidget->width();
+        float scaleY = 1000.0f / ui->gridLayoutWidget->height();
+
+        // // Calculate cell size based on grid layout dimensions
+        // int cellWidth = ui->gridLayoutWidget->width() / ui->gridLayout->columnCount();
+        // int cellHeight = ui->gridLayoutWidget->height() / ui->gridLayout->rowCount();
+
+        // qDebug() << "Cell Width: " << cellWidth << " Cell Height: " << cellHeight;
+
+        // // Get drop position and convert to game map coordinates
         QPoint dropPos = event->pos();
-        int mapX = dropPos.x() * 1000 / cellWidth;
-        int mapY = dropPos.y() * 1000 / cellHeight;
+
+        // qDebug() << "Drop Pos: " << dropPos.x() << " " << dropPos.y();
+
+        // int gridCol = dropPos.x() / cellWidth;
+        // int gridRow = dropPos.y() / cellHeight;
+        // qDebug() << "Grid Col: " << gridCol << " Grid Row: " << gridRow;
+
+        int mapX = static_cast<int>(dropPos.x() * scaleX);
+        int mapY = static_cast<int>(dropPos.y() * scaleY);
+
+        // int mapX = gridCol * (1000 / ui->gridLayout->columnCount());
+        // int mapY = gridRow * (1000 / ui->gridLayout->rowCount());
+        qDebug() << "Map X: " << mapX << " Map Y: " << mapY;
 
         // Store element position for saving
         elementData[elementType].emplace_back(mapX, mapY);
-
-        QString elementName = elementNames[elementType];
-
-        // Create a DroppedElement widget (assuming you have it)
-        auto* elementWidget = new DroppedElement(elementType, SpritesManager::get(elementName));
-        elementWidget->setFixedSize(cellWidth, cellHeight); // Set size based on cell size
-
-        // Add the DroppedElement widget to the grid
-        ui->gridLayout->addWidget(elementWidget, row, col);
+        qDebug() << "Element Data Size: " << elementData.size();
     }
-
     event->acceptProposedAction();
 }
 
@@ -90,7 +104,7 @@ void LevelEditor::onSaveClicked() {
     }
 
     if (elementData.empty()) {
-        QMessageBox(QMessageBox::Warning, "Error", "El mapa no puede estar vacío").exec();
+        QMessageBox(QMessageBox::Warning, "Error", "El mapa no puede estar vacÃ­o").exec();
         return;
     }
 
@@ -147,7 +161,7 @@ void LevelEditor::createYAML(const QString& mapName) {
         stream << out.c_str();
         file.close();
     }
-};
+}
 
 void LevelEditor::closeEvent(QCloseEvent* event) {
     SpritesManager::deleteInstance();

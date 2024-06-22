@@ -75,9 +75,6 @@
      </rect>
     </property>
     <layout class="QGridLayout" name="gridLayout">
-     <property name="leftMargin">
-      <number>25</number>
-     </property>
     </layout>
    </widget>
    <widget class="QPushButton" name="btnSave">
