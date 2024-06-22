@@ -10,13 +10,11 @@
 #include "items/goldCoin.h"
 #include "items/silverCoin.h"
 #include "obstacles/fullFloor.h"
-#include "obstacles/largeWoodFloor.h"
 #include "obstacles/leftLadder.h"
 #include "obstacles/longPlatform.h"
 #include "obstacles/rightLadder.h"
 #include "obstacles/smallPlatform.h"
-#include "obstacles/woodFloor.h"
-#include "obstacles/woodLargeColumn.h"
+#include "obstacles/column.h"
 #include "gameMap.h"
 
 EntityFactory::EntityFactory(GameMap& gameMap) : gameMap(gameMap) {}
@@ -64,8 +62,6 @@ std::shared_ptr<Obstacle> EntityFactory::createObstacle(ObstacleType type, Vecto
     switch (type){
         case ObstacleType::FULL_FLOOR:
             return std::make_shared<FullFloor>(gameMap, position);
-        case ObstacleType::LARGE_WOOD_FLOOR:
-            return std::make_shared<LargeWoodFloor>(gameMap, position);
         case ObstacleType::LEFT_LADDER:
             return std::make_shared<LeftLadder>(gameMap, position);
         case ObstacleType::LONG_PLATFORM:
@@ -74,10 +70,8 @@ std::shared_ptr<Obstacle> EntityFactory::createObstacle(ObstacleType type, Vecto
             return std::make_shared<RightLadder>(gameMap, position);
         case ObstacleType::SMALL_PLATFORM:
             return std::make_shared<SmallPlatform>(gameMap, position);
-        case ObstacleType::WOOD_FLOOR:
-            return std::make_shared<WoodFloor>(gameMap, position);
-        case ObstacleType::WOOD_LARGE_COLUMN:   
-            return std::make_shared<WoodLargeColumn>(gameMap, position);
+        case ObstacleType::COLUMN:   
+            return std::make_shared<Column>(gameMap, position);
         default:
             return nullptr;
     }

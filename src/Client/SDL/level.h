@@ -8,12 +8,13 @@
 
 #include "../../Common/DTO/player.h"
 #include "../../Common/DTO/tile.h"
+#include "../../Common/Types/obstacles.h"
 #include "../../Common/Types/tile.h"
 
 class Level {
-    std::map<TileType, std::string> paths;
-    std::map<TileType, std::vector<int>> pixels_pos;
-    std::map<TileType, std::vector<int>> width_height;
+    std::map<ObstacleType, std::string> paths;
+    std::map<ObstacleType, std::vector<int>> pixels_pos;
+    std::map<ObstacleType, std::vector<int>> width_height;
     int max_pixel_x_floor;
     int floor_height;
     int background_width;
@@ -22,15 +23,15 @@ class Level {
 public:
     explicit Level(uint8_t level);
 
-    std::map<TileType, std::unique_ptr<SDL2pp::Texture>> getTilesTextures(SDL2pp::Renderer& renderer);
+    std::map<ObstacleType, std::unique_ptr<SDL2pp::Texture>> getTilesTextures(SDL2pp::Renderer& renderer);
 
-    std::string getLevelPath(TileType type);
+    std::string getLevelPath(ObstacleType type);
 
-    std::vector<int> draw_background(SDL2pp::Window& window, SDL2pp::Renderer& renderer, std::map<TileType, std::unique_ptr<SDL2pp::Texture>>& textures, PlayerDTO& player);
+    std::vector<int> draw_background(SDL2pp::Window& window, SDL2pp::Renderer& renderer, std::map<ObstacleType, std::unique_ptr<SDL2pp::Texture>>& textures, PlayerDTO& player);
 
-    void draw_floor(SDL2pp::Window& window, SDL2pp::Renderer& renderer, std::map<TileType, std::unique_ptr<SDL2pp::Texture>>& textures, int player_speed);
+    void draw_floor(SDL2pp::Window& window, SDL2pp::Renderer& renderer, std::map<ObstacleType, std::unique_ptr<SDL2pp::Texture>>& textures, int player_speed);
 
-    void draw_tiles(SDL2pp::Window& window, SDL2pp::Renderer& renderer, std::map<TileType, std::unique_ptr<SDL2pp::Texture>>& tiles_textures, std::vector<TileDTO>& tiles, PlayerDTO& player, int dir_x_screen, int dir_y_screen);
+    void draw_tiles(SDL2pp::Window& window, SDL2pp::Renderer& renderer, std::map<ObstacleType, std::unique_ptr<SDL2pp::Texture>>& tiles_textures, std::vector<TileDTO>& tiles, PlayerDTO& player, int dir_x_screen, int dir_y_screen);
 
 };
 #endif //LEVEL_H

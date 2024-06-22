@@ -69,7 +69,7 @@ void GameScreen::run() {
 
     std::cout << "[GAME SCREEN] Renderer created" << std::endl;
       
-    std::map<TileType, std::unique_ptr<SDL2pp::Texture>> tiles_textures =
+    std::map<ObstacleType, std::unique_ptr<SDL2pp::Texture>> tiles_textures =
             this->level.getTilesTextures(renderer);
     std::cout << "[GAME SCREEN] Level textures created" << std::endl;
 

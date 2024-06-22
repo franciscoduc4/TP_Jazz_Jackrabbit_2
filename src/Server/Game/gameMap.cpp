@@ -48,7 +48,6 @@ void GameMap::loadMap(uint8_t mapId) {
                 }
             }
         }
-
         // Cargar enemigos
         if (config["ENEMIES"]) {
             for (const auto& enemy : config["ENEMIES"]) {
@@ -66,7 +65,6 @@ void GameMap::loadMap(uint8_t mapId) {
                 }
             }
         }
-
         // Cargar ítems
         if (config["ITEMS"]) {
             for (const auto& item : config["ITEMS"]) {
@@ -90,13 +88,11 @@ void GameMap::loadMap(uint8_t mapId) {
 
 ObstacleType GameMap::getObstacleType(const std::string& typeStr) {
     if (typeStr == "FULL_FLOOR") return ObstacleType::FULL_FLOOR;
-    if (typeStr == "LARGE_WOOD_FLOOR") return ObstacleType::LARGE_WOOD_FLOOR;
     if (typeStr == "LEFT_LADDER") return ObstacleType::LEFT_LADDER;
     if (typeStr == "LONG_PLATFORM") return ObstacleType::LONG_PLATFORM;
     if (typeStr == "RIGHT_LADDER") return ObstacleType::RIGHT_LADDER;
     if (typeStr == "SMALL_PLATFORM") return ObstacleType::SMALL_PLATFORM;
-    if (typeStr == "WOOD_FLOOR") return ObstacleType::WOOD_FLOOR;
-    if (typeStr == "WOOD_LARGE_COLUMN") return ObstacleType::WOOD_LARGE_COLUMN;
+    if (typeStr == "COLUMN") return ObstacleType::COLUMN;
     throw std::runtime_error("Unknown obstacle type: " + typeStr);
 }
 
@@ -425,7 +421,8 @@ std::unique_ptr<GameDTO> GameMap::getGameDTO() {
                 // case EntityType::BULLET:
                 //     bulletsDTO.push_back(std::dynamic_pointer_cast<Bullet>(entity)->getDTO());
                 //     break;
-                case EntityType::TILE:
+                case EntityType::OBSTACLE:
+                    std::cout << "[GAMEMAP] Tile found at position: (" << pos.x << ", " << pos.y << ")" << std::endl;
                     tilesDTO.push_back(std::dynamic_pointer_cast<Obstacle>(entity)->getDTO());
                     break;
                 default:

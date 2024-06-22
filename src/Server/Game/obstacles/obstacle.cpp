@@ -9,5 +9,6 @@ void Obstacle::update(double deltaTime) {
 }
 
 TileDTO Obstacle::getDTO() {
+    
     return TileDTO{position.x, position.y, getObstacleType()};
 }
