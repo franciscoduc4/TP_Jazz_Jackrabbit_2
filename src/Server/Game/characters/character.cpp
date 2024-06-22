@@ -103,8 +103,6 @@ void Character::shoot(float time) {
     std::cout << "[CHARACTER] Character ID: " << static_cast<int>(id) << " shooting" << std::endl;
     if (!currentWeapon) {
         currentWeapon = std::make_unique<Blaster>();
-        // std::cerr << "[CHARACTER] Error: currentWeapon is null" << std::endl;
-        // return;
     }
     auto newState = std::unique_ptr<State>(state->shoot(std::move(currentWeapon), time));
     if (newState) {

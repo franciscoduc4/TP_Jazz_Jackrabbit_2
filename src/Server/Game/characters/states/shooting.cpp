@@ -24,6 +24,7 @@ std::unique_ptr<State> ShootingState::exec(float time) {
 std::unique_ptr<State> ShootingState::shoot(const std::shared_ptr<Weapon>& weapon,
                                             float time) {
 
+    std::cout << "[SHOOTING] Shooting" << std::endl;                                  
     if (!weapon->isEmpty() && (time - startTime) > shootCooldown) {
         startTime = time;
         std::vector<std::shared_ptr<Entity>> characters = character.getTargets();

@@ -501,15 +501,18 @@ std::unique_ptr<GameDTO> GameMap::getGameDTO() {
     std::vector<TileDTO> tilesDTO;
 
     try {
-        // Recopilar información de los jugadores
-        for (const auto& [playerId, character]: characters) {
-            playersDTO.push_back(character->getDTO());
-            std::cout << "[GAMEMAP] Character added to DTO with ID: " << static_cast<int>(playerId)
-                      << std::endl;
-        }
+        // // Recopilar información de los jugadores
+        // for (const auto& [playerId, character]: characters) {
+        //     playersDTO.push_back(character->getDTO());
+        //     std::cout << "[GAMEMAP] Character added to DTO with ID: " << static_cast<int>(playerId)
+        //               << std::endl;
+        // }
 
         for (const auto& [pos, entity]: mapGrid) {
             switch (entity->getType()) {
+                case EntityType::CHARACTER:
+                    playersDTO.push_back(std::dynamic_pointer_cast<Character>(entity)->getDTO());
+                    break;
                 case EntityType::ENEMY:
                     enemiesDTO.push_back(std::dynamic_pointer_cast<Enemy>(entity)->getDTO());
                     break;
