@@ -1,20 +1,20 @@
 #include "leveleditor.h"
-#include "dropwidget.h"
-
-#include "ui_leveleditor.h"
 
 #include <QDrag>
 #include <QMimeData>
 #include <QPainter>
-
 #include <iostream>
+
+#include "droppedElement.h"
+#include "dropwidget.h"
+#include "ui_leveleditor.h"
 
 LevelEditor::LevelEditor(QWidget* parent)
         : QMainWindow(parent), ui(new Ui::LevelEditor) {
     ui->setupUi(this);
 
     // Populate the QTreeWidget
-    QStringList elements = {"Jazz", "Spaz", "Lori", "Food", "Gems", "Silver Coins", "Gold Coins", "Turtle", "Schwartzenguard", "Yellowmon", "Full Floor", "Large Wood Floor", "Left Ladder", "Long Platform", "Right Ladder", "Small Platform", "Wood Floor", "Wood Large Column"};
+    QStringList elements = {"Jazz", "Spaz", "Lori", "Food", "Gem", "Silver Coin", "Gold Coin", "Turtle", "Schwartzenguard", "Yellowmon", "Full Floor", "Large Wood Floor", "Left Ladder", "Long Platform", "Right Ladder", "Small Platform", "Wood Floor", "Wood Large Column"};
     for (const auto& element : elements) {
         auto* item = new QTreeWidgetItem(ui->elementsTree);
         item->setText(0, element);
@@ -57,33 +57,26 @@ void LevelEditor::handleDropEvent(QDropEvent* event) {
 
         QString elementType = roleDataMap[Qt::DisplayRole].toString();
 
-        // Calculate the grid cell size
+        // Calculate cell size based on grid layout dimensions
         int cellWidth = ui->gridLayoutWidget->width() / ui->gridLayout->columnCount();
         int cellHeight = ui->gridLayoutWidget->height() / ui->gridLayout->rowCount();
 
-        // Get the drop position
+        // Get drop position and convert to game map coordinates
         QPoint dropPos = event->pos();
+        int mapX = dropPos.x() * 1000 / cellWidth;
+        int mapY = dropPos.y() * 1000 / cellHeight;
 
-        // Convert the drop position to the game map dimensions
-        int gridX = dropPos.x() * ui->gridLayout->columnCount() / ui->gridLayoutWidget->width();
-        int gridY = dropPos.y() * ui->gridLayout->rowCount() / ui->gridLayoutWidget->height();
-
-        int mapX = gridX * 1000 / ui->gridLayout->columnCount();
-        int mapY = gridY * 1000 / ui->gridLayout->rowCount();
+        // Store element position for saving
+        elementData[elementType].emplace_back(mapX, mapY);
 
         QString elementName = elementNames[elementType];
-        // Store the element position
-        elementData[elementName].emplace_back(mapX, mapY);
 
-        // Create a QLabel and set its pixmap to the sprite
-        auto* spriteLabel = new QLabel(this);
-        spriteLabel->setPixmap(SpritesManager::get(elementType));
+        // Create a DroppedElement widget (assuming you have it)
+        auto* elementWidget = new DroppedElement(elementType, SpritesManager::get(elementName));
+        elementWidget->setFixedSize(cellWidth, cellHeight); // Set size based on cell size
 
-        // Set the QLabel's size to match the grid cell size
-        spriteLabel->setFixedSize(cellWidth, cellHeight);
-
-        // Add the QLabel to the grid at the dropped position
-        ui->gridLayout->addWidget(spriteLabel, gridY, gridX);
+        // Add the DroppedElement widget to the grid
+        ui->gridLayout->addWidget(elementWidget, row, col);
     }
 
     event->acceptProposedAction();

@@ -44,7 +44,7 @@ private:
             {"Wood Floor", "WOOD_FLOOR"},
             {"Wood Large Column", "WOOD_LARGE_COLUMN"},
             {"Turtle", "TURTLES"},
-            {"SchwarzenGuard", "SCHWARZENGUARDS"},
+            {"Schwartzenguard", "SCHWARZENGUARDS"},
             {"Yellowmon", "YELLOWMONS"},
             {"Gem", "GEMS"},
             {"Gold Coin", "GOLD_COINS"},
@@ -88,27 +88,6 @@ private:
             {"JAZZ", ElementCategory::PLAYER},
             {"SPAZ", ElementCategory::PLAYER},
             {"LORI", ElementCategory::PLAYER}
-    };
-
-    std::unordered_map<QString, QPixmap> elementSprites = {
-            {"FULL_FLOOR", SpritesManager::get("FULL_FLOOR")},
-            {"LARGE_WOOD_FLOOR", SpritesManager::get("LARGE_WOOD_FLOOR")},
-            {"LEFT_LADDER", SpritesManager::get("LEFT_LADDER")},
-            {"LONG_PLATFORM", SpritesManager::get("LONG_PLATFORM")},
-            {"RIGHT_LADDER", SpritesManager::get("RIGHT_LADDER")},
-            {"SMALL_PLATFORM", SpritesManager::get("SMALL_PLATFORM")},
-            {"WOOD_FLOOR", SpritesManager::get("WOOD_FLOOR")},
-            {"WOOD_LARGE_COLUMN", SpritesManager::get("WOOD_LARGE_COLUMN")},
-            {"TURTLE", SpritesManager::get("TURTLE")},
-            {"SCHWARZENGUARD", SpritesManager::get("SCHWARZENGUARD")},
-            {"YELLOWMON", SpritesManager::get("YELLOWMON")},
-            {"GEM", SpritesManager::get("GEM")},
-            {"GOLD_COIN", SpritesManager::get("GOLD_COIN")},
-            {"SILVER_COIN", SpritesManager::get("SILVER_COIN")},
-            {"FOOD", SpritesManager::get("FOOD")},
-            {"JAZZ", SpritesManager::get("JAZZ")},
-            {"SPAZ", SpritesManager::get("SPAZ")},
-            {"LORI", SpritesManager::get("LORI")}
     };
 
     std::unordered_map<ElementCategory, std::unordered_map<QString, std::vector<QPoint>>>

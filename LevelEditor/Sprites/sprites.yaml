@@ -47,37 +47,37 @@ WOOD_LARGE_COLUMN:
   COLOUR_KEY: [87, 0, 203]
   WIDTH: 50
   HEIGHT: 1000
-TURTLE:
+TURTLES:
   SPRITE: [12, 56, 67, 56]
   PATH: "assets/Enemies/TurtleEnemies.png"
   COLOUR_KEY: [0, 128, 255]
   WIDTH: 50
   HEIGHT: 50
-SCHWARZENGUARD:
+SCHWARZENGUARDS:
   SPRITE: [11, 6, 65, 56]
   PATH: "assets/Enemies/Schwartzenguard.png"
   COLOUR_KEY: [0, 128, 255]
   WIDTH: 60
   HEIGHT: 100
-YELLOWMON:
+YELLOWMONS:
   SPRITE: [14, 9, 70, 66]
   PATH: "assets/Enemies/Enemies.png"
   COLOUR_KEY: [0, 128, 255]
   WIDTH: 30
   HEIGHT: 50
-GEM:
+GEMS:
   SPRITE: [145, 1240, 31, 30]
   PATH: "assets/Miscellaneous/ItemsObjects.png"
   COLOUR_KEY: [0, 128, 255]
   WIDTH: 20
   HEIGHT: 20
-GOLD_COIN:
+GOLD_COINS:
   SPRITE: [481, 1218, 27, 27]
   PATH: "assets/Miscellaneous/ItemsObjects.png"
   COLOUR_KEY: [0, 128, 255]
   WIDTH: 20
   HEIGHT: 20
-SILVER_COIN:
+SILVER_COINS:
   SPRITE: [482, 1266, 27, 26]
   PATH: "assets/Miscellaneous/ItemsObjects.png"
   COLOUR_KEY: [0, 128, 255]

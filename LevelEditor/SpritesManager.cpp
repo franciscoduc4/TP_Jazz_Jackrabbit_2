@@ -40,7 +40,7 @@ SpritesManager::SpritesManager() {
     }
 }
 SpritesManager* SpritesManager::getInstance() {
-    if (!instance) {
+    if (instance == nullptr) {
         instance = new SpritesManager();
     }
     return instance;
