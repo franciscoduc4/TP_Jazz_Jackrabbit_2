@@ -11,8 +11,6 @@ class Character;
 
 class State {
 protected:
-    bool onGround = false;
-
 public:
     virtual ~State() = default;
 
@@ -30,7 +28,6 @@ public:
     CharacterStateEntity characterState = IDLE;
 
     virtual CharacterStateEntity getCharacterState() { return characterState; }
-    virtual void setOnGround(bool onGround) { this->onGround = onGround; }
 };
 
 #endif  // STATE_H

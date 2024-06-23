@@ -104,8 +104,8 @@ public:
     void interact(std::shared_ptr<Entity>& other);
     void switchWeapon(WeaponType type);
 
-    void moveRight(bool onGround);
-    void moveLeft(bool onGround);
+    void moveRight();
+    void moveLeft();
     void moveDown();
     void moveUp();
 

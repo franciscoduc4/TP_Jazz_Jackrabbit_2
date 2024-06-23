@@ -42,10 +42,10 @@ std::unique_ptr<State> MovingState::move(Direction direction2, float time) {
             character.moveDown();
             break;
         case Direction::RIGHT:
-            character.moveRight(onGround);
+            character.moveRight();
             break;
         case Direction::LEFT:
-            character.moveLeft(onGround);
+            character.moveLeft();
             break;
         default:
             break;

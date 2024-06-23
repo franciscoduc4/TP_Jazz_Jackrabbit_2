@@ -187,7 +187,6 @@ void Character::moveRight(double time) {
         std::cout << "[CHARACTER] Character ID: " << static_cast<int>(id) << " moving right"
                   << std::endl;
         state = std::move(newState);
-        state->setOnGround(onGround);
     }
 }
 
@@ -198,7 +197,6 @@ void Character::moveLeft(double time) {
     // auto newState = std::make_unique<MovingState>(*this, Direction::LEFT);
     if (newState) {
         state = std::move(newState);
-        state->setOnGround(onGround);
     }
 }
 
@@ -343,7 +341,7 @@ WeaponType Character::getCurrentWeaponType() {
     return weaponType;
 }
 
-void Character::moveRight(bool onGround) {
+void Character::moveRight() {
     if (isIntoxicated)
         return;
 
@@ -387,7 +385,7 @@ void Character::moveRight(bool onGround) {
     }
 }
 
-void Character::moveLeft(bool onGround) {
+void Character::moveLeft() {
     if (isIntoxicated)
         return;
 
@@ -570,7 +568,4 @@ uint32_t Character::getWidth() const { return width; }
 
 uint32_t Character::getHeight() const { return height; }
 
-void Character::setOnGround(bool onGround) {
-    this->onGround = onGround;
-    state->setOnGround(onGround);
-}
+void Character::setOnGround(bool onGround) { this->onGround = onGround; }
