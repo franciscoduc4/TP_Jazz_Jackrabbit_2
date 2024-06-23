@@ -138,43 +138,107 @@ void Character::handleCollision(std::shared_ptr<Enemy> enemy) {
         state = std::move(newState);
     }
 }
-
-
 void Character::handleObstacleCollision(std::shared_ptr<Obstacle> obstacle) {
     std::cout << "[CHARACTER] Character ID: " << static_cast<int>(id)
               << " collided with Obstacle at position: (" << obstacle->getPosition().x << ", "
               << obstacle->getPosition().y << ")" << std::endl;
+
     auto obstaclePos = obstacle->getPosition();
     auto obstacleWidth = obstacle->getWidth();
     auto obstacleHeight = obstacle->getHeight();
-    // Manejo de colisiones
-    if (pos.y + height >= obstaclePos.y) {
-        if (pos.x + width < obstaclePos.x || pos.x > obstaclePos.x + obstacleWidth) {
-            return;
-        }
-        onGround = true;
-        std::cout << "[CHARACTER] Character ID: " << static_cast<int>(id)
-                  << " collided with obstacle from below" << std::endl;
-        pos.y = obstaclePos.y - height;  // Colisión por abajo
-    } else if (pos.y <= obstaclePos.y + obstacleHeight) {
-        std::cout << "[CHARACTER] Character ID: " << static_cast<int>(id)
-                  << " collided with obstacle from above" << std::endl;
-        pos.y = obstaclePos.y + obstacleHeight;  // Colisión por arriba
-    } else if (pos.x + width >= obstaclePos.x) {
-        std::cout << "[CHARACTER] Character ID: " << static_cast<int>(id)
-                  << " collided with obstacle from the left" << std::endl;
-        pos.x = obstaclePos.x - width;  // Colisión por la izquierda
-    } else if (pos.x <= obstaclePos.x + obstacleWidth) {
-        std::cout << "[CHARACTER] Character ID: " << static_cast<int>(id)
-                  << " collided with obstacle from the right" << std::endl;
-        pos.x = obstaclePos.x + obstacleWidth;  // Colisión por la derecha
-    }
+    auto characterWidth = getWidth();
+    auto characterHeight = getHeight();
 
-    // auto newState = std::make_unique<IdleState>(*this);
-    // if (newState) {
-    //     state = std::move(newState);
-    // }
+    ObstacleType obstacleType = obstacle->getObstacleType();  // Obtén el tipo específico de obstáculo
+
+    if (obstacleType == ObstacleType::LEFT_LADDER || obstacleType == ObstacleType::RIGHT_LADDER) {
+        // Verificar colisión con el triángulo de la escalera
+        Vector<uint32_t> p1, p2, p3;
+        if (obstacleType == ObstacleType::LEFT_LADDER) {
+            p1 = obstaclePos;
+            p2 = {obstaclePos.x + obstacleWidth, obstaclePos.y};
+            p3 = {obstaclePos.x, obstaclePos.y + obstacleHeight};
+        } else if (obstacleType == ObstacleType::RIGHT_LADDER) {
+            p1 = {obstaclePos.x, obstaclePos.y};
+            p2 = {obstaclePos.x + obstacleWidth, obstaclePos.y};
+            p3 = {obstaclePos.x + obstacleWidth, obstaclePos.y + obstacleHeight};
+        }
+
+        // Verificar si alguno de los cuatro puntos del personaje está dentro del triángulo
+        Vector<uint32_t> characterPoints[] = {
+            {pos.x, pos.y},
+            {pos.x + characterWidth, pos.y},
+            {pos.x, pos.y + characterHeight},
+            {pos.x + characterWidth, pos.y + characterHeight}
+        };
+
+        bool collisionDetected = false;
+        for (const auto& point : characterPoints) {
+            if (isPointInTriangle(point, p1, p2, p3)) {
+                collisionDetected = true;
+                break;
+            }
+        }
+
+        if (collisionDetected) {
+            // Resolver la colisión
+            // Ajustar la posición del personaje para "alinearlo" con la escalera
+            if (obstacleType == ObstacleType::LEFT_LADDER) {
+                // Ajuste para escalera izquierda
+                float slope = static_cast<float>(obstacleHeight) / obstacleWidth;
+                pos.y = obstaclePos.y + static_cast<uint32_t>(slope * (pos.x - obstaclePos.x));
+            } else {
+                // Ajuste para escalera derecha
+                float slope = static_cast<float>(obstacleHeight) / obstacleWidth;
+                pos.y = obstaclePos.y + static_cast<uint32_t>(slope * (obstaclePos.x + obstacleWidth - pos.x));
+            }
+
+            onGround = true;  // Asegúrate de que el personaje esté considerado en el suelo al caminar sobre la escalera
+        }
+    } else {
+        // Manejo de colisión regular (rectángulo)
+        if (pos.y + characterHeight >= obstaclePos.y) {
+            if (pos.x + characterWidth < obstaclePos.x || pos.x > obstaclePos.x + obstacleWidth) {
+                return;
+            }
+            onGround = true;
+            std::cout << "[CHARACTER] Character ID: " << static_cast<int>(id)
+                      << " collided with obstacle from below" << std::endl;
+            pos.y = obstaclePos.y - characterHeight;  // Colisión por abajo
+        } else if (pos.y <= obstaclePos.y + obstacleHeight) {
+            std::cout << "[CHARACTER] Character ID: " << static_cast<int>(id)
+                      << " collided with obstacle from above" << std::endl;
+            pos.y = obstaclePos.y + obstacleHeight;  // Colisión por arriba
+        } else if (pos.x + characterWidth >= obstaclePos.x) {
+            std::cout << "[CHARACTER] Character ID: " << static_cast<int>(id)
+                      << " collided with obstacle from the left" << std::endl;
+            pos.x = obstaclePos.x - characterWidth;  // Colisión por la izquierda
+        } else if (pos.x <= obstaclePos.x + obstacleWidth) {
+            std::cout << "[CHARACTER] Character ID: " << static_cast<int>(id)
+                      << " collided with obstacle from the right" << std::endl;
+            pos.x = obstaclePos.x + obstacleWidth;  // Colisión por la derecha
+        }
+    }
 }
+
+
+
+
+bool Character::isPointInTriangle(const Vector<uint32_t>& p, const Vector<uint32_t>& v1, 
+    const Vector<uint32_t>& v2, const Vector<uint32_t>& v3){
+    auto sign = [](const Vector<uint32_t>& p1, const Vector<uint32_t>& p2, const Vector<uint32_t>& p3) {
+        return (p1.x - p3.x) * (p2.y - p3.y) - (p2.x - p3.x) * (p1.y - p3.y);
+    };
+
+    bool b1, b2, b3;
+
+    b1 = sign(p, v1, v2) < 0.0f;
+    b2 = sign(p, v2, v3) < 0.0f;
+    b3 = sign(p, v3, v1) < 0.0f;
+
+    return ((b1 == b2) && (b2 == b3));
+}
+
 
 
 void Character::moveRight(double time) {

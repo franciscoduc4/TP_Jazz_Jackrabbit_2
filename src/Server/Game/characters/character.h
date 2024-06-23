@@ -79,6 +79,8 @@ public:
     void update(float time);
     void shoot(float time);
 
+    bool isPointInTriangle(const Vector<uint32_t>& p, const Vector<uint32_t>& v1, 
+    const Vector<uint32_t>& v2, const Vector<uint32_t>& v3);
     void update(double deltaTime);
     void handleCollision(std::shared_ptr<Enemy> enemy);
     void handleObstacleCollision(std::shared_ptr<Obstacle> obstacle);

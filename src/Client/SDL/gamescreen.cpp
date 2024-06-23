@@ -184,8 +184,8 @@ void GameScreen::run() {
         }
         std::vector<int> dir_screen = this->level.draw_background(window, renderer, tiles_textures, *mainPlayer/*players[0]*/);
         this->level.draw_floor(window, renderer, tiles_textures, mainPlayer->getSpeed());
-        x_screen = dir_screen[0];
-        y_screen = dir_screen[1];
+        x_screen = 0; //dir_screen[0];
+        y_screen = 0; //dir_screen[1];
 
         if (players.size() > 0) {
             this->pj.draw_players(window, renderer, pjs_textures, players, x_screen, y_screen, *mainPlayer);
