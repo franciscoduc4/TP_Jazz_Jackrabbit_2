@@ -1,49 +1,110 @@
 # Elements
-FULL_FLOOR: []
-LARGE_WOOD_FLOOR: []
-LEFT_LADDER: []
-LONG_PLATFORM: []
-RIGHT_LADDER: []
-SMALL_PLATFORM: []
-WOOD_FLOOR: []
-WOOD_LARGE_COLUMN: []
-TURTLE: [12, 56, 67, 56]
-SCHWARZENGUARD: [11, 6, 65, 56]
-YELLOWMON: [14, 9, 70, 66]
-GEM: [145, 1240, 31, 30]
-GOLD_COIN: [481, 1218, 27, 27]
-SILVER_COIN: [482, 1266, 27, 26]
-FOOD: []
-JAZZ: [0, 11, 38, 52]
-LORI: [0, 10, 45, 56]
-SPAZ: [0, 9, 38, 49]
+FULL_FLOOR:
+  SPRITE: []
+  PATH: "assets/scenes/BeachWorld/fullFloor.png"
+  COLOUR_KEY: [87, 0, 203]
+  WIDTH: 1000
+  HEIGHT: 70
+LARGE_WOOD_FLOOR:
+  SPRITE: [ ]
+  PATH: "assets/scenes/BeachWorld/largeWoodFloor.png"
+  COLOUR_KEY: [87, 0, 203]
+  WIDTH: 1000
+  HEIGHT: 70
+LEFT_LADDER:
+  SPRITE: [ ]
+  PATH: "assets/scenes/BeachWorld/leftLadder.png"
+  COLOUR_KEY: [87, 0, 203]
+  WIDTH: 100
+  HEIGHT: 70
+LONG_PLATFORM:
+  SPRITE: [ ]
+  PATH: "assets/scenes/BeachWorld/longPlatform.png"
+  COLOUR_KEY: [87, 0, 203]
+  WIDTH: 100
+  HEIGHT: 70
+RIGHT_LADDER:
+  SPRITE: [ ]
+  PATH: "assets/scenes/BeachWorld/rightLadder.png"
+  COLOUR_KEY: [87, 0, 203]
+  WIDTH: 100
+  HEIGHT: 70
+SMALL_PLATFORM:
+  SPRITE: [ ]
+  PATH: "assets/scenes/BeachWorld/smallPlatform.png"
+  COLOUR_KEY: [87, 0, 203]
+  WIDTH: 50
+  HEIGHT: 70
+WOOD_FLOOR:
+  SPRITE: [ ]
+  PATH: "assets/scenes/BeachWorld/woodfloor.png"
+  COLOUR_KEY: [87, 0, 203]
+  WIDTH: 100
+  HEIGHT: 70
+WOOD_LARGE_COLUMN:
+  SPRITE: [ ]
+  PATH: "assets/scenes/BeachWorld/woodLargeColumn.png"
+  COLOUR_KEY: [87, 0, 203]
+  WIDTH: 50
+  HEIGHT: 1000
+TURTLES:
+  SPRITE: [12, 56, 67, 56]
+  PATH: "assets/Enemies/TurtleEnemies.png"
+  COLOUR_KEY: [0, 128, 255]
+  WIDTH: 50
+  HEIGHT: 50
+SCHWARZENGUARDS:
+  SPRITE: [11, 6, 65, 56]
+  PATH: "assets/Enemies/Schwartzenguard.png"
+  COLOUR_KEY: [0, 128, 255]
+  WIDTH: 60
+  HEIGHT: 100
+YELLOWMONS:
+  SPRITE: [14, 9, 70, 66]
+  PATH: "assets/Enemies/Enemies.png"
+  COLOUR_KEY: [0, 128, 255]
+  WIDTH: 30
+  HEIGHT: 50
+GEMS:
+  SPRITE: [145, 1240, 31, 30]
+  PATH: "assets/Miscellaneous/ItemsObjects.png"
+  COLOUR_KEY: [0, 128, 255]
+  WIDTH: 20
+  HEIGHT: 20
+GOLD_COINS:
+  SPRITE: [481, 1218, 27, 27]
+  PATH: "assets/Miscellaneous/ItemsObjects.png"
+  COLOUR_KEY: [0, 128, 255]
+  WIDTH: 20
+  HEIGHT: 20
+SILVER_COINS:
+  SPRITE: [482, 1266, 27, 26]
+  PATH: "assets/Miscellaneous/ItemsObjects.png"
+  COLOUR_KEY: [0, 128, 255]
+  WIDTH: 20
+  HEIGHT: 20
+FOOD:
+  SPRITE: [24, 892, 19, 22]
+  PATH: "assets/Miscellaneous/ItemsObjects.png"
+  COLOUR_KEY: [0, 128, 255]
+  WIDTH: 20
+  HEIGHT: 20
+JAZZ:
+  SPRITE: [0, 11, 38, 52]
+  PATH: "assets/Characters/Jazz.png"
+  COLOUR_KEY: [44, 102, 150]
+  WIDTH: 50
+  HEIGHT: 80
+LORI:
+  SPRITE: [0, 10, 45, 56]
+  PATH: "assets/Characters/Lori.png"
+  COLOUR_KEY: [44, 102, 150]
+  WIDTH: 50
+  HEIGHT: 80
+SPAZ:
+  SPRITE: [0, 9, 38, 49]
+  PATH: "assets/Characters/Spaz.png"
+  COLOUR_KEY: [44, 102, 150]
+  WIDTH: 50
+  HEIGHT: 80
 
-# Files
-JAZZ_FILE: "assets/Characters/Jazz.png"
-SPAZ_FILE: "assets/Characters/Spaz.png"
-LORI_FILE: "assets/Characters/Lori.png"
-TURTLE_FILE: "assets/Enemies/TurtleEnemies.png"
-SCH_GUARD_FILE: "assets/Enemies/Schwartzenguard.png"
-YELLOWMONS_FILE: "assets/Enemies/Enemies.png"
-ITEMS_FILE: "assets/Miscellaneous/Items&Objects.png"
-
-# Colour Keys
-JAZZ_FILE_CK: [44, 102, 150]
-SPAZ_FILE_CK: [44, 102, 150]
-LORI_FILE_CK: [44, 102, 150]
-TURTLE_FILE_CK: [0, 128, 255]
-SCH_GUARD_FILE_CK: [0, 128, 255]
-YELLOWMONS_FILE_CK: [0, 128, 255]
-ITEMS_FILE_CK: [0, 128, 255]
-
-# Sizes
-TURTLE_WIDTH: 50
-TURTLE_HEIGHT: 50
-SCH_WIDTH: 60
-SCH_HEIGHT: 100
-YELLOWMONS_WIDTH: 30
-YELLOWMONS_HEIGHT: 50
-PLAYER_WIDTH: 50
-PLAYER_HEIGHT: 80
-ITEMS_WIDTH: 20
-ITEMS_HEIGHT: 20

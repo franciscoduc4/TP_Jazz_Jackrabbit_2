@@ -20,7 +20,17 @@ Vagrant.configure("2") do |config|
     sudo apt-get install -y qtbase5-dev qtdeclarative5-dev qt5-qmake qttools5-dev-tools libqt5widgets5 libqt5core5a 
     sudo apt-get install -y libgtest-dev
     sudo apt-get install -y libjpeg-dev libpng-dev libfreetype-dev libopusfile-dev libflac-dev libxmp-dev libfluidsynth-dev libwavpack-dev cmake libmodplug-dev
-    sudo apt-get install -y libsdl2-dev libsdl2-image-dev libsdl2-ttf-dev libsdl2-mixer-dev libsdl2-gfx-dev
+    # sudo apt-get install -y libsdl2-dev libsdl2-image-dev libsdl2-ttf-dev libsdl2-mixer-dev libsdl2-gfx-dev
+
+    # Instalación de SDL2
+    wget https://github.com/libsdl-org/SDL/releases/download/release-2.30.4/SDL2-2.30.4.tar.gz
+    tar -xvf SDL2-2.30.4.tar.gz 
+    cd SDL2-2.30.4
+    mkdir build
+    cd build
+    ../configure --prefix=/usr/local/sdl2
+    make -j2
+    sudo make install
 
     # Remove CMakeCache.txt
     find /home/vagrant/jazz_jackrabbit_2 -name CMakeCache.txt -type f -exec rm {} \;
@@ -41,6 +51,10 @@ Vagrant.configure("2") do |config|
 
     cd /home/vagrant/jazz_jackrabbit_2
 
+    # Si existe, lo detono
+    if [ -d "/home/vagrant/jazz_jackrabbit_2/build" ]; then
+        sudo rm -rf /home/vagrant/jazz_jackrabbit_2/build
+    fi
     # Se crea el directorio build si no existe
     sudo mkdir -p build
     sudo chown -R vagrant:vagrant /home/vagrant/jazz_jackrabbit_2/build

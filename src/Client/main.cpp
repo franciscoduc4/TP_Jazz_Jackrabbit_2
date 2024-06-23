@@ -22,5 +22,8 @@ int main(int argc, char* argv[]) {
     } catch (const std::exception& e) {
         return FAIL;
     }
+
+    ClientConfig::deleteInstance();
+
     return SUCCESS;
 }

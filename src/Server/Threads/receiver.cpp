@@ -31,7 +31,7 @@ void ReceiverThread::runLobby() {
     std::cout << "[SERVER SENDER LOBBY] Command received" << std::endl;
 
     auto handler = LobbyCommandHandler::createHandler(std::move(command));
-    handler->execute(gameMonitor, std::ref(inGame), sendQueue);
+    handler->execute(gameMonitor, inGame, sendQueue);
     std::cout << "[SERVER SENDER LOBBY] Command executed" << std::endl;
 }
 

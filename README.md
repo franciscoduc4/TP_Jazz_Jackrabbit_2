@@ -115,8 +115,8 @@ La configuración del juego se maneja a través de archivos YAML ubicados en el 
 Para ejecutar el juego, primero debe compilarse utilizando CMake. Una vez compilado, se pueden iniciar el cliente y el servidor con los siguientes comandos:
 
 ```sh
-./jazzclient localhost 8080
-./jazzserver 8080
+./jazzclient <ip> <puerto>
+./jazzserver <puerto>
 ```
 
 ### Ejecución con Vagrant
@@ -128,7 +128,7 @@ El proyecto también cuenta con un Vagrantfile que permite la ejecución del mis
 Para ejecutar el programa usándo esta herramienta:
 
 ```sh
-vagrant up
+vagrant up --provision
 vagrant ssh
 cd /home/vagrant/jazz_jackrabbit_2/build
 ```

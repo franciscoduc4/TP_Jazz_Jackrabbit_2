@@ -188,6 +188,17 @@ std::vector<std::vector<int>> ClientConfig::getBeachSprites() {
     return beachSprites;
 }
 
+std::vector<std::vector<int>> ClientConfig::getBeachWidthHeightSprites() {
+    YAML::Node beachWidthHeightSpritesNode = getInstance()->root["BEACH_WIDTHS_HEIGHTS"];
+    std::vector<std::vector<int>> beachWidthsHeights;
+    for (YAML::const_iterator it = beachWidthHeightSpritesNode.begin();
+         it != beachWidthHeightSpritesNode.end(); ++it) {
+        beachWidthsHeights.push_back(it->as<std::vector<int>>());
+    }
+    return beachWidthsHeights;
+}
+
+
 //Colonius
 std::vector<std::string> ClientConfig::getColoniusFiles() {
     YAML::Node coloniusFilesNode = getInstance()->root["COLONIUS"];
@@ -213,6 +224,15 @@ std::vector<std::vector<int>> ClientConfig::getColoniusSprites() {
     return coloniusSprites;
 }
 
+std::vector<std::vector<int>> ClientConfig::getColoniusWidthHeightSprites() {
+    YAML::Node coloniusWidthHeightSpritesNode = getInstance()->root["COLONIUS_PIXELS"];
+    std::vector<std::vector<int>> coloniusWidthsHeights;
+    for (YAML::const_iterator it = coloniusWidthHeightSpritesNode.begin();
+         it != coloniusWidthHeightSpritesNode.end(); ++it) {
+        coloniusWidthsHeights.push_back(it->as<std::vector<int>>());
+    }
+    return coloniusWidthsHeights;
+}
 
 // Enemies
 // Turtle
