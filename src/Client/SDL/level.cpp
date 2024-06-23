@@ -19,6 +19,14 @@ Level::Level(uint8_t level) {
     std::vector<std::vector<int>> widthsHeights; 
     switch (level) {
         case HOLIDAIUS:
+            tilesSprites = ClientConfig::getHolidaiusFiles();
+            beachSprites = ClientConfig::getHolidaiusSprites();
+            widthsHeights = ClientConfig::getHolidaiusWidthHeightSprites();
+            for (int i = 0; i < tilesSprites.size(); i++) {
+                this->paths[tiles_types[i]] = tilesSprites[i];
+                this->pixels_pos[tiles_types[i]] = beachSprites[i];
+                this->width_height[tiles_types[i]] = widthsHeights[i];
+            }
             break;
         case COLONIUS:
             tilesSprites = ClientConfig::getColoniusFiles();

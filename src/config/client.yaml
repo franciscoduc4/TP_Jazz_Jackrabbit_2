@@ -49,7 +49,13 @@ BEACH_WIDTHS_HEIGHTS: [[715, 153], [500, 70], [150, 30], [70, 30], [30, 100], [1
 COLONIUS: ["../assets/scenes/Colonius/background.png", "../assets/scenes/Colonius/fullFloor.png", "../assets/scenes/Colonius/longPlatform.png", "../assets/scenes/Colonius/smallPlatform.png", "../assets/scenes/Colonius/column.png", "../assets/scenes/Colonius/leftLadder.png", "../assets/scenes/Colonius/rightLadder.png"]
 COLONIUS_BACKSOUND: "../assets/audios/coloniusBackSound.wav"
 COLONIUS_PIXELS: [[1200, 0, 1804, 839], [0, 0, 400, 150], [0, 0, 192, 46], [0, 0, 145, 96], [0, 0, 80, 191], [0, 0, 144, 119], [0, 0, 144, 119]]
-COLONIUS_WIDTHS_HEIGHT: [[2000, 839], [500, 100], [150, 30], [60, 40], [20, 120], [150, 150], [150, 150]]
+COLONIUS_WIDTHS_HEIGHTS: [[2000, 839], [500, 100], [150, 30], [60, 40], [20, 120], [150, 150], [150, 150]]
+
+#Holidaius level sprites
+HOLIDAIUS: ["../assets/scenes/Holidaius/background.png", "../assets/scenes/Holidaius/floor.png", "../assets/scenes/Holidaius/longPlatform.png", "../assets/scenes/Holidaius/smallPlatform.png", "../assets/scenes/Holidaius/column.png", "../assets/scenes/Holidaius/leftLadder.png", "../assets/scenes/Holidaius/rightLadder.png"]
+HOLIDAIUS_BACKSOUND: "../assets/audios/holidaiusBackSound.wav"
+HOLIDAIUS_PIXELS: [[0, 0, 200, 254], [0, 0, 300, 120], [0, 0, 164, 100], [0, 0, 74, 25], [0, 0, 62, 180], [0, 0, 189, 191], [0, 0, 189, 191]]
+HOLIDAIUS_WIDTHS_HEIGHTS: [[729, 254], [300, 70], [150, 30], [60, 40], [20, 120], [150, 150], [150, 150]] 
 
 ## Enemies
 TURTLE_WIDTH: 50
