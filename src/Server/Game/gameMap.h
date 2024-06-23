@@ -18,7 +18,7 @@
 #include "enemies/enemy.h"
 #include "items/item.h"
 #include "obstacles/obstacle.h"
-
+#include "characters/bullet.h"
 #include "entity.h"
 #include "entityFactory.h"
 
@@ -39,14 +39,9 @@ private:
     float gravity;
     std::string mapName;
     uint8_t mapId;
-
+    std::vector<std::shared_ptr<Bullet>> bullets;
 
     Vector<uint32_t> calculateNewPosition(const Vector<uint32_t> position, Direction dir) const;
-
-
-    bool handleMovement(Vector<uint32_t>& position, Vector<uint32_t> mapPosition,
-                        const Vector<uint32_t>& newPosition, const Vector<uint32_t>& newMapPosition);
-
 
 public:
     explicit GameMap(Vector<uint32_t> size, uint8_t mapId);
@@ -75,12 +70,14 @@ public:
     void handleCharacterEnemyCollision(std::shared_ptr<Character> character, std::shared_ptr<Enemy> enemy);
     void handleCharacterObstacleCollision(std::shared_ptr<Character> character, std::shared_ptr<Obstacle> obstacle);
 
+    void handleShooting(uint32_t characterX, uint8_t damage, float time, Direction dir);
     bool checkCollision(const Vector<uint32_t>& pos1, const Vector<uint32_t>& size1, const Vector<uint32_t>& pos2, const Vector<uint32_t>& size2);
 
     void update(float time);
+    void updateBullets(float time);
 
     void removeCharacter(uint8_t playerId);
-    void removeEnemy(Vector<uint32_t> position);
+    void removeEnemy(uint8_t enemyId);
     void removeItem(Vector<uint32_t> position);
 
     std::shared_ptr<Entity> getEntityAt(Vector<uint32_t> position);

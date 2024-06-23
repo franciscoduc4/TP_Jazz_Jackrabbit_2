@@ -101,6 +101,12 @@ void Character::shoot(float time) {
     std::cout << "[CHARACTER SHOOT] Character state before shooting: "
               << static_cast<int>(state->getCharacterState()) << std::endl;
 
+
+    std::cout << "[CHARACTER] Character ID: " << static_cast<int>(id) << " calling handleShooting on GameMap" << std::endl;
+
+    gameMap.handleShooting(pos.x, 10, time, dir);
+
+
     if (newState) {
         state = std::move(newState);
         std::cout << "[CHARACTER] Character state after shooting: "
@@ -138,6 +144,7 @@ void Character::handleCollision(std::shared_ptr<Enemy> enemy) {
         state = std::move(newState);
     }
 }
+
 void Character::handleObstacleCollision(std::shared_ptr<Obstacle> obstacle) {
     std::cout << "[CHARACTER] Character ID: " << static_cast<int>(id)
               << " collided with Obstacle at position: (" << obstacle->getPosition().x << ", "
@@ -149,7 +156,7 @@ void Character::handleObstacleCollision(std::shared_ptr<Obstacle> obstacle) {
     auto characterWidth = getWidth();
     auto characterHeight = getHeight();
 
-    ObstacleType obstacleType = obstacle->getObstacleType();  // Obtén el tipo específico de obstáculo
+    ObstacleType obstacleType = obstacle->getObstacleType();
 
     if (obstacleType == ObstacleType::LEFT_LADDER || obstacleType == ObstacleType::RIGHT_LADDER) {
         // Verificar colisión con el triángulo de la escalera
@@ -184,16 +191,13 @@ void Character::handleObstacleCollision(std::shared_ptr<Obstacle> obstacle) {
             // Resolver la colisión
             // Ajustar la posición del personaje para "alinearlo" con la escalera
             if (obstacleType == ObstacleType::LEFT_LADDER) {
-                // Ajuste para escalera izquierda
                 float slope = static_cast<float>(obstacleHeight) / obstacleWidth;
-                pos.y = obstaclePos.y + static_cast<uint32_t>(slope * (pos.x - obstaclePos.x));
+                pos.y = obstaclePos.y + static_cast<uint32_t>(slope * (pos.x - obstaclePos.x)) - characterHeight;
             } else {
-                // Ajuste para escalera derecha
                 float slope = static_cast<float>(obstacleHeight) / obstacleWidth;
-                pos.y = obstaclePos.y + static_cast<uint32_t>(slope * (obstaclePos.x + obstacleWidth - pos.x));
+                pos.y = obstaclePos.y + static_cast<uint32_t>(slope * (obstaclePos.x + obstacleWidth - pos.x)) - characterHeight;
             }
-
-            onGround = true;  // Asegúrate de que el personaje esté considerado en el suelo al caminar sobre la escalera
+            onGround = true;
         }
     } else {
         // Manejo de colisión regular (rectángulo)
@@ -222,10 +226,25 @@ void Character::handleObstacleCollision(std::shared_ptr<Obstacle> obstacle) {
 }
 
 
+void Character::handleLadderCollision(std::shared_ptr<Obstacle> obstacle) {
+    auto obstaclePos = obstacle->getPosition();
+    auto obstacleWidth = obstacle->getWidth();
+    auto obstacleHeight = obstacle->getHeight();
+
+    if (obstacle->getObstacleType() == ObstacleType::LEFT_LADDER) {
+        float slope = static_cast<float>(obstacleHeight) / obstacleWidth;
+        pos.y = obstaclePos.y + static_cast<uint32_t>(slope * (pos.x - obstaclePos.x));
+    } else if (obstacle->getObstacleType() == ObstacleType::RIGHT_LADDER) {
+        float slope = static_cast<float>(obstacleHeight) / obstacleWidth;
+        pos.y = obstaclePos.y + static_cast<uint32_t>(slope * (obstaclePos.x + obstacleWidth - pos.x));
+    }
+    
+    onGround = true;
+}
 
 
 bool Character::isPointInTriangle(const Vector<uint32_t>& p, const Vector<uint32_t>& v1, 
-    const Vector<uint32_t>& v2, const Vector<uint32_t>& v3){
+    const Vector<uint32_t>& v2, const Vector<uint32_t>& v3) {
     auto sign = [](const Vector<uint32_t>& p1, const Vector<uint32_t>& p2, const Vector<uint32_t>& p3) {
         return (p1.x - p3.x) * (p2.y - p3.y) - (p2.x - p3.x) * (p1.y - p3.y);
     };
@@ -238,6 +257,7 @@ bool Character::isPointInTriangle(const Vector<uint32_t>& p, const Vector<uint32
 
     return ((b1 == b2) && (b2 == b3));
 }
+
 
 
 
@@ -612,7 +632,6 @@ void Character::collectItem(const std::shared_ptr<Item>& item) {
             std::cerr << "[CHARACTER] Unknown item type collected." << std::endl;
             break;
     }
-
     // gameMap.removeItem(item->getPosition());
 }
 

@@ -52,6 +52,8 @@ public:
 
     EnemyDTO getDTO() const;
 
+    bool isDead() {return Entity::isEntityDead();}
+
     virtual uint8_t getDamage() const = 0;
 
     virtual uint32_t getWidth() const = 0;

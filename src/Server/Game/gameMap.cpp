@@ -472,13 +472,20 @@ void GameMap::handleCharacterObstacleCollision(std::shared_ptr<Character> charac
                            {obstacleWidth, obstacleHeight})) {
             std::cout << "[GAMEMAP] Character ID: " << static_cast<int>(character->getId())
                       << " collided with obstacle" << std::endl;
-            character->handleObstacleCollision(obstacle);
+
+            if (obstacle->getObstacleType() == ObstacleType::LEFT_LADDER ||
+                obstacle->getObstacleType() == ObstacleType::RIGHT_LADDER) {
+                character->handleLadderCollision(obstacle);
+            } else {
+                character->handleObstacleCollision(obstacle);
+            }
         }
     } catch (const std::exception& e) {
         std::cerr << "[GAMEMAP] Error handling character-obstacle collision: " << e.what()
                   << std::endl;
     }
 }
+
 
 void GameMap::removeCharacter(uint8_t playerId) {
     try {
@@ -501,11 +508,18 @@ void GameMap::removeItem(Vector<uint32_t> position) {
     }
 }
 
-void GameMap::removeEnemy(Vector<uint32_t> position) {
-    try {
-        mapGrid.erase(position);
-        std::cout << "[GAMEMAP] Removed enemy at position: (" << static_cast<int>(position.x)
-                  << ", " << static_cast<int>(position.y) << ")" << std::endl;
+void GameMap::removeEnemy(uint8_t enemyId) {
+    try{ 
+        auto it = enemies.find(enemyId);
+        if (it != enemies.end()) {
+            auto position = it->second->getPosition();
+            mapGrid.erase(position);
+            enemies.erase(it);
+            std::cout << "[GAMEMAP] Removed enemy with ID: " << static_cast<int>(enemyId)
+                    << " at position: (" << position.x << ", " << position.y << ")" << std::endl;
+        } else {
+            std::cerr << "[GAMEMAP] Error removing enemy: Enemy ID not found" << std::endl;
+        }
     } catch (const std::exception& e) {
         std::cerr << "[GAMEMAP] Error removing enemy: " << e.what() << std::endl;
     }
@@ -649,46 +663,45 @@ Vector<uint32_t> GameMap::calculateNewPosition(const Vector<uint32_t> position,
     }
 }
 
+void GameMap::handleShooting(uint32_t characterX, uint8_t damage, float time, Direction dir) {
+    const uint32_t shootRange = 100; // Define el alcance máximo del disparo
+    std::cout << "[GAMEMAP] Handling shooting at position: " << characterX
+              << ", damage: " << static_cast<int>(damage) << std::endl;
+    
+    std::vector<uint8_t> enemiesToRemove;
+    std::cout << "[GAMEMAP] Number of enemies: " << enemies.size() << std::endl;
 
-bool GameMap::handleMovement(Vector<uint32_t>& position, Vector<uint32_t> mapPosition,
-                             const Vector<uint32_t>& newPosition,
-                             const Vector<uint32_t>& newMapPosition) {
-    try {
-        if (newMapPosition == mapPosition) {
-            std::cout << "[GAMEMAP] Same map position" << std::endl;
-            position = newPosition;
-            return true;
+    for (const auto& enemyPair : enemies) {
+        auto enemy = enemyPair.second;
+        uint32_t enemyX = enemy->getPosition().x;
+        std::cout << "[GAMEMAP] Checking enemy at position: " << enemyX << std::endl;
+
+        bool inRange = false;
+        if (dir == Direction::RIGHT) {
+            if (enemyX >= characterX && enemyX <= characterX + shootRange) {
+                inRange = true;
+            }
+        } else if (dir == Direction::LEFT) {
+            if (enemyX <= characterX && enemyX >= characterX - shootRange) {
+                inRange = true;
+            }
         }
 
-        auto oldIt = mapGrid.find(mapPosition);
-        if (oldIt == mapGrid.end()) {
-            std::cerr << "[GAMEMAP] Old position (" << mapPosition.x << ", " << mapPosition.y
-                      << ") does not exist" << std::endl;
-            return false;
-        }
-
-        auto entity = oldIt->second;
-        if (!entity) {
-            std::cerr << "[GAMEMAP] Entity at old position (" << mapPosition.x << ", "
-                      << mapPosition.y << ") is null" << std::endl;
-            return false;
-        }
-
-        if (isFreePosition(newMapPosition)) {
-            std::cout << "[GAMEMAP] Moving object to new position" << std::endl;
-            mapGrid[newMapPosition] = entity;
-            mapGrid.erase(mapPosition);
-            std::cout << "[GAMEMAP] Object moved from (" << mapPosition.x << ", " << mapPosition.y
-                      << ") to (" << newMapPosition.x << ", " << newMapPosition.y << ")"
+        if (inRange) {
+            enemy->recvDamage(damage, time);
+            std::cout << "[GAMEMAP] Enemy ID: " << static_cast<int>(enemy->getId())
+                      << " received damage from shooting at x = " << characterX 
+                      << " in direction " << (dir == Direction::RIGHT ? "RIGHT" : "LEFT")
                       << std::endl;
-            position = newPosition;
-            return true;
-        } else {
-            std::cerr << "[GAMEMAP] New position (" << newMapPosition.x << ", " << newMapPosition.y
-                      << ") is not free" << std::endl;
+            
+            if (enemy->isDead()) {
+                enemiesToRemove.push_back(enemy->getId());
+            }
         }
-    } catch (const std::exception& e) {
-        std::cerr << "[GAMEMAP] Error handling movement: " << e.what() << std::endl;
     }
-    return false;
+
+    for (auto enemyId : enemiesToRemove) {
+        removeEnemy(enemyId);
+    }
 }
+

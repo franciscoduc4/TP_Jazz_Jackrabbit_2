@@ -33,7 +33,7 @@ void Enemy::update(std::vector<std::shared_ptr<Character>> characters, float tim
 void Enemy::recvDamage(uint8_t dmg, float time) {
     Entity::recvDamage(dmg, time);
     viewDistance = viewDistanceHit;
-    if (isDead) {
+    if (isDead()) {
         die(time);
         return;
     } else {
@@ -61,7 +61,6 @@ void Enemy::attack(std::vector<std::shared_ptr<Character>> characters, float tim
 
 void Enemy::die(float time) {
     Entity::die(time);
-    gameMap.removeEnemy(getMapPosition(movesPerCell));
     std::unique_ptr<EnemyState> newState = state->die(time);
     if (newState != nullptr) {
         state = std::move(newState);

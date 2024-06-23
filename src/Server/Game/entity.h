@@ -46,6 +46,7 @@ public:
     void setDirection(Direction newDir);
 
     bool isAlive() const;
+    bool isEntityDead() { return health <= 0;}
 
     uint8_t getDistanceTo(std::shared_ptr<Entity> other) const;
 

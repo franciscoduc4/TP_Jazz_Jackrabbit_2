@@ -4,7 +4,7 @@
 #include <cstdint>
 #include <memory>
 #include <vector>
-
+#include "bullet.h"
 #include "../../../Common/Config/ServerConfig.h"
 #include "../../../Common/DTO/player.h"
 #include "../../../Common/Types/character.h"
@@ -84,6 +84,7 @@ public:
     void update(double deltaTime);
     void handleCollision(std::shared_ptr<Enemy> enemy);
     void handleObstacleCollision(std::shared_ptr<Obstacle> obstacle);
+    void handleLadderCollision(std::shared_ptr<Obstacle> obstacle);
 
     void moveRight(double time);
     void sprintRight(float time);

@@ -44,6 +44,8 @@ public:
     float getFireRate() override;
 
     bool cooldown(float time) override;
+
+    uint32_t getDamage() {return 20;}
 };
 
 #endif  // RFMISSILE_H
