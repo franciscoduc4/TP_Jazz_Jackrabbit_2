@@ -1,0 +1,29 @@
+@startuml
+
+start
+
+:Welcome;
+
+:Lobby;
+
+if (Join or Create?) then (yes)
+    :Map Selection;
+    :Create Game;
+else (no)
+endif
+
+:Character Selection;
+
+if (is Join Game) then (yes)
+    :Game List;
+else (no)
+endif
+
+if (Ready to Start?) then (no)
+    :Waiting Room;
+else (yes)
+endif
+
+stop
+
+@enduml
