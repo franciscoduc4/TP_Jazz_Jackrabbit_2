@@ -852,6 +852,18 @@ int ClientConfig::getWidthFont() { return getInstance()->root["INTERFACE_WIDTH"]
 
 int ClientConfig::getHeightFont() { return getInstance()->root["INTERFACE_HEIGHT"].as<int>(); }
 
+//Interface heart
+std::vector<std::vector<int>> ClientConfig::getInterfaceHeartSprites() {
+    YAML::Node interfaceHeartSpritesNode = getInstance()->root["INTERFACE_HEART"];
+    std::vector<std::vector<int>> interfaceHeartSprites;
+    for (YAML::const_iterator it = interfaceHeartSpritesNode.begin();
+        it != interfaceHeartSpritesNode.end();
+        ++it) {
+        interfaceHeartSprites.push_back(it->as<std::vector<int>>());
+    }
+    return interfaceHeartSprites;
+}
+
 
 // Sprites
 std::vector<std::vector<std::pair<int, int>>> ClientConfig::getJazzSelectNameSprites() {

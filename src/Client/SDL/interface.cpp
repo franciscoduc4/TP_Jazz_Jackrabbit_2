@@ -17,6 +17,11 @@ Interface::Interface() {
     this->draw_height = ClientConfig::getHeightFont();
     this->counts = 0;
 
+    std::vector<std::vector<int>> heart_sprites = ClientConfig::getInterfaceHeartSprites();
+    for (int i = 0; i < heart_sprites.size(); i++) {
+        this->hearts.push_back(RectangularSprite(heart_sprites[i]));
+    }
+
     std::vector<std::vector<int>> jazz_icon_sprites = ClientConfig::getJazzIconSprites();
     for (int i = 0; i < jazz_icon_sprites.size(); i++) {
         this->sprites[CharacterType::JAZZ].push_back(RectangularSprite(jazz_icon_sprites[i]));
@@ -59,17 +64,21 @@ std::vector<RectangularSprite>::iterator Interface::icon_coords(CharacterType ty
 
 
 
-void Interface::draw_interface(SDL2pp::Window& window, SDL2pp::Renderer& renderer, SDL2pp::Texture& iconTexture, CharacterType type, std::unique_ptr<SDL2pp::Texture>& font, int points, int lives) {
+void Interface::draw_interface(SDL2pp::Window& window, SDL2pp::Renderer& renderer, SDL2pp::Texture& iconTexture, std::unique_ptr<SDL2pp::Texture>& heartTexture, CharacterType type, std::unique_ptr<SDL2pp::Texture>& font, int points, int lives, int actual_health) {
     std::vector<RectangularSprite>::iterator it = icon_coords(type);
     std::string p = std::to_string(points);
     std::string l = std::to_string(lives);
+    std::string h = std::to_string(actual_health);
     int x = 0;
     int y = 0;
     this->draw_width = window.GetWidth() / 40;
     this->draw_height = window.GetHeight() / 40;
     int index_value_x = 10;
+
+    //DRAW ICON
     renderer.Copy(iconTexture, SDL2pp::Rect(it->getX(), it->getY(), it->getWidth(), it->getHeight()), SDL2pp::Rect(x, y, this->draw_width * 2, this->draw_height * 2));
     x += this->draw_width * 2;
+    //DRAW CANT LIVES
     renderer.Copy(*font, SDL2pp::Rect(this->numbers[index_value_x].getX(), this->numbers[index_value_x].getY(), this->numbers[index_value_x].getWidth(), this->numbers[index_value_x].getHeight()), SDL2pp::Rect(x, y, this->draw_width * 2, this->draw_height * 2));
     x += this->draw_width * 2;
     std::string aux;
@@ -79,12 +88,33 @@ void Interface::draw_interface(SDL2pp::Window& window, SDL2pp::Renderer& rendere
         x += this->draw_width * 2;
     }
     x += this->draw_width * 4;
-
+    //DRAW POINTS
     for (int i = 0; i < p.size(); i++) {
         aux = p[i];
         renderer.Copy(*font, SDL2pp::Rect(this->numbers[std::stoi(aux)].getX(), this->numbers[std::stoi(aux)].getY(), this->numbers[std::stoi(aux)].getWidth(), this->numbers[std::stoi(aux)].getHeight()), SDL2pp::Rect(x, y, this->draw_width, this->draw_height));
         x += this->draw_width;
     }
+    //DRAW HEALTH    
+    this->draw_height = window.GetHeight() / 30;
+    x = 0;
+    y = window.GetHeight() - this->draw_height;
+    for (int i = 0; i < h.size(); i++) {
+        aux = h[i];
+        renderer.Copy(*font, SDL2pp::Rect(this->numbers[std::stoi(aux)].getX(), this->numbers[std::stoi(aux)].getY(), this->numbers[std::stoi(aux)].getWidth(), this->numbers[std::stoi(aux)].getHeight()), SDL2pp::Rect(x, y, this->draw_width, this->draw_height));
+        x += this->draw_width;
+    }
+    int cant_hearts = actual_health / 10;
+    int index_hearts = 0;
+    for (int i = 0; i < cant_hearts; i++) {
+        renderer.Copy(*heartTexture, SDL2pp::Rect(this->hearts[index_hearts].getX(), this->hearts[index_hearts].getY(), this->hearts[index_hearts].getWidth(), this->hearts[index_hearts].getHeight()), SDL2pp::Rect(x, y, this->draw_width, this->draw_height));
+        if (index_hearts == 0) {
+            index_hearts++;
+        } else {
+            index_hearts--;
+        }
+        x += this->draw_width;
+    }
+    
 }
 
 

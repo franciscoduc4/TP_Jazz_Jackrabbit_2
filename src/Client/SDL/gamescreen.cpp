@@ -220,7 +220,7 @@ void GameScreen::run() {
         }
 
         this->stats.draw_interface(window, renderer, *pjs_textures[mainPlayer->getCharacterType()/*players[0].getItemType()*/],
-                mainPlayer->getCharacterType(), font, 1000/*getPoints()*/, 3/*getLives()*/);
+                items, mainPlayer->getCharacterType(), font, 1000/*getPoints()*/, 3/*getLives()*/, mainPlayer->getHealth());
 
         x_screen = 0;
         y_screen = 0;
