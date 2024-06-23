@@ -222,7 +222,7 @@ std::list<RectangularSprite>::iterator Player::img_coords(CharacterType characte
 	return it;
 }
 
-void Player::draw_players(SDL2pp::Window& window, SDL2pp::Renderer& renderer, std::map<CharacterType, std::unique_ptr<SDL2pp::Texture>>& pjs_textures, std::vector<PlayerDTO>& players, int dir_x_screen, int dir_y_screen, PlayerDTO& mainPlayer) {
+void Player::draw_players(SDL2pp::Window& window, SDL2pp::Renderer& renderer, std::map<CharacterType, std::unique_ptr<SDL2pp::Texture>>& pjs_textures, std::vector<PlayerDTO>& players, int dir_x_screen, int dir_y_screen, PlayerDTO& mainPlayer, int pj_direction) {
 	int i = 0;
 	uint32_t main_pj_x = mainPlayer.getX();
 	uint32_t main_pj_y = mainPlayer.getY();
@@ -270,7 +270,7 @@ void Player::draw_players(SDL2pp::Window& window, SDL2pp::Renderer& renderer, st
 				y = dir_y_screen + distance_main_secondary_y;
 			}
 		}
-
+		flip = (pj_direction < 0) ? 1 : 0;
 		if (abs(distance_main_secondary_x) <= window.GetWidth() && abs(distance_main_secondary_y) <= window.GetHeight()) {
 			renderer.Copy(*pjs_textures[p.getCharacterType()], SDL2pp::Rect(it->getX(), it->getY(), it->getWidth(), it->getHeight()),
                       SDL2pp::Rect(x, y, this->width, this->height), 0.0, SDL2pp::NullOpt, flip);
