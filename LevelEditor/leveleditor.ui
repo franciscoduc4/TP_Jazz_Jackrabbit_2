@@ -20,59 +20,48 @@
       <x>520</x>
       <y>80</y>
       <width>256</width>
-      <height>351</height>
+      <height>431</height>
      </rect>
+    </property>
+    <property name="dragDropMode">
+     <enum>QAbstractItemView::DragOnly</enum>
     </property>
     <column>
      <property name="text">
-      <string notr="true">1</string>
+      <string notr="true">Elements</string>
      </property>
     </column>
-   </widget>
-   <widget class="QPushButton" name="btnAdd">
-    <property name="geometry">
-     <rect>
-      <x>600</x>
-      <y>440</y>
-      <width>100</width>
-      <height>32</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Add Element</string>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="btnDel">
-    <property name="geometry">
-     <rect>
-      <x>600</x>
-      <y>480</y>
-      <width>100</width>
-      <height>32</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Delete Element</string>
-    </property>
    </widget>
    <widget class="QLineEdit" name="mapName">
     <property name="geometry">
      <rect>
-      <x>210</x>
-      <y>30</y>
-      <width>381</width>
-      <height>30</height>
+      <x>200</x>
+      <y>10</y>
+      <width>441</width>
+      <height>51</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Jazz Jackrabbit 2</family>
+      <pointsize>20</pointsize>
+     </font>
     </property>
    </widget>
    <widget class="QLabel" name="labelMapName">
     <property name="geometry">
      <rect>
-      <x>80</x>
-      <y>29</y>
-      <width>111</width>
+      <x>30</x>
+      <y>20</y>
+      <width>161</width>
       <height>31</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Jazz Jackrabbit 2</family>
+      <pointsize>20</pointsize>
+     </font>
     </property>
     <property name="text">
      <string>Map Name: </string>
@@ -87,23 +76,44 @@
       <height>471</height>
      </rect>
     </property>
-    <layout class="QGridLayout" name="gridLayout">
-     <property name="leftMargin">
-      <number>25</number>
-     </property>
-    </layout>
+    <layout class="QGridLayout" name="gridLayout"/>
    </widget>
    <widget class="QPushButton" name="btnSave">
     <property name="geometry">
      <rect>
-      <x>600</x>
+      <x>520</x>
       <y>520</y>
       <width>100</width>
       <height>32</height>
      </rect>
     </property>
+    <property name="font">
+     <font>
+      <family>Jazz Jackrabbit 2</family>
+      <pointsize>14</pointsize>
+     </font>
+    </property>
     <property name="text">
      <string>Save Map</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="btnClear">
+    <property name="geometry">
+     <rect>
+      <x>670</x>
+      <y>520</y>
+      <width>100</width>
+      <height>32</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Jazz Jackrabbit 2</family>
+      <pointsize>14</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>Clear Map</string>
     </property>
    </widget>
   </widget>

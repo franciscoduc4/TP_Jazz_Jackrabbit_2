@@ -35,6 +35,7 @@ private:
     static std::unique_ptr<CommandDTO> deserializeGamesList(uint8_t& playerId);
 
     // Game
+    std::unique_ptr<CommandDTO> deserializeIdle(uint8_t& playerId);
     std::unique_ptr<GameCommandDTO> deserializeMove(uint8_t& playerId);
     std::unique_ptr<StartGameDTO> deserializeStart(uint8_t& playerId);
     std::unique_ptr<CommandDTO> deserializeShooting(uint8_t& playerId);

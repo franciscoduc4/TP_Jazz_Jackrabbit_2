@@ -6,6 +6,7 @@
 #include "jump.h"
 #include "move.h"
 #include "shoot.h"
+#include "idle.h"
 #include "switchWeapon.h"
 #include "move.h"
 
@@ -20,6 +21,10 @@ std::unique_ptr<GameCommandHandler> GameCommandHandler::createHandler(
         case Command::SHOOT: {
             return std::make_unique<ShootHandler>(std::unique_ptr<CommandDTO>(command.release()));
         }
+        case Command::IDLE: {
+            return std::make_unique<IdleHandler>(std::unique_ptr<CommandDTO>(command.release()));
+        }
+
         case Command::JUMP: {
             return std::make_unique<JumpHandler>(std::unique_ptr<CommandDTO>(command.release()));
         }

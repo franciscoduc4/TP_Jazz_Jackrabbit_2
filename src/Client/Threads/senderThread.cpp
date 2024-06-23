@@ -36,6 +36,7 @@ void SenderThread::sendCommandDTO(const CommandDTO& cmd) {
     std::cout << "[CLIENT SENDER] Getting command" << std::endl;
     this->socket->sendall(&command, sizeof(char), &this->closed);
     std::cout << "[CLIENT SENDER] Sent command" << std::endl;
+    std::cout << "EL VALOR DE COMMAND ES " << static_cast<int>(command) << '\n';
     this->was_closed.store(closed);
     if (this->was_closed.load()) {
         std::cout << "[CLIENT SENDER] Socket was closed, exiting sendCommandDTO" << std::endl;

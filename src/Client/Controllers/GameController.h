@@ -19,6 +19,8 @@ public:
     GameController(Serializer& serializer, Deserializer& deserializer,
                    std::shared_ptr<Queue<std::unique_ptr<DTO>>>& gameQueue);
 
+    void idle_msg(uint8_t playerId);
+
     void sendMsg(uint8_t playerId, Command& cmd, std::vector<uint8_t>& parameters);
 
     void move_msg(uint8_t playerId, std::vector<uint8_t>& parameters);

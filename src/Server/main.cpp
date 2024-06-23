@@ -32,5 +32,8 @@ int main(int argc, char** argv) {
         std::cerr << "Exception caught: " << e.what() << std::endl;
         return FAIL;
     }
+
+    ServerConfig::deleteInstance();
+
     return SUCCESS;
 }

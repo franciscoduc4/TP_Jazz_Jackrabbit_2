@@ -256,18 +256,15 @@ void GameMap::addEnemy(EnemyType type, Vector<uint32_t> position) {
     }
 }
 
-// bool GameMap::isValidMapPosition(Vector<uint32_t> mapPosition) {
-//     return mapPosition.x >= 0 && mapPosition.x <= size.x && mapPosition.y >= 0 &&
-//            mapPosition.y <= size.y;
-// }
-
 bool GameMap::isValidMapPosition(Vector<uint32_t> mapPosition) {
-    return mapPosition.x < size.x && mapPosition.y < size.y;
+    return mapPosition.x >= 0 && mapPosition.x <= size.x && mapPosition.y >= 0 &&
+            mapPosition.y <= size.y;
 }
 
+
 bool GameMap::isValidPosition(Vector<uint32_t> position) {
-    return position.x >= 0 && position.x <= size.x * movesPerCell && position.y >= 0 &&
-           position.y <= size.y * movesPerCell;
+    return position.x >= 0 && position.x < size.x * movesPerCell && position.y >= 0 &&
+           position.y < size.y * movesPerCell;
 }
 
 Vector<uint32_t> GameMap::getAvailablePosition() {

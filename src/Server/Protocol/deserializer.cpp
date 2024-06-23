@@ -25,6 +25,8 @@ std::unique_ptr<CommandDTO> Deserializer::getCommand(uint8_t& playerId) {
             return deserializeGamesList(playerId);
         case Command::START_GAME:
             return deserializeStart(playerId);
+        case Command::IDLE:
+            return deserializeIdle(playerId);
         case Command::MOVE:
             return deserializeMove(playerId);
         case Command::SWITCH_WEAPON:
@@ -136,11 +138,17 @@ std::unique_ptr<CommandDTO> Deserializer::deserializeGamesList(uint8_t& playerId
     return std::make_unique<GamesListDTO>();
 }
 
+std::unique_ptr<CommandDTO> Deserializer::deserializeIdle(uint8_t& playerId) {
+    std::cout << "[SERVER DESERIALIZER] Deserialize Idle" << std::endl;
+    return std::make_unique<GameCommandDTO>(playerId, Direction::UP, Command::IDLE);
+
+}
+
+
 std::unique_ptr<GameCommandDTO> Deserializer::deserializeMove(uint8_t& playerId) {
     char directionChar;
     if (!this->receive_char(directionChar)) return nullptr;
-    auto direction = static_cast<Direction>(directionChar);
-    socket->recvall(&direction, sizeof(char), &wasClosed);
+    Direction direction = static_cast<Direction>(directionChar);
     return std::make_unique<GameCommandDTO>(playerId, direction, Command::MOVE);
 }
 

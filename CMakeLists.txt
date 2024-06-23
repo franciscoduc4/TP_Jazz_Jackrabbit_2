@@ -28,7 +28,7 @@ option(TESTING "Build internal testing suite" OFF)
 option(INSTALL "Apply install settings" OFF)
 option(SERVER "Build server" ON)
 option(CLIENT "Build client" ON)
-option(LEVEL_EDITOR "Build Level Editor" OFF)
+option(LEVEL_EDITOR "Build Level Editor" ON)
 
 # ------------------------------------------------------------------------------------
 # Configuración de instalación
@@ -114,8 +114,7 @@ if(CLIENT)
     qt5_wrap_ui(UIS_HEADERS ${UI_FILES})
     qt5_add_resources(RESOURCES ${PROJECT_SOURCE_DIR}/src/Client/resources.qrc)
 
-    add_executable(jazzclient ${CLIENT_SOURCES} ${UIS_HEADERS} ${RESOURCES}
-            src/Client/Protocol/protocol.h)
+    add_executable(jazzclient ${CLIENT_SOURCES} ${UIS_HEADERS} ${RESOURCES})
     target_link_libraries(jazzclient common Qt5::Widgets Qt5::Core SDL2 SDL2pp SDL2_image SDL2_mixer yaml-cpp fmt::fmt -pthread)
     target_include_directories(jazzclient PUBLIC ${PROJECT_SOURCE_DIR}/src/Common)
     set_target_properties(jazzclient PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
@@ -134,14 +133,15 @@ if (LEVEL_EDITOR)
             ${PROJECT_SOURCE_DIR}/LevelEditor/*.h
     )
 
-    set(UI_FILES
+    set(UI_FILES_2
             ${PROJECT_SOURCE_DIR}/LevelEditor/leveleditor.ui
     )
 
-    qt5_wrap_ui(UIS_HEADERS ${UI_FILES})
-    qt5_add_resources(RESOURCES ${PROJECT_SOURCE_DIR}/LevelEditor/resources.qrc)
+    qt5_wrap_ui(UIS_HEADERS ${UI_FILES_2})
+    qt5_add_resources(RESOURCES_LE ${PROJECT_SOURCE_DIR}/LevelEditor/resourcesLE.qrc)
 
-    add_executable(leveleditor ${LEVELEDITOR_SOURCES} ${UIS_HEADERS} ${RESOURCES})
+    add_executable(leveleditor ${LEVELEDITOR_SOURCES} ${UIS_HEADERS} ${RESOURCES_LE})
+    target_include_directories(leveleditor PRIVATE ${CMAKE_CURRENT_BINARY_DIR})
     target_link_libraries(leveleditor common Qt5::Widgets Qt5::Core yaml-cpp fmt::fmt -pthread)
     target_include_directories(leveleditor PUBLIC ${PROJECT_SOURCE_DIR}/src/Common)
     set_target_properties(leveleditor PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})

@@ -125,13 +125,13 @@ void Enemy::draw_enemy(SDL2pp::Window& window, SDL2pp::Renderer& renderer, std::
 	int index_width = 0;
 	int index_height = 1;
 	int mov_type = 0;
-    int x; 
-    int y;
-    int distance_main_enemy_x;
-    int distance_main_enemy_y;
+    uint32_t x; 
+    uint32_t y;
+    int distance_main_enemy_x = 0;
+    int distance_main_enemy_y = 0;
     for (auto e : enemies) {
         EnemyStateEntity mov_type = e.getState();
-		int enemyId = e.getEnemyId();
+		uint32_t enemyId = e.getEnemyId();
         if (!this->init) {
             this->last_move[enemyId] = mov_type;
 			this->counts[enemyId][EnemyStateEntity::ENEMY_WALKING] = 0;
@@ -147,13 +147,14 @@ void Enemy::draw_enemy(SDL2pp::Window& window, SDL2pp::Renderer& renderer, std::
             x = dir_x_screen + distance_main_enemy_x;
         }
         if (dir_y_screen != 0) {
-            distance_main_enemy_y = y - player.getX();
+            distance_main_enemy_y = y - player.getY();
             y = dir_y_screen + distance_main_enemy_y;
         }
-        renderer.Copy(*textures_enemies[e.getEnemyType()], SDL2pp::Rect(it->getX(), it->getY(), it->getWidth(), it->getHeight()),
-                  SDL2pp::Rect(x, y, this->width_height[e.getEnemyType()][index_width], this->width_height[e.getEnemyType()][index_height]), 0.0,
-                  SDL2pp::NullOpt, this->flip);
 
+        if (abs(distance_main_enemy_x)  <= window.GetWidth() && abs(distance_main_enemy_y) <= window.GetHeight()) {
+           renderer.Copy(*textures_enemies[e.getEnemyType()], SDL2pp::Rect(it->getX(), it->getY(), it->getWidth(), it->getHeight()),
+                  SDL2pp::Rect(x, y, this->width_height[e.getEnemyType()][index_width], this->width_height[e.getEnemyType()][index_height]), 0.0, SDL2pp::NullOpt, this->flip);
+        }
 
     }
     this->init = true;

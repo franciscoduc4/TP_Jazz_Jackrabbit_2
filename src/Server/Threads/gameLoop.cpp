@@ -7,7 +7,7 @@
 GameLoopThread::GameLoopThread(std::shared_ptr<Queue<std::unique_ptr<CommandDTO>>> recvQueue,
                                QueueMonitor& queueMonitor, GameMap& gameMap,
                                uint8_t gameId):
-        frameRate(1),  // 1 frame per 16 ms === 60 fps
+        frameRate(0.016),  // 1 frame per 16 ms === 60 fps
         keepRunning(false),
         commandsToProcess(1),
         recvQueue(recvQueue),
@@ -84,7 +84,7 @@ void GameLoopThread::processCommands(double deltaTime) {
                     std::cerr << "[GAME LOOP] Failed to create handler" << std::endl;
                     continue;
                 }
-
+                
                 std::cout << "[GAME LOOP] Executing handler" << std::endl;
                 handler->execute(gameMap, keepRunning, deltaTime);
 

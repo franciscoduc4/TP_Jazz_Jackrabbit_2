@@ -9,6 +9,9 @@ GameController::GameController(Serializer& serializer, Deserializer& deserialize
 
 void GameController::sendMsg(uint8_t playerId, Command& cmd, std::vector<uint8_t>& parameters) {
     switch (cmd) {
+        case Command::IDLE:
+            idle_msg(playerId);
+            break;
         case Command::MOVE:
             move_msg(playerId, parameters);
             break;
@@ -28,6 +31,11 @@ void GameController::move_msg(uint8_t playerId, std::vector<uint8_t>& parameters
 void GameController::shoot_msg(uint8_t playerId) {
 	std::unique_ptr<CommandDTO> shoot = std::make_unique<CommandDTO>(playerId, Command::SHOOT);
 	this->serializer.sendMsg(shoot);
+}
+
+void GameController::idle_msg(uint8_t playerId) {
+	std::unique_ptr<CommandDTO> idle = std::make_unique<GameCommandDTO>(playerId, Direction::UP, Command::IDLE);
+	this->serializer.sendMsg(idle);
 }
 
 std::unique_ptr<DTO> GameController::getServerMsg() {
