@@ -863,6 +863,17 @@ std::vector<std::vector<int>> ClientConfig::getInterfaceHeartSprites() {
     }
     return interfaceHeartSprites;
 }
+std::vector<std::vector<int>> ClientConfig::getInterfaceColors() {
+    YAML::Node interfaceColorsNode = getInstance()->root["INTERFACE_COLORS"];
+    std::vector<std::vector<int>> interfaceColors;
+    for (YAML::const_iterator it = interfaceColorsNode.begin();
+        it != interfaceColorsNode.end();
+        ++it) {
+        interfaceColors.push_back(it->as<std::vector<int>>());
+    }
+    return interfaceColors;
+}
+
 
 
 // Sprites

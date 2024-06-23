@@ -218,9 +218,9 @@ void GameScreen::run() {
         if (tiles.size() > 0) {
             this->level.draw_tiles(window, renderer, tiles_textures, tiles, *mainPlayer, x_screen, y_screen);
         }
-
-        this->stats.draw_interface(window, renderer, *pjs_textures[mainPlayer->getCharacterType()/*players[0].getItemType()*/],
-                items, mainPlayer->getCharacterType(), font, 1000/*getPoints()*/, 3/*getLives()*/, mainPlayer->getHealth());
+        //this->stats.draw_interface(window, renderer, *pjs_textures[mainPlayer->getCharacterType()/*players[0].getItemType()*/],
+        //         items, mainPlayer->getCharacterType(), font, 1000/*getPoints()*/, 3/*getLives()*/, mainPlayer->getHealth());
+        this->stats.draw_interface(window, renderer, *pjs_textures[mainPlayer->getCharacterType()], items, font, players, *mainPlayer, 3);
 
         x_screen = 0;
         y_screen = 0;

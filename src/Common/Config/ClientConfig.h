@@ -151,8 +151,8 @@ public:
     static std::vector<std::vector<int>> getInterfaceFontSprites();
     static int getWidthFont();
     static int getHeightFont();
-    //Interface heart
     static std::vector<std::vector<int>> getInterfaceHeartSprites();
+    static std::vector<std::vector<int>> getInterfaceColors();
 
     // Sprites
     static std::vector<std::vector<std::pair<int, int>>> getJazzSelectNameSprites();
