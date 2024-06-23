@@ -48,7 +48,8 @@ void GameMap::loadMap(uint8_t mapId) {
                     ObstacleType type = getObstacleType(obstacleType);
                     addObstacle(type, position, width, height);
                     std::cout << "[GAMEMAP] Obstacle start position set for obstacleType: "
-                              << obstacleType << " at (" << position.x << ", " << position.y << "), width: " << width << ", height: " << height << std::endl;
+                              << obstacleType << " at (" << position.x << ", " << position.y
+                              << "), width: " << width << ", height: " << height << std::endl;
                 }
             }
         }
@@ -59,7 +60,8 @@ void GameMap::loadMap(uint8_t mapId) {
                 std::cout << "[GAMEMAP] Enemy type: " << enemyType << std::endl;
                 for (const auto& pos: enemy.second) {
                     if (pos.size() != 4) {
-                        throw std::runtime_error("Invalid enemy position configuration in YAML file");
+                        throw std::runtime_error(
+                                "Invalid enemy position configuration in YAML file");
                     }
                     Vector<uint32_t> position = {static_cast<uint32_t>(pos[0].as<int>()),
                                                  static_cast<uint32_t>(pos[1].as<int>())};
@@ -68,7 +70,8 @@ void GameMap::loadMap(uint8_t mapId) {
                     EnemyType type = getEnemyType(enemyType);
                     addEnemy(type, position, width, height);
                     std::cout << "[GAMEMAP] Enemy position: (" << static_cast<int>(position.x)
-                              << ", " << static_cast<int>(position.y) << "), width: " << width << ", height: " << height << std::endl;
+                              << ", " << static_cast<int>(position.y) << "), width: " << width
+                              << ", height: " << height << std::endl;
                 }
             }
         }
@@ -84,7 +87,8 @@ void GameMap::loadMap(uint8_t mapId) {
                     uint32_t height = static_cast<uint32_t>(pos[3].as<int>());
                     addItem(itemType, position, width, height);
                     std::cout << "[GAMEMAP] Item start position set for itemType: " << itemTypeStr
-                              << " at (" << position.x << ", " << position.y << "), width: " << width << ", height: " << height << std::endl;
+                              << " at (" << position.x << ", " << position.y
+                              << "), width: " << width << ", height: " << height << std::endl;
                 }
             }
         }
@@ -101,7 +105,8 @@ void GameMap::loadMap(uint8_t mapId) {
                 initialPositions[type] = position;
                 initialSizes[type] = {width, height};  // Guardar ancho y alto de los personajes
                 std::cout << "[GAMEMAP] Initial position for character " << playerType << ": ("
-                          << position.x << ", " << position.y << "), width: " << width << ", height: " << height << std::endl;
+                          << position.x << ", " << position.y << "), width: " << width
+                          << ", height: " << height << std::endl;
             }
         }
 
@@ -276,7 +281,7 @@ void GameMap::addCharacter(uint8_t playerId, CharacterType type) {
         }
 
         Vector<uint32_t> initPosition = it->second;
-        Vector<uint32_t> initSize = initialSizes[type]; // Obtener el tamaño inicial del personaje
+        Vector<uint32_t> initSize = initialSizes[type];  // Obtener el tamaño inicial del personaje
         std::cout << "[ADD CHARACTER] Initial position for character: ("
                   << static_cast<int>(initPosition.x) << ", " << static_cast<int>(initPosition.y)
                   << "), width: " << initSize.x << ", height: " << initSize.y << std::endl;
@@ -286,7 +291,8 @@ void GameMap::addCharacter(uint8_t playerId, CharacterType type) {
             return;
         }
 
-        auto character = entityFactory.createCharacter(playerId, type, initPosition, initSize.x, initSize.y);
+        auto character =
+                entityFactory.createCharacter(playerId, type, initPosition, initSize.x, initSize.y);
         if (!character) {
             std::cerr << "[GAMEMAP] Failed to create character" << std::endl;
             return;
@@ -311,7 +317,8 @@ void GameMap::addEnemy(EnemyType type, Vector<uint32_t> position, uint32_t width
         }
         auto enemy = entityFactory.createEnemy(entityCount, type, position, width, height);
         std::cout << "[GAMEMAP] Adding enemy at position: (" << static_cast<int>(position.x) << ", "
-                  << static_cast<int>(position.y) << "), width: " << width << ", height: " << height << std::endl;
+                  << static_cast<int>(position.y) << "), width: " << width << ", height: " << height
+                  << std::endl;
         entityCount++;
         addEntityToMap(enemy, position);
     } catch (const std::exception& e) {
@@ -319,14 +326,16 @@ void GameMap::addEnemy(EnemyType type, Vector<uint32_t> position, uint32_t width
     }
 }
 
-void GameMap::addObstacle(ObstacleType type, Vector<uint32_t> position, uint32_t width, uint32_t height) {
+void GameMap::addObstacle(ObstacleType type, Vector<uint32_t> position, uint32_t width,
+                          uint32_t height) {
     try {
         if (!isValidMapPosition(position)) {
             throw std::runtime_error("Invalid position for obstacle");
         }
         auto obstacle = entityFactory.createObstacle(type, position, width, height);
         std::cout << "[GAMEMAP] Adding obstacle at position: (" << static_cast<int>(position.x)
-                  << ", " << static_cast<int>(position.y) << "), width: " << width << ", height: " << height << std::endl;
+                  << ", " << static_cast<int>(position.y) << "), width: " << width
+                  << ", height: " << height << std::endl;
 
         addEntityToMap(obstacle, position);
         entityCount++;
@@ -342,7 +351,8 @@ void GameMap::addItem(ItemType type, Vector<uint32_t> position, uint32_t width, 
         }
         auto item = entityFactory.createItem(type, position, width, height);
         std::cout << "[GAMEMAP] Adding item at position: (" << static_cast<int>(position.x) << ", "
-                  << static_cast<int>(position.y) << "), width: " << width << ", height: " << height << std::endl;
+                  << static_cast<int>(position.y) << "), width: " << width << ", height: " << height
+                  << std::endl;
         addEntityToMap(item, position);
         entityCount++;
     } catch (const std::exception& e) {
@@ -381,27 +391,24 @@ void GameMap::update(float time) {
             auto character = characterPair.second;
             character->update(time);
 
-            // Verificar colisiones con enemigos
-            for (const auto& enemyPair: mapGrid) {
-                if (enemyPair.second->getType() == EntityType::ENEMY) {
-                    handleCharacterEnemyCollision(
-                            character, std::dynamic_pointer_cast<Enemy>(enemyPair.second));
-                }
-            }
-
-            // // Verificar colisiones con obstáculos
-            for (const auto& obstaclePair : mapGrid) {
-                if (obstaclePair.second->getType() == EntityType::OBSTACLE) {
-                    handleCharacterObstacleCollision(character,
-                    std::dynamic_pointer_cast<Obstacle>(obstaclePair.second));
-                }
-            }
-
-            // Verificar colisiones con ítems
-            for (const auto& itemPair: mapGrid) {
-                if (itemPair.second->getType() == EntityType::ITEM) {
-                    handleCharacterItemCollision(character,
-                                                 std::dynamic_pointer_cast<Item>(itemPair.second));
+            // Verificar colisiones con entidades
+            for (const auto& entityPair: mapGrid) {
+                switch (entityPair.second->getType()) {
+                    case EntityType::ENEMY:
+                        handleCharacterEnemyCollision(
+                                character, std::dynamic_pointer_cast<Enemy>(entityPair.second));
+                        break;
+                    case EntityType::OBSTACLE:
+                        handleCharacterObstacleCollision(
+                                character, std::dynamic_pointer_cast<Obstacle>(entityPair.second));
+                        break;
+                    case EntityType::ITEM:
+                        handleCharacterItemCollision(
+                                character, std::dynamic_pointer_cast<Item>(entityPair.second));
+                        break;
+                    default:
+                        character->setOnGround(false);
+                        break;
                 }
             }
         }
@@ -410,11 +417,11 @@ void GameMap::update(float time) {
     }
 }
 
-bool GameMap::checkCollision(const Vector<uint32_t>& pos1, const Vector<uint32_t>& size1, const Vector<uint32_t>& pos2, const Vector<uint32_t>& size2) {
-    return (pos1.x < pos2.x + size2.x && pos1.x + size1.x > pos2.x &&
-            pos1.y < pos2.y + size2.y && pos1.y + size1.y > pos2.y);
+bool GameMap::checkCollision(const Vector<uint32_t>& pos1, const Vector<uint32_t>& size1,
+                             const Vector<uint32_t>& pos2, const Vector<uint32_t>& size2) {
+    return (pos1.x + size1.x >= pos2.x && pos1.x <= pos2.x + size2.x &&
+            pos1.y + size1.y >= pos2.y && pos1.y <= pos2.y + size2.y);
 }
-
 
 
 void GameMap::handleCharacterItemCollision(std::shared_ptr<Character> character,
@@ -437,9 +444,9 @@ void GameMap::handleCharacterEnemyCollision(std::shared_ptr<Character> character
     try {
         if (character->getPosition() == enemy->getPosition()) {
             uint8_t damage = enemy->getDamage();  // Suponiendo que Enemy tiene un método
-                                                       // getDamageValue()
-            character->recvDamage(damage, 0);          // Llamar al método recvDamage del personaje
-            character->handleCollision(enemy);  // Llamar al método handleCollision del personaje
+                                                  // getDamageValue()
+            character->recvDamage(damage, 0);     // Llamar al método recvDamage del personaje
+            character->handleCollision(enemy);    // Llamar al método handleCollision del personaje
             std::cout << "[GAMEMAP] Character ID: " << static_cast<int>(character->getId())
                       << " received damage from enemy. Damage: " << static_cast<int>(damage)
                       << std::endl;
@@ -453,10 +460,19 @@ void GameMap::handleCharacterEnemyCollision(std::shared_ptr<Character> character
 void GameMap::handleCharacterObstacleCollision(std::shared_ptr<Character> character,
                                                std::shared_ptr<Obstacle> obstacle) {
     try {
-        if (character->getPosition() == obstacle->getPosition()) {
-            character->handleObstacleCollision(obstacle);
+        auto characterPos = character->getPosition();
+        auto characterWidth = character->getWidth();
+        auto characterHeight = character->getHeight();
+
+        auto obstaclePos = obstacle->getPosition();
+        auto obstacleWidth = obstacle->getWidth();
+        auto obstacleHeight = obstacle->getHeight();
+
+        if (checkCollision(characterPos, {characterWidth, characterHeight}, obstaclePos,
+                           {obstacleWidth, obstacleHeight})) {
             std::cout << "[GAMEMAP] Character ID: " << static_cast<int>(character->getId())
                       << " collided with obstacle" << std::endl;
+            character->handleObstacleCollision(obstacle);
         }
     } catch (const std::exception& e) {
         std::cerr << "[GAMEMAP] Error handling character-obstacle collision: " << e.what()
@@ -519,7 +535,8 @@ std::unique_ptr<GameDTO> GameMap::getGameDTO() {
         // // Recopilar información de los jugadores
         // for (const auto& [playerId, character]: characters) {
         //     playersDTO.push_back(character->getDTO());
-        //     std::cout << "[GAMEMAP] Character added to DTO with ID: " << static_cast<int>(playerId)
+        //     std::cout << "[GAMEMAP] Character added to DTO with ID: " <<
+        //     static_cast<int>(playerId)
         //               << std::endl;
         // }
 

@@ -1,7 +1,9 @@
 #include "character.h"
-#include "../gameMap.h"
+
 #include <algorithm>
+
 #include "../enemies/enemy.h"
+#include "../gameMap.h"
 // #define CONFIG ServerConfig::getInstance()
 
 Character::Character(GameMap& gameMap, Vector<uint32_t> pos, uint8_t playerId, CharacterType type,
@@ -33,8 +35,7 @@ Character::Character(GameMap& gameMap, Vector<uint32_t> pos, uint8_t playerId, C
     currentWeapon = std::make_unique<Blaster>();
 }
 
-void Character::update(double time){
-}
+void Character::update(double time) {}
 
 void Character::idle(float time) {
 
@@ -65,24 +66,28 @@ void Character::recvDamage(uint8_t dmg, float time) {
 void Character::update(float time) {
     std::cout << "[CHARACTER] Updating character ID: " << static_cast<int>(id) << std::endl;
     if (!state) {
-        std::cerr << "[CHARACTER] Null state for character ID: " << static_cast<int>(id) << std::endl;
+        std::cerr << "[CHARACTER] Null state for character ID: " << static_cast<int>(id)
+                  << std::endl;
         return;
     }
-    if (!isOnGround()) {
-        std::cout << "[is on ground] Character ID: " << static_cast<int>(id) << " is not on the ground" << std::endl;
-        // Si el personaje no está en el suelo y no está saltando, aplicar gravedad
-        auto newState = std::make_unique<MovingState>(*this, Direction::DOWN)->exec(time);
-        if (newState) {
-            state = std::move(newState);
-        }
-    } else {
-        std::cout << "[is on ground] Character ID: " << static_cast<int>(id) << " is on the ground" << std::endl;
-        auto newState = std::unique_ptr<State>(state->exec(time));
-        if (newState) {
-            state = std::move(newState);
-        }
+    // if (!isOnGround()) {
+    //     std::cout << "[is on ground] Character ID: " << static_cast<int>(id)
+    //               << " is not on the ground" << std::endl;
+    //     // Si el personaje no está en el suelo y no está saltando, aplicar gravedad
+    //     auto newState = std::make_unique<MovingState>(*this, Direction::DOWN)->exec(time);
+    //     if (newState) {
+    //         state = std::move(newState);
+    //     }
+    // } else {
+    // std::cout << "[is on ground] Character ID: " << static_cast<int>(id) << " is on the ground"
+    //           << std::endl;
+    auto newState = std::unique_ptr<State>(state->exec(time));
+    if (newState) {
+        state = std::move(newState);
     }
-    std::cout << "[CHARACTER POS] Character Pos Update: " << static_cast<int>(pos.x) << ", " << static_cast<int>(pos.y) << std::endl;
+    // }
+    std::cout << "[CHARACTER POS] Character Pos Update: " << static_cast<int>(pos.x) << ", "
+              << static_cast<int>(pos.y) << std::endl;
 }
 
 
@@ -107,7 +112,8 @@ void Character::shoot(float time) {
 
 
 void Character::handleCollision(std::shared_ptr<Enemy> enemy) {
-    std::cout << "[CHARACTER] Character ID: " << static_cast<int>(id) << " collided with Enemy ID: " << static_cast<int>(enemy->getId()) << std::endl;
+    std::cout << "[CHARACTER] Character ID: " << static_cast<int>(id)
+              << " collided with Enemy ID: " << static_cast<int>(enemy->getId()) << std::endl;
 
     auto enemyPos = enemy->getPosition();
     auto enemyWidth = enemy->getWidth();
@@ -116,13 +122,13 @@ void Character::handleCollision(std::shared_ptr<Enemy> enemy) {
     if (pos.y + height > enemyPos.y && pos.y < enemyPos.y + enemyHeight) {
         if (pos.x + width > enemyPos.x && pos.x < enemyPos.x + enemyWidth) {
             if (pos.y + height - movesPerCell <= enemyPos.y) {
-                pos.y = enemyPos.y - height; // Colisión por abajo
+                pos.y = enemyPos.y - height;  // Colisión por abajo
             } else if (pos.y >= enemyPos.y + enemyHeight - movesPerCell) {
-                pos.y = enemyPos.y + enemyHeight; // Colisión por arriba
+                pos.y = enemyPos.y + enemyHeight;  // Colisión por arriba
             } else if (pos.x + width - movesPerCell <= enemyPos.x) {
-                pos.x = enemyPos.x - width; // Colisión por la izquierda
+                pos.x = enemyPos.x - width;  // Colisión por la izquierda
             } else if (pos.x >= enemyPos.x + enemyWidth - movesPerCell) {
-                pos.x = enemyPos.x + enemyWidth; // Colisión por la derecha
+                pos.x = enemyPos.x + enemyWidth;  // Colisión por la derecha
             }
         }
     }
@@ -135,51 +141,64 @@ void Character::handleCollision(std::shared_ptr<Enemy> enemy) {
 
 
 void Character::handleObstacleCollision(std::shared_ptr<Obstacle> obstacle) {
-    std::cout << "[CHARACTER] Character ID: " << static_cast<int>(id) << " collided with Obstacle at position: (" 
-              << obstacle->getPosition().x << ", " << obstacle->getPosition().y << ")" << std::endl;
+    std::cout << "[CHARACTER] Character ID: " << static_cast<int>(id)
+              << " collided with Obstacle at position: (" << obstacle->getPosition().x << ", "
+              << obstacle->getPosition().y << ")" << std::endl;
     auto obstaclePos = obstacle->getPosition();
     auto obstacleWidth = obstacle->getWidth();
     auto obstacleHeight = obstacle->getHeight();
-    if (gameMap.checkCollision(pos, {width, height}, obstaclePos, {obstacleWidth, obstacleHeight})) {
-        // Manejo de colisiones
-        if (pos.y + height - movesPerCell <= obstaclePos.y) {
-            pos.y = obstaclePos.y - height; // Colisión por abajo
-        } else if (pos.y >= obstaclePos.y + obstacleHeight - movesPerCell) {
-            pos.y = obstaclePos.y + obstacleHeight; // Colisión por arriba
-        } else if (pos.x + width - movesPerCell <= obstaclePos.x) {
-            pos.x = obstaclePos.x - width; // Colisión por la izquierda
-        } else if (pos.x >= obstaclePos.x + obstacleWidth - movesPerCell) {
-            pos.x = obstaclePos.x + obstacleWidth; // Colisión por la derecha
+    // Manejo de colisiones
+    if (pos.y + height >= obstaclePos.y) {
+        if (pos.x + width < obstaclePos.x || pos.x > obstaclePos.x + obstacleWidth) {
+            return;
         }
+        onGround = true;
+        std::cout << "[CHARACTER] Character ID: " << static_cast<int>(id)
+                  << " collided with obstacle from below" << std::endl;
+        pos.y = obstaclePos.y - height;  // Colisión por abajo
+    } else if (pos.y <= obstaclePos.y + obstacleHeight) {
+        std::cout << "[CHARACTER] Character ID: " << static_cast<int>(id)
+                  << " collided with obstacle from above" << std::endl;
+        pos.y = obstaclePos.y + obstacleHeight;  // Colisión por arriba
+    } else if (pos.x + width >= obstaclePos.x) {
+        std::cout << "[CHARACTER] Character ID: " << static_cast<int>(id)
+                  << " collided with obstacle from the left" << std::endl;
+        pos.x = obstaclePos.x - width;  // Colisión por la izquierda
+    } else if (pos.x <= obstaclePos.x + obstacleWidth) {
+        std::cout << "[CHARACTER] Character ID: " << static_cast<int>(id)
+                  << " collided with obstacle from the right" << std::endl;
+        pos.x = obstaclePos.x + obstacleWidth;  // Colisión por la derecha
     }
-    auto newState = std::make_unique<IdleState>(*this);
-    if (newState) {
-        state = std::move(newState);
-    }
+
+    // auto newState = std::make_unique<IdleState>(*this);
+    // if (newState) {
+    //     state = std::move(newState);
+    // }
 }
 
 
-void Character::moveRight(float time) {
+void Character::moveRight(double time) {
     std::cout << "[CHARACTER] Character ID: " << static_cast<int>(id) << " moving right"
               << std::endl;
-    //auto newState = std::unique_ptr<State>(state->move(Direction::RIGHT, time));
-    auto newState = std::make_unique<MovingState>(*this, Direction::RIGHT);
+    auto newState = std::unique_ptr<State>(state->move(Direction::RIGHT, time));
+    // auto newState = std::make_unique<MovingState>(*this, Direction::RIGHT);
 
     if (newState) {
         std::cout << "[CHARACTER] Character ID: " << static_cast<int>(id) << " moving right"
                   << std::endl;
         state = std::move(newState);
+        state->setOnGround(onGround);
     }
 }
 
-void Character::moveLeft(float time) {
+void Character::moveLeft(double time) {
     std::cout << "[CHARACTER] Character ID: " << static_cast<int>(id) << " moving left"
               << std::endl;
-    //auto newState = std::unique_ptr<State>(state->move(Direction::LEFT, time));
-    auto newState = std::make_unique<MovingState>(*this, Direction::LEFT);
-
+    auto newState = std::unique_ptr<State>(state->move(Direction::LEFT, time));
+    // auto newState = std::make_unique<MovingState>(*this, Direction::LEFT);
     if (newState) {
         state = std::move(newState);
+        state->setOnGround(onGround);
     }
 }
 
@@ -194,8 +213,9 @@ void Character::moveUp(float time) {
 }
 
 void Character::moveDown() {
-    std::cout << "[MOVE DOWN] Character ID: " << static_cast<int>(id) << " moving down" << std::endl;
-    Vector<uint32_t> newPos = pos + Vector<uint32_t>{0, movesPerCell};
+    std::cout << "[MOVE DOWN] Character ID: " << static_cast<int>(id) << " moving down"
+              << std::endl;
+    Vector<uint32_t> newPos = pos + Vector<uint32_t>{0, movesPerCell * 4};
     if (newPos.y >= gameMap.getMaxYPos()) {
         newPos = Vector<uint32_t>{pos.x, gameMap.getMaxYPos()};
     }
@@ -205,24 +225,28 @@ void Character::moveDown() {
 
     auto entityAtNewPos = gameMap.getEntityAt(newPos);
     if (entityAtNewPos) {
-        std::cout << "[MOVE DOWN] Entity at new pos: " << static_cast<int>(entityAtNewPos->getType()) << std::endl;
+        std::cout << "[MOVE DOWN] Entity at new pos: "
+                  << static_cast<int>(entityAtNewPos->getType()) << std::endl;
         if (entityAtNewPos->getType() == EntityType::ENEMY) {
-            gameMap.handleCharacterEnemyCollision(shared_from_this(), std::dynamic_pointer_cast<Enemy>(entityAtNewPos));
+            gameMap.handleCharacterEnemyCollision(shared_from_this(),
+                                                  std::dynamic_pointer_cast<Enemy>(entityAtNewPos));
             return;
         } else if (entityAtNewPos->getType() == EntityType::OBSTACLE) {
-            gameMap.handleCharacterObstacleCollision(shared_from_this(), std::dynamic_pointer_cast<Obstacle>(entityAtNewPos));
+            gameMap.handleCharacterObstacleCollision(
+                    shared_from_this(), std::dynamic_pointer_cast<Obstacle>(entityAtNewPos));
             return;
         }
     }
     pos = newPos;
-    std::cout << "[CHARACTER] NEW POS Character ID: " << static_cast<int>(id) << " new y: " << int(pos.y) << std::endl;
+    std::cout << "[CHARACTER] NEW POS Character ID: " << static_cast<int>(id)
+              << " new y: " << int(pos.y) << std::endl;
 
     // // Check for item collision after moving
     // entityAtNewPos = gameMap.getEntityAt(newPos);
     // if (entityAtNewPos && entityAtNewPos->getType() == EntityType::ITEM) {
-    //     gameMap.handleCharacterItemCollision(shared_from_this(), std::dynamic_pointer_cast<Item>(entityAtNewPos));
+    //     gameMap.handleCharacterItemCollision(shared_from_this(),
+    //     std::dynamic_pointer_cast<Item>(entityAtNewPos));
     // }
-
 }
 
 void Character::moveDown(float time) {
@@ -279,7 +303,9 @@ void Character::revive(float time) {
 
 std::vector<std::shared_ptr<Entity>> Character::getTargets() {
     std::vector<std::shared_ptr<Entity>> targets;
-    gameMap.getObjectsInShootRange({static_cast<unsigned char>(pos.x / movesPerCell), static_cast<unsigned char>(pos.y / movesPerCell)}, dir);
+    gameMap.getObjectsInShootRange({static_cast<unsigned char>(pos.x / movesPerCell),
+                                    static_cast<unsigned char>(pos.y / movesPerCell)},
+                                   dir);
     std::cout << "[CHARACTER] targets size: " << targets.size() << std::endl;
     return targets;
 }
@@ -317,12 +343,17 @@ WeaponType Character::getCurrentWeaponType() {
     return weaponType;
 }
 
-void Character::moveRight() {
+void Character::moveRight(bool onGround) {
     if (isIntoxicated)
         return;
 
-    auto mapPosition = getMapPosition(movesPerCell);
-    Vector<uint32_t> newPos = pos + Vector<uint32_t>{movesPerCell, 0};
+    uint8_t movesPerCellX = onGround ? this->movesPerCell * 4 : this->movesPerCell * 2;
+    auto mapPositionX = getMapPosition(movesPerCellX);
+
+    uint8_t movesPerCellY = onGround ? 0 : this->movesPerCell;
+    auto mapPositionY = getMapPosition(movesPerCellY);
+
+    Vector<uint32_t> newPos = pos + Vector<uint32_t>{movesPerCellX, movesPerCellY};
 
     if (newPos.x >= gameMap.getMaxXPos()) {
         newPos = Vector<uint32_t>{gameMap.getMaxXPos(), pos.y};
@@ -334,30 +365,39 @@ void Character::moveRight() {
     auto entityAtNewPos = gameMap.getEntityAt(newPos);
     if (entityAtNewPos) {
         if (entityAtNewPos->getType() == EntityType::ENEMY) {
-            gameMap.handleCharacterEnemyCollision(shared_from_this(), std::dynamic_pointer_cast<Enemy>(entityAtNewPos));
+            gameMap.handleCharacterEnemyCollision(shared_from_this(),
+                                                  std::dynamic_pointer_cast<Enemy>(entityAtNewPos));
             return;
         } else if (entityAtNewPos->getType() == EntityType::OBSTACLE) {
-            gameMap.handleCharacterObstacleCollision(shared_from_this(), std::dynamic_pointer_cast<Obstacle>(entityAtNewPos));
+            gameMap.handleCharacterObstacleCollision(
+                    shared_from_this(), std::dynamic_pointer_cast<Obstacle>(entityAtNewPos));
             return;
         }
     }
 
     pos = newPos;
-    std::cout << "[CHARACTER] NEW POS Character ID: " << static_cast<int>(id) << " new x : " << int(pos.x) << std::endl;
+    std::cout << "[CHARACTER] NEW POS Character ID: " << static_cast<int>(id)
+              << " new x : " << int(pos.x) << std::endl;
 
     // Check for item collision after moving
     entityAtNewPos = gameMap.getEntityAt(newPos);
     if (entityAtNewPos && entityAtNewPos->getType() == EntityType::ITEM) {
-        gameMap.handleCharacterItemCollision(shared_from_this(), std::dynamic_pointer_cast<Item>(entityAtNewPos));
+        gameMap.handleCharacterItemCollision(shared_from_this(),
+                                             std::dynamic_pointer_cast<Item>(entityAtNewPos));
     }
 }
 
-void Character::moveLeft() {
+void Character::moveLeft(bool onGround) {
     if (isIntoxicated)
         return;
 
-    auto mapPosition = getMapPosition(movesPerCell);
-    Vector<uint32_t> newPos = pos - Vector<uint32_t>{movesPerCell, 0};
+    uint8_t movesPerCellX = onGround ? this->movesPerCell * 4 : this->movesPerCell * 2;
+    auto mapPositionX = getMapPosition(movesPerCellX);
+
+    uint8_t movesPerCellY = onGround ? 0 : this->movesPerCell;
+    auto mapPositionY = getMapPosition(movesPerCellY);
+
+    Vector<uint32_t> newPos = pos - Vector<uint32_t>{movesPerCellX, -movesPerCellY};
 
     if (newPos.x <= 0) {
         newPos = Vector<uint32_t>{0, pos.y};
@@ -369,28 +409,33 @@ void Character::moveLeft() {
     auto entityAtNewPos = gameMap.getEntityAt(newPos);
     if (entityAtNewPos) {
         if (entityAtNewPos->getType() == EntityType::ENEMY) {
-            gameMap.handleCharacterEnemyCollision(shared_from_this(), std::dynamic_pointer_cast<Enemy>(entityAtNewPos));
+            gameMap.handleCharacterEnemyCollision(shared_from_this(),
+                                                  std::dynamic_pointer_cast<Enemy>(entityAtNewPos));
             return;
         } else if (entityAtNewPos->getType() == EntityType::OBSTACLE) {
-            gameMap.handleCharacterObstacleCollision(shared_from_this(), std::dynamic_pointer_cast<Obstacle>(entityAtNewPos));
+            gameMap.handleCharacterObstacleCollision(
+                    shared_from_this(), std::dynamic_pointer_cast<Obstacle>(entityAtNewPos));
             return;
         }
     }
 
     pos = newPos;
-    std::cout << "[CHARACTER] NEW POS Character ID: " << static_cast<int>(id) << " new x : " << int(pos.x) << std::endl;
+    std::cout << "[CHARACTER] NEW POS Character ID: " << static_cast<int>(id)
+              << " new x : " << int(pos.x) << std::endl;
 
     // Check for item collision after moving
     entityAtNewPos = gameMap.getEntityAt(newPos);
     if (entityAtNewPos && entityAtNewPos->getType() == EntityType::ITEM) {
-        gameMap.handleCharacterItemCollision(shared_from_this(), std::dynamic_pointer_cast<Item>(entityAtNewPos));
+        gameMap.handleCharacterItemCollision(shared_from_this(),
+                                             std::dynamic_pointer_cast<Item>(entityAtNewPos));
     }
 }
 
 
 void Character::moveUp() {
-    // std::cout << "[CHARACTER] Character ID: " << static_cast<int>(id) << " moving up" << std::endl;
-    // Vector<uint32_t> newPos = pos - Vector<uint32_t>{0, static_cast<uint32_t>(verticalSpeed * time)};
+    // std::cout << "[CHARACTER] Character ID: " << static_cast<int>(id) << " moving up" <<
+    // std::endl; Vector<uint32_t> newPos = pos - Vector<uint32_t>{0,
+    // static_cast<uint32_t>(verticalSpeed * time)};
 
     // if (newPos.y <= 0) {
     //     newPos.y = 0;
@@ -402,15 +447,16 @@ void Character::moveUp() {
     // auto entityAtNewPos = gameMap.getEntityAt(newPos);
     // if (entityAtNewPos) {
     //     if (entityAtNewPos->getType() == EntityType::ENEMY) {
-    //         gameMap.handleCharacterEnemyCollision(shared_from_this(), std::dynamic_pointer_cast<Enemy>(entityAtNewPos));
-    //         return;
+    //         gameMap.handleCharacterEnemyCollision(shared_from_this(),
+    //         std::dynamic_pointer_cast<Enemy>(entityAtNewPos)); return;
     //     } else if (entityAtNewPos->getType() == EntityType::OBSTACLE) {
     //         handleObstacleCollision(std::dynamic_pointer_cast<Obstacle>(entityAtNewPos));
     //         return;
     //     }
     // }
     // pos = newPos;
-    // std::cout << "[CHARACTER] NEW POS Character ID: " << static_cast<int>(id) << " new y: " << int(pos.y) << std::endl;
+    // std::cout << "[CHARACTER] NEW POS Character ID: " << static_cast<int>(id) << " new y: " <<
+    // int(pos.y) << std::endl;
 }
 
 void Character::jump(float time) {
@@ -428,10 +474,12 @@ void Character::jump(float time) {
         auto entityAtNewPos = gameMap.getEntityAt(newPosition);
         if (entityAtNewPos) {
             if (entityAtNewPos->getType() == EntityType::ENEMY) {
-                gameMap.handleCharacterEnemyCollision(shared_from_this(), std::dynamic_pointer_cast<Enemy>(entityAtNewPos));
+                gameMap.handleCharacterEnemyCollision(
+                        shared_from_this(), std::dynamic_pointer_cast<Enemy>(entityAtNewPos));
                 return;
             } else if (entityAtNewPos->getType() == EntityType::OBSTACLE) {
-                gameMap.handleCharacterObstacleCollision(shared_from_this(), std::dynamic_pointer_cast<Obstacle>(entityAtNewPos));
+                gameMap.handleCharacterObstacleCollision(
+                        shared_from_this(), std::dynamic_pointer_cast<Obstacle>(entityAtNewPos));
                 return;
             }
         }
@@ -450,22 +498,24 @@ bool Character::hasLanded() {
 }
 
 bool Character::isOnGround() const {
-    Vector<uint32_t> belowPos = pos + Vector<uint32_t>{0, height};
+    // Vector<uint32_t> belowPos = pos + Vector<uint32_t>{0, height};
 
-    if (belowPos.y >= gameMap.getMaxYPos()) {
-        return true; // Si está en el límite inferior del mapa, consideramos que está en el suelo
-    }
+    // if (belowPos.y >= gameMap.getMaxYPos()) {
+    //     return true;  // Si está en el límite inferior del mapa, consideramos que está en el
+    //     suelo
+    // }
 
-    auto entityBelow = gameMap.getEntityAt(belowPos);
+    // auto entityBelow = gameMap.getEntityAt(belowPos);
 
-    if (entityBelow && entityBelow->getType() == EntityType::OBSTACLE) {
-        auto obstacle = std::dynamic_pointer_cast<Obstacle>(entityBelow);
-        if (obstacle && pos.y + height <= obstacle->getPosition().y) {
-            return true;
-        }
-    }
+    // if (entityBelow && entityBelow->getType() == EntityType::OBSTACLE) {
+    //     auto obstacle = std::dynamic_pointer_cast<Obstacle>(entityBelow);
+    //     if (obstacle && pos.y + height >= obstacle->getPosition().y) {
+    //         return true;
+    //     }
+    // }
 
-    return false;
+    // return false;
+    return onGround;
 }
 
 
@@ -479,15 +529,18 @@ void Character::collectItem(const std::shared_ptr<Item>& item) {
     switch (item->getItemType()) {
         case ItemType::FOOD:
             // health = std::min(maxHealth, health + item->getValue());
-            // std::cout << "[CHARACTER] Collected food. Health increased to: " << static_cast<int>(health) << std::endl;
+            // std::cout << "[CHARACTER] Collected food. Health increased to: " <<
+            // static_cast<int>(health) << std::endl;
             break;
         case ItemType::GEM:
             // score += item->getValue();
-            // std::cout << "[CHARACTER] Collected gem. Score increased to: " << static_cast<int>(score) << std::endl;
+            // std::cout << "[CHARACTER] Collected gem. Score increased to: " <<
+            // static_cast<int>(score) << std::endl;
             break;
         case ItemType::SILVER_COIN:
             // score += item->getValue();
-            // std::cout << "[CHARACTER] Collected silver coin. Score increased to: " << static_cast<int>(score) << std::endl;
+            // std::cout << "[CHARACTER] Collected silver coin. Score increased to: " <<
+            // static_cast<int>(score) << std::endl;
             break;
         case ItemType::GOLD_COIN:
             // score += item->getValue();
@@ -498,7 +551,7 @@ void Character::collectItem(const std::shared_ptr<Item>& item) {
             break;
     }
 
-    //gameMap.removeItem(item->getPosition());
+    // gameMap.removeItem(item->getPosition());
 }
 
 
@@ -511,4 +564,13 @@ PlayerDTO Character::getDTO() const {
                      static_cast<uint8_t>(0),
                      type,
                      state->getCharacterState()};
+}
+
+uint32_t Character::getWidth() const { return width; }
+
+uint32_t Character::getHeight() const { return height; }
+
+void Character::setOnGround(bool onGround) {
+    this->onGround = onGround;
+    state->setOnGround(onGround);
 }

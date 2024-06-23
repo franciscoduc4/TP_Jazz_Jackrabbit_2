@@ -21,8 +21,7 @@ std::unique_ptr<State> MovingState::exec(float time) {
     return move(direction, time);
 }
 
-std::unique_ptr<State> MovingState::shoot(const std::shared_ptr<Weapon>& weapon,
-                                          float time) {
+std::unique_ptr<State> MovingState::shoot(const std::shared_ptr<Weapon>& weapon, float time) {
     if (time - lastTimeMoved >= waitingMoveTime) {
         return nullptr;
     }
@@ -43,10 +42,10 @@ std::unique_ptr<State> MovingState::move(Direction direction2, float time) {
             character.moveDown();
             break;
         case Direction::RIGHT:
-            character.moveRight();
+            character.moveRight(onGround);
             break;
         case Direction::LEFT:
-            character.moveLeft();
+            character.moveLeft(onGround);
             break;
         default:
             break;
@@ -58,15 +57,13 @@ std::unique_ptr<State> MovingState::move(Direction direction2, float time) {
 }
 
 
-
 std::unique_ptr<State> MovingState::sprint(Direction direction2, float time) {
     // Cambia al estado de sprint
     // return std::unique_ptr<MovingState>(character, direction2);
     return nullptr;
 }
 
-std::unique_ptr<State> MovingState::receiveDamage(uint8_t damage,
-                                                  float time) {
+std::unique_ptr<State> MovingState::receiveDamage(uint8_t damage, float time) {
     // Maneja la recepción de daño
     return std::make_unique<ReceivingDamageState>(character, time, damage);
 }

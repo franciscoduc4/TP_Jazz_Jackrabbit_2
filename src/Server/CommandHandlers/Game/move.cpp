@@ -1,4 +1,5 @@
 #include "move.h"
+
 #include "gameCommand.h"
 
 MoveHandler::MoveHandler(std::unique_ptr<GameCommandDTO> moveCommand):
@@ -24,7 +25,7 @@ void MoveHandler::execute(GameMap& gameMap, std::atomic<bool>& keepRunning, doub
             character->moveRight(deltaTime);
             break;
         default:
-            //character->idle(deltaTime);
+            // character->idle(deltaTime);
             break;
     }
 }

@@ -1,7 +1,8 @@
 #include "gameLoop.h"
+
+#include <algorithm>
 #include <chrono>
 #include <thread>
-#include <algorithm>
 
 GameLoopThread::GameLoopThread(std::shared_ptr<Queue<std::unique_ptr<CommandDTO>>> recvQueue,
                                QueueMonitor& queueMonitor, GameMap& gameMap,
@@ -66,7 +67,7 @@ void GameLoopThread::run() {
 void GameLoopThread::processCommands(double deltaTime) {
     try {
         size_t processedCommands = 0;
-        size_t maxCommandsPerFrame = 10; // Limit the number of commands processed per frame
+        size_t maxCommandsPerFrame = 10;  // Limit the number of commands processed per frame
 
         while (processedCommands < maxCommandsPerFrame) {
             std::unique_ptr<CommandDTO> command;

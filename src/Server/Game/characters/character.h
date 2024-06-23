@@ -10,6 +10,7 @@
 #include "../../../Common/Types/character.h"
 #include "../../../Common/Types/direction.h"
 #include "../entity.h"
+#include "../items/item.h"
 #include "../weapons/blaster.h"
 #include "../weapons/bouncer.h"
 #include "../weapons/freezer.h"
@@ -19,12 +20,10 @@
 #include "states/idle.h"
 #include "states/intoxicated.h"
 #include "states/jumping.h"
+#include "states/moving.h"
 #include "states/shooting.h"
 #include "states/specialAttack.h"
 #include "states/state.h"
-#include "states/moving.h"
-#include "../items/item.h"
-#include <memory>
 
 class GameMap;
 class Enemy;
@@ -58,6 +57,7 @@ protected:
     std::unique_ptr<State> state;
 
     bool jumping = false;
+    bool onGround = false;
 
     bool isIntoxicated = false;
     float shootCooldown = 0.0f;
@@ -67,7 +67,7 @@ protected:
     uint8_t initialYJump = 0;
 
     uint32_t width;
-    uint32_t height; 
+    uint32_t height;
 
 public:
     Character(GameMap& gameMap, Vector<uint32_t> pos, uint8_t playerId, CharacterType type,
@@ -83,9 +83,9 @@ public:
     void handleCollision(std::shared_ptr<Enemy> enemy);
     void handleObstacleCollision(std::shared_ptr<Obstacle> obstacle);
 
-    void moveRight(float time);
+    void moveRight(double time);
     void sprintRight(float time);
-    void moveLeft(float time);
+    void moveLeft(double time);
     void sprintLeft(float time);
     void moveUp(float time);
     void moveDown(float time);
@@ -104,9 +104,9 @@ public:
     void interact(std::shared_ptr<Entity>& other);
     void switchWeapon(WeaponType type);
 
-    void moveRight();
+    void moveRight(bool onGround);
+    void moveLeft(bool onGround);
     void moveDown();
-    void moveLeft();
     void moveUp();
 
 
@@ -123,6 +123,10 @@ public:
     bool hasLanded();
     bool isOnGround() const;
 
+    uint32_t getWidth() const;
+    uint32_t getHeight() const;
+
+    void setOnGround(bool onGround);
 };
 
 #endif  // PLAYER_CHARACTER_H

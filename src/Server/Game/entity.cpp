@@ -21,6 +21,9 @@ uint8_t Entity::getHealth() const { return health; }
 Vector<uint32_t> Entity::getMapPosition(uint8_t movesPerCell) const {
     std::cout << "[ENTITY] Position: " << pos << " movesPerCell: " << (int)movesPerCell
               << std::endl;
+    if (movesPerCell == 0) {
+        return pos;
+    }
     return {static_cast<uint8_t>(pos.x / movesPerCell), static_cast<uint8_t>(pos.y / movesPerCell)};
 }
 
