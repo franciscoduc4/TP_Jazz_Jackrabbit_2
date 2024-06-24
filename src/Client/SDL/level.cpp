@@ -12,21 +12,33 @@
 enum lvl { BEACH, HOLIDAIUS, COLONIUS };
 
 Level::Level(uint8_t level) {
-    /* std::vector<int> backVector{0, 0, 200, 160};
-    std::vector<int> floorVector{0, 0, 485, 118};
-    std::vector<int> longPlatformVector{0, 0, 160, 17};
-    std::vector<int> smallPlatformVector{0, 0, 88, 17};
-    std::vector<int> columnVector{0, 0, 24, 91};
-    std::vector<int> leftLadderVector{0, 0, 145, 145};
-    std::vector<int> rightLadderVector{0, 0, 144, 165};
-    */
     std::vector<ObstacleType> tiles_types{ ObstacleType::BACKGROUND, ObstacleType::FULL_FLOOR, ObstacleType::LONG_PLATFORM, 
     ObstacleType::SMALL_PLATFORM, ObstacleType::COLUMN, ObstacleType::LEFT_LADDER, ObstacleType::RIGHT_LADDER };
     std::vector<std::string> tilesSprites;
     std::vector<std::vector<int>> beachSprites;
     std::vector<std::vector<int>> widthsHeights; 
     switch (level) {
-        case BEACH:
+        case HOLIDAIUS:
+            tilesSprites = ClientConfig::getHolidaiusFiles();
+            beachSprites = ClientConfig::getHolidaiusSprites();
+            widthsHeights = ClientConfig::getHolidaiusWidthHeightSprites();
+            for (int i = 0; i < tilesSprites.size(); i++) {
+                this->paths[tiles_types[i]] = tilesSprites[i];
+                this->pixels_pos[tiles_types[i]] = beachSprites[i];
+                this->width_height[tiles_types[i]] = widthsHeights[i];
+            }
+            break;
+        case COLONIUS:
+            tilesSprites = ClientConfig::getColoniusFiles();
+            beachSprites = ClientConfig::getColoniusSprites();
+            widthsHeights = ClientConfig::getColoniusWidthHeightSprites();
+            for (int i = 0; i < tilesSprites.size(); i++) {
+                this->paths[tiles_types[i]] = tilesSprites[i];
+                this->pixels_pos[tiles_types[i]] = beachSprites[i];
+                this->width_height[tiles_types[i]] = widthsHeights[i];
+            }
+            break;
+        default:
             tilesSprites = ClientConfig::getBeachFiles();
             beachSprites = ClientConfig::getBeachSprites();
             widthsHeights = ClientConfig::getBeachWidthHeightSprites();
@@ -35,53 +47,9 @@ Level::Level(uint8_t level) {
                 this->pixels_pos[tiles_types[i]] = beachSprites[i];
                 this->width_height[tiles_types[i]] = widthsHeights[i];
             }
-            /*
-            this->paths[ObstacleType::BACKGROUND] = "../assets/scenes/BeachWorld/background.png";
-            this->pixels_pos[ObstacleType::BACKGROUND] = backVector;
-            
-            this->paths[ObstacleType::FULL_FLOOR] = "../assets/scenes/BeachWorld/fullFloor.png";
-            this->pixels_pos[ObstacleType::FULL_FLOOR] = floorVector;
-
-            this->paths[ObstacleType::LONG_PLATFORM] = "../assets/scenes/BeachWorld/longPlatform.png";
-            this->pixels_pos[ObstacleType::LONG_PLATFORM] = longPlatformVector;
-            this->width_height[ObstacleType::LONG_PLATFORM] = {150, 30};
-
-            this->paths[ObstacleType::SMALL_PLATFORM] = "../assets/scenes/BeachWorld/smallPlatform.png";
-            this->pixels_pos[ObstacleType::SMALL_PLATFORM] = smallPlatformVector;
-            this->width_height[ObstacleType::SMALL_PLATFORM] = {70, 30};
-
-            this->paths[ObstacleType::COLUMN] = "../assets/scenes/BeachWorld/woodLargeColumn.png";
-            this->pixels_pos[ObstacleType::COLUMN] = columnVector;
-            this->width_height[ObstacleType::COLUMN] = {30, 100};
-
-            this->paths[ObstacleType::LEFT_LADDER] = "../assets/scenes/BeachWorld/leftLadder.png";
-            this->pixels_pos[ObstacleType::LEFT_LADDER] = leftLadderVector;
-            this->width_height[ObstacleType::LEFT_LADDER] = {120, 120};
-
-            this->paths[ObstacleType::RIGHT_LADDER] = "../assets/scenes/BeachWorld/rightLadder.png";
-            this->pixels_pos[ObstacleType::RIGHT_LADDER] = rightLadderVector;
-            this->width_height[ObstacleType::RIGHT_LADDER] = {120, 120};
-            */
-            this->max_pixel_x_floor = 2491;
-            this->floor_height = 70;
-            this->background_width = 715;
-            this->background_height = 153;
             break;
-        case HOLIDAIUS:
-            break;
-        case COLONIUS:
-            tilesSprites = ClientConfig::getColoniusFiles();
-            beachSprites = ClientConfig::getColoniusSprites();
-            for (int i = 0; i < tilesSprites.size(); i++) {
-                this->paths[tiles_types[i]] = tilesSprites[i];
-                this->pixels_pos[tiles_types[i]] = beachSprites[i];
-            }
-            this->max_pixel_x_floor = 2000;
-            this->floor_height = 100;
+        
 
-            this->background_width = 2000;
-            this->background_height = 839;
-            break;
     }
 }
 
@@ -132,7 +100,7 @@ std::string Level::getLevelPath(ObstacleType type) {
     return this->paths[type];
 }
 
-std::vector<int> Level::draw_background(SDL2pp::Window& window, SDL2pp::Renderer& renderer, std::map<ObstacleType, std::unique_ptr<SDL2pp::Texture>>& textures, PlayerDTO& player) {
+std::vector<int> Level::draw_background(SDL2pp::Window& window, SDL2pp::Renderer& renderer, std::map<ObstacleType, std::unique_ptr<SDL2pp::Texture>>& textures, PlayerDTO& player, int pj_direction) {
     int index_x = 0;
     int index_y = 1;
     int index_width = 2;
@@ -151,17 +119,17 @@ std::vector<int> Level::draw_background(SDL2pp::Window& window, SDL2pp::Renderer
 
     
     if (get_pos_x > window_width / 2) {
-        if (pixels_pos[ObstacleType::BACKGROUND][index_x] + get_speed > this->width_height[ObstacleType::BACKGROUND][index_draw_width] - pixels_pos[ObstacleType::BACKGROUND][index_width]) {
+        if (pixels_pos[ObstacleType::BACKGROUND][index_x] + pj_direction/*get_speed*/ > this->width_height[ObstacleType::BACKGROUND][index_draw_width] - pixels_pos[ObstacleType::BACKGROUND][index_width]) {
             pixels_pos[ObstacleType::BACKGROUND][index_x] = 0;
         } else if (pixels_pos[ObstacleType::BACKGROUND][index_x] < 0) {
             pixels_pos[ObstacleType::BACKGROUND][index_x] = this->width_height[ObstacleType::BACKGROUND][index_draw_width] - pixels_pos[ObstacleType::BACKGROUND][index_width];
         } else {
-            pixels_pos[ObstacleType::BACKGROUND][index_x] += get_speed;
+            pixels_pos[ObstacleType::BACKGROUND][index_x] += pj_direction;/*get_speed*/;
         }
         dir_screen[0] = window_width / 2;
     }
 
-    if (get_pos_y > window_height / 2) {
+    if (get_pos_y > window_height / 2 && get_pos_y < window_height) {
         if (pixels_pos[ObstacleType::BACKGROUND][index_y] + get_speed > this->width_height[ObstacleType::BACKGROUND][index_draw_height] - pixels_pos[ObstacleType::BACKGROUND][index_height]) {
             pixels_pos[ObstacleType::BACKGROUND][index_y] = 0;
         } else if (pixels_pos[ObstacleType::BACKGROUND][index_y] < 0) {
@@ -175,20 +143,33 @@ std::vector<int> Level::draw_background(SDL2pp::Window& window, SDL2pp::Renderer
 
 }
 
-void Level::draw_floor(SDL2pp::Window& window, SDL2pp::Renderer& renderer, std::map<ObstacleType, std::unique_ptr<SDL2pp::Texture>>& textiles, int player_speed) {
+void Level::draw_floor(SDL2pp::Window& window, SDL2pp::Renderer& renderer, std::map<ObstacleType, std::unique_ptr<SDL2pp::Texture>>& textiles, PlayerDTO& player, int player_speed, int dir_x_screen, int dir_y_screen) {
     int index_x = 0;
     int index_y = 1;
     int index_width = 2;
     int index_height = 3;
     int index_draw_height = 1;
-    
+    int distance_floor_player_x = 0;
+    int distance_floor_player_y = 0;
+
+    int y = window.GetHeight() - this->width_height[ObstacleType::FULL_FLOOR][index_draw_height];
+    if (dir_y_screen != 0) {
+        distance_floor_player_y = y - player.getX();
+        y = dir_y_screen + distance_floor_player_y;
+    }
+    if (dir_x_screen != 0) {
+        this->pixels_pos[ObstacleType::FULL_FLOOR][index_x] += player_speed;
+    }
+       
+
     if (this->pixels_pos[ObstacleType::FULL_FLOOR][index_x] > this->max_pixel_x_floor - this->pixels_pos[ObstacleType::FULL_FLOOR][index_width]) {
         this->pixels_pos[ObstacleType::FULL_FLOOR][index_x] = 0;
     }
 
-    renderer.Copy(*textiles[ObstacleType::FULL_FLOOR], SDL2pp::Rect(this->pixels_pos[ObstacleType::FULL_FLOOR][index_x], this->pixels_pos[ObstacleType::FULL_FLOOR][index_y], this->pixels_pos[ObstacleType::FULL_FLOOR][index_width], this->pixels_pos[ObstacleType::FULL_FLOOR][index_height]), 
-                        SDL2pp::Rect(0, window.GetHeight() - this->width_height[ObstacleType::FULL_FLOOR][index_draw_height], window.GetWidth(), this->width_height[ObstacleType::FULL_FLOOR][index_draw_height]));
-    this->pixels_pos[ObstacleType::FULL_FLOOR][index_x] += player_speed;
+    if (abs(distance_floor_player_y) <= window.GetHeight()) {
+        renderer.Copy(*textiles[ObstacleType::FULL_FLOOR], SDL2pp::Rect(this->pixels_pos[ObstacleType::FULL_FLOOR][index_x], this->pixels_pos[ObstacleType::FULL_FLOOR][index_y], this->pixels_pos[ObstacleType::FULL_FLOOR][index_width], this->pixels_pos[ObstacleType::FULL_FLOOR][index_height]), 
+                        SDL2pp::Rect(0, y/*window.GetHeight() - this->width_height[ObstacleType::FULL_FLOOR][index_draw_height]*/, window.GetWidth(), this->width_height[ObstacleType::FULL_FLOOR][index_draw_height]));
+    }
 }
 
 

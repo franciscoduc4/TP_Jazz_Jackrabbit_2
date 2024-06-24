@@ -84,7 +84,9 @@ void Points::draw_points(SDL2pp::Window& window, SDL2pp::Renderer& renderer, std
                       SDL2pp::Rect(x, y, this->draw_width, this->draw_height),
                       0.0, SDL2pp::NullOpt, 0);
         }
-        this->counts[static_cast<int>(p.getItemType())]++;
    	}
+    for (int i = 0; i < this->counts.size(); i++) {
+        this->counts[i]++;
+    }
 }
 

@@ -225,7 +225,7 @@ std::vector<std::vector<int>> ClientConfig::getColoniusSprites() {
 }
 
 std::vector<std::vector<int>> ClientConfig::getColoniusWidthHeightSprites() {
-    YAML::Node coloniusWidthHeightSpritesNode = getInstance()->root["COLONIUS_PIXELS"];
+    YAML::Node coloniusWidthHeightSpritesNode = getInstance()->root["COLONIUS_WIDTHS_HEIGHTS"];
     std::vector<std::vector<int>> coloniusWidthsHeights;
     for (YAML::const_iterator it = coloniusWidthHeightSpritesNode.begin();
          it != coloniusWidthHeightSpritesNode.end(); ++it) {
@@ -233,6 +233,43 @@ std::vector<std::vector<int>> ClientConfig::getColoniusWidthHeightSprites() {
     }
     return coloniusWidthsHeights;
 }
+
+
+//Holidaius
+std::vector<std::string> ClientConfig::getHolidaiusFiles() {
+    YAML::Node holidaiusFilesNode = getInstance()->root["HOLIDAIUS"];
+    std::vector<std::string> holidaiusFiles;
+    for (YAML::const_iterator it = holidaiusFilesNode.begin();
+         it != holidaiusFilesNode.end(); ++it) {
+        holidaiusFiles.push_back(it->as<std::string>());
+    }
+    return holidaiusFiles;
+}
+
+std::string ClientConfig::getHolidaiusBacksound() {
+    return getInstance()->root["HOLIDAIUS_BACKSOUND"].as<std::string>();
+}
+
+std::vector<std::vector<int>> ClientConfig::getHolidaiusSprites() {
+    YAML::Node holidaiusSpritesNode = getInstance()->root["HOLIDAIUS_PIXELS"];
+    std::vector<std::vector<int>> holidaiusSprites;
+    for (YAML::const_iterator it = holidaiusSpritesNode.begin();
+         it != holidaiusSpritesNode.end(); ++it) {
+        holidaiusSprites.push_back(it->as<std::vector<int>>());
+    }
+    return holidaiusSprites;
+}
+
+std::vector<std::vector<int>> ClientConfig::getHolidaiusWidthHeightSprites() {
+    YAML::Node holidaiusWidthHeightSpritesNode = getInstance()->root["HOLIDAIUS_WIDTHS_HEIGHTS"];
+    std::vector<std::vector<int>> holidaiusWidthsHeights;
+    for (YAML::const_iterator it = holidaiusWidthHeightSpritesNode.begin();
+         it != holidaiusWidthHeightSpritesNode.end(); ++it) {
+        holidaiusWidthsHeights.push_back(it->as<std::vector<int>>());
+    }
+    return holidaiusWidthsHeights;
+}
+
 
 // Enemies
 // Turtle
@@ -814,6 +851,29 @@ std::vector<std::vector<int>> ClientConfig::getInterfaceFontSprites() {
 int ClientConfig::getWidthFont() { return getInstance()->root["INTERFACE_WIDTH"].as<int>(); }
 
 int ClientConfig::getHeightFont() { return getInstance()->root["INTERFACE_HEIGHT"].as<int>(); }
+
+//Interface heart
+std::vector<std::vector<int>> ClientConfig::getInterfaceHeartSprites() {
+    YAML::Node interfaceHeartSpritesNode = getInstance()->root["INTERFACE_HEART"];
+    std::vector<std::vector<int>> interfaceHeartSprites;
+    for (YAML::const_iterator it = interfaceHeartSpritesNode.begin();
+        it != interfaceHeartSpritesNode.end();
+        ++it) {
+        interfaceHeartSprites.push_back(it->as<std::vector<int>>());
+    }
+    return interfaceHeartSprites;
+}
+std::vector<std::vector<int>> ClientConfig::getInterfaceColors() {
+    YAML::Node interfaceColorsNode = getInstance()->root["INTERFACE_COLORS"];
+    std::vector<std::vector<int>> interfaceColors;
+    for (YAML::const_iterator it = interfaceColorsNode.begin();
+        it != interfaceColorsNode.end();
+        ++it) {
+        interfaceColors.push_back(it->as<std::vector<int>>());
+    }
+    return interfaceColors;
+}
+
 
 
 // Sprites

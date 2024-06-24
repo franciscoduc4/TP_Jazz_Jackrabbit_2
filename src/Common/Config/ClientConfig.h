@@ -63,6 +63,11 @@ public:
     static std::string getColoniusBacksound();
     static std::vector<std::vector<int>> getColoniusSprites();
     static std::vector<std::vector<int>> getColoniusWidthHeightSprites();
+    //Holidaius
+    static std::vector<std::string> getHolidaiusFiles();
+    static std::string getHolidaiusBacksound();
+    static std::vector<std::vector<int>> getHolidaiusSprites();
+    static std::vector<std::vector<int>> getHolidaiusWidthHeightSprites();
 
     // Enemies Sprites
     // Turtle
@@ -146,6 +151,8 @@ public:
     static std::vector<std::vector<int>> getInterfaceFontSprites();
     static int getWidthFont();
     static int getHeightFont();
+    static std::vector<std::vector<int>> getInterfaceHeartSprites();
+    static std::vector<std::vector<int>> getInterfaceColors();
 
     // Sprites
     static std::vector<std::vector<std::pair<int, int>>> getJazzSelectNameSprites();
