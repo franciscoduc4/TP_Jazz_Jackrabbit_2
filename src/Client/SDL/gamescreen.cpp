@@ -196,8 +196,8 @@ void GameScreen::run() {
             continue;
         }
         std::vector<int> dir_screen = this->level.draw_background(window, renderer, tiles_textures, *mainPlayer, speed);
-        x_screen = 0;//dir_screen[0];
-        y_screen = 0;// dir_screen[1];
+        x_screen = dir_screen[0];
+        y_screen = dir_screen[1];
         this->level.draw_floor(window, renderer, tiles_textures, *mainPlayer, speed, x_screen, y_screen);
 
         if (players.size() > 0) {
@@ -242,4 +242,5 @@ void GameScreen::run() {
     }
     this->soundControl.free_musics();
     Mix_CloseAudio();
+
 }

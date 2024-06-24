@@ -129,14 +129,15 @@ std::vector<int> Level::draw_background(SDL2pp::Window& window, SDL2pp::Renderer
         dir_screen[0] = window_width / 2;
     }
 
-    if (get_pos_y > window_height / 2 && get_pos_y < window_height) {
-        if (pixels_pos[ObstacleType::BACKGROUND][index_y] + get_speed > this->width_height[ObstacleType::BACKGROUND][index_draw_height] - pixels_pos[ObstacleType::BACKGROUND][index_height]) {
-            pixels_pos[ObstacleType::BACKGROUND][index_y] = 0;
-        } else if (pixels_pos[ObstacleType::BACKGROUND][index_y] < 0) {
-            pixels_pos[ObstacleType::BACKGROUND][index_y] = this->width_height[ObstacleType::BACKGROUND][index_draw_height] - pixels_pos[ObstacleType::BACKGROUND][index_height];
-        } else {
-            pixels_pos[ObstacleType::BACKGROUND][index_y] += get_speed;
-        }
+    if (get_pos_y > window_height / 2) {
+        // if (pixels_pos[ObstacleType::BACKGROUND][index_y] > this->width_height[ObstacleType::BACKGROUND][index_draw_height] - pixels_pos[ObstacleType::BACKGROUND][index_height]) {
+        //     pixels_pos[ObstacleType::BACKGROUND][index_y] = 0;
+        // } else if (pixels_pos[ObstacleType::BACKGROUND][index_y] < 0) {
+        //     pixels_pos[ObstacleType::BACKGROUND][index_y] = this->width_height[ObstacleType::BACKGROUND][index_draw_height] - pixels_pos[ObstacleType::BACKGROUND][index_height];
+        // } else {
+        //     pixels_pos[ObstacleType::BACKGROUND][index_y];
+        // }
+        // 
         dir_screen[1] = window_height / 2;
     }
     return dir_screen;
@@ -144,32 +145,32 @@ std::vector<int> Level::draw_background(SDL2pp::Window& window, SDL2pp::Renderer
 }
 
 void Level::draw_floor(SDL2pp::Window& window, SDL2pp::Renderer& renderer, std::map<ObstacleType, std::unique_ptr<SDL2pp::Texture>>& textiles, PlayerDTO& player, int player_speed, int dir_x_screen, int dir_y_screen) {
-    int index_x = 0;
-    int index_y = 1;
-    int index_width = 2;
-    int index_height = 3;
-    int index_draw_height = 1;
-    int distance_floor_player_x = 0;
-    int distance_floor_player_y = 0;
+    // int index_x = 0;
+    // int index_y = 1;
+    // int index_width = 2;
+    // int index_height = 3;
+    // int index_draw_height = 1;
+    // int distance_floor_player_x = 0;
+    // int distance_floor_player_y = 0;
 
-    int y = window.GetHeight() - this->width_height[ObstacleType::FULL_FLOOR][index_draw_height];
-    if (dir_y_screen != 0) {
-        distance_floor_player_y = y - player.getX();
-        y = dir_y_screen + distance_floor_player_y;
-    }
-    if (dir_x_screen != 0) {
-        this->pixels_pos[ObstacleType::FULL_FLOOR][index_x] += player_speed;
-    }
+    // int y = window.GetHeight() - this->width_height[ObstacleType::FULL_FLOOR][index_draw_height];
+    // if (dir_y_screen != 0) {
+    //     distance_floor_player_y = y - player.getY();
+    //     y = dir_y_screen + distance_floor_player_y;
+    // }
+    // if (dir_x_screen != 0) {
+    //     this->pixels_pos[ObstacleType::FULL_FLOOR][index_x] += player_speed;
+    // }
        
 
-    if (this->pixels_pos[ObstacleType::FULL_FLOOR][index_x] > this->max_pixel_x_floor - this->pixels_pos[ObstacleType::FULL_FLOOR][index_width]) {
-        this->pixels_pos[ObstacleType::FULL_FLOOR][index_x] = 0;
-    }
+    // if (this->pixels_pos[ObstacleType::FULL_FLOOR][index_x] > this->max_pixel_x_floor - this->pixels_pos[ObstacleType::FULL_FLOOR][index_width]) {
+    //     this->pixels_pos[ObstacleType::FULL_FLOOR][index_x] = 0;
+    // }
 
-    if (abs(distance_floor_player_y) <= window.GetHeight()) {
-        renderer.Copy(*textiles[ObstacleType::FULL_FLOOR], SDL2pp::Rect(this->pixels_pos[ObstacleType::FULL_FLOOR][index_x], this->pixels_pos[ObstacleType::FULL_FLOOR][index_y], this->pixels_pos[ObstacleType::FULL_FLOOR][index_width], this->pixels_pos[ObstacleType::FULL_FLOOR][index_height]), 
-                        SDL2pp::Rect(0, y/*window.GetHeight() - this->width_height[ObstacleType::FULL_FLOOR][index_draw_height]*/, window.GetWidth(), this->width_height[ObstacleType::FULL_FLOOR][index_draw_height]));
-    }
+    // if (abs(distance_floor_player_y) <= window.GetHeight()) {
+    //     renderer.Copy(*textiles[ObstacleType::FULL_FLOOR], SDL2pp::Rect(this->pixels_pos[ObstacleType::FULL_FLOOR][index_x], this->pixels_pos[ObstacleType::FULL_FLOOR][index_y], this->pixels_pos[ObstacleType::FULL_FLOOR][index_width], this->pixels_pos[ObstacleType::FULL_FLOOR][index_height]), 
+    //                     SDL2pp::Rect(0, y/*window.GetHeight() - this->width_height[ObstacleType::FULL_FLOOR][index_draw_height]*/, window.GetWidth(), this->width_height[ObstacleType::FULL_FLOOR][index_draw_height]));
+    // }
 }
 
 
@@ -194,7 +195,7 @@ void Level::draw_tiles(SDL2pp::Window& window, SDL2pp::Renderer& renderer, std::
             x = dir_x_screen + distance_tile_player_x;
         }
         if (dir_y_screen != 0) {
-            distance_tile_player_y = y - player.getX();
+            distance_tile_player_y = y - player.getY();
             y = dir_y_screen + distance_tile_player_y;
         }
 		

@@ -75,7 +75,7 @@ void Points::draw_points(SDL2pp::Window& window, SDL2pp::Renderer& renderer, std
             x = dir_x_screen + distance_main_item_x;
         }
         if (dir_y_screen != 0) {
-            distance_main_item_y = y - player.getX();
+            distance_main_item_y = y - player.getY();
             y = dir_y_screen + distance_main_item_y;
         }
 		
