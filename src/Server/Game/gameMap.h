@@ -70,13 +70,13 @@ public:
     void handleCharacterEnemyCollision(std::shared_ptr<Character> character, std::shared_ptr<Enemy> enemy);
     void handleCharacterObstacleCollision(std::shared_ptr<Character> character, std::shared_ptr<Obstacle> obstacle);
 
-    void handleShooting(uint32_t characterX, uint8_t damage, float time, Direction dir);
+    void handleShooting(uint32_t characterX, uint8_t damage, float time, Direction dir, uint8_t shooterId);
     bool checkCollision(const Vector<uint32_t>& pos1, const Vector<uint32_t>& size1, const Vector<uint32_t>& pos2, const Vector<uint32_t>& size2);
 
     void update(float time);
     void updateBullets(float time);
 
-    void removeCharacter(uint8_t playerId);
+    void removeCharacter(std::shared_ptr<Character> character);
     void removeEnemy(uint8_t enemyId);
     void removeItem(Vector<uint32_t> position);
 

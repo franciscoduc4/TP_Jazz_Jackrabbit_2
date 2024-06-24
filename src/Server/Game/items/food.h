@@ -12,6 +12,9 @@ public:
     ItemType getItemType() const  { return ItemType::FOOD;}
 
     uint32_t getValue() const { return 10; }
+
+    uint32_t getWidth() const { return 1; }
+    uint32_t getHeight() const { return 1; }
 };
 
 #endif // FOOD_H

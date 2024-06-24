@@ -389,35 +389,60 @@ Vector<uint32_t> GameMap::getAvailablePosition() {
 void GameMap::update(float time) {
     std::cout << "[GAMEMAP] Updating game map" << std::endl;
     try {
-        for (const auto& characterPair: characters) {
-            auto character = characterPair.second;
-            character->update(time);
+        std::vector<std::shared_ptr<Entity>> entitiesToRemove;
 
-            // Verificar colisiones con entidades
-            for (const auto& entityPair: mapGrid) {
-                switch (entityPair.second->getType()) {
-                    case EntityType::ENEMY:
-                        handleCharacterEnemyCollision(
-                                character, std::dynamic_pointer_cast<Enemy>(entityPair.second));
-                        break;
-                    case EntityType::OBSTACLE:
-                        handleCharacterObstacleCollision(
-                                character, std::dynamic_pointer_cast<Obstacle>(entityPair.second));
-                        break;
-                    case EntityType::ITEM:
-                        handleCharacterItemCollision(
-                                character, std::dynamic_pointer_cast<Item>(entityPair.second));
-                        break;
-                    default:
-                        character->setOnGround(false);
-                        break;
+        // Actualizar personajes y enemigos en un solo bucle
+        for (auto& entityPair : mapGrid) {
+            auto entity = entityPair.second;
+
+            if (entity->getType() == EntityType::CHARACTER) {
+                auto character = std::dynamic_pointer_cast<Character>(entity);
+                if (!character->isAlive()) {
+                    entitiesToRemove.push_back(character);
+                    continue;
                 }
+                character->update(time);
+
+                // Verificar colisiones con entidades
+                for (const auto& checkEntityPair : mapGrid) {
+                    auto checkEntity = checkEntityPair.second;
+                    switch (checkEntity->getType()) {
+                        case EntityType::ENEMY:
+                            handleCharacterEnemyCollision(
+                                    character, std::dynamic_pointer_cast<Enemy>(checkEntity));
+                            break;
+                        case EntityType::OBSTACLE:
+                            handleCharacterObstacleCollision(
+                                    character, std::dynamic_pointer_cast<Obstacle>(checkEntity));
+                            break;
+                        case EntityType::ITEM:
+                            handleCharacterItemCollision(
+                                    character, std::dynamic_pointer_cast<Item>(checkEntity));
+                            break;
+                        default:
+                            character->setOnGround(false);
+                            break;
+                    }
+                }
+            } else if (entity->getType() == EntityType::ENEMY) {
+                auto enemy = std::dynamic_pointer_cast<Enemy>(entity);
+                enemy->update(characters, time);
+            } else if (entity->getType() == EntityType::ITEM) {
+                auto item = std::dynamic_pointer_cast<Item>(entity);
+                item->update(time);
             }
+        }
+
+        // Eliminar personajes muertos después de la actualización
+        for (const auto& entity : entitiesToRemove) {
+            removeCharacter(std::dynamic_pointer_cast<Character>(entity));
         }
     } catch (const std::exception& e) {
         std::cerr << "[GAMEMAP] Error updating game map: " << e.what() << std::endl;
     }
 }
+
+
 
 bool GameMap::checkCollision(const Vector<uint32_t>& pos1, const Vector<uint32_t>& size1,
                              const Vector<uint32_t>& pos2, const Vector<uint32_t>& size2) {
@@ -426,10 +451,10 @@ bool GameMap::checkCollision(const Vector<uint32_t>& pos1, const Vector<uint32_t
 }
 
 
-void GameMap::handleCharacterItemCollision(std::shared_ptr<Character> character,
-                                           std::shared_ptr<Item> item) {
+void GameMap::handleCharacterItemCollision(std::shared_ptr<Character> character, std::shared_ptr<Item> item) {
     try {
-
+        // if (checkCollision(character->getPosition(), {character->getWidth(), character->getHeight()},
+        //                    item->getPosition(), {item->getWidth(), item->getHeight()})) {
         if (character->getPosition() == item->getPosition()) {
             character->collectItem(item);
             mapGrid.erase(item->getPosition());
@@ -440,15 +465,18 @@ void GameMap::handleCharacterItemCollision(std::shared_ptr<Character> character,
     }
 }
 
+
+
 void GameMap::handleCharacterEnemyCollision(std::shared_ptr<Character> character,
                                             std::shared_ptr<Enemy> enemy) {
-
     try {
-        if (character->getPosition() == enemy->getPosition()) {
-            uint8_t damage = enemy->getDamage();  // Suponiendo que Enemy tiene un método
-                                                  // getDamageValue()
-            character->recvDamage(damage, 0);     // Llamar al método recvDamage del personaje
-            character->handleCollision(enemy);    // Llamar al método handleCollision del personaje
+        if (!character->isAlive()) return;
+
+        if (checkCollision(character->getPosition(), {character->getWidth(), character->getHeight()},
+                           enemy->getPosition(), {enemy->getWidth(), enemy->getHeight()})) {
+            uint8_t damage = enemy->getDamage();  
+            character->recvDamage(damage, 0);    
+            character->handleCollision(enemy);  
             std::cout << "[GAMEMAP] Character ID: " << static_cast<int>(character->getId())
                       << " received damage from enemy. Damage: " << static_cast<int>(damage)
                       << std::endl;
@@ -489,16 +517,24 @@ void GameMap::handleCharacterObstacleCollision(std::shared_ptr<Character> charac
 }
 
 
-void GameMap::removeCharacter(uint8_t playerId) {
+void GameMap::removeCharacter(std::shared_ptr<Character> character) {
     try {
-        auto character = characters[playerId];
-        mapGrid.erase(character->getPosition());
-        std::cout << "[GAMEMAP] Removed character with ID " << static_cast<int>(playerId)
-                  << std::endl;
+        auto it = characters.find(character->getId());
+        if (it != characters.end()){
+            auto position = it->second->getPosition();
+            mapGrid.erase(position);
+            characters.erase(it);
+            std::cout << "[GAMEMAP] Removed character with ID: " << static_cast<int>(character->getId())
+                      << " at position: (" << position.x << ", " << position.y << ")" << std::endl;     
+        } else {
+            std::cerr << "[GAMEMAP] Error removing character: Character ID not found" << std::endl;
+        }
+
     } catch (const std::exception& e) {
-        std::cerr << "[GAMEMAP] Error removing character: " << e.what() << std::endl;
+        std::cerr << "[GAMEMAP] Error removing character from map: " << e.what() << std::endl;
     }
 }
+
 
 void GameMap::removeItem(Vector<uint32_t> position) {
     try {
@@ -588,14 +624,15 @@ std::unique_ptr<GameDTO> GameMap::getGameDTO() {
 
 std::shared_ptr<Character> GameMap::getCharacter(uint8_t playerId) {
     std::cout << "[GAMEMAP] Getting character with ID " << (int)(playerId) << std::endl;
-    try {
-        return characters.at(playerId);
-    } catch (const std::exception& e) {
-        std::cerr << "[GAMEMAP] Error getting character with ID " << static_cast<int>(playerId)
-                  << ": " << e.what() << std::endl;
-        return nullptr;
+    auto it = characters.find(playerId);
+    if (it != characters.end()) {
+        return it->second;
     }
+    std::cerr << "[GAMEMAP] Error getting character with ID " << static_cast<int>(playerId)
+              << ": character not found" << std::endl;
+    return nullptr;
 }
+
 
 void GameMap::printMapGrid() const {
     try {
@@ -650,47 +687,36 @@ Vector<uint32_t> GameMap::calculateNewPosition(const Vector<uint32_t> position,
         throw;
     }
 }
-
-
-void GameMap::handleShooting(uint32_t characterX, uint8_t damage, float time, Direction dir) {
+void GameMap::handleShooting(uint32_t characterX, uint8_t damage, float time, Direction dir, uint8_t shooterId) {
     const uint32_t shootRange = 200; // Define el alcance máximo del disparo
+
     std::cout << "[GAMEMAP] Handling shooting at position: " << characterX
               << ", damage: " << static_cast<int>(damage) << std::endl;
-    
-    std::vector<uint8_t> enemiesToRemove;
-    std::cout << "[GAMEMAP] Number of enemies: " << enemies.size() << std::endl;
 
+    std::vector<uint8_t> enemiesToRemove;
+
+    // Check enemies
     for (const auto& enemyPair : enemies) {
         auto enemy = enemyPair.second;
         uint32_t enemyX = enemy->getPosition().x;
-        std::cout << "[GAMEMAP] Checking enemy at position: " << enemyX << std::endl;
 
-        bool inRange = false;
-        if (dir == Direction::RIGHT) {
-            if (enemyX >= characterX && enemyX <= characterX + shootRange) {
-                inRange = true;
-            }
-        } else if (dir == Direction::LEFT) {
-            if (enemyX <= characterX && enemyX >= characterX - shootRange) {
-                inRange = true;
-            }
-        }
+        std::cout << "[GAMEMAP] Checking enemy with ID: " << static_cast<int>(enemy->getId()) << std::endl;
+
+        // Verificar que el enemigo esté dentro del rango y la dirección del disparo
+        bool inRange = (dir == Direction::RIGHT && enemyX >= characterX && enemyX <= characterX + shootRange) ||
+                       (dir == Direction::LEFT && enemyX <= characterX && enemyX >= characterX - shootRange);
 
         if (inRange) {
             enemy->recvDamage(damage, time);
-            std::cout << "[GAMEMAP] Enemy ID: " << static_cast<int>(enemy->getId())
-                      << " received damage from shooting at x = " << characterX 
-                      << " in direction " << (dir == Direction::RIGHT ? "RIGHT" : "LEFT")
-                      << std::endl;
-            
             if (enemy->isDead()) {
                 enemiesToRemove.push_back(enemy->getId());
+                std::cout << "[GAMEMAP] Enemy with ID: " << static_cast<int>(enemy->getId()) << " is dead" << std::endl;
             }
         }
     }
 
-    for (auto enemyId : enemiesToRemove) {
-        removeEnemy(enemyId);
-        std::cout << "[GAMEMAP] Enemy with ID " << static_cast<int>(enemyId) << " removed" << std::endl; 
+    // Remove dead enemies
+    for (uint8_t id : enemiesToRemove) {
+        removeEnemy(id);
     }
 }

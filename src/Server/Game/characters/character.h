@@ -8,6 +8,7 @@
 #include "../../../Common/Config/ServerConfig.h"
 #include "../../../Common/DTO/player.h"
 #include "../../../Common/Types/character.h"
+#include "../../../Common/Types/entity.h"
 #include "../../../Common/Types/direction.h"
 #include "../entity.h"
 #include "../items/item.h"
@@ -19,6 +20,7 @@
 #include "states/dead.h"
 #include "states/idle.h"
 #include "states/intoxicated.h"
+#include "states/damage.h"
 #include "states/jumping.h"
 #include "states/moving.h"
 #include "states/shooting.h"
@@ -53,7 +55,7 @@ protected:
     float horizontalSpeed;
     float jumpHeight;
 
-    std::unique_ptr<Weapon> currentWeapon;
+    std::unique_ptr<Weapon> currentWeapon = std::make_unique<Blaster>();
     std::unique_ptr<State> state;
 
     bool jumping = false;

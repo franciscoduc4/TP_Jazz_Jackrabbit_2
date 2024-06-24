@@ -20,19 +20,53 @@ Enemy::Enemy(GameMap& gameMap, const Vector<uint32_t>& pos, uint8_t id, uint8_t 
         jumpProb(jumpProb),
         flyProb(flyProb),
         width(width),
-        height(height) {}
+        height(height),
+        initialPosition(pos),
+        maxDistance(50),
+        movingRight(true) {}
 
-void Enemy::update(std::vector<std::shared_ptr<Character>> characters, float time) {
+void Enemy::update(const std::map<uint8_t, std::shared_ptr<Character>>& characters, float time) {
+
+    std::cout << "[ENEMY] update" << std::endl;
+    //moveCycle(time);
+
+    std::vector<std::shared_ptr<Character>> characterList;
+    for (const auto& pair : characters) {
+        characterList.push_back(pair.second);
+    }
+
     std::unique_ptr<EnemyState> newState = state->update(time);
     if (newState != nullptr) {
         state = std::move(newState);
     }
-    attack(characters, time);
+    //attack(characterList, time);  
+}
+
+void Enemy::moveCycle(float deltaTime) {
+
+    std::cout << "[ENEMY] moveCycle" << std::endl;
+    Vector<uint32_t> newPos = pos;
+    if (movingRight) {
+        newPos.x += speed * deltaTime;
+        if (newPos.x >= initialPosition.x + maxDistance) {
+            movingRight = false;
+        }
+    } else {
+        newPos.x -= speed * deltaTime;
+        if (newPos.x <= initialPosition.x) {
+            movingRight = true;
+        }
+    }
+
+    if (gameMap.isValidMapPosition(newPos)) {
+        pos = newPos;
+        std::cout << "[ENEMY] Moved to: " << pos.x << ", " << pos.y << std::endl;
+    }    
 }
 
 void Enemy::recvDamage(uint8_t dmg, float time) {
+    std::cout << "[ENEMY] recvDamage" << std::endl;
     Entity::recvDamage(dmg, time);
-    viewDistance = viewDistanceHit;
     if (isDead()) {
         die(time);
         return;
@@ -90,4 +124,5 @@ EnemyDTO Enemy::getDTO() const {
 }
 
 void Enemy::update(double deltaTime) {
+    moveCycle(deltaTime);
 }

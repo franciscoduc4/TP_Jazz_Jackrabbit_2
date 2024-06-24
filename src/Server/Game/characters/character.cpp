@@ -47,45 +47,59 @@ void Character::idle(float time) {
     }
 }
 
-
 void Character::recvDamage(uint8_t dmg, float time) {
     std::cout << "[CHARACTER] Character ID: " << static_cast<int>(id)
               << " receiving damage: " << static_cast<int>(dmg) << std::endl;
-    Entity::recvDamage(dmg, time);
-    if (isDead) {
+    
+    if (isAlive()) {
+        Entity::recvDamage(dmg, time);
+        std::cout << "[CHARACTER] Character ID: " << static_cast<int>(id)
+                  << " health after receiving damage: " << static_cast<int>(health) << std::endl;
+        damageTime = time;
+
+        if (!isAlive()) {
+            die(respawnTime);
+            gameMap.removeCharacter(shared_from_this());
+        } else {
+            auto newState = std::unique_ptr<State>(state->receiveDamage(dmg, time));
+            if (newState) {
+                state = std::move(newState);
+            }
+        }
+    } else {
         std::cout << "[CHARACTER] Character ID: " << static_cast<int>(id) << " is dead"
                   << std::endl;
+        gameMap.removeCharacter(shared_from_this());
         return;
-    }
-    auto newState = std::unique_ptr<State>(state->receiveDamage(dmg, time));
-    if (newState) {
-        state = std::move(newState);
     }
 }
 
+
 void Character::update(float time) {
+
+    if (!isAlive()) {
+        std::cout << "[CHARACTER] Character ID: " << static_cast<int>(id) << " is dead and will not be updated." << std::endl;
+        return;
+    }
+    
     std::cout << "[CHARACTER] Updating character ID: " << static_cast<int>(id) << std::endl;
     if (!state) {
         std::cerr << "[CHARACTER] Null state for character ID: " << static_cast<int>(id)
                   << std::endl;
         return;
     }
-    // if (!isOnGround()) {
-    //     std::cout << "[is on ground] Character ID: " << static_cast<int>(id)
-    //               << " is not on the ground" << std::endl;
-    //     // Si el personaje no está en el suelo y no está saltando, aplicar gravedad
-    //     auto newState = std::make_unique<MovingState>(*this, Direction::DOWN)->exec(time);
-    //     if (newState) {
-    //         state = std::move(newState);
-    //     }
-    // } else {
-    // std::cout << "[is on ground] Character ID: " << static_cast<int>(id) << " is on the ground"
-    //           << std::endl;
+    
+    // if (typeid(*state) == typeid(ReceivingDamageState) && !static_cast<ReceivingDamageState*>(state.get())->isReceivingDamage(time)) {
+    //     state = std::make_unique<IdleState>(*this);
+    // }
+
     auto newState = std::unique_ptr<State>(state->exec(time));
     if (newState) {
         state = std::move(newState);
     }
-    // }
+    std::cout << "[CHARACTER] Character new state after update: "
+              << static_cast<int>(state->getCharacterState()) << std::endl;
+
     std::cout << "[CHARACTER POS] Character Pos Update: " << static_cast<int>(pos.x) << ", "
               << static_cast<int>(pos.y) << std::endl;
 }
@@ -101,11 +115,9 @@ void Character::shoot(float time) {
     std::cout << "[CHARACTER SHOOT] Character state before shooting: "
               << static_cast<int>(state->getCharacterState()) << std::endl;
 
-
     std::cout << "[CHARACTER] Character ID: " << static_cast<int>(id) << " calling handleShooting on GameMap" << std::endl;
 
-    gameMap.handleShooting(pos.x, 10, time, dir);
-
+    gameMap.handleShooting(pos.x, 10, time, dir, id);
 
     if (newState) {
         state = std::move(newState);
@@ -115,6 +127,7 @@ void Character::shoot(float time) {
         std::cerr << "[CHARACTER SHOOT] No new state returned from shoot()" << std::endl;
     }
 }
+
 
 
 void Character::handleCollision(std::shared_ptr<Enemy> enemy) {
@@ -569,7 +582,7 @@ void Character::jump(float time) {
             }
         }
 
-        gameMap.moveObject(pos, mapPosition, Direction::UP);
+        //gameMap.moveObject(pos, mapPosition, Direction::UP);
         pos = newPosition;
         jumping = true;
     }
@@ -637,9 +650,7 @@ void Character::collectItem(const std::shared_ptr<Item>& item) {
             std::cerr << "[CHARACTER] Unknown item type collected." << std::endl;
             break;
     }
-    // gameMap.removeItem(item->getPosition());
 }
-
 
 PlayerDTO Character::getDTO() const {
     return PlayerDTO{pos.x,

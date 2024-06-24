@@ -7,6 +7,19 @@ MoveHandler::MoveHandler(std::unique_ptr<GameCommandDTO> moveCommand):
 
 void MoveHandler::execute(GameMap& gameMap, std::atomic<bool>& keepRunning, double deltaTime) {
     std::shared_ptr<Character> character = gameMap.getCharacter(moveCommand->getPlayerId());
+    
+    if (!character) {
+        std::cerr << "[MOVE HANDLER] Character with ID " << static_cast<int>(moveCommand->getPlayerId())
+                  << " not found. Skipping move command." << std::endl;
+        return;
+    }
+
+    if (!character->isAlive()) {
+        std::cerr << "[MOVE HANDLER] Character with ID " << static_cast<int>(moveCommand->getPlayerId())
+                  << " is dead. Skipping move command." << std::endl;
+        return;
+    }
+
     switch (moveCommand->getMoveType()) {
         case Direction::UP:
             std::cout << "[MOVE HANDLER] Moving character up" << std::endl;
