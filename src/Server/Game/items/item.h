@@ -18,6 +18,7 @@ public:
     ItemDTO getDTO();
 
     virtual ItemType getItemType() const = 0;
+    virtual uint32_t getValue() const = 0;
 
     
 };

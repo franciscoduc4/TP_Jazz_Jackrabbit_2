@@ -10,6 +10,8 @@ public:
     void update(double deltaTime) override;
 
     ItemType getItemType() const { return ItemType::SILVER_COIN;}
+
+    uint32_t getValue() const { return 10; }
     
 };
 

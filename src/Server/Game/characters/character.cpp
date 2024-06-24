@@ -266,6 +266,7 @@ void Character::moveRight(double time) {
               << std::endl;
     auto newState = std::unique_ptr<State>(state->move(Direction::RIGHT, time));
     // auto newState = std::make_unique<MovingState>(*this, Direction::RIGHT);
+    dir = Direction::RIGHT;  // Actualiza la dirección
 
     if (newState) {
         std::cout << "[CHARACTER] Character ID: " << static_cast<int>(id) << " moving right"
@@ -279,6 +280,8 @@ void Character::moveLeft(double time) {
               << std::endl;
     auto newState = std::unique_ptr<State>(state->move(Direction::LEFT, time));
     // auto newState = std::make_unique<MovingState>(*this, Direction::LEFT);
+    dir = Direction::LEFT;  // Actualiza la dirección
+
     if (newState) {
         state = std::move(newState);
     }
@@ -610,22 +613,24 @@ CharacterType Character::getCharacterType() { return type; }
 void Character::collectItem(const std::shared_ptr<Item>& item) {
     switch (item->getItemType()) {
         case ItemType::FOOD:
-            // health = std::min(maxHealth, health + item->getValue());
-            // std::cout << "[CHARACTER] Collected food. Health increased to: " <<
-            // static_cast<int>(health) << std::endl;
+            if (health <= maxHealth - 10){
+                health += item->getValue();
+                }
+                std::cout << "[CHARACTER] Collected food. Health increased to: " <<
+                static_cast<int>(health) << std::endl;
             break;
         case ItemType::GEM:
-            // score += item->getValue();
-            // std::cout << "[CHARACTER] Collected gem. Score increased to: " <<
-            // static_cast<int>(score) << std::endl;
+            score += item->getValue();
+            std::cout << "[CHARACTER] Collected gem. Score increased to: " <<
+            static_cast<int>(score) << std::endl;
             break;
         case ItemType::SILVER_COIN:
-            // score += item->getValue();
-            // std::cout << "[CHARACTER] Collected silver coin. Score increased to: " <<
-            // static_cast<int>(score) << std::endl;
+            score += item->getValue();
+            std::cout << "[CHARACTER] Collected silver coin. Score increased to: " <<
+            static_cast<int>(score) << std::endl;
             break;
         case ItemType::GOLD_COIN:
-            // score += item->getValue();
+            score += item->getValue();
             std::cout << "[CHARACTER] Collected gold coin" << std::endl;
             break;
         default:
@@ -644,7 +649,8 @@ PlayerDTO Character::getDTO() const {
                      static_cast<uint8_t>(0),
                      static_cast<uint8_t>(0),
                      type,
-                     state->getCharacterState()};
+                     state->getCharacterState(),
+                     score};
 }
 
 uint32_t Character::getWidth() const { return width; }

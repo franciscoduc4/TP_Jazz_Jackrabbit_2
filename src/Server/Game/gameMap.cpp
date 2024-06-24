@@ -650,8 +650,10 @@ Vector<uint32_t> GameMap::calculateNewPosition(const Vector<uint32_t> position,
         throw;
     }
 }
+
+
 void GameMap::handleShooting(uint32_t characterX, uint8_t damage, float time, Direction dir) {
-    const uint32_t shootRange = 100; // Define el alcance máximo del disparo
+    const uint32_t shootRange = 200; // Define el alcance máximo del disparo
     std::cout << "[GAMEMAP] Handling shooting at position: " << characterX
               << ", damage: " << static_cast<int>(damage) << std::endl;
     

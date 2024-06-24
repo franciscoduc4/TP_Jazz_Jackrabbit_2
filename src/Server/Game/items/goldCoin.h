@@ -10,6 +10,8 @@ public:
     void update(double deltaTime) override;
 
     ItemType getItemType() const { return ItemType::GOLD_COIN; }
+
+    uint32_t getValue() const { return 30; }
 };
 
 #endif // GOLDCOIN_H

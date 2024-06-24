@@ -263,6 +263,8 @@ std::vector<char> Serializer::serializePlayerDTO(const std::unique_ptr<PlayerDTO
     buffer.push_back(static_cast<char>(dto->getState()));
     // std::cout << "[SERVER SERIALIZER PLAYER] Serializing player state: " << (int)dto->getState()
     //   << std::endl;
+
+    buffer.push_back(static_cast<char>(dto->getScore()));
     return buffer;
 }
 

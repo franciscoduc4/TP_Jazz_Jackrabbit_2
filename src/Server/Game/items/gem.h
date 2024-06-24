@@ -10,6 +10,8 @@ public:
     void update(double deltaTime) override;
 
     ItemType getItemType() const { return ItemType::GEM;}
+
+    uint32_t getValue() const { return 50; }
 };
 
 #endif // GEM_H

@@ -65,6 +65,7 @@ protected:
     float jumpStartTime = 0.0f;
     float jumpDuration = 0.5f;
     uint8_t initialYJump = 0;
+    uint8_t score = 0;
 
     uint32_t width;
     uint32_t height;

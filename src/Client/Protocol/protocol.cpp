@@ -240,7 +240,10 @@ std::vector<PlayerDTO> ClientProtocol::receivePlayers() {
             if (!this->receive_uint8(aux)) return {};
             auto state = static_cast<CharacterStateEntity>(aux);
 
-            PlayerDTO player(x, y, playerId, health, damage, speed, pj_type, state);
+            if (!this->receive_uint8(aux)) return {};
+            uint8_t score = static_cast<uint8_t>(aux);
+
+            PlayerDTO player(x, y, playerId, health, damage, speed, pj_type, state, score);
             players.push_back(player);
         }
     } catch (const std::exception& e) {
