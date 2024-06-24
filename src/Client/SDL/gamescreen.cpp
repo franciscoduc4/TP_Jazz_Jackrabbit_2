@@ -27,6 +27,10 @@
 
 #include "projectile.h"
 
+#include <ctime>
+#include <chrono>
+#include "../../Common/printer.h"
+
 GameScreen::GameScreen(GameController& controller, uint8_t playerId):
         controller(controller),
         mainPlayerId(playerId),
@@ -103,6 +107,8 @@ void GameScreen::run() {
     Uint32 frameStart;
     int frameTime;
 
+    std::time_t game_time = ClientConfig::getGameTime(); 
+    std::time_t start = std::time({});
     while (true) {
         SDL_Event event;
         std::cout << "[GAME SCREEN] Waiting for event" << std::endl;
@@ -111,6 +117,8 @@ void GameScreen::run() {
 
             if (event.type == SDL_QUIT) {
                 std::cout << "[GAME SCREEN] SDL_QUIT event received, exiting run loop" << std::endl;
+                this->soundControl.free_musics();
+                Mix_CloseAudio();
                 return;
             } else if (event.type == SDL_KEYDOWN) {
                 switch (event.key.keysym.sym) {
@@ -229,7 +237,18 @@ void GameScreen::run() {
         if (tiles.size() > 0) {
             this->level.draw_tiles(window, renderer, tiles_textures, tiles, *mainPlayer, x_screen, y_screen);
         }
-        this->stats.draw_interface(window, renderer, *pjs_textures[mainPlayer->getCharacterType()], items, font, players, *mainPlayer, 3);
+        auto const now = std::chrono::high_resolution_clock::now();
+        std::time_t final = std::chrono::system_clock::to_time_t(now) - start;
+        
+        this->stats.draw_interface(window, renderer, *pjs_textures[mainPlayer->getCharacterType()], items, font, players, *mainPlayer, 3, game_time - final);
+
+        if (game_time - final == 0) {
+            SDL_Delay(1000);
+            this->soundControl.free_musics();
+            Mix_CloseAudio(); 
+            final_screen(window, renderer, *tiles_textures[ObstacleType::BACKGROUND], font);
+            return;
+        }
 
         x_screen = 0;
         y_screen = 0;
@@ -245,5 +264,22 @@ void GameScreen::run() {
     }
     this->soundControl.free_musics();
     Mix_CloseAudio();
+
+}
+
+void GameScreen::final_screen(SDL2pp::Window& window, SDL2pp::Renderer& renderer, SDL2pp::Texture& background, std::unique_ptr<SDL2pp::Texture>& font) {
+    while (true) {
+        SDL_Event event;
+        std::cout << "[GAME SCREEN] Waiting for event" << std::endl;
+        while (SDL_PollEvent(&event)) {
+            if (event.type == SDL_QUIT) {
+                return;
+            }
+        }
+        renderer.Clear();
+        this->stats.draw_game_finished(window, renderer, background, font);
+
+        renderer.Present();
+    }
 
 }

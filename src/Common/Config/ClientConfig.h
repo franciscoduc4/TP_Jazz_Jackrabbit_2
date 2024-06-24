@@ -50,6 +50,8 @@ public:
     static std::tuple<int, int, int> getInterfaceFontColourKey();
     // Rectangular Sprites
     static std::vector<std::vector<int>> getEpisodesSprites();
+    //Game time
+    static int getGameTime();
     //Levels sounds and sprites
     //Sounds
     static std::vector<std::string> getSoundsFiles();

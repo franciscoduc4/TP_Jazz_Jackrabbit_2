@@ -129,7 +129,7 @@ std::vector<int> Level::draw_background(SDL2pp::Window& window, SDL2pp::Renderer
         dir_screen[0] = window_width / 2;
     }
 
-    if (get_pos_y > window_height / 2) {
+    if (get_pos_y > window_height / 4 * 3) {
         // if (pixels_pos[ObstacleType::BACKGROUND][index_y] > this->width_height[ObstacleType::BACKGROUND][index_draw_height] - pixels_pos[ObstacleType::BACKGROUND][index_height]) {
         //     pixels_pos[ObstacleType::BACKGROUND][index_y] = 0;
         // } else if (pixels_pos[ObstacleType::BACKGROUND][index_y] < 0) {
@@ -138,7 +138,7 @@ std::vector<int> Level::draw_background(SDL2pp::Window& window, SDL2pp::Renderer
         //     pixels_pos[ObstacleType::BACKGROUND][index_y];
         // }
         // 
-        dir_screen[1] = window_height / 2;
+        dir_screen[1] = window_height / 4 * 3;
     }
     return dir_screen;
 
@@ -200,9 +200,13 @@ void Level::draw_tiles(SDL2pp::Window& window, SDL2pp::Renderer& renderer, std::
         }
 		
         
-        if (abs(distance_tile_player_x) <= window.GetWidth()  && abs(distance_tile_player_y) <= window.GetHeight()) {
+        if (abs(distance_tile_player_x) <= window.GetWidth()  && abs(distance_tile_player_y) <= window.GetHeight() / 4 * 3) {
             ObstacleType type = t.getObstacleType();
-            renderer.Copy(*tiles_textures[type], SDL2pp::Rect(pixels_pos[type][index_x], pixels_pos[type][index_y], pixels_pos[type][index_width], pixels_pos[type][index_height]), SDL2pp::Rect(x, y, this->width_height[type][index_draw_width], this->width_height[type][index_draw_height]));
+            if (type == ObstacleType::FULL_FLOOR) {
+                renderer.Copy(*tiles_textures[type], SDL2pp::Rect(pixels_pos[type][index_x], pixels_pos[type][index_y], pixels_pos[type][index_width], pixels_pos[type][index_height]), SDL2pp::Rect(x, y, window.GetWidth(), this->width_height[type][index_draw_height]));    
+            } else {
+                renderer.Copy(*tiles_textures[type], SDL2pp::Rect(pixels_pos[type][index_x], pixels_pos[type][index_y], pixels_pos[type][index_width], pixels_pos[type][index_height]), SDL2pp::Rect(x, y, this->width_height[type][index_draw_width], this->width_height[type][index_draw_height]));
+            }
         } 
 
     }

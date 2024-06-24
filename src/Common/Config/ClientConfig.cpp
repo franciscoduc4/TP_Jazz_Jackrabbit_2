@@ -151,6 +151,9 @@ std::vector<std::vector<int>> ClientConfig::getEpisodesSprites() {
     return episodesSprites;
 }
 
+int ClientConfig::getGameTime() { return getInstance()->root["GAME_TIME"].as<int>(); }
+
+
 //Sounds
 std::vector<std::string> ClientConfig::getSoundsFiles() {
     YAML::Node soundsFilesNode = getInstance()->root["SOUNDS"];
