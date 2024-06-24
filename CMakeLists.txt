@@ -55,8 +55,10 @@ endif()
 find_package(fmt REQUIRED)
 find_package(Qt5Widgets CONFIG REQUIRED)
 find_package(Qt5Core CONFIG REQUIRED)
+find_package(Qt5Gui CONFIG REQUIRED)
 find_package(SDL2 REQUIRED)
 find_package(yaml-cpp REQUIRED)
+find_package(GTest REQUIRED)
 
 # ------------------------------------------------------------------------------------
 # Common files
@@ -67,8 +69,7 @@ file(GLOB_RECURSE COMMON_SOURCES
         ${PROJECT_SOURCE_DIR}/src/Common/*.h
 )
 
-add_library(common ${COMMON_SOURCES}
-        src/Common/DTO/gameUpdate.h)
+add_library(common SHARED ${COMMON_SOURCES})
 target_link_libraries(common yaml-cpp fmt::fmt -pthread)
 target_include_directories(common PUBLIC ${PROJECT_SOURCE_DIR}/src/Common)
 
@@ -114,8 +115,10 @@ if(CLIENT)
     qt5_wrap_ui(UIS_HEADERS ${UI_FILES})
     qt5_add_resources(RESOURCES ${PROJECT_SOURCE_DIR}/src/Client/resources.qrc)
 
-    add_executable(jazzclient ${CLIENT_SOURCES} ${UIS_HEADERS} ${RESOURCES})
-    target_link_libraries(jazzclient common Qt5::Widgets Qt5::Core SDL2 SDL2pp SDL2_image SDL2_mixer yaml-cpp fmt::fmt -pthread)
+    add_library(jazzclient_lib SHARED ${CLIENT_SOURCES} ${UIS_HEADERS} ${RESOURCES})
+    target_link_libraries(jazzclient_lib common Qt5::Widgets Qt5::Core SDL2 SDL2pp SDL2_image SDL2_mixer yaml-cpp fmt::fmt -pthread)
+    add_executable(jazzclient ${PROJECT_SOURCE_DIR}/src/Client/main.cpp)  # Replace main.cpp with the actual main file of jazzclient
+    target_link_libraries(jazzclient jazzclient_lib)
     target_include_directories(jazzclient PUBLIC ${PROJECT_SOURCE_DIR}/src/Common)
     set_target_properties(jazzclient PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
 endif()
