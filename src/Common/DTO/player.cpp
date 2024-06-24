@@ -16,7 +16,7 @@ PlayerDTO::PlayerDTO(const uint8_t& playerId):
         state(CharacterStateEntity::IDLE) {}
 
 PlayerDTO::PlayerDTO(const uint32_t& x, const uint32_t& y, const uint8_t& player_id, uint8_t health, uint8_t damage, uint8_t speed,
-                     const CharacterType& type, const CharacterStateEntity& state, uint8_t score):
+                     const CharacterType& type, const CharacterStateEntity& state, uint32_t score):
         GameElementDTO(ElementType::PLAYER),
         x(x),
         y(y),
@@ -61,4 +61,4 @@ std::unique_ptr<DTO> PlayerDTO::clone() const {
     return std::make_unique<PlayerDTO>(*this);
 }
 
-uint8_t PlayerDTO::getScore() const { return score; }
+uint32_t PlayerDTO::getScore() const { return score; }

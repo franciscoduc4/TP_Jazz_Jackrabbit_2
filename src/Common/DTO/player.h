@@ -24,13 +24,13 @@ private:
     WeaponDTO currentWeapon;
     CharacterType type;
     CharacterStateEntity state;
-    uint8_t score;
+    uint32_t score;
 
 public:
     explicit PlayerDTO(const uint8_t& playerId);
 
     PlayerDTO(const uint32_t& x, const uint32_t& y, const uint8_t& player_id, uint8_t health, uint8_t damage, uint8_t speed,
-              const CharacterType& type, const CharacterStateEntity& state, uint8_t score);
+              const CharacterType& type, const CharacterStateEntity& state, uint32_t score);
     uint8_t getPlayerId() const;
     uint32_t getX() const;
     uint32_t getY() const;
@@ -43,7 +43,7 @@ public:
     uint8_t getRespawnTime() const;
     CharacterType getCharacterType() const;
     CharacterStateEntity getState() const;
-    uint8_t getScore() const;
+    uint32_t getScore() const;
 
     virtual std::unique_ptr<DTO> clone() const override;
 };
