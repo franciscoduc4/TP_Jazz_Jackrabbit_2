@@ -81,6 +81,7 @@ public:
     void recvDamage(uint8_t damage, float time) override;
     void update(float time);
     void shoot(float time);
+    void setState(std::unique_ptr<State> newState);
 
     bool isPointInTriangle(const Vector<uint32_t>& p, const Vector<uint32_t>& v1, 
     const Vector<uint32_t>& v2, const Vector<uint32_t>& v3);
@@ -88,12 +89,12 @@ public:
     void handleCollision(std::shared_ptr<Enemy> enemy);
     void handleObstacleCollision(std::shared_ptr<Obstacle> obstacle);
     void handleLadderCollision(std::shared_ptr<Obstacle> obstacle);
+    void handleCharacterCollision(std::shared_ptr<Character> character);
 
     void moveRight(double time);
     void sprintRight(float time);
     void moveLeft(double time);
     void sprintLeft(float time);
-    void moveUp(float time);
     void moveDown(float time);
     void jump(float time);
 
@@ -113,7 +114,7 @@ public:
     void moveRight();
     void moveLeft();
     void moveDown();
-    void moveUp();
+    void jump();
 
 
     bool characIsIntoxicated() const;

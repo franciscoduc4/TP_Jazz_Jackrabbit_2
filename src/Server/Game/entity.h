@@ -13,6 +13,7 @@
 
 class Entity {
 protected:
+    Vector<uint32_t> initialPos;
     Vector<uint32_t> pos;
     uint8_t id;
     uint8_t health;
@@ -55,6 +56,10 @@ public:
     EntityType getType() const;
 
     virtual void update(double deltaTime) = 0; 
+
+
+
+    Vector<uint32_t> getInitialPos() const { return initialPos; }
 
 
 

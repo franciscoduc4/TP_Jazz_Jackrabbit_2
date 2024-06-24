@@ -34,6 +34,8 @@ protected:
     uint32_t maxDistance;
     bool movingRight;
 
+
+
 public:
     Enemy(GameMap& map, const Vector<uint32_t>& pos, uint8_t id, uint8_t health, Direction dir, uint8_t dmg,
           std::unique_ptr<EnemyState> initialState, uint8_t viewDistance, uint8_t viewDistanceHit,

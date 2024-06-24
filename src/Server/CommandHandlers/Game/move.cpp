@@ -23,7 +23,7 @@ void MoveHandler::execute(GameMap& gameMap, std::atomic<bool>& keepRunning, doub
     switch (moveCommand->getMoveType()) {
         case Direction::UP:
             std::cout << "[MOVE HANDLER] Moving character up" << std::endl;
-            character->moveUp(deltaTime);
+            character->jump(deltaTime);
             break;
         case Direction::DOWN:
             std::cout << "[MOVE HANDLER] Moving character down" << std::endl;

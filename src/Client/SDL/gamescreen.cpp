@@ -149,9 +149,12 @@ void GameScreen::run() {
                         break;
                     }
                     case SDLK_SPACE: {
-                        Command jump = Command::JUMP;
-                        std::vector<uint8_t> elements;
-                        this->controller.sendMsg(this->mainPlayerId, jump, elements);
+                        Command move = Command::MOVE;
+                        std::vector<uint8_t> elements{static_cast<uint8_t>(Direction::UP)};
+                        this->controller.sendMsg(this->mainPlayerId, move, elements);
+                        pj_direction = -1;
+                        speed = -2;
+                        break;
                     }
                 }
             } else if (event.type == SDL_KEYUP) {

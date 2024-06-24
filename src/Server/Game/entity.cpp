@@ -1,6 +1,7 @@
 #include "entity.h"
 
 Entity::Entity(Vector<uint32_t> pos, uint8_t id, uint8_t health, Direction dir, EntityType type):
+        initialPos(pos),
         pos(pos),
         id(id),
         health(health),
