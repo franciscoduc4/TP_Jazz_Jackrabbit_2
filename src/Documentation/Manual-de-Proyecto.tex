@@ -1,0 +1,213 @@
+\documentclass[titlepage,a4paper]{article}
+\usepackage{a4wide}
+\usepackage[T1]{fontenc}
+\usepackage{lipsum}
+\usepackage{enumitem,amssymb}
+\newlist{todolist}{itemize}{2}
+\setlist[todolist]{label=$\square$}
+\usepackage{pifont}
+\usepackage{xcolor}
+\usepackage[normalem]{ulem}
+\usepackage{listings}
+\usepackage{color}
+\usepackage{pdfpages}
+\usepackage{multirow}
+\usepackage{plantuml}
+\usepackage{fancyhdr}
+\usepackage[spanish,es-tabla]{babel}
+
+% Quote box
+% for adjustwidth environment
+\usepackage[strict]{changepage}
+
+% for formal definitions
+\usepackage{framed}
+
+% Add the titlesec package for optional formatting (if needed)
+\usepackage{titlesec}
+
+\newcounter{subsubsubsection}[subsubsection]
+\renewcommand\thesubsubsubsection{\thesubsubsection.\arabic{subsubsubsection}}
+\renewcommand\theparagraph{\thesubsubsubsection.\arabic{paragraph}} % optional; useful if paragraphs are to be numbered
+
+\titleformat{\subsubsubsection}
+  {\normalfont\normalsize\bfseries}{\thesubsubsubsection}{1em}{}
+\titlespacing*{\subsubsubsection}
+{0pt}{3.25ex plus 1ex minus .2ex}{1.5ex plus .2ex}
+
+\makeatletter
+\renewcommand\paragraph{\@startsection{paragraph}{5}{\z@}%
+  {3.25ex \@plus1ex \@minus.2ex}%
+  {-1em}%
+  {\normalfont\normalsize\bfseries}}
+\renewcommand\subparagraph{\@startsection{subparagraph}{6}{\parindent}%
+  {3.25ex \@plus1ex \@minus .2ex}%
+  {-1em}%
+  {\normalfont\normalsize\bfseries}}
+\def\toclevel@subsubsubsection{4}
+\def\toclevel@paragraph{5}
+\def\toclevel@paragraph{6}
+\def\l@subsubsubsection{\@dottedtocline{4}{7em}{4em}}
+\def\l@paragraph{\@dottedtocline{5}{10em}{5em}}
+\def\l@subparagraph{\@dottedtocline{6}{14em}{6em}}
+\makeatother
+
+\setcounter{secnumdepth}{5}
+\setcounter{tocdepth}{4}
+
+
+% environment derived from framed.sty: see leftbar environment definition
+\definecolor{formalshade}{rgb}{0.95,0.95,1}
+
+\newenvironment{formal}{%
+  \def\FrameCommand{%
+    \hspace{1pt}%
+    {\color{blue}\vrule width 2pt}%
+    {\color{formalshade}\vrule width 4pt}%
+    \colorbox{formalshade}%
+  }%
+  \MakeFramed{\advance\hsize-\width\FrameRestore}%
+  \noindent\hspace{-4.55pt}% disable indenting first paragraph
+  \begin{adjustwidth}{}{7pt}\itshape%
+  \vspace{2pt}\vspace{2pt}%
+}
+{%
+  \vspace{2pt}\end{adjustwidth}\endMakeFramed%
+}
+
+\definecolor{dkgreen}{rgb}{0,0.6,0}
+\definecolor{gray}{rgb}{0.5,0.5,0.5}
+\definecolor{mauve}{rgb}{0.58,0,0.82}
+
+\lstset{frame=tb,
+  language=Java,
+  aboveskip=3mm,
+  belowskip=3mm,
+  showstringspaces=false,
+  columns=flexible,
+  basicstyle={\small\ttfamily},
+  numbers=none,
+  numberstyle=\tiny\color{gray},
+  keywordstyle=\color{blue},
+  commentstyle=\color{dkgreen},
+  stringstyle=\color{mauve},
+  breaklines=true,
+  breakatwhitespace=true,
+  tabsize=3,
+  literate=
+  {á}{{\'a}}1 {é}{{\'e}}1 {í}{{\'i}}1 {ó}{{\'o}}1 {ú}{{\'u}}1
+  {Á}{{\'A}}1 {É}{{\'E}}1 {Í}{{\'I}}1 {Ó}{{\'O}}1 {Ú}{{\'U}}1
+  {à}{{\`a}}1 {è}{{\`e}}1 {ì}{{\`i}}1 {ò}{{\`o}}1 {ù}{{\`u}}1
+  {À}{{\`A}}1 {È}{{\'E}}1 {Ì}{{\`I}}1 {Ò}{{\`O}}1 {Ù}{{\`U}}1
+  {ä}{{\"a}}1 {ë}{{\"e}}1 {ï}{{\"i}}1 {ö}{{\"o}}1 {ü}{{\"u}}1
+  {Ä}{{\"A}}1 {Ë}{{\"E}}1 {Ï}{{\"I}}1 {Ö}{{\"O}}1 {Ü}{{\"U}}1
+  {â}{{\^a}}1 {ê}{{\^e}}1 {î}{{\^i}}1 {ô}{{\^o}}1 {û}{{\^u}}1
+  {Â}{{\^A}}1 {Ê}{{\^E}}1 {Î}{{\^I}}1 {Ô}{{\^O}}1 {Û}{{\^U}}1
+  {ã}{{\~a}}1 {ẽ}{{\~e}}1 {ĩ}{{\~i}}1 {õ}{{\~o}}1 {ũ}{{\~u}}1
+  {Ã}{{\~A}}1 {Ẽ}{{\~E}}1 {Ĩ}{{\~I}}1 {Õ}{{\~O}}1 {Ũ}{{\~U}}1
+  {œ}{{\oe}}1 {Œ}{{\OE}}1 {æ}{{\ae}}1 {Æ}{{\AE}}1 {ß}{{\ss}}1
+  {ű}{{\H{u}}}1 {Ű}{{\H{U}}}1 {ő}{{\H{o}}}1 {Ő}{{\H{O}}}1
+  {ç}{{\c c}}1 {Ç}{{\c C}}1 {ø}{{\o}}1 {å}{{\r a}}1 {Å}{{\r A}}1
+  {€}{{\euro}}1 {£}{{\pounds}}1 {«}{{\guillemotleft}}1
+  {»}{{\guillemotright}}1 {ñ}{{\~n}}1 {Ñ}{{\~N}}1 {¿}{{?`}}1 {¡}{{!`}}1
+}
+
+\pagestyle{fancy} % Encabezado y pie de página
+\fancyhf{}
+\fancyhead[L]{Trabajo Práctico Final | Jazz Jackrabbit 2 | Grupo 5\\Manual de Proyecto}
+\fancyhead[R]{Taller de Programación I - FIUBA}
+\renewcommand{\headrulewidth}{0.4pt}
+\fancyfoot[C]{\thepage}
+\renewcommand{\footrulewidth}{0.4pt}
+
+\fancypagestyle{firstPage}{%
+  \fancyfoot[C]{\thepage}
+  \renewcommand{\footrulewidth}{0.4pt}
+}
+
+\begin{document}
+
+\begin{titlepage} % Carátula
+	\hfill\includegraphics[width=6cm]{logofiuba.jpg}
+    \centering
+    \vfill
+    \Huge \textbf{Trabajo Práctico Final\\Jazz Jackrabbit 2}
+    \vskip2cm
+    \Large [75.42] Taller de Programación I\\
+    Primer Cuatrimestre de 2024
+    \vfill
+    \begin{tabular}{ | l | l | l | } % Datos del alumno
+      \hline
+      \textbf{Estudiante} & \textbf{Padrón} & \textbf{Email} \\ \hline
+      Buono, Fernando & 103523 & fbuono@fi.uba.ar \\ \hline
+      Duca, Francisco & 106308 & fduca@fi.uba.ar \\ \hline
+      Oshiro, Lucas & 107024 & loshiro@fi.uba.ar \\ \hline
+      Shiao, Tomás Jorge & 106099 & tshiao@fi.uba.ar \\ \hline
+  	\end{tabular}
+    \vfill
+    \vfill
+\end{titlepage}
+
+\clearpage\pagestyle{empty}
+\tableofcontents % Índice general
+\newpage
+\setcounter{page}{1}
+\pagestyle{fancy}
+\setcounter{secnumdepth}{5}
+\setcounter{tocdepth}{5}
+\section{Organización del Proyecto}
+Para el desarrollo del proyecto, se decidió dividir el trabajo entre cliente y servidor. A su vez, en el lado del cliente, se subdividieron las tareas entre QT y SDL, Lobby y Game play. 
+
+\subsection{Servidor}
+Fernando y Francisco se encargaron de la implementación de la lógica del juego, así también como la comunicación con el cliente. Para ello, se diseñó un protocolo de comunicación entre cliente y servidor, que permite la sincronización de los estados del juego. Para esto, se utilizan sockets, threads y monitores para garantizar la correcta sincronización de los datos.
+
+A través de los sockets, se envían y reciben DTOs (Data Transfer Objects). Estos pueden ser para la creación de una partida, para indicar el comienzo de un juego, para informar el estado actual de la partida, entre otros. 
+
+La comunicación con el cliente se puede subdividir en dos grandes áreas: el Lobby y el Juego. En el Lobby, se realiza un ping-pong en su mayor parte, donde el cliente solicita la creación de una partida, las partidas disponibles para unirse, los mapas disponibles o unirse a una partida. La única instancia en que no es un ping pong es cuando el cliente solicita jugar en una partida multijugador que no está completa: en este caso, se queda esperando por mensajes y al unirse un nuevo jugador, el servidor realiza un broadcast del mismo. En el Juego, en tanto, constantemente se envían mensajes de actualización de estado, para mantener sincronizados a los jugadores. De este modo, todos pueden ver qué es lo que está ocurriendo en la partida en tiempo real.
+
+\subsection{Cliente}
+El cliente se inicia con el Lobby, donde el jugador selecciona qué es lo que desea hacer: crear una nueva partida o unirse a una de ellas. Luego, cuando inicia el juego, se pasa al gameplay. Posee dos controladores, una para cada sección, que manejan las comunicaciones con el servidor. Estos, al tener que enviar un mensaje, lo serializan y luego se lo pasan al thread emisor, que lo envían via el socket de comunicación. El thread receptor, en tanto, se encuentra recibiendo los mensajes del servidor, y al recibir uno, lo deserializa y se lo pasa al controlador.
+
+\subsubsection{SDL}
+Lucas fue quien estuvo trabajando con SDL. Para ello, se creó un motor de juego que permite la creación de escenarios, personajes, enemigos, armas, municiones, gemas, monedas, entre otros elementos. A su vez, se crearon las animaciones de los personajes, los sonidos y la música ambiente a partir de los sprites y audios provistos por la cátedra. 
+
+La comunicación con el servidor, como fue explicado anteriormente, es constante y se realiza a través del controlador del juego. Recibe estados del juego, conteniendo las posiciones de todos los elementos e información acerca de cada uno de ellos, tales como la cantidad de vidas, puntajes, el estado de cada jugador o enemigo, entre otros. Es a partir de estos datos que se renderiza cada frame del juego, logrando así una sincronización entre el cliente y el servidor y la visualización de la partida en tiempo real.
+
+\subsubsection{QT}
+
+\subsubsubsection{Lobby}
+Por último, Tomás fue quien se encargó de realizar el Lobby. Para ello, se utiliza QT5, una herramienta que permite la creación de interfaces. En el Lobby, se pueden crear partidas, unirse a partidas, ver las partidas disponibles, ver los mapas disponibles y seleccionar el personaje con quien se quiere jugar.
+
+A medida que se pasan las pantallas, el Lobby va completando una estructura LobbyMessage, que contiene los datos que se le envían al servidor a través del controlador. En él, se encuentran los datos de la partida, el mapa, el personaje, entre otros datos, dependiendo de lo que seleccione el cliente. El controlador envía y recibe los mensajes desde el servidor como fue explicado anteriormente. En el momento que se puede empezar la partida, cuando se alcanzan la cantidad de jugadores necesarios, el servidor envía un mensaje de inicio de juego, y el cliente cambia de pantalla, pasando al gameplay.
+
+\subsubsubsection{Editor de Niveles}
+Para el editor de niveles también se usó QT5. En este programa se pueden seleccionar los distintos elementos del juego y diseñar un nuevo mapa. Para ello, se tiene una columna con todos los elementos y un canvas sobre al cual se le pueden arrastrar los elementos encima. Una vez que el mapa se guarda, el editor procesa los elementos sobre el canvas y guarda sus posiciones en un archivo YAML en el servidor. 
+
+\section{Features}
+\begin{tabular}{ | l | l | l | }
+  \hline
+  \textbf{Feature} & \textbf{Estado} & \textbf{Comentario} \\ \hline
+  Acciones Comunes & \textcolor{orange}{En Progreso} & \\ \hline
+  Estados & \textcolor{orange}{En Progreso} & \\ \hline
+  Acciones Especiales & \textcolor{red}{Por Implementar} & \\ \hline
+  Armas y Municiones & \textcolor{orange}{En Progreso} & \\ \hline
+  Gemas y Monedas & \textcolor{green}{Implementado} & \\ \hline
+  Enemigos & \textcolor{orange}{En Progreso} & \\ \hline
+  Escenarios & \textcolor{green}{Implementado} & \\ \hline
+  Multijugador & \textcolor{orange}{En Progreso} & \\ \hline
+  Cámara & \textcolor{orange}{En Progreso} & \\ \hline
+  Animaciones & \textcolor{green}{Implementado} & \\ \hline
+  Sonidos y Música Ambiente & \textcolor{green}{Implementado} & \\ \hline
+  Interfaz del Jugador & \textcolor{orange}{En Progreso} & Queda pendiente el top 3 de puntajes. \\ \hline
+  Configuración YAML & \textcolor{green}{Implementado} & \\ \hline
+  Interfaz del Lobby & \textcolor{green}{Implementado} & \\ \hline
+  Editor de Niveles & \textcolor{orange}{En Progreso} & No permite selección de fondo ni spawn points. \\ \hline
+  Vagrant & \textcolor{green}{Implementado} & \\ \hline
+\end{tabular}
+
+\section{Known Issues}
+\begin{itemize}
+  \item 
+\end{itemize}
+
+\end{document}

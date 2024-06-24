@@ -15,6 +15,9 @@
 
 Los sprites fueron obtenidos desde [aquí](https://www.spriters-resource.com/pc_computer/jazzjackrabbit2thesecretfiles/), mientras que se usan los sonidos obtenidos desde [aquí](https://www.sounds-resource.com/pc_computer/jazzjackrabbit/sound/18894/) y la tipografía se descargó desde [esta fuente](https://www.jazz2online.com/downloads/2974/jazz-jackrabbit-2-font/).
 
+[Manual de Proyecto](src/Documentation/build/Manual-de-Proyecto.pdf)
+[Documentación Técnica](src/Documentation/build/Documentacion-Tecnica.pdf)
+
 ## Dependencias
 
 Comando completo para configurar y construir sh
