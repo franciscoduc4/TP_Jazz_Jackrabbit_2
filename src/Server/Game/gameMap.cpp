@@ -319,12 +319,14 @@ void GameMap::addEnemy(EnemyType type, Vector<uint32_t> position, uint32_t width
         std::cout << "[GAMEMAP] Adding enemy at position: (" << static_cast<int>(position.x) << ", "
                   << static_cast<int>(position.y) << "), width: " << width << ", height: " << height
                   << std::endl;
-        entityCount++;
+        enemies[enemy->getId()] = enemy;  // Añadir a la lista de enemigos
         addEntityToMap(enemy, position);
+        entityCount++;
     } catch (const std::exception& e) {
         std::cerr << "[GAMEMAP] Error adding enemy: " << e.what() << std::endl;
     }
 }
+
 
 void GameMap::addObstacle(ObstacleType type, Vector<uint32_t> position, uint32_t width,
                           uint32_t height) {
@@ -546,13 +548,6 @@ std::unique_ptr<GameDTO> GameMap::getGameDTO() {
     std::vector<TileDTO> tilesDTO;
 
     try {
-        // // Recopilar información de los jugadores
-        // for (const auto& [playerId, character]: characters) {
-        //     playersDTO.push_back(character->getDTO());
-        //     std::cout << "[GAMEMAP] Character added to DTO with ID: " <<
-        //     static_cast<int>(playerId)
-        //               << std::endl;
-        // }
 
         for (const auto& [pos, entity]: mapGrid) {
             switch (entity->getType()) {
@@ -565,15 +560,8 @@ std::unique_ptr<GameDTO> GameMap::getGameDTO() {
                 case EntityType::ITEM:
                     itemsDTO.push_back(std::dynamic_pointer_cast<Item>(entity)->getDTO());
                     break;
-                // case EntityType::WEAPON:
-                //     weaponsDTO.push_back(std::dynamic_pointer_cast<Weapon>(entity)->getDTO());
-                //     break;
-                // case EntityType::BULLET:
-                //     bulletsDTO.push_back(std::dynamic_pointer_cast<Bullet>(entity)->getDTO());
-                //     break;
+
                 case EntityType::OBSTACLE:
-                    std::cout << "[GAMEMAP] Tile found at position: (" << pos.x << ", " << pos.y
-                              << ")" << std::endl;
                     tilesDTO.push_back(std::dynamic_pointer_cast<Obstacle>(entity)->getDTO());
                     break;
                 default:
@@ -662,7 +650,6 @@ Vector<uint32_t> GameMap::calculateNewPosition(const Vector<uint32_t> position,
         throw;
     }
 }
-
 void GameMap::handleShooting(uint32_t characterX, uint8_t damage, float time, Direction dir) {
     const uint32_t shootRange = 100; // Define el alcance máximo del disparo
     std::cout << "[GAMEMAP] Handling shooting at position: " << characterX
@@ -702,6 +689,6 @@ void GameMap::handleShooting(uint32_t characterX, uint8_t damage, float time, Di
 
     for (auto enemyId : enemiesToRemove) {
         removeEnemy(enemyId);
+        std::cout << "[GAMEMAP] Enemy with ID " << static_cast<int>(enemyId) << " removed" << std::endl; 
     }
 }
-

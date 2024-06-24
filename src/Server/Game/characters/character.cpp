@@ -429,13 +429,13 @@ void Character::moveRight() {
     if (isIntoxicated)
         return;
 
-    uint8_t movesPerCellX = onGround ? this->movesPerCell * 4 : this->movesPerCell * 2;
-    auto mapPositionX = getMapPosition(movesPerCellX);
+    // uint8_t movesPerCellX = onGround ? this->movesPerCell * 4 : this->movesPerCell * 2;
+    // auto mapPositionX = getMapPosition(movesPerCellX);
 
-    uint8_t movesPerCellY = onGround ? 0 : this->movesPerCell;
-    auto mapPositionY = getMapPosition(movesPerCellY);
+    // uint8_t movesPerCellY = onGround ? 0 : this->movesPerCell;
+    // auto mapPositionY = getMapPosition(movesPerCellY);
 
-    Vector<uint32_t> newPos = pos + Vector<uint32_t>{movesPerCellX, movesPerCellY};
+    Vector<uint32_t> newPos = pos + Vector<uint32_t>{1, 0};
 
     if (newPos.x >= gameMap.getMaxXPos()) {
         newPos = Vector<uint32_t>{gameMap.getMaxXPos(), pos.y};
@@ -473,13 +473,13 @@ void Character::moveLeft() {
     if (isIntoxicated)
         return;
 
-    uint8_t movesPerCellX = onGround ? this->movesPerCell * 4 : this->movesPerCell * 2;
-    auto mapPositionX = getMapPosition(movesPerCellX);
+    // uint8_t movesPerCellX = onGround ? this->movesPerCell * 4 : this->movesPerCell * 2;
+    // auto mapPositionX = getMapPosition(movesPerCellX);
 
-    uint8_t movesPerCellY = onGround ? 0 : this->movesPerCell;
-    auto mapPositionY = getMapPosition(movesPerCellY);
+    // uint8_t movesPerCellY = onGround ? 0 : this->movesPerCell;
+    // auto mapPositionY = getMapPosition(movesPerCellY);
 
-    Vector<uint32_t> newPos = pos - Vector<uint32_t>{movesPerCellX, -movesPerCellY};
+    Vector<uint32_t> newPos = pos - Vector<uint32_t>{1, 0};
 
     if (newPos.x <= 0) {
         newPos = Vector<uint32_t>{0, pos.y};
