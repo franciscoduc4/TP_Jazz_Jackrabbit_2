@@ -162,7 +162,7 @@ void Interface::draw_interface(SDL2pp::Window& window, SDL2pp::Renderer& rendere
 std::map<int, uint8_t> Interface::sort_score(std::vector<PlayerDTO>& players) {
     std::map<int, uint8_t> scores;
     for (auto p : players) {
-        scores[1000/*p.getPoints()*/] = p.getPlayerId();
+        scores[p.getScore()] = p.getPlayerId();
     }
     //scores[2000/*p.getPoints()*/] = 1;
     //scores[3000] = 2;
