@@ -23,8 +23,9 @@
 % for formal definitions
 \usepackage{framed}
 
-% Add the titlesec package for optional formatting (if needed)
 \usepackage{titlesec}
+
+\titleclass{\subsubsubsection}{straight}[\subsection]
 
 \newcounter{subsubsubsection}[subsubsection]
 \renewcommand\thesubsubsubsection{\thesubsubsection.\arabic{subsubsubsection}}
@@ -53,7 +54,7 @@
 \makeatother
 
 \setcounter{secnumdepth}{5}
-\setcounter{tocdepth}{4}
+\setcounter{tocdepth}{5}
 
 
 % environment derived from framed.sty: see leftbar environment definition
@@ -149,12 +150,14 @@
 \end{titlepage}
 
 \clearpage\pagestyle{empty}
+
 \tableofcontents % Índice general
 \newpage
 \setcounter{page}{1}
 \pagestyle{fancy}
 \setcounter{secnumdepth}{5}
 \setcounter{tocdepth}{5}
+
 \section{Organización del Proyecto}
 Para el desarrollo del proyecto, se decidió dividir el trabajo entre cliente y servidor. A su vez, en el lado del cliente, se subdividieron las tareas entre QT y SDL, Lobby y Game play. 
 
@@ -170,6 +173,8 @@ El cliente se inicia con el Lobby, donde el jugador selecciona qué es lo que de
 
 \subsubsection{SDL}
 Lucas fue quien estuvo trabajando con SDL. Para ello, se creó un motor de juego que permite la creación de escenarios, personajes, enemigos, armas, municiones, gemas, monedas, entre otros elementos. A su vez, se crearon las animaciones de los personajes, los sonidos y la música ambiente a partir de los sprites y audios provistos por la cátedra. 
+
+SDL es el responsable del renderizado de cada frame del juego, por lo que se encarga del dinujado de los frames en la pantalla. No solo eso, sino también se encarga de captar los comandos del lado del usuario, como el movimiento del personaje, el disparo, y enviarlos hacia el servidor. Cuando un usuario aprieta una tecla, SDL verifica si está asociada a alguna acción del juego, y si lo está, serializa y envía al servidor.
 
 La comunicación con el servidor, como fue explicado anteriormente, es constante y se realiza a través del controlador del juego. Recibe estados del juego, conteniendo las posiciones de todos los elementos e información acerca de cada uno de ellos, tales como la cantidad de vidas, puntajes, el estado de cada jugador o enemigo, entre otros. Es a partir de estos datos que se renderiza cada frame del juego, logrando así una sincronización entre el cliente y el servidor y la visualización de la partida en tiempo real.
 
