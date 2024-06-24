@@ -17,6 +17,7 @@ Los sprites fueron obtenidos desde [aquí](https://www.spriters-resource.com/pc_
 
 [Manual de Proyecto](src/Documentation/build/Manual-de-Proyecto.pdf)
 [Documentación Técnica](src/Documentation/build/Documentacion-Tecnica.pdf)
+[Manual de Usuario](src/Documentation/build/Manual-de-Usuario.pdf)
 
 ## Dependencias
 
