@@ -10,11 +10,11 @@
 #define MOVEMENTS_PER_CELL 2
 
 TEST(testCharacterMove, testCharacterSpawnsInCorrectPosition) {
-    GameMap gameMap({10, 10});
-    int16_t playerId = 1;
-    Vector<int16_t> characterPos = {5, 5};
-    auto character = gameMap.addCharacter(playerId, CharacterType::JAZZ, characterPos);
-    Vector<int16_t> mapPosition = character->getMapPosition(MOVEMENTS_PER_CELL);
+    GameMap gameMap({10, 10}, 0);
+    uint8_t playerId = 1;
+    Vector<uint32_t> characterPos = {5, 5};
+    auto character = gameMap.addCharacter(playerId, CharacterType::JAZZ);
+    Vector<uint32_t> mapPosition = character->getMapPosition(MOVEMENTS_PER_CELL);
 
     auto chracaterAtPos = gameMap.getEntityAt(mapPosition);
 
@@ -22,11 +22,11 @@ TEST(testCharacterMove, testCharacterSpawnsInCorrectPosition) {
 }
 
 TEST(testCharacterMove, testCharacterMoveLeftOneCell) {
-    GameMap gameMap({10, 10});
-    int16_t playerId = 1;
-    Vector<int16_t> characterPos = {5, 5};
-    auto character = gameMap.addCharacter(playerId, CharacterType::JAZZ, characterPos);
-    Vector<int16_t> mapPosition = character->getMapPosition(MOVEMENTS_PER_CELL);
+    GameMap gameMap({10, 10}, 0);
+    uint8_t playerId = 1;
+    Vector<uint32_t> characterPos = {5, 5};
+    auto character = gameMap.addCharacter(playerId, CharacterType::JAZZ);
+    Vector<uint32_t> mapPosition = character->getMapPosition(MOVEMENTS_PER_CELL);
 
     for (int i = 0; i < MOVEMENTS_PER_CELL; i++) {
         character->moveLeft();
@@ -36,21 +36,21 @@ TEST(testCharacterMove, testCharacterMoveLeftOneCell) {
     auto entityAtOldPos = gameMap.getEntityAt(mapPosition);
 
     ASSERT_EQ(characterAtNewPos, character);
-    ASSERT_EQ(characterAtNewPos->getPosition(), Vector<int16_t>({5 - MOVEMENTS_PER_CELL, 5}));
+    ASSERT_EQ(characterAtNewPos->getPosition(), Vector<uint32_t>({5 - MOVEMENTS_PER_CELL, 5}));
     ASSERT_EQ(characterAtNewPos->getMapPosition(MOVEMENTS_PER_CELL),
-              Vector<int16_t>(
+              Vector<uint32_t>(
                       {(5 - MOVEMENTS_PER_CELL) / MOVEMENTS_PER_CELL, 5 / MOVEMENTS_PER_CELL}));
     ASSERT_EQ(entityAtOldPos, nullptr);
     ASSERT_EQ(gameMap.isFreePosition(mapPosition), true);
 }
 
 TEST(testCharacterMove, testCharacterMoveRightOneCell) {
-    GameMap gameMap({10, 10});
-    int16_t playerId = 1;
-    Vector<int16_t> characterPos = {5, 5};
-    auto character = gameMap.addCharacter(playerId, CharacterType::JAZZ, characterPos);
+    GameMap gameMap({10, 10}, 0);
+    uint8_t playerId = 1;
+    Vector<uint32_t> characterPos = {5, 5};
+    auto character = gameMap.addCharacter(playerId, CharacterType::JAZZ);
 
-    Vector<int16_t> mapPosition = character->getMapPosition(MOVEMENTS_PER_CELL);
+    Vector<uint32_t> mapPosition = character->getMapPosition(MOVEMENTS_PER_CELL);
     for (int i = 0; i < MOVEMENTS_PER_CELL; i++) {
         character->moveRight();
     }
@@ -59,21 +59,21 @@ TEST(testCharacterMove, testCharacterMoveRightOneCell) {
     auto entityAtOldPos = gameMap.getEntityAt(mapPosition);
 
     ASSERT_EQ(characterAtNewPos, character);
-    ASSERT_EQ(characterAtNewPos->getPosition(), Vector<int16_t>({5 + MOVEMENTS_PER_CELL, 5}));
+    ASSERT_EQ(characterAtNewPos->getPosition(), Vector<uint32_t>({5 + MOVEMENTS_PER_CELL, 5}));
     ASSERT_EQ(characterAtNewPos->getMapPosition(MOVEMENTS_PER_CELL),
-              Vector<int16_t>(
+              Vector<uint32_t>(
                       {(5 + MOVEMENTS_PER_CELL) / MOVEMENTS_PER_CELL, 5 / MOVEMENTS_PER_CELL}));
     ASSERT_EQ(entityAtOldPos, nullptr);
     ASSERT_EQ(gameMap.isFreePosition(mapPosition), true);
 }
 
 TEST(testCharacterMove, testCharacterAtTheEdgeDoesNotMove) {
-    GameMap gameMap({10, 10});
-    int16_t playerId = 1;
-    Vector<int16_t> characterPos = {0, 5};
-    auto character = gameMap.addCharacter(playerId, CharacterType::JAZZ, characterPos);
+    GameMap gameMap({10, 10}, 0);
+    uint8_t playerId = 1;
+    Vector<uint32_t> characterPos = {0, 5};
+    auto character = gameMap.addCharacter(playerId, CharacterType::JAZZ);
 
-    Vector<int16_t> mapPosition = character->getMapPosition(MOVEMENTS_PER_CELL);
+    Vector<uint32_t> mapPosition = character->getMapPosition(MOVEMENTS_PER_CELL);
     for (int i = 0; i < MOVEMENTS_PER_CELL; i++) {
         character->moveLeft();
     }
@@ -82,41 +82,41 @@ TEST(testCharacterMove, testCharacterAtTheEdgeDoesNotMove) {
     auto entityAtOldPos = gameMap.getEntityAt(mapPosition);
 
     ASSERT_EQ(characterAtNewPos, character);
-    ASSERT_EQ(characterAtNewPos->getPosition(), Vector<int16_t>({0, 5}));
+    ASSERT_EQ(characterAtNewPos->getPosition(), Vector<uint32_t>({0, 5}));
     ASSERT_EQ(entityAtOldPos, character);
     ASSERT_EQ(gameMap.isFreePosition(mapPosition), false);
 }
 
 TEST(testCharacterMove, testCharacterSpawnsOutOfBounds) {
-    GameMap gameMap({10, 10});
-    int16_t playerId = 1;
-    Vector<int16_t> characterPos = {15, 15};
-    auto character = gameMap.addCharacter(playerId, CharacterType::JAZZ, characterPos);
+    GameMap gameMap({10, 10}, 0);
+    uint8_t playerId = 1;
+    Vector<uint32_t> characterPos = {15, 15};
+    auto character = gameMap.addCharacter(playerId, CharacterType::JAZZ);
 
     ASSERT_EQ(character, nullptr);
 }
 
 
 TEST(testCharacterMove, testCharacterMovesOutOfBounds) {
-    GameMap gameMap({10, 10});
-    int16_t playerId = 1;
-    Vector<int16_t> characterPos = {9, 5};
-    auto character = gameMap.addCharacter(playerId, CharacterType::JAZZ, characterPos);
+    GameMap gameMap({10, 10}, 0);
+    uint8_t playerId = 1;
+    Vector<uint32_t> characterPos = {9, 5};
+    auto character = gameMap.addCharacter(playerId, CharacterType::JAZZ);
 
     for (int i = 0; i < MOVEMENTS_PER_CELL; i++) {
         character->moveRight();
     }
 
     auto characterAtNewPos = gameMap.getCharacter(playerId);
-    ASSERT_EQ(characterAtNewPos->getPosition(), Vector<int16_t>({9, 5}));
+    ASSERT_EQ(characterAtNewPos->getPosition(), Vector<uint32_t>({9, 5}));
 }
 
 
 TEST(testCharacterMove, testCharacterReceivesDamage) {
-    GameMap gameMap({10, 10});
-    int16_t playerId = 1;
-    Vector<int16_t> characterPos = {5, 5};
-    auto character = gameMap.addCharacter(playerId, CharacterType::JAZZ, characterPos);
+    GameMap gameMap({10, 10}, 0);
+    uint8_t playerId = 1;
+    Vector<uint32_t> characterPos = {5, 5};
+    auto character = gameMap.addCharacter(playerId, CharacterType::JAZZ);
     int initialHealth = character->getHealth();
 
     character->recvDamage(10, 1.0f);
@@ -126,10 +126,10 @@ TEST(testCharacterMove, testCharacterReceivesDamage) {
 
 
 TEST(testCharacterMove, testCharacterHeals) {
-    GameMap gameMap({10, 10});
-    int16_t playerId = 1;
-    Vector<int16_t> characterPos = {5, 5};
-    auto character = gameMap.addCharacter(playerId, CharacterType::JAZZ, characterPos);
+    GameMap gameMap({10, 10}, 0);
+    uint8_t playerId = 1;
+    Vector<uint32_t> characterPos = {5, 5};
+    auto character = gameMap.addCharacter(playerId, CharacterType::JAZZ);
 
     character->recvDamage(10, 1.0f);
     int healthAfterDamage = character->getHealth();
@@ -141,10 +141,10 @@ TEST(testCharacterMove, testCharacterHeals) {
 
 
 TEST(testCharacterMove, testCharacterIntoxicated) {
-    GameMap gameMap({10, 10});
-    int16_t playerId = 1;
-    Vector<int16_t> characterPos = {5, 5};
-    auto character = gameMap.addCharacter(playerId, CharacterType::JAZZ, characterPos);
+    GameMap gameMap({10, 10}, 0);
+    uint8_t playerId = 1;
+    Vector<uint32_t> characterPos = {5, 5};
+    auto character = gameMap.addCharacter(playerId, CharacterType::JAZZ);
 
     character->becomeIntoxicated(5.0f);
 
@@ -154,10 +154,10 @@ TEST(testCharacterMove, testCharacterIntoxicated) {
 
 
 TEST(testCharacterMove, testCharacterDiesAndRevives) {
-    GameMap gameMap({10, 10});
-    int16_t playerId = 1;
-    Vector<int16_t> characterPos = {5, 5};
-    auto character = gameMap.addCharacter(playerId, CharacterType::JAZZ, characterPos);
+    GameMap gameMap({10, 10}, 0);
+    uint8_t playerId = 1;
+    Vector<uint32_t> characterPos = {5, 5};
+    auto character = gameMap.addCharacter(playerId, CharacterType::JAZZ);
     int initialHealth = character->getHealth();
 
     character->recvDamage(initialHealth, 1.0f);
@@ -169,10 +169,10 @@ TEST(testCharacterMove, testCharacterDiesAndRevives) {
 }
 
 TEST(testCharacterMove, testCharacterSwitchWeapon) {
-    GameMap gameMap({10, 10});
-    int16_t playerId = 1;
-    Vector<int16_t> characterPos = {5, 5};
-    auto character = gameMap.addCharacter(playerId, CharacterType::JAZZ, characterPos);
+    GameMap gameMap({10, 10}, 0);
+    uint8_t playerId = 1;
+    Vector<uint32_t> characterPos = {5, 5};
+    auto character = gameMap.addCharacter(playerId, CharacterType::JAZZ);
 
     character->switchWeapon(WeaponType::BOUNCER);
     // Assuming the Character class has a method to get the current weapon type.
@@ -186,25 +186,25 @@ TEST(testCharacterMove, testCharacterSwitchWeapon) {
 }
 
 TEST(testCharacterMove, testCharacterCannotMoveWhileIntoxicated) {
-    GameMap gameMap({10, 10});
-    int16_t playerId = 1;
-    Vector<int16_t> characterPos = {5, 5};
-    auto character = gameMap.addCharacter(playerId, CharacterType::JAZZ, characterPos);
+    GameMap gameMap({10, 10}, 0);
+    uint8_t playerId = 1;
+    Vector<uint32_t> characterPos = {5, 5};
+    auto character = gameMap.addCharacter(playerId, CharacterType::JAZZ);
 
     character->becomeIntoxicated(5.0f);
-    Vector<int16_t> mapPosition = character->getMapPosition(MOVEMENTS_PER_CELL);
+    Vector<uint32_t> mapPosition = character->getMapPosition(MOVEMENTS_PER_CELL);
     for (int i = 0; i < MOVEMENTS_PER_CELL; i++) {
         character->moveRight();
     }
 
-    ASSERT_EQ(character->getPosition(), Vector<int16_t>({5, 5}));
+    ASSERT_EQ(character->getPosition(), Vector<uint32_t>({5, 5}));
 }
 
 TEST(testCharacterMove, testCharacterReceivesContinuousDamage) {
-    GameMap gameMap({10, 10});
-    int16_t playerId = 1;
-    Vector<int16_t> characterPos = {5, 5};
-    auto character = gameMap.addCharacter(playerId, CharacterType::JAZZ, characterPos);
+    GameMap gameMap({10, 10}, 0);
+    uint8_t playerId = 1;
+    Vector<uint32_t> characterPos = {5, 5};
+    auto character = gameMap.addCharacter(playerId, CharacterType::JAZZ);
     int initialHealth = character->getHealth();
 
     for (int i = 0; i < 5; i++) {
