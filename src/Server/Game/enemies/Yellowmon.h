@@ -1,5 +1,5 @@
-#ifndef JUMPING_ENEMY_H
-#define JUMPING_ENEMY_H
+#ifndef YELLOWMON_H
+#define YELLOWMON_H
 
 #include <memory>
 #include <vector>
@@ -10,19 +10,19 @@
 
 #include "enemy.h"
 
-class JumpingEnemy: public Enemy {
+class Yellowmon: public Enemy {
 
 public:
-    JumpingEnemy(GameMap& map, Vector<uint32_t> pos, uint8_t id, uint32_t width, uint32_t height);
+    Yellowmon(GameMap& map, Vector<uint32_t> pos, uint8_t id, uint32_t width, uint32_t height);
 
     EnemyType getEnemyType() const override;
 
     void update(double deltaTime) override;
 
-    uint8_t getDamage() const override { return ServerConfig::getJumpingEnemyDamage(); }
+    uint8_t getDamage() const override { return ServerConfig::getFlyingEnemyDamage(); }
 
     uint32_t getWidth() const { return 25; }
     uint32_t getHeight() const { return 70; }
 };
 
-#endif  // JUMPING_ENEMY_H
+#endif  // YELLOWMON_H

@@ -2,9 +2,9 @@
 #include "characters/jazz.h"
 #include "characters/lori.h"
 #include "characters/spaz.h"
-#include "enemies/flyingEnemy.h"
-#include "enemies/jumpingEnemy.h"
-#include "enemies/walkingEnemy.h"
+#include "enemies/Yellowmon.h"
+#include "enemies/Schwarzenguard.h"
+#include "enemies/Turtle.h"
 #include "items/food.h"
 #include "items/gem.h"
 #include "items/goldCoin.h"
@@ -36,11 +36,11 @@ std::shared_ptr<Enemy> EntityFactory::createEnemy(uint8_t enemyId, EnemyType typ
 uint32_t width, uint32_t height) {
     switch (type) {
         case EnemyType::TURTLE:
-            return std::make_shared<WalkingEnemy>(gameMap, position, enemyId, width, height);
+            return std::make_shared<Turtle>(gameMap, position, enemyId, width, height);
         case EnemyType::YELLOWMON:
-            return std::make_shared<FlyingEnemy>(gameMap, position, enemyId, width, height);
+            return std::make_shared<Yellowmon>(gameMap, position, enemyId, width, height);
         case EnemyType::SCHWARZENGUARD:
-            return std::make_shared<JumpingEnemy>(gameMap, position, enemyId, width, height);
+            return std::make_shared<Schwarzenguard>(gameMap, position, enemyId, width, height);
     }
     return nullptr;
 }

@@ -1,8 +1,8 @@
-#include "jumpingEnemy.h"
+#include "Schwarzenguard.h"
 
 // #define CONFIG ServerConfig::getInstance()
 
-JumpingEnemy::JumpingEnemy(GameMap& map, Vector<uint32_t> pos, uint8_t id, uint32_t width, uint32_t height):
+Schwarzenguard::Schwarzenguard(GameMap& map, Vector<uint32_t> pos, uint8_t id, uint32_t width, uint32_t height):
         Enemy(map, pos, id, ServerConfig::getJumpingEnemyInitialHealth(), Direction::LEFT,
               ServerConfig::getJumpingEnemyDamage(), std::make_unique<EnemyIdle>(),
               ServerConfig::getJumpingEnemyViewDistance(), ServerConfig::getJumpingEnemyViewDistanceHit(),
@@ -11,7 +11,7 @@ JumpingEnemy::JumpingEnemy(GameMap& map, Vector<uint32_t> pos, uint8_t id, uint3
               width, height) {}
 
 
-EnemyType JumpingEnemy::getEnemyType() const { return EnemyType::SCHWARZENGUARD; }
+EnemyType Schwarzenguard::getEnemyType() const { return EnemyType::SCHWARZENGUARD; }
 
-void JumpingEnemy::update(double deltaTime) {
+void Schwarzenguard::update(double deltaTime) {
 }

@@ -1,5 +1,5 @@
-#ifndef WALKING_ENEMY_H
-#define WALKING_ENEMY_H
+#ifndef TURTLE_H
+#define TURTLE_H
 
 #include <memory>
 #include <vector>
@@ -10,10 +10,10 @@
 
 #include "enemy.h"
 
-class WalkingEnemy: public Enemy {
+class Turtle: public Enemy {
 
 public:
-    WalkingEnemy(GameMap& map, Vector<uint32_t> pos, uint8_t id, uint32_t width, uint32_t height);
+    Turtle(GameMap& map, Vector<uint32_t> pos, uint8_t id, uint32_t width, uint32_t height);
 
     EnemyType getEnemyType() const override;
 
@@ -26,4 +26,4 @@ public:
 
 };
 
-#endif  // WALKING_ENEMY_H
+#endif  // TURTLE_H
