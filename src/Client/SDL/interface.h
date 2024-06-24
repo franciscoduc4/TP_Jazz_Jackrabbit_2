@@ -31,7 +31,7 @@ public:
 
     void draw_interface(SDL2pp::Window& window, SDL2pp::Renderer& renderer, SDL2pp::Texture& iconTexture, std::unique_ptr<SDL2pp::Texture>& heartTexture, std::unique_ptr<SDL2pp::Texture>& font, std::vector<PlayerDTO>& players, PlayerDTO& mainPlayer, int lives);
 
-    std::map<int, uint8_t> sort_score(std::vector<PlayerDTO>& players);
+    std::map<uint8_t, int> sort_score(std::vector<PlayerDTO>& players);
 };
 
 #endif

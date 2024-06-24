@@ -1,5 +1,6 @@
 #include "interface.h"
 #include "../Common/Config/ClientConfig.h"
+#include "../Common/printer.h"
 
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
@@ -95,8 +96,8 @@ void Interface::draw_interface(SDL2pp::Window& window, SDL2pp::Renderer& rendere
     x += this->draw_width * 4;
     
     //DRAW POINTS
-    std::map<int, uint8_t> players_scores = sort_score(players); 
-    std::map<int, uint8_t>::reverse_iterator it_scores = players_scores.rbegin();
+    std::map<uint8_t, int> players_scores = sort_score(players); 
+    std::map<uint8_t, int>::iterator it_scores = players_scores.begin();
     std::vector<std::vector<int>>::iterator it_colors = this->colors.begin();
     int index_colors_r = 0;
     int index_colors_g = 1;
@@ -105,13 +106,13 @@ void Interface::draw_interface(SDL2pp::Window& window, SDL2pp::Renderer& rendere
     std::string playerId;
     std::string points;
     int initial_x = x;
-    while (it_scores != players_scores.rend()) {
+    while (it_scores != players_scores.end()) {
         font->SetColorMod((*it_colors)[index_colors_r], (*it_colors)[index_colors_g], (*it_colors)[index_colors_b]);
         renderer.Copy(*font, SDL2pp::Rect(this->numbers[index_value_i].getX(), this->numbers[index_value_i].getY(), this->numbers[index_value_i].getWidth(), this->numbers[index_value_i].getHeight()), SDL2pp::Rect(x, y, this->draw_width, this->draw_height));
         x += this->draw_width;
         renderer.Copy(*font, SDL2pp::Rect(this->numbers[index_value_d].getX(), this->numbers[index_value_d].getY(), this->numbers[index_value_d].getWidth(), this->numbers[index_value_d].getHeight()), SDL2pp::Rect(x, y, this->draw_width, this->draw_height));
         x += this->draw_width;
-        playerId = std::to_string(static_cast<int>(it_scores->second));
+        playerId = std::to_string(static_cast<int>(it_scores->first));
         for (int i = 0; i < playerId.size(); i++) {
             aux = playerId[i];
             renderer.Copy(*font, SDL2pp::Rect(this->numbers[std::stoi(aux)].getX(), this->numbers[std::stoi(aux)].getY(), this->numbers[std::stoi(aux)].getWidth(), this->numbers[std::stoi(aux)].getHeight()), SDL2pp::Rect(x, y, this->draw_width, this->draw_height));
@@ -121,7 +122,7 @@ void Interface::draw_interface(SDL2pp::Window& window, SDL2pp::Renderer& rendere
         x += this->draw_width * 2;
 
         
-        points = std::to_string(it_scores->first);
+        points = std::to_string(it_scores->second);
         for (int i = 0; i < points.size(); i++) {
             aux = points[i];
             renderer.Copy(*font, SDL2pp::Rect(this->numbers[std::stoi(aux)].getX(), this->numbers[std::stoi(aux)].getY(), this->numbers[std::stoi(aux)].getWidth(), this->numbers[std::stoi(aux)].getHeight()), SDL2pp::Rect(x, y, this->draw_width, this->draw_height));
@@ -159,13 +160,11 @@ void Interface::draw_interface(SDL2pp::Window& window, SDL2pp::Renderer& rendere
     }
 }
 
-std::map<int, uint8_t> Interface::sort_score(std::vector<PlayerDTO>& players) {
-    std::map<int, uint8_t> scores;
-    for (auto p : players) {
-        scores[p.getScore()] = p.getPlayerId();
+std::map<uint8_t, int> Interface::sort_score(std::vector<PlayerDTO>& players) {
+    std::map<uint8_t, int> scores;
+    for (const auto& p : players) {
+        //Printer::printDebugHighlightedMessage("PASO POR ACA");
+        scores[p.getPlayerId()] = p.getScore();
     }
-    //scores[2000/*p.getPoints()*/] = 1;
-    //scores[3000] = 2;
-    //scores[800] = 3;
     return scores;
 }
