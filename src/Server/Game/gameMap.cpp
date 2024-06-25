@@ -710,28 +710,69 @@ Vector<uint32_t> GameMap::calculateNewPosition(const Vector<uint32_t>& position,
 
 void GameMap::handleShooting(uint32_t characterX, uint8_t damage, float time, Direction dir, uint8_t shooterId) {
     const uint32_t shootRange = 400;  // Define el alcance máximo del disparo
+    const uint32_t heightRange = 50;
 
     std::vector<uint8_t> enemiesToRemove;
+
+    auto shooter = characters[shooterId];
+    if (!shooter) {
+        std::cerr << "[GAMEMAP] Shooter character not found: ID " << static_cast<int>(shooterId) << std::endl;
+        return;
+    }
+    uint32_t shooterY = shooter->getPosition().y;
 
     // Check enemies
     for (const auto& enemyPair: enemies) {
         auto enemy = enemyPair.second;
         uint32_t enemyX = enemy->getPosition().x;
         uint32_t enemyY = enemy->getPosition().y;
-        uint32_t shooterY = characters[shooterId]->getPosition().y;
 
         // Verify that the enemy is on the same line and direction as the shooter
         bool inRange = (dir == Direction::RIGHT && enemyX >= characterX && enemyX <= characterX + shootRange) ||
                        (dir == Direction::LEFT && enemyX <= characterX && enemyX >= characterX - shootRange);
-        bool sameLine = (enemyY == shooterY);
+        bool inHeightRange = (std::abs(static_cast<int>(enemyY) - static_cast<int>(shooterY)) <= heightRange);
 
-        if (inRange && sameLine) {
+        // std::cout << "[SHOOT GM] Checking enemy with ID: " << 
+        // static_cast<int>(enemy->getId()) << std::endl;
+        // std::cout << "[SHOOT GM] Enemy position: (" << enemyX << ", " << enemyY << ")" 
+        // << std::endl;
+        // std::cout << "[SHOOT GM] Shooter position: (" << characterX << ", " 
+        // << shooterY << ")" << std::endl;
+        // std::cout << "[SHOOT GM] In Range: " << inRange << ", In Height Range: " 
+        // << inHeightRange << std::endl;
+        // std::cout << "[SHOOT GM] Direction: " << (
+        //     dir == Direction::RIGHT ? "RIGHT" : "LEFT") << std::endl;
+
+        // std::cout << "[CHEQUEO IN RANGE LEFT]" << (dir == Direction::LEFT && enemyX <= characterX && enemyX >= characterX - shootRange) << std::endl;
+
+        // std::cout << "[CHEQUEO IN RANGE IZQ]" << (dir == Direction::LEFT && enemyX <= characterX) << std::endl;
+        // std::cout << "[CHEQUEO IN RANGE IZQ DER]" << (enemyX >= characterX - shootRange) << std::endl;
+
+        // std::cout << "[CHEQUEO characterX - shootRange]" << (characterX - shootRange) << std::endl;
+        // std::cout << "[CHEQUEO enemyX]" << (enemyX) << std::endl;
+        // std::cout << "[CHEQUEO enemyX >= characterX - shootRange]" << (enemyX >= characterX - shootRange) << std::endl;
+
+
+        // [CHARACTER SHOOT] Character state before shooting: 4
+        // [CHARACTER] Character ID: 0 calling handleShooting on GameMap
+        // [SHOOT GM] Checking enemy with ID: 22
+        // [SHOOT GM] Enemy position: (330, 298)
+        // [SHOOT GM] Shooter position: (390, 280)
+        // [SHOOT GM] In Range: 0, In Height Range: 1
+        // [SHOOT GM] Direction: LEFT
+        // [GAMEMAP] Enemy with ID: 22 out of range. Enemy position: (330, 298)
+
+
+        if (inRange && inHeightRange) {
             enemy->recvDamage(damage, time);
             std::cout << "[GAMEMAP] Enemy with ID: " << static_cast<int>(enemy->getId())
-              << " received damage: " << static_cast<int>(damage) << std::endl;
+                      << " received damage: " << static_cast<int>(damage) << std::endl;
             if (enemy->isDead()) {
                 enemiesToRemove.push_back(enemy->getId());
             }
+        } else {
+            std::cout << "[GAMEMAP] Enemy with ID: " << static_cast<int>(enemy->getId())
+                      << " out of range. Enemy position: (" << enemyX << ", " << enemyY << ")" << std::endl;
         }
     }
 
@@ -749,13 +790,24 @@ void GameMap::handleShooting(uint32_t characterX, uint8_t damage, float time, Di
         // Verify that the character is on the same line and direction as the shooter
         bool inRange = (dir == Direction::RIGHT && characterXPos >= characterX && characterXPos <= characterX + shootRange) ||
                        (dir == Direction::LEFT && characterXPos <= characterX && characterXPos >= characterX - shootRange);
-        bool sameLine = (characterYPos == characters[shooterId]->getPosition().y);
+        bool inHeightRange = (std::abs(static_cast<int>(characterYPos) - static_cast<int>(shooterY)) <= heightRange);
 
-        if (inRange && sameLine) {
+        std::cout << "[SHOOT GM] Checking character with ID: " << static_cast<int>(character->getId()) << std::endl;
+        std::cout << "[SHOOT GM] Character position: (" << characterXPos << ", " << characterYPos << ")" << std::endl;
+        std::cout << "[SHOOT GM] Shooter position: (" << characterX << ", " << shooterY << ")" << std::endl;
+        std::cout << "[SHOOT GM] In Range: " << inRange << ", In Height Range: " << inHeightRange << std::endl;
+        std::cout << "[SHOOT GM] Direction: " << (dir == Direction::RIGHT ? "RIGHT" : "LEFT") << std::endl;
+
+        if (inRange && inHeightRange) {
             character->recvDamage(damage, time);
             if (!character->isAlive()) {
                 character->setState(std::make_unique<DeadState>(*character, time));
             }
+            std::cout << "[GAMEMAP] Character with ID: " << static_cast<int>(character->getId())
+                      << " received damage: " << static_cast<int>(damage) << std::endl;
+        } else {
+            std::cout << "[GAMEMAP] Character with ID: " << static_cast<int>(character->getId())
+                      << " out of range. Character position: (" << characterXPos << ", " << characterYPos << ")" << std::endl;
         }
     }
 
