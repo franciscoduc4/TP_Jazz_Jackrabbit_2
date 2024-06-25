@@ -79,11 +79,6 @@ void Client::start() {
             return;
         }
 
-        // END - TESTING SKIP QT
-        //CharacterType pj = qtResult.second.getCharacter();
-        //uint8_t mapId = qtResult.second.getMap();
-        }
-
         // // END - TESTING SKIP QT
         // CharacterType pj = qtResult.second.getCharacter();
         // uint8_t mapId = qtResult.second.getMap();
