@@ -1,28 +1,47 @@
-QWidget {
+QWidget#centralwidget {
     border-image: url(:/assets/LobbyImages/Background.png) 0 0 0 0 stretch stretch;
 }
 
-QPushButton {
+QPushButton#btnSave {
     background-color: transparent;
     border-image: none;
     border: none;
     color: white;
 }
 
-QLabel {
-    background-color: white;
-    border-image: none;
+QPushButton#btnSave:hover {
     color: #00A35B;
 }
 
-QTreeWidget {
+QPushButton#btnClear {
+    background-color: black;
+    border-image: none;
+    border: none;
+    color: #E3000B;
+}
+
+QPushButton#btnClear:hover {
+    background-color: #E3000B;
+    color: white;
+}
+
+QLabel {
     background-color: white;
     border-image: none;
-    color: #00A35B;
+    color: white;
+}
+
+QTreeWidget {
+    border-image: none;
 }
 
 QGridLayout {
     background-color: white;
     border-image: none;
-    color: #00A35B;
+}
+
+QLineEdit {
+    background-color: white;
+    border-image: none;
+    color: black;
 }
