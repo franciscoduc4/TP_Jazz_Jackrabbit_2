@@ -37,7 +37,7 @@ void Client::start() {
         }
         // TODO: Continue with SDL.
         // START - TESTING SKIP QT
-        
+
         /*Command cmd = (this->playerId == 0) ? Command::CREATE_GAME : Command::JOIN_GAME;
 
         LobbyMessage msg;
@@ -78,12 +78,12 @@ void Client::start() {
             std::cerr << "Failed to receive response for create game." << std::endl;
             return;
         }*/
-        
+
         // END - TESTING SKIP QT
         //CharacterType pj = qtResult.second.getCharacter();
-        //uint8_t mapId = qtResult.second.getMap();  
+        //uint8_t mapId = qtResult.second.getMap();
         GameScreen game(this->gameController, this->playerId, 0);
-        game.run();
+        std::map<uint8_t, int> scores = game.run();
         // FinalStats stats = game.getStats();
         FinalStats stats;
         init.displayStats(stats, (bool&)clientJoinedGame);
