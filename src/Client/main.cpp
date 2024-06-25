@@ -20,7 +20,9 @@ int main(int argc, char* argv[]) {
         Client client(argv[1], argv[2]);
         client.start();
     } catch (const std::exception& e) {
+        ClientConfig::deleteInstance();
         return FAIL;
     }
+    ClientConfig::deleteInstance();
     return SUCCESS;
 }
