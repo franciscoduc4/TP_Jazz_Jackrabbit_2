@@ -1,0 +1,65 @@
+@startuml Level Editor
+
+class LevelEditor {
+    - ui : Ui::LevelEditor*
+    - elementData : QMap<QString, QVector<QPoint>>
+    - elementPositions : QMap<ElementCategory, QMap<QString, QVector<QPoint>>>
+    --
+    + LevelEditor(QWidget* parent)
+    + ~LevelEditor()
+    + void onSelectionChanged()
+    + void handleDropEvent(QDropEvent* event)
+    + void onSaveClicked()
+    + void createYAML(const QString& mapName)
+    + void onClearClicked()
+    + void closeEvent(QCloseEvent* event)
+}
+
+class CanvasWidget {
+    - backgroundImage : QPixmap
+    - droppedElements : QVector<DroppedElement*>
+    - currentDraggedElement : DroppedElement*
+    - dragOffset : QPoint
+    --
+    + CanvasWidget(QWidget *parent)
+    + ~CanvasWidget()
+    + void dragEnterEvent(QDragEnterEvent *event)
+    + void dragMoveEvent(QDragMoveEvent *event)
+    + void dropEvent(QDropEvent *event)
+    + void paintEvent(QPaintEvent *event)
+    + void mousePressEvent(QMouseEvent *event)
+    + void mouseMoveEvent(QMouseEvent *event)
+    + void mouseReleaseEvent(QMouseEvent *event)
+    + void clearElements()
+}
+
+class DroppedElement {
+    - m_elementType : QString
+    - m_position : QPoint
+    - m_sprite : QPixmap
+    --
+    + DroppedElement(QString  elementType, const QPoint& position, const QPixmap& sprite, QWidget* parent)
+    + void paintEvent(QPaintEvent* event)
+    + QPoint position() const
+    + QString elementType() const
+    + QPixmap getSprite() const
+}
+
+class SpritesManager {
+    - static instance : SpritesManager*
+    - static sprites : QMap<QString, QPixmap>
+    - static widths : QMap<QString, int>
+    - static heights : QMap<QString, int>
+    - root : YAML::Node
+    --
+    + SpritesManager()
+    + static SpritesManager* getInstance()
+    + static QPixmap get(const QString& name)
+    + static void deleteInstance()
+}
+
+LevelEditor *-- CanvasWidget
+CanvasWidget *-- DroppedElement
+LevelEditor ..> SpritesManager : uses
+
+@enduml
