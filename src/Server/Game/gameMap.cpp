@@ -470,7 +470,7 @@ bool GameMap::handleCharacterItemCollision(const std::shared_ptr<Character>& cha
                            {item->getWidth(), item->getHeight()})) {
             // if (character->getPosition() == item->getPosition()) {
             character->collectItem(item);
-            mapGrid.erase(item->getPosition());
+            // mapGrid.erase(item->getPosition());
             std::cout << "[GAMEMAP] Character collected item. Item removed from map." << std::endl;
             return true;
         }

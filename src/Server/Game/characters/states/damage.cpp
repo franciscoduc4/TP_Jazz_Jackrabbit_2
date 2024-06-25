@@ -12,9 +12,6 @@
 #include "specialAttack.h"
 
 ReceivingDamageState::ReceivingDamageState(Character& character, float startTime, uint8_t damage):
-        startTime(startTime),
-        timeReceivingDamage(ServerConfig::getCharacterDamageTime()),
-        damage(damage),
         character(character) {
     characterState = CharacterStateEntity::TAKING_DAMAGE;
 }
@@ -37,13 +34,10 @@ std::unique_ptr<State> ReceivingDamageState::sprint(Direction direction, float t
 }
 
 std::unique_ptr<State> ReceivingDamageState::receiveDamage(uint8_t dmg, float time) {
-    currentTime += time;
-    if (isReceivingDamage(time)) {
-        std::cout << "[RECEIVING DAMAGE] Receiving damage" << std::endl;
-        character.recvDamage(dmg);
-        if (!character.isAlive()) {
-            return die(time);
-        }
+    std::cout << "[RECEIVING DAMAGE] Receiving damage" << std::endl;
+    character.recvDamage(dmg);
+    if (!character.isAlive()) {
+        return die(time);
     }
     return nullptr;
 }
@@ -53,9 +47,6 @@ std::unique_ptr<State> ReceivingDamageState::die(float respawnTime) {
 }
 
 std::unique_ptr<State> ReceivingDamageState::becomeIntoxicated(float duration) {
-    if (isReceivingDamage(duration)) {
-        return nullptr;
-    }
     return std::make_unique<IntoxicatedState>(character, duration);
 }
 
@@ -64,18 +55,9 @@ std::unique_ptr<State> ReceivingDamageState::jump(float time) {
 }
 
 std::unique_ptr<State> ReceivingDamageState::specialAttack(float time) {
-    if (isReceivingDamage(time)) {
-        return nullptr;
-    }
     return std::make_unique<SpecialAttackState>(character, time);
 }
 
 std::unique_ptr<State> ReceivingDamageState::stopAction() { return nullptr; }
 
 std::unique_ptr<State> ReceivingDamageState::revive(float time) { return nullptr; }
-
-bool ReceivingDamageState::isReceivingDamage(float time) const {
-    std::cout << "[RECEIVING DAMAGE] currentTime: " << currentTime << " Start time: " << startTime
-              << " Time receiving damage: " << timeReceivingDamage << std::endl;
-    return (currentTime - startTime) < timeReceivingDamage;
-}
