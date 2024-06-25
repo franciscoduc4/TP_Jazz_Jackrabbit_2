@@ -66,7 +66,7 @@ public:
     void addItem(ItemType type, Vector<uint32_t> position, uint32_t width, uint32_t height);
 
 
-    void handleCharacterItemCollision(std::shared_ptr<Character> character, std::shared_ptr<Item> item);
+    bool handleCharacterItemCollision(std::shared_ptr<Character> character, std::shared_ptr<Item> item);
     void handleCharacterEnemyCollision(std::shared_ptr<Character> character, std::shared_ptr<Enemy> enemy);
     void handleCharacterObstacleCollision(std::shared_ptr<Character> character, std::shared_ptr<Obstacle> obstacle);
 

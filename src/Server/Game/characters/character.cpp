@@ -357,11 +357,12 @@ void Character::moveDown() {
               << " new y: " << int(pos.y) << std::endl;
 
     // // Check for item collision after moving
-    entityAtNewPos = gameMap.getEntityAt(newPos);
+    //entityAtNewPos = gameMap.getEntityAt(newPos);
     if (entityAtNewPos && entityAtNewPos->getType() == EntityType::ITEM) {
         gameMap.handleCharacterItemCollision(shared_from_this(),
         std::dynamic_pointer_cast<Item>(entityAtNewPos));
     }
+    std::cout << "ENTRO EN MOVE DOWN\n";
 }
 
 void Character::moveDown(float time) {
@@ -506,6 +507,7 @@ void Character::moveRight() {
         gameMap.handleCharacterItemCollision(shared_from_this(),
                                              std::dynamic_pointer_cast<Item>(entityAtNewPos));
     }
+    std::cout << "ENTROA EN MOVERIGHT\n";
 }
 
 void Character::moveLeft() {
@@ -557,6 +559,7 @@ void Character::moveLeft() {
         gameMap.handleCharacterItemCollision(shared_from_this(),
                                              std::dynamic_pointer_cast<Item>(entityAtNewPos));
     }
+    std::cout << "ENTRO EN MOVE LEFT\n";
 }
 
 void Character::jump() {
