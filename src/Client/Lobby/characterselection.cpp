@@ -39,14 +39,10 @@ CharacterSelection::~CharacterSelection() { delete ui; }
 
 void CharacterSelection::on_btnChoose_clicked() {
     this->msg.setCharacter(characterSelectionWidget->getSelectedCharacter());
-    std::cout << "[Character Selection] Selected character: "
-              << static_cast<int>(this->msg.getCharacter()) << std::endl;
 
     this->hide();
 
     if (this->msg.getLobbyCmd() == Command::CREATE_GAME) {
-        std::cout << "[CHARACTER SELECTION] Creating game, requesting game ID" << std::endl;
-        // Send Request with CREATE_GAME
         this->controller.sendRequest(this->msg);
         // Receive Create Game
         std::pair<bool, GameInfo> cgAck = this->controller.recvResponse();
@@ -85,37 +81,29 @@ void CharacterSelection::on_btnChoose_clicked() {
         auto wr = new WaitingRoom(this, this->controller, this->msg, this->clientJoinedGame);
         wr->show();
 
-        std::cout << "[CHARACTER SELECTION] WaitingRoom dialog shown" << std::endl;
     } else if (this->msg.getLobbyCmd() == Command::JOIN_GAME) {
-        std::cout << "[CHARACTER SELECTION] Joining game, requesting game list" << std::endl;
         this->msg.setLobbyCmd(Command::GAMES_LIST);
         auto gl = new GameList(this, this->controller, this->msg, this->clientJoinedGame);
         gl->show();
         gl->updateGameList();
-        std::cout << "[CHARACTER SELECTION] GameList dialog shown" << std::endl;
     } else {
-        std::cout << "[CHARACTER SELECTION] Unexpected command" << std::endl;
         QMessageBox::warning(this, "Error", "Ocurrió un error inesperado.");
+        this->deleteLater();
         return;
     }
 }
 
 void CharacterSelection::on_btnBack_clicked() {
-    std::cout << "[CHARACTER SELECTION] Back button clicked" << std::endl;
     this->msg.setCharacter(CharacterType::INVALID);
-    std::cout << "[CHARACTER SELECTION] Character set to INVALID in message" << std::endl;
 
     this->hide();
-    std::cout << "[CHARACTER SELECTION] Dialog hidden" << std::endl;
 
     QWidget* parent = this->parentWidget();
     if (parent) {
         parent->show();
-        std::cout << "[CHARACTER SELECTION] Parent widget shown" << std::endl;
     }
 
     this->deleteLater();
-    std::cout << "[CHARACTER SELECTION] Dialog marked for deletion" << std::endl;
 }
 
 void CharacterSelection::keyPressEvent(QKeyEvent* event) {
