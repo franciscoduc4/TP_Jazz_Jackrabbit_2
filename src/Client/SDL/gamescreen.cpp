@@ -215,6 +215,7 @@ std::map<uint8_t, int> GameScreen::run() {
 
         if (players.size() > 0) {
             this->pj.draw_players(window, renderer, pjs_textures, players, x_screen, y_screen, *mainPlayer, pj_direction);
+            this->soundControl.play_players_effect(players);
         }
 
         std::vector<EnemyDTO> enemiesSnapshot = snapshot->getEnemies();

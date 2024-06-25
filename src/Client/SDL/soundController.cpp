@@ -1,29 +1,36 @@
 #include "soundController.h"
 #include "../Common/Config/ClientConfig.h"
+#include "../../Common/Types/entity.h"
 
 #include <iterator>
 #include <iostream>
 
-enum lvl {BEACH, COLONIUS};
+enum lvl {BEACH, COLONIUS, HOLIDAIUS};
 
 SoundController::SoundController(uint8_t leveltype) {
     std::vector<SoundType> soundsType{ SoundType::BACKSOUND, SoundType::PLAYERHURT, SoundType::SHOOT, SoundType::GETPOINT};
     int soundsIndex = 0;
     
     switch (leveltype) {
-        case BEACH:
-            {
-                //Beach
-                std::string beachBackSound = ClientConfig::getBeachBacksound();
-                this->sounds_paths[soundsType[soundsIndex]] = beachBackSound;
-                break;
-            }
-        case COLONIUS:
-            {
-                std::string coloniusBackSound = ClientConfig::getColoniusBacksound();
-                this->sounds_paths[soundsType[soundsIndex]] = coloniusBackSound;
-                break;
-            }
+        case COLONIUS:{
+            //COLONIUS
+            std::string coloniusBackSound = ClientConfig::getColoniusBacksound();
+            this->sounds_paths[soundsType[soundsIndex]] = coloniusBackSound;
+            break;
+        }
+        case HOLIDAIUS: {
+            std::string holidaiusBackSound = ClientConfig::getHolidaiusBacksound();
+            this->sounds_paths[soundsType[soundsIndex]] = holidaiusBackSound;
+            break;
+
+        }
+        default:{
+            //Beach
+            std::string beachBackSound = ClientConfig::getBeachBacksound();
+            this->sounds_paths[soundsType[soundsIndex]] = beachBackSound;
+            break;
+        }
+        
     }
     soundsIndex++;
     std::vector<std::string> soundsFiles = ClientConfig::getSoundsFiles();
@@ -47,6 +54,19 @@ void SoundController::play_sound_effect(SoundType soundType) {
         this->chunks[soundType] = Mix_LoadWAV(this->sounds_paths[soundType].c_str());
     }
     Mix_PlayChannel(-1, this->chunks[soundType], 0);
+}
+
+void SoundController::play_players_effect(std::vector<PlayerDTO>& players) {
+    for (const auto& p: players) {
+        switch (p.getState()) {
+            //case CharacterStateEntity::SHOOTING:
+            //    play_sound_effect(SoundType::SHOOT);
+            //    break;
+            case CharacterStateEntity::TAKING_DAMAGE:
+                play_sound_effect(SoundType::PLAYERHURT);
+                break;
+        }
+    }
 }
 
 void SoundController::free_musics() {

@@ -215,6 +215,7 @@ std::list<RectangularSprite>::iterator Player::img_coords(CharacterType characte
 	for (int i = 0; i != this->counts[pjId][mov_type]; i++) {
 		++it;
 		if (it == this->sprites[character][mov_type].end() && mov_type == CharacterStateEntity::DEAD) {
+			it--;
 			return it;
 		} else if (it == this->sprites[character][mov_type].end()) {
 			it = this->sprites[character][mov_type].begin();
