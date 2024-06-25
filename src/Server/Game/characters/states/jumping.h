@@ -11,6 +11,7 @@
 class JumpingState: public State {
 private:
     Character& character;
+
 public:
     explicit JumpingState(Character& character);
 

@@ -83,6 +83,8 @@ void WaitingRoom::fetchUpdates() {
 void WaitingRoom::updateNumPlayers(bool startGameReceived, int numPlayers) {
     ui->numPlayers->setText(QString::number(numPlayers));
     if (startGameReceived) {
+        this->clearFocus();
+        this->deleteLater();
         QCoreApplication::exit(0);
         return;
     }

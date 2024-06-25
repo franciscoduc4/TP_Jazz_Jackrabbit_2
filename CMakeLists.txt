@@ -24,7 +24,7 @@ if (DEBUG)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O0 -ggdb")
 endif()
 
-option(TESTING "Build internal testing suite" OFF)
+option(TESTING "Build internal testing suite" ON)
 option(INSTALL "Apply install settings" OFF)
 option(SERVER "Build server" ON)
 option(CLIENT "Build client" ON)

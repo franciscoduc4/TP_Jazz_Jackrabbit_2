@@ -15,6 +15,7 @@ class DeadState: public State {
 private:
     float reviveTime;
     float startTime;
+    float currentTime = 0;
     Character& character;
 
 public:

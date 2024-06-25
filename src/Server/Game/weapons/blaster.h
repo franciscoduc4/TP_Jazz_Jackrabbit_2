@@ -43,6 +43,10 @@ public:
     float getFireRate() override;
 
     bool cooldown(float time) override;
+
+    uint32_t getDamage() {
+        std::cout << "Blaster damage: " << damage << std::endl;
+        return 10;}
 };
 
 #endif  // BLASTER_H

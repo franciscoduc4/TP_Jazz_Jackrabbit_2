@@ -11,6 +11,7 @@
 class IdleState: public State {
 private:
     Character& character;
+
 public:
     explicit IdleState(Character& character);
     std::unique_ptr<State> exec(float time) override;

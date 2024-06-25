@@ -31,8 +31,11 @@ std::unique_ptr<CommandDTO> Deserializer::getCommand(uint8_t& playerId) {
             return deserializeMove(playerId);
         case Command::SWITCH_WEAPON:
             return deserializeSwitchWeapon(playerId);
+        case Command::SHOOT:
+            return deserializeShooting(playerId);
         case Command::SPRINT:
             return deserializeSprint(playerId);
+
         default:
             std::cout << "[SERVER DESERIALIZER] Unknown command received: " << (int)cmd
                       << std::endl;

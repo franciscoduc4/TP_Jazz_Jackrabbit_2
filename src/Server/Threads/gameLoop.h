@@ -19,7 +19,7 @@ class GameLoopThread: public Thread {
 private:
     double frameRate;
     bool exponentialIncrease = true;
-    const size_t exponentialThreshold = 100;
+    const size_t exponentialThreshold = 16;
     std::atomic<bool> keepRunning;
     size_t commandsToProcess;
     std::shared_ptr<Queue<std::unique_ptr<CommandDTO>>> recvQueue;

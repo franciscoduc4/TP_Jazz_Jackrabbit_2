@@ -13,15 +13,19 @@
 
 MovingState::MovingState(Character& character, Direction direction):
         character(character), direction(direction) {
-    characterState = CharacterStateEntity::MOVING;
+    if (direction == Direction::UP) {
+        characterState = CharacterStateEntity::JUMPING;
+    } else {
+        characterState = CharacterStateEntity::MOVING;
+    }
 }
 
 std::unique_ptr<State> MovingState::exec(float time) {
+    std::cout << "[MOVE] MovingState::exec" << std::endl;
     return move(direction, time);
 }
 
-std::unique_ptr<State> MovingState::shoot(const std::shared_ptr<Weapon>& weapon,
-                                          float time) {
+std::unique_ptr<State> MovingState::shoot(const std::shared_ptr<Weapon>& weapon, float time) {
     if (time - lastTimeMoved >= waitingMoveTime) {
         return nullptr;
     }
@@ -33,13 +37,10 @@ std::unique_ptr<State> MovingState::shoot(const std::shared_ptr<Weapon>& weapon,
 }
 
 std::unique_ptr<State> MovingState::move(Direction direction2, float time) {
-    // if (direction2 != this->direction2) {
-    //     this->direction2 = direction2;
-    //     return nullptr;
-    // }
+    std::cout << "[MOVE] moving direction: " << static_cast<int>(direction2) << std::endl;
     switch (direction2) {
         case Direction::UP:
-            character.moveUp();
+            character.jump();
             break;
         case Direction::DOWN:
             character.moveDown();
@@ -53,6 +54,9 @@ std::unique_ptr<State> MovingState::move(Direction direction2, float time) {
         default:
             break;
     }
+    if (character.isOnGround() && direction2 == Direction::DOWN) {
+        return std::make_unique<IdleState>(character);
+    }
     return nullptr;
 }
 
@@ -63,8 +67,7 @@ std::unique_ptr<State> MovingState::sprint(Direction direction2, float time) {
     return nullptr;
 }
 
-std::unique_ptr<State> MovingState::receiveDamage(uint8_t damage,
-                                                  float time) {
+std::unique_ptr<State> MovingState::receiveDamage(uint8_t damage, float time) {
     // Maneja la recepción de daño
     return std::make_unique<ReceivingDamageState>(character, time, damage);
 }

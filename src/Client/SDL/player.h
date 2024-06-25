@@ -34,7 +34,7 @@ public:
 
     std::list<RectangularSprite>::iterator img_coords(CharacterType character, CharacterStateEntity mov_type, int pjId);
 
-	void draw_players(SDL2pp::Window& window, SDL2pp::Renderer& renderer, std::map<CharacterType, std::unique_ptr<SDL2pp::Texture>>& pjs_textures, std::vector<PlayerDTO>& players, int dir_x_screen, int dir_y_screen, PlayerDTO& mainPlayer);
+	void draw_players(SDL2pp::Window& window, SDL2pp::Renderer& renderer, std::map<CharacterType, std::unique_ptr<SDL2pp::Texture>>& pjs_textures, std::vector<PlayerDTO>& players, int dir_x_screen, int dir_y_screen, PlayerDTO& mainPlayer, int pj_direction);
 	
     std::map<CharacterType, std::unique_ptr<SDL2pp::Texture>> getPlayersTextures(SDL2pp::Renderer& renderer);
 

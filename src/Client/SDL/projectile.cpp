@@ -107,7 +107,7 @@ void Projectile::draw_projectile(SDL2pp::Window& window, SDL2pp::Renderer& rende
             x = dir_x_screen + distance_main_bullet_x;
         }
         if (dir_y_screen != 0) {
-            distance_main_bullet_y = y - player.getX();
+            distance_main_bullet_y = y - player.getY();
             y = dir_y_screen + distance_main_bullet_y;
         }
 		if (abs(distance_main_bullet_x) <= window.GetWidth() && abs(distance_main_bullet_y) <= window.GetHeight()) {

@@ -133,9 +133,12 @@ void LevelEditor::onSaveClicked() {
     }
 
     createYAML(mapName);
-
+  
     QMessageBox(QMessageBox::Information, "Éxito", "El mapa " + mapNameTrimmed + " fue creado!").exec();
-
+  
+    this->clearFocus();
+    this->deleteLater();
+  
     QCoreApplication::exit(0);
 }
 

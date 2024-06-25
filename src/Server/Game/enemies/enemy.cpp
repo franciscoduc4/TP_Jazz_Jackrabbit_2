@@ -2,11 +2,11 @@
 
 #include "../gameMap.h"
 
-Enemy::Enemy(GameMap& gameMap, const Vector<uint32_t>& pos, uint8_t id, uint8_t health, Direction dir,
-             uint8_t dmg, std::unique_ptr<EnemyState> initialState, uint8_t viewDistance,
-             uint8_t viewDistanceHit, uint8_t movesPerCell, uint8_t hitDistance,
-             std::vector<uint8_t> walkProb, std::vector<uint8_t> jumpProb,
-             std::vector<uint8_t> flyProb):
+Enemy::Enemy(GameMap& gameMap, const Vector<uint32_t>& pos, uint8_t id, uint8_t health,
+             Direction dir, uint8_t dmg, std::unique_ptr<EnemyState> initialState,
+             uint8_t viewDistance, uint8_t viewDistanceHit, uint8_t movesPerCell,
+             uint8_t hitDistance, std::vector<uint8_t> walkProb, std::vector<uint8_t> jumpProb,
+             std::vector<uint8_t> flyProb, uint32_t width, uint32_t height):
         Entity(pos, id, health, dir, EntityType::ENEMY),
         gameMap(gameMap),
         dmg(dmg),
@@ -18,20 +18,56 @@ Enemy::Enemy(GameMap& gameMap, const Vector<uint32_t>& pos, uint8_t id, uint8_t 
         speed(1),
         walkProb(walkProb),
         jumpProb(jumpProb),
-        flyProb(flyProb) {}
+        flyProb(flyProb),
+        width(width),
+        height(height),
+        initialPosition(pos),
+        maxDistance(50),
+        movingRight(true) {}
 
-void Enemy::update(std::vector<std::shared_ptr<Character>> characters, float time) {
+void Enemy::update(const std::map<uint8_t, std::shared_ptr<Character>>& characters, float time) {
+
+    // std::cout << "[ENEMY] update" << std::endl;
+    // moveCycle(time);
+
+    std::vector<std::shared_ptr<Character>> characterList;
+    for (const auto& pair: characters) {
+        characterList.push_back(pair.second);
+    }
+
     std::unique_ptr<EnemyState> newState = state->update(time);
     if (newState != nullptr) {
         state = std::move(newState);
     }
-    attack(characters, time);
+    // attack(characterList, time);
+}
+
+void Enemy::moveCycle(float deltaTime) {
+
+    std::cout << "[ENEMY] moveCycle" << std::endl;
+    Vector<uint32_t> newPos = pos;
+    if (movingRight) {
+        newPos.x += speed * deltaTime;
+        if (newPos.x >= initialPosition.x + maxDistance) {
+            movingRight = false;
+        }
+    } else {
+        newPos.x -= speed * deltaTime;
+        if (newPos.x <= initialPosition.x) {
+            movingRight = true;
+        }
+    }
+
+    if (gameMap.isValidMapPosition(newPos)) {
+        pos = newPos;
+        std::cout << "[ENEMY] Moved to: " << pos.x << ", " << pos.y << std::endl;
+    }
 }
 
 void Enemy::recvDamage(uint8_t dmg, float time) {
-    Entity::recvDamage(dmg, time);
-    viewDistance = viewDistanceHit;
-    if (isDead) {
+    std::cout << "[ENEMY] recvDamage" << std::endl;
+    Entity::recvDamage(dmg);
+    if (isDead()) {
         die(time);
         return;
     } else {
@@ -59,7 +95,6 @@ void Enemy::attack(std::vector<std::shared_ptr<Character>> characters, float tim
 
 void Enemy::die(float time) {
     Entity::die(time);
-    gameMap.removeEnemy(getMapPosition(movesPerCell));
     std::unique_ptr<EnemyState> newState = state->die(time);
     if (newState != nullptr) {
         state = std::move(newState);
@@ -83,7 +118,9 @@ std::shared_ptr<Character> Enemy::getClosestCharacter(
 std::unique_ptr<EnemyState>& Enemy::getState() { return state; }
 
 
-
 EnemyDTO Enemy::getDTO() const {
-    return EnemyDTO{pos.x, pos.y, id, health, dmg, speed, EnemyType::TURTLE/*getEnemyType()*/, EnemyStateEntity::ENEMY_WALKING};
+    return EnemyDTO{
+            pos.x, pos.y, id, health, dmg, speed, getEnemyType(), EnemyStateEntity::ENEMY_WALKING};
 }
+
+void Enemy::update(double deltaTime) { moveCycle(deltaTime); }

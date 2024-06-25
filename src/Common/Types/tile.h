@@ -7,8 +7,8 @@ enum class TileType : char {
     LONGPLATFORM, 
     SMALLPLATFORM, 
     COLUMN, 
-    LEFTDIAGONAL, 
-    RIGHTDIAGONAL
+    LEFTLADDER, 
+    RIGHTLADDER
 };
 
 #endif //TILETYPE_H_

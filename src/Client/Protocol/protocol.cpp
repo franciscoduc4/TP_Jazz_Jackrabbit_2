@@ -1,5 +1,7 @@
 #include "protocol.h"
 
+#include "printer.h"
+
 ClientProtocol::ClientProtocol(std::shared_ptr<Socket>& socket, std::atomic<bool>& was_closed) :
     socket(socket), was_closed(was_closed), closed(false) {}
 
@@ -217,16 +219,16 @@ std::vector<PlayerDTO> ClientProtocol::receivePlayers() {
             auto playerId = static_cast<uint8_t>(aux);
 
             if (!this->receive_uint8(aux)) return {};
-            uint8_t damage = static_cast<uint8_t>(aux);
+            auto damage = static_cast<uint8_t>(aux);
 
             if (!this->receive_uint8(aux)) return {};
-            uint8_t health = static_cast<uint8_t>(aux);
+            auto health = static_cast<uint8_t>(aux);
 
             if (!this->receive_uint8(aux)) return {};
-            uint8_t speed = static_cast<uint8_t>(aux);
+            auto speed = static_cast<uint8_t>(aux);
 
             if (!this->receive_uint8(aux)) return {};
-            uint8_t getRespawnTime = static_cast<uint8_t>(aux);
+            auto getRespawnTime = static_cast<uint8_t>(aux);
 
             if (!this->receive_uint32(aux32)) return {};
             uint32_t x = aux32;
@@ -234,13 +236,18 @@ std::vector<PlayerDTO> ClientProtocol::receivePlayers() {
             if (!this->receive_uint32(aux32)) return {};
             uint32_t y = aux32;
 
+            Printer::printDebugHighlightedMessage("Player id: " + std::to_string(playerId)+ " x: " + std::to_string(x) + " y: " + std::to_string(y));
+
             if (!this->receive_uint8(aux)) return {};
             auto pj_type = static_cast<CharacterType>(aux);
 
             if (!this->receive_uint8(aux)) return {};
             auto state = static_cast<CharacterStateEntity>(aux);
 
-            PlayerDTO player(x, y, playerId, health, damage, speed, pj_type, state);
+            if (!this->receive_uint32(aux32)) return {};
+            uint32_t score = aux32;      
+
+            PlayerDTO player(x, y, playerId, health, damage, speed, pj_type, state, score);
             players.push_back(player);
         }
     } catch (const std::exception& e) {
@@ -262,32 +269,25 @@ std::vector<EnemyDTO> ClientProtocol::receiveEnemies() {
             auto enemyId = static_cast<uint8_t>(aux);
 
             if (!this->receive_uint8(aux)) return {};
-            uint8_t enemy_damage = static_cast<uint8_t>(aux);
+            auto enemy_damage = static_cast<uint8_t>(aux);
 
             if (!this->receive_uint8(aux)) return {};
-            uint8_t enemy_health = static_cast<uint8_t>(aux);
+            auto enemy_health = static_cast<uint8_t>(aux);
 
             if (!this->receive_uint8(aux)) return {};
-            uint8_t enemy_speed = static_cast<uint8_t>(aux);
-            std::cout << "[CLIENT RECEIVER ENEMY] Speed: " << enemy_speed << std::endl;
+            auto enemy_speed = static_cast<uint8_t>(aux);
 
             if (!this->receive_uint32(aux32)) return {};
             uint32_t enemy_x = aux32;
-            std::cout << "[CLIENT RECEIVER ENEMY] X: " << static_cast<int>(enemy_x) << std::endl;
 
             if (!this->receive_uint32(aux32)) return {};
             uint32_t enemy_y = aux32;
-            std::cout << "[CLIENT RECEIVER ENEMY] Y: " << static_cast<int>(enemy_y) << std::endl;
 
             if (!this->receive_uint8(aux)) return {};
             auto enemy_type = static_cast<EnemyType>(aux);
-            std::cout << "[CLIENT RECEIVER ENEMY] Type: " << static_cast<int>(enemy_type)
-                      << std::endl;
 
             if (!this->receive_uint8(aux)) return {};
             auto enemy_state = static_cast<EnemyStateEntity>(aux);
-            std::cout << "[CLIENT RECEIVER ENEMY] State: " << static_cast<int>(enemy_state)
-                      << std::endl;
 
             EnemyDTO enemy(enemy_x, enemy_y, enemyId, enemy_health, enemy_damage, enemy_speed,
                            enemy_type, enemy_state);
@@ -304,36 +304,27 @@ std::vector<BulletDTO> ClientProtocol::receiveBullets() {
     try {
         uint32_t cant_bullets;
         if (!this->receive_uint32(cant_bullets)) return {};
-        std::cout << "[CLIENT RECEIVER] Number of bullets: " << static_cast<int>(cant_bullets)
-                  << std::endl;
 
         uint8_t aux;
         uint32_t aux32;
         for (uint32_t i = 0; i < cant_bullets; i++) {
             if (!this->receive_uint8(aux)) return {};
             auto bulletId = static_cast<uint8_t>(aux);
-            std::cout << "[CLIENT RECEIVER BULLET] Bullet ID: " << static_cast<int>(bulletId)
-                      << std::endl;
 
             if (!this->receive_uint32(aux32)) return {};
             int bullet_damage = static_cast<int>(aux32);
-            std::cout << "[CLIENT RECEIVER BULLET] Damage: " << bullet_damage << std::endl;
 
             if (!this->receive_uint32(aux32)) return {};
             int bullet_speed = static_cast<int>(aux32);
-            std::cout << "[CLIENT RECEIVER BULLET] Speed: " << bullet_speed << std::endl;
 
             if (!this->receive_uint32(aux32)) return {};
             uint32_t bullet_x = aux32;
-            std::cout << "[CLIENT RECEIVER BULLET] X: " << static_cast<int>(bullet_x) << std::endl;
 
             if (!this->receive_uint32(aux32)) return {};
             uint32_t bullet_y = aux32;
-            std::cout << "[CLIENT RECEIVER BULLET] Y: " << static_cast<int>(bullet_y) << std::endl;
 
             if (!this->receive_uint32(aux32)) return {};
             int shooterId = static_cast<int>(aux32);
-            std::cout << "[CLIENT RECEIVER BULLET] Shooter ID: " << shooterId << std::endl;
 
             BulletDTO bullet(bullet_x, bullet_y, bulletId, bullet_damage, bullet_speed, shooterId);
             bullets.push_back(bullet);
@@ -349,24 +340,18 @@ std::vector<ItemDTO> ClientProtocol::receiveItems() {
     try {
         uint32_t cant_items;
         if (!this->receive_uint32(cant_items)) return {};
-        std::cout << "[CLIENT RECEIVER] Number of items: " << static_cast<int>(cant_items)
-                  << std::endl;
 
         uint8_t aux;
         uint32_t aux32;
         for (uint32_t i = 0; i < cant_items; i++) {
             if (!this->receive_uint32(aux32)) return {};
             uint32_t item_x = aux32;
-            std::cout << "[CLIENT RECEIVER ITEM] X: " << static_cast<int>(item_x) << std::endl;
 
             if (!this->receive_uint32(aux32)) return {};
             uint32_t item_y = aux32;
-            std::cout << "[CLIENT RECEIVER ITEM] Y: " << static_cast<int>(item_y) << std::endl;
 
             if (!this->receive_uint8(aux)) return {};
             auto item_type = static_cast<ItemType>(aux);
-            std::cout << "[CLIENT RECEIVER ITEM] Type: " << static_cast<int>(item_type)
-                      << std::endl;
 
             ItemDTO item(item_x, item_y, item_type);
             items.push_back(item);
@@ -382,63 +367,45 @@ std::vector<WeaponDTO> ClientProtocol::receiveWeapons() {
     try {
         uint32_t cant_weapons;
         if (!this->receive_uint32(cant_weapons)) return {};
-        std::cout << "[CLIENT RECEIVER] Number of weapons: " << static_cast<int>(cant_weapons)
-                  << std::endl;
 
         uint8_t aux;
         uint32_t aux32;
         for (uint32_t i = 0; i < cant_weapons; i++) {
             if (!this->receive_uint8(aux)) return {};
             auto weaponId = static_cast<uint8_t>(aux);
-            std::cout << "[CLIENT RECEIVER WEAPON] Weapon ID: " << static_cast<int>(weaponId)
-                      << std::endl;
 
             if (!this->receive_uint32(aux32)) return {};
             int weapon_damage = static_cast<int>(aux32);
-            std::cout << "[CLIENT RECEIVER WEAPON] Damage: " << weapon_damage << std::endl;
 
             if (!this->receive_uint32(aux32)) return {};
             int weapon_ammo = static_cast<int>(aux32);
-            std::cout << "[CLIENT RECEIVER WEAPON] Ammo: " << weapon_ammo << std::endl;
 
             if (!this->receive_uint32(aux32)) return {};
             int shoot_speed = static_cast<int>(aux32);
-            std::cout << "[CLIENT RECEIVER WEAPON] Shoot speed: " << shoot_speed << std::endl;
 
             if (!this->receive_uint32(aux32)) return {};
             uint32_t weapon_x = aux32;
-            std::cout << "[CLIENT RECEIVER WEAPON] X: " << static_cast<int>(weapon_x) << std::endl;
 
             if (!this->receive_uint32(aux32)) return {};
             uint32_t weapon_y = aux32;
-            std::cout << "[CLIENT RECEIVER WEAPON] Y: " << static_cast<int>(weapon_y) << std::endl;
 
             if (!this->receive_uint8(aux)) return {};
             auto bulletId = static_cast<uint8_t>(aux);
-            std::cout << "[CLIENT RECEIVER WEAPON] Bullet ID: " << static_cast<int>(bulletId)
-                      << std::endl;
 
             if (!this->receive_uint32(aux32)) return {};
             int bullet_damage = static_cast<int>(aux32);
-            std::cout << "[CLIENT RECEIVER WEAPON] Bullet damage: " << bullet_damage << std::endl;
 
             if (!this->receive_uint32(aux32)) return {};
             int bullet_speed = static_cast<int>(aux32);
-            std::cout << "[CLIENT RECEIVER WEAPON] Bullet speed: " << bullet_speed << std::endl;
 
             if (!this->receive_uint8(aux)) return {};
             auto bullet_x = static_cast<uint8_t>(aux);
-            std::cout << "[CLIENT RECEIVER WEAPON] Bullet X: " << static_cast<int>(bullet_x)
-                      << std::endl;
 
             if (!this->receive_uint8(aux)) return {};
             auto bullet_y = static_cast<uint8_t>(aux);
-            std::cout << "[CLIENT RECEIVER WEAPON] Bullet Y: " << static_cast<int>(bullet_y)
-                      << std::endl;
 
             if (!this->receive_uint32(aux32)) return {};
             int shooterId = static_cast<int>(aux32);
-            std::cout << "[CLIENT RECEIVER WEAPON] Shooter ID: " << shooterId << std::endl;
 
             WeaponDTO weapon(weaponId, weapon_x, weapon_y, weapon_damage, weapon_ammo);
             weapons.push_back(weapon);
@@ -454,20 +421,20 @@ std::vector<TileDTO> ClientProtocol::receiveTiles() {
     try {
         uint32_t cant_tiles;
         if (!this->receive_uint32(cant_tiles)) return {};
-        std::cout << "[CLIENT RECEIVER] Number of tiles: " << static_cast<int>(cant_tiles)
-                  << std::endl;
 
         uint32_t aux32;
+        uint8_t aux8;  // Cambia esto para recibir el tipo de ObstacleType
         for (uint32_t i = 0; i < cant_tiles; i++) {
             if (!this->receive_uint32(aux32)) return {};
             uint32_t tile_x = aux32;
-            std::cout << "[CLIENT RECEIVER TILE] X: " << static_cast<int>(tile_x) << std::endl;
 
             if (!this->receive_uint32(aux32)) return {};
             uint32_t tile_y = aux32;
-            std::cout << "[CLIENT RECEIVER TILE] Y: " << static_cast<int>(tile_y) << std::endl;
 
-            TileDTO tile(tile_x, tile_y);
+            if (!this->receive_uint8(aux8)) return {}; // Recibe el tipo de tile como uint8_t
+            auto tile_type = static_cast<ObstacleType>(aux8);
+
+            TileDTO tile(tile_x, tile_y, tile_type);
             tiles.push_back(tile);
         }
     } catch (const std::exception& e) {
@@ -475,4 +442,6 @@ std::vector<TileDTO> ClientProtocol::receiveTiles() {
     }
     return tiles;
 }
+
+
 
