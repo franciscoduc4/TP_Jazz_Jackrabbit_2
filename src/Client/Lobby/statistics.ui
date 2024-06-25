@@ -20,39 +20,13 @@
    <string>Estadísticas</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QLabel" name="labelGG">
-    <property name="geometry">
-     <rect>
-      <x>160</x>
-      <y>20</y>
-      <width>321</width>
-      <height>51</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Buena Partida!</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="labelStatistics">
-    <property name="geometry">
-     <rect>
-      <x>30</x>
-      <y>80</y>
-      <width>581</width>
-      <height>51</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Estas son las estadisticas</string>
-    </property>
-   </widget>
    <widget class="QLabel" name="stats">
     <property name="geometry">
      <rect>
       <x>30</x>
-      <y>150</y>
+      <y>30</y>
       <width>571</width>
-      <height>151</height>
+      <height>271</height>
      </rect>
     </property>
     <property name="text">

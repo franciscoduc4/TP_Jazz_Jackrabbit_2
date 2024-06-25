@@ -28,6 +28,7 @@ private:
     GameMode gameMode;
     uint8_t maxPlayers;
     uint8_t currentPlayers;
+    std::shared_ptr<Queue<std::unique_ptr<CommandDTO>>> recvQueue;
     GameLoopThread gameLoop;
     GameMap gameMap;
 
@@ -57,6 +58,8 @@ public:
     void endGame();
 
     std::unique_ptr<GameDTO> getGameDTO();
+
+    std::shared_ptr<Queue<std::unique_ptr<CommandDTO>>> getRecvQueue();
 };
 
 #endif  // GAME_H_

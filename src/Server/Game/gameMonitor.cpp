@@ -11,7 +11,7 @@
 #include "maps/mapsManager.h"
 
 GameMonitor::GameMonitor(QueueMonitor& queueMonitor):
-        queueMonitor(queueMonitor), gamesListSize(0) {}
+        queueMonitor(queueMonitor), gamesListSize(0), playersGameQueues({}) {}
 
 void GameMonitor::createGame(uint8_t playerId, uint8_t mapId, GameMode gameMode, uint8_t maxPlayers,
                              CharacterType characterType, const std::string& gameName,
@@ -32,12 +32,12 @@ void GameMonitor::createGame(uint8_t playerId, uint8_t mapId, GameMode gameMode,
 
     auto it = playersRecvQueues.find(playerId);
     if (it != playersRecvQueues.end()) {
-        // Move the shared_ptr from the players map to the games map
-        auto playerQueue = std::move(it->second);
-        playersRecvQueues.erase(it);
+        std::shared_ptr<Queue<std::unique_ptr<CommandDTO>>> gameQueue = std::make_shared<Queue<std::unique_ptr<CommandDTO>>>();
+
+        playersGameQueues[playerId] = gameQueue;
 
         games[playerId] = std::make_unique<Game>(gameId, gameName, mapId, playerId, gameMode, maxPlayers,
-                                                 characterType, std::move(playerQueue), queueMonitor);
+                                                 characterType, std::move(gameQueue), queueMonitor);
     } else {
         std::cerr << "[GM] Player " << playerId << " not found in playersRecvQueues" << std::endl;
         return;
@@ -65,9 +65,15 @@ void GameMonitor::joinGame(uint8_t playerId, uint8_t gameId, CharacterType chara
     if (it != games.end()) {
         auto& [id, game] = *it;
         if (!game->isFull()) {
+            auto it2 = playersRecvQueues.find(playerId);
+            if (it2 == playersRecvQueues.end()) {
+                std::cerr << "[GM] Player " << playerId << " not found in playersRecvQueues" << std::endl;
+                return;
+            }
             queueMonitor.assignGameIdToQueues(gameId, sendQueue);
             std::cout << "[GM] Assigned id to queue for gameId: " << gameId << std::endl;
             game->addPlayer(playerId, characterType);
+            playersGameQueues[playerId] = game->getRecvQueue();
             std::cout << "[GM] Player " << playerId << " added to game " << gameId << std::endl;
             GameInfo gi = game->getGameInfo();
             auto currentPlayers = gi.currentPlayers;
@@ -140,7 +146,8 @@ void GameMonitor::mapsList(const std::shared_ptr<Queue<std::unique_ptr<DTO>>>& s
     std::cout << "[GM] Pushed MapsListDTO to send queue" << std::endl;
 }
 
-uint8_t GameMonitor::getCurrentPlayers(uint8_t gameId) {
+/*
+std::shared_ptr<Queue<std::unique_ptr<CommandDTO>>> GameMonitor::getCurrentPlayers(uint8_t gameId) {
     std::cout << "[GM] Attempting to lock mutex in getCurrentPlayers" << std::endl;
     std::lock_guard<std::mutex> lock(mtx);
     std::cout << "[GM] Mutex locked in getCurrentPlayers" << std::endl;
@@ -153,6 +160,7 @@ uint8_t GameMonitor::getCurrentPlayers(uint8_t gameId) {
     std::cout << "[GM] Game with id " << gameId << " not found" << std::endl;
     return 0;
 }
+*/
 
 uint8_t GameMonitor::getGamesListSize() {
     std::cout << "[GM] Returning games list size: " << gamesListSize << std::endl;
@@ -192,4 +200,13 @@ void GameMonitor::addPlayerRecvQueue(uint8_t playerId,
     std::cout << "[GM] Mutex locked in addPlayerRecvQueue" << std::endl;
     playersRecvQueues[playerId] = recvQueue;
     std::cout << "[GM] Added player " << playerId << " to playersRecvQueues" << std::endl;
+}
+
+std::shared_ptr<Queue<std::unique_ptr<CommandDTO>>> GameMonitor::getPlayerGameQueue(uint8_t playerId) {
+    auto it = playersGameQueues.find(playerId);
+    if (it == playersGameQueues.end()) {
+        std::cerr << "[GM] Player " << playerId << " not found in playersGameQueues" << std::endl;
+        return nullptr;
+    }
+    return playersGameQueues[playerId];
 }

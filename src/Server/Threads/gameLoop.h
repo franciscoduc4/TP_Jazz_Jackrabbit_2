@@ -28,7 +28,7 @@ private:
     uint8_t gameId;
 
 public:
-    GameLoopThread(std::shared_ptr<Queue<std::unique_ptr<CommandDTO>>> recvQueue,
+    GameLoopThread(const std::shared_ptr<Queue<std::unique_ptr<CommandDTO>>>& recvQueue,
                    QueueMonitor& queueMonitor, GameMap& gameMap,
                    uint8_t gameId);
 
