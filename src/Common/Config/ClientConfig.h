@@ -50,6 +50,8 @@ public:
     static std::tuple<int, int, int> getInterfaceFontColourKey();
     // Rectangular Sprites
     static std::vector<std::vector<int>> getEpisodesSprites();
+    //Game time
+    static int getGameTime();
     //Levels sounds and sprites
     //Sounds
     static std::vector<std::string> getSoundsFiles();
@@ -63,6 +65,11 @@ public:
     static std::string getColoniusBacksound();
     static std::vector<std::vector<int>> getColoniusSprites();
     static std::vector<std::vector<int>> getColoniusWidthHeightSprites();
+    //Holidaius
+    static std::vector<std::string> getHolidaiusFiles();
+    static std::string getHolidaiusBacksound();
+    static std::vector<std::vector<int>> getHolidaiusSprites();
+    static std::vector<std::vector<int>> getHolidaiusWidthHeightSprites();
 
     // Enemies Sprites
     // Turtle
@@ -128,6 +135,7 @@ public:
     static std::vector<std::vector<int>> getRedGemSprites();
     static std::vector<std::vector<int>> getGoldCoinSprites();
     static std::vector<std::vector<int>> getSilverCoinSprites();
+    static std::vector<std::vector<int>> getCarrotSprites();
     // Projectiles
     static int getProjWidth();
     static int getProjHeight();
@@ -145,6 +153,8 @@ public:
     static std::vector<std::vector<int>> getInterfaceFontSprites();
     static int getWidthFont();
     static int getHeightFont();
+    static std::vector<std::vector<int>> getInterfaceHeartSprites();
+    static std::vector<std::vector<int>> getInterfaceColors();
 
     // Sprites
     static std::vector<std::vector<std::pair<int, int>>> getJazzSelectNameSprites();

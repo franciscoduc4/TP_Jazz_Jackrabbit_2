@@ -3,10 +3,12 @@
 #include <utility>
 #include "ui_statistics.h"
 
-Statistics::Statistics(QWidget *parent, FinalStats  stats, bool& clientJoinedGame)
+Statistics::Statistics(QWidget *parent, const LobbyMessage& msg, const FinalStats& stats, bool& clientJoinedGame, const uint8_t& playerId)
         : QMainWindow(parent)
         , ui(new Ui::Statistics)
-        , stats(std::move(stats))
+        , stats(stats)
+        , msg(msg)
+        , playerId(playerId)
         , clientJoinedGame(clientJoinedGame)
 {
     ui->setupUi(this);
@@ -17,20 +19,30 @@ Statistics::Statistics(QWidget *parent, FinalStats  stats, bool& clientJoinedGam
 Statistics::~Statistics() { delete ui; }
 
 void Statistics::displayStats() {
-    std::string winnerName = stats.getWinner();
-    std::map<std::string, std::string> players = stats.getPlayers();
-    std::map<std::string, std::string> scores = stats.getScores();
-
-    std::string statsText = "Ganador: " + winnerName + "\n\n";
-
-    for (const auto& player : players) {
-        std::string playerName = player.first;
-        std::string playerCharacter = player.second;
-        std::string playerScore = scores[playerName];
-
-        statsText += playerName + " | " + playerCharacter + " | " + playerScore + "\n";
+    if (!clientJoinedGame) {
+        ui->stats->setText("No hay estadísticas para mostrar.");
+        return;
     }
 
-    ui->stats->setText(QString::fromStdString(statsText));
+    if (msg.getMaxPlayers() == 1) {
+        QString finalMsg = "Buena Partida!";
+        if (stats.getScores().empty()) {
+            ui->stats->setText(finalMsg);
+            return;
+        }
+
+        int score = stats.getScores().at(this->playerId);
+        finalMsg += "\n\nPuntaje: " + QString::number(score);
+        ui->stats->setText(finalMsg);
+        return;
+    }
+
+    bool isWinner = this->playerId == stats.getWinner();
+    QString finalMsg = isWinner ? "Ganaste!" : "Buena Partida!";
+    finalMsg += "\n\nPuntajes:\n";
+    for (const auto& [player, score] : stats.getScores()) {
+        finalMsg += "Jugador " + QString::number(player) + ": " + QString::number(score) + "\n";
+    }
+    ui->stats->setText(finalMsg);
 }
 

@@ -6,6 +6,7 @@
 #include <vector>
 
 #include "../../../Common/Types/weapon.h"
+#include "../../../Common/Config/ServerConfig.h"
 
 #include "weapon.h"
 
@@ -43,6 +44,10 @@ public:
     float getFireRate() override;
 
     bool cooldown(float time) override;
+
+    uint32_t getDamage() {
+        std::cout << "Blaster damage: " << damage << std::endl;
+        return ServerConfig::getWeaponBlasterDamage();}
 };
 
 #endif  // BLASTER_H

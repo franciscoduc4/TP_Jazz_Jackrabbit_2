@@ -38,7 +38,9 @@ public:
 
     std::unique_ptr<PlayerDTO> searchMainPlayer(std::vector<PlayerDTO>& players);
 
-    void run();
+    std::map<uint8_t, int> run();
+
+    void final_screen(SDL2pp::Window& window, SDL2pp::Renderer& renderer, SDL2pp::Texture& background, std::unique_ptr<SDL2pp::Texture>& font);
 };
 
 #endif  // CLIENT_GAME_SCREEN_H_

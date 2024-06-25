@@ -31,6 +31,12 @@ Points::Points() {
     }
     this->counts.push_back(0);
 
+    std::vector<std::vector<int>> carrot_sprites = ClientConfig::getCarrotSprites();
+    for (int i = 0; i < carrot_sprites.size(); i++) {
+        this->sprites[ItemType::FOOD].push_back(RectangularSprite(carrot_sprites[i]));
+    }
+    this->counts.push_back(0);
+
 }
 
 
@@ -69,7 +75,7 @@ void Points::draw_points(SDL2pp::Window& window, SDL2pp::Renderer& renderer, std
             x = dir_x_screen + distance_main_item_x;
         }
         if (dir_y_screen != 0) {
-            distance_main_item_y = y - player.getX();
+            distance_main_item_y = y - player.getY();
             y = dir_y_screen + distance_main_item_y;
         }
 		
@@ -78,7 +84,9 @@ void Points::draw_points(SDL2pp::Window& window, SDL2pp::Renderer& renderer, std
                       SDL2pp::Rect(x, y, this->draw_width, this->draw_height),
                       0.0, SDL2pp::NullOpt, 0);
         }
-        this->counts[static_cast<int>(p.getItemType())]++;
    	}
+    for (int i = 0; i < this->counts.size(); i++) {
+        this->counts[i]++;
+    }
 }
 

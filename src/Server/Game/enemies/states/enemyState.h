@@ -20,6 +20,8 @@ public:
     virtual std::unique_ptr<EnemyState> die(float time) = 0;
     virtual void setVelocity(float vel) = 0;
 
+    EnemyStateEntity getState(){ return enemyState; }
+
     virtual ~EnemyState() = default;
 };
 

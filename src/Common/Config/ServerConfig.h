@@ -19,6 +19,11 @@ public:
     static float getGameGravity();
     static uint8_t getGameMaxMoves();
     static uint8_t getGameMaxRevived();
+    
+    static float getGameFrameRate();
+    static uint32_t getGameCommandsToProcess();
+
+
 
     static uint32_t getCharacterInitialX();
     static uint32_t getCharacterInitialY();
@@ -29,6 +34,10 @@ public:
     static uint8_t getCharacterRespawnTime();
     static uint8_t getCharacterDamageTime();
     static uint8_t getCharacterIntoxicatedTime();
+    static uint32_t getCharacterQuadMovesPerCell();
+    static uint32_t getCharacterTwoMovesPerCell();
+    static uint32_t getCharacterJumpHeight();
+
 
     static uint8_t getJazzShootCooldownTime();
     static float getJazzHorizontalSpeed();
@@ -82,6 +91,8 @@ public:
     static uint8_t getWalkingEnemyViewDistance();
     static uint8_t getWalkingEnemyViewDistanceHit();
     static std::vector<uint8_t> getWalkingEnemyWalkProb();
+    static uint32_t getWalkingEnemyWidth();
+    static uint32_t getWalkingEnemyHeight();
 
     static uint32_t getFlyingEnemyInitialX();
     static uint32_t getFlyingEnemyInitialY();
@@ -97,6 +108,9 @@ public:
     static uint8_t getFlyingEnemyViewDistance();
     static uint8_t getFlyingEnemyViewDistanceHit();
     static std::vector<uint8_t> getFlyingEnemyFlyProb();
+    static uint32_t getFlyingEnemyWidth();
+    static uint32_t getFlyingEnemyHeight();
+
 
     static uint32_t getJumpingEnemyInitialX();
     static uint32_t getJumpingEnemyInitialY();
@@ -112,6 +126,22 @@ public:
     static uint8_t getJumpingEnemyViewDistance();
     static uint8_t getJumpingEnemyViewDistanceHit();
     static std::vector<uint8_t> getJumpingEnemyJumpProb();
+    static uint32_t getJumpingEnemyWidth();
+    static uint32_t getJumpingEnemyHeight();
+
+    static uint32_t getItemFoodValue();
+    static uint32_t getItemFoodWidth();
+    static uint32_t getItemFoodHeight();
+    static uint32_t getItemGoldCoinValue();
+    static uint32_t getItemGoldCoinWidth();
+    static uint32_t getItemGoldCoinHeight();
+    static uint32_t getItemSilverCoinValue();
+    static uint32_t getItemSilverCoinWidth();
+    static uint32_t getItemSilverCoinHeight();
+    static uint32_t getItemGemValue();
+    static uint32_t getItemGemWidth();
+    static uint32_t getItemGemHeight();
+
 
     static uint32_t getGameMapSizeX(const std::string& mapName);
     static uint32_t getGameMapSizeY(const std::string& mapName);
@@ -120,6 +150,8 @@ public:
     static uint8_t getGameMapGems(const std::string& mapName);
     static uint8_t getGameMapSilverCoins(const std::string& mapName);
     static uint8_t getGameMapGoldCoins(const std::string& mapName);
+    static uint32_t getGameMapShootRange();
+    static uint32_t getGameMapHeightRange();
 };
 
 #endif  // __SERVER_CONFIG_H__

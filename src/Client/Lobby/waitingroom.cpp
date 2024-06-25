@@ -19,7 +19,7 @@ WaitingRoom::WaitingRoom(QWidget* parent, LobbyController& controller, LobbyMess
 
     connect(&updateTimer, &QTimer::timeout, this, &WaitingRoom::fetchUpdates);
 
-    updateTimer.start(1000);
+    updateTimer.start(10);
 
     GameInfo selected = this->controller.getSelectedGame();
     QString numPlayers = QString::number(selected.getCurrentPlayers());
@@ -83,6 +83,8 @@ void WaitingRoom::fetchUpdates() {
 void WaitingRoom::updateNumPlayers(bool startGameReceived, int numPlayers) {
     ui->numPlayers->setText(QString::number(numPlayers));
     if (startGameReceived) {
+        this->clearFocus();
+        this->deleteLater();
         QCoreApplication::exit(0);
         return;
     }

@@ -27,14 +27,12 @@ void AcceptorThread::run() {
                 std::cerr << e.what() << std::endl;
             }
             removeAllPlayers();
-            // gameMonitor.endAllGames();
         }
     }
 }
 
 void AcceptorThread::stop() {
     removeAllPlayers();
-    // gameMonitor.endAllGames();
     isAlive = false;
     serverSocket->shutdown(SHUT_RDWR);
     serverSocket->close();

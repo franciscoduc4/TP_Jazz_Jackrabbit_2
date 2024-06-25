@@ -133,7 +133,12 @@ void LevelEditor::onSaveClicked() {
     }
 
     createYAML(mapName);
-
+  
+    QMessageBox(QMessageBox::Information, "Éxito", "El mapa " + mapNameTrimmed + " fue creado!").exec();
+  
+    this->clearFocus();
+    this->deleteLater();
+  
     QCoreApplication::exit(0);
 }
 
@@ -155,9 +160,10 @@ void LevelEditor::createYAML(const QString& mapName) {
             out << YAML::Key << element.first.toStdString();
             out << YAML::Value << YAML::BeginSeq;
             qDebug() << "Element: " << element.first;
+            QPixmap sprite = SpritesManager::get(element.first);
             for (const auto& point : element.second) {
                 qDebug() << "Point: " << point.x() << " " << point.y();
-                out << YAML::Flow << YAML::BeginSeq << point.x() << point.y() << YAML::EndSeq;
+                out << YAML::Flow << YAML::BeginSeq << point.x() << point.y() << sprite.width() << sprite.height() << YAML::EndSeq;
             }
             out << YAML::EndSeq;
         }
