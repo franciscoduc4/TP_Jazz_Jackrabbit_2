@@ -21,6 +21,8 @@ private:
     std::map<uint8_t, std::unique_ptr<Game>> games;
     std::unordered_map<uint8_t, std::shared_ptr<Queue<std::unique_ptr<CommandDTO>>>>
             playersRecvQueues;
+    std::unordered_map<uint8_t, std::shared_ptr<Queue<std::unique_ptr<CommandDTO>>>>
+            playersGameQueues;
     std::mutex mtx;
     QueueMonitor& queueMonitor;
     uint8_t gamesListSize = 0;
@@ -29,6 +31,7 @@ public:
     explicit GameMonitor(QueueMonitor& queueMonitor);
     void addPlayerRecvQueue(uint8_t playerId,
                             const std::shared_ptr<Queue<std::unique_ptr<CommandDTO>>>& recvQueue);
+    std::shared_ptr<Queue<std::unique_ptr<CommandDTO>>> getPlayerGameQueue(uint8_t playerId);
     void createGame(uint8_t playerId, uint8_t mapId, GameMode gameMode, uint8_t maxPlayers,
                     CharacterType characterType, const std::string& gameName,
                     const std::shared_ptr<Queue<std::unique_ptr<DTO>>>& sendQueue);
@@ -43,7 +46,7 @@ public:
 
     void mapsList(const std::shared_ptr<Queue<std::unique_ptr<DTO>>>& sendQueue);
 
-    uint8_t getCurrentPlayers(uint8_t gameId);
+    std::shared_ptr<Queue<std::unique_ptr<CommandDTO>>> getCurrentPlayers(uint8_t gameId);
 
     void endGame(const std::string& gameName);
 

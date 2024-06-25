@@ -15,7 +15,8 @@ Game::Game(uint8_t gameId, std::string gameName, uint8_t mapId, uint8_t playerId
         maxPlayers(gameMode == GameMode::PARTY_MODE ? maxPlayers : 1),
         gameMap({}, mapId),
         currentPlayers(1),
-        gameLoop(recvQueue, queueMonitor, gameMap, gameId) {
+        recvQueue(std::move(recvQueue)),
+        gameLoop(this->recvQueue, queueMonitor, gameMap, gameId) {
     std::cout << "[GAME] Game created with id: " << (int)gameId << " and name: " << this->gameName
               << std::endl;
     gameMap.loadMap(mapId);
@@ -85,4 +86,8 @@ void Game::endGame() {
 std::unique_ptr<GameDTO> Game::getGameDTO() {
     std::cout << "[GAME] getGameDTO called" << std::endl;
     return gameMap.getGameDTO();
+}
+
+std::shared_ptr<Queue<std::unique_ptr<CommandDTO>>> Game::getRecvQueue() {
+    return this->recvQueue;
 }

@@ -38,7 +38,7 @@ void Statistics::displayStats() {
     }
 
     bool isWinner = this->playerId == stats.getWinner();
-    QString finalMsg = isWinner ? "¡Ganaste!" : "¡Buena Partida!";
+    QString finalMsg = isWinner ? "Ganaste!" : "Buena Partida!";
     finalMsg += "\n\nPuntajes:\n";
     for (const auto& [player, score] : stats.getScores()) {
         finalMsg += "Jugador " + QString::number(player) + ": " + QString::number(score) + "\n";
