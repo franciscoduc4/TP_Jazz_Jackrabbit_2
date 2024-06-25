@@ -1,0 +1,164 @@
+@startuml Server Game Classes
+class Player {
+    - uint8_t playerId
+    - std::shared_ptr<Socket> socket
+    - std::shared_ptr<Queue<std::unique_ptr<DTO>>> sendQueue
+    - std::shared_ptr<Queue<std::unique_ptr<CommandDTO>>> recvQueue
+    - SenderThread sender
+    - ReceiverThread receiver
+    - std::atomic<bool> keepPlaying
+    - std::atomic<bool> inGame
+    + Player()
+    + closeQueues() : void
+    + stopThreads() : void
+    + closeSocket() : void
+    + disconnect() : void
+    + isPlaying() : bool
+    + getPlayerId() : uint8_t
+    + getRecvQueue() : std::shared_ptr<Queue<std::unique_ptr<CommandDTO>>>
+}
+
+class GameMonitor {
+    - QueueMonitor queueMonitor
+    - std::unordered_map<uint8_t, std::unique_ptr<Game>> games
+    - std::unordered_map<uint8_t, std::shared_ptr<Queue<std::unique_ptr<CommandDTO>>>> playersRecvQueues
+    - std::mutex mtx
+    - uint8_t gamesListSize
+    + GameMonitor()
+    + createGame() : void
+    + joinGame() : void
+    + startGame() : void
+    + gamesList() : void
+    + mapsList() : void
+    + getCurrentPlayers() : uint8_t
+    + getGamesListSize() : uint8_t
+    + endGame() : void
+    + endAllGames() : void
+    + addPlayerRecvQueue() : void
+}
+
+class GameMap {
+    - Vector<uint32_t> size
+    - EntityFactory entityFactory
+    - float gravity
+    - uint32_t movesPerCell
+    - uint8_t mapId
+    - std::unordered_map<Vector<uint32_t>, std::shared_ptr<Entity>> mapGrid
+    - std::unordered_map<uint8_t, std::shared_ptr<Character>> characters
+    - std::unordered_map<uint8_t, std::shared_ptr<Enemy>> enemies
+    - std::unordered_map<CharacterType, Vector<uint32_t>> initialPositions
+    - std::unordered_map<CharacterType, Vector<uint32_t>> initialSizes
+    - uint32_t entityCount
+    + GameMap()
+    + loadMap() : void
+    + getObjectsInShootRange() : std::vector<std::shared_ptr<Entity>>
+    + getObjectsInExplosionRange() : std::vector<std::shared_ptr<Entity>>
+    + moveObject() : void
+    + isFreePosition() : bool
+    + addEntityToMap() : void
+    + addCharacter() : void
+    + addEnemy() : void
+    + addObstacle() : void
+    + addItem() : void
+    + isValidMapPosition() : bool
+    + isValidPosition() : bool
+    + getAvailablePosition() : Vector<uint32_t>
+    + update() : void
+    + checkCollision() : bool
+    + handleCharacterItemCollision() : void
+    + handleCharacterEnemyCollision() : void
+    + handleCharacterObstacleCollision() : void
+    + removeCharacter() : void
+    + removeItem() : void
+    + removeEnemy() : void
+    + getEntityAt() : std::shared_ptr<Entity>
+    + getGameDTO() : std::unique_ptr<GameDTO>
+    + getCharacter() : std::shared_ptr<Character>
+    + printMapGrid() : void
+    + getMapPosition() : Vector<uint32_t>
+    + calculateNewPosition() : Vector<uint32_t>
+    + handleShooting() : void
+}
+
+class Game {
+    - uint8_t gameId
+    - std::string gameName
+    - uint8_t mapId
+    - std::string mapName
+    - GameMode gameMode
+    - uint8_t maxPlayers
+    - GameMap gameMap
+    - uint8_t currentPlayers
+    - GameLoopThread gameLoop
+    + Game()
+    + getGameName() : std::string
+    + isFull() : bool
+    + addPlayer() : void
+    + getGameId() : uint8_t
+    + getGameInfo() : GameInfo
+    + launch() : void
+    + isRunning() : bool
+    + endGame() : void
+    + getGameDTO() : std::unique_ptr<GameDTO>
+}
+
+class Entity {
+    - Vector<uint32_t> initialPos
+    - Vector<uint32_t> pos
+    - uint8_t id
+    - uint8_t health
+    - uint8_t initialHealth
+    - Direction dir
+    - EntityType type
+    - bool isDead
+    + Entity()
+    + getPosition() : Vector<uint32_t>
+    + getId() : uint8_t
+    + getDirection() : Direction
+    + getHealth() : uint8_t
+    + getMapPosition() : Vector<uint32_t>
+    + recvDamage() : void
+    + getIsDead() : bool
+    + die() : void
+    + setPosition() : void
+    + setDirection() : void
+    + isAlive() : bool
+    + getDistanceTo() : uint8_t
+    + heal() : void
+    + getType() : EntityType
+}
+
+class EntityFactory {
+    - GameMap gameMap
+    + EntityFactory(GameMap& gameMap)
+    + createCharacter(uint8_t playerId, CharacterType type, Vector<uint32_t> position, uint32_t width, uint32_t height) : std::shared_ptr<Character>
+    + createEnemy(uint8_t enemyId, EnemyType type, Vector<uint32_t> position, uint32_t width, uint32_t height) : std::shared_ptr<Enemy>
+    + createItem(ItemType type, Vector<uint32_t> position, uint32_t width, uint32_t height) : std::shared_ptr<Item>
+    + createObstacle(ObstacleType type, Vector<uint32_t> position, uint32_t width, uint32_t height) : std::shared_ptr<Obstacle>
+}
+
+Player --> Socket
+Player --> Queue
+Player --> SenderThread
+Player --> ReceiverThread
+GameMonitor --> QueueMonitor
+GameMonitor --> Game
+GameMap --> Vector
+GameMap --> EntityFactory
+GameMap --> Entity
+GameMap --> Character
+GameMap --> Enemy
+GameMap --> Obstacle
+GameMap --> Item
+Game --> GameMap
+Game --> GameLoopThread
+Game --> GameInfo
+Entity --> Vector
+Entity --> EntityType
+Entity --> Direction
+EntityFactory --> GameMap
+EntityFactory --> Character
+EntityFactory --> Enemy
+EntityFactory --> Item
+EntityFactory --> Obstacle
+@enduml

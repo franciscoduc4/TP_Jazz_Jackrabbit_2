@@ -14,6 +14,7 @@
 \usepackage{multirow}
 \usepackage{plantuml}
 \usepackage{fancyhdr}
+\usepackage{float}
 \usepackage[spanish,es-tabla]{babel}
 
 % Quote box
@@ -161,6 +162,23 @@ El proyecto es una implementación del juego Jazz Jackrabbit 2 con soporte multi
 \section{Estructura del Proyecto}
 El proyecto tiene una estructura de cliente servidor, donde el servidor es el encargado de manejar la lógica del juego y el cliente es el encargado de mostrar la información al usuario. Además, se incluye un editor de niveles que permite crear nuevos niveles para el juego.
 
+\subsection{dependencias}
+\begin{enumerate}
+  \item CMake: para la compilación del proyecto.
+  \item Qt5: para la interfaz gráfica, versión 5.15.
+  \item YAML-cpp: para el manejo de archivos de configuración.
+  \item SDL2: para la interfaz gráfica.
+  \item SDL2pp: para la interfaz gráfica.
+  \item libfmt
+\end{enumerate}
+
+En caso de usar Vagrant:
+\begin{enumerate}
+  \item Vagrant
+  \item VirtualBox
+\end{enumerate}
+
+
 \subsection{Common}
 Los archivos en común que usan tanto cliente como servidor son:
 
@@ -183,7 +201,35 @@ Cuando llega un mensaje, este es deserialiado por el deserializador. Una vez des
 
 El último hilo que se tiene es el gameloop, que es quien se encarga de actualizar el juego y enviar los mensajes a los clientes. Esto lo hace recibiendo en cada loop las actualizaciones del juego correspondientes y enviádnolas a todos los clientes, es decir, haciendo un broadcast.
 
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth]{images/Server Threads Classes.png}
+  \caption{Diagrama de Clases de los hilos del servidor.}
+  \label{fig:server-threads}
+\end{figure}
+
 Siendo una estrctura multithreading, se tiene que tener en cuenta la concurrencia. Para ello, se utilizan monitores, que son dos: \texttt{GameMonitor} y \texttt{QueueMonitor}. Ambos utilizan mutex para asegurar que no haya problemas de concurrencia ni race conditions en las actualizaciones de los juegos o procesando comandos. GameMonitor es quien se encarga de actualizar el juego, mientras que QueueMonitor es quien agrega a los clientes a los juegos o realiza un broadcast para informar acerca de una actualización en la partida.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth]{images/Lobby Command Handlers.png}
+  \caption{Lobby Command Handlers.}
+  \label{fig:lobby-cmd-handler}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth]{images/Game Command Handlers.png}
+  \caption{Game Command Handlers.}
+  \label{fig:game-cmd-hanlder}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth]{images/Server Game Classes.png}
+  \caption{Diagrama de Clases del Modelo del Juego, lado servidor.}
+  \label{fig:server-game}
+\end{figure}
 
 \subsection{Cliente}
 El cliente posee una estructura simple que se puede dividir en dos grandes áreas: gameplay y lobby. El gameplay es la parte del juego donde se muestra el mapa y los jugadores pueden interactuar entre sí. El lobby es la parte del juego donde los jugadores pueden seleccionar su personaje y unirse a una partida.
@@ -197,6 +243,20 @@ Antes de ser enviados, los mensajes son serializados, y antes de ser enviados a 
 La clase \texttt{Protocolo} es quien realmente conoce cómo es el protocolo de recepción, este es quien realmente procesa la recepción de datos. 
 
 Por último, se tienen los controladores: \texttt{LobbyController} y \texttt{GameController}. Estos tienen a la cola de mensajes recibidos de cada uno y van desencolandolos y, en función del mensaje recibido, realizan las acciones correspondientes.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth]{images/Diagrama de Clases Lobby.png}
+  \caption{Diagrama de Clases del Lobby.}
+  \label{fig:lobby}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth]{images/Client.png}
+  \caption{Diagrama de Clases del lado cliente.}
+  \label{fig:client}
+\end{figure}
 
 \subsection{Editor de Niveles}
 El editor de niveles es un programa simple que consiste de una sola ventana. En ella, se encuetran un canvas, representando el mapa del juego, y a derecha una lista de elementos que se pueden arrastrar sobre el canvas. De esta manera, se pueden crear nuevos niveles para el juego.
@@ -219,6 +279,13 @@ Los elementos también están asociados a Sprites, que son las imágenes que se 
 
 El canvas está compuesto por un \texttt{QGridLayoutWidget} que contiene un \texttt{QGridLayout}. Se le crea a ese elemento perteneciente a la clase \texttt{LevelEditor}, la venta principal, un \texttt{CanvasWidget}, que acepta que se le arrastren y suelten los elementos encima. Cada vez que se suelte un elemento encima de ella, se crea un nuevo \texttt{DroppedElement} y se guarda la posición en la que cayó, en coordenadas del mapa real.
 
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale=0.4]{images/Level Editor.png}
+  \caption{Diagrama de Clases del Editor de Niveles}
+  \label{fig:editor}
+\end{figure}
+
 \section{Protocolo}
 El protocolo que se diseñó para este Trabajo Práctico utiliza Data Transfer Objects (DTO) para enviar y recibir mensajes tanto desde el lado cliente como del lado servidor.
 
@@ -226,8 +293,19 @@ Se crea un DTO por cada tipo de mensaje: Crear Partida, Unirse a una partida, Ob
 
 Cada DTO contiene datos específicos que se deben enviar hacia el otro lado, previamente serializados por el serializador. En la otra punta, el deserializador se encarga de deserializar el mensaje y convertirlo en un DTO para ser usado.
 
-\section{Diagramas de Clases}
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale=0.28, angle=270]{images/DTO Hierarchy.png}
+  \caption{Jerarquía de los Data Travel Objects.}
+  \label{fig:dto}
+\end{figure}
 
+
+\section{Vagrant e Instalador}
+Se provee un archivo \texttt{Vagrantfile} que permite crear una máquina virtual con todas las dependencias necesarias para compilar y ejecutar el proyecto. Para ello, se debe tener instalado Vagrant y VirtualBox.
+
+El archivo crea una máquina virtual utilizando la box \texttt{jammy64}, que utiliza el sistema operativo Ubuntu 22.04 y contiene todas las dependencias que se precisan para compilar y ejecutar el proyecto. 
+Ejecutando \texttt{vagrant up --provision}, se crea la máquina virtual y se instalan las dependencias. Luego, se puede acceder a la máquina virtual con \texttt{vagrant ssh} y compilar y ejecutar el proyecto.
 
 \section{Compilación y Ejecución}
 Para compilar el proyecto, se debe ejecutar los siguientes comandos en la terminal sobre el directorio del proyecto:

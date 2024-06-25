@@ -1,4 +1,4 @@
-@startuml Diagrama de Clases Lobby
+@startuml Client
 
 class Client{
     - senderQueue: std::stared_ptr<Queue<std::unique_ptr<CommandDTO>>>
