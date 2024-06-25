@@ -456,7 +456,7 @@ bool GameMap::checkCollision(const Vector<uint32_t>& pos1, const Vector<uint32_t
 }
 
 
-bool GameMap::handleCharacterItemCollision(std::shared_ptr<Character> character, std::shared_ptr<Item> item) {
+bool GameMap::handleCharacterItemCollision(const std::shared_ptr<Character>& character, const std::shared_ptr<Item>& item) {
     try {
         if (checkCollision(character->getPosition(), {character->getWidth(), character->getHeight()},
                            item->getPosition(), {item->getWidth(), item->getHeight()})) {
@@ -466,16 +466,16 @@ bool GameMap::handleCharacterItemCollision(std::shared_ptr<Character> character,
             std::cout << "[GAMEMAP] Character collected item. Item removed from map." << std::endl;
             return true;
         }
-        return false;
     } catch (const std::exception& e) {
         std::cerr << "[GAMEMAP] Error handling character-item collision: " << e.what() << std::endl;
     }
+    return false;
 }
 
 
 
-void GameMap::handleCharacterEnemyCollision(std::shared_ptr<Character> character,
-                                            std::shared_ptr<Enemy> enemy) {
+void GameMap::handleCharacterEnemyCollision(const std::shared_ptr<Character>& character,
+                                            const std::shared_ptr<Enemy>& enemy) {
     try {
         if (!character->isAlive()) return;
 
@@ -494,8 +494,8 @@ void GameMap::handleCharacterEnemyCollision(std::shared_ptr<Character> character
     }
 }
 
-void GameMap::handleCharacterObstacleCollision(std::shared_ptr<Character> character,
-                                               std::shared_ptr<Obstacle> obstacle) {
+void GameMap::handleCharacterObstacleCollision(const std::shared_ptr<Character>& character,
+                                               const std::shared_ptr<Obstacle>& obstacle) {
     try {
         auto characterPos = character->getPosition();
         auto characterWidth = character->getWidth();
@@ -524,7 +524,7 @@ void GameMap::handleCharacterObstacleCollision(std::shared_ptr<Character> charac
 }
 
 
-void GameMap::removeCharacter(std::shared_ptr<Character> character) {
+void GameMap::removeCharacter(const std::shared_ptr<Character>& character) {
     try {
         auto it = characters.find(character->getId());
         if (it != characters.end()){
@@ -660,7 +660,7 @@ Vector<uint32_t> GameMap::getMapPosition(Vector<uint32_t> position) {
     return {position.x, position.y};
 }
 
-Vector<uint32_t> GameMap::calculateNewPosition(const Vector<uint32_t> position,
+Vector<uint32_t> GameMap::calculateNewPosition(const Vector<uint32_t>& position,
                                                Direction dir) const {
     try {
         Vector<uint32_t> newPosition = position;

@@ -41,7 +41,7 @@ private:
     uint8_t mapId;
     std::vector<std::shared_ptr<Bullet>> bullets;
 
-    Vector<uint32_t> calculateNewPosition(const Vector<uint32_t> position, Direction dir) const;
+    Vector<uint32_t> calculateNewPosition(const Vector<uint32_t>& position, Direction dir) const;
 
 public:
     explicit GameMap(Vector<uint32_t> size, uint8_t mapId);
@@ -66,9 +66,9 @@ public:
     void addItem(ItemType type, Vector<uint32_t> position, uint32_t width, uint32_t height);
 
 
-    bool handleCharacterItemCollision(std::shared_ptr<Character> character, std::shared_ptr<Item> item);
-    void handleCharacterEnemyCollision(std::shared_ptr<Character> character, std::shared_ptr<Enemy> enemy);
-    void handleCharacterObstacleCollision(std::shared_ptr<Character> character, std::shared_ptr<Obstacle> obstacle);
+    bool handleCharacterItemCollision(const std::shared_ptr<Character>& character, const std::shared_ptr<Item>& item);
+    void handleCharacterEnemyCollision(const std::shared_ptr<Character>& character, const std::shared_ptr<Enemy>& enemy);
+    void handleCharacterObstacleCollision(const std::shared_ptr<Character>& character, const std::shared_ptr<Obstacle>& obstacle);
 
     void handleShooting(uint32_t characterX, uint8_t damage, float time, Direction dir, uint8_t shooterId);
     bool checkCollision(const Vector<uint32_t>& pos1, const Vector<uint32_t>& size1, const Vector<uint32_t>& pos2, const Vector<uint32_t>& size2);
@@ -76,7 +76,7 @@ public:
     void update(float time);
     void updateBullets(float time);
 
-    void removeCharacter(std::shared_ptr<Character> character);
+    void removeCharacter(const std::shared_ptr<Character>& character);
     void removeEnemy(uint8_t enemyId);
     void removeItem(Vector<uint32_t> position);
 
@@ -103,9 +103,9 @@ public:
     ItemType getItemType(const std::string& typeStr);
     CharacterType getCharacterType(const std::string& typeStr);
 
-    uint32_t getMaxXPos() { return size.x - static_cast<uint32_t>(movesPerCell); }
+    uint32_t getMaxXPos() const { return size.x - static_cast<uint32_t>(movesPerCell); }
 
-    uint32_t getMaxYPos() { return size.y - static_cast<uint32_t>(movesPerCell); } //Revisar
+    uint32_t getMaxYPos() const { return size.y - static_cast<uint32_t>(movesPerCell); } //Revisar
 };
 
 #endif  // GAME_MAP_H_

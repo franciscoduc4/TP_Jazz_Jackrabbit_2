@@ -233,7 +233,7 @@ void Player::draw_players(SDL2pp::Window& window, SDL2pp::Renderer& renderer, st
 	int distance_main_secondary_y = 0;
 	uint32_t x;
 	uint32_t y;
-	for (auto p: players) {
+	for (const auto& p: players) {
 		CharacterStateEntity mov_type = p.getState();
 		uint8_t pjId = p.getPlayerId();
 		if (!this->init) {
