@@ -4,6 +4,8 @@
 #include <chrono>
 #include <thread>
 
+#include "printer.h"
+
 GameLoopThread::GameLoopThread(std::shared_ptr<Queue<std::unique_ptr<CommandDTO>>> recvQueue,
                                QueueMonitor& queueMonitor, GameMap& gameMap,
                                uint8_t gameId):
@@ -71,30 +73,29 @@ void GameLoopThread::processCommands(double deltaTime) {
         while (processedCommands < maxCommandsPerFrame) {
             std::unique_ptr<CommandDTO> command;
             if (recvQueue->try_pop(command)) {
-                std::cout << "[GAME LOOP] Processing command" << std::endl;
+                Printer::printDebugHighlightedMessage("[GAME LOOP] Command received");
                 if (!command) {
-                    std::cerr << "[GAME LOOP] Null command received" << std::endl;
+                    Printer::printWarningHighlightedMessage("[GAME LOOP] Null command received");
                     continue;
                 }
 
                 auto handler = GameCommandHandler::createHandler(std::move(command));
                 if (!handler) {
-                    std::cerr << "[GAME LOOP] Failed to create handler" << std::endl;
+                    Printer::printErrorHighlightedMessage("[GAME LOOP] Invalid command received");
                     continue;
                 }
 
-                std::cout << "[GAME LOOP] Executing handler" << std::endl;
+                Printer::printSuccessMessage("[GAME LOOP] Executing Handler");
                 handler->execute(gameMap, keepRunning, deltaTime);
 
                 processedCommands++;
-                std::cout << "[GAME LOOP] Command processed number: " << processedCommands
-                          << std::endl;
+                Printer::printSuccessMessage("[GAME LOOP] Command processed");
             } else {
-                std::cout << "[GAME LOOP] No more commands to process" << std::endl;
+                Printer::printErrorHighlightedMessage("[GAME LOOP] No more commands to process");
                 break;
             }
         }
-        std::cout << "[GAME LOOP] Processed " << processedCommands << " commands" << std::endl;
+        Printer::printSuccessHighlightedMessage("[GAME LOOP] Processed " + std::to_string(processedCommands) + " commands");
     } catch (const std::exception& e) {
         std::cerr << "[GAME LOOP] Error processing commands: " << e.what() << std::endl;
     }

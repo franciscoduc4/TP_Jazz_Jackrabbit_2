@@ -24,11 +24,11 @@ if (DEBUG)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O0 -ggdb")
 endif()
 
-option(TESTING "Build internal testing suite" OFF)
+option(TESTING "Build internal testing suite" ON)
 option(INSTALL "Apply install settings" OFF)
 option(SERVER "Build server" ON)
 option(CLIENT "Build client" ON)
-option(LEVEL_EDITOR "Build Level Editor" OFF)
+option(LEVEL_EDITOR "Build Level Editor" ON)
 
 # ------------------------------------------------------------------------------------
 # Configuración de instalación
@@ -157,11 +157,10 @@ if(TESTING)
     )
     include(FetchContent)
     FetchContent_Declare(
-        googletest
-        URL https://github.com/google/googletest/archive/release-1.10.0.zip
-        DOWNLOAD_EXTRACT_TIMESTAMP TRUE
+            googletest
+            URL https://github.com/google/googletest/archive/refs/heads/main.zip
+            DOWNLOAD_EXTRACT_TIMESTAMP TRUE
     )
-    
     set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
     FetchContent_MakeAvailable(googletest)
 

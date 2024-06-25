@@ -31,6 +31,8 @@ CharacterSelection::CharacterSelection(QWidget* parent, LobbyController& control
     ui->centralwidget->setStyleSheet(styleSheet);
     ui->labelTitle->setAttribute(Qt::WA_TranslucentBackground);
     std::cout << "[CHARACTER SELECTION] Stylesheet applied" << std::endl;
+
+    this->setFocusPolicy(Qt::StrongFocus);
 }
 
 CharacterSelection::~CharacterSelection() { delete ui; }
@@ -53,6 +55,8 @@ void CharacterSelection::on_btnChoose_clicked() {
 
         if (!cgAck.first || !guAck.first) {
             QMessageBox::warning(this, "Error", "No se pudo crear la partida.");
+            this->clearFocus();
+            this->deleteLater();
             QCoreApplication::exit(37);
             return;
         }
@@ -67,9 +71,13 @@ void CharacterSelection::on_btnChoose_clicked() {
             std::pair<bool, GameInfo> sgAck = this->controller.recvResponse();
             if (!sgAck.first) {
                 QMessageBox::warning(this, "Error", "No se pudo iniciar la partida.");
+                this->clearFocus();
+                this->deleteLater();
                 QCoreApplication::exit(37);
                 return;
             }
+            this->clearFocus();
+            this->deleteLater();
             QCoreApplication::exit(0);
             return;
         }

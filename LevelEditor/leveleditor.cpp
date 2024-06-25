@@ -133,7 +133,8 @@ void LevelEditor::onSaveClicked() {
     }
 
     createYAML(mapName);
-
+    this->clearFocus();
+    this->deleteLater();
     QCoreApplication::exit(0);
 }
 
