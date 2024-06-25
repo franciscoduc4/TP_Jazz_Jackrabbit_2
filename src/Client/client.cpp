@@ -30,8 +30,9 @@ void Client::start() {
     bool clientJoinedGame = false;
     do {
         LobbyInit init;
-        std::pair<bool, LobbyMessage> qtResult = init.launchQT(this->lobbyController,
-        (bool&)clientJoinedGame); clientJoinedGame = qtResult.first; if (!clientJoinedGame) {
+        std::pair<bool, LobbyMessage> qtResult = init.launchQT(this->lobbyController, (bool&)clientJoinedGame);
+        clientJoinedGame = qtResult.first;
+        if (!clientJoinedGame) {
               return;
         }
         // TODO: Continue with SDL.
@@ -81,7 +82,6 @@ void Client::start() {
         // END - TESTING SKIP QT
         //CharacterType pj = qtResult.second.getCharacter();
         //uint8_t mapId = qtResult.second.getMap();
-        }
 
         // // END - TESTING SKIP QT
         // CharacterType pj = qtResult.second.getCharacter();
