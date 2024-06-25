@@ -486,6 +486,8 @@ WeaponType Character::getCurrentWeaponType() {
 }
 
 void Character::moveRight() {
+    dir = Direction::RIGHT;
+    
     if (isIntoxicated)
         return;
 
@@ -537,6 +539,8 @@ void Character::moveRight() {
 }
 
 void Character::moveLeft() {
+    dir = Direction::LEFT;
+
     if (isIntoxicated)
         return;
 
