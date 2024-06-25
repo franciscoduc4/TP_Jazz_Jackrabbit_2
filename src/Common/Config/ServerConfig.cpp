@@ -17,6 +17,14 @@ std::string ServerConfig::getLogFile() { return getInstance()->root["LOG_FILE"].
 
 float ServerConfig::getGameGravity() { return getInstance()->root["GAME"]["GRAVITY"].as<float>(); }
 
+float ServerConfig::getGameFrameRate(){
+    return getInstance()->root["GAME"]["FRAME_RATE"].as<float>();
+}
+
+uint32_t ServerConfig::getGameCommandsToProcess(){
+    return static_cast<uint32_t>(getInstance()->root["GAME"]["COMMANDS_TO_PROCESS"].as<int>());
+}
+
 uint8_t ServerConfig::getGameMaxMoves() {
     int maxMoves = getInstance()->root["GAME"]["MAX_MOVES"].as<int>();
     return static_cast<uint8_t>(maxMoves);

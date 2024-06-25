@@ -297,6 +297,7 @@ void Character::jump(float time) {
                   << std::endl;
         auto newState = state->move(Direction::UP, time);
         if (newState) {
+            initialYJump = pos.y;
             std::cout << "[CHARACTER] Character ID: " << static_cast<int>(id) << " jumping"
                       << std::endl;
             state = std::move(newState);
@@ -340,7 +341,6 @@ void Character::moveDown() {
         gameMap.handleCharacterItemCollision(shared_from_this(),
                                              std::dynamic_pointer_cast<Item>(entityAtNewPos));
     }
-    std::cout << "ENTRO EN MOVE DOWN\n";
 }
 
 void Character::moveDown(float time) {
@@ -481,7 +481,6 @@ void Character::moveRight() {
         gameMap.handleCharacterItemCollision(shared_from_this(),
                                              std::dynamic_pointer_cast<Item>(entityAtNewPos));
     }
-    std::cout << "ENTROA EN MOVERIGHT\n";
 }
 
 void Character::moveLeft() {
@@ -533,23 +532,65 @@ void Character::moveLeft() {
         gameMap.handleCharacterItemCollision(shared_from_this(),
                                              std::dynamic_pointer_cast<Item>(entityAtNewPos));
     }
-    std::cout << "ENTRO EN MOVE LEFT\n";
 }
 
 void Character::jump() {
-    if (onGround) {
-        std::cout << "[CHARACTER] Character ID: " << static_cast<int>(id) << " initiating jump"
+    // if (onGround) {
+    //     std::cout << "[CHARACTER] Character ID: " << static_cast<int>(id) << " initiating jump"
+    //               << std::endl;
+    //     initialYJump = pos.y;
+    //     jumping = true;
+    //     onGround = false;
+    //     for (int i = 0; i < ServerConfig::getCharacterJumpHeight(); i++) {
+    //         uint32_t newPosY = pos.y - i;
+    //         if (gameMap.isValidMapPosition({pos.x, newPosY})) {
+    //             pos.y = newPosY;
+    //         }
+    //     }
+
+    // }
+    if (ServerConfig::getCharacterJumpHeight() + initialYJump == pos.y) {
+        std::cout << "[CHARACTER] Character ID: " << static_cast<int>(id) << " jumping"
                   << std::endl;
-        initialYJump = pos.y;
-        jumping = true;
-        onGround = false;
-        for (int i = 0; i < ServerConfig::getCharacterJumpHeight(); i++) {
-            uint32_t newPosY = pos.y - i;
-            if (gameMap.isValidMapPosition({pos.x, newPosY})) {
-                pos.y = newPosY;
-            }
+        auto newState = state->move(Direction::DOWN, 0);
+        if (newState) {
+            state = std::move(newState);
         }
-        jumping = false;
+        return;
+    }
+    std::cout << "[JUMP] Character ID: " << static_cast<int>(id) << " jumping"
+              << std::endl;
+    Vector<uint32_t> newPos = pos - Vector<uint32_t>{0, static_cast<uint32_t>(movesPerCell * ServerConfig::getCharacterQuadMovesPerCell())};
+    if (newPos.y >= gameMap.getMaxYPos()) {
+        newPos = Vector<uint32_t>{pos.x, gameMap.getMaxYPos()};
+    }
+
+    if (!gameMap.isValidMapPosition(newPos))
+        return;
+
+    auto entityAtNewPos = gameMap.getEntityAt(newPos);
+    if (entityAtNewPos) {
+        if (entityAtNewPos->getType() == EntityType::ENEMY) {
+            gameMap.handleCharacterEnemyCollision(shared_from_this(),
+                                                  std::dynamic_pointer_cast<Enemy>(entityAtNewPos));
+            return;
+        } else if (entityAtNewPos->getType() == EntityType::OBSTACLE) {
+            gameMap.handleCharacterObstacleCollision(
+                    shared_from_this(), std::dynamic_pointer_cast<Obstacle>(entityAtNewPos));
+            return;
+        } else if (entityAtNewPos->getType() == EntityType::CHARACTER) {
+            handleCharacterCollision(std::dynamic_pointer_cast<Character>(entityAtNewPos));
+            return;
+        }
+    }
+
+    pos = newPos;
+    std::cout << "[CHARACTER] NEW POS Character ID: " << static_cast<int>(id)
+              << " new y: " << int(pos.y) << std::endl;
+
+    if (entityAtNewPos && entityAtNewPos->getType() == EntityType::ITEM) {
+        gameMap.handleCharacterItemCollision(shared_from_this(),
+                                             std::dynamic_pointer_cast<Item>(entityAtNewPos));
     }
 }
 

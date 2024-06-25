@@ -19,6 +19,11 @@ public:
     static float getGameGravity();
     static uint8_t getGameMaxMoves();
     static uint8_t getGameMaxRevived();
+    
+    static float getGameFrameRate();
+    static uint32_t getGameCommandsToProcess();
+
+
 
     static uint32_t getCharacterInitialX();
     static uint32_t getCharacterInitialY();

@@ -29,63 +29,63 @@ void Client::start() {
 
     bool clientJoinedGame = false;
     do {
-        // LobbyInit init;
-        // std::pair<bool, LobbyMessage> qtResult = init.launchQT(this->lobbyController, (bool&)clientJoinedGame);
-        // clientJoinedGame = qtResult.first;
-        // if (!clientJoinedGame) {
-        //       return;
-        // }
+        LobbyInit init;
+        std::pair<bool, LobbyMessage> qtResult = init.launchQT(this->lobbyController, (bool&)clientJoinedGame);
+        clientJoinedGame = qtResult.first;
+        if (!clientJoinedGame) {
+              return;
+        }
         // TODO: Continue with SDL.
         // START - TESTING SKIP QT
 
-        Command cmd = (this->playerId == 0) ? Command::CREATE_GAME : Command::JOIN_GAME;
+        // Command cmd = (this->playerId == 0) ? Command::CREATE_GAME : Command::JOIN_GAME;
 
-        LobbyMessage msg;
-        msg.setCharacter(CharacterType::JAZZ);
-        msg.setMap(0);
-        msg.setGameName("Dummy");
-        msg.setLobbyCmd(cmd);
-        msg.setMaxPlayers(1);
-        msg.setPlayerName("Test");
-        if (cmd == Command::JOIN_GAME) {
-            msg.setGameId(0);
-        }
-        clientJoinedGame = true;
+        // LobbyMessage msg;
+        // msg.setCharacter(CharacterType::JAZZ);
+        // msg.setMap(0);
+        // msg.setGameName("Dummy");
+        // msg.setLobbyCmd(cmd);
+        // msg.setMaxPlayers(1);
+        // msg.setPlayerName("Test");
+        // if (cmd == Command::JOIN_GAME) {
+        //     msg.setGameId(0);
+        // }
+        // clientJoinedGame = true;
 
-        this->lobbyController.sendRequest(msg);
-        std::cout << "Request sent." << std::endl;
-        std::pair<bool, GameInfo> response = this->lobbyController.recvResponse();
-        bool responseReceived = response.first;
-        GameInfo gameInfo = response.second;
-        std::cout << "Response received: " << responseReceived << std::endl;
+        // this->lobbyController.sendRequest(msg);
+        // std::cout << "Request sent." << std::endl;
+        // std::pair<bool, GameInfo> response = this->lobbyController.recvResponse();
+        // bool responseReceived = response.first;
+        // GameInfo gameInfo = response.second;
+        // std::cout << "Response received: " << responseReceived << std::endl;
 
-        std::pair<bool, GameInfo> sResponse = this->lobbyController.recvResponse();
-        bool sResponseReceived = sResponse.first;
-        GameInfo sGameInfo = sResponse.second;
+        // std::pair<bool, GameInfo> sResponse = this->lobbyController.recvResponse();
+        // bool sResponseReceived = sResponse.first;
+        // GameInfo sGameInfo = sResponse.second;
 
-        LobbyMessage msg2;
-        msg2.setLobbyCmd(Command::START_GAME);
-        msg2.setGameId(0);
-        if (responseReceived && sResponseReceived) {
-            this->lobbyController.startGame(msg2);
-            bool gameStartAck = this->lobbyController.recvStartGame();
-            std::cout << "Game start ack: " << gameStartAck << std::endl;
-            if (!gameStartAck) {
-                std::cerr << "Failed to start game." << std::endl;
-                return;
-            }
-        } else {
-            std::cerr << "Failed to receive response for create game." << std::endl;
-            return;
-        }
+        // LobbyMessage msg2;
+        // msg2.setLobbyCmd(Command::START_GAME);
+        // msg2.setGameId(0);
+        // if (responseReceived && sResponseReceived) {
+        //     this->lobbyController.startGame(msg2);
+        //     bool gameStartAck = this->lobbyController.recvStartGame();
+        //     std::cout << "Game start ack: " << gameStartAck << std::endl;
+        //     if (!gameStartAck) {
+        //         std::cerr << "Failed to start game." << std::endl;
+        //         return;
+        //     }
+        // } else {
+        //     std::cerr << "Failed to receive response for create game." << std::endl;
+        //     return;
+        // }
 
         // // END - TESTING SKIP QT
-        // CharacterType pj = qtResult.second.getCharacter();
-        // uint8_t mapId = qtResult.second.getMap();
+        CharacterType pj = qtResult.second.getCharacter();
+        uint8_t mapId = qtResult.second.getMap();
         GameScreen game(this->gameController, this->playerId, 0);
         std::map<uint8_t, int> scores = game.run();
-        // FinalStats stats(scores);
-        // init.displayStats(qtResult.second, stats, (bool&)clientJoinedGame, this->playerId);
+        FinalStats stats(scores);
+        init.displayStats(qtResult.second, stats, (bool&)clientJoinedGame, this->playerId);
     } while (clientJoinedGame);
 
     this->finish();

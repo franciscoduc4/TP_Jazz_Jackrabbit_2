@@ -31,7 +31,7 @@ void GameLoopThread::run() {
 
         while (keepRunning) {
             auto currentTime = std::chrono::high_resolution_clock::now();
-            std::chrono::duration<double> deltaTime = currentTime - lastTime;
+            std::chrono::duration<float> deltaTime = currentTime - lastTime;
             lastTime = currentTime;
 
             // std::cout << "[GAME LOOP] Processing commands, deltaTime: " << deltaTime.count()
@@ -47,11 +47,11 @@ void GameLoopThread::run() {
             // std::cout << "[GAME LOOP] Game state broadcasted" << std::endl;
 
             auto processingEndTime = std::chrono::high_resolution_clock::now();
-            std::chrono::duration<double> processingDuration = processingEndTime - currentTime;
+            std::chrono::duration<float> processingDuration = processingEndTime - currentTime;
             // std::cout << "[GAME LOOP] Processing duration: " << processingDuration.count()
             //   << std::endl;
 
-            auto sleepTime = std::chrono::duration<double>(frameRate) - processingDuration;
+            auto sleepTime = std::chrono::duration<float>(frameRate) - processingDuration;
             if (sleepTime.count() > 0) {
                 // std::cout << "[GAME LOOP] Sleeping for: " << sleepTime.count() << " seconds"
                 //   << std::endl;
@@ -64,7 +64,7 @@ void GameLoopThread::run() {
     }
 }
 
-void GameLoopThread::processCommands(double deltaTime) {
+void GameLoopThread::processCommands(float deltaTime) {
     try {
         size_t processedCommands = 0;
         size_t maxCommandsPerFrame = 10;

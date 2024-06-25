@@ -38,7 +38,6 @@ void MoveHandler::execute(GameMap& gameMap, std::atomic<bool>& keepRunning, doub
             character->moveRight(deltaTime);
             break;
         default:
-            // character->idle(deltaTime);
             break;
     }
 }
