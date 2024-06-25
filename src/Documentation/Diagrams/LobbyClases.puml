@@ -1,0 +1,72 @@
+@startuml Diagrama de Clases Lobby
+
+class Client{
+    - senderQueue: std::stared_ptr<Queue<std::unique_ptr<CommandDTO>>>
+    - lobbyQueue: std::stared_ptr<Queue<std::unique_ptr<DTO>>>
+    - gameQueue: std::stared_ptr<Queue<std::unique_ptr<DTO>>>
+}
+class LobbyInit
+package "Lobby" as LobbyPkg {
+    class Lobby
+    class MapSelection
+    class CreateGame
+    class CharacterSelection
+    class GameList
+    class WaitingRoom
+    class Welcome
+}
+
+class LobbyController{
+    - lobbyQueue: std::stared_ptr<Queue<std::unique_ptr<DTO>>>
+}
+class GameController {
+    - gameQueue: std::stared_ptr<Queue<std::unique_ptr<DTO>>>
+}
+class Serializer {
+    - senderQueue: std::stared_ptr<Queue<std::unique_ptr<CommandDTO>>>
+}
+class SenderThread {
+    - senderQueue: std::stared_ptr<Queue<std::unique_ptr<CommandDTO>>>
+}
+class Socket
+class ReceiverThread
+class Protocol
+class Deserializer {
+    - lobbyQueue: std::stared_ptr<Queue<std::unique_ptr<DTO>>>
+    - gameQueue: std::stared_ptr<Queue<std::unique_ptr<DTO>>>
+}
+
+Client --> LobbyInit
+Client --> LobbyController
+Client --> GameController
+LobbyInit --> Welcome
+Welcome --> Lobby
+Lobby --> MapSelection
+MapSelection --> CreateGame
+CreateGame --> CharacterSelection
+Lobby --> CharacterSelection
+CharacterSelection --> GameList
+CharacterSelection --> WaitingRoom
+GameList --> WaitingRoom
+
+MapSelection --> LobbyController
+CharacterSelection --> LobbyController
+GameList --> LobbyController
+WaitingRoom --> LobbyController
+
+LobbyController --> MapSelection
+LobbyController --> CharacterSelection
+LobbyController --> GameList
+LobbyController --> WaitingRoom
+
+LobbyController --> Serializer
+GameController --> Serializer
+Serializer --> SenderThread
+SenderThread --> Socket
+Protocol --> Socket
+ReceiverThread --> Protocol
+ReceiverThread --> Deserializer
+Deserializer --> LobbyController
+GameController <-- Deserializer
+
+@enduml

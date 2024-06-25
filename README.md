@@ -15,6 +15,10 @@
 
 Los sprites fueron obtenidos desde [aquí](https://www.spriters-resource.com/pc_computer/jazzjackrabbit2thesecretfiles/), mientras que se usan los sonidos obtenidos desde [aquí](https://www.sounds-resource.com/pc_computer/jazzjackrabbit/sound/18894/) y la tipografía se descargó desde [esta fuente](https://www.jazz2online.com/downloads/2974/jazz-jackrabbit-2-font/).
 
+[Manual de Proyecto](src/Documentation/build/Manual-de-Proyecto.pdf)
+[Documentación Técnica](src/Documentation/build/Documentacion-Tecnica.pdf)
+[Manual de Usuario](src/Documentation/build/Manual-de-Usuario.pdf)
+
 ## Dependencias
 
 Comando completo para configurar y construir sh
@@ -89,10 +93,30 @@ El proyecto es una implementación del juego Jazz Jackrabbit 2 con soporte multi
 
 #### Cliente
 
-- **Lobby**: Maneja la selección de personajes, la creación de juegos y la lista de juegos disponibles.
-- **SDL**: Maneja la visualización del juego y la lógica de los personajes y enemigos.
-- **Protocol**: Maneja la serialización y deserialización de los mensajes entre el cliente y el servidor.
-- **Threads**: Maneja los hilos de recepción y envío de comandos.
+##### Lobby
+
+El lobby maneja la selección de personajes, la creación de juegos y la lista de juegos disponibles.
+
+El Lobby es donde el jugador selecciona si quiere crear una partida o unirse a un juego ya existente, así como donde selecciona su personaje.
+La configuración del juego solicita que el usuario elija primero un mapa y luego un nombre y cantidad de jugadores de la partida.
+
+Posee el siguiente flujo:
+
+![Flujo Lobby](src/Documentation/images/LobbyFlujo.png)
+
+![Demo Lobby](src/Documentation/demo/demoLobby.gif)
+
+##### SDL
+
+Maneja la visualización del juego y la lógica de los personajes y enemigos.
+
+##### Protocol
+
+Maneja la serialización y deserialización de los mensajes entre el cliente y el servidor.
+
+##### Threads
+
+Maneja los hilos de recepción y envío de comandos.
 
 #### Servidor
 
@@ -105,6 +129,20 @@ El proyecto es una implementación del juego Jazz Jackrabbit 2 con soporte multi
 - **Config**: Contiene la configuración del cliente y del servidor.
 - **DTO**: Define los objetos de transferencia de datos utilizados en la comunicación entre el cliente y el servidor.
 - **Types**: Define los tipos utilizados en el juego, como personajes, comandos, direcciones, etc.
+
+#### Editor de Niveles
+
+El editor de niveles ofrece al usuario la posibilidad de crear sus propios mapas para el juego.
+Permite posicionar a gusto los distintos elementos que contiene el juego, como personajes, enemigos, obstáculos e ítems.
+
+Posee una lista de elementos a derecha y a izquierda, un canvas sobre al cual se le pueden arrastrar elementos.
+
+![Captura Editor](src/Documentation/images/LevelEditor.png)
+
+Para que se cree un mapa, se debe ingresar un nombre y el canvas debe tener elementos.
+De cumplirse estas condiciones, y que el nombre del mapa no sea uno existente, se crea el mapa en formato YAML y se guarda en el servidor.
+
+![Demo Editor](src/Documentation/demo/demoLevelEditor.gif)
 
 ### Configuración del Juego
 

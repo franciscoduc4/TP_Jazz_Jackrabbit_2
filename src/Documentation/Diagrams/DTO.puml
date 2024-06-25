@@ -1,0 +1,49 @@
+@startuml DTO Hierarchy
+
+abstract class DTO
+
+class CommandDTO
+
+class CreateGameDTO
+class GameCommandDTO
+class GamesListDTO
+class GameUpdateDTO
+class JoinGameDTO
+class MapsListDTO
+class StartGameDTO
+class SwitchWeaponDTO
+
+class GameDTO
+
+class GameElementDTO
+
+class BulletDTO
+class EnemyDTO
+class ItemDTO
+class PlayerDTO
+class TileDTO
+class WeaponDTO
+
+DTO <|-- CommandDTO
+DTO <|-- GameDTO
+DTO <|-- GameElementDTO
+
+CommandDTO <|-- CreateGameDTO
+CommandDTO <|-- GameCommandDTO
+CommandDTO <|-- GamesListDTO
+CommandDTO <|-- GameUpdateDTO
+CommandDTO <|-- JoinGameDTO
+CommandDTO <|-- MapsListDTO
+CommandDTO <|-- StartGameDTO
+CommandDTO <|-- SwitchWeaponDTO
+
+GameElementDTO <|-- BulletDTO
+GameElementDTO <|-- EnemyDTO
+GameElementDTO <|-- ItemDTO
+GameElementDTO <|-- PlayerDTO
+GameElementDTO <|-- TileDTO
+GameElementDTO <|-- WeaponDTO
+
+
+
+@enduml

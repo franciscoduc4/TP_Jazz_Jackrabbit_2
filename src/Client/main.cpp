@@ -23,6 +23,8 @@ int main(int argc, char* argv[]) {
         ClientConfig::deleteInstance();
         return FAIL;
     }
+  
     ClientConfig::deleteInstance();
+  
     return SUCCESS;
 }

@@ -33,6 +33,8 @@ int main(int argc, char** argv) {
         ServerConfig::deleteInstance();
         return FAIL;
     }
+
     ServerConfig::deleteInstance();
+
     return SUCCESS;
 }

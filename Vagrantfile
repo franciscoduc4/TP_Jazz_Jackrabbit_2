@@ -1,71 +1,48 @@
-require 'yaml'
-
 Vagrant.configure("2") do |config|
-  config.vm.box = "ubuntu/focal64"
-  # config.vm.network "forwarded_port", guest: 7777, host: 7777
+  config.vm.box = "ubuntu/jammy64"
 
-  # Provisión de la repo
   config.vm.synced_folder ".", "/home/vagrant/jazz_jackrabbit_2", type: "rsync",
-  rsync__exclude: ["build/", "cmake-build-debug/", "clion-build/"]
-  # Provisión del archivo de tipografía.
+    rsync__exclude: ["build/", "cmake-build-debug/", "clion-build/"]
+
   config.vm.provision "file", source: "./assets/Miscellaneous/Jazz-Jackrabbit-2.ttf", destination: "/home/vagrant/Jazz-Jackrabbit-2.ttf"
 
-  # Instalación de dependencias.
   config.vm.provision "shell", inline: <<-SHELL
-    sudo chown -R vagrant:vagrant .
-    sudo chmod -R u+w .
-
     sudo apt-get update
     sudo apt-get install -y build-essential cmake git libyaml-cpp-dev libfmt-dev
-    sudo apt-get install -y qtbase5-dev qtdeclarative5-dev qt5-qmake qttools5-dev-tools libqt5widgets5 libqt5core5a 
-    sudo apt-get install -y libgtest-dev
+    sudo apt-get install -y libgl1-mesa-dev libglu1-mesa-dev libglew-dev
     sudo apt-get install -y libjpeg-dev libpng-dev libfreetype-dev libopusfile-dev libflac-dev libxmp-dev libfluidsynth-dev libwavpack-dev cmake libmodplug-dev
-    # sudo apt-get install -y libsdl2-dev libsdl2-image-dev libsdl2-ttf-dev libsdl2-mixer-dev libsdl2-gfx-dev
+    sudo apt-get install -y libgl-dev libegl-dev libfontconfig1-dev libinput-dev libfontconfig1-dev libfreetype6-dev libx11-dev libx11-xcb-dev libxext-dev libxfixes-dev libxi-dev libxrender-dev libxcb1-dev libxcb-cursor-dev libxcb-glx0-dev libxcb-keysyms1-dev libxcb-image0-dev libxcb-shm0-dev libxcb-icccm4-dev libxcb-sync-dev libxcb-xfixes0-dev libxcb-shape0-dev libxcb-randr0-dev libxcb-render-util0-dev libxcb-util-dev libxcb-xinerama0-dev libxcb-xkb-dev libxkbcommon-dev libxkbcommon-x11-dev
 
-    # Instalación de SDL2
-    wget https://github.com/libsdl-org/SDL/releases/download/release-2.30.4/SDL2-2.30.4.tar.gz
-    tar -xvf SDL2-2.30.4.tar.gz 
-    cd SDL2-2.30.4
-    mkdir build
-    cd build
-    ../configure --prefix=/usr/local/sdl2
-    make -j2
-    sudo make install
+    # Install Qt5
+    sudo apt-get install -y qtbase5-dev qtchooser qt5-qmake qtbase5-dev-tools
+    sudo apt-get install -y libqt5widgets5 libqt5gui5 libqt5dbus5 libqt5network5 libqt5core5a
 
-    # Remove CMakeCache.txt
-    find /home/vagrant/jazz_jackrabbit_2 -name CMakeCache.txt -type f -exec rm {} \;
+    # Install SDL2 and its extensions from Ubuntu repositories
+    sudo apt-get install -y libsdl2-dev libsdl2-image-dev libsdl2-mixer-dev libsdl2-ttf-dev
 
-    # Instalación de tipografía.
+    # Install and setup GTest
+    sudo apt-get install -y libgtest-dev libgmock-dev
+    cd /usr/src/googletest
+    sudo cmake .
+    sudo make
+    sudo cp lib/*.a /usr/lib
+    
+    # Update library cache
+    sudo ldconfig
+
+    # Install font
     mkdir -p /home/vagrant/.local/share/fonts
     mv /home/vagrant/Jazz-Jackrabbit-2.ttf /home/vagrant/.local/share/fonts/
     fc-cache -fv
 
-    # Verificación de permisos
-    if [ -d "/home/vagrant/jazz_jackrabbit_2" ]; then
-        sudo chown -R vagrant:vagrant /home/vagrant/jazz_jackrabbit_2
-        sudo chmod -R u+w /home/vagrant/jazz_jackrabbit_2
-    else
-        echo "Project directory /home/vagrant/jazz_jackrabbit_2 does not exist."
-        exit 1
-    fi
-
+    # Set up project
     cd /home/vagrant/jazz_jackrabbit_2
-
-    # Si existe, lo detono
-    if [ -d "/home/vagrant/jazz_jackrabbit_2/build" ]; then
-        sudo rm -rf /home/vagrant/jazz_jackrabbit_2/build
-    fi
-    # Se crea el directorio build si no existe
-    sudo mkdir -p build
-    sudo chown -R vagrant:vagrant /home/vagrant/jazz_jackrabbit_2/build
-    sudo chmod -R 755 /home/vagrant/jazz_jackrabbit_2/build
+    sudo rm -rf build
+    mkdir build
     cd build
 
-    sudo chown -R vagrant:vagrant .
-    sudo chmod -R u+w .
-
-    # Compilación
-    cmake ..
+    # Compile project
+    cmake -DCMAKE_PREFIX_PATH="/usr/lib/x86_64-linux-gnu/cmake;/usr/lib/x86_64-linux-gnu/cmake/SDL2" ..
     make -j$(nproc)
   SHELL
 end

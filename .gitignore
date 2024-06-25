@@ -52,6 +52,12 @@
 #build
 build
 build/*
+!src/Documentation/build/
+src/Documentation/build/*.aux
+src/Documentation/build/*.log
+src/Documentation/build/*.pytxcode
+src/Documentation/build/*.synctex.gz
+src/Documentation/build/*.toc
 
 # QT Debug
 build-Lobby-Qt6-Debug/
