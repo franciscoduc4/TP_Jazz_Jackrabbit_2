@@ -19,11 +19,6 @@ int main(int argc, char** argv) {
     }
 
     try {
-        // Load the server configuration
-
-        // Initialize Logger
-        // Logger logger(config->getLogFile());
-
         // Create and run the server
         Server server(argv[1]);
         std::cout << "Server created" << std::endl;

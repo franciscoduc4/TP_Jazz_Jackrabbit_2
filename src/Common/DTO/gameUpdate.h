@@ -4,7 +4,7 @@
 #include <utility>
 #include <memory>
 
-#include "Types/gameInfo.h"
+#include "../Types/gameInfo.h"
 #include "command.h"
 #include "dto.h"
 

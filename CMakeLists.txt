@@ -24,7 +24,7 @@ if (DEBUG)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O0 -ggdb")
 endif()
 
-option(TESTING "Build internal testing suite" OFF)
+option(TESTING "Build internal testing suite" ON)
 option(INSTALL "Apply install settings" OFF)
 option(SERVER "Build server" ON)
 option(CLIENT "Build client" ON)
@@ -157,9 +157,9 @@ if(TESTING)
     )
     include(FetchContent)
     FetchContent_Declare(
-            googletest
-            URL https://github.com/google/googletest/archive/refs/heads/main.zip
-            DOWNLOAD_EXTRACT_TIMESTAMP TRUE
+        googletest
+        GIT_REPOSITORY https://github.com/google/googletest.git
+        GIT_TAG release-1.11.0
     )
     set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
     FetchContent_MakeAvailable(googletest)

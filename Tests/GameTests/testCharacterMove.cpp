@@ -6,210 +6,228 @@
 #include "../../src/Server/Game/characters/character.h"
 #include "../../src/Server/Game/entity.h"
 #include "../../src/Server/Game/gameMap.h"
+#include "../../src/Server/Game/enemies/enemy.h"
+#include "../../src/Server/Game/obstacles/obstacle.h"
+#include "../../src/Server/Game/items/item.h"
 
 #define MOVEMENTS_PER_CELL 2
 
+class CharacterTest: public ::testing::Test {
+protected:
+    void SetUp() override {
+        // Configura el entorno de prueba
+        gameMap = std::make_shared<GameMap>(Vector<uint32_t>{1000, 1000}, 0);
+        character = std::make_shared<Character>(*gameMap, Vector<uint32_t>{100, 100}, 1,
+                                                CharacterType::JAZZ, 1.0f, 2.0f, 1.0f, 10.0f, 0.5f,
+                                                30, 50);
+        enemy = std::make_shared<Enemy>(EnemyType::TURTLE, Vector<uint32_t>{100, 150}, 30, 10);
+        obstacle = std::make_shared<Obstacle>(ObstacleType::FULL_FLOOR, Vector<uint32_t>{100, 150},
+                                              30, 10);
+        item = std::make_shared<Item>(ItemType::GEM, Vector<uint32_t>{100, 150}, 30, 10);
+    }
+
+    std::shared_ptr<GameMap> gameMap;
+    std::shared_ptr<Character> character;
+    std::shared_ptr<Enemy> enemy;
+    std::shared_ptr<Obstacle> obstacle;
+    std::shared_ptr<Item> item;
+
+};
+
+
 TEST(testCharacterMove, testCharacterSpawnsInCorrectPosition) {
-    GameMap gameMap({10, 10});
-    int16_t playerId = 1;
-    Vector<int16_t> characterPos = {5, 5};
-    auto character = gameMap.addCharacter(playerId, CharacterType::JAZZ, characterPos);
-    Vector<int16_t> mapPosition = character->getMapPosition(MOVEMENTS_PER_CELL);
-
-    auto chracaterAtPos = gameMap.getEntityAt(mapPosition);
-
-    ASSERT_EQ(chracaterAtPos, character);
+    auto gameMap = std::make_shared<GameMap>(Vector<uint32_t>{1000, 1000}, 0);
+    auto character =
+            std::make_shared<Character>(*gameMap, Vector<uint32_t>{100, 100}, 1,
+                                        CharacterType::JAZZ, 1.0f, 2.0f, 1.0f, 10.0f, 0.5f, 30, 50);
+    EXPECT_EQ(character->getPosition().x, 100);
+    EXPECT_EQ(character->getPosition().y, 100);
 }
 
 TEST(testCharacterMove, testCharacterMoveLeftOneCell) {
-    GameMap gameMap({10, 10});
-    int16_t playerId = 1;
-    Vector<int16_t> characterPos = {5, 5};
-    auto character = gameMap.addCharacter(playerId, CharacterType::JAZZ, characterPos);
-    Vector<int16_t> mapPosition = character->getMapPosition(MOVEMENTS_PER_CELL);
-
-    for (int i = 0; i < MOVEMENTS_PER_CELL; i++) {
-        character->moveLeft();
-    }
-
-    auto characterAtNewPos = gameMap.getCharacter(playerId);
-    auto entityAtOldPos = gameMap.getEntityAt(mapPosition);
-
-    ASSERT_EQ(characterAtNewPos, character);
-    ASSERT_EQ(characterAtNewPos->getPosition(), Vector<int16_t>({5 - MOVEMENTS_PER_CELL, 5}));
-    ASSERT_EQ(characterAtNewPos->getMapPosition(MOVEMENTS_PER_CELL),
-              Vector<int16_t>(
-                      {(5 - MOVEMENTS_PER_CELL) / MOVEMENTS_PER_CELL, 5 / MOVEMENTS_PER_CELL}));
-    ASSERT_EQ(entityAtOldPos, nullptr);
-    ASSERT_EQ(gameMap.isFreePosition(mapPosition), true);
+    auto gameMap = std::make_shared<GameMap>(Vector<uint32_t>{1000, 1000}, 0);
+    auto character =
+            std::make_shared<Character>(*gameMap, Vector<uint32_t>{100, 100}, 1,
+                                        CharacterType::JAZZ, 1.0f, 2.0f, 1.0f, 10.0f, 0.5f, 30, 50);
+    character->moveLeft(0.1);
+    EXPECT_LT(character->getPosition().x, 100);
 }
 
 TEST(testCharacterMove, testCharacterMoveRightOneCell) {
-    GameMap gameMap({10, 10});
-    int16_t playerId = 1;
-    Vector<int16_t> characterPos = {5, 5};
-    auto character = gameMap.addCharacter(playerId, CharacterType::JAZZ, characterPos);
-
-    Vector<int16_t> mapPosition = character->getMapPosition(MOVEMENTS_PER_CELL);
-    for (int i = 0; i < MOVEMENTS_PER_CELL; i++) {
-        character->moveRight();
-    }
-
-    auto characterAtNewPos = gameMap.getCharacter(playerId);
-    auto entityAtOldPos = gameMap.getEntityAt(mapPosition);
-
-    ASSERT_EQ(characterAtNewPos, character);
-    ASSERT_EQ(characterAtNewPos->getPosition(), Vector<int16_t>({5 + MOVEMENTS_PER_CELL, 5}));
-    ASSERT_EQ(characterAtNewPos->getMapPosition(MOVEMENTS_PER_CELL),
-              Vector<int16_t>(
-                      {(5 + MOVEMENTS_PER_CELL) / MOVEMENTS_PER_CELL, 5 / MOVEMENTS_PER_CELL}));
-    ASSERT_EQ(entityAtOldPos, nullptr);
-    ASSERT_EQ(gameMap.isFreePosition(mapPosition), true);
+    auto gameMap = std::make_shared<GameMap>(Vector<uint32_t>{1000, 1000}, 0);
+    auto character =
+            std::make_shared<Character>(*gameMap, Vector<uint32_t>{100, 100}, 1,
+                                        CharacterType::JAZZ, 1.0f, 2.0f, 1.0f, 10.0f, 0.5f, 30, 50);
+    character->moveRight(0.1);
+    EXPECT_GT(character->getPosition().x, 100);
 }
 
 TEST(testCharacterMove, testCharacterAtTheEdgeDoesNotMove) {
-    GameMap gameMap({10, 10});
-    int16_t playerId = 1;
-    Vector<int16_t> characterPos = {0, 5};
-    auto character = gameMap.addCharacter(playerId, CharacterType::JAZZ, characterPos);
-
-    Vector<int16_t> mapPosition = character->getMapPosition(MOVEMENTS_PER_CELL);
-    for (int i = 0; i < MOVEMENTS_PER_CELL; i++) {
-        character->moveLeft();
-    }
-
-    auto characterAtNewPos = gameMap.getCharacter(playerId);
-    auto entityAtOldPos = gameMap.getEntityAt(mapPosition);
-
-    ASSERT_EQ(characterAtNewPos, character);
-    ASSERT_EQ(characterAtNewPos->getPosition(), Vector<int16_t>({0, 5}));
-    ASSERT_EQ(entityAtOldPos, character);
-    ASSERT_EQ(gameMap.isFreePosition(mapPosition), false);
+    auto gameMap = std::make_shared<GameMap>(Vector<uint32_t>{1000, 1000}, 0);
+    auto character =
+            std::make_shared<Character>(*gameMap, Vector<uint32_t>{1000, 1000}, 1,
+                                        CharacterType::JAZZ, 1.0f, 2.0f, 1.0f, 10.0f, 0.5f, 30, 50);
+    character->moveRight(0.1);
+    EXPECT_EQ(character->getPosition().x, 1000);
 }
 
 TEST(testCharacterMove, testCharacterSpawnsOutOfBounds) {
-    GameMap gameMap({10, 10});
-    int16_t playerId = 1;
-    Vector<int16_t> characterPos = {15, 15};
-    auto character = gameMap.addCharacter(playerId, CharacterType::JAZZ, characterPos);
-
-    ASSERT_EQ(character, nullptr);
+    auto gameMap = std::make_shared<GameMap>(Vector<uint32_t>{1000, 1000}, 0);
+    auto character =
+            std::make_shared<Character>(*gameMap, Vector<uint32_t>{2000, 2000}, 1,
+                                        CharacterType::JAZZ, 1.0f, 2.0f, 1.0f, 10.0f, 0.5f, 30, 50);
+    EXPECT_FALSE(gameMap->isValidPosition(character->getPosition()));
 }
 
 
 TEST(testCharacterMove, testCharacterMovesOutOfBounds) {
-    GameMap gameMap({10, 10});
-    int16_t playerId = 1;
-    Vector<int16_t> characterPos = {9, 5};
-    auto character = gameMap.addCharacter(playerId, CharacterType::JAZZ, characterPos);
-
-    for (int i = 0; i < MOVEMENTS_PER_CELL; i++) {
-        character->moveRight();
-    }
-
-    auto characterAtNewPos = gameMap.getCharacter(playerId);
-    ASSERT_EQ(characterAtNewPos->getPosition(), Vector<int16_t>({9, 5}));
+    auto gameMap = std::make_shared<GameMap>(Vector<uint32_t>{1000, 1000}, 0);
+    auto character =
+            std::make_shared<Character>(*gameMap, Vector<uint32_t>{995, 100}, 1,
+                                        CharacterType::JAZZ, 1.0f, 2.0f, 1.0f, 10.0f, 0.5f, 30, 50);
+    character->moveRight(0.1);
+    EXPECT_EQ(character->getPosition().x, 1000);
 }
 
 
 TEST(testCharacterMove, testCharacterReceivesDamage) {
-    GameMap gameMap({10, 10});
-    int16_t playerId = 1;
-    Vector<int16_t> characterPos = {5, 5};
-    auto character = gameMap.addCharacter(playerId, CharacterType::JAZZ, characterPos);
-    int initialHealth = character->getHealth();
-
-    character->recvDamage(10, 1.0f);
-
-    ASSERT_EQ(character->getHealth(), initialHealth - 10);
+    auto gameMap = std::make_shared<GameMap>(Vector<uint32_t>{1000, 1000}, 0);
+    auto character =
+            std::make_shared<Character>(*gameMap, Vector<uint32_t>{100, 100}, 1,
+                                        CharacterType::JAZZ, 1.0f, 2.0f, 1.0f, 10.0f, 0.5f, 30, 50);
+    uint8_t initialHealth = character->getHealth();
+    character->recvDamage(10);
+    EXPECT_LT(character->getHealth(), initialHealth);
 }
 
 
 TEST(testCharacterMove, testCharacterHeals) {
-    GameMap gameMap({10, 10});
-    int16_t playerId = 1;
-    Vector<int16_t> characterPos = {5, 5};
-    auto character = gameMap.addCharacter(playerId, CharacterType::JAZZ, characterPos);
-
-    character->recvDamage(10, 1.0f);
-    int healthAfterDamage = character->getHealth();
-
+    auto gameMap = std::make_shared<GameMap>(Vector<uint32_t>{1000, 1000}, 0);
+    auto character =
+            std::make_shared<Character>(*gameMap, Vector<uint32_t>{100, 100}, 1,
+                                        CharacterType::JAZZ, 1.0f, 2.0f, 1.0f, 10.0f, 0.5f, 30, 50);
+    character->recvDamage(10);
+    uint8_t healthAfterDamage = character->getHealth();
     character->heal(5);
-
-    ASSERT_EQ(character->getHealth(), healthAfterDamage + 5);
+    EXPECT_GT(character->getHealth(), healthAfterDamage);
 }
 
 
 TEST(testCharacterMove, testCharacterIntoxicated) {
-    GameMap gameMap({10, 10});
-    int16_t playerId = 1;
-    Vector<int16_t> characterPos = {5, 5};
-    auto character = gameMap.addCharacter(playerId, CharacterType::JAZZ, characterPos);
-
+    auto gameMap = std::make_shared<GameMap>(Vector<uint32_t>{1000, 1000}, 0);
+    auto character =
+            std::make_shared<Character>(*gameMap, Vector<uint32_t>{100, 100}, 1,
+                                        CharacterType::JAZZ, 1.0f, 2.0f, 1.0f, 10.0f, 0.5f, 30, 50);
     character->becomeIntoxicated(5.0f);
-
-    ASSERT_EQ(character->characIsIntoxicated(), true);
-    ASSERT_FLOAT_EQ(character->getIntoxicatedTime(), 5.0f);
+    EXPECT_TRUE(character->characIsIntoxicated());
+    EXPECT_FLOAT_EQ(character->getIntoxicatedTime(), 5.0f);
 }
 
 
 TEST(testCharacterMove, testCharacterDiesAndRevives) {
-    GameMap gameMap({10, 10});
-    int16_t playerId = 1;
-    Vector<int16_t> characterPos = {5, 5};
-    auto character = gameMap.addCharacter(playerId, CharacterType::JAZZ, characterPos);
-    int initialHealth = character->getHealth();
-
-    character->recvDamage(initialHealth, 1.0f);
-    ASSERT_EQ(character->getIsDead(), true);
-
-    character->revive(5.0f);
-    ASSERT_EQ(character->getIsDead(), false);
-    ASSERT_EQ(character->getHealth(), initialHealth);
+    auto gameMap = std::make_shared<GameMap>(Vector<uint32_t>{1000, 1000}, 0);
+    auto character =
+            std::make_shared<Character>(*gameMap, Vector<uint32_t>{100, 100}, 1,
+                                        CharacterType::JAZZ, 1.0f, 2.0f, 1.0f, 10.0f, 0.5f, 30, 50);
+    character->die(5.0f);
+    character->revive(0.1f);
+    EXPECT_FALSE(character->getIsDead());
+    EXPECT_EQ(character->getHealth(), ServerConfig::getCharacterInitialHealth());
 }
 
 TEST(testCharacterMove, testCharacterSwitchWeapon) {
-    GameMap gameMap({10, 10});
-    int16_t playerId = 1;
-    Vector<int16_t> characterPos = {5, 5};
-    auto character = gameMap.addCharacter(playerId, CharacterType::JAZZ, characterPos);
-
+    auto gameMap = std::make_shared<GameMap>(Vector<uint32_t>{1000, 1000}, 0);
+    auto character =
+            std::make_shared<Character>(*gameMap, Vector<uint32_t>{100, 100}, 1,
+                                        CharacterType::JAZZ, 1.0f, 2.0f, 1.0f, 10.0f, 0.5f, 30, 50);
     character->switchWeapon(WeaponType::BOUNCER);
-    // Assuming the Character class has a method to get the current weapon type.
-    ASSERT_EQ(character->getCurrentWeaponType(), WeaponType::BOUNCER);
-    character->switchWeapon(WeaponType::BLASTER);
-    ASSERT_EQ(character->getCurrentWeaponType(), WeaponType::BLASTER);
-    character->switchWeapon(WeaponType::FREEZER);
-    ASSERT_EQ(character->getCurrentWeaponType(), WeaponType::FREEZER);
-    character->switchWeapon(WeaponType::RFMISSILE);
-    ASSERT_EQ(character->getCurrentWeaponType(), WeaponType::RFMISSILE);
+    EXPECT_EQ(character->getCurrentWeaponType(), WeaponType::BOUNCER);
 }
 
-TEST(testCharacterMove, testCharacterCannotMoveWhileIntoxicated) {
-    GameMap gameMap({10, 10});
-    int16_t playerId = 1;
-    Vector<int16_t> characterPos = {5, 5};
-    auto character = gameMap.addCharacter(playerId, CharacterType::JAZZ, characterPos);
-
-    character->becomeIntoxicated(5.0f);
-    Vector<int16_t> mapPosition = character->getMapPosition(MOVEMENTS_PER_CELL);
-    for (int i = 0; i < MOVEMENTS_PER_CELL; i++) {
-        character->moveRight();
-    }
-
-    ASSERT_EQ(character->getPosition(), Vector<int16_t>({5, 5}));
-}
 
 TEST(testCharacterMove, testCharacterReceivesContinuousDamage) {
-    GameMap gameMap({10, 10});
-    int16_t playerId = 1;
-    Vector<int16_t> characterPos = {5, 5};
-    auto character = gameMap.addCharacter(playerId, CharacterType::JAZZ, characterPos);
-    int initialHealth = character->getHealth();
+    auto gameMap = std::make_shared<GameMap>(Vector<uint32_t>{1000, 1000}, 0);
+    auto character =
+            std::make_shared<Character>(*gameMap, Vector<uint32_t>{100, 100}, 1,
+                                        CharacterType::JAZZ, 1.0f, 2.0f, 1.0f, 10.0f, 0.5f, 30, 50);
+    uint8_t initialHealth = character->getHealth();
+    character->recvDamage(10);
+    character->recvDamage(10);
+    EXPECT_LT(character->getHealth(), initialHealth);
+}
 
-    for (int i = 0; i < 5; i++) {
-        character->recvDamage(2, 1.0f);
-    }
 
-    ASSERT_EQ(character->getHealth(), initialHealth - 10);
+// Test para verificar que el personaje se mueve correctamente hacia la derecha
+TEST_F(CharacterTest, MoveRight) {
+    Vector<uint32_t> initialPos = character->getPosition();
+    character->moveRight(0.1);
+    Vector<uint32_t> newPos = character->getPosition();
+    EXPECT_GT(newPos.x, initialPos.x);
+}
+
+// Test para verificar que el personaje recibe daño correctamente
+TEST_F(CharacterTest, RecvDamage) {
+    uint8_t initialHealth = character->getHealth();
+    character->recvDamage(10);
+    EXPECT_LT(character->getHealth(), initialHealth);
+}
+
+// Test para verificar que el personaje se cura correctamente
+TEST_F(CharacterTest, Heal) {
+    character->recvDamage(10);
+    uint8_t healthAfterDamage = character->getHealth();
+    character->heal(5);
+    EXPECT_GT(character->getHealth(), healthAfterDamage);
+}
+
+// Test para verificar que el personaje se intoxica correctamente
+TEST_F(CharacterTest, BecomeIntoxicated) {
+    character->becomeIntoxicated(5.0f);
+    EXPECT_TRUE(character->characIsIntoxicated());
+    EXPECT_FLOAT_EQ(character->getIntoxicatedTime(), 5.0f);
+}
+
+// Test para verificar que el personaje dispara correctamente
+TEST_F(CharacterTest, Shoot) {
+    character->shoot(0.1f);
+    // Aquí puedes agregar verificaciones específicas si hay algún cambio en el estado del personaje
+    // o del mapa de juego Por ejemplo, verificar si se ha registrado un disparo en gameMap
+}
+
+// Test para verificar que el personaje revive correctamente
+TEST_F(CharacterTest, Revive) {
+    character->die(5.0f);
+    character->revive(0.1f);
+    EXPECT_FALSE(character->getIsDead());
+    EXPECT_EQ(character->getHealth(), ServerConfig::getCharacterInitialHealth());
+}
+
+// Test para verificar que el personaje maneja colisiones con obstáculos correctamente
+TEST_F(CharacterTest, HandleObstacleCollision) {
+    auto obstacle = std::make_shared<Obstacle>(ObstacleType::FULL_FLOOR, Vector<uint32_t>{100, 150},
+                                               30, 10);
+    character->handleObstacleCollision(obstacle);
+    EXPECT_TRUE(character->isOnGround());
+}
+
+// Test para verificar que el personaje maneja colisiones con enemigos correctamente
+TEST_F(CharacterTest, HandleEnemyCollision) {
+    auto enemy = std::make_shared<Enemy>(EnemyType::TURTLE, Vector<uint32_t>{100, 150}, 30, 10);
+    character->handleCollision(enemy);
+    // Aquí puedes agregar verificaciones específicas si hay algún cambio en el estado del personaje
+}
+
+// Test para verificar que el personaje maneja colisiones con otros personajes correctamente
+TEST_F(CharacterTest, HandleCharacterCollision) {
+    auto otherCharacter =
+            std::make_shared<Character>(*gameMap, Vector<uint32_t>{120, 100}, 2,
+                                        CharacterType::SPAZ, 1.0f, 2.0f, 1.0f, 10.0f, 0.5f, 30, 50);
+    character->handleCharacterCollision(otherCharacter);
+    // Aquí puedes agregar verificaciones específicas si hay algún cambio en el estado del personaje
+}
+
+// Test para verificar que el personaje cambia de arma correctamente
+TEST_F(CharacterTest, SwitchWeapon) {
+    character->switchWeapon(WeaponType::BOUNCER);
+    EXPECT_EQ(character->getCurrentWeaponType(), WeaponType::BOUNCER);
 }

@@ -37,6 +37,7 @@ void Player::disconnect() {
     this->closeQueues();
     this->stopThreads();
     this->closeSocket();
+    std::cout << "Player disconnected" << std::endl;
 }
 
 bool Player::isPlaying() const { return keepPlaying.load(); }

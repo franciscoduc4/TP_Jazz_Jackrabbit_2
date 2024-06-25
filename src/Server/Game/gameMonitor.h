@@ -12,7 +12,7 @@
 #include "../../Common/Types/gameInfo.h"
 #include "../../Common/Types/gameMode.h"
 #include "../../Common/queueMonitor.h"
-#include "maps/mapsManager.h"
+#include "../../Common/maps/mapsManager.h"
 
 #include "game.h"
 

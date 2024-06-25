@@ -8,9 +8,9 @@
 
 GameLoopThread::GameLoopThread(const std::shared_ptr<Queue<std::unique_ptr<CommandDTO>>>& recvQueue,
                                QueueMonitor& queueMonitor, GameMap& gameMap, uint8_t gameId):
-        frameRate(0.064),
+        frameRate(ServerConfig::getGameFrameRate()),
         keepRunning(false),
-        commandsToProcess(10),
+        commandsToProcess(ServerConfig::getGameCommandsToProcess()),
         recvQueue(recvQueue),
         queueMonitor(queueMonitor),
         gameMap(gameMap),
@@ -22,7 +22,7 @@ GameLoopThread::GameLoopThread(const std::shared_ptr<Queue<std::unique_ptr<Comma
 void GameLoopThread::run() {
     try {
         std::cout << "[GAME LOOP] Game loop started" << std::endl;
-        keepRunning = true;
+        keepRunning.store(true);
         auto lastTime = std::chrono::high_resolution_clock::now();
 
         auto gameDTO = gameMap.getGameDTO();
@@ -67,7 +67,7 @@ void GameLoopThread::run() {
 void GameLoopThread::processCommands(float deltaTime) {
     try {
         size_t processedCommands = 0;
-        size_t maxCommandsPerFrame = 10;
+        size_t maxCommandsPerFrame = ServerConfig::getGameCommandsToProcess() * 2;
 
         while (processedCommands < maxCommandsPerFrame) {
             std::unique_ptr<CommandDTO> command;
@@ -101,11 +101,11 @@ void GameLoopThread::processCommands(float deltaTime) {
 }
 
 void GameLoopThread::stop() {
-    keepRunning = false;
+    keepRunning.store(false);
     std::cout << "[GAME LOOP] Stop called, setting keepRunning to false" << std::endl;
 }
 
 bool GameLoopThread::isRunning() const {
-    std::cout << "[GAME LOOP] isRunning called, returning: " << keepRunning << std::endl;
-    return keepRunning;
+    std::cout << "[GAME LOOP] isRunning called, returning: " << keepRunning.load() << std::endl;
+    return keepRunning.load();
 }

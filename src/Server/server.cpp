@@ -10,5 +10,6 @@ void Server::run() {
     while (std::cin.get() != 'q') {}
 
     acceptor.stop();
+    std::cout << "Server stopped" << std::endl;
     acceptor.join();
 }

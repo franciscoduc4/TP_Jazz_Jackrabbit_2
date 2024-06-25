@@ -33,9 +33,11 @@ void AcceptorThread::run() {
 
 void AcceptorThread::stop() {
     removeAllPlayers();
-    isAlive = false;
+    isAlive.store(false);
     serverSocket->shutdown(SHUT_RDWR);
     serverSocket->close();
+    gameMonitor.endAllGames();
+    std::cout << "Acceptor stopped" << std::endl;
 }
 
 void AcceptorThread::removeDeadPlayers() {
