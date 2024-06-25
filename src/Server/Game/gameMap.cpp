@@ -13,24 +13,25 @@ GameMap::GameMap(Vector<uint32_t> size, uint8_t mapId):
         gravity(ServerConfig::getGameGravity()),
         movesPerCell(ServerConfig::getGameMaxMoves()),
         mapId(mapId) {
-    std::cout << "[GAMEMAP] GameMap created with mapId: " << static_cast<int>(mapId) << std::endl;
+    // std::cout << "[GAMEMAP] GameMap created with mapId: " << static_cast<int>(mapId) <<
+    // std::endl;
 }
 
 void GameMap::loadMap(uint8_t mapId) {
     try {
         std::string filePath = MapsManager::getMapFileNameById(mapId);
-        std::cout << "[GAMEMAP] Loading map from file: " << filePath << std::endl;
+        // std::cout << "[GAMEMAP] Loading map from file: " << filePath << std::endl;
 
         YAML::Node config = YAML::LoadFile(filePath);
-        std::cout << "[GAMEMAP] YAML file loaded" << std::endl;
+        // std::cout << "[GAMEMAP] YAML file loaded" << std::endl;
 
         if (!config["SIZE"] || !config["SIZE"]["WIDTH"] || !config["SIZE"]["HEIGHT"]) {
             throw std::runtime_error("Invalid map size configuration in YAML file");
         }
         size.x = static_cast<uint32_t>(config["SIZE"]["WIDTH"].as<int>());
         size.y = static_cast<uint32_t>(config["SIZE"]["HEIGHT"].as<int>());
-        std::cout << "[GAMEMAP] Map size: Width = " << static_cast<int>(size.x)
-                  << ", Height = " << static_cast<int>(size.y) << std::endl;
+        // std::cout << "[GAMEMAP] Map size: Width = " << static_cast<int>(size.x)
+        //   << ", Height = " << static_cast<int>(size.y) << std::endl;
 
         if (size.x <= 0 || size.y <= 0) {
             throw std::runtime_error("Map size must be positive non-zero values");
@@ -47,9 +48,9 @@ void GameMap::loadMap(uint8_t mapId) {
                     uint32_t height = static_cast<uint32_t>(pos[3].as<int>());
                     ObstacleType type = getObstacleType(obstacleType);
                     addObstacle(type, position, width, height);
-                    std::cout << "[GAMEMAP] Obstacle start position set for obstacleType: "
-                              << obstacleType << " at (" << position.x << ", " << position.y
-                              << "), width: " << width << ", height: " << height << std::endl;
+                    // std::cout << "[GAMEMAP] Obstacle start position set for obstacleType: "
+                    //   << obstacleType << " at (" << position.x << ", " << position.y
+                    //   << "), width: " << width << ", height: " << height << std::endl;
                 }
             }
         }
@@ -57,7 +58,7 @@ void GameMap::loadMap(uint8_t mapId) {
         if (config["ENEMIES"]) {
             for (const auto& enemy: config["ENEMIES"]) {
                 std::string enemyType = enemy.first.as<std::string>();
-                std::cout << "[GAMEMAP] Enemy type: " << enemyType << std::endl;
+                // std::cout << "[GAMEMAP] Enemy type: " << enemyType << std::endl;
                 for (const auto& pos: enemy.second) {
                     if (pos.size() != 4) {
                         throw std::runtime_error(
@@ -69,9 +70,9 @@ void GameMap::loadMap(uint8_t mapId) {
                     uint32_t height = static_cast<uint32_t>(pos[3].as<int>());
                     EnemyType type = getEnemyType(enemyType);
                     addEnemy(type, position, width, height);
-                    std::cout << "[GAMEMAP] Enemy position: (" << static_cast<int>(position.x)
-                              << ", " << static_cast<int>(position.y) << "), width: " << width
-                              << ", height: " << height << std::endl;
+                    // std::cout << "[GAMEMAP] Enemy position: (" << static_cast<int>(position.x)
+                    //   << ", " << static_cast<int>(position.y) << "), width: " << width
+                    //   << ", height: " << height << std::endl;
                 }
             }
         }
@@ -86,9 +87,10 @@ void GameMap::loadMap(uint8_t mapId) {
                     uint32_t width = static_cast<uint32_t>(pos[2].as<int>());
                     uint32_t height = static_cast<uint32_t>(pos[3].as<int>());
                     addItem(itemType, position, width, height);
-                    std::cout << "[GAMEMAP] Item start position set for itemType: " << itemTypeStr
-                              << " at (" << position.x << ", " << position.y
-                              << "), width: " << width << ", height: " << height << std::endl;
+                    // std::cout << "[GAMEMAP] Item start position set for itemType: " <<
+                    // itemTypeStr
+                    //   << " at (" << position.x << ", " << position.y
+                    //   << "), width: " << width << ", height: " << height << std::endl;
                 }
             }
         }
@@ -104,14 +106,14 @@ void GameMap::loadMap(uint8_t mapId) {
                 CharacterType type = getCharacterType(playerType);
                 initialPositions[type] = position;
                 initialSizes[type] = {width, height};  // Guardar ancho y alto de los personajes
-                std::cout << "[GAMEMAP] Initial position for character " << playerType << ": ("
-                          << position.x << ", " << position.y << "), width: " << width
-                          << ", height: " << height << std::endl;
+                // std::cout << "[GAMEMAP] Initial position for character " << playerType << ": ("
+                //   << position.x << ", " << position.y << "), width: " << width
+                //   << ", height: " << height << std::endl;
             }
         }
 
     } catch (const std::exception& e) {
-        std::cerr << "[GAMEMAP] Error loading map: " << e.what() << std::endl;
+        // std::cerr << "[GAMEMAP] Error loading map: " << e.what() << std::endl;
         throw;
     }
 }
@@ -168,7 +170,7 @@ CharacterType GameMap::getCharacterType(const std::string& typeStr) {
 std::vector<std::shared_ptr<Entity>> GameMap::getObjectsInShootRange(Vector<uint32_t> mapPosition,
                                                                      Direction dir) {
     std::vector<std::shared_ptr<Entity>> entities;
-    std::cout << "[GAMEMAP] Getting objects in shoot range" << std::endl;
+    // std::cout << "[GAMEMAP] Getting objects in shoot range" << std::endl;
     try {
         if (dir == Direction::LEFT) {
             for (int8_t i = mapPosition.x - 1; i >= 0; i--) {
@@ -186,9 +188,9 @@ std::vector<std::shared_ptr<Entity>> GameMap::getObjectsInShootRange(Vector<uint
             }
         }
     } catch (const std::exception& e) {
-        std::cerr << "[GAMEMAP] Error getting objects in shoot range: " << e.what() << std::endl;
+        // std::cerr << "[GAMEMAP] Error getting objects in shoot range: " << e.what() << std::endl;
     }
-    std::cout << "[GAMEMAP] Objects in shoot range size: " << entities.size() << std::endl;
+    // std::cout << "[GAMEMAP] Objects in shoot range size: " << entities.size() << std::endl;
     return entities;
 }
 
@@ -205,8 +207,8 @@ std::vector<std::shared_ptr<Entity>> GameMap::getObjectsInExplosionRange(
             }
         }
     } catch (const std::exception& e) {
-        std::cerr << "[GAMEMAP] Error getting objects in explosion range: " << e.what()
-                  << std::endl;
+        // std::cerr << "[GAMEMAP] Error getting objects in explosion range: " << e.what()
+        //   << std::endl;
     }
     return entities;
 }
@@ -215,23 +217,23 @@ void GameMap::moveObject(Vector<uint32_t>& position, Vector<uint32_t> mapPositio
     try {
         auto it = mapGrid.find(mapPosition);
         if (it == mapGrid.end()) {
-            std::cerr << "[GAMEMAP] Invalid character at position: (" << mapPosition.x << ", "
-                      << mapPosition.y << ")" << std::endl;
+            // std::cerr << "[GAMEMAP] Invalid character at position: (" << mapPosition.x << ", "
+            //   << mapPosition.y << ")" << std::endl;
             return;
         }
 
         auto character = std::dynamic_pointer_cast<Character>(it->second);
         if (!character) {
-            std::cerr << "[GAMEMAP] Character at (" << mapPosition.x << ", " << mapPosition.y
-                      << ") is invalid" << std::endl;
+            // std::cerr << "[GAMEMAP] Character at (" << mapPosition.x << ", " << mapPosition.y
+            //   << ") is invalid" << std::endl;
             return;
         }
 
         Vector<uint32_t> newPosition = calculateNewPosition(position, dir);
         Vector<uint32_t> newMapPosition = getMapPosition(newPosition);
         if (!isValidMapPosition(newMapPosition)) {
-            std::cerr << "[GAMEMAP] New map position (" << newMapPosition.x << ", "
-                      << newMapPosition.y << ") is invalid" << std::endl;
+            // std::cerr << "[GAMEMAP] New map position (" << newMapPosition.x << ", "
+            //   << newMapPosition.y << ") is invalid" << std::endl;
             return;
         }
 
@@ -239,15 +241,16 @@ void GameMap::moveObject(Vector<uint32_t>& position, Vector<uint32_t> mapPositio
             mapGrid[newMapPosition] = it->second;
             mapGrid.erase(it);
             character->setPosition(newPosition);
-            std::cout << "[GAMEMAP] Object moved from (" << mapPosition.x << ", " << mapPosition.y
-                      << ") to (" << newMapPosition.x << ", " << newMapPosition.y << ")"
-                      << std::endl;
+            // std::cout << "[GAMEMAP] Object moved from (" << mapPosition.x << ", " <<
+            // mapPosition.y
+            //   << ") to (" << newMapPosition.x << ", " << newMapPosition.y << ")"
+            //   << std::endl;
         } else {
             character->interact(mapGrid[newMapPosition]);
         }
 
     } catch (const std::exception& e) {
-        std::cerr << "[GAMEMAP] Error moving object: " << e.what() << std::endl;
+        // std::cerr << "[GAMEMAP] Error moving object: " << e.what() << std::endl;
     }
 }
 
@@ -259,8 +262,8 @@ bool GameMap::isFreePosition(Vector<uint32_t> position) {
 void GameMap::addEntityToMap(std::shared_ptr<Entity> entity, Vector<uint32_t> position) {
     try {
         // Vector<uint32_t> mapPosition = entity->getMapPosition(movesPerCell);
-        std::cout << "[GAMEMAP] Adding entity at position: (" << static_cast<int>(position.x)
-                  << ", " << static_cast<int>(position.y) << ")" << std::endl;
+        // std::cout << "[GAMEMAP] Adding entity at position: (" << static_cast<int>(position.x)
+        //   << ", " << static_cast<int>(position.y) << ")" << std::endl;
         if (isFreePosition(position)) {
             mapGrid[position] = entity;
         } else {
@@ -268,7 +271,7 @@ void GameMap::addEntityToMap(std::shared_ptr<Entity> entity, Vector<uint32_t> po
             mapGrid[position] = entity;
         }
     } catch (const std::exception& e) {
-        std::cerr << "[GAMEMAP] Error adding entity to map: " << e.what() << std::endl;
+        // std::cerr << "[GAMEMAP] Error adding entity to map: " << e.what() << std::endl;
     }
 }
 
@@ -276,35 +279,35 @@ void GameMap::addCharacter(uint8_t playerId, CharacterType type) {
     try {
         auto it = initialPositions.find(type);
         if (it == initialPositions.end()) {
-            std::cerr << "[GAMEMAP] Initial position for character type not found" << std::endl;
+            // std::cerr << "[GAMEMAP] Initial position for character type not found" << std::endl;
             return;
         }
 
         Vector<uint32_t> initPosition = it->second;
         Vector<uint32_t> initSize = initialSizes[type];  // Obtener el tamaño inicial del personaje
-        std::cout << "[ADD CHARACTER] Initial position for character: ("
-                  << static_cast<int>(initPosition.x) << ", " << static_cast<int>(initPosition.y)
-                  << "), width: " << initSize.x << ", height: " << initSize.y << std::endl;
+        // std::cout << "[ADD CHARACTER] Initial position for character: ("
+        //   << static_cast<int>(initPosition.x) << ", " << static_cast<int>(initPosition.y)
+        //   << "), width: " << initSize.x << ", height: " << initSize.y << std::endl;
 
         if (!isValidMapPosition(initPosition)) {
-            std::cerr << "[GAMEMAP] Invalid initial position for character" << std::endl;
+            // std::cerr << "[GAMEMAP] Invalid initial position for character" << std::endl;
             return;
         }
 
         auto character =
                 entityFactory.createCharacter(playerId, type, initPosition, initSize.x, initSize.y);
         if (!character) {
-            std::cerr << "[GAMEMAP] Failed to create character" << std::endl;
+            // std::cerr << "[GAMEMAP] Failed to create character" << std::endl;
             return;
         }
 
         characters[playerId] = character;
         addEntityToMap(character, initPosition);
         entityCount++;
-        std::cout << "[GAMEMAP] Character with ID " << static_cast<int>(playerId) << " added"
-                  << std::endl;
+        // std::cout << "[GAMEMAP] Character with ID " << static_cast<int>(playerId) << " added"
+        //   << std::endl;
     } catch (const std::exception& e) {
-        std::cerr << "[GAMEMAP] Error adding character: " << e.what() << std::endl;
+        // std::cerr << "[GAMEMAP] Error adding character: " << e.what() << std::endl;
         return;
     }
 }
@@ -316,14 +319,15 @@ void GameMap::addEnemy(EnemyType type, Vector<uint32_t> position, uint32_t width
             throw std::runtime_error("Invalid position for enemy");
         }
         auto enemy = entityFactory.createEnemy(entityCount, type, position, width, height);
-        std::cout << "[GAMEMAP] Adding enemy at position: (" << static_cast<int>(position.x) << ", "
-                  << static_cast<int>(position.y) << "), width: " << width << ", height: " << height
-                  << std::endl;
+        // std::cout << "[GAMEMAP] Adding enemy at position: (" << static_cast<int>(position.x) <<
+        // ", "
+        //   << static_cast<int>(position.y) << "), width: " << width << ", height: " << height
+        //   << std::endl;
         enemies[enemy->getId()] = enemy;  // Añadir a la lista de enemigos
         addEntityToMap(enemy, position);
         entityCount++;
     } catch (const std::exception& e) {
-        std::cerr << "[GAMEMAP] Error adding enemy: " << e.what() << std::endl;
+        // std::cerr << "[GAMEMAP] Error adding enemy: " << e.what() << std::endl;
     }
 }
 
@@ -335,14 +339,14 @@ void GameMap::addObstacle(ObstacleType type, Vector<uint32_t> position, uint32_t
             throw std::runtime_error("Invalid position for obstacle");
         }
         auto obstacle = entityFactory.createObstacle(type, position, width, height);
-        std::cout << "[GAMEMAP] Adding obstacle at position: (" << static_cast<int>(position.x)
-                  << ", " << static_cast<int>(position.y) << "), width: " << width
-                  << ", height: " << height << std::endl;
+        // std::cout << "[GAMEMAP] Adding obstacle at position: (" << static_cast<int>(position.x)
+        //   << ", " << static_cast<int>(position.y) << "), width: " << width
+        //   << ", height: " << height << std::endl;
 
         addEntityToMap(obstacle, position);
         entityCount++;
     } catch (const std::exception& e) {
-        std::cerr << "[GAMEMAP] Error adding obstacle: " << e.what() << std::endl;
+        // std::cerr << "[GAMEMAP] Error adding obstacle: " << e.what() << std::endl;
     }
 }
 
@@ -352,13 +356,14 @@ void GameMap::addItem(ItemType type, Vector<uint32_t> position, uint32_t width, 
             throw std::runtime_error("Invalid position for item");
         }
         auto item = entityFactory.createItem(type, position, width, height);
-        std::cout << "[GAMEMAP] Adding item at position: (" << static_cast<int>(position.x) << ", "
-                  << static_cast<int>(position.y) << "), width: " << width << ", height: " << height
-                  << std::endl;
+        // std::cout << "[GAMEMAP] Adding item at position: (" << static_cast<int>(position.x) << ",
+        // "
+        //   << static_cast<int>(position.y) << "), width: " << width << ", height: " << height
+        //   << std::endl;
         addEntityToMap(item, position);
         entityCount++;
     } catch (const std::exception& e) {
-        std::cerr << "[GAMEMAP] Error adding item: " << e.what() << std::endl;
+        // std::cerr << "[GAMEMAP] Error adding item: " << e.what() << std::endl;
     }
 }
 
@@ -381,31 +386,31 @@ Vector<uint32_t> GameMap::getAvailablePosition() {
         } while (mapGrid.find(pos) != mapGrid.end() && isValidPosition(pos));
         return pos;
     } catch (const std::exception& e) {
-        std::cerr << "[GAMEMAP] Error getting available position: " << e.what() << std::endl;
+        // std::cerr << "[GAMEMAP] Error getting available position: " << e.what() << std::endl;
         throw;
     }
 }
 
 void GameMap::update(float time) {
-    std::cout << "[GAMEMAP] Updating game map" << std::endl;
+    // std::cout << "[GAMEMAP] Updating game map" << std::endl;
     try {
         std::vector<std::shared_ptr<Entity>> entitiesToRemove;
-        std::vector<std::shared_ptr<Entity>> itemsToRemove; 
+        std::vector<std::shared_ptr<Entity>> itemsToRemove;
 
         // Actualizar personajes y enemigos en un solo bucle
-        for (auto& entityPair : mapGrid) {
+        for (auto& entityPair: mapGrid) {
             auto entity = entityPair.second;
 
             if (entity->getType() == EntityType::CHARACTER) {
                 auto character = std::dynamic_pointer_cast<Character>(entity);
+                character->update(time);
                 if (!character->isAlive()) {
-                    entitiesToRemove.push_back(character);
+                    // entitiesToRemove.push_back(character);
                     continue;
                 }
-                character->update(time);
 
                 // Verificar colisiones con entidades
-                for (const auto& checkEntityPair : mapGrid) {
+                for (const auto& checkEntityPair: mapGrid) {
                     auto checkEntity = checkEntityPair.second;
                     switch (checkEntity->getType()) {
                         case EntityType::ENEMY:
@@ -417,8 +422,10 @@ void GameMap::update(float time) {
                                     character, std::dynamic_pointer_cast<Obstacle>(checkEntity));
                             break;
                         case EntityType::ITEM:
-                            if (handleCharacterItemCollision(character, std::dynamic_pointer_cast<Item>(checkEntity))) {
-                                itemsToRemove.push_back(std::dynamic_pointer_cast<Item>(checkEntity));
+                            if (handleCharacterItemCollision(
+                                        character, std::dynamic_pointer_cast<Item>(checkEntity))) {
+                                itemsToRemove.push_back(
+                                        std::dynamic_pointer_cast<Item>(checkEntity));
                             }
                             break;
                         default:
@@ -436,17 +443,16 @@ void GameMap::update(float time) {
         }
 
         // Eliminar personajes muertos después de la actualización
-        for (const auto& entity : entitiesToRemove) {
+        for (const auto& entity: entitiesToRemove) {
             removeCharacter(std::dynamic_pointer_cast<Character>(entity));
         }
-        for (const auto& entity : itemsToRemove) {
+        for (const auto& entity: itemsToRemove) {
             removeItem(entity->getPosition());
         }
     } catch (const std::exception& e) {
-        std::cerr << "[GAMEMAP] Error updating game map: " << e.what() << std::endl;
+        // std::cerr << "[GAMEMAP] Error updating game map: " << e.what() << std::endl;
     }
 }
-
 
 
 bool GameMap::checkCollision(const Vector<uint32_t>& pos1, const Vector<uint32_t>& size1,
@@ -456,41 +462,45 @@ bool GameMap::checkCollision(const Vector<uint32_t>& pos1, const Vector<uint32_t
 }
 
 
-bool GameMap::handleCharacterItemCollision(const std::shared_ptr<Character>& character, const std::shared_ptr<Item>& item) {
+bool GameMap::handleCharacterItemCollision(const std::shared_ptr<Character>& character,
+                                           const std::shared_ptr<Item>& item) {
     try {
-        if (checkCollision(character->getPosition(), {character->getWidth(), character->getHeight()},
-                           item->getPosition(), {item->getWidth(), item->getHeight()})) {
-        //if (character->getPosition() == item->getPosition()) {
+        if (checkCollision(character->getPosition(),
+                           {character->getWidth(), character->getHeight()}, item->getPosition(),
+                           {item->getWidth(), item->getHeight()})) {
+            // if (character->getPosition() == item->getPosition()) {
             character->collectItem(item);
-            //mapGrid.erase(item->getPosition());
+            mapGrid.erase(item->getPosition());
             std::cout << "[GAMEMAP] Character collected item. Item removed from map." << std::endl;
             return true;
         }
     } catch (const std::exception& e) {
-        std::cerr << "[GAMEMAP] Error handling character-item collision: " << e.what() << std::endl;
+        // std::cerr << "[GAMEMAP] Error handling character-item collision: " << e.what() <<
+        // std::endl;
     }
     return false;
 }
 
 
-
 void GameMap::handleCharacterEnemyCollision(const std::shared_ptr<Character>& character,
                                             const std::shared_ptr<Enemy>& enemy) {
     try {
-        if (!character->isAlive()) return;
+        if (!character->isAlive())
+            return;
 
-        if (checkCollision(character->getPosition(), {character->getWidth(), character->getHeight()},
-                           enemy->getPosition(), {enemy->getWidth(), enemy->getHeight()})) {
-            uint8_t damage = enemy->getDamage();  
-            character->recvDamage(damage, 0);    
-            character->handleCollision(enemy);  
-            std::cout << "[GAMEMAP] Character ID: " << static_cast<int>(character->getId())
-                      << " received damage from enemy. Damage: " << static_cast<int>(damage)
-                      << std::endl;
+        if (checkCollision(character->getPosition(),
+                           {character->getWidth(), character->getHeight()}, enemy->getPosition(),
+                           {enemy->getWidth(), enemy->getHeight()})) {
+            uint8_t damage = enemy->getDamage();
+            character->recvDamage(damage, 0);
+            character->handleCollision(enemy);
+            // std::cout << "[GAMEMAP] Character ID: " << static_cast<int>(character->getId())
+            //   << " received damage from enemy. Damage: " << static_cast<int>(damage)
+            //   << std::endl;
         }
     } catch (const std::exception& e) {
-        std::cerr << "[GAMEMAP] Error handling character-enemy collision: " << e.what()
-                  << std::endl;
+        // std::cerr << "[GAMEMAP] Error handling character-enemy collision: " << e.what()
+        //   << std::endl;
     }
 }
 
@@ -507,8 +517,8 @@ void GameMap::handleCharacterObstacleCollision(const std::shared_ptr<Character>&
 
         if (checkCollision(characterPos, {characterWidth, characterHeight}, obstaclePos,
                            {obstacleWidth, obstacleHeight})) {
-            std::cout << "[GAMEMAP] Character ID: " << static_cast<int>(character->getId())
-                      << " collided with obstacle" << std::endl;
+            // std::cout << "[GAMEMAP] Character ID: " << static_cast<int>(character->getId())
+            //   << " collided with obstacle" << std::endl;
 
             if (obstacle->getObstacleType() == ObstacleType::LEFT_LADDER ||
                 obstacle->getObstacleType() == ObstacleType::RIGHT_LADDER) {
@@ -518,8 +528,8 @@ void GameMap::handleCharacterObstacleCollision(const std::shared_ptr<Character>&
             }
         }
     } catch (const std::exception& e) {
-        std::cerr << "[GAMEMAP] Error handling character-obstacle collision: " << e.what()
-                  << std::endl;
+        // std::cerr << "[GAMEMAP] Error handling character-obstacle collision: " << e.what()
+        //   << std::endl;
     }
 }
 
@@ -527,18 +537,20 @@ void GameMap::handleCharacterObstacleCollision(const std::shared_ptr<Character>&
 void GameMap::removeCharacter(const std::shared_ptr<Character>& character) {
     try {
         auto it = characters.find(character->getId());
-        if (it != characters.end()){
+        if (it != characters.end()) {
             auto position = it->second->getPosition();
             mapGrid.erase(position);
             characters.erase(it);
-            std::cout << "[GAMEMAP] Removed character with ID: " << static_cast<int>(character->getId())
-                      << " at position: (" << position.x << ", " << position.y << ")" << std::endl;     
+            // std::cout << "[GAMEMAP] Removed character with ID: "
+            //   << static_cast<int>(character->getId()) << " at position: (" << position.x
+            //   << ", " << position.y << ")" << std::endl;
         } else {
-            std::cerr << "[GAMEMAP] Error removing character: Character ID not found" << std::endl;
+            // std::cerr << "[GAMEMAP] Error removing character: Character ID not found" <<
+            // std::endl;
         }
 
     } catch (const std::exception& e) {
-        std::cerr << "[GAMEMAP] Error removing character from map: " << e.what() << std::endl;
+        // std::cerr << "[GAMEMAP] Error removing character from map: " << e.what() << std::endl;
     }
 }
 
@@ -546,27 +558,28 @@ void GameMap::removeCharacter(const std::shared_ptr<Character>& character) {
 void GameMap::removeItem(Vector<uint32_t> position) {
     try {
         mapGrid.erase(position);
-        std::cout << "[GAMEMAP] Removed item at position: (" << static_cast<int>(position.x) << ", "
-                  << static_cast<int>(position.y) << ")" << std::endl;
+        // std::cout << "[GAMEMAP] Removed item at position: (" << static_cast<int>(position.x) <<
+        // ", "
+        //   << static_cast<int>(position.y) << ")" << std::endl;
     } catch (const std::exception& e) {
-        std::cerr << "[GAMEMAP] Error removing item: " << e.what() << std::endl;
+        // std::cerr << "[GAMEMAP] Error removing item: " << e.what() << std::endl;
     }
 }
 
 void GameMap::removeEnemy(uint8_t enemyId) {
-    try{ 
+    try {
         auto it = enemies.find(enemyId);
         if (it != enemies.end()) {
             auto position = it->second->getPosition();
             mapGrid.erase(position);
             enemies.erase(it);
-            std::cout << "[GAMEMAP] Removed enemy with ID: " << static_cast<int>(enemyId)
-                    << " at position: (" << position.x << ", " << position.y << ")" << std::endl;
+            // std::cout << "[GAMEMAP] Removed enemy with ID: " << static_cast<int>(enemyId)
+            //   << " at position: (" << position.x << ", " << position.y << ")" << std::endl;
         } else {
-            std::cerr << "[GAMEMAP] Error removing enemy: Enemy ID not found" << std::endl;
+            // std::cerr << "[GAMEMAP] Error removing enemy: Enemy ID not found" << std::endl;
         }
     } catch (const std::exception& e) {
-        std::cerr << "[GAMEMAP] Error removing enemy: " << e.what() << std::endl;
+        // std::cerr << "[GAMEMAP] Error removing enemy: " << e.what() << std::endl;
     }
 }
 
@@ -577,7 +590,7 @@ std::shared_ptr<Entity> GameMap::getEntityAt(Vector<uint32_t> mapPosition) {
         }
         return nullptr;
     } catch (const std::exception& e) {
-        std::cerr << "[GAMEMAP] Error getting entity at position: " << e.what() << std::endl;
+        // std::cerr << "[GAMEMAP] Error getting entity at position: " << e.what() << std::endl;
         return nullptr;
     }
 }
@@ -608,35 +621,35 @@ std::unique_ptr<GameDTO> GameMap::getGameDTO() {
                     tilesDTO.push_back(std::dynamic_pointer_cast<Obstacle>(entity)->getDTO());
                     break;
                 default:
-                    std::cerr << "[GAMEMAP] Unknown entity type at position: (" << pos.x << ", "
-                              << pos.y << ")" << std::endl;
+                    // std::cerr << "[GAMEMAP] Unknown entity type at position: (" << pos.x << ", "
+                    //   << pos.y << ")" << std::endl;
                     break;
             }
         }
 
-        std::cout << "[GAMEMAP] playersDTO size: " << playersDTO.size() << std::endl;
-        std::cout << "[GAMEMAP] enemiesDTO size: " << enemiesDTO.size() << std::endl;
-        std::cout << "[GAMEMAP] itemsDTO size: " << itemsDTO.size() << std::endl;
-        std::cout << "[GAMEMAP] weaponsDTO size: " << weaponsDTO.size() << std::endl;
-        std::cout << "[GAMEMAP] bulletsDTO size: " << bulletsDTO.size() << std::endl;
-        std::cout << "[GAMEMAP] tilesDTO size: " << tilesDTO.size() << std::endl;
+        // std::cout << "[GAMEMAP] playersDTO size: " << playersDTO.size() << std::endl;
+        // std::cout << "[GAMEMAP] enemiesDTO size: " << enemiesDTO.size() << std::endl;
+        // std::cout << "[GAMEMAP] itemsDTO size: " << itemsDTO.size() << std::endl;
+        // std::cout << "[GAMEMAP] weaponsDTO size: " << weaponsDTO.size() << std::endl;
+        // std::cout << "[GAMEMAP] bulletsDTO size: " << bulletsDTO.size() << std::endl;
+        // std::cout << "[GAMEMAP] tilesDTO size: " << tilesDTO.size() << std::endl;
 
         return std::make_unique<GameDTO>(playersDTO, enemiesDTO, bulletsDTO, itemsDTO, weaponsDTO,
                                          tilesDTO);
     } catch (const std::exception& e) {
-        std::cerr << "[GAMEMAP] Error creating GameDTO: " << e.what() << std::endl;
+        // std::cerr << "[GAMEMAP] Error creating GameDTO: " << e.what() << std::endl;
         throw;
     }
 }
 
 std::shared_ptr<Character> GameMap::getCharacter(uint8_t playerId) {
-    std::cout << "[GAMEMAP] Getting character with ID " << (int)(playerId) << std::endl;
+    // std::cout << "[GAMEMAP] Getting character with ID " << (int)(playerId) << std::endl;
     auto it = characters.find(playerId);
     if (it != characters.end()) {
         return it->second;
     }
-    std::cerr << "[GAMEMAP] Error getting character with ID " << static_cast<int>(playerId)
-              << ": character not found" << std::endl;
+    // std::cerr << "[GAMEMAP] Error getting character with ID " << static_cast<int>(playerId)
+    //   << ": character not found" << std::endl;
     return nullptr;
 }
 
@@ -644,14 +657,14 @@ std::shared_ptr<Character> GameMap::getCharacter(uint8_t playerId) {
 void GameMap::printMapGrid() const {
     try {
         for (const auto& pair: mapGrid) {
-            std::cout << "[GAMEMAP] Key: (" << static_cast<int>(pair.first.x) << ", "
-                      << static_cast<int>(pair.first.y) << "), "
-                      << "Value: " << static_cast<int>(pair.second->getMapPosition(movesPerCell).x)
-                      << ", " << static_cast<int>(pair.second->getMapPosition(movesPerCell).y)
-                      << " - ID: " << static_cast<int>(pair.second->getId()) << std::endl;
+            // std::cout << "[GAMEMAP] Key: (" << static_cast<int>(pair.first.x) << ", "
+            //   << static_cast<int>(pair.first.y) << "), "
+            //   << "Value: " << static_cast<int>(pair.second->getMapPosition(movesPerCell).x)
+            //   << ", " << static_cast<int>(pair.second->getMapPosition(movesPerCell).y)
+            //   << " - ID: " << static_cast<int>(pair.second->getId()) << std::endl;
         }
     } catch (const std::exception& e) {
-        std::cerr << "[GAMEMAP] Error printing map grid: " << e.what() << std::endl;
+        // std::cerr << "[GAMEMAP] Error printing map grid: " << e.what() << std::endl;
     }
 }
 
@@ -690,45 +703,47 @@ Vector<uint32_t> GameMap::calculateNewPosition(const Vector<uint32_t>& position,
         }
         return newPosition;
     } catch (const std::exception& e) {
-        std::cerr << "[GAMEMAP] Error calculating new position: " << e.what() << std::endl;
+        // std::cerr << "[GAMEMAP] Error calculating new position: " << e.what() << std::endl;
         throw;
     }
 }
 
 
+void GameMap::handleShooting(uint32_t characterX, uint8_t damage, float time, Direction dir,
+                             uint8_t shooterId) {
+    const uint32_t shootRange = 200;  // Define el alcance máximo del disparo
 
-
-
-void GameMap::handleShooting(uint32_t characterX, uint8_t damage, float time, Direction dir, uint8_t shooterId) {
-    const uint32_t shootRange = 200; // Define el alcance máximo del disparo
-
-    std::cout << "[GAMEMAP] Handling shooting at position: " << characterX
-              << ", damage: " << static_cast<int>(damage) << std::endl;
+    // std::cout << "[GAMEMAP] Handling shooting at position: " << characterX
+    //   << ", damage: " << static_cast<int>(damage) << std::endl;
 
     std::vector<uint8_t> enemiesToRemove;
 
     // Check enemies
-    for (const auto& enemyPair : enemies) {
+    for (const auto& enemyPair: enemies) {
         auto enemy = enemyPair.second;
         uint32_t enemyX = enemy->getPosition().x;
 
-        std::cout << "[GAMEMAP] Checking enemy with ID: " << static_cast<int>(enemy->getId()) << std::endl;
+        // std::cout << "[GAMEMAP] Checking enemy with ID: " << static_cast<int>(enemy->getId())
+        //   << std::endl;
 
         // Verificar que el enemigo esté dentro del rango y la dirección del disparo
-        bool inRange = (dir == Direction::RIGHT && enemyX >= characterX && enemyX <= characterX + shootRange) ||
-                       (dir == Direction::LEFT && enemyX <= characterX && enemyX >= characterX - shootRange);
+        bool inRange = (dir == Direction::RIGHT && enemyX >= characterX &&
+                        enemyX <= characterX + shootRange) ||
+                       (dir == Direction::LEFT && enemyX <= characterX &&
+                        enemyX >= characterX - shootRange);
 
         if (inRange) {
             enemy->recvDamage(damage, time);
             if (enemy->isDead()) {
                 enemiesToRemove.push_back(enemy->getId());
-                std::cout << "[GAMEMAP] Enemy with ID: " << static_cast<int>(enemy->getId()) << " is dead" << std::endl;
+                // std::cout << "[GAMEMAP] Enemy with ID: " << static_cast<int>(enemy->getId())
+                //   << " is dead" << std::endl;
             }
         }
     }
 
     // Check characters
-    for (const auto& characterPair : characters) {
+    for (const auto& characterPair: characters) {
         auto character = characterPair.second;
         uint32_t characterXPos = character->getPosition().x;
 
@@ -737,24 +752,28 @@ void GameMap::handleShooting(uint32_t characterX, uint8_t damage, float time, Di
             continue;
         }
 
-        std::cout << "[GAMEMAP] Checking character with ID: " << static_cast<int>(character->getId()) << std::endl;
+        // std::cout << "[GAMEMAP] Checking character with ID: "
+        //   << static_cast<int>(character->getId()) << std::endl;
 
         // Verificar que el personaje esté dentro del rango y la dirección del disparo
-        bool inRange = (dir == Direction::RIGHT && characterXPos >= characterX && characterXPos <= characterX + shootRange) ||
-                       (dir == Direction::LEFT && characterXPos <= characterX && characterXPos >= characterX - shootRange);
+        bool inRange = (dir == Direction::RIGHT && characterXPos >= characterX &&
+                        characterXPos <= characterX + shootRange) ||
+                       (dir == Direction::LEFT && characterXPos <= characterX &&
+                        characterXPos >= characterX - shootRange);
 
         if (inRange) {
             character->recvDamage(damage, time);
             if (!character->isAlive()) {
                 character->setState(std::make_unique<DeadState>(*character, time));
-                std::cout << "[GAMEMAP] Character with ID: " << static_cast<int>(character->getId()) <<
-                 " is dead and now in DeadState" << std::endl;
+                // std::cout << "[GAMEMAP] Character with ID: " <<
+                // static_cast<int>(character->getId())
+                //   << " is dead and now in DeadState" << std::endl;
             }
         }
     }
 
     // Remove dead enemies
-    for (uint8_t id : enemiesToRemove) {
+    for (uint8_t id: enemiesToRemove) {
         removeEnemy(id);
     }
 }

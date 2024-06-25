@@ -11,6 +11,7 @@
 class ReceivingDamageState: public State {
 private:
     float startTime;
+    float currentTime = 0;
     float timeReceivingDamage;
     uint8_t damage;
     Character& character;

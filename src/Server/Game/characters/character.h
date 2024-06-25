@@ -4,12 +4,12 @@
 #include <cstdint>
 #include <memory>
 #include <vector>
-#include "bullet.h"
+
 #include "../../../Common/Config/ServerConfig.h"
 #include "../../../Common/DTO/player.h"
 #include "../../../Common/Types/character.h"
-#include "../../../Common/Types/entity.h"
 #include "../../../Common/Types/direction.h"
+#include "../../../Common/Types/entity.h"
 #include "../entity.h"
 #include "../items/item.h"
 #include "../weapons/blaster.h"
@@ -17,15 +17,17 @@
 #include "../weapons/freezer.h"
 #include "../weapons/rfMissile.h"
 #include "../weapons/weapon.h"
+#include "states/damage.h"
 #include "states/dead.h"
 #include "states/idle.h"
 #include "states/intoxicated.h"
-#include "states/damage.h"
 #include "states/jumping.h"
 #include "states/moving.h"
 #include "states/shooting.h"
 #include "states/specialAttack.h"
 #include "states/state.h"
+
+#include "bullet.h"
 
 class GameMap;
 class Enemy;
@@ -83,8 +85,8 @@ public:
     void shoot(float time);
     void setState(std::unique_ptr<State> newState);
 
-    bool isPointInTriangle(const Vector<uint32_t>& p, const Vector<uint32_t>& v1, 
-    const Vector<uint32_t>& v2, const Vector<uint32_t>& v3);
+    bool isPointInTriangle(const Vector<uint32_t>& p, const Vector<uint32_t>& v1,
+                           const Vector<uint32_t>& v2, const Vector<uint32_t>& v3);
     void update(double deltaTime);
     void handleCollision(std::shared_ptr<Enemy> enemy);
     void handleObstacleCollision(std::shared_ptr<Obstacle> obstacle);
@@ -111,6 +113,7 @@ public:
     void interact(std::shared_ptr<Entity>& other);
     void switchWeapon(WeaponType type);
 
+    void recvDamage(uint8_t damage);
     void moveRight();
     void moveLeft();
     void moveDown();

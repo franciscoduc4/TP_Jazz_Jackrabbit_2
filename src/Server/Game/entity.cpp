@@ -28,19 +28,21 @@ Vector<uint32_t> Entity::getMapPosition(uint8_t movesPerCell) const {
     return {static_cast<uint8_t>(pos.x / movesPerCell), static_cast<uint8_t>(pos.y / movesPerCell)};
 }
 
-void Entity::recvDamage(uint8_t damage, float time) {
+void Entity::recvDamage(uint8_t damage) {
+    if (health - damage <= 0) {
+        health = 0;
+        die();
+        std::cout << "[ENTITY] Died" << std::endl;
+        return;
+    }
     health -= damage;
     std::cout << "[ENTITY] Received damage: " << (int)damage << std::endl;
-
-    if (health <= 0) {
-        die(time);
-    }
     std::cout << "[ENTITY] Health post damage: " << (int)health << std::endl;
 }
 
 bool Entity::getIsDead() const { return isDead; }
 
-void Entity::die(float time) { isDead = true; }
+void Entity::die() { isDead = true; }
 
 void Entity::setPosition(Vector<uint32_t> newPosition) { pos = newPosition; }
 

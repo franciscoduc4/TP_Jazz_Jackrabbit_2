@@ -24,7 +24,7 @@ void Serializer::clientClosed() {
 void Serializer::sendId(uint8_t playerId) {
     try {
         // std::cout << "[SERVER SERIALIZER] Sending id" << std::endl;
-        // std::cout << "[SERVER SERIALIZER] Id to send: " << (int)playerId << std::endl;
+        std::cout << "[SERVER SERIALIZER] Id to send: " << (int)playerId << std::endl;
         const auto* p = reinterpret_cast<const unsigned char*>(&playerId);
         socket->sendall(p, sizeof(uint8_t), &wasClosed);
         if (wasClosed) {
@@ -148,7 +148,7 @@ std::vector<char> Serializer::serializeCreateGame(const std::unique_ptr<CreateGa
     std::vector<char> buffer;
     uint8_t gameId = dto->getGameId();
     const auto* p = reinterpret_cast<const unsigned char*>(&gameId);
-    std::cout << "[SERVER SERIALIZE CG] Game id: " << gameId << std::endl;
+    std::cout << "[SERVER SERIALIZE CG] Game id: " << (int)gameId << std::endl;
     buffer.insert(buffer.end(), p, p + sizeof(uint8_t));
     return buffer;
 }

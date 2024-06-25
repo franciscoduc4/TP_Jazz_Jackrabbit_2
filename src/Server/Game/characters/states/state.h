@@ -11,6 +11,8 @@ class Character;
 
 class State {
 protected:
+    CharacterStateEntity characterState;
+
 public:
     virtual ~State() = default;
 
@@ -25,7 +27,6 @@ public:
     virtual std::unique_ptr<State> specialAttack(float time) = 0;
     virtual std::unique_ptr<State> becomeIntoxicated(float duration) = 0;
     virtual std::unique_ptr<State> stopAction() = 0;
-    CharacterStateEntity characterState = IDLE;
 
     virtual CharacterStateEntity getCharacterState() { return characterState; }
 };

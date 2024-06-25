@@ -7,9 +7,8 @@
 #include "printer.h"
 
 GameLoopThread::GameLoopThread(std::shared_ptr<Queue<std::unique_ptr<CommandDTO>>> recvQueue,
-                               QueueMonitor& queueMonitor, GameMap& gameMap,
-                               uint8_t gameId):
-        frameRate(0.064),  
+                               QueueMonitor& queueMonitor, GameMap& gameMap, uint8_t gameId):
+        frameRate(0.064),
         keepRunning(false),
         commandsToProcess(10),
         recvQueue(recvQueue),
@@ -35,27 +34,27 @@ void GameLoopThread::run() {
             std::chrono::duration<double> deltaTime = currentTime - lastTime;
             lastTime = currentTime;
 
-            std::cout << "[GAME LOOP] Processing commands, deltaTime: " << deltaTime.count()
-                      << std::endl;
+            // std::cout << "[GAME LOOP] Processing commands, deltaTime: " << deltaTime.count()
+            //   << std::endl;
             processCommands(deltaTime.count());
 
-            std::cout << "[GAME LOOP] Updating game map, deltaTime: " << deltaTime.count()
-                      << std::endl;
+            // std::cout << "[GAME LOOP] Updating game map, deltaTime: " << deltaTime.count()
+            //   << std::endl;
             gameMap.update(deltaTime.count());
 
             std::unique_ptr<GameDTO> gameDTO = gameMap.getGameDTO();
             queueMonitor.broadcast(gameId, std::move(gameDTO));
-            std::cout << "[GAME LOOP] Game state broadcasted" << std::endl;
+            // std::cout << "[GAME LOOP] Game state broadcasted" << std::endl;
 
             auto processingEndTime = std::chrono::high_resolution_clock::now();
             std::chrono::duration<double> processingDuration = processingEndTime - currentTime;
-            std::cout << "[GAME LOOP] Processing duration: " << processingDuration.count()
-                      << std::endl;
+            // std::cout << "[GAME LOOP] Processing duration: " << processingDuration.count()
+            //   << std::endl;
 
             auto sleepTime = std::chrono::duration<double>(frameRate) - processingDuration;
             if (sleepTime.count() > 0) {
-                std::cout << "[GAME LOOP] Sleeping for: " << sleepTime.count() << " seconds"
-                          << std::endl;
+                // std::cout << "[GAME LOOP] Sleeping for: " << sleepTime.count() << " seconds"
+                //   << std::endl;
                 std::this_thread::sleep_for(sleepTime);
             }
         }
@@ -68,7 +67,7 @@ void GameLoopThread::run() {
 void GameLoopThread::processCommands(double deltaTime) {
     try {
         size_t processedCommands = 0;
-        size_t maxCommandsPerFrame = 10;  
+        size_t maxCommandsPerFrame = 10;
 
         while (processedCommands < maxCommandsPerFrame) {
             std::unique_ptr<CommandDTO> command;

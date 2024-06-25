@@ -5,8 +5,8 @@
 #include <memory>
 #include <vector>
 
-#include "../../../Common/Types/enemy.h"
 #include "../../../Common/DTO/enemy.h"
+#include "../../../Common/Types/enemy.h"
 #include "../../../Common/vector.h"
 #include "../characters/character.h"
 #include "../entity.h"
@@ -35,12 +35,12 @@ protected:
     bool movingRight;
 
 
-
 public:
-    Enemy(GameMap& map, const Vector<uint32_t>& pos, uint8_t id, uint8_t health, Direction dir, uint8_t dmg,
-          std::unique_ptr<EnemyState> initialState, uint8_t viewDistance, uint8_t viewDistanceHit,
-          uint8_t movesPerCell, uint8_t hitDistance, std::vector<uint8_t> walkProb,
-          std::vector<uint8_t> jumpProb, std::vector<uint8_t> flyProb, uint32_t width, uint32_t height);
+    Enemy(GameMap& map, const Vector<uint32_t>& pos, uint8_t id, uint8_t health, Direction dir,
+          uint8_t dmg, std::unique_ptr<EnemyState> initialState, uint8_t viewDistance,
+          uint8_t viewDistanceHit, uint8_t movesPerCell, uint8_t hitDistance,
+          std::vector<uint8_t> walkProb, std::vector<uint8_t> jumpProb,
+          std::vector<uint8_t> flyProb, uint32_t width, uint32_t height);
 
     void update(const std::map<uint8_t, std::shared_ptr<Character>>& characters, float time);
 
@@ -59,7 +59,7 @@ public:
 
     EnemyDTO getDTO() const;
 
-    bool isDead() {return Entity::isEntityDead();}
+    bool isDead() { return Entity::isEntityDead(); }
 
     virtual uint8_t getDamage() const = 0;
 

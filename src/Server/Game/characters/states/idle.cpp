@@ -10,20 +10,20 @@
 #include "shooting.h"
 #include "specialAttack.h"
 
-IdleState::IdleState(Character& character) : character(character){ characterState = IDLE; }
+IdleState::IdleState(Character& character): character(character) { characterState = IDLE; }
 
 std::unique_ptr<State> IdleState::exec(float time) {
-    std::cout << "[IDLE] Executing idle state for character ID: " << static_cast<int>(character.getId()) << std::endl;
+    std::cout << "[IDLE] Executing idle state for character ID: "
+              << static_cast<int>(character.getId()) << std::endl;
     if (!character.isOnGround()) {
         return std::make_unique<MovingState>(character, Direction::DOWN);
     }
     return nullptr;
 }
 
-std::unique_ptr<State> IdleState::shoot(const std::shared_ptr<Weapon>& weapon,
-                                        float time) {
-                                       
-    std::cout << "[IDLE STATE SHOOT] Shooting" << std::endl;                            
+std::unique_ptr<State> IdleState::shoot(const std::shared_ptr<Weapon>& weapon, float time) {
+
+    std::cout << "[IDLE STATE SHOOT] Shooting" << std::endl;
     if (!weapon) {
         std::cerr << "[IDLE STATE] Error: weapon is null" << std::endl;
         return nullptr;
@@ -40,13 +40,11 @@ std::unique_ptr<State> IdleState::move(Direction direction, float time) {
     return std::make_unique<MovingState>(character, direction);
 }
 
-std::unique_ptr<State> IdleState::sprint(Direction direction, float time) {
-
-    return nullptr;
-}
+std::unique_ptr<State> IdleState::sprint(Direction direction, float time) { return nullptr; }
 
 
 std::unique_ptr<State> IdleState::receiveDamage(uint8_t dmg, float time) {
+    std::cout << "[IDLE STATE] Receiving damage" << std::endl;
     return std::make_unique<ReceivingDamageState>(character, time, dmg);
 }
 
