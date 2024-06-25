@@ -9,6 +9,12 @@
 
 #include <arpa/inet.h>
 
+Serializer::Serializer():
+        socket(nullptr),
+        keepPlaying(*new std::atomic<bool>(true)),
+        inGame(*new std::atomic<bool>(false)),
+        wasClosed(false) {}
+
 Serializer::Serializer(const std::shared_ptr<Socket>& socket, std::atomic<bool>& keepPlaying,
                        std::atomic<bool>& inGame):
         socket(socket), keepPlaying(keepPlaying), inGame(inGame), wasClosed(false) {
