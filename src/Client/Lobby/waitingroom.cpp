@@ -19,7 +19,7 @@ WaitingRoom::WaitingRoom(QWidget* parent, LobbyController& controller, LobbyMess
 
     connect(&updateTimer, &QTimer::timeout, this, &WaitingRoom::fetchUpdates);
 
-    updateTimer.start(64);
+    updateTimer.start(1000);
 
     GameInfo selected = this->controller.getSelectedGame();
     QString numPlayers = QString::number(selected.getCurrentPlayers());
