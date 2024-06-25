@@ -6,8 +6,15 @@ class Client{
     - gameQueue: std::stared_ptr<Queue<std::unique_ptr<DTO>>>
 }
 class LobbyInit
-package "Lobby" as LobbyPkg{}
-package "SDL" as SDLPkg{}
+package "Lobby" as LobbyPkg {
+    class Lobby
+    class MapSelection
+    class CreateGame
+    class CharacterSelection
+    class GameList
+    class WaitingRoom
+    class Welcome
+}
 
 class LobbyController{
     - lobbyQueue: std::stared_ptr<Queue<std::unique_ptr<DTO>>>
@@ -32,15 +39,25 @@ class Deserializer {
 Client --> LobbyInit
 Client --> LobbyController
 Client --> GameController
+LobbyInit --> Welcome
+Welcome --> Lobby
+Lobby --> MapSelection
+MapSelection --> CreateGame
+CreateGame --> CharacterSelection
+Lobby --> CharacterSelection
+CharacterSelection --> GameList
+CharacterSelection --> WaitingRoom
+GameList --> WaitingRoom
 
-LobbyInit --> LobbyPkg.Lobby
-Client --> SDLPkg.GameScreen
+MapSelection --> LobbyController
+CharacterSelection --> LobbyController
+GameList --> LobbyController
+WaitingRoom --> LobbyController
 
-LobbyPkg --> LobbyController
-LobbyCotroller --> LobbyPkg
-
-SDLPkg --> GameController
-GameController --> SDLPkg
+LobbyController --> MapSelection
+LobbyController --> CharacterSelection
+LobbyController --> GameList
+LobbyController --> WaitingRoom
 
 LobbyController --> Serializer
 GameController --> Serializer

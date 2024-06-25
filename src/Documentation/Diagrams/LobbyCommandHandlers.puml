@@ -1,0 +1,17 @@
+@startuml Lobby Command Handlers
+
+abstract class LobbyCommandHandler
+
+class CreateGameHandler
+class GamesListHandler
+class JoinGameHandler
+class MapsListHandler
+class StartGameHandler
+
+LobbyCommandHandler <|-- CreateGameHandler
+LobbyCommandHandler <|-- GamesListHandler
+LobbyCommandHandler <|-- JoinGameHandler
+LobbyCommandHandler <|-- MapsListHandler
+LobbyCommandHandler <|-- StartGameHandler
+
+@enduml

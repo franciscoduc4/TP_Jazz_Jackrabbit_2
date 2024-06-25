@@ -1,0 +1,17 @@
+@startuml Game Command Handlers
+
+abstract class GameCommandHandler
+
+class IdleHandler
+class JumpHandler
+class MoveHandler
+class ShootHandler
+class SwitchWeaponHandler
+
+GameCommandHandler <|-- IdleHandler
+GameCommandHandler <|-- JumpHandler
+GameCommandHandler <|-- MoveHandler
+GameCommandHandler <|-- ShootHandler
+GameCommandHandler <|-- SwitchWeaponHandler
+
+@enduml
