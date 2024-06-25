@@ -708,13 +708,8 @@ Vector<uint32_t> GameMap::calculateNewPosition(const Vector<uint32_t>& position,
     }
 }
 
-
-void GameMap::handleShooting(uint32_t characterX, uint8_t damage, float time, Direction dir,
-                             uint8_t shooterId) {
-    const uint32_t shootRange = 200;  // Define el alcance máximo del disparo
-
-    // std::cout << "[GAMEMAP] Handling shooting at position: " << characterX
-    //   << ", damage: " << static_cast<int>(damage) << std::endl;
+void GameMap::handleShooting(uint32_t characterX, uint8_t damage, float time, Direction dir, uint8_t shooterId) {
+    const uint32_t shootRange = 400;  // Define el alcance máximo del disparo
 
     std::vector<uint8_t> enemiesToRemove;
 
@@ -722,22 +717,20 @@ void GameMap::handleShooting(uint32_t characterX, uint8_t damage, float time, Di
     for (const auto& enemyPair: enemies) {
         auto enemy = enemyPair.second;
         uint32_t enemyX = enemy->getPosition().x;
+        uint32_t enemyY = enemy->getPosition().y;
+        uint32_t shooterY = characters[shooterId]->getPosition().y;
 
-        // std::cout << "[GAMEMAP] Checking enemy with ID: " << static_cast<int>(enemy->getId())
-        //   << std::endl;
+        // Verify that the enemy is on the same line and direction as the shooter
+        bool inRange = (dir == Direction::RIGHT && enemyX >= characterX && enemyX <= characterX + shootRange) ||
+                       (dir == Direction::LEFT && enemyX <= characterX && enemyX >= characterX - shootRange);
+        bool sameLine = (enemyY == shooterY);
 
-        // Verificar que el enemigo esté dentro del rango y la dirección del disparo
-        bool inRange = (dir == Direction::RIGHT && enemyX >= characterX &&
-                        enemyX <= characterX + shootRange) ||
-                       (dir == Direction::LEFT && enemyX <= characterX &&
-                        enemyX >= characterX - shootRange);
-
-        if (inRange) {
+        if (inRange && sameLine) {
             enemy->recvDamage(damage, time);
+            std::cout << "[GAMEMAP] Enemy with ID: " << static_cast<int>(enemy->getId())
+              << " received damage: " << static_cast<int>(damage) << std::endl;
             if (enemy->isDead()) {
                 enemiesToRemove.push_back(enemy->getId());
-                // std::cout << "[GAMEMAP] Enemy with ID: " << static_cast<int>(enemy->getId())
-                //   << " is dead" << std::endl;
             }
         }
     }
@@ -746,33 +739,26 @@ void GameMap::handleShooting(uint32_t characterX, uint8_t damage, float time, Di
     for (const auto& characterPair: characters) {
         auto character = characterPair.second;
         uint32_t characterXPos = character->getPosition().x;
+        uint32_t characterYPos = character->getPosition().y;
 
         // No dispararse a sí mismo
         if (character->getId() == shooterId) {
             continue;
         }
 
-        // std::cout << "[GAMEMAP] Checking character with ID: "
-        //   << static_cast<int>(character->getId()) << std::endl;
+        // Verify that the character is on the same line and direction as the shooter
+        bool inRange = (dir == Direction::RIGHT && characterXPos >= characterX && characterXPos <= characterX + shootRange) ||
+                       (dir == Direction::LEFT && characterXPos <= characterX && characterXPos >= characterX - shootRange);
+        bool sameLine = (characterYPos == characters[shooterId]->getPosition().y);
 
-        // Verificar que el personaje esté dentro del rango y la dirección del disparo
-        bool inRange = (dir == Direction::RIGHT && characterXPos >= characterX &&
-                        characterXPos <= characterX + shootRange) ||
-                       (dir == Direction::LEFT && characterXPos <= characterX &&
-                        characterXPos >= characterX - shootRange);
-
-        if (inRange) {
+        if (inRange && sameLine) {
             character->recvDamage(damage, time);
             if (!character->isAlive()) {
                 character->setState(std::make_unique<DeadState>(*character, time));
-                // std::cout << "[GAMEMAP] Character with ID: " <<
-                // static_cast<int>(character->getId())
-                //   << " is dead and now in DeadState" << std::endl;
             }
         }
     }
 
-    // Remove dead enemies
     for (uint8_t id: enemiesToRemove) {
         removeEnemy(id);
     }

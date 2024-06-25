@@ -61,4 +61,5 @@ void Entity::heal(uint8_t healQnt) {
     }
 }
 
+
 EntityType Entity::getType() const { return type; }

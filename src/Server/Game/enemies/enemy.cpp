@@ -66,7 +66,7 @@ void Enemy::moveCycle(float deltaTime) {
 
 void Enemy::recvDamage(uint8_t dmg, float time) {
     std::cout << "[ENEMY] recvDamage" << std::endl;
-    Entity::recvDamage(dmg, time);
+    Entity::recvDamage(dmg);
     if (isDead()) {
         die(time);
         return;

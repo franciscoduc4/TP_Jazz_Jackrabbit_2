@@ -125,7 +125,7 @@ void Character::shoot(float time) {
     std::cout << "[CHARACTER] Character ID: " << static_cast<int>(id)
               << " calling handleShooting on GameMap" << std::endl;
 
-    gameMap.handleShooting(pos.x, 10, time, dir, id);
+    gameMap.handleShooting(pos.x,10, time, dir, id);
 
     if (newState) {
         state = std::move(newState);
@@ -139,6 +139,11 @@ void Character::shoot(float time) {
 
 
 void Character::handleCollision(std::shared_ptr<Enemy> enemy) {
+    if (!enemy) {
+        std::cerr << "[CHARACTER] Null enemy pointer!" << std::endl;
+        return;
+    }
+
     std::cout << "[CHARACTER] Character ID: " << static_cast<int>(id)
               << " collided with Enemy ID: " << static_cast<int>(enemy->getId()) << std::endl;
 
@@ -159,12 +164,8 @@ void Character::handleCollision(std::shared_ptr<Enemy> enemy) {
             }
         }
     }
-
-    // auto newState = std::make_unique<IdleState>(*this);
-    // if (newState) {
-    //     state = std::move(newState);
-    // }
 }
+
 
 void Character::handleObstacleCollision(std::shared_ptr<Obstacle> obstacle) {
     std::cout << "[CHARACTER] Character ID: " << static_cast<int>(id)
