@@ -15,20 +15,17 @@ Enemy::Enemy(GameMap& gameMap, const Vector<uint32_t>& pos, uint8_t id, uint8_t 
         viewDistanceHit(viewDistanceHit),
         movesPerCell(movesPerCell),
         hitDistance(hitDistance),
-        speed(1),
         walkProb(walkProb),
         jumpProb(jumpProb),
         flyProb(flyProb),
         width(width),
         height(height),
         initialPosition(pos),
-        maxDistance(50),
         movingRight(true) {}
 
 void Enemy::update(const std::map<uint8_t, std::shared_ptr<Character>>& characters, float time) {
 
     // std::cout << "[ENEMY] update" << std::endl;
-    // moveCycle(time);
 
     std::vector<std::shared_ptr<Character>> characterList;
     for (const auto& pair: characters) {
@@ -39,30 +36,8 @@ void Enemy::update(const std::map<uint8_t, std::shared_ptr<Character>>& characte
     if (newState != nullptr) {
         state = std::move(newState);
     }
-    // attack(characterList, time);
 }
 
-void Enemy::moveCycle(float deltaTime) {
-
-    std::cout << "[ENEMY] moveCycle" << std::endl;
-    Vector<uint32_t> newPos = pos;
-    if (movingRight) {
-        newPos.x += speed * deltaTime;
-        if (newPos.x >= initialPosition.x + maxDistance) {
-            movingRight = false;
-        }
-    } else {
-        newPos.x -= speed * deltaTime;
-        if (newPos.x <= initialPosition.x) {
-            movingRight = true;
-        }
-    }
-
-    if (gameMap.isValidMapPosition(newPos)) {
-        pos = newPos;
-        std::cout << "[ENEMY] Moved to: " << pos.x << ", " << pos.y << std::endl;
-    }
-}
 
 void Enemy::recvDamage(uint8_t dmg, float time) {
     std::cout << "[ENEMY] recvDamage" << std::endl;
@@ -120,7 +95,7 @@ std::unique_ptr<EnemyState>& Enemy::getState() { return state; }
 
 EnemyDTO Enemy::getDTO() const {
     return EnemyDTO{
-            pos.x, pos.y, id, health, dmg, speed, getEnemyType(), EnemyStateEntity::ENEMY_WALKING};
+            pos.x, pos.y, id, health, dmg, static_cast<uint32_t>(0), getEnemyType(), EnemyStateEntity::ENEMY_WALKING};
 }
 
-void Enemy::update(double deltaTime) { moveCycle(deltaTime); }
+void Enemy::update(double deltaTime) { }

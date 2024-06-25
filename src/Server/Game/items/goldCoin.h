@@ -11,10 +11,9 @@ public:
 
     ItemType getItemType() const { return ItemType::GOLD_COIN; }
 
-    uint32_t getValue() const { return 30; }
-
-    uint32_t getWidth() const { return 1; }
-    uint32_t getHeight() const { return 1; }
+    uint32_t getValue() const { return ServerConfig::getItemGoldCoinValue(); }
+    uint32_t getWidth() const { return ServerConfig::getItemGoldCoinWidth(); }
+    uint32_t getHeight() const { return ServerConfig::getItemGoldCoinHeight(); }
 };
 
 #endif // GOLDCOIN_H

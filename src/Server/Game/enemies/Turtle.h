@@ -21,9 +21,10 @@ public:
 
     uint8_t getDamage() const override { return ServerConfig::getWalkingEnemyDamage(); }
 
-    uint32_t getWidth() const { return 25; }
-    uint32_t getHeight() const { return 70; }
+    uint32_t getWidth() const { return ServerConfig::getWalkingEnemyWidth(); }
+    uint32_t getHeight() const { return ServerConfig::getWalkingEnemyHeight(); }
 
+    
 };
 
 #endif  // TURTLE_H

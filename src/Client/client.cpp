@@ -30,7 +30,7 @@ void Client::start() {
     bool clientJoinedGame = false;
     do {
         // LobbyInit init;
-        // // std::pair<bool, LobbyMessage> qtResult = init.launchQT(this->lobbyController, // (bool&)clientJoinedGame);
+        // std::pair<bool, LobbyMessage> qtResult = init.launchQT(this->lobbyController, (bool&)clientJoinedGame);
         // clientJoinedGame = qtResult.first;
         // if (!clientJoinedGame) {
         //       return;

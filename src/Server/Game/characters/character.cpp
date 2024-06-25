@@ -25,7 +25,6 @@ Character::Character(GameMap& gameMap, Vector<uint32_t> pos, uint8_t playerId, C
         sprintSpeed(sprintSpeed),
         verticalSpeed(verticalSpeed),
         jumpHeight(jumpHeight),
-        shootCooldownTime(shootCooldownTime),
         currentWeapon(std::make_unique<Blaster>()),
         state(std::make_unique<IdleState>(*this)),
         width(width),
@@ -125,7 +124,7 @@ void Character::shoot(float time) {
     std::cout << "[CHARACTER] Character ID: " << static_cast<int>(id)
               << " calling handleShooting on GameMap" << std::endl;
 
-    gameMap.handleShooting(pos.x,10, time, dir, id);
+    gameMap.handleShooting(pos.x, ServerConfig::getWeaponBlasterDamage(), time, dir, id);
 
     if (newState) {
         state = std::move(newState);
@@ -180,51 +179,6 @@ void Character::handleObstacleCollision(std::shared_ptr<Obstacle> obstacle) {
 
     ObstacleType obstacleType = obstacle->getObstacleType();
 
-    // if (obstacleType == ObstacleType::LEFT_LADDER || obstacleType == ObstacleType::RIGHT_LADDER)
-    // {
-    //     // Verificar colisión con el triángulo de la escalera
-    //     Vector<uint32_t> p1, p2, p3;
-    //     if (obstacleType == ObstacleType::LEFT_LADDER) {
-    //         p1 = obstaclePos;
-    //         p2 = {obstaclePos.x + obstacleWidth, obstaclePos.y};
-    //         p3 = {obstaclePos.x, obstaclePos.y + obstacleHeight};
-    //     } else if (obstacleType == ObstacleType::RIGHT_LADDER) {
-    //         p1 = {obstaclePos.x, obstaclePos.y};
-    //         p2 = {obstaclePos.x + obstacleWidth, obstaclePos.y};
-    //         p3 = {obstaclePos.x + obstacleWidth, obstaclePos.y + obstacleHeight};
-    //     }
-
-    //     // Verificar si alguno de los cuatro puntos del personaje está dentro del triángulo
-    //     Vector<uint32_t> characterPoints[] = {{pos.x, pos.y},
-    //                                           {pos.x + characterWidth, pos.y},
-    //                                           {pos.x, pos.y + characterHeight},
-    //                                           {pos.x + characterWidth, pos.y + characterHeight}};
-
-    //     bool collisionDetected = false;
-    //     for (const auto& point: characterPoints) {
-    //         if (isPointInTriangle(point, p1, p2, p3)) {
-    //             collisionDetected = true;
-    //             break;
-    //         }
-    //     }
-
-    //     if (collisionDetected) {
-    //         // Resolver la colisión
-    //         // Ajustar la posición del personaje para "alinearlo" con la escalera
-    //         if (obstacleType == ObstacleType::LEFT_LADDER) {
-    //             float slope = static_cast<float>(obstacleHeight) / obstacleWidth;
-    //             pos.y = obstaclePos.y + static_cast<uint32_t>(slope * (pos.x - obstaclePos.x)) -
-    //                     characterHeight;
-    //         } else {
-    //             float slope = static_cast<float>(obstacleHeight) / obstacleWidth;
-    //             pos.y = obstaclePos.y +
-    //                     static_cast<uint32_t>(slope * (obstaclePos.x + obstacleWidth - pos.x)) -
-    //                     characterHeight;
-    //         }
-    //         onGround = true;
-    //     }
-    // } else {
-    // Manejo de colisión regular (rectángulo)
     if (pos.y + characterHeight >= obstaclePos.y) {
         if (pos.x + characterWidth < obstaclePos.x || pos.x > obstaclePos.x + obstacleWidth) {
             return;
@@ -246,7 +200,6 @@ void Character::handleObstacleCollision(std::shared_ptr<Obstacle> obstacle) {
                   << " collided with obstacle from the right" << std::endl;
         pos.x = obstaclePos.x + obstacleWidth;  // Colisión por la derecha
     }
-    // }
 }
 
 void Character::handleCharacterCollision(std::shared_ptr<Character> character) {
@@ -382,8 +335,7 @@ void Character::moveDown() {
     std::cout << "[CHARACTER] NEW POS Character ID: " << static_cast<int>(id)
               << " new y: " << int(pos.y) << std::endl;
 
-    // // Check for item collision after moving
-    //entityAtNewPos = gameMap.getEntityAt(newPos);
+
     if (entityAtNewPos && entityAtNewPos->getType() == EntityType::ITEM) {
         gameMap.handleCharacterItemCollision(shared_from_this(),
                                              std::dynamic_pointer_cast<Item>(entityAtNewPos));
@@ -452,10 +404,6 @@ std::vector<std::shared_ptr<Entity>> Character::getTargets() {
     return targets;
 }
 
-void Character::interact(std::shared_ptr<Entity>& other) {
-    // Interaction logic here
-}
-
 void Character::switchWeapon(WeaponType type) {
     std::cout << "[CHARACTER] Character ID: " << static_cast<int>(id)
               << " switching weapon to type: " << static_cast<int>(type) << std::endl;
@@ -487,12 +435,12 @@ WeaponType Character::getCurrentWeaponType() {
 
 void Character::moveRight() {
     dir = Direction::RIGHT;
-    
+
     if (isIntoxicated)
         return;
 
-    uint8_t movesPerCellX = onGround ? static_cast<uint32_t>(this->movesPerCell * 4) :
-                                       static_cast<uint32_t>(this->movesPerCell * 2);
+    uint8_t movesPerCellX = onGround ? static_cast<uint32_t>(this->movesPerCell * ServerConfig::getCharacterQuadMovesPerCell()) :
+                                       static_cast<uint32_t>(this->movesPerCell * ServerConfig::getCharacterTwoMovesPerCell());
     auto mapPositionX = getMapPosition(movesPerCellX);
 
     uint8_t movesPerCellY = onGround ? 0 : static_cast<uint32_t>(this->movesPerCell);
@@ -500,7 +448,6 @@ void Character::moveRight() {
 
     Vector<uint32_t> newPos = pos + Vector<uint32_t>{movesPerCellX, movesPerCellY};
 
-    // Vector<uint32_t> newPos = pos + Vector<uint32_t>{1, 0};
 
     if (newPos.x >= gameMap.getMaxXPos()) {
         newPos = Vector<uint32_t>{gameMap.getMaxXPos(), pos.y};
@@ -529,7 +476,6 @@ void Character::moveRight() {
     std::cout << "[CHARACTER] NEW POS Character ID: " << static_cast<int>(id)
               << " new x : " << int(pos.x) << std::endl;
 
-    // Check for item collision after moving
     entityAtNewPos = gameMap.getEntityAt(newPos);
     if (entityAtNewPos && entityAtNewPos->getType() == EntityType::ITEM) {
         gameMap.handleCharacterItemCollision(shared_from_this(),
@@ -544,8 +490,8 @@ void Character::moveLeft() {
     if (isIntoxicated)
         return;
 
-    uint8_t movesPerCellX = onGround ? static_cast<uint32_t>(this->movesPerCell * 4) :
-                                       static_cast<uint32_t>(this->movesPerCell * 2);
+    uint8_t movesPerCellX = onGround ? static_cast<uint32_t>(this->movesPerCell * ServerConfig::getCharacterQuadMovesPerCell()) :
+                                       static_cast<uint32_t>(this->movesPerCell * ServerConfig::getCharacterTwoMovesPerCell());
     auto mapPositionX = getMapPosition(movesPerCellX);
 
     uint8_t movesPerCellY = onGround ? 0 : static_cast<uint32_t>(this->movesPerCell);
@@ -554,7 +500,6 @@ void Character::moveLeft() {
 
     Vector<uint32_t> newPos = pos - Vector<uint32_t>{movesPerCellX, movesPerCellY};
 
-    // Vector<uint32_t> newPos = pos - Vector<uint32_t>{1, 0};
 
     if (newPos.x <= 0) {
         newPos = Vector<uint32_t>{0, pos.y};
@@ -583,7 +528,6 @@ void Character::moveLeft() {
     std::cout << "[CHARACTER] NEW POS Character ID: " << static_cast<int>(id)
               << " new x : " << int(pos.x) << std::endl;
 
-    // Check for item collision after moving
     entityAtNewPos = gameMap.getEntityAt(newPos);
     if (entityAtNewPos && entityAtNewPos->getType() == EntityType::ITEM) {
         gameMap.handleCharacterItemCollision(shared_from_this(),
@@ -599,7 +543,7 @@ void Character::jump() {
         initialYJump = pos.y;
         jumping = true;
         onGround = false;
-        for (int i = 0; i < 20; i++) {
+        for (int i = 0; i < ServerConfig::getCharacterJumpHeight(); i++) {
             uint32_t newPosY = pos.y - i;
             if (gameMap.isValidMapPosition({pos.x, newPosY})) {
                 pos.y = newPosY;

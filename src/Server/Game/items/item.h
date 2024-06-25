@@ -5,6 +5,8 @@
 #include "../../../Common/vector.h"
 #include "../../../Common/Types/item.h"
 #include "../../../Common/DTO/item.h"
+#include "../../../Common/Config/ServerConfig.h"
+
 
 class GameMap;
 class Item : public Entity {

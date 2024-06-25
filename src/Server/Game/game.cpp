@@ -22,7 +22,6 @@ Game::Game(uint8_t gameId, std::string gameName, uint8_t mapId, uint8_t playerId
     gameMap.loadMap(mapId);
     std::cout << "[GAME] Map loaded for mapId: " << (int)mapId << std::endl;
     gameMap.addCharacter(playerId, characterType);
-    //gameMap.addCharacter(2, CharacterType::LORI);
     std::cout << "[GAME] Character added with playerId: " << (int)playerId
               << " and characterType: " << (int)characterType << std::endl;
 }
@@ -45,13 +44,6 @@ void Game::addPlayer(uint8_t playerId, CharacterType characterType) {
     currentPlayers++;
     std::cout << "[GAME] Player added, currentPlayers now: " << (int)currentPlayers << std::endl;
 }
-
-// void Game::removePlayer(uint8_t playerId) {
-//     std::cout << "[GAME] removePlayer called with playerId: " << playerId << std::endl;
-//     gameMap.removeCharacter(playerId);
-//     currentPlayers--;
-//     std::cout << "[GAME] Player removed, currentPlayers now: " << (int)currentPlayers << std::endl;
-// }
 
 uint8_t Game::getGameId() const {
     std::cout << "[GAME] getGameId called, returning: " << gameId << std::endl;

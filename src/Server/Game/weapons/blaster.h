@@ -6,6 +6,7 @@
 #include <vector>
 
 #include "../../../Common/Types/weapon.h"
+#include "../../../Common/Config/ServerConfig.h"
 
 #include "weapon.h"
 
@@ -46,7 +47,7 @@ public:
 
     uint32_t getDamage() {
         std::cout << "Blaster damage: " << damage << std::endl;
-        return 10;}
+        return ServerConfig::getWeaponBlasterDamage();}
 };
 
 #endif  // BLASTER_H

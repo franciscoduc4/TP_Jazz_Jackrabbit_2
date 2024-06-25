@@ -11,10 +11,9 @@ public:
 
     ItemType getItemType() const { return ItemType::GEM;}
 
-    uint32_t getValue() const { return 50; }
-
-    uint32_t getWidth() const { return 1; }
-    uint32_t getHeight() const { return 1; }
+    uint32_t getValue() const { return ServerConfig::getItemGemValue(); }
+    uint32_t getWidth() const { return ServerConfig::getItemGemWidth(); }
+    uint32_t getHeight() const { return ServerConfig::getItemGemHeight(); }
 };
 
 #endif // GEM_H

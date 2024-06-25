@@ -18,7 +18,6 @@
 #include "enemies/enemy.h"
 #include "items/item.h"
 #include "obstacles/obstacle.h"
-#include "characters/bullet.h"
 #include "entity.h"
 #include "entityFactory.h"
 
@@ -39,7 +38,6 @@ private:
     float gravity;
     std::string mapName;
     uint8_t mapId;
-    std::vector<std::shared_ptr<Bullet>> bullets;
 
     Vector<uint32_t> calculateNewPosition(const Vector<uint32_t>& position, Direction dir) const;
 
@@ -105,7 +103,7 @@ public:
 
     uint32_t getMaxXPos() const { return size.x - static_cast<uint32_t>(movesPerCell); }
 
-    uint32_t getMaxYPos() const { return size.y - static_cast<uint32_t>(movesPerCell); } //Revisar
+    uint32_t getMaxYPos() const { return size.y - static_cast<uint32_t>(movesPerCell); } 
 };
 
 #endif  // GAME_MAP_H_

@@ -5,8 +5,6 @@
 
 #include "../../Common/maps/mapsManager.h"
 
-// #define CONFIG ServerConfig::getInstance()
-
 GameMap::GameMap(Vector<uint32_t> size, uint8_t mapId):
         size(size),
         entityFactory(*this),
@@ -105,7 +103,7 @@ void GameMap::loadMap(uint8_t mapId) {
                 uint32_t height = static_cast<uint32_t>(player.second[0][3].as<int>());
                 CharacterType type = getCharacterType(playerType);
                 initialPositions[type] = position;
-                initialSizes[type] = {width, height};  // Guardar ancho y alto de los personajes
+                initialSizes[type] = {width, height};  
                 // std::cout << "[GAMEMAP] Initial position for character " << playerType << ": ("
                 //   << position.x << ", " << position.y << "), width: " << width
                 //   << ", height: " << height << std::endl;
@@ -245,9 +243,7 @@ void GameMap::moveObject(Vector<uint32_t>& position, Vector<uint32_t> mapPositio
             // mapPosition.y
             //   << ") to (" << newMapPosition.x << ", " << newMapPosition.y << ")"
             //   << std::endl;
-        } else {
-            character->interact(mapGrid[newMapPosition]);
-        }
+        } 
 
     } catch (const std::exception& e) {
         // std::cerr << "[GAMEMAP] Error moving object: " << e.what() << std::endl;
@@ -261,7 +257,6 @@ bool GameMap::isFreePosition(Vector<uint32_t> position) {
 
 void GameMap::addEntityToMap(std::shared_ptr<Entity> entity, Vector<uint32_t> position) {
     try {
-        // Vector<uint32_t> mapPosition = entity->getMapPosition(movesPerCell);
         // std::cout << "[GAMEMAP] Adding entity at position: (" << static_cast<int>(position.x)
         //   << ", " << static_cast<int>(position.y) << ")" << std::endl;
         if (isFreePosition(position)) {
@@ -397,7 +392,6 @@ void GameMap::update(float time) {
         std::vector<std::shared_ptr<Entity>> entitiesToRemove;
         std::vector<std::shared_ptr<Entity>> itemsToRemove;
 
-        // Actualizar personajes y enemigos en un solo bucle
         for (auto& entityPair: mapGrid) {
             auto entity = entityPair.second;
 
@@ -405,11 +399,9 @@ void GameMap::update(float time) {
                 auto character = std::dynamic_pointer_cast<Character>(entity);
                 character->update(time);
                 if (!character->isAlive()) {
-                    // entitiesToRemove.push_back(character);
                     continue;
                 }
 
-                // Verificar colisiones con entidades
                 for (const auto& checkEntityPair: mapGrid) {
                     auto checkEntity = checkEntityPair.second;
                     switch (checkEntity->getType()) {
@@ -442,7 +434,6 @@ void GameMap::update(float time) {
             }
         }
 
-        // Eliminar personajes muertos después de la actualización
         for (const auto& entity: entitiesToRemove) {
             removeCharacter(std::dynamic_pointer_cast<Character>(entity));
         }
@@ -468,9 +459,7 @@ bool GameMap::handleCharacterItemCollision(const std::shared_ptr<Character>& cha
         if (checkCollision(character->getPosition(),
                            {character->getWidth(), character->getHeight()}, item->getPosition(),
                            {item->getWidth(), item->getHeight()})) {
-            // if (character->getPosition() == item->getPosition()) {
             character->collectItem(item);
-            // mapGrid.erase(item->getPosition());
             std::cout << "[GAMEMAP] Character collected item. Item removed from map." << std::endl;
             return true;
         }
@@ -621,18 +610,11 @@ std::unique_ptr<GameDTO> GameMap::getGameDTO() {
                     tilesDTO.push_back(std::dynamic_pointer_cast<Obstacle>(entity)->getDTO());
                     break;
                 default:
-                    // std::cerr << "[GAMEMAP] Unknown entity type at position: (" << pos.x << ", "
-                    //   << pos.y << ")" << std::endl;
+
                     break;
             }
         }
 
-        // std::cout << "[GAMEMAP] playersDTO size: " << playersDTO.size() << std::endl;
-        // std::cout << "[GAMEMAP] enemiesDTO size: " << enemiesDTO.size() << std::endl;
-        // std::cout << "[GAMEMAP] itemsDTO size: " << itemsDTO.size() << std::endl;
-        // std::cout << "[GAMEMAP] weaponsDTO size: " << weaponsDTO.size() << std::endl;
-        // std::cout << "[GAMEMAP] bulletsDTO size: " << bulletsDTO.size() << std::endl;
-        // std::cout << "[GAMEMAP] tilesDTO size: " << tilesDTO.size() << std::endl;
 
         return std::make_unique<GameDTO>(playersDTO, enemiesDTO, bulletsDTO, itemsDTO, weaponsDTO,
                                          tilesDTO);
@@ -654,22 +636,7 @@ std::shared_ptr<Character> GameMap::getCharacter(uint8_t playerId) {
 }
 
 
-void GameMap::printMapGrid() const {
-    try {
-        for (const auto& pair: mapGrid) {
-            // std::cout << "[GAMEMAP] Key: (" << static_cast<int>(pair.first.x) << ", "
-            //   << static_cast<int>(pair.first.y) << "), "
-            //   << "Value: " << static_cast<int>(pair.second->getMapPosition(movesPerCell).x)
-            //   << ", " << static_cast<int>(pair.second->getMapPosition(movesPerCell).y)
-            //   << " - ID: " << static_cast<int>(pair.second->getId()) << std::endl;
-        }
-    } catch (const std::exception& e) {
-        // std::cerr << "[GAMEMAP] Error printing map grid: " << e.what() << std::endl;
-    }
-}
-
 Vector<uint32_t> GameMap::getMapPosition(Vector<uint32_t> position) {
-    // return {position.x / movesPerCell, position.y / movesPerCell};
     return {position.x, position.y};
 }
 
@@ -709,8 +676,8 @@ Vector<uint32_t> GameMap::calculateNewPosition(const Vector<uint32_t>& position,
 }
 
 void GameMap::handleShooting(uint32_t characterX, uint8_t damage, float time, Direction dir, uint8_t shooterId) {
-    const uint32_t shootRange = 400;  // Define el alcance máximo del disparo
-    const uint32_t heightRange = 50;
+    const uint32_t shootRange = ServerConfig::getGameMapShootRange();  
+    const uint32_t heightRange = ServerConfig::getGameMapHeightRange();
 
     std::vector<uint8_t> enemiesToRemove;
 
@@ -776,7 +743,6 @@ void GameMap::handleShooting(uint32_t characterX, uint8_t damage, float time, Di
         }
     }
 
-    // Check characters
     for (const auto& characterPair: characters) {
         auto character = characterPair.second;
         uint32_t characterXPos = character->getPosition().x;
@@ -787,16 +753,15 @@ void GameMap::handleShooting(uint32_t characterX, uint8_t damage, float time, Di
             continue;
         }
 
-        // Verify that the character is on the same line and direction as the shooter
         bool inRange = (dir == Direction::RIGHT && characterXPos >= characterX && characterXPos <= characterX + shootRange) ||
                        (dir == Direction::LEFT && characterXPos <= characterX && characterXPos >= characterX - shootRange);
         bool inHeightRange = (std::abs(static_cast<int>(characterYPos) - static_cast<int>(shooterY)) <= heightRange);
 
-        std::cout << "[SHOOT GM] Checking character with ID: " << static_cast<int>(character->getId()) << std::endl;
-        std::cout << "[SHOOT GM] Character position: (" << characterXPos << ", " << characterYPos << ")" << std::endl;
-        std::cout << "[SHOOT GM] Shooter position: (" << characterX << ", " << shooterY << ")" << std::endl;
-        std::cout << "[SHOOT GM] In Range: " << inRange << ", In Height Range: " << inHeightRange << std::endl;
-        std::cout << "[SHOOT GM] Direction: " << (dir == Direction::RIGHT ? "RIGHT" : "LEFT") << std::endl;
+        // std::cout << "[SHOOT GM] Checking character with ID: " << static_cast<int>(character->getId()) << std::endl;
+        // std::cout << "[SHOOT GM] Character position: (" << characterXPos << ", " << characterYPos << ")" << std::endl;
+        // std::cout << "[SHOOT GM] Shooter position: (" << characterX << ", " << shooterY << ")" << std::endl;
+        // std::cout << "[SHOOT GM] In Range: " << inRange << ", In Height Range: " << inHeightRange << std::endl;
+        // std::cout << "[SHOOT GM] Direction: " << (dir == Direction::RIGHT ? "RIGHT" : "LEFT") << std::endl;
 
         if (inRange && inHeightRange) {
             character->recvDamage(damage, time);

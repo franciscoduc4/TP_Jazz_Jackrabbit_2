@@ -9,7 +9,6 @@ Lori::Lori(GameMap& map, Vector<uint32_t> pos, uint8_t playerId, uint32_t width,
                   width, height) {}
 
 void Lori::specialAttack(float time) {
-    // Implement Lori's special attack logic here
 }
 
 void Lori::update(double deltaTime) {

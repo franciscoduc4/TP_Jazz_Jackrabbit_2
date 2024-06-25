@@ -11,10 +11,9 @@ public:
 
     ItemType getItemType() const { return ItemType::SILVER_COIN;}
 
-    uint32_t getValue() const { return 10; }
-
-    uint32_t getWidth() const { return 1; }
-    uint32_t getHeight() const { return 1; }
+    uint32_t getValue() const { return ServerConfig::getItemSilverCoinValue(); }
+    uint32_t getWidth() const { return ServerConfig::getItemSilverCoinWidth(); }
+    uint32_t getHeight() const { return ServerConfig::getItemSilverCoinHeight(); }
     
 };
 

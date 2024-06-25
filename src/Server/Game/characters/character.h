@@ -27,7 +27,6 @@
 #include "states/specialAttack.h"
 #include "states/state.h"
 
-#include "bullet.h"
 
 class GameMap;
 class Enemy;
@@ -64,10 +63,7 @@ protected:
     bool onGround = false;
 
     bool isIntoxicated = false;
-    float shootCooldown = 0.0f;
 
-    float jumpStartTime = 0.0f;
-    float jumpDuration = 0.5f;
     uint8_t initialYJump = 0;
     uint32_t score = 0;
 
@@ -110,7 +106,6 @@ public:
     void heal(uint8_t amount);
 
     std::vector<std::shared_ptr<Entity>> getTargets();
-    void interact(std::shared_ptr<Entity>& other);
     void switchWeapon(WeaponType type);
 
     void recvDamage(uint8_t damage);

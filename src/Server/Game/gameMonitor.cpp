@@ -146,22 +146,6 @@ void GameMonitor::mapsList(const std::shared_ptr<Queue<std::unique_ptr<DTO>>>& s
     std::cout << "[GM] Pushed MapsListDTO to send queue" << std::endl;
 }
 
-/*
-std::shared_ptr<Queue<std::unique_ptr<CommandDTO>>> GameMonitor::getCurrentPlayers(uint8_t gameId) {
-    std::cout << "[GM] Attempting to lock mutex in getCurrentPlayers" << std::endl;
-    std::lock_guard<std::mutex> lock(mtx);
-    std::cout << "[GM] Mutex locked in getCurrentPlayers" << std::endl;
-    auto it = games.find(gameId);
-    if (it != games.end()) {
-        auto& [id, game] = *it;
-        std::cout << "[GM] Found game with id: " << gameId << std::endl;
-        return game->getGameInfo().currentPlayers;
-    }
-    std::cout << "[GM] Game with id " << gameId << " not found" << std::endl;
-    return 0;
-}
-*/
-
 uint8_t GameMonitor::getGamesListSize() {
     std::cout << "[GM] Returning games list size: " << gamesListSize << std::endl;
     return gamesListSize;

@@ -23,7 +23,6 @@ protected:
     uint8_t viewDistanceHit;
     uint8_t movesPerCell;
     uint8_t hitDistance;
-    uint8_t speed;
     std::vector<uint8_t> walkProb;
     std::vector<uint8_t> jumpProb;
     std::vector<uint8_t> flyProb;
@@ -31,7 +30,6 @@ protected:
     uint32_t height;
 
     Vector<uint32_t> initialPosition;
-    uint32_t maxDistance;
     bool movingRight;
 
 
@@ -45,7 +43,6 @@ public:
     void update(const std::map<uint8_t, std::shared_ptr<Character>>& characters, float time);
 
     void update(double deltaTime) override;
-    void moveCycle(float deltaTime);
 
     void recvDamage(uint8_t dmg, float time) override;
 
