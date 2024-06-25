@@ -83,10 +83,10 @@ void Client::start() {
         // CharacterType pj = qtResult.second.getCharacter();
         // uint8_t mapId = qtResult.second.getMap();  
         GameScreen game(this->gameController, this->playerId, 0);
-        game.run();
+        std::map<uint8_t, int> scores = game.run();
         // FinalStats stats = game.getStats();
-        FinalStats stats;
-        init.displayStats(stats, (bool&)clientJoinedGame);
+        FinalStats stats(scores);
+        init.displayStats(qtResult.second, stats, (bool&)clientJoinedGame, this->playerId);
     } while (clientJoinedGame);
 
     this->finish();

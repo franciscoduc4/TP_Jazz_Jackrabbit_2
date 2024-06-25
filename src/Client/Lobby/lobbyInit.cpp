@@ -24,14 +24,14 @@ std::pair<bool, LobbyMessage> LobbyInit::launchQT(LobbyController& controller, b
     return std::make_pair(clientJoinedGame, msg);
 }
 
-void LobbyInit::displayStats(FinalStats stats, bool& clientJoinedGame) {
+void LobbyInit::displayStats(const LobbyMessage& msg, const FinalStats& stats, bool& clientJoinedGame, const uint8_t& playerId) {
     int argc = 0;
     char arg1[] = "";
     char* argv[] = { arg1 };
 
     QApplication a(argc, argv);
 
-    Statistics s(nullptr, std::move(stats), clientJoinedGame);
+    Statistics s(nullptr, msg, stats, clientJoinedGame, playerId);
     s.show();
     a.exec();
 }
