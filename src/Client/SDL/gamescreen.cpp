@@ -56,7 +56,7 @@ std::unique_ptr<PlayerDTO> GameScreen::searchMainPlayer(std::vector<PlayerDTO>& 
     return std::make_unique<PlayerDTO>(players[i - 1]);
 }
 
-void GameScreen::run() {
+std::map<uint8_t, int> GameScreen::run() {
     SDL2pp::SDL sdl(SDL_INIT_VIDEO);
     Mix_Init(MIX_INIT_OGG);
     Mix_OpenAudio(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT, MIX_DEFAULT_CHANNELS, 4096);Mix_OpenAudio(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT, MIX_DEFAULT_CHANNELS, 4096);
@@ -109,6 +109,8 @@ void GameScreen::run() {
 
     std::time_t game_time = ClientConfig::getGameTime(); 
     std::time_t start = std::time({});
+
+    std::map<uint8_t, int> scores;
     while (true) {
         SDL_Event event;
         std::cout << "[GAME SCREEN] Waiting for event" << std::endl;
@@ -119,7 +121,7 @@ void GameScreen::run() {
                 std::cout << "[GAME SCREEN] SDL_QUIT event received, exiting run loop" << std::endl;
                 this->soundControl.free_musics();
                 Mix_CloseAudio();
-                return;
+                return scores;
             } else if (event.type == SDL_KEYDOWN) {
                 switch (event.key.keysym.sym) {
                     case SDLK_RIGHT:
@@ -209,7 +211,7 @@ void GameScreen::run() {
         std::vector<int> dir_screen = this->level.draw_background(window, renderer, tiles_textures, *mainPlayer, speed);
         x_screen = dir_screen[0];
         y_screen = dir_screen[1];
-        this->level.draw_floor(window, renderer, tiles_textures, *mainPlayer, speed, x_screen, y_screen);
+        //this->level.draw_floor(window, renderer, tiles_textures, *mainPlayer, speed, x_screen, y_screen);
 
         if (players.size() > 0) {
             this->pj.draw_players(window, renderer, pjs_textures, players, x_screen, y_screen, *mainPlayer, pj_direction);
@@ -241,13 +243,14 @@ void GameScreen::run() {
         std::time_t final = std::chrono::system_clock::to_time_t(now) - start;
         
         this->stats.draw_interface(window, renderer, *pjs_textures[mainPlayer->getCharacterType()], items, font, players, *mainPlayer, 3, game_time - final);
+        scores = this->stats.sort_score(players);
 
         if (game_time - final == 0) {
             SDL_Delay(1000);
             this->soundControl.free_musics();
             Mix_CloseAudio(); 
             final_screen(window, renderer, *tiles_textures[ObstacleType::BACKGROUND], font);
-            return;
+            return scores;
         }
 
         x_screen = 0;
@@ -264,6 +267,7 @@ void GameScreen::run() {
     }
     this->soundControl.free_musics();
     Mix_CloseAudio();
+    return scores;
 
 }
 

@@ -390,6 +390,7 @@ void GameMap::update(float time) {
     std::cout << "[GAMEMAP] Updating game map" << std::endl;
     try {
         std::vector<std::shared_ptr<Entity>> entitiesToRemove;
+        std::vector<std::shared_ptr<Entity>> itemsToRemove; 
 
         // Actualizar personajes y enemigos en un solo bucle
         for (auto& entityPair : mapGrid) {
@@ -416,8 +417,9 @@ void GameMap::update(float time) {
                                     character, std::dynamic_pointer_cast<Obstacle>(checkEntity));
                             break;
                         case EntityType::ITEM:
-                            handleCharacterItemCollision(
-                                    character, std::dynamic_pointer_cast<Item>(checkEntity));
+                            if (handleCharacterItemCollision(character, std::dynamic_pointer_cast<Item>(checkEntity))) {
+                                itemsToRemove.push_back(std::dynamic_pointer_cast<Item>(checkEntity));
+                            }
                             break;
                         default:
                             character->setOnGround(false);
@@ -437,6 +439,9 @@ void GameMap::update(float time) {
         for (const auto& entity : entitiesToRemove) {
             removeCharacter(std::dynamic_pointer_cast<Character>(entity));
         }
+        for (const auto& entity : itemsToRemove) {
+            removeItem(entity->getPosition());
+        }
     } catch (const std::exception& e) {
         std::cerr << "[GAMEMAP] Error updating game map: " << e.what() << std::endl;
     }
@@ -451,15 +456,17 @@ bool GameMap::checkCollision(const Vector<uint32_t>& pos1, const Vector<uint32_t
 }
 
 
-void GameMap::handleCharacterItemCollision(std::shared_ptr<Character> character, std::shared_ptr<Item> item) {
+bool GameMap::handleCharacterItemCollision(std::shared_ptr<Character> character, std::shared_ptr<Item> item) {
     try {
-        // if (checkCollision(character->getPosition(), {character->getWidth(), character->getHeight()},
-        //                    item->getPosition(), {item->getWidth(), item->getHeight()})) {
-        if (character->getPosition() == item->getPosition()) {
+        if (checkCollision(character->getPosition(), {character->getWidth(), character->getHeight()},
+                           item->getPosition(), {item->getWidth(), item->getHeight()})) {
+        //if (character->getPosition() == item->getPosition()) {
             character->collectItem(item);
-            mapGrid.erase(item->getPosition());
+            //mapGrid.erase(item->getPosition());
             std::cout << "[GAMEMAP] Character collected item. Item removed from map." << std::endl;
+            return true;
         }
+        return false;
     } catch (const std::exception& e) {
         std::cerr << "[GAMEMAP] Error handling character-item collision: " << e.what() << std::endl;
     }

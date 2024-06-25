@@ -8,6 +8,7 @@
 
 #include <iostream>
 #include <cmath>
+#include "../../Common/printer.h"
 
 enum lvl { BEACH, HOLIDAIUS, COLONIUS };
 
@@ -144,33 +145,36 @@ std::vector<int> Level::draw_background(SDL2pp::Window& window, SDL2pp::Renderer
 
 }
 
-void Level::draw_floor(SDL2pp::Window& window, SDL2pp::Renderer& renderer, std::map<ObstacleType, std::unique_ptr<SDL2pp::Texture>>& textiles, PlayerDTO& player, int player_speed, int dir_x_screen, int dir_y_screen) {
-    // int index_x = 0;
-    // int index_y = 1;
-    // int index_width = 2;
-    // int index_height = 3;
-    // int index_draw_height = 1;
-    // int distance_floor_player_x = 0;
-    // int distance_floor_player_y = 0;
+void Level::draw_floor(SDL2pp::Window& window, SDL2pp::Renderer& renderer, std::map<ObstacleType, std::unique_ptr<SDL2pp::Texture>>& textiles, PlayerDTO& player, TileDTO& floor, int player_speed, int dir_x_screen, int dir_y_screen) {
+    int index_x = 0;
+    int index_y = 1;
+    int index_width = 2;
+    int index_height = 3;
+    int index_draw_height = 1;
+    int distance_floor_player_x = 0;
+    int distance_floor_player_y = 0;
 
-    // int y = window.GetHeight() - this->width_height[ObstacleType::FULL_FLOOR][index_draw_height];
-    // if (dir_y_screen != 0) {
-    //     distance_floor_player_y = y - player.getY();
-    //     y = dir_y_screen + distance_floor_player_y;
+    int x = floor.getX();
+    int y = floor.getY();
+    // if (dir_x_screen != 0) { 
+    //     distance_floor_player_x = x - player.getX();
+    //     x = dir_x_screen + distance_floor_player_x;
     // }
-    // if (dir_x_screen != 0) {
-    //     this->pixels_pos[ObstacleType::FULL_FLOOR][index_x] += player_speed;
-    // }
-       
+    if (dir_y_screen != 0) {
+        distance_floor_player_y = y - player.getY();
+        y = dir_y_screen + distance_floor_player_y;
+        Printer::printDebugHighlightedMessage("EL VALOR DE Y ES");
+        std::cout << y << '\n';
+    }
+    
+    if (this->pixels_pos[ObstacleType::FULL_FLOOR][index_x] > this->max_pixel_x_floor - this->pixels_pos[ObstacleType::FULL_FLOOR][index_width]) {
+        this->pixels_pos[ObstacleType::FULL_FLOOR][index_x] = 0;
+    }
 
-    // if (this->pixels_pos[ObstacleType::FULL_FLOOR][index_x] > this->max_pixel_x_floor - this->pixels_pos[ObstacleType::FULL_FLOOR][index_width]) {
-    //     this->pixels_pos[ObstacleType::FULL_FLOOR][index_x] = 0;
-    // }
-
-    // if (abs(distance_floor_player_y) <= window.GetHeight()) {
-    //     renderer.Copy(*textiles[ObstacleType::FULL_FLOOR], SDL2pp::Rect(this->pixels_pos[ObstacleType::FULL_FLOOR][index_x], this->pixels_pos[ObstacleType::FULL_FLOOR][index_y], this->pixels_pos[ObstacleType::FULL_FLOOR][index_width], this->pixels_pos[ObstacleType::FULL_FLOOR][index_height]), 
-    //                     SDL2pp::Rect(0, y/*window.GetHeight() - this->width_height[ObstacleType::FULL_FLOOR][index_draw_height]*/, window.GetWidth(), this->width_height[ObstacleType::FULL_FLOOR][index_draw_height]));
-    // }
+    if (abs(distance_floor_player_y) <= window.GetHeight() / 4 * 3) {
+        renderer.Copy(*textiles[ObstacleType::FULL_FLOOR], SDL2pp::Rect(this->pixels_pos[ObstacleType::FULL_FLOOR][index_x], this->pixels_pos[ObstacleType::FULL_FLOOR][index_y], this->pixels_pos[ObstacleType::FULL_FLOOR][index_width], this->pixels_pos[ObstacleType::FULL_FLOOR][index_height]), 
+                        SDL2pp::Rect(0, y/*window.GetHeight() - this->width_height[ObstacleType::FULL_FLOOR][index_draw_height]*/, window.GetWidth(), window.GetHeight() - y/*this->width_height[ObstacleType::FULL_FLOOR][index_draw_height]*/));
+    }
 }
 
 
@@ -203,7 +207,8 @@ void Level::draw_tiles(SDL2pp::Window& window, SDL2pp::Renderer& renderer, std::
         if (abs(distance_tile_player_x) <= window.GetWidth()  && abs(distance_tile_player_y) <= window.GetHeight() / 4 * 3) {
             ObstacleType type = t.getObstacleType();
             if (type == ObstacleType::FULL_FLOOR) {
-                renderer.Copy(*tiles_textures[type], SDL2pp::Rect(pixels_pos[type][index_x], pixels_pos[type][index_y], pixels_pos[type][index_width], pixels_pos[type][index_height]), SDL2pp::Rect(x, y, window.GetWidth(), this->width_height[type][index_draw_height]));    
+                draw_floor(window, renderer, tiles_textures, player, t, 0, dir_x_screen, dir_y_screen);
+                //renderer.Copy(*tiles_textures[type], SDL2pp::Rect(pixels_pos[type][index_x], pixels_pos[type][index_y], pixels_pos[type][index_width], pixels_pos[type][index_height]), SDL2pp::Rect(0, y, window.GetWidth(), window.GetHeight() - y));    
             } else {
                 renderer.Copy(*tiles_textures[type], SDL2pp::Rect(pixels_pos[type][index_x], pixels_pos[type][index_y], pixels_pos[type][index_width], pixels_pos[type][index_height]), SDL2pp::Rect(x, y, this->width_height[type][index_draw_width], this->width_height[type][index_draw_height]));
             }
