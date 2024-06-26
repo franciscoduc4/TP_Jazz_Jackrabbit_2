@@ -206,3 +206,24 @@ uint8_t GameMonitor::getGameId(uint8_t playerId) {
     }
     return playersGameIds[playerId];
 }
+
+void GameMonitor::removePlayerFromGame(uint8_t playerId) {
+    std::cout << "[GM] Attempting to lock mutex in removePlayerFromGame" << std::endl;
+    std::lock_guard<std::mutex> lock(mtx);
+    std::cout << "[GM] Mutex locked in removePlayerFromGame" << std::endl;
+    auto it = playersGameIds.find(playerId);
+    if (it != playersGameIds.end()) {
+        uint8_t gameId = it->second;
+        auto it2 = games.find(gameId);
+        if (it2 != games.end()) {
+            it2->second->removePlayer(playerId);
+            playersGameQueues.erase(playerId);
+            playersGameIds.erase(playerId);
+            std::cout << "[GM] Removed player " << playerId << " from game " << gameId << std::endl;
+        } else {
+            std::cerr << "[GM] Game with id " << gameId << " not found" << std::endl;
+        }
+    } else {
+        std::cerr << "[GM] Player " << playerId << " not found in playersGameIds" << std::endl;
+    }
+}

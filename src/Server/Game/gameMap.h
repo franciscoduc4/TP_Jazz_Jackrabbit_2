@@ -74,6 +74,7 @@ public:
     void update(float time);
     void updateBullets(float time);
 
+    void removeCharacter(uint8_t playerId);
     void removeCharacter(const std::shared_ptr<Character>& character);
     void removeEnemy(uint8_t enemyId);
     void removeItem(Vector<uint32_t> position);

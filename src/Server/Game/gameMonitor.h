@@ -55,6 +55,8 @@ public:
     uint8_t getGamesListSize();
 
     uint8_t getGameId(uint8_t playerId);
+
+    void removePlayerFromGame(uint8_t playerId);
 };
 
 #endif  // GAME_MONITOR_H_

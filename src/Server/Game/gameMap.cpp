@@ -527,6 +527,9 @@ void GameMap::handleCharacterObstacleCollision(const std::shared_ptr<Character>&
     }
 }
 
+void GameMap::removeCharacter(uint8_t playerId) {
+    removeCharacter(getCharacter(playerId));
+}
 
 void GameMap::removeCharacter(const std::shared_ptr<Character>& character) {
     try {

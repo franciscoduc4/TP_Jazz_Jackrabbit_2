@@ -83,9 +83,11 @@ void ReceiverThread::run() {
             if (!inGame.load() || !keepPlaying.load()) {
                 std::cout << "[SERVER RECEIVER] Socket was closed, exiting receiver thread"
                           << std::endl;
+                gameMonitor.removePlayerFromGame(playerId);
                 return;
             }
         }
     }
+    gameMonitor.removePlayerFromGame(playerId);
     std::cout << "[SERVER RECEIVER] Receiver thread exiting" << std::endl;
 }

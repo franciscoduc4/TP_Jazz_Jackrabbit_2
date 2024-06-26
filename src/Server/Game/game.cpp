@@ -68,6 +68,16 @@ bool Game::isRunning() {
     return running;
 }
 
+void Game::removePlayer(uint8_t playerId) {
+    std::cout << "[GAME] removePlayer called with playerId: " << (int)playerId << std::endl;
+    gameMap.removeCharacter(playerId);
+    currentPlayers--;
+    std::cout << "[GAME] Player removed, currentPlayers now: " << (int)currentPlayers << std::endl;
+    if (currentPlayers == 0) {
+        endGame();
+    }
+}
+
 void Game::endGame() {
     std::cout << "[GAME] endGame called, stopping gameLoop" << std::endl;
     if (this->isRunning()) {
