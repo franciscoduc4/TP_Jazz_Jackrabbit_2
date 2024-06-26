@@ -28,7 +28,7 @@
 
 class ClientProtocol {
 private:
-    std::shared_ptr<Socket>& socket;
+    std::shared_ptr<Socket> socket;
     std::atomic<bool>& was_closed;
     bool closed;
 
@@ -38,7 +38,7 @@ private:
     bool receive_char(char& value);
     bool receive_string(const uint8_t& length, std::string& value);
 public:
-    ClientProtocol(std::shared_ptr<Socket>& socket, std::atomic<bool>& was_closed);
+    ClientProtocol(const std::shared_ptr<Socket>& socket, std::atomic<bool>& was_closed);
     // States
     bool isClosed();
     // Connection

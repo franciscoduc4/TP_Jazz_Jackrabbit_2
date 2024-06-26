@@ -2,7 +2,7 @@
 
 #include "printer.h"
 
-ClientProtocol::ClientProtocol(std::shared_ptr<Socket>& socket, std::atomic<bool>& was_closed) :
+ClientProtocol::ClientProtocol(const std::shared_ptr<Socket>& socket, std::atomic<bool>& was_closed) :
     socket(socket), was_closed(was_closed), closed(false) {}
 
 // State
