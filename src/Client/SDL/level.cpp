@@ -56,41 +56,42 @@ Level::Level(uint8_t level) {
 
 std::map<ObstacleType, std::unique_ptr<SDL2pp::Texture>> Level::getTilesTextures(SDL2pp::Renderer& renderer)  {
     std::map<ObstacleType, std::unique_ptr<SDL2pp::Texture>> textures;
+    std::tuple<int, int, int> colorKey = ClientConfig::getScenesColourKey();
 
     SDL_Surface* bg_surf = IMG_Load(this->paths[ObstacleType::BACKGROUND].c_str());
     SDL2pp::Surface backgroundSurface(bg_surf);
-    backgroundSurface.SetColorKey(true, SDL_MapRGB(backgroundSurface.Get()->format, 87, 0, 203));
+    backgroundSurface.SetColorKey(true, SDL_MapRGB(backgroundSurface.Get()->format, std::get<0>(colorKey), std::get<1>(colorKey), std::get<2>(colorKey)));
     textures[ObstacleType::BACKGROUND] = std::make_unique<SDL2pp::Texture>(renderer, backgroundSurface);
 
     
     SDL_Surface* floor_surf = IMG_Load(this->paths[ObstacleType::FULL_FLOOR].c_str());
     SDL2pp::Surface floorSurface(floor_surf);
-    floorSurface.SetColorKey(true, SDL_MapRGB(floorSurface.Get()->format, 87, 0, 203));
+    floorSurface.SetColorKey(true, SDL_MapRGB(floorSurface.Get()->format, std::get<0>(colorKey), std::get<1>(colorKey), std::get<2>(colorKey)));
     textures[ObstacleType::FULL_FLOOR] =  std::make_unique<SDL2pp::Texture>(renderer, floorSurface);
 
     SDL_Surface* longPlatform_surf = IMG_Load(this->paths[ObstacleType::LONG_PLATFORM].c_str());
     SDL2pp::Surface longPlatformSurface(longPlatform_surf);
-    longPlatformSurface.SetColorKey(true, SDL_MapRGB(longPlatformSurface.Get()->format, 87, 0, 203));
+    longPlatformSurface.SetColorKey(true, SDL_MapRGB(longPlatformSurface.Get()->format, std::get<0>(colorKey), std::get<1>(colorKey), std::get<2>(colorKey)));
     textures[ObstacleType::LONG_PLATFORM] = std::make_unique<SDL2pp::Texture>(renderer, longPlatformSurface);
     
     SDL_Surface* smallPlatform_surf = IMG_Load(this->paths[ObstacleType::SMALL_PLATFORM].c_str());
     SDL2pp::Surface smallPlatformSurface(smallPlatform_surf);
-    smallPlatformSurface.SetColorKey(true, SDL_MapRGB(smallPlatformSurface.Get()->format, 87, 0, 203));
+    smallPlatformSurface.SetColorKey(true, SDL_MapRGB(smallPlatformSurface.Get()->format, std::get<0>(colorKey), std::get<1>(colorKey), std::get<2>(colorKey)));
     textures[ObstacleType::SMALL_PLATFORM] = std::make_unique<SDL2pp::Texture>(renderer, smallPlatformSurface);
     
     SDL_Surface* column_surf = IMG_Load(this->paths[ObstacleType::COLUMN].c_str());
     SDL2pp::Surface columnSurface(column_surf);
-    columnSurface.SetColorKey(true, SDL_MapRGB(columnSurface.Get()->format, 87, 0, 203));
+    columnSurface.SetColorKey(true, SDL_MapRGB(columnSurface.Get()->format, std::get<0>(colorKey), std::get<1>(colorKey), std::get<2>(colorKey)));
     textures[ObstacleType::COLUMN] = std::make_unique<SDL2pp::Texture>(renderer, columnSurface);
 
     SDL_Surface* leftDiagonal_surf = IMG_Load(this->paths[ObstacleType::LEFT_LADDER].c_str());
     SDL2pp::Surface leftDiagonalSurface(leftDiagonal_surf);
-    leftDiagonalSurface.SetColorKey(true, SDL_MapRGB(leftDiagonalSurface.Get()->format, 87, 0, 203));
+    leftDiagonalSurface.SetColorKey(true, SDL_MapRGB(leftDiagonalSurface.Get()->format, std::get<0>(colorKey), std::get<1>(colorKey), std::get<2>(colorKey)));
     textures[ObstacleType::LEFT_LADDER] = std::make_unique<SDL2pp::Texture>(renderer, leftDiagonalSurface);
 
     SDL_Surface* rightDiagonal_surf = IMG_Load(this->paths[ObstacleType::RIGHT_LADDER].c_str());
     SDL2pp::Surface rightDiagonalSurface(rightDiagonal_surf);
-    rightDiagonalSurface.SetColorKey(true, SDL_MapRGB(rightDiagonalSurface.Get()->format, 87, 0, 203));
+    rightDiagonalSurface.SetColorKey(true, SDL_MapRGB(rightDiagonalSurface.Get()->format, std::get<0>(colorKey), std::get<1>(colorKey), std::get<2>(colorKey)));
     textures[ObstacleType::RIGHT_LADDER] = std::make_unique<SDL2pp::Texture>(renderer, rightDiagonalSurface);
     
     return textures;
@@ -163,8 +164,6 @@ void Level::draw_floor(SDL2pp::Window& window, SDL2pp::Renderer& renderer, std::
     if (dir_y_screen != 0) {
         distance_floor_player_y = y - player.getY();
         y = dir_y_screen + distance_floor_player_y;
-        Printer::printDebugHighlightedMessage("EL VALOR DE Y ES");
-        std::cout << y << '\n';
     }
     
     if (this->pixels_pos[ObstacleType::FULL_FLOOR][index_x] > this->max_pixel_x_floor - this->pixels_pos[ObstacleType::FULL_FLOOR][index_width]) {

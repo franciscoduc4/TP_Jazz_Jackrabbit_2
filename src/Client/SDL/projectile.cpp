@@ -44,9 +44,10 @@ Projectile::Projectile(int p_type) {
 }
 
 std::unique_ptr<SDL2pp::Texture> Projectile::getProjectilesTextures(SDL2pp::Renderer& renderer) {
+	std::tuple<int, int, int> colorKey = ClientConfig::getSFXColourKey();
 	SDL_Surface* projectile_surf = IMG_Load("../assets/Miscellaneous/SFX.png");
     SDL2pp::Surface projectileSurface(projectile_surf);
-    projectileSurface.SetColorKey(true, SDL_MapRGB(projectileSurface.Get()->format, 0, 128, 255));
+    projectileSurface.SetColorKey(true, SDL_MapRGB(projectileSurface.Get()->format, std::get<0>(colorKey), std::get<1>(colorKey), std::get<2>(colorKey)));
 	return std::make_unique<SDL2pp::Texture>(renderer, projectileSurface);
 }
 

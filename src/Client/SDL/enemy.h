@@ -13,8 +13,6 @@
 #include "../../Common/DTO/player.h"
 #include "../../Common/Types/entity.h"
 
-#include "enemyweapon.h"
-
 class Enemy {
     std::map<EnemyType, std::string> enemies_path;
     std::map<EnemyType, std::map<EnemyStateEntity, std::list<RectangularSprite>>> sprites;

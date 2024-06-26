@@ -48,6 +48,7 @@ public:
     static std::tuple<int, int, int> getSFXColourKey();
     static std::tuple<int, int, int> getItemsColourKey();
     static std::tuple<int, int, int> getInterfaceFontColourKey();
+    static std::tuple<int, int, int> getScenesColourKey();
     // Rectangular Sprites
     static std::vector<std::vector<int>> getEpisodesSprites();
     //Game time

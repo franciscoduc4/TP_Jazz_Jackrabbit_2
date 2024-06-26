@@ -140,6 +140,14 @@ std::tuple<int, int, int> ClientConfig::getInterfaceFontColourKey() {
                            interfaceFontColourKeyNode[2].as<int>());
 }
 
+std::tuple<int, int, int> ClientConfig::getScenesColourKey() {
+    YAML::Node scenesColourKeyNode = getInstance()->root["SCENES_CK"];
+    return std::make_tuple(scenesColourKeyNode[0].as<int>(),
+                           scenesColourKeyNode[1].as<int>(),
+                           scenesColourKeyNode[2].as<int>());
+}
+
+
 // Rectangular Sprites
 std::vector<std::vector<int>> ClientConfig::getEpisodesSprites() {
     YAML::Node episodesSpritesNode = getInstance()->root["EPISODES_SPRITES"];

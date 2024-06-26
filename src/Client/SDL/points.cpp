@@ -41,9 +41,10 @@ Points::Points() {
 
 
 std::unique_ptr<SDL2pp::Texture> Points::getItemsTextures(SDL2pp::Renderer& renderer) {
+    std::tuple<int, int, int> colorKey = ClientConfig::getSFXColourKey();
     SDL_Surface* items_surf = IMG_Load("../assets/Miscellaneous/Items&Objects.png");
     SDL2pp::Surface itemsSurface(items_surf);
-    itemsSurface.SetColorKey(true, SDL_MapRGB(itemsSurface.Get()->format, 0, 128, 255));
+    itemsSurface.SetColorKey(true, SDL_MapRGB(itemsSurface.Get()->format, std::get<0>(colorKey), std::get<1>(colorKey), std::get<2>(colorKey)));
     return std::make_unique<SDL2pp::Texture>(renderer, itemsSurface);
 }
 

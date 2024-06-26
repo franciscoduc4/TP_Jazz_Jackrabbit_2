@@ -10,17 +10,6 @@
 #include <iostream>
 
 
-#include "enemyweapon.h"
-
-/*
-ENEMY_IDLE,              
-ENEMY_JUMPING,           
-ENEMY_FLYING,            
-ENEMY_RECEIVING_DAMAGE,  
-ENEMY_DEAD,              
-ENEMY_RESPAWNING         
-*/
-
 Enemy::Enemy() {
     this->flip = 0;
     this->init = false;
@@ -93,20 +82,21 @@ std::string Enemy::getPath(EnemyType enemy_type) { return this->enemies_path[ene
 
 std::map<EnemyType, std::unique_ptr<SDL2pp::Texture>> Enemy::getEnemiesTextures(SDL2pp::Renderer& renderer) {
     std::map<EnemyType, std::unique_ptr<SDL2pp::Texture>> enemies;
+    std::tuple<int, int, int> colorKey = ClientConfig::getTurtleColourKey();
     
     SDL_Surface* enemy_surf = IMG_Load(getPath(EnemyType::TURTLE).c_str());
     SDL2pp::Surface enemySurface(enemy_surf);
-    enemySurface.SetColorKey(true, SDL_MapRGB(enemySurface.Get()->format, 0, 128, 255));
+    enemySurface.SetColorKey(true, SDL_MapRGB(enemySurface.Get()->format, std::get<0>(colorKey), std::get<1>(colorKey), std::get<2>(colorKey)));
     enemies[EnemyType::TURTLE] = std::make_unique<SDL2pp::Texture>(renderer, enemySurface);
 
     SDL_Surface* sch_surf = IMG_Load(getPath(EnemyType::SCHWARZENGUARD).c_str());
     SDL2pp::Surface schSurface(sch_surf);
-    schSurface.SetColorKey(true, SDL_MapRGB(schSurface.Get()->format, 0, 128, 255));
+    schSurface.SetColorKey(true, SDL_MapRGB(schSurface.Get()->format, std::get<0>(colorKey), std::get<1>(colorKey), std::get<2>(colorKey)));
     enemies[EnemyType::SCHWARZENGUARD] = std::make_unique<SDL2pp::Texture>(renderer, schSurface);
 
     SDL_Surface* yellowMon_surf = IMG_Load(getPath(EnemyType::YELLOWMON).c_str());
     SDL2pp::Surface yellowMonSurface(yellowMon_surf);
-    yellowMonSurface.SetColorKey(true, SDL_MapRGB(yellowMonSurface.Get()->format, 0, 128, 255));
+    yellowMonSurface.SetColorKey(true, SDL_MapRGB(yellowMonSurface.Get()->format, std::get<0>(colorKey), std::get<1>(colorKey), std::get<2>(colorKey)));
     enemies[EnemyType::YELLOWMON] = std::make_unique<SDL2pp::Texture>(renderer, yellowMonSurface);
 
     return enemies;
