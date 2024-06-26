@@ -45,7 +45,7 @@ public:
 
     bool cooldown(float time) override;
 
-    uint32_t getDamage() override {return 20;}
+    uint8_t getDamage() override;
 };
 
 #endif  // RFMISSILE_H

@@ -57,4 +57,4 @@ bool Blaster::cooldown(float time) {
     return (time - lastTimeShot) > fireRate;
 }
 
-
+uint8_t Blaster::getDamage() { return damage; }

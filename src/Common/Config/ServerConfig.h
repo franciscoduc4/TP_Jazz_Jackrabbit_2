@@ -71,6 +71,18 @@ public:
     static float getWeaponRFMissileFireRate();
 
     static uint8_t getObstacleMoves();
+    static uint32_t getColumnWidth();
+    static uint32_t getColumnHeight();
+    static uint32_t getFullFloorWidth();
+    static uint32_t getFullFloorHeight();
+    static uint32_t getLeftLadderWidth();
+    static uint32_t getLeftLadderHeight();
+    static uint32_t getLongPlatformWidth();
+    static uint32_t getLongPlatformHeight();
+    static uint32_t getRightLadderWidth();
+    static uint32_t getRightLadderHeight();
+    static uint32_t getSmallPlatformWidth();
+    static uint32_t getSmallPlatformHeight();
 
     static uint32_t getGameMapSizeX();
     static uint32_t getGameMapSizeY();

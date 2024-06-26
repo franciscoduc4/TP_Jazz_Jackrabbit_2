@@ -11,8 +11,8 @@ public:
 
     ObstacleType getObstacleType() const override { return ObstacleType::FULL_FLOOR; }
 
-    uint32_t getWidth() const override { return 500; }
-    uint32_t getHeight() const override { return 70; }
+    uint32_t getWidth() const override { return ServerConfig::getFullFloorWidth(); }
+    uint32_t getHeight() const override { return ServerConfig::getFullFloorHeight(); }
 
 };
 

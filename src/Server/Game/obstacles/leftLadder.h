@@ -11,8 +11,8 @@ public:
 
     ObstacleType getObstacleType() const override { return ObstacleType::LEFT_LADDER; }
 
-    uint32_t getWidth() const override { return 120; }
-    uint32_t getHeight() const override { return 120; }
+    uint32_t getWidth() const override { return ServerConfig::getLeftLadderWidth(); }
+    uint32_t getHeight() const override { return ServerConfig::getLeftLadderHeight(); }
 };
 
 #endif // LEFTLADDER_H

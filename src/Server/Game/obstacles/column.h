@@ -11,8 +11,8 @@ public:
 
     ObstacleType getObstacleType() const override { return ObstacleType::COLUMN; }
 
-    uint32_t getWidth() const override { return 30; }
-    uint32_t getHeight() const override { return 100; }
+    uint32_t getWidth() const override { return ServerConfig::getColumnWidth(); }
+    uint32_t getHeight() const override { return ServerConfig::getColumnHeight(); }
 };
 
 #endif // Column_H

@@ -45,8 +45,7 @@ public:
 
     bool cooldown(float time) override;
 
-    uint32_t getDamage() override {
-        return ServerConfig::getWeaponBlasterDamage();}
+    uint8_t getDamage() override;
 };
 
 #endif  // BLASTER_H

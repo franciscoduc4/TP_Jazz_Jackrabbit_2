@@ -44,7 +44,7 @@ public:
 
     bool cooldown(float time) override;
 
-    uint32_t getDamage() override {return 10;}
+    uint8_t getDamage() override;
 };
 
 #endif  // FREEZER_H
