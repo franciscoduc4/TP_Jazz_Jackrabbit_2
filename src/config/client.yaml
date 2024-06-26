@@ -36,7 +36,7 @@ INTERFACE_FONT_CK: [0, 128, 255]
 EPISODES_SPRITES: [[9, 9, 495, 354],[505, 9, 496, 354],[1002, 9, 531, 354],[1534, 9, 469, 354],[9, 367, 445, 353],[455, 367, 513, 353],[969, 367, 525, 353],[1495, 367, 498, 353]]
 
 # Game time
-GAME_TIME: 10
+GAME_TIME: 200
 
 # Sounds
 SOUNDS: [ "../assets/audios/playerHurt.WAV", "../assets/audios/shoot3.WAV", "../assets/audios/takePoint.WAV"]
