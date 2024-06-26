@@ -133,6 +133,14 @@ Posee el siguiente flujo:
 
 Maneja la visualización del juego y la lógica de los personajes y enemigos.
 
+![Game screen](src/Documentation/images/gameScreen.png)
+
+
+
+![Demo game](src/Documentation/demo/game.gif)
+
+
+
 ##### Protocol
 
 Maneja la serialización y deserialización de los mensajes entre el cliente y el servidor.
