@@ -9,6 +9,7 @@
 #include "items/gem.h"
 #include "items/goldCoin.h"
 #include "items/silverCoin.h"
+#include "items/poisonedFood.h"
 #include "obstacles/fullFloor.h"
 #include "obstacles/leftLadder.h"
 #include "obstacles/longPlatform.h"
@@ -56,6 +57,8 @@ uint32_t width, uint32_t height) {
             return std::make_shared<SilverCoin>(gameMap, position, width, height);
         case ItemType::GOLD_COIN:
             return std::make_shared<GoldCoin>(gameMap, position, width, height);
+        case ItemType::POISONED_FOOD:
+            return std::make_shared<PoisonedFood>(gameMap, position, width, height);
         default:
             return nullptr;
     }

@@ -10,9 +10,10 @@ IntoxicatedState::IntoxicatedState(Character& character, float duration):
 }
 
 std::unique_ptr<State> IntoxicatedState::exec(float time) {
+    std::cout << "EL VALOR DE TIME " << time <<'\n';
     intoxicatedDuration -= time;
     if (intoxicatedDuration <= 0) {
-        return std::unique_ptr<IdleState>();
+        return std::make_unique<IdleState>(character);
     }
     return nullptr;
 }

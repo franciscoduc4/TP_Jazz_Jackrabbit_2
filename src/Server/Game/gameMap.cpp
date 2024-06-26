@@ -153,6 +153,8 @@ ItemType GameMap::getItemType(const std::string& typeStr) {
         return ItemType::SILVER_COIN;
     if (typeStr == "GOLD_COINS")
         return ItemType::GOLD_COIN;
+    if (typeStr == "POISONED_FOOD")
+        return ItemType::POISONED_FOOD;
     throw std::runtime_error("Unknown item type: " + typeStr);
 }
 

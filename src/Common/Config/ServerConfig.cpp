@@ -644,3 +644,18 @@ uint32_t ServerConfig::getItemGemHeight(){
     int itemGemHeight = getInstance()->root["ITEM"]["GEM"]["HEIGHT"].as<int>();
     return static_cast<uint32_t>(itemGemHeight);
 }
+
+uint32_t ServerConfig::getItemPoisonedFoodValue(){
+    int itemPoisonedFoodValue = getInstance()->root["ITEM"]["POISONED_FOOD"]["VALUE"].as<int>();
+    return static_cast<uint32_t>(itemPoisonedFoodValue);
+}
+
+uint32_t ServerConfig::getItemPoisonedFoodWidth(){
+    int itemPoisonedFoodWidth = getInstance()->root["ITEM"]["POISONED_FOOD"]["WIDTH"].as<int>();
+    return static_cast<uint32_t>(itemPoisonedFoodWidth);
+}
+
+uint32_t ServerConfig::getItemPoisonedFoodHeight(){
+    int itemPoisonedFoodHeight = getInstance()->root["ITEM"]["POISONED_FOOD"]["HEIGHT"].as<int>();
+    return static_cast<uint32_t>(itemPoisonedFoodHeight);
+}

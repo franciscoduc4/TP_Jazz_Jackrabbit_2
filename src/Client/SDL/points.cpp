@@ -37,6 +37,9 @@ Points::Points() {
     }
     this->counts.push_back(0);
 
+    std::vector<int> poisoned_food = ClientConfig::getPoisonedFoodSprites();
+    this->sprites[ItemType::POISONED_FOOD].push_back(RectangularSprite(poisoned_food));
+    this->counts.push_back(0);
 }
 
 

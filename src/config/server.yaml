@@ -194,3 +194,7 @@ ITEM:
     VALUE: 50
     WIDTH: 1
     HEIGHT: 1
+  POISONED_FOOD:
+    VALUE: 5
+    WIDTH: 1
+    HEIGHT: 1

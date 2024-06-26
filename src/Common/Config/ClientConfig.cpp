@@ -782,6 +782,10 @@ std::vector<std::vector<int>> ClientConfig::getCarrotSprites() {
     return carrotSprites;
 }
 
+std::vector<int> ClientConfig::getPoisonedFoodSprites() {
+    return getInstance()->root["POISONED_FOOD"].as<std::vector<int>>();
+}
+
 
 // Projectiles
 int ClientConfig::getProjWidth() { return getInstance()->root["PROJ_WIDTH"].as<int>(); }

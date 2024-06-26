@@ -8,7 +8,7 @@
 enum lvl {BEACH, COLONIUS, HOLIDAIUS};
 
 SoundController::SoundController(uint8_t leveltype) {
-    std::vector<SoundType> soundsType{ SoundType::BACKSOUND, SoundType::PLAYERHURT, SoundType::SHOOT, SoundType::GETPOINT};
+    std::vector<SoundType> soundsType{ SoundType::BACKSOUND, SoundType::PLAYERHURT, SoundType::SHOOT, SoundType::GETPOINT, SoundType::INTOXICATED };
     int soundsIndex = 0;
     
     switch (leveltype) {
@@ -65,6 +65,9 @@ void SoundController::play_players_effect(std::vector<PlayerDTO>& players) {
             case CharacterStateEntity::TAKING_DAMAGE:
                 play_sound_effect(SoundType::PLAYERHURT);
                 break;
+            //case CharacterStateEntity::INTOXICATED:
+            //    play_sound_effect(SoundType::INTOXICATED);
+            //    break;
         }
     }
 }

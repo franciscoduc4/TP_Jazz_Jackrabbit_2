@@ -99,6 +99,9 @@ void Character::update(float time) {
 
     auto newState = state->exec(time);
     if (newState) {
+        if (state->getCharacterState() == CharacterStateEntity::INTOXICATED) {
+            isIntoxicated = false;
+        }
         state = std::move(newState);
         std::cout << "[NEW STATE] Character ID: " << static_cast<int>(id)
                   << " new state after update: " << static_cast<int>(state->getCharacterState())
@@ -630,6 +633,10 @@ void Character::collectItem(const std::shared_ptr<Item>& item) {
         case ItemType::GOLD_COIN:
             score += item->getValue();
             std::cout << "[CHARACTER] Collected gold coin" << std::endl;
+            break;
+        case ItemType::POISONED_FOOD:
+            becomeIntoxicated(intoxicatedTime);
+            std::cout << "[CHARACTER] Collected poisoned food" << std::endl;
             break;
         default:
             std::cerr << "[CHARACTER] Unknown item type collected." << std::endl;

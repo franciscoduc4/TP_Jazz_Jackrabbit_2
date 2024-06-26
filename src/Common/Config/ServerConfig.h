@@ -153,6 +153,9 @@ public:
     static uint32_t getItemGemValue();
     static uint32_t getItemGemWidth();
     static uint32_t getItemGemHeight();
+    static uint32_t getItemPoisonedFoodValue();
+    static uint32_t getItemPoisonedFoodWidth();
+    static uint32_t getItemPoisonedFoodHeight();
 
 
     static uint32_t getGameMapSizeX(const std::string& mapName);

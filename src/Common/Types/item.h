@@ -5,7 +5,8 @@ enum class ItemType : char {
     GEM,
     GOLD_COIN,
     SILVER_COIN,
-    FOOD
+    FOOD,
+    POISONED_FOOD
 };
 
 #endif // ITEM_TYPE_H
