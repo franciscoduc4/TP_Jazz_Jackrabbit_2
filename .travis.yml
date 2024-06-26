@@ -30,5 +30,4 @@ script:
   - cd build
   - cmake ..
   - make -j$(nproc)
-  - cd ..
-  - ./build/tests
+  - ./tests
