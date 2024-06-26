@@ -16,18 +16,13 @@
 #include "../../Common/DTO/switchWeapon.h"
 #include "../../Common/Types/command.h"
 #include "../../Common/socket.h"
+#include "protocol.h"
 
 class Deserializer {
 private:
-    std::shared_ptr<Socket> socket;
-    std::atomic<bool>& keepPlaying;
-    std::atomic<bool>& inGame;
-    bool wasClosed;
 
-    // Receive Types
-    bool receive_uint8(uint8_t& value);
-    bool receive_char(char& value);
-    bool receive_vector_char(std::vector<char>& buffer);
+    std::shared_ptr<Protocol> protocol;
+
     // Lobby
     std::unique_ptr<CreateGameDTO> deserializeCreateGame(uint8_t& playerId);
     static std::unique_ptr<MapsListDTO> deserializeMapsList(uint8_t& playerId);
