@@ -177,6 +177,7 @@ void GameMonitor::endAllGames() {
     games.clear();
     std::cout << "[GM] Cleared all games" << std::endl;
 }
+
 void GameMonitor::addPlayerRecvQueue(uint8_t playerId,
                                      const std::shared_ptr<Queue<std::unique_ptr<CommandDTO>>>& recvQueue) {
     std::cout << "[GM] Attempting to lock mutex in addPlayerRecvQueue" << std::endl;

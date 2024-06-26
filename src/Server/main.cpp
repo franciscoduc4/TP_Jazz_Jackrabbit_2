@@ -3,12 +3,13 @@
 #include <sstream>
 
 #include "../Common/Config/ServerConfig.h"
+#include "../Common/maps/mapsManager.h"
 #include "../Common/logger.h"
 
 #include "server.h"
 
 #define SUCCESS 0
-#define FAIL -1
+#define FAIL (-1)
 #define SERVER_ARGS 2
 
 int main(int argc, char** argv) {
@@ -26,10 +27,12 @@ int main(int argc, char** argv) {
     } catch (const std::exception& e) {
         std::cerr << "Exception caught: " << e.what() << std::endl;
         ServerConfig::deleteInstance();
+        MapsManager::deleteInstance();
         return FAIL;
     }
 
     ServerConfig::deleteInstance();
+    MapsManager::deleteInstance();
 
     return SUCCESS;
 }

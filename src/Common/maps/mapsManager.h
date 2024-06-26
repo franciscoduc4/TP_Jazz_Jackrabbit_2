@@ -27,6 +27,7 @@ public:
     static std::string getMapNameById(const uint8_t& id);
     static std::string getMapFileNameById(const uint8_t& id);
     static std::unordered_map<uint8_t, std::string> getMapIdAndName();
+    static void deleteInstance();
 };
 
 #endif  // MAPS_MANAGER_H_

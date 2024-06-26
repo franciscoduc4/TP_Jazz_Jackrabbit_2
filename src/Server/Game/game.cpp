@@ -70,8 +70,10 @@ bool Game::isRunning() {
 
 void Game::endGame() {
     std::cout << "[GAME] endGame called, stopping gameLoop" << std::endl;
-    gameLoop.stop();
-    gameLoop.join();
+    if (this->isRunning()) {
+        gameLoop.stop();
+        gameLoop.join();
+    }
     std::cout << "[GAME] Game loop stopped and joined" << std::endl;
 }
 

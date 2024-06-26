@@ -37,6 +37,7 @@ void AcceptorThread::stop() {
     serverSocket->shutdown(SHUT_RDWR);
     serverSocket->close();
     gameMonitor.endAllGames();
+    _keep_running = false;
     std::cout << "Acceptor stopped" << std::endl;
 }
 

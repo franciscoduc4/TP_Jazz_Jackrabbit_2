@@ -35,8 +35,8 @@ void Player::disconnect() {
     keepPlaying.store(false);
     inGame.store(false);
     this->closeQueues();
-    this->stopThreads();
     this->closeSocket();
+    this->stopThreads();
     std::cout << "Player disconnected" << std::endl;
 }
 

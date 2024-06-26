@@ -9,6 +9,7 @@ GameMap::GameMap(Vector<uint32_t> size, uint8_t mapId):
         size(size),
         entityFactory(*this),
         gravity(ServerConfig::getGameGravity()),
+        entityCount(0),
         movesPerCell(ServerConfig::getGameMaxMoves()),
         mapId(mapId) {
     // std::cout << "[GAMEMAP] GameMap created with mapId: " << static_cast<int>(mapId) <<
@@ -55,7 +56,7 @@ void GameMap::loadMap(uint8_t mapId) {
         // Cargar enemigos
         if (config["ENEMIES"]) {
             for (const auto& enemy: config["ENEMIES"]) {
-                std::string enemyType = enemy.first.as<std::string>();
+                auto enemyType = enemy.first.as<std::string>();
                 // std::cout << "[GAMEMAP] Enemy type: " << enemyType << std::endl;
                 for (const auto& pos: enemy.second) {
                     if (pos.size() != 4) {
@@ -318,7 +319,11 @@ void GameMap::addEnemy(EnemyType type, Vector<uint32_t> position, uint32_t width
         // ", "
         //   << static_cast<int>(position.y) << "), width: " << width << ", height: " << height
         //   << std::endl;
-        enemies[enemy->getId()] = enemy;  // Añadir a la lista de enemigos
+        if (enemy == nullptr) {
+            throw std::runtime_error("Failed to create enemy");
+        }
+        uint8_t enemyId = enemy->getId();
+        enemies[enemyId] = enemy;  // Añadir a la lista de enemigos
         addEntityToMap(enemy, position);
         entityCount++;
     } catch (const std::exception& e) {

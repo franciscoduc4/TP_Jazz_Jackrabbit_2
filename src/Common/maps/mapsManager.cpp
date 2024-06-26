@@ -76,3 +76,10 @@ std::unordered_map<uint8_t, std::string> MapsManager::getMapIdAndName() {
     }
     return mapIdAndName;
 }
+
+void MapsManager::deleteInstance() {
+    if (instance != nullptr) {
+        delete instance;
+        instance = nullptr;
+    }
+}
