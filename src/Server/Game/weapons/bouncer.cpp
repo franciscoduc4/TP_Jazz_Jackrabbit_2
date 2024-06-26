@@ -51,3 +51,5 @@ float Bouncer::getFireRate() { return fireRate; }
 bool Bouncer::cooldown(float time) {
     return (time - lastTimeShot) > fireRate;
 }
+
+uint8_t Bouncer::getDamage() { return damage; }

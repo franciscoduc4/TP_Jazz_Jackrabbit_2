@@ -52,3 +52,5 @@ float Freezer::getFireRate() { return fireRate; }
 bool Freezer::cooldown(float time) {
     return (time - lastTimeShot) > fireRate;
 }
+
+uint8_t Freezer::getDamage() { return damage; }

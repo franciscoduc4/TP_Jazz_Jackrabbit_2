@@ -15,6 +15,7 @@ ServerConfig* ServerConfig::getInstance() {
 
 std::string ServerConfig::getLogFile() { return getInstance()->root["LOG_FILE"].as<std::string>(); }
 
+// GAME
 float ServerConfig::getGameGravity() { return getInstance()->root["GAME"]["GRAVITY"].as<float>(); }
 
 float ServerConfig::getGameFrameRate(){
@@ -35,6 +36,7 @@ uint8_t ServerConfig::getGameMaxRevived() {
     return static_cast<uint8_t>(maxRevived);
 }
 
+// Character
 uint32_t ServerConfig::getCharacterInitialX() {
     int initialX = getInstance()->root["CHARACTER"]["INITIAL_X"].as<int>();
     return static_cast<uint32_t>(initialX);
@@ -94,7 +96,6 @@ uint32_t ServerConfig::getCharacterJumpHeight() {
     int jumpHeight = getInstance()->root["CHARACTER"]["JUMP_HEIGHT"].as<int>();
     return static_cast<uint32_t>(jumpHeight);
 }
-
 
 uint8_t ServerConfig::getJazzShootCooldownTime() {
     int jazzShootCooldownTime = getInstance()->root["CHARACTER"]["JAZZ"]["SHOOT_COOLDOWN_TIME"].as<int>();
@@ -161,6 +162,7 @@ uint8_t ServerConfig::getSpazJumpHeight() {
     return static_cast<uint8_t>(spazJumpHeight);
 }
 
+// Weapons
 uint8_t ServerConfig::getWeaponBlasterBullets() {
     int blasterBullets = getInstance()->root["WEAPON"]["BLASTER"]["BULLETS"].as<int>();
     return static_cast<uint8_t>(blasterBullets);
@@ -217,9 +219,70 @@ float ServerConfig::getWeaponRFMissileFireRate() {
     return getInstance()->root["WEAPON"]["RFMISSILE"]["FIRE_RATE"].as<float>();
 }
 
+// Obstacle
 uint8_t ServerConfig::getObstacleMoves() {
     int obstacleMoves = getInstance()->root["OBSTACLE"]["MOVES"].as<int>();
     return static_cast<uint8_t>(obstacleMoves);
+}
+
+uint32_t ServerConfig::getColumnWidth() {
+    int columnWidth = getInstance()->root["OBSTACLE"]["COLUMN"]["WIDTH"].as<int>();
+    return static_cast<uint32_t>(columnWidth);
+}
+
+uint32_t ServerConfig::getColumnHeight() {
+    int columnHeight = getInstance()->root["OBSTACLE"]["COLUMN"]["HEIGHT"].as<int>();
+    return static_cast<uint32_t>(columnHeight);
+}
+
+uint32_t ServerConfig::getFullFloorWidth() {
+    int fullFloorWidth = getInstance()->root["OBSTACLE"]["FULL_FLOOR"]["WIDTH"].as<int>();
+    return static_cast<uint32_t>(fullFloorWidth);
+}
+
+uint32_t ServerConfig::getFullFloorHeight() {
+    int fullFloorHeight = getInstance()->root["OBSTACLE"]["FULL_FLOOR"]["HEIGHT"].as<int>();
+    return static_cast<uint32_t>(fullFloorHeight);
+}
+
+uint32_t ServerConfig::getLeftLadderWidth() {
+    int leftLadderWidth = getInstance()->root["OBSTACLE"]["LEFT_LADDER"]["WIDTH"].as<int>();
+    return static_cast<uint32_t>(leftLadderWidth);
+}
+
+uint32_t ServerConfig::getLeftLadderHeight() {
+    int leftLadderHeight = getInstance()->root["OBSTACLE"]["LEFT_LADDER"]["HEIGHT"].as<int>();
+    return static_cast<uint32_t>(leftLadderHeight);
+}
+
+uint32_t ServerConfig::getLongPlatformWidth() {
+    int longPlatformWidth = getInstance()->root["OBSTACLE"]["LONG_PLATFORM"]["WIDTH"].as<int>();
+    return static_cast<uint32_t>(longPlatformWidth);
+}
+
+uint32_t ServerConfig::getLongPlatformHeight() {
+    int longPlatformHeight = getInstance()->root["OBSTACLE"]["LONG_PLATFORM"]["HEIGHT"].as<int>();
+    return static_cast<uint32_t>(longPlatformHeight);
+}
+
+uint32_t ServerConfig::getRightLadderWidth() {
+    int rightLadderWidth = getInstance()->root["OBSTACLE"]["RIGHT_LADDER"]["WIDTH"].as<int>();
+    return static_cast<uint32_t>(rightLadderWidth);
+}
+
+uint32_t ServerConfig::getRightLadderHeight() {
+    int rightLadderHeight = getInstance()->root["OBSTACLE"]["RIGHT_LADDER"]["HEIGHT"].as<int>();
+    return static_cast<uint32_t>(rightLadderHeight);
+}
+
+uint32_t ServerConfig::getSmallPlatformWidth() {
+    int smallPlatformWidth = getInstance()->root["OBSTACLE"]["SMALL_PLATFORM"]["WIDTH"].as<int>();
+    return static_cast<uint32_t>(smallPlatformWidth);
+}
+
+uint32_t ServerConfig::getSmallPlatformHeight() {
+    int smallPlatformHeight = getInstance()->root["OBSTACLE"]["SMALL_PLATFORM"]["HEIGHT"].as<int>();
+    return static_cast<uint32_t>(smallPlatformHeight);
 }
 
 void ServerConfig::deleteInstance() {

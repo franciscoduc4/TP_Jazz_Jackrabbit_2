@@ -11,8 +11,8 @@ public:
 
     ObstacleType getObstacleType() const override { return ObstacleType::SMALL_PLATFORM; }
 
-    uint32_t getWidth() const override { return 70; }
-    uint32_t getHeight() const override { return 30; }
+    uint32_t getWidth() const override { return ServerConfig::getSmallPlatformWidth(); }
+    uint32_t getHeight() const override { return ServerConfig::getSmallPlatformHeight(); }
 };
 
 #endif // SMALLPLATFORM_H

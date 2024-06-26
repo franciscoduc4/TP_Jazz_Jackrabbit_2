@@ -44,7 +44,7 @@ public:
 
     bool cooldown(float time) override;
 
-    uint32_t getDamage() override {return 15;}
+    uint8_t getDamage() override;
 };
 
 #endif  // BOUNCER_H

@@ -52,3 +52,5 @@ float RFMissile::getFireRate() { return fireRate; }
 bool RFMissile::cooldown(float time) {
     return (time - lastTimeShot) > fireRate;
 }
+
+uint8_t RFMissile::getDamage() { return damage; }
