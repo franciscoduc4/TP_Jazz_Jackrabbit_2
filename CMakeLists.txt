@@ -59,6 +59,7 @@ find_package(Qt5Gui CONFIG REQUIRED)
 find_package(SDL2 REQUIRED)
 find_package(yaml-cpp REQUIRED)
 find_package(GTest REQUIRED)
+include_directories(${GTEST_INCLUDE_DIRS})
 
 # ------------------------------------------------------------------------------------
 # Common files
@@ -152,22 +153,17 @@ endif()
 # ------------------------------------------------------------------------------------
 # Tests
 if(TESTING)
+    set(GMOCK_LIBRARY /usr/local/lib/libgmock.a)
+    set(GMOCK_MAIN_LIBRARY /usr/local/lib/libgmock_main.a)
+
     file(GLOB_RECURSE TEST_SOURCES
             ${PROJECT_SOURCE_DIR}/Tests/*.cpp
     )
-    include(FetchContent)
-    FetchContent_Declare(
-        googletest
-        GIT_REPOSITORY https://github.com/google/googletest.git
-        GIT_TAG release-1.11.0
-    )
-    set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
-    FetchContent_MakeAvailable(googletest)
 
     enable_testing()
 
     add_executable(tests ${TEST_SOURCES})
-    target_link_libraries(tests GTest::gtest_main jazzserver_lib jazzclient_lib)
+    target_link_libraries(tests GTest::GTest GTest::Main ${GMOCK_LIBRARY} ${GMOCK_MAIN_LIBRARY} jazzserver_lib jazzclient_lib pthread)
 
     include(GoogleTest)
     gtest_discover_tests(tests)

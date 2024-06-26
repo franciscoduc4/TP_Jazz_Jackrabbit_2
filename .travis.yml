@@ -1,0 +1,25 @@
+os: linux
+dist: jammy
+addons:
+  apt:
+    packages:
+      - libusb-1.0-0-dev
+      - qtbase5-dev
+      - qtchooser
+      - qt5-qmake
+      - qtbase5-dev-tools
+      - libsdl2-dev
+      - libsdl2-image-dev
+      - libsdl2-ttf-dev
+      - libsdl2-mixer-dev
+      - libyaml-cpp-dev
+      - libfmt-dev
+      - libgtest-dev
+      - libgmock-dev
+script:
+  - mkdir build
+  - cd build
+  - cmake ..
+  - make
+  - cd ..
+  - ./build/tests
