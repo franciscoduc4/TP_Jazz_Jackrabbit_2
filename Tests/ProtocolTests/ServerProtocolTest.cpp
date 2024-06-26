@@ -154,6 +154,5 @@ TEST_F(DeserializerTest, DeserializeCreateGameReturnsNullOnSocketClose) {
 
     auto dto = deserializer.getCommand(playerId);
 
-    EXPECT_NE(dto, nullptr);
-    EXPECT_EQ(dto->getCommand(), Command::IDLE);
+    EXPECT_EQ(dto, nullptr);
 }
