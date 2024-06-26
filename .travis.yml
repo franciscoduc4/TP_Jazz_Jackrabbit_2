@@ -3,6 +3,7 @@ dist: jammy
 addons:
   apt:
     packages:
+      - cmake
       - libusb-1.0-0-dev
       - qtbase5-dev
       - qtchooser
