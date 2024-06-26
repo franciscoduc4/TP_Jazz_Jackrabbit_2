@@ -11,7 +11,7 @@
 #include "maps/mapsManager.h"
 
 GameMonitor::GameMonitor(QueueMonitor& queueMonitor):
-        queueMonitor(queueMonitor), gamesListSize(0), playersGameQueues({}) {}
+        queueMonitor(queueMonitor), gamesListSize(0), playersGameQueues({}), playersGameIds({}) {}
 
 void GameMonitor::createGame(uint8_t playerId, uint8_t mapId, GameMode gameMode, uint8_t maxPlayers,
                              CharacterType characterType, const std::string& gameName,
@@ -36,8 +36,9 @@ void GameMonitor::createGame(uint8_t playerId, uint8_t mapId, GameMode gameMode,
 
         playersGameQueues[playerId] = gameQueue;
 
-        games[playerId] = std::make_unique<Game>(gameId, gameName, mapId, playerId, gameMode, maxPlayers,
+        games[gameId] = std::make_unique<Game>(gameId, gameName, mapId, playerId, gameMode, maxPlayers,
                                                  characterType, std::move(gameQueue), queueMonitor);
+        playersGameIds[playerId] = gameId;
     } else {
         std::cerr << "[GM] Player " << playerId << " not found in playersRecvQueues" << std::endl;
         return;
@@ -74,6 +75,7 @@ void GameMonitor::joinGame(uint8_t playerId, uint8_t gameId, CharacterType chara
             std::cout << "[GM] Assigned id to queue for gameId: " << gameId << std::endl;
             game->addPlayer(playerId, characterType);
             playersGameQueues[playerId] = game->getRecvQueue();
+            playersGameIds[playerId] = gameId;
             std::cout << "[GM] Player " << playerId << " added to game " << gameId << std::endl;
             GameInfo gi = game->getGameInfo();
             auto currentPlayers = gi.currentPlayers;
@@ -194,4 +196,13 @@ std::shared_ptr<Queue<std::unique_ptr<CommandDTO>>> GameMonitor::getPlayerGameQu
         return nullptr;
     }
     return playersGameQueues[playerId];
+}
+
+uint8_t GameMonitor::getGameId(uint8_t playerId) {
+    auto it = playersGameIds.find(playerId);
+    if (it == playersGameIds.end()) {
+        std::cerr << "[GM] Player " << playerId << " not found in playersGameIds" << std::endl;
+        return 0;
+    }
+    return playersGameIds[playerId];
 }

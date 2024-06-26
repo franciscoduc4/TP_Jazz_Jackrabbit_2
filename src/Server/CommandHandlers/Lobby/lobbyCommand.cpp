@@ -12,7 +12,7 @@
 #include "startGame.h"
 
 std::unique_ptr<LobbyCommandHandler> LobbyCommandHandler::createHandler(
-        std::unique_ptr<CommandDTO> command) {
+        std::unique_ptr<CommandDTO> command, uint8_t gameId) {
     switch (command->getCommand()) {
         case Command::CREATE_GAME: {
             auto createGameCommand = dynamic_cast<CreateGameDTO*>(command.get());
@@ -33,6 +33,7 @@ std::unique_ptr<LobbyCommandHandler> LobbyCommandHandler::createHandler(
         }
         case Command::START_GAME: {
             auto startGameCommand = dynamic_cast<StartGameDTO*>(command.get());
+            startGameCommand->setGameId(gameId);
             command.release();
             return std::make_unique<StartGameHandler>(
                     std::unique_ptr<StartGameDTO>(startGameCommand));

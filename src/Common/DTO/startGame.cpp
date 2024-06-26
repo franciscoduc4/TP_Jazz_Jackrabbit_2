@@ -13,6 +13,11 @@ StartGameDTO::StartGameDTO(const uint8_t& gameId):
 StartGameDTO::StartGameDTO(uint8_t& playerId, uint8_t& gameId):
         CommandDTO(playerId, Command::START_GAME), gameId(gameId), gameIdSet(true) {}
 
+void StartGameDTO::setGameId(uint8_t gameId) {
+    this->gameId = gameId;
+    gameIdSet = true;
+}
+
 uint8_t StartGameDTO::getGameId() const { return gameId; }
 
 std::vector<char> StartGameDTO::getData() const {

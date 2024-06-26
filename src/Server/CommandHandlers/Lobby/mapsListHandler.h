@@ -18,7 +18,7 @@ public:
     explicit MapsListHandler(std::unique_ptr<CommandDTO> command);
 
     virtual void execute(GameMonitor& gameMonitor, std::atomic<bool>& inGame,
-                         std::shared_ptr<Queue<std::unique_ptr<DTO>>> sendQueue);
+                         const std::shared_ptr<Queue<std::unique_ptr<DTO>>>& sendQueue);
 };
 
 #endif  // MAPS_LIST_HANDLER_H_

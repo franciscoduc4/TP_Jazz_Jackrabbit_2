@@ -23,6 +23,7 @@ private:
             playersRecvQueues;
     std::unordered_map<uint8_t, std::shared_ptr<Queue<std::unique_ptr<CommandDTO>>>>
             playersGameQueues;
+    std::unordered_map<uint8_t, uint8_t> playersGameIds;
     std::mutex mtx;
     QueueMonitor& queueMonitor;
     uint8_t gamesListSize = 0;
@@ -52,6 +53,8 @@ public:
 
     void endAllGames();
     uint8_t getGamesListSize();
+
+    uint8_t getGameId(uint8_t playerId);
 };
 
 #endif  // GAME_MONITOR_H_

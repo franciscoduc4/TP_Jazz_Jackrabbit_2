@@ -37,7 +37,7 @@ void ReceiverThread::runLobby() {
 
     std::cout << "[SERVER RECEIVER LOBBY] Command received" << std::endl;
 
-    auto handler = LobbyCommandHandler::createHandler(std::move(command));
+    auto handler = LobbyCommandHandler::createHandler(std::move(command), gameMonitor.getGameId(playerId));
     std::cout << "[SERVER RECEIVER LOBBY] Handler created" << std::endl;
     if (inGame.load() || handler == nullptr)
         return;

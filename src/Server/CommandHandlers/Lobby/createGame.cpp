@@ -16,7 +16,7 @@ CreateGameHandler::CreateGameHandler(std::unique_ptr<CreateGameDTO> command):
         command(std::move(command)) {}
 
 void CreateGameHandler::execute(GameMonitor& gameMonitor, std::atomic<bool>& inGame,
-                                std::shared_ptr<Queue<std::unique_ptr<DTO>>> sendQueue) {
+                                const std::shared_ptr<Queue<std::unique_ptr<DTO>>>& sendQueue) {
     uint8_t playerId = command->getPlayerId();
     uint8_t mapId = command->getMapId();
     uint8_t maxPlayers = command->getMaxPlayers();
