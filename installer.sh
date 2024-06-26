@@ -22,7 +22,7 @@ sudo apt-get install -y libgtest-dev libgmock-dev
 cd /usr/src/googletest
 sudo cmake .
 sudo make
-sudo cp lib/*.a /usr/lib
+sudo make install
 
 # Update library cache
 sudo ldconfig

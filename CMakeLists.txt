@@ -46,6 +46,10 @@ endif()
 
 # Configuración de paquetes
 set(LIBDIR "/usr/local/lib")
+set(GTEST_LIBRARY "/usr/lib/libgtest.a")
+set(GTEST_MAIN_LIBRARY "/usr/lib/libgtest_main.a")
+set(GMOCK_LIBRARY "/usr/lib/libgmock.a")
+set(GMOCK_MAIN_LIBRARY "/usr/lib/libgmock_main.a")
 
 if (APPLE)
     list(APPEND CMAKE_PREFIX_PATH "/usr/local/Cellar/sdl2/2.30.3")
@@ -152,18 +156,24 @@ if (LEVEL_EDITOR)
 endif()
 # ------------------------------------------------------------------------------------
 # Tests
+# Tests
 if(TESTING)
-    set(GMOCK_LIBRARY ${PROJECT_SOURCE_DIR}/Tests/GMock/libgmock.a)
-    set(GMOCK_MAIN_LIBRARY ${PROJECT_SOURCE_DIR}/Tests/GMock/libgmock_main.a)
+    enable_testing()
 
     file(GLOB_RECURSE TEST_SOURCES
             ${PROJECT_SOURCE_DIR}/Tests/*.cpp
     )
 
-    enable_testing()
-
     add_executable(tests ${TEST_SOURCES})
-    target_link_libraries(tests GTest::GTest GTest::Main ${GMOCK_LIBRARY} ${GMOCK_MAIN_LIBRARY} jazzserver_lib jazzclient_lib pthread)
+    target_link_libraries(tests 
+        GTest::GTest 
+        GTest::Main 
+        gmock 
+        gmock_main 
+        jazzserver_lib 
+        jazzclient_lib 
+        pthread
+    )
 
     include(GoogleTest)
     gtest_discover_tests(tests)

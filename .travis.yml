@@ -16,10 +16,18 @@ addons:
       - libfmt-dev
       - libgtest-dev
       - libgmock-dev
+before_script:
+  - cd /usr/src/googletest
+  - sudo cmake .
+  - sudo make
+  - sudo make install
+  - sudo ldconfig
+  - cd $TRAVIS_BUILD_DIR
+
 script:
   - mkdir build
   - cd build
   - cmake ..
-  - make
+  - make -j$(nproc)
   - cd ..
   - ./build/tests

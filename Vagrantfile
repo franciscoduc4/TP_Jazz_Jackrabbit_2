@@ -25,7 +25,7 @@ Vagrant.configure("2") do |config|
     cd /usr/src/googletest
     sudo cmake .
     sudo make
-    sudo cp lib/*.a /usr/lib
+    sudo make install
     
     # Update library cache
     sudo ldconfig
