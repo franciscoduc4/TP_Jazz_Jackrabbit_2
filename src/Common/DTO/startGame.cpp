@@ -20,7 +20,7 @@ std::vector<char> StartGameDTO::getData() const {
         return {};
     }
     std::vector<char> data;
-    data.resize(sizeof(uint8_t));
+    //data.resize(sizeof(uint8_t));
     data.push_back(static_cast<char>(gameId));
     return data;
 }
