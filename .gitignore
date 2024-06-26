@@ -26,6 +26,9 @@
 *.a
 *.lib
 
+# Exclude GMock libraries
+!Tests/GMock/*
+
 # Executables
 *.exe
 *.out
