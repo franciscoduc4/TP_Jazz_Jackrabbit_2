@@ -21,8 +21,8 @@ public:
 
     uint8_t getDamage() const override { return ServerConfig::getFlyingEnemyDamage(); }
 
-    uint32_t getWidth() const { return ServerConfig::getFlyingEnemyWidth(); }
-    uint32_t getHeight() const { return ServerConfig::getFlyingEnemyHeight(); }
+    uint32_t getWidth() const override { return ServerConfig::getFlyingEnemyWidth(); }
+    uint32_t getHeight() const override { return ServerConfig::getFlyingEnemyHeight(); }
 
 };
 

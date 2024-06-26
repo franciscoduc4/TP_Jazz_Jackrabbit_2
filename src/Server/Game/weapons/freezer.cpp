@@ -17,7 +17,7 @@ void Freezer::update(float time) {
     }
 }
 
-void Freezer::shoot(std::vector<std::shared_ptr<Entity>>& shootingEntities, uint32_t xPos,
+void Freezer::shoot(const std::vector<std::shared_ptr<Entity>>& shootingEntities, uint32_t xPos,
                     float time) {
     lastTimeShot = time;
     bullets--;

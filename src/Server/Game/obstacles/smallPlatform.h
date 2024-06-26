@@ -9,10 +9,10 @@ public:
 
      void update(double deltaTime) override;
 
-    ObstacleType getObstacleType() const { return ObstacleType::SMALL_PLATFORM; }
+    ObstacleType getObstacleType() const override { return ObstacleType::SMALL_PLATFORM; }
 
-    uint32_t getWidth() const { return 70; }
-    uint32_t getHeight() const { return 30; }
+    uint32_t getWidth() const override { return 70; }
+    uint32_t getHeight() const override { return 30; }
 };
 
 #endif // SMALLPLATFORM_H

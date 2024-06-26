@@ -17,7 +17,7 @@ void RFMissile::update(float time) {
     }
 }
 
-void RFMissile::shoot(std::vector<std::shared_ptr<Entity>>& shootingEntities, uint32_t xPos,
+void RFMissile::shoot(const std::vector<std::shared_ptr<Entity>>& shootingEntities, uint32_t xPos,
                       float time) {
     lastTimeShot = time;
     bullets--;

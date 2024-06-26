@@ -1,5 +1,7 @@
 #include "enemy.h"
 
+#include <utility>
+
 #include "../gameMap.h"
 
 Enemy::Enemy(GameMap& gameMap, const Vector<uint32_t>& pos, uint8_t id, uint8_t health,
@@ -15,9 +17,9 @@ Enemy::Enemy(GameMap& gameMap, const Vector<uint32_t>& pos, uint8_t id, uint8_t 
         viewDistanceHit(viewDistanceHit),
         movesPerCell(movesPerCell),
         hitDistance(hitDistance),
-        walkProb(walkProb),
-        jumpProb(jumpProb),
-        flyProb(flyProb),
+        walkProb(std::move(walkProb)),
+        jumpProb(std::move(jumpProb)),
+        flyProb(std::move(flyProb)),
         width(width),
         height(height),
         initialPosition(pos),
@@ -28,6 +30,7 @@ void Enemy::update(const std::map<uint8_t, std::shared_ptr<Character>>& characte
     // std::cout << "[ENEMY] update" << std::endl;
 
     std::vector<std::shared_ptr<Character>> characterList;
+    characterList.reserve(characters.size());
     for (const auto& pair: characters) {
         characterList.push_back(pair.second);
     }
@@ -53,7 +56,7 @@ void Enemy::recvDamage(uint8_t dmg, float time) {
     }
 }
 
-void Enemy::attack(std::vector<std::shared_ptr<Character>> characters, float time) {
+void Enemy::attack(const std::vector<std::shared_ptr<Character>>& characters, float time) {
     std::shared_ptr<Character> closeCharacter = getClosestCharacter(characters);
     if (!closeCharacter) {
         return;
@@ -77,7 +80,7 @@ void Enemy::die(float time) {
 }
 
 std::shared_ptr<Character> Enemy::getClosestCharacter(
-        std::vector<std::shared_ptr<Character>> characters) {
+        const std::vector<std::shared_ptr<Character>>& characters) {
     std::shared_ptr<Character> closestCharacter = nullptr;
     uint8_t minDistance = viewDistance;
     for (auto& character: characters) {

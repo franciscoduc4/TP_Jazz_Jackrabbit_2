@@ -9,11 +9,11 @@ public:
 
     void update(double deltaTime) override;
 
-    ItemType getItemType() const  { return ItemType::FOOD;}
+    ItemType getItemType() const override  { return ItemType::FOOD;}
 
-    uint32_t getValue() const { return ServerConfig::getItemFoodValue(); }
-    uint32_t getWidth() const { return ServerConfig::getItemFoodWidth(); }
-    uint32_t getHeight() const { return ServerConfig::getItemFoodHeight(); }
+    uint32_t getValue() const override { return ServerConfig::getItemFoodValue(); }
+    uint32_t getWidth() const override { return ServerConfig::getItemFoodWidth(); }
+    uint32_t getHeight() const override { return ServerConfig::getItemFoodHeight(); }
 };
 
 #endif // FOOD_H

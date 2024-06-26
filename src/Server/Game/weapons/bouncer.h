@@ -23,7 +23,7 @@ public:
 
     void update(float time) override;
 
-    void shoot(std::vector<std::shared_ptr<Entity>>& shootingEntities, uint32_t xPos,
+    void shoot(const std::vector<std::shared_ptr<Entity>>& shootingEntities, uint32_t xPos,
                float time) override;
 
     void reload() override;
@@ -44,7 +44,7 @@ public:
 
     bool cooldown(float time) override;
 
-    uint32_t getDamage() {return 15;}
+    uint32_t getDamage() override {return 15;}
 };
 
 #endif  // BOUNCER_H

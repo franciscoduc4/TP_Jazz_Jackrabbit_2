@@ -9,11 +9,11 @@ public:
 
     void update(double deltaTime) override;
 
-    ItemType getItemType() const { return ItemType::GEM;}
+    ItemType getItemType() const override { return ItemType::GEM;}
 
-    uint32_t getValue() const { return ServerConfig::getItemGemValue(); }
-    uint32_t getWidth() const { return ServerConfig::getItemGemWidth(); }
-    uint32_t getHeight() const { return ServerConfig::getItemGemHeight(); }
+    uint32_t getValue() const override { return ServerConfig::getItemGemValue(); }
+    uint32_t getWidth() const override { return ServerConfig::getItemGemWidth(); }
+    uint32_t getHeight() const override { return ServerConfig::getItemGemHeight(); }
 };
 
 #endif // GEM_H

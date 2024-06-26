@@ -46,7 +46,7 @@ public:
 
     void recvDamage(uint8_t dmg, float time) override;
 
-    void attack(std::vector<std::shared_ptr<Character>> characters, float time);
+    void attack(const std::vector<std::shared_ptr<Character>>& characters, float time);
 
     void die(float time) override;
 
@@ -64,7 +64,7 @@ public:
     virtual uint32_t getHeight() const = 0;
 
     std::shared_ptr<Character> getClosestCharacter(
-            std::vector<std::shared_ptr<Character>> characters);
+            const std::vector<std::shared_ptr<Character>>& characters);
 };
 
 #endif  // ENEMY_H_

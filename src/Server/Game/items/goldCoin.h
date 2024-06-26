@@ -9,11 +9,11 @@ public:
 
     void update(double deltaTime) override;
 
-    ItemType getItemType() const { return ItemType::GOLD_COIN; }
+    ItemType getItemType() const override { return ItemType::GOLD_COIN; }
 
-    uint32_t getValue() const { return ServerConfig::getItemGoldCoinValue(); }
-    uint32_t getWidth() const { return ServerConfig::getItemGoldCoinWidth(); }
-    uint32_t getHeight() const { return ServerConfig::getItemGoldCoinHeight(); }
+    uint32_t getValue() const override { return ServerConfig::getItemGoldCoinValue(); }
+    uint32_t getWidth() const override { return ServerConfig::getItemGoldCoinWidth(); }
+    uint32_t getHeight() const override { return ServerConfig::getItemGoldCoinHeight(); }
 };
 
 #endif // GOLDCOIN_H

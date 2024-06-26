@@ -17,7 +17,7 @@ void Blaster::update(float time) {
     // }
 }
 
-void Blaster::shoot(std::vector<std::shared_ptr<Entity>>& shootingEntities, uint32_t xPos,
+void Blaster::shoot(const std::vector<std::shared_ptr<Entity>>& shootingEntities, uint32_t xPos,
                     float time) {
     lastTimeShot = time;
     bullets--;

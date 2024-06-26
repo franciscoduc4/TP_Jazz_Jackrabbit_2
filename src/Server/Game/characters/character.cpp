@@ -137,7 +137,7 @@ void Character::shoot(float time) {
 }
 
 
-void Character::handleCollision(std::shared_ptr<Enemy> enemy) {
+void Character::handleCollision(const std::shared_ptr<Enemy>& enemy) {
     if (!enemy) {
         std::cerr << "[CHARACTER] Null enemy pointer!" << std::endl;
         return;
@@ -166,7 +166,7 @@ void Character::handleCollision(std::shared_ptr<Enemy> enemy) {
 }
 
 
-void Character::handleObstacleCollision(std::shared_ptr<Obstacle> obstacle) {
+void Character::handleObstacleCollision(const std::shared_ptr<Obstacle>& obstacle) {
     std::cout << "[CHARACTER] Character ID: " << static_cast<int>(id)
               << " collided with Obstacle at position: (" << obstacle->getPosition().x << ", "
               << obstacle->getPosition().y << ")" << std::endl;
@@ -202,7 +202,7 @@ void Character::handleObstacleCollision(std::shared_ptr<Obstacle> obstacle) {
     }
 }
 
-void Character::handleCharacterCollision(std::shared_ptr<Character> character) {
+void Character::handleCharacterCollision(const std::shared_ptr<Character>& character) {
     std::cout << "[CHARACTER] Character ID: " << static_cast<int>(id)
               << " collided with Character ID: " << static_cast<int>(character->getId())
               << std::endl;
@@ -232,16 +232,16 @@ void Character::handleCharacterCollision(std::shared_ptr<Character> character) {
 }
 
 
-void Character::handleLadderCollision(std::shared_ptr<Obstacle> obstacle) {
+void Character::handleLadderCollision(const std::shared_ptr<Obstacle>& obstacle) {
     auto obstaclePos = obstacle->getPosition();
     auto obstacleWidth = obstacle->getWidth();
     auto obstacleHeight = obstacle->getHeight();
 
     if (obstacle->getObstacleType() == ObstacleType::LEFT_LADDER) {
-        float slope = static_cast<float>(obstacleHeight) / obstacleWidth;
+        double slope = static_cast<double>(obstacleHeight) / obstacleWidth;
         pos.y = obstaclePos.y + static_cast<uint32_t>(slope * (pos.x - obstaclePos.x));
     } else if (obstacle->getObstacleType() == ObstacleType::RIGHT_LADDER) {
-        float slope = static_cast<float>(obstacleHeight) / obstacleWidth;
+        double slope = static_cast<double>(obstacleHeight) / obstacleWidth;
         pos.y = obstaclePos.y +
                 static_cast<uint32_t>(slope * (obstaclePos.x + obstacleWidth - pos.x));
     }
