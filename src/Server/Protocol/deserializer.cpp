@@ -12,17 +12,10 @@ Deserializer::Deserializer(const std::shared_ptr<Socket>& socket, std::atomic<bo
 
 std::unique_ptr<CommandDTO> Deserializer::getCommand(uint8_t& playerId) {
     char cmd = 0;
-<<<<<<< Updated upstream
-    socket->recvall(&cmd, sizeof(char), &wasClosed);
-    this->keepPlaying.store(!wasClosed);
-    if (wasClosed) {
-        std::cerr << "[SERVER DESERIALIZER] Connection was closed while receiving command"
-                  << std::endl;
+    if (!protocol->receiveChar(cmd)) {
         return nullptr;
     }
-=======
-    protocol->receiveChar(cmd);
->>>>>>> Stashed changes
+
     std::cout << "[SERVER DESERIALIZER] Received command: " << (int)cmd << std::endl;
     auto command = static_cast<Command>(cmd);
     switch (command) {
