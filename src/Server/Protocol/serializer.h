@@ -18,20 +18,15 @@
 #include "../../Common/DTO/startGame.h"
 #include "../../Common/Types/command.h"
 #include "../../Common/socket.h"
+#include "protocol.h"
 
 class Serializer {
 private:
-    std::shared_ptr<Socket> socket;
-    std::atomic<bool>& keepPlaying;
-    std::atomic<bool>& inGame;
-    bool wasClosed;
-
+    std::shared_ptr<Protocol> protocol;
     static void insertGameInfoIntoBuffer(std::vector<char>& buffer, const GameInfo& gameInfo);
     static void insertPositionIntoBuffer(std::vector<char>& buffer, const uint32_t& x,
                                          const uint32_t& y);
     static void insert_int_into_buffer(std::vector<char>& buffer, const int& value);
-
-    void clientClosed();
 
 public:
     // Lobby
