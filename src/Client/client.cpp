@@ -84,6 +84,8 @@ void Client::start() {
         uint8_t mapId = qtResult.second.getMap();
         GameScreen game(this->gameController, this->playerId, 0);
         std::map<uint8_t, int> scores = game.run();
+        this->skt->shutdown(SHUT_RDWR);
+        this->skt->close();    
         FinalStats stats(scores);
         init.displayStats(qtResult.second, stats, (bool&)clientJoinedGame, this->playerId);
     } while (clientJoinedGame);
