@@ -1,3 +1,5 @@
+![Build Status](https://app.travis-ci.com/franciscoduc4/TP_Jazz_Jackrabbit_2.svg?token=mC9ywb2WHisYvKkuYiWn&branch=main)
+
 # TP Jazz Jackrabbit 2
 
 ![Banner](assets/Miscellaneous/banner.png)
