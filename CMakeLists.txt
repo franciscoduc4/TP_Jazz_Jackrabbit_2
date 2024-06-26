@@ -153,8 +153,8 @@ endif()
 # ------------------------------------------------------------------------------------
 # Tests
 if(TESTING)
-    set(GMOCK_LIBRARY /usr/local/lib/libgmock.a)
-    set(GMOCK_MAIN_LIBRARY /usr/local/lib/libgmock_main.a)
+    set(GMOCK_LIBRARY ${PROJECT_SOURCE_DIR}/Tests/GMock/libgmock.a)
+    set(GMOCK_MAIN_LIBRARY ${PROJECT_SOURCE_DIR}/Tests/GMock/libgmock_main.a)
 
     file(GLOB_RECURSE TEST_SOURCES
             ${PROJECT_SOURCE_DIR}/Tests/*.cpp
