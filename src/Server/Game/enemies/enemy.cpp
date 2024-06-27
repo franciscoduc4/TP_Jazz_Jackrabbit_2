@@ -97,8 +97,22 @@ std::unique_ptr<EnemyState>& Enemy::getState() { return state; }
 
 
 EnemyDTO Enemy::getDTO() const {
-    return EnemyDTO{
-            pos.x, pos.y, id, health, dmg, static_cast<uint32_t>(0), getEnemyType(), EnemyStateEntity::ENEMY_WALKING};
+    return EnemyDTO{pos.x,
+                    pos.y,
+                    id,
+                    health,
+                    dmg,
+                    static_cast<uint32_t>(0),
+                    getEnemyType(),
+                    EnemyStateEntity::ENEMY_WALKING};
 }
 
-void Enemy::update(double deltaTime) { }
+void Enemy::update(double deltaTime) {}
+
+ItemType Enemy::dropRandomItem() const {
+    std::array<ItemType, 6> possibleItems = {ItemType::GEM,           ItemType::GOLD_COIN,
+                                             ItemType::SILVER_COIN,   ItemType::FOOD,
+                                             ItemType::POISONED_FOOD, ItemType::BULLET};
+    int randomIndex = std::rand() % possibleItems.size();
+    return possibleItems[randomIndex];
+}

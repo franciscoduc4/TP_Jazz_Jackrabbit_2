@@ -58,6 +58,8 @@ public:
 
     bool isDead() { return Entity::isEntityDead(); }
 
+    ItemType dropRandomItem() const;
+
     virtual uint8_t getDamage() const = 0;
 
     virtual uint32_t getWidth() const = 0;

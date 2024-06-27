@@ -20,10 +20,9 @@ public:
     static uint8_t getGameMaxMoves();
     static uint8_t getGameMaxRevived();
     static int getItemsCollected();
-    
+
     static float getGameFrameRate();
     static uint32_t getGameCommandsToProcess();
-
 
 
     static uint32_t getCharacterInitialX();
@@ -123,7 +122,7 @@ public:
     static std::vector<uint8_t> getYellowmonsEnemyFlyProb();
     static uint32_t getYellowmonsEnemyWidth();
     static uint32_t getYellowmonsEnemyHeight();
-    static uint32_t getYellowmonsEnemyValue();\
+    static uint32_t getYellowmonsEnemyValue();
     static uint32_t getYellowmonsEnemyRespawnTime();
 
 
@@ -161,7 +160,9 @@ public:
     static uint32_t getItemPoisonedFoodValue();
     static uint32_t getItemPoisonedFoodWidth();
     static uint32_t getItemPoisonedFoodHeight();
-
+    static uint32_t getItemBulletValue();
+    static uint32_t getItemBulletWidth();
+    static uint32_t getItemBulletHeight();
 
     static uint32_t getGameMapSizeX(const std::string& mapName);
     static uint32_t getGameMapSizeY(const std::string& mapName);

@@ -213,3 +213,7 @@ ITEM:
     VALUE: 5
     WIDTH: 1
     HEIGHT: 1
+  BULLET:
+    VALUE: 10
+    WIDTH: 1
+    HEIGHT: 1

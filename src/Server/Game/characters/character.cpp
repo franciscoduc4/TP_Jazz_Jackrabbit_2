@@ -712,6 +712,10 @@ void Character::collectItem(const std::shared_ptr<Item>& item) {
             becomeIntoxicated(intoxicatedTime);
             std::cout << "[CHARACTER] Collected poisoned food" << std::endl;
             break;
+        case ItemType::BULLET:
+            // addAmmo(item->getValue());
+            std::cout << "[CHARACTER] Collected bullet" << std::endl;
+            break;
         default:
             std::cerr << "[CHARACTER] Unknown item type collected." << std::endl;
             break;
