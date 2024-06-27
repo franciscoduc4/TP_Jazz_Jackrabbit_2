@@ -298,6 +298,9 @@ void Character::moveLeft(double time) {
 }
 
 void Character::jump(float time) {
+    if (isIntoxicated){
+        return;
+    }
     float gravity = ServerConfig::getGameGravity();
     if (!jumping) {
         currentSpeed.y = -ServerConfig::getCharacterJumpHeight();
@@ -692,6 +695,12 @@ void Character::collectItem(const std::shared_ptr<Item>& item) {
             std::cerr << "[CHARACTER] Unknown item type collected." << std::endl;
             break;
     }
+}
+
+void Character::collectPointsForEnemy(uint32_t value) {
+    score += value;
+    std::cout << "[CHARACTER] Collected points for enemy. Score increased to: "
+              << static_cast<int>(score) << std::endl;
 }
 
 void Character::setState(std::unique_ptr<State> newState) { state = std::move(newState); }

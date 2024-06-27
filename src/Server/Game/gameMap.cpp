@@ -746,7 +746,13 @@ void GameMap::handleShooting(uint32_t characterX, uint8_t damage, float time, Di
             std::cout << "[GAMEMAP] Enemy with ID: " << static_cast<int>(enemy->getId())
                       << " received damage: " << static_cast<int>(damage) << std::endl;
             if (enemy->isDead()) {
+                //shooter->collectPointsForEnemy(enemy->getPointsValue());
+                uint32_t points = enemy->getPointsValue();
+                std::cout << "[GAMEMAP] Enemy with ID: " << static_cast<int>(enemy->getId())
+                          << " is dead. Points collected: " <<static_cast<int>(enemy->getPointsValue())<< std::endl;
                 enemiesToRemove.push_back(enemy->getId());
+                shooter->collectPointsForEnemy(points);
+
             }
         } else {
             std::cout << "[GAMEMAP] Enemy with ID: " << static_cast<int>(enemy->getId())

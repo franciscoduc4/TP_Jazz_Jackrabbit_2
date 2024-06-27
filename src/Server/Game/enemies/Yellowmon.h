@@ -19,10 +19,12 @@ public:
 
     void update(double deltaTime) override;
 
-    uint8_t getDamage() const override { return ServerConfig::getFlyingEnemyDamage(); }
+    uint8_t getDamage() const override { return ServerConfig::getYellowmonsEnemyDamage(); }
 
-    uint32_t getWidth() const override { return ServerConfig::getFlyingEnemyWidth(); }
-    uint32_t getHeight() const override { return ServerConfig::getFlyingEnemyHeight(); }
+    uint32_t getWidth() const override { return ServerConfig::getYellowmonsEnemyWidth(); }
+    uint32_t getHeight() const override { return ServerConfig::getYellowmonsEnemyHeight(); }
+
+    uint32_t getPointsValue() const override { return ServerConfig::getYellowmonsEnemyValue(); }
 
 };
 

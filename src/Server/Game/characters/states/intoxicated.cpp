@@ -57,7 +57,6 @@ std::unique_ptr<State> IntoxicatedState::revive(float time) {
 
 std::unique_ptr<State> IntoxicatedState::jump(float time) {
     // Puede saltar pero con menos altura
-    // character.jump(time * 0.5f);  // Salta a la mitad de la altura normal
     return nullptr;
 }
 

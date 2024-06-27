@@ -105,6 +105,7 @@ public:
 
     void collectItem(const std::shared_ptr<Item>& item);
     void heal(uint8_t amount);
+    void collectPointsForEnemy(uint32_t value);
 
     std::vector<std::shared_ptr<Entity>> getTargets();
     void switchWeapon(WeaponType type);

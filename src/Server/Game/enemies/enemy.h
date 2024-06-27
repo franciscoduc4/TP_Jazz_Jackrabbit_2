@@ -62,6 +62,7 @@ public:
 
     virtual uint32_t getWidth() const = 0;
     virtual uint32_t getHeight() const = 0;
+    virtual uint32_t getPointsValue() const = 0;
 
     std::shared_ptr<Character> getClosestCharacter(
             const std::vector<std::shared_ptr<Character>>& characters);

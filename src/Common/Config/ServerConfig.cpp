@@ -289,275 +289,275 @@ void ServerConfig::deleteInstance() {
     }
 }
 
-uint32_t ServerConfig::getWalkingEnemyInitialX() {
-    int walkingEnemyInitialX = getInstance()->root["ENEMY"]["WALKING"]["INITIAL_X"].as<int>();
-    return static_cast<uint32_t>(walkingEnemyInitialX);
+uint32_t ServerConfig::getTurtleEnemyInitialX() {
+    int turtleEnemyInitialX = getInstance()->root["ENEMY"]["TURTLE"]["INITIAL_X"].as<int>();
+    return static_cast<uint32_t>(turtleEnemyInitialX);
 }
 
-uint32_t ServerConfig::getWalkingEnemyInitialY() {
-    int walkingEnemyInitialY = getInstance()->root["ENEMY"]["WALKING"]["INITIAL_Y"].as<int>();
-    return static_cast<uint32_t>(walkingEnemyInitialY);
+uint32_t ServerConfig::getTurtleEnemyInitialY() {
+    int turtleEnemyInitialY = getInstance()->root["ENEMY"]["TURTLE"]["INITIAL_Y"].as<int>();
+    return static_cast<uint32_t>(turtleEnemyInitialY);
 }
 
-uint8_t ServerConfig::getWalkingEnemyMaxMovesPerCell() {
-    int walkingEnemyMaxMovesPerCell = getInstance()->root["ENEMY"]["WALKING"]["MAX_MOVES_PER_CELL"].as<int>();
-    return static_cast<uint8_t>(walkingEnemyMaxMovesPerCell);
+uint8_t ServerConfig::getTurtleEnemyMaxMovesPerCell() {
+    int turtleEnemyMaxMovesPerCell = getInstance()->root["ENEMY"]["TURTLE"]["MAX_MOVES_PER_CELL"].as<int>();
+    return static_cast<uint8_t>(turtleEnemyMaxMovesPerCell);
 }
 
-uint8_t ServerConfig::getWalkingEnemyInitialHealth() {
-    int walkingEnemyInitialHealth = getInstance()->root["ENEMY"]["WALKING"]["INITIAL_HEALTH"].as<int>();
-    return static_cast<uint8_t>(walkingEnemyInitialHealth);
+uint8_t ServerConfig::getTurtleEnemyInitialHealth() {
+    int turtleEnemyInitialHealth = getInstance()->root["ENEMY"]["TURTLE"]["INITIAL_HEALTH"].as<int>();
+    return static_cast<uint8_t>(turtleEnemyInitialHealth);
 }
 
-uint8_t ServerConfig::getWalkingEnemyDamage() {
-    int walkingEnemyDamage = getInstance()->root["ENEMY"]["WALKING"]["DAMAGE"].as<int>();
-    return static_cast<uint8_t>(walkingEnemyDamage);
+uint8_t ServerConfig::getTurtleEnemyDamage() {
+    int turtleEnemyDamage = getInstance()->root["ENEMY"]["TURTLE"]["DAMAGE"].as<int>();
+    return static_cast<uint8_t>(turtleEnemyDamage);
 }
 
-uint8_t ServerConfig::getWalkingEnemyMaxRevived() {
-    int walkingEnemyMaxRevived = getInstance()->root["ENEMY"]["WALKING"]["MAX_REVIVED"].as<int>();
-    return static_cast<uint8_t>(walkingEnemyMaxRevived);
+uint8_t ServerConfig::getTurtleEnemyMaxRevived() {
+    int turtleEnemyMaxRevived = getInstance()->root["ENEMY"]["TURTLE"]["MAX_REVIVED"].as<int>();
+    return static_cast<uint8_t>(turtleEnemyMaxRevived);
 }
 
-uint8_t ServerConfig::getWalkingEnemyDamageTime() {
-    int walkingEnemyDamageTime = getInstance()->root["ENEMY"]["WALKING"]["DAMAGE_TIME"].as<int>();
-    return static_cast<uint8_t>(walkingEnemyDamageTime);
+uint8_t ServerConfig::getTurtleEnemyDamageTime() {
+    int turtleEnemyDamageTime = getInstance()->root["ENEMY"]["TURTLE"]["DAMAGE_TIME"].as<int>();
+    return static_cast<uint8_t>(turtleEnemyDamageTime);
 }
 
-uint8_t ServerConfig::getWalkingEnemyReviveTime() {
-    int walkingEnemyReviveTime = getInstance()->root["ENEMY"]["WALKING"]["REVIVE_TIME"].as<int>();
-    return static_cast<uint8_t>(walkingEnemyReviveTime);
+uint8_t ServerConfig::getTurtleEnemyReviveTime() {
+    int turtleEnemyReviveTime = getInstance()->root["ENEMY"]["TURTLE"]["REVIVE_TIME"].as<int>();
+    return static_cast<uint8_t>(turtleEnemyReviveTime);
 }
 
-uint8_t ServerConfig::getWalkingEnemyHitDistance() {
-    int walkingEnemyHitDistance = getInstance()->root["ENEMY"]["WALKING"]["HIT_DISTANCE"].as<int>();
-    return static_cast<uint8_t>(walkingEnemyHitDistance);
+uint8_t ServerConfig::getTurtleEnemyHitDistance() {
+    int turtleEnemyHitDistance = getInstance()->root["ENEMY"]["TURTLE"]["HIT_DISTANCE"].as<int>();
+    return static_cast<uint8_t>(turtleEnemyHitDistance);
 }
 
-uint8_t ServerConfig::getWalkingEnemyHitDistanceY() {
-    int walkingEnemyHitDistanceY = getInstance()->root["ENEMY"]["WALKING"]["HIT_DISTANCE_Y"].as<int>();
-    return static_cast<uint8_t>(walkingEnemyHitDistanceY);
+uint8_t ServerConfig::getTurtleEnemyHitDistanceY() {
+    int turtleEnemyHitDistanceY = getInstance()->root["ENEMY"]["TURTLE"]["HIT_DISTANCE_Y"].as<int>();
+    return static_cast<uint8_t>(turtleEnemyHitDistanceY);
 }
 
-uint8_t ServerConfig::getWalkingEnemyViewDistance() {
-    int walkingEnemyViewDistance = getInstance()->root["ENEMY"]["WALKING"]["VIEW_DISTANCE"].as<int>();
-    return static_cast<uint8_t>(walkingEnemyViewDistance);
+uint8_t ServerConfig::getTurtleEnemyViewDistance() {
+    int turtleEnemyViewDistance = getInstance()->root["ENEMY"]["TURTLE"]["VIEW_DISTANCE"].as<int>();
+    return static_cast<uint8_t>(turtleEnemyViewDistance);
 }
 
-uint8_t ServerConfig::getWalkingEnemyViewDistanceHit() {
-    int walkingEnemyViewDistanceHit = getInstance()->root["ENEMY"]["WALKING"]["VIEW_DISTANCE_HIT"].as<int>();
-    return static_cast<uint8_t>(walkingEnemyViewDistanceHit);
+uint8_t ServerConfig::getTurtleEnemyViewDistanceHit() {
+    int turtleEnemyViewDistanceHit = getInstance()->root["ENEMY"]["TURTLE"]["VIEW_DISTANCE_HIT"].as<int>();
+    return static_cast<uint8_t>(turtleEnemyViewDistanceHit);
 }
 
-std::vector<uint8_t> ServerConfig::getWalkingEnemyWalkProb() {
+std::vector<uint8_t> ServerConfig::getTurtleEnemyWalkProb() {
     std::vector<uint8_t> walkProb;
-    for (const auto& prob: getInstance()->root["ENEMY"]["WALKING"]["WALK_PROB"]) {
+    for (const auto& prob: getInstance()->root["ENEMY"]["TURTLE"]["WALK_PROB"]) {
         walkProb.push_back(static_cast<uint8_t>(prob.as<int>()));
     }
     return walkProb;
 }
 
-uint32_t ServerConfig::getWalkingEnemyWidth() {
-    int walkingEnemyWidth = getInstance()->root["ENEMY"]["WALKING"]["WIDTH"].as<int>();
-    return static_cast<uint32_t>(walkingEnemyWidth);
+uint32_t ServerConfig::getTurtleEnemyWidth() {
+    int turtleEnemyWidth = getInstance()->root["ENEMY"]["TURTLE"]["WIDTH"].as<int>();
+    return static_cast<uint32_t>(turtleEnemyWidth);
 }
 
-uint32_t ServerConfig::getWalkingEnemyHeight() {
-    int walkingEnemyHeight = getInstance()->root["ENEMY"]["WALKING"]["HEIGHT"].as<int>();
-    return static_cast<uint32_t>(walkingEnemyHeight);
+uint32_t ServerConfig::getTurtleEnemyHeight() {
+    int turtleEnemyHeight = getInstance()->root["ENEMY"]["TURTLE"]["HEIGHT"].as<int>();
+    return static_cast<uint32_t>(turtleEnemyHeight);
 }
 
-uint32_t ServerConfig::getWalkingEnemyValue() {
-    int walkingEnemyValue = getInstance()->root["ENEMY"]["WALKING"]["VALUE"].as<int>();
-    return static_cast<uint32_t>(walkingEnemyValue);
+uint32_t ServerConfig::getTurtleEnemyValue() {
+    int turtleEnemyValue = getInstance()->root["ENEMY"]["TURTLE"]["VALUE"].as<int>();
+    return static_cast<uint32_t>(turtleEnemyValue);
 }
 
-uint32_t ServerConfig::getWalkingEnemyRespawnTime() {
-    int walkingEnemyRespawnTime = getInstance()->root["ENEMY"]["WALKING"]["RESPAWN_TIME"].as<int>();
-    return static_cast<uint32_t>(walkingEnemyRespawnTime);
+uint32_t ServerConfig::getTurtleEnemyRespawnTime() {
+    int turtleEnemyRespawnTime = getInstance()->root["ENEMY"]["TURTLE"]["RESPAWN_TIME"].as<int>();
+    return static_cast<uint32_t>(turtleEnemyRespawnTime);
 }
 
 
-uint32_t ServerConfig::getFlyingEnemyInitialX() {
-    int flyingEnemyInitialX = getInstance()->root["ENEMY"]["FLYING"]["INITIAL_X"].as<int>();
-    return static_cast<uint32_t>(flyingEnemyInitialX);
+uint32_t ServerConfig::getYellowmonsEnemyInitialX() {
+    int yellowmonsEnemyInitialX = getInstance()->root["ENEMY"]["YELLOWMONS"]["INITIAL_X"].as<int>();
+    return static_cast<uint32_t>(yellowmonsEnemyInitialX);
 }
 
-uint32_t ServerConfig::getFlyingEnemyInitialY() {
-    int flyingEnemyInitialY = getInstance()->root["ENEMY"]["FLYING"]["INITIAL_Y"].as<int>();
-    return static_cast<uint32_t>(flyingEnemyInitialY);
+uint32_t ServerConfig::getYellowmonsEnemyInitialY() {
+    int yellowmonsEnemyInitialY = getInstance()->root["ENEMY"]["YELLOWMONS"]["INITIAL_Y"].as<int>();
+    return static_cast<uint32_t>(yellowmonsEnemyInitialY);
 }
 
-uint8_t ServerConfig::getFlyingEnemyMaxMovesPerCell() {
-    int flyingEnemyMaxMovesPerCell = getInstance()->root["ENEMY"]["FLYING"]["MAX_MOVES_PER_CELL"].as<int>();
-    return static_cast<uint8_t>(flyingEnemyMaxMovesPerCell);
+uint8_t ServerConfig::getYellowmonsEnemyMaxMovesPerCell() {
+    int yellowmonsEnemyMaxMovesPerCell = getInstance()->root["ENEMY"]["YELLOWMONS"]["MAX_MOVES_PER_CELL"].as<int>();
+    return static_cast<uint8_t>(yellowmonsEnemyMaxMovesPerCell);
 }
 
-uint8_t ServerConfig::getFlyingEnemyInitialHealth() {
-    int flyingEnemyInitialHealth = getInstance()->root["ENEMY"]["FLYING"]["INITIAL_HEALTH"].as<int>();
-    return static_cast<uint8_t>(flyingEnemyInitialHealth);
+uint8_t ServerConfig::getYellowmonsEnemyInitialHealth() {
+    int yellowmonsEnemyInitialHealth = getInstance()->root["ENEMY"]["YELLOWMONS"]["INITIAL_HEALTH"].as<int>();
+    return static_cast<uint8_t>(yellowmonsEnemyInitialHealth);
 }
 
-uint8_t ServerConfig::getFlyingEnemyDamage() {
-    int flyingEnemyDamage = getInstance()->root["ENEMY"]["FLYING"]["DAMAGE"].as<int>();
-    return static_cast<uint8_t>(flyingEnemyDamage);
+uint8_t ServerConfig::getYellowmonsEnemyDamage() {
+    int yellowmonsEnemyDamage = getInstance()->root["ENEMY"]["YELLOWMONS"]["DAMAGE"].as<int>();
+    return static_cast<uint8_t>(yellowmonsEnemyDamage);
 }
 
-uint8_t ServerConfig::getFlyingEnemyMaxMoves() {
-    int flyingEnemyMaxMoves = getInstance()->root["ENEMY"]["FLYING"]["MAX_MOVES"].as<int>();
-    return static_cast<uint8_t>(flyingEnemyMaxMoves);
+uint8_t ServerConfig::getYellowmonsEnemyMaxMoves() {
+    int yellowmonsEnemyMaxMoves = getInstance()->root["ENEMY"]["YELLOWMONS"]["MAX_MOVES"].as<int>();
+    return static_cast<uint8_t>(yellowmonsEnemyMaxMoves);
 }
 
-uint8_t ServerConfig::getFlyingEnemyMaxRevived() {
-    int flyingEnemyMaxRevived = getInstance()->root["ENEMY"]["FLYING"]["MAX_REVIVED"].as<int>();
-    return static_cast<uint8_t>(flyingEnemyMaxRevived);
+uint8_t ServerConfig::getYellowmonsEnemyMaxRevived() {
+    int yellowmonsEnemyMaxRevived = getInstance()->root["ENEMY"]["YELLOWMONS"]["MAX_REVIVED"].as<int>();
+    return static_cast<uint8_t>(yellowmonsEnemyMaxRevived);
 }
 
-uint8_t ServerConfig::getFlyingEnemyDamageTime() {
-    int flyingEnemyDamageTime = getInstance()->root["ENEMY"]["FLYING"]["DAMAGE_TIME"].as<int>();
-    return static_cast<uint8_t>(flyingEnemyDamageTime);
+uint8_t ServerConfig::getYellowmonsEnemyDamageTime() {
+    int yellowmonsEnemyDamageTime = getInstance()->root["ENEMY"]["YELLOWMONS"]["DAMAGE_TIME"].as<int>();
+    return static_cast<uint8_t>(yellowmonsEnemyDamageTime);
 }
 
-uint8_t ServerConfig::getFlyingEnemyReviveTime() {
-    int flyingEnemyReviveTime = getInstance()->root["ENEMY"]["FLYING"]["REVIVE_TIME"].as<int>();
-    return static_cast<uint8_t>(flyingEnemyReviveTime);
+uint8_t ServerConfig::getYellowmonsEnemyReviveTime() {
+    int yellowmonsEnemyReviveTime = getInstance()->root["ENEMY"]["YELLOWMONS"]["REVIVE_TIME"].as<int>();
+    return static_cast<uint8_t>(yellowmonsEnemyReviveTime);
 }
 
-uint8_t ServerConfig::getFlyingEnemyHitDistance() {
-    int flyingEnemyHitDistance = getInstance()->root["ENEMY"]["FLYING"]["HIT_DISTANCE"].as<int>();
-    return static_cast<uint8_t>(flyingEnemyHitDistance);
+uint8_t ServerConfig::getYellowmonsEnemyHitDistance() {
+    int yellowmonsEnemyHitDistance = getInstance()->root["ENEMY"]["YELLOWMONS"]["HIT_DISTANCE"].as<int>();
+    return static_cast<uint8_t>(yellowmonsEnemyHitDistance);
 }
 
-uint8_t ServerConfig::getFlyingEnemyHitDistanceY() {
-    int flyingEnemyHitDistanceY = getInstance()->root["ENEMY"]["FLYING"]["HIT_DISTANCE_Y"].as<int>();
-    return static_cast<uint8_t>(flyingEnemyHitDistanceY);
+uint8_t ServerConfig::getYellowmonsEnemyHitDistanceY() {
+    int yellowmonsEnemyHitDistanceY = getInstance()->root["ENEMY"]["YELLOWMONS"]["HIT_DISTANCE_Y"].as<int>();
+    return static_cast<uint8_t>(yellowmonsEnemyHitDistanceY);
 }
 
-uint8_t ServerConfig::getFlyingEnemyViewDistance() {
-    int flyingEnemyViewDistance = getInstance()->root["ENEMY"]["FLYING"]["VIEW_DISTANCE"].as<int>();
-    return static_cast<uint8_t>(flyingEnemyViewDistance);
+uint8_t ServerConfig::getYellowmonsEnemyViewDistance() {
+    int yellowmonsEnemyViewDistance = getInstance()->root["ENEMY"]["YELLOWMONS"]["VIEW_DISTANCE"].as<int>();
+    return static_cast<uint8_t>(yellowmonsEnemyViewDistance);
 }
 
-uint8_t ServerConfig::getFlyingEnemyViewDistanceHit() {
-    int flyingEnemyViewDistanceHit = getInstance()->root["ENEMY"]["FLYING"]["VIEW_DISTANCE_HIT"].as<int>();
-    return static_cast<uint8_t>(flyingEnemyViewDistanceHit);
+uint8_t ServerConfig::getYellowmonsEnemyViewDistanceHit() {
+    int yellowmonsEnemyViewDistanceHit = getInstance()->root["ENEMY"]["YELLOWMONS"]["VIEW_DISTANCE_HIT"].as<int>();
+    return static_cast<uint8_t>(yellowmonsEnemyViewDistanceHit);
 }
 
-std::vector<uint8_t> ServerConfig::getFlyingEnemyFlyProb() {
+std::vector<uint8_t> ServerConfig::getYellowmonsEnemyFlyProb() {
     std::vector<uint8_t> flyProb;
-    for (const auto& prob: getInstance()->root["ENEMY"]["FLYING"]["FLY_PROB"]) {
+    for (const auto& prob: getInstance()->root["ENEMY"]["YELLOWMONS"]["FLY_PROB"]) {
         flyProb.push_back(static_cast<uint8_t>(prob.as<int>()));
     }
     return flyProb;
 }
 
-uint32_t ServerConfig::getFlyingEnemyWidth() {
-    int flyingEnemyWidth = getInstance()->root["ENEMY"]["FLYING"]["WIDTH"].as<int>();
-    return static_cast<uint32_t>(flyingEnemyWidth);
+uint32_t ServerConfig::getYellowmonsEnemyWidth() {
+    int yellowmonsEnemyWidth = getInstance()->root["ENEMY"]["YELLOWMONS"]["WIDTH"].as<int>();
+    return static_cast<uint32_t>(yellowmonsEnemyWidth);
 }
 
-uint32_t ServerConfig::getFlyingEnemyHeight() {
-    int flyingEnemyHeight = getInstance()->root["ENEMY"]["FLYING"]["HEIGHT"].as<int>();
-    return static_cast<uint32_t>(flyingEnemyHeight);
+uint32_t ServerConfig::getYellowmonsEnemyHeight() {
+    int yellowmonsEnemyHeight = getInstance()->root["ENEMY"]["YELLOWMONS"]["HEIGHT"].as<int>();
+    return static_cast<uint32_t>(yellowmonsEnemyHeight);
 }
 
-uint32_t ServerConfig::getFlyingEnemyValue() {
-    int flyingEnemyValue = getInstance()->root["ENEMY"]["FLYING"]["VALUE"].as<int>();
-    return static_cast<uint32_t>(flyingEnemyValue);
+uint32_t ServerConfig::getYellowmonsEnemyValue() {
+    int yellowmonsEnemyValue = getInstance()->root["ENEMY"]["YELLOWMONS"]["VALUE"].as<int>();
+    return static_cast<uint32_t>(yellowmonsEnemyValue);
 }
 
-uint32_t ServerConfig::getFlyingEnemyRespawnTime() {
-    int flyingEnemyRespawnTime = getInstance()->root["ENEMY"]["FLYING"]["RESPAWN_TIME"].as<int>();
-    return static_cast<uint32_t>(flyingEnemyRespawnTime);
+uint32_t ServerConfig::getYellowmonsEnemyRespawnTime() {
+    int yellowmonsEnemyRespawnTime = getInstance()->root["ENEMY"]["YELLOWMONS"]["RESPAWN_TIME"].as<int>();
+    return static_cast<uint32_t>(yellowmonsEnemyRespawnTime);
 }
 
 
-uint32_t ServerConfig::getJumpingEnemyInitialX() {
-    int jumpingEnemyInitialX = getInstance()->root["ENEMY"]["JUMPING"]["INITIAL_X"].as<int>();
-    return static_cast<uint32_t>(jumpingEnemyInitialX);
+uint32_t ServerConfig::getSchwarzenguardEnemyInitialX() {
+    int schwarzenguardEnemyInitialX = getInstance()->root["ENEMY"]["SCHWARZENGUARD"]["INITIAL_X"].as<int>();
+    return static_cast<uint32_t>(schwarzenguardEnemyInitialX);
 }
 
-uint32_t ServerConfig::getJumpingEnemyInitialY() {
-    int jumpingEnemyInitialY = getInstance()->root["ENEMY"]["JUMPING"]["INITIAL_Y"].as<int>();
-    return static_cast<uint32_t>(jumpingEnemyInitialY);
+uint32_t ServerConfig::getSchwarzenguardEnemyInitialY() {
+    int schwarzenguardEnemyInitialY = getInstance()->root["ENEMY"]["JUMPING"]["INITIAL_Y"].as<int>();
+    return static_cast<uint32_t>(schwarzenguardEnemyInitialY);
 }
 
-uint8_t ServerConfig::getJumpingEnemyMaxMovesPerCell() {
-    int jumpingEnemyMaxMovesPerCell = getInstance()->root["ENEMY"]["JUMPING"]["MAX_MOVES_PER_CELL"].as<int>();
-    return static_cast<uint8_t>(jumpingEnemyMaxMovesPerCell);
+uint8_t ServerConfig::getSchwarzenguardEnemyMaxMovesPerCell() {
+    int schwarzenguardEnemyMaxMovesPerCell = getInstance()->root["ENEMY"]["JUMPING"]["MAX_MOVES_PER_CELL"].as<int>();
+    return static_cast<uint8_t>(schwarzenguardEnemyMaxMovesPerCell);
 }
 
-uint8_t ServerConfig::getJumpingEnemyInitialHealth() {
-    int jumpingEnemyInitialHealth = getInstance()->root["ENEMY"]["JUMPING"]["INITIAL_HEALTH"].as<int>();
-    return static_cast<uint8_t>(jumpingEnemyInitialHealth);
+uint8_t ServerConfig::getSchwarzenguardEnemyInitialHealth() {
+    int schwarzenguardEnemyInitialHealth = getInstance()->root["ENEMY"]["JUMPING"]["INITIAL_HEALTH"].as<int>();
+    return static_cast<uint8_t>(schwarzenguardEnemyInitialHealth);
 }
 
-uint8_t ServerConfig::getJumpingEnemyDamage() {
-    int jumpingEnemyDamage = getInstance()->root["ENEMY"]["JUMPING"]["DAMAGE"].as<int>();
-    return static_cast<uint8_t>(jumpingEnemyDamage);
+uint8_t ServerConfig::getSchwarzenguardEnemyDamage() {
+    int schwarzenguardEnemyDamage = getInstance()->root["ENEMY"]["JUMPING"]["DAMAGE"].as<int>();
+    return static_cast<uint8_t>(schwarzenguardEnemyDamage);
 }
 
-uint8_t ServerConfig::getJumpingEnemyMaxMoves() {
-    int jumpingEnemyMaxMoves = getInstance()->root["ENEMY"]["JUMPING"]["MAX_MOVES"].as<int>();
-    return static_cast<uint8_t>(jumpingEnemyMaxMoves);
+uint8_t ServerConfig::getSchwarzenguardEnemyMaxMoves() {
+    int schwarzenguardEnemyMaxMoves = getInstance()->root["ENEMY"]["JUMPING"]["MAX_MOVES"].as<int>();
+    return static_cast<uint8_t>(schwarzenguardEnemyMaxMoves);
 }
 
-uint8_t ServerConfig::getJumpingEnemyMaxRevived() {
-    int jumpingEnemyMaxRevived = getInstance()->root["ENEMY"]["JUMPING"]["MAX_REVIVED"].as<int>();
-    return static_cast<uint8_t>(jumpingEnemyMaxRevived);
+uint8_t ServerConfig::getSchwarzenguardEnemyMaxRevived() {
+    int schwarzenguardEnemyMaxRevived = getInstance()->root["ENEMY"]["JUMPING"]["MAX_REVIVED"].as<int>();
+    return static_cast<uint8_t>(schwarzenguardEnemyMaxRevived);
 }
 
-uint8_t ServerConfig::getJumpingEnemyDamageTime() {
-    int jumpingEnemyDamageTime = getInstance()->root["ENEMY"]["JUMPING"]["DAMAGE_TIME"].as<int>();
-    return static_cast<uint8_t>(jumpingEnemyDamageTime);
+uint8_t ServerConfig::getSchwarzenguardEnemyDamageTime() {
+    int schwarzenguardEnemyDamageTime = getInstance()->root["ENEMY"]["JUMPING"]["DAMAGE_TIME"].as<int>();
+    return static_cast<uint8_t>(schwarzenguardEnemyDamageTime);
 }
 
-uint8_t ServerConfig::getJumpingEnemyReviveTime() {
-    int jumpingEnemyReviveTime = getInstance()->root["ENEMY"]["JUMPING"]["REVIVE_TIME"].as<int>();
-    return static_cast<uint8_t>(jumpingEnemyReviveTime);
+uint8_t ServerConfig::getSchwarzenguardEnemyReviveTime() {
+    int schwarzenguardEnemyReviveTime = getInstance()->root["ENEMY"]["JUMPING"]["REVIVE_TIME"].as<int>();
+    return static_cast<uint8_t>(schwarzenguardEnemyReviveTime);
 }
 
-uint8_t ServerConfig::getJumpingEnemyHitDistance() {
-    int jumpingEnemyHitDistance = getInstance()->root["ENEMY"]["JUMPING"]["HIT_DISTANCE"].as<int>();
-    return static_cast<uint8_t>(jumpingEnemyHitDistance);
+uint8_t ServerConfig::getSchwarzenguardEnemyHitDistance() {
+    int schwarzenguardEnemyHitDistance = getInstance()->root["ENEMY"]["JUMPING"]["HIT_DISTANCE"].as<int>();
+    return static_cast<uint8_t>(schwarzenguardEnemyHitDistance);
 }
 
-uint8_t ServerConfig::getJumpingEnemyHitDistanceY() {
-    int jumpingEnemyHitDistanceY = getInstance()->root["ENEMY"]["JUMPING"]["HIT_DISTANCE_Y"].as<int>();
-    return static_cast<uint8_t>(jumpingEnemyHitDistanceY);
+uint8_t ServerConfig::getSchwarzenguardEnemyHitDistanceY() {
+    int schwarzenguardEnemyHitDistanceY = getInstance()->root["ENEMY"]["JUMPING"]["HIT_DISTANCE_Y"].as<int>();
+    return static_cast<uint8_t>(schwarzenguardEnemyHitDistanceY);
 }
 
-uint8_t ServerConfig::getJumpingEnemyViewDistance() {
-    int jumpingEnemyViewDistance = getInstance()->root["ENEMY"]["JUMPING"]["VIEW_DISTANCE"].as<int>();
-    return static_cast<uint8_t>(jumpingEnemyViewDistance);
+uint8_t ServerConfig::getSchwarzenguardEnemyViewDistance() {
+    int schwarzenguardEnemyViewDistance = getInstance()->root["ENEMY"]["JUMPING"]["VIEW_DISTANCE"].as<int>();
+    return static_cast<uint8_t>(schwarzenguardEnemyViewDistance);
 }
 
-uint8_t ServerConfig::getJumpingEnemyViewDistanceHit() {
-    int jumpingEnemyViewDistanceHit = getInstance()->root["ENEMY"]["JUMPING"]["VIEW_DISTANCE_HIT"].as<int>();
-    return static_cast<uint8_t>(jumpingEnemyViewDistanceHit);
+uint8_t ServerConfig::getSchwarzenguardEnemyViewDistanceHit() {
+    int schwarzenguardEnemyViewDistanceHit = getInstance()->root["ENEMY"]["JUMPING"]["VIEW_DISTANCE_HIT"].as<int>();
+    return static_cast<uint8_t>(schwarzenguardEnemyViewDistanceHit);
 }
 
-uint32_t ServerConfig::getJumpingEnemyWidth() {
-    int jumpingEnemyWidth = getInstance()->root["ENEMY"]["JUMPING"]["WIDTH"].as<int>();
-    return static_cast<uint32_t>(jumpingEnemyWidth);
+uint32_t ServerConfig::getSchwarzenguardEnemyWidth() {
+    int schwarzenguardEnemyWidth = getInstance()->root["ENEMY"]["JUMPING"]["WIDTH"].as<int>();
+    return static_cast<uint32_t>(schwarzenguardEnemyWidth);
 }
 
-uint32_t ServerConfig::getJumpingEnemyHeight() {
-    int jumpingEnemyHeight = getInstance()->root["ENEMY"]["JUMPING"]["HEIGHT"].as<int>();
-    return static_cast<uint32_t>(jumpingEnemyHeight);
+uint32_t ServerConfig::getSchwarzenguardEnemyHeight() {
+    int schwarzenguardEnemyHeight = getInstance()->root["ENEMY"]["JUMPING"]["HEIGHT"].as<int>();
+    return static_cast<uint32_t>(schwarzenguardEnemyHeight);
 }
 
-uint32_t ServerConfig::getJumpingEnemyValue() {
-    int jumpingEnemyValue = getInstance()->root["ENEMY"]["JUMPING"]["VALUE"].as<int>();
-    return static_cast<uint32_t>(jumpingEnemyValue);
+uint32_t ServerConfig::getSchwarzenguardEnemyValue() {
+    int schwarzenguardEnemyValue = getInstance()->root["ENEMY"]["JUMPING"]["VALUE"].as<int>();
+    return static_cast<uint32_t>(schwarzenguardEnemyValue);
 }
 
-uint32_t ServerConfig::getJumpingEnemyRespawnTime() {
-    int jumpingEnemyRespawnTime = getInstance()->root["ENEMY"]["JUMPING"]["RESPAWN_TIME"].as<int>();
-    return static_cast<uint32_t>(jumpingEnemyRespawnTime);
+uint32_t ServerConfig::getSchwarzenguardEnemyRespawnTime() {
+    int schwarzenguardEnemyRespawnTime = getInstance()->root["ENEMY"]["JUMPING"]["RESPAWN_TIME"].as<int>();
+    return static_cast<uint32_t>(schwarzenguardEnemyRespawnTime);
 }
 
-std::vector<uint8_t> ServerConfig::getJumpingEnemyJumpProb() {
+std::vector<uint8_t> ServerConfig::getSchwarzenguardEnemyJumpProb() {
     std::vector<uint8_t> jumpProb;
     for (const auto& prob: getInstance()->root["ENEMY"]["JUMPING"]["JUMP_PROB"]) {
         jumpProb.push_back(static_cast<uint8_t>(prob.as<int>()));
