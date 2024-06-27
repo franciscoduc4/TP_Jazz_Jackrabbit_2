@@ -13,11 +13,14 @@ JumpingState::JumpingState(Character& character) : character(character) {
 }
 
 std::unique_ptr<State> JumpingState::exec(float time) {
+
+    if (!character.isAlive()){
+        return nullptr;
+    }
+
     if (!character.isJumping()) {
         character.jump(time);
     }
-
-    // character.applyGravity(time);
 
     if (character.hasLanded()) {
         return std::make_unique<IdleState>(character);

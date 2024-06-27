@@ -8,7 +8,6 @@ Jazz::Jazz(GameMap& gameMap, Vector<uint32_t> pos, uint8_t playerId, uint32_t wi
                 ServerConfig::getJazzSprintSpeed(), ServerConfig::getJazzVerticalSpeed(),
                 ServerConfig::getJazzJumpHeight(), ServerConfig::getJazzShootCooldownTime(), width, height) {}
 
-
 void Jazz::specialAttack() {
     std::cout << "[SPECIAL ATTACK] Jazz realiza un puñetazo hacia arriba" << std::endl;
     // Hacer que Jazz salte hacia arriba
@@ -28,8 +27,13 @@ void Jazz::specialAttack() {
         if (entity->getType() == EntityType::ENEMY) {
             auto enemy = std::dynamic_pointer_cast<Enemy>(entity);
             if (enemy) {
-                enemy->recvDamage(400, 0); // Asigna un valor de daño adecuado
+                enemy->recvDamage(144, 0); // Asigna un valor de daño adecuado
                 std::cout << "[SPECIAL ATTACK] Jazz golpea al enemigo ID: " << static_cast<int>(enemy->getId()) << std::endl;
+                if (enemy->isDead()) {
+                        score += enemy->getPointsValue();
+                    gameMap.removeEnemy(enemy->getId());
+                    std::cout << "[SPECIAL ATTACK] Enemigo ID: " << static_cast<int>(enemy->getId()) << " removido del mapa." << std::endl;
+                }
             }
         }
     }

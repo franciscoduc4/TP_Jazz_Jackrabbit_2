@@ -224,13 +224,14 @@ std::vector<std::shared_ptr<Entity>> GameMap::getObjectsInAreaRange(Vector<uint3
 
 
 // Método para obtener entidades en un rango vertical
-std::vector<std::shared_ptr<Entity>> GameMap::getObjectsInVerticalRange(Vector<uint32_t> mapPosition, uint32_t range) {
+std::vector<std::shared_ptr<Entity>> GameMap::getObjectsInVerticalRange(const Vector<uint32_t>& mapPosition, uint32_t range) {
     std::vector<std::shared_ptr<Entity>> entities;
     try {
-        for (uint32_t i = mapPosition.y - range; i <= mapPosition.y + range; ++i) {
-            Vector<uint32_t> pos = {mapPosition.x, i};
-            if (mapGrid.find(pos) != mapGrid.end()) {
-                entities.push_back(mapGrid[pos]);
+        for (auto& entry : mapGrid) {
+            auto entity = entry.second;
+            auto entityPos = entity->getPosition();
+            if (entityPos.x == mapPosition.x && entityPos.y >= mapPosition.y - range && entityPos.y <= mapPosition.y + range) {
+                entities.push_back(entity);
             }
         }
     } catch (const std::exception& e) {
@@ -238,6 +239,7 @@ std::vector<std::shared_ptr<Entity>> GameMap::getObjectsInVerticalRange(Vector<u
     }
     return entities;
 }
+
 
 /*
  * Devuelve las entidades dentro del rango de explosión de una posición y radio dados.
@@ -617,18 +619,19 @@ void GameMap::removeEnemy(uint8_t enemyId) {
         auto it = enemies.find(enemyId);
         if (it != enemies.end()) {
             auto position = it->second->getPosition();
-            mapGrid.erase(position);
-            enemies.erase(it);
-
-            ItemType droppedItem = it->second->dropRandomItem();
+            mapGrid.erase(position); // Eliminar de mapGrid primero
+            ItemType droppedItem = it->second->dropRandomItem(); // Obtener el ítem antes de eliminar el enemigo
+            dead_enemies[it->second->getEnemyType()].push_back(it->second); // Añadir a dead_enemies antes de eliminar del mapa
+            enemies.erase(it); // Luego eliminar del mapa de enemigos
             addItem(droppedItem, position, 1, 1);
         } else {
-            // Error al eliminar enemigo: ID no encontrado
+            std::cerr << "Error al eliminar enemigo: ID no encontrado" << std::endl;
         }
     } catch (const std::exception& e) {
-        // Error al eliminar enemigo
+        std::cerr << "Error en removeEnemy: " << e.what() << std::endl;
     }
 }
+
 
 /*
  * Devuelve la entidad en una posición dada.
@@ -806,9 +809,6 @@ void GameMap::handleShooting(uint32_t characterX, uint8_t damage, float time, Di
 
     for (uint8_t id: enemiesToRemove) {
         removeEnemy(id);
-        std::cout << "EL VALOR DEL ID ES " << static_cast<int>(id) << '\n';
-        Printer::printDebugHighlightedMessage("SE ELIMINO UN ENEMIGO");
-                
     }
 }
 

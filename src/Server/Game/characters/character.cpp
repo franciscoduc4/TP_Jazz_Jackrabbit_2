@@ -255,18 +255,45 @@ void Character::handleCharacterCollision(const std::shared_ptr<Character>& chara
 }
 
 
+// void Character::handleLadderCollision(const std::shared_ptr<Obstacle>& obstacle) {
+//     auto obstaclePos = obstacle->getPosition();
+//     auto obstacleWidth = obstacle->getWidth();
+//     auto obstacleHeight = obstacle->getHeight();
+
+//     if (obstacle->getObstacleType() == ObstacleType::LEFT_LADDER) {
+//         double slope = static_cast<double>(obstacleHeight) / obstacleWidth;
+//         pos.y = obstaclePos.y + static_cast<uint32_t>(slope * (pos.x - obstaclePos.x));
+//     } else if (obstacle->getObstacleType() == ObstacleType::RIGHT_LADDER) {
+//         double slope = static_cast<double>(obstacleHeight) / obstacleWidth;
+//         pos.y = obstaclePos.y +
+//                 static_cast<uint32_t>(slope * (obstaclePos.x + obstacleWidth - pos.x));
+//     }
+
+//     onGround = true;
+// }
+
 void Character::handleLadderCollision(const std::shared_ptr<Obstacle>& obstacle) {
     auto obstaclePos = obstacle->getPosition();
     auto obstacleWidth = obstacle->getWidth();
     auto obstacleHeight = obstacle->getHeight();
 
-    if (obstacle->getObstacleType() == ObstacleType::LEFT_LADDER) {
-        double slope = static_cast<double>(obstacleHeight) / obstacleWidth;
-        pos.y = obstaclePos.y + static_cast<uint32_t>(slope * (pos.x - obstaclePos.x));
-    } else if (obstacle->getObstacleType() == ObstacleType::RIGHT_LADDER) {
-        double slope = static_cast<double>(obstacleHeight) / obstacleWidth;
-        pos.y = obstaclePos.y +
-                static_cast<uint32_t>(slope * (obstaclePos.x + obstacleWidth - pos.x));
+    // Calculate the slope of the ladder
+    double slope = static_cast<double>(obstacleHeight) / obstacleWidth;
+
+    // Calculate the y-intercept of the ladder
+    double y_intercept = obstaclePos.y - slope * obstaclePos.x;
+
+    // Calculate the expected y position of the character on the ladder
+    double expected_y = slope * pos.x + y_intercept; 
+
+    // If the character is below the expected position, move it up
+    if (pos.y > expected_y) {
+        pos.y = static_cast<uint32_t>(expected_y);
+    }
+
+    // If the character is above the expected position, move it down
+    else if (pos.y < expected_y) {
+        pos.y = static_cast<uint32_t>(expected_y);
     }
 
     onGround = true;
