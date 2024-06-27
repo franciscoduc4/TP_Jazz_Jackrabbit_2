@@ -111,14 +111,14 @@ void LevelEditor::onSaveClicked() {
     }
 
     if (elementData.empty()) {
-        QMessageBox(QMessageBox::Warning, "Error", "El mapa no puede estar vacÃ­o").exec();
+        QMessageBox(QMessageBox::Warning, "Error", "El mapa no puede estar vacío").exec();
         return;
     }
 
     QString mapName = "../src/maps/" + ui->mapName->text().trimmed() + ".yaml";
     QFile file(mapName);
     if (file.exists()) {
-        QMessageBox(QMessageBox::Warning, "Error", "A map with this name already exists").exec();
+        QMessageBox(QMessageBox::Warning, "Error", ("Ya existe un mapa con el nombre " + ui->mapName->text().trimmed())).exec();
         return;
     }
 
