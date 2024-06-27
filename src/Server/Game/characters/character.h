@@ -84,7 +84,7 @@ public:
     bool isPointInTriangle(const Vector<uint32_t>& p, const Vector<uint32_t>& v1,
                            const Vector<uint32_t>& v2, const Vector<uint32_t>& v3);
     void update(double deltaTime);
-    void handleCollision(const std::shared_ptr<Enemy>& enemy);
+    void handleEnemyCollision(const std::shared_ptr<Enemy>& enemy);
     void handleObstacleCollision(const std::shared_ptr<Obstacle>& obstacle);
     void handleLadderCollision(const std::shared_ptr<Obstacle>& obstacle);
     void handleCharacterCollision(const std::shared_ptr<Character>& character);

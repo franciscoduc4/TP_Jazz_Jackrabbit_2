@@ -158,7 +158,7 @@ void LevelEditor::createYAML(const QString& mapName) {
         qDebug() << "Category: " << categoryNames[category.first];
         for (const auto& element : category.second) {
             out << YAML::Key << element.first.toStdString();
-            out << YAML::Value << YAML::BeginSeq;
+            out << YAML::Value << YAML::Flow << YAML::BeginSeq;
             qDebug() << "Element: " << element.first;
             QPixmap sprite = SpritesManager::get(element.first);
             for (const auto& point : element.second) {
