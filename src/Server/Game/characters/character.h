@@ -124,8 +124,9 @@ public:
     float getIntoxicatedTime() const;
 
     WeaponType getCurrentWeaponType();
-
     CharacterType getCharacterType();
+
+    float getHorizontalSpeed() const { return horizontalSpeed; }
 
     PlayerDTO getDTO() const;
 

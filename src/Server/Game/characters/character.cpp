@@ -11,7 +11,7 @@ Character::Character(GameMap& gameMap, Vector<uint32_t> pos, uint8_t playerId, C
                      float jumpHeight, float shootCooldownTime, uint32_t width, uint32_t height):
         Entity(pos, playerId, ServerConfig::getCharacterInitialHealth(), Direction::RIGHT,
                EntityType::CHARACTER),
-        type(type),
+        type(type),  
         gameMap(gameMap),
         maxHealth(ServerConfig::getCharacterInitialHealth()),
         reviveTime(ServerConfig::getCharacterReviveTime()),
@@ -188,9 +188,9 @@ void Character::handleObstacleCollision(const std::shared_ptr<Obstacle>& obstacl
     if (pos.y <= obstaclePos.y + obstacleHeight && pos.y + characterHeight > obstaclePos.y + obstacleHeight) {
         std::cout << "[CHARACTER] Character ID: " << static_cast<int>(id)
                   << " collided with obstacle from below" << std::endl;
-        pos.y = obstaclePos.y + obstacleHeight;  // Colisión por arriba (detiene el salto)
-        currentSpeed.y = 0; // Detiene el movimiento ascendente
-        jumping = false; // Detiene el salto
+        pos.y = obstaclePos.y + obstacleHeight;  
+        currentSpeed.y = 0; 
+        jumping = false; 
         return;
     }
 
@@ -212,44 +212,6 @@ void Character::handleObstacleCollision(const std::shared_ptr<Obstacle>& obstacl
         pos.x = obstaclePos.x + obstacleWidth;  // Colisión por la derecha
     }
 }
-
-
-
-// void Character::handleObstacleCollision(const std::shared_ptr<Obstacle>& obstacle) {
-//     std::cout << "[CHARACTER] Character ID: " << static_cast<int>(id)
-//               << " collided with Obstacle at position: (" << obstacle->getPosition().x << ", "
-//               << obstacle->getPosition().y << ")" << std::endl;
-
-//     auto obstaclePos = obstacle->getPosition();
-//     auto obstacleWidth = obstacle->getWidth();
-//     auto obstacleHeight = obstacle->getHeight();
-//     auto characterWidth = getWidth();
-//     auto characterHeight = getHeight();
-
-//     ObstacleType obstacleType = obstacle->getObstacleType();
-
-//     if (pos.y + characterHeight >= obstaclePos.y) {
-//         if (pos.x + characterWidth < obstaclePos.x || pos.x > obstaclePos.x + obstacleWidth) {
-//             return;
-//         }
-//         onGround = true;
-//         std::cout << "[CHARACTER] Character ID: " << static_cast<int>(id)
-//                   << " collided with obstacle from below" << std::endl;
-//         pos.y = obstaclePos.y - characterHeight;  // Colisión por abajo
-//     } else if (pos.y <= obstaclePos.y + obstacleHeight) {
-//         std::cout << "[CHARACTER] Character ID: " << static_cast<int>(id)
-//                   << " collided with obstacle from above" << std::endl;
-//         pos.y = obstaclePos.y + obstacleHeight;  // Colisión por arriba
-//     } else if (pos.x + characterWidth >= obstaclePos.x) {
-//         std::cout << "[CHARACTER] Character ID: " << static_cast<int>(id)
-//                   << " collided with obstacle from the left" << std::endl;
-//         pos.x = obstaclePos.x - characterWidth;  // Colisión por la izquierda
-//     } else if (pos.x <= obstaclePos.x + obstacleWidth) {
-//         std::cout << "[CHARACTER] Character ID: " << static_cast<int>(id)
-//                   << " collided with obstacle from the right" << std::endl;
-//         pos.x = obstaclePos.x + obstacleWidth;  // Colisión por la derecha
-//     }
-// }
 
 void Character::handleCharacterCollision(const std::shared_ptr<Character>& character) {
     std::cout << "[CHARACTER] Character ID: " << static_cast<int>(id)
@@ -319,8 +281,13 @@ bool Character::isPointInTriangle(const Vector<uint32_t>& p, const Vector<uint32
 void Character::moveRight(double time) {
     std::cout << "[CHARACTER] Character ID: " << static_cast<int>(id) << " moving right"
               << std::endl;
-    auto newState = state->move(Direction::RIGHT, time);
+    //auto newState = state->move(Direction::RIGHT, time);
     dir = Direction::RIGHT;
+
+    float speed = jumping ? horizontalSpeed * 0.5 : horizontalSpeed;
+    pos.x += speed * time;
+
+    auto newState = state->move(Direction::RIGHT, time);
 
     if (newState) {
         std::cout << "[CHARACTER] Character ID: " << static_cast<int>(id) << " moving right"
@@ -332,13 +299,20 @@ void Character::moveRight(double time) {
 void Character::moveLeft(double time) {
     std::cout << "[CHARACTER] Character ID: " << static_cast<int>(id) << " moving left"
               << std::endl;
-    auto newState = state->move(Direction::LEFT, time);
+    //auto newState = state->move(Direction::LEFT, time);
     dir = Direction::LEFT;
+
+    float speed = jumping ? horizontalSpeed * 0.5 : horizontalSpeed;
+    pos.x -= speed * time;
+
+    auto newState = state->move(Direction::LEFT, time);
+
 
     if (newState) {
         state = std::move(newState);
     }
 }
+
 
 void Character::jump(float time) {
     if (isIntoxicated) {
@@ -348,20 +322,18 @@ void Character::jump(float time) {
     if (!jumping) {
         currentSpeed.y = -ServerConfig::getCharacterJumpHeight();
         jumping = true;
+        auto newState = std::make_unique<JumpingState>(*this);
+        state = std::move(newState);
     } else {
-        // Calculate new velocity and position
         currentSpeed.y += gravity * time;  // v = u + at
 
-        // Increment the character's vertical position in smaller steps
         for (int i = 0; i < std::abs(currentSpeed.y * time); ++i) {
             float newY = pos.y + (currentSpeed.y > 0 ? 1 : -1);
 
-            // If newY is less than 0, set it to 0
             if (newY < 0) {
                 newY = 0;
             }
 
-            // Check for collisions at the new position
             Vector<uint32_t> newPos = {pos.x, static_cast<uint32_t>(newY)};
             auto entityAtNewPos = gameMap.getEntityAt(newPos);
             if (entityAtNewPos) {
@@ -370,10 +342,8 @@ void Character::jump(float time) {
                 currentSpeed.y = 0;
                 break;
             } else {
-                // No collision, update position
                 pos.y = newY;
 
-                // Check if character has landed
                 if (pos.y >= ServerConfig::getGameMapSizeY()) {
                     pos.y = ServerConfig::getGameMapSizeY();
                     jumping = false;
@@ -653,20 +623,7 @@ void Character::moveLeft() {
 }
 
 void Character::jump() {
-    // if (onGround) {
-    //     std::cout << "[CHARACTER] Character ID: " << static_cast<int>(id) << " initiating jump"
-    //               << std::endl;
-    //     initialYJump = pos.y;
-    //     jumping = true;
-    //     onGround = false;
-    //     for (int i = 0; i < ServerConfig::getCharacterJumpHeight(); i++) {
-    //         uint32_t newPosY = pos.y - i;
-    //         if (gameMap.isValidMapPosition({pos.x, newPosY})) {
-    //             pos.y = newPosY;
-    //         }
-    //     }
 
-    // }
     if (ServerConfig::getCharacterJumpHeight() + initialYJump == pos.y) {
         std::cout << "[CHARACTER] Character ID: " << static_cast<int>(id) << " jumping"
                   << std::endl;
@@ -728,7 +685,9 @@ bool Character::characIsIntoxicated() const { return isIntoxicated; }
 
 float Character::getIntoxicatedTime() const { return intoxicatedTime; }
 
-CharacterType Character::getCharacterType() { return type; }
+CharacterType Character::getCharacterType() {
+    return type;
+}
 
 void Character::collectItem(const std::shared_ptr<Item>& item) {
     switch (item->getItemType()) {
