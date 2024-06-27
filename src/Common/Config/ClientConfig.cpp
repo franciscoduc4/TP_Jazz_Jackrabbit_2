@@ -851,6 +851,54 @@ int ClientConfig::getFireWidth() { return getInstance()->root["PROJ_WIDTH_FIRE"]
 
 int ClientConfig::getFireHeight() { return getInstance()->root["PROJ_HEIGHT_FIRE"].as<int>(); }
 
+// Weapons
+int ClientConfig::getWeaponWidth() { return getInstance()->root["WEAPON_WIDTH"].as<int>(); }
+
+int ClientConfig::getWeaponHeight() { return getInstance()->root["WEAPON_HEIGHT"].as<int>(); }
+
+
+std::vector<std::vector<int>> ClientConfig::getBlasterSprites() {
+    YAML::Node blasterSpritesNode = getInstance()->root["BLASTER"];
+    std::vector<std::vector<int>> blasterSprites;
+    for (YAML::const_iterator it = blasterSpritesNode.begin(); it != blasterSpritesNode.end();
+         ++it) {
+        blasterSprites.push_back(it->as<std::vector<int>>());
+    }
+    return blasterSprites;
+}
+
+std::vector<std::vector<int>> ClientConfig::getBouncerSprites() {
+    YAML::Node bouncerSpritesNode = getInstance()->root["BOUNCER"];
+    std::vector<std::vector<int>> bouncerSprites;
+    for (YAML::const_iterator it = bouncerSpritesNode.begin(); it != bouncerSpritesNode.end();
+         ++it) {
+        bouncerSprites.push_back(it->as<std::vector<int>>());
+    }
+    return bouncerSprites;
+}
+
+std::vector<std::vector<int>> ClientConfig::getRfmissileSprites() {
+    YAML::Node rfmissileSpritesNode = getInstance()->root["RFMISSILE"];
+    std::vector<std::vector<int>> rfmissileSprites;
+    for (YAML::const_iterator it = rfmissileSpritesNode.begin(); it != rfmissileSpritesNode.end();
+         ++it) {
+        rfmissileSprites.push_back(it->as<std::vector<int>>());
+    }
+    return rfmissileSprites;
+}
+
+std::vector<std::vector<int>> ClientConfig::getFrezzerSprites() {
+    YAML::Node frezzerSpritesNode = getInstance()->root["FREZZER"];
+    std::vector<std::vector<int>> frezzerSprites;
+    for (YAML::const_iterator it = frezzerSpritesNode.begin(); it != frezzerSpritesNode.end();
+         ++it) {
+        frezzerSprites.push_back(it->as<std::vector<int>>());
+    }
+    return frezzerSprites;
+}
+
+
+
 //Interface font
 std::vector<std::vector<int>> ClientConfig::getInterfaceFontSprites() {
     YAML::Node interfaceFontSpritesNode = getInstance()->root["INTERFACE_FONT"];

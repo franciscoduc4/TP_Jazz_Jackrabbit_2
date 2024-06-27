@@ -151,6 +151,15 @@ public:
     static int getFireY();
     static int getFireWidth();
     static int getFireHeight();
+    // Weapons
+    static int getWeaponWidth();
+    static int getWeaponHeight();
+    static std::vector<std::vector<int>> getBlasterSprites();
+    static std::vector<std::vector<int>> getBouncerSprites();
+    static std::vector<std::vector<int>> getRfmissileSprites();
+    static std::vector<std::vector<int>> getFrezzerSprites();
+
+
     // Interface font
     static std::vector<std::vector<int>> getInterfaceFontSprites();
     static int getWidthFont();

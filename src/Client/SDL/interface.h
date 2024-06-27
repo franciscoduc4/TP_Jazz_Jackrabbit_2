@@ -4,6 +4,7 @@
 #include "../../Common/sprite.h"
 #include "../../Common/Types/character.h"
 #include "../../Common/DTO/player.h"
+#include "../../Common/Types/weapon.h"
 
 #include <map>
 #include <string>
@@ -18,12 +19,14 @@ class Interface {
     std::map<std::string, int> index_letters;
     std::vector<RectangularSprite> hearts; 
     std::map<CharacterType, std::vector<RectangularSprite>> sprites;
+    std::map<WeaponType, std::vector<RectangularSprite>> weapons;
     std::vector<std::vector<int>> colors;
     int x;
     int y;
     int draw_width;
     int draw_height;
     int counts;
+    int weapon_count;
 
 public:
     Interface();
@@ -34,7 +37,9 @@ public:
 
     std::vector<RectangularSprite>::iterator icon_coords(CharacterType type);
 
-    void draw_interface(SDL2pp::Window& window, SDL2pp::Renderer& renderer, SDL2pp::Texture& iconTexture, std::unique_ptr<SDL2pp::Texture>& heartTexture, std::unique_ptr<SDL2pp::Texture>& font, std::vector<PlayerDTO>& players, PlayerDTO& mainPlayer, int lives, time_t time);
+    std::vector<RectangularSprite>::iterator weapon_sprite(WeaponType type);
+
+    void draw_interface(SDL2pp::Window& window, SDL2pp::Renderer& renderer, SDL2pp::Texture& iconTexture, std::unique_ptr<SDL2pp::Texture>& heartTexture, std::unique_ptr<SDL2pp::Texture>& font, std::vector<PlayerDTO>& players, PlayerDTO& mainPlayer, int lives, time_t time, WeaponType currentWeapon);
 
     std::map<uint8_t, int> sort_score(std::vector<PlayerDTO>& players);
 

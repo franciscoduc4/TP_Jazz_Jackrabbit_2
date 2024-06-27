@@ -44,7 +44,8 @@ GameScreen::GameScreen(GameController& controller, uint8_t playerId, uint8_t map
         mainPlayerId(playerId),
         level(mapId),
         proj(0),
-        soundControl(mapId) {}
+        soundControl(mapId),
+        currentWeapon(WeaponType::BLASTER) {}
 
 std::unique_ptr<PlayerDTO> GameScreen::searchMainPlayer(std::vector<PlayerDTO>& players) {
     int i = 0;
@@ -281,7 +282,7 @@ std::map<uint8_t, int> GameScreen::run() {
         std::time_t final = std::chrono::system_clock::to_time_t(now) - start;
 
         this->stats.draw_interface(window, renderer, *pjs_textures[mainPlayer->getCharacterType()],
-                                   items, font, players, *mainPlayer, 3, game_time - final);
+                                   items, font, players, *mainPlayer, 3, game_time - final, currentWeapon);
         scores = this->stats.sort_score(players);
 
         if (game_time - final == 0) {

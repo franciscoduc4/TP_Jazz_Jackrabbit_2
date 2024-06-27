@@ -31,8 +31,25 @@ Interface::Interface() {
         this->hearts.push_back(RectangularSprite(heart_sprites[i]));
     }
 
-    this->colors = ClientConfig::getInterfaceColors();
+    this->weapon_count = 0;
+    std::vector<std::vector<int>> blaster_sprites = ClientConfig::getBlasterSprites();
+    for (int i = 0; i < blaster_sprites.size(); i++) {
+        this->weapons[WeaponType::BLASTER].push_back(RectangularSprite(blaster_sprites[i]));
+    }
+    std::vector<std::vector<int>> bouncer_sprites = ClientConfig::getBouncerSprites();
+    for (int i = 0; i < bouncer_sprites.size(); i++) {
+        this->weapons[WeaponType::BOUNCER].push_back(RectangularSprite(bouncer_sprites[i]));
+    }
+    std::vector<std::vector<int>> rfmissile_sprites = ClientConfig::getRfmissileSprites();
+    for (int i = 0; i < rfmissile_sprites.size(); i++) {
+        this->weapons[WeaponType::RFMISSILE].push_back(RectangularSprite(rfmissile_sprites[i]));
+    }
+    std::vector<std::vector<int>> frezzer_sprites = ClientConfig::getFrezzerSprites();
+    for (int i = 0; i < frezzer_sprites.size(); i++) {
+        this->weapons[WeaponType::FREEZER].push_back(RectangularSprite(frezzer_sprites[i]));
+    }
 
+    this->colors = ClientConfig::getInterfaceColors();
 
     std::vector<std::vector<int>> jazz_icon_sprites = ClientConfig::getJazzIconSprites();
     for (int i = 0; i < jazz_icon_sprites.size(); i++) {
@@ -74,8 +91,20 @@ std::vector<RectangularSprite>::iterator Interface::icon_coords(CharacterType ty
     return it;
 }
 
+std::vector<RectangularSprite>::iterator Interface::weapon_sprite(WeaponType type) {
+    std::vector<RectangularSprite>::iterator it = this->weapons[type].begin();
+    for (int i = 0; i != this->weapon_count; i++) {
+		++it;
+		if (it == this->weapons[type].end()) {
+			it = this->weapons[type].begin();
+		}
+	}
+	this->weapon_count++;
+    return it;
+}
 
-void Interface::draw_interface(SDL2pp::Window& window, SDL2pp::Renderer& renderer, SDL2pp::Texture& iconTexture, std::unique_ptr<SDL2pp::Texture>& heartTexture, std::unique_ptr<SDL2pp::Texture>& font, std::vector<PlayerDTO>& players, PlayerDTO& mainPlayer, int lives, time_t time) {
+
+void Interface::draw_interface(SDL2pp::Window& window, SDL2pp::Renderer& renderer, SDL2pp::Texture& iconTexture, std::unique_ptr<SDL2pp::Texture>& heartTexture, std::unique_ptr<SDL2pp::Texture>& font, std::vector<PlayerDTO>& players, PlayerDTO& mainPlayer, int lives, time_t time, WeaponType currentWeapon) {
     std::vector<RectangularSprite>::iterator it = icon_coords(mainPlayer.getCharacterType());
     std::string l = std::to_string(lives);
     std::string h = std::to_string(mainPlayer.getHealth());
@@ -124,6 +153,16 @@ void Interface::draw_interface(SDL2pp::Window& window, SDL2pp::Renderer& rendere
         }
         x += this->draw_width;
     }
+
+    //DRAW WEAPON
+    int weapon_width = ClientConfig::getWeaponWidth();
+    int weapon_height = ClientConfig::getWeaponHeight();
+    x = window.GetWidth() - weapon_width;
+    y = window.GetHeight() - weapon_height;
+    std::vector<RectangularSprite>::iterator it_weapon = weapon_sprite(currentWeapon);
+    renderer.Copy(*heartTexture, SDL2pp::Rect(it_weapon->getX(), it_weapon->getY(), it_weapon->getWidth(), it_weapon->getHeight()), SDL2pp::Rect(x, y, weapon_width, weapon_height));
+        
+
     x = 0;
     y = 0;
 }
