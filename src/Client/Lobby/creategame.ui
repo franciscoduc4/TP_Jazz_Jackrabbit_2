@@ -98,7 +98,7 @@
      <number>1</number>
     </property>
     <property name="maximum">
-     <number>5</number>
+     <number>3</number>
     </property>
    </widget>
    <widget class="QLineEdit" name="gameName">
