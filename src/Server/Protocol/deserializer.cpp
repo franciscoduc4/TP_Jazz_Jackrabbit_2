@@ -110,6 +110,7 @@ std::unique_ptr<CommandDTO> Deserializer::deserializeSwitchWeapon(uint8_t& playe
     char weaponTypeChar;
     if (!protocol->receiveChar(weaponTypeChar)) return nullptr;
     auto weaponType = static_cast<WeaponType>(weaponTypeChar);
+    std::cout << "[SERVER DESERIALIZER] Deserialized SwitchWeapon command with WeaponType: " << (int)weaponType << std::endl;
     return std::make_unique<SwitchWeaponDTO>(playerId, weaponType);
 }
 

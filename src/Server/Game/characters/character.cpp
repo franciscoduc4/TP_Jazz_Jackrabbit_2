@@ -116,9 +116,7 @@ void Character::update(float time) {
 
 void Character::shoot(float time) {
     std::cout << "[CHARACTER] Character ID: " << static_cast<int>(id) << " shooting" << std::endl;
-    if (!currentWeapon) {
-        currentWeapon = std::make_unique<Blaster>();
-    }
+
 
     auto newState = state->shoot(std::move(currentWeapon), time);
     std::cout << "[CHARACTER SHOOT] Character state before shooting: "
@@ -127,7 +125,12 @@ void Character::shoot(float time) {
     std::cout << "[CHARACTER] Character ID: " << static_cast<int>(id)
               << " calling handleShooting on GameMap" << std::endl;
 
-    gameMap.handleShooting(pos.x, ServerConfig::getWeaponBlasterDamage(), time, dir, id);
+    
+    if (!currentWeapon) {
+        currentWeapon = std::make_unique<Blaster>();
+    }
+
+    gameMap.handleShooting(pos.x, currentWeapon->getDamage(), time, dir, id);
 
     if (newState) {
         state = std::move(newState);
@@ -470,6 +473,10 @@ void Character::switchWeapon(WeaponType type) {
             currentWeapon = std::make_unique<Blaster>();
             return;
     }
+
+    std::cout << "[CHARACTER] Character ID: " << static_cast<int>(id)
+              << " new weapon type: " << static_cast<int>(currentWeapon->getWeaponType())
+              << std::endl;
 }
 
 WeaponType Character::getCurrentWeaponType() {

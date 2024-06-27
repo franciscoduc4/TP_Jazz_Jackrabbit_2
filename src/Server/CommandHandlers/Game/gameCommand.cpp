@@ -29,9 +29,10 @@ std::unique_ptr<GameCommandHandler> GameCommandHandler::createHandler(
             return std::make_unique<JumpHandler>(std::unique_ptr<CommandDTO>(command.release()));
         }
         case Command::SWITCH_WEAPON: {
+            std::cout << "Switch weapon command received" << std::endl;
             auto switchWeaponCommand = dynamic_cast<SwitchWeaponDTO*>(command.get());
-            return std::make_unique<SwitchWeaponHandler>(
-                    std::unique_ptr<SwitchWeaponDTO>(switchWeaponCommand));
+            command.release();
+            return std::make_unique<SwitchWeaponHandler>(std::unique_ptr<SwitchWeaponDTO>(switchWeaponCommand));
         }
         default: {
             return nullptr;

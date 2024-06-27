@@ -30,6 +30,8 @@ class GameScreen {
 
     GameController& controller;
     uint8_t mainPlayerId;
+    WeaponType currentWeapon;
+
 
 public:
     GameScreen(GameController& controller, uint8_t playerId);
@@ -39,6 +41,8 @@ public:
     std::unique_ptr<PlayerDTO> searchMainPlayer(std::vector<PlayerDTO>& players);
 
     std::map<uint8_t, int> run();
+
+    WeaponType getNextWeapon(WeaponType currentWeapon);
 
     void final_screen(SDL2pp::Window& window, SDL2pp::Renderer& renderer, SDL2pp::Texture& background, std::unique_ptr<SDL2pp::Texture>& font);
 };

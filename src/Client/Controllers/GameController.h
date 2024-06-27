@@ -6,6 +6,7 @@
 
 #include "../../Common/DTO/dto.h"
 #include "../../Common/Types/command.h"
+#include "../../Common/Types/weapon.h"
 #include "../Protocol/deserializer.h"
 #include "../Protocol/serializer.h"
 
@@ -26,6 +27,8 @@ public:
     void move_msg(uint8_t playerId, std::vector<uint8_t>& parameters);
 
     void shoot_msg(uint8_t playerId);
+
+    void switch_weapon_msg(uint8_t playerId, std::vector<uint8_t>& parameters);
 
     std::unique_ptr<DTO> getServerMsg();
 };

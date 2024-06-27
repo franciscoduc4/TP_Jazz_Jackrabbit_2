@@ -8,7 +8,7 @@
 
 GameLoopThread::GameLoopThread(const std::shared_ptr<Queue<std::unique_ptr<CommandDTO>>>& recvQueue,
                                QueueMonitor& queueMonitor, GameMap& gameMap, uint8_t gameId):
-        frameRate(ServerConfig::getGameFrameRate()),
+        frameRate(1),
         keepRunning(false),
         commandsToProcess(ServerConfig::getGameCommandsToProcess()),
         recvQueue(recvQueue),

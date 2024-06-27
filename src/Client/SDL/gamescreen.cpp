@@ -36,7 +36,8 @@ GameScreen::GameScreen(GameController& controller, uint8_t playerId):
         mainPlayerId(playerId),
         level(0),
         proj(0),
-        soundControl(0) {}
+        soundControl(0),
+        currentWeapon(WeaponType::BLASTER) {}
  
 GameScreen::GameScreen(GameController& controller, uint8_t playerId, uint8_t mapId):
         controller(controller), mainPlayerId(playerId), level(mapId), proj(0), soundControl(mapId) {}
@@ -166,6 +167,13 @@ std::map<uint8_t, int> GameScreen::run() {
                         speed = -2;
                         break;
                     }
+                    case SDLK_g: {
+                        currentWeapon = getNextWeapon(currentWeapon);
+                        Command switchWeapon = Command::SWITCH_WEAPON;
+                        std::vector<uint8_t> elements{static_cast<uint8_t>(currentWeapon)};
+                        this->controller.sendMsg(this->mainPlayerId, switchWeapon, elements);
+                        break;                        
+                    }
                 }
             } else if (event.type == SDL_KEYUP) {
                 switch (event.key.keysym.sym) {
@@ -271,6 +279,22 @@ std::map<uint8_t, int> GameScreen::run() {
     return scores;
 
 }
+
+WeaponType GameScreen::getNextWeapon(WeaponType currentWeapon) {
+    switch (currentWeapon) {
+        case WeaponType::BLASTER:
+            return WeaponType::BOUNCER;
+        case WeaponType::BOUNCER:
+            return WeaponType::RFMISSILE;
+        case WeaponType::RFMISSILE:
+            return WeaponType::FREEZER;
+        case WeaponType::FREEZER:
+            return WeaponType::BLASTER;
+        default:
+            return WeaponType::BLASTER;
+    }
+}
+
 
 void GameScreen::final_screen(SDL2pp::Window& window, SDL2pp::Renderer& renderer, SDL2pp::Texture& background, std::unique_ptr<SDL2pp::Texture>& font) {
     while (true) {

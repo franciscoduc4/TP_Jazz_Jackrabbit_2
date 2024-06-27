@@ -16,7 +16,7 @@ SenderThread::SenderThread(std::shared_ptr<Queue<std::unique_ptr<CommandDTO>>>& 
     this->additionalData[static_cast<char>(Command::CHARACTER_TYPE)] = false;
     this->additionalData[static_cast<char>(Command::START_GAME)] = true;
     this->additionalData[static_cast<char>(Command::SHOOT)] = true;
-    this->additionalData[static_cast<char>(Command::SWITCH_WEAPON)] = false;  // TODO: REVISAR
+    this->additionalData[static_cast<char>(Command::SWITCH_WEAPON)] = true;  // TODO: REVISAR
     this->additionalData[static_cast<char>(Command::MOVE)] = true;
     this->additionalData[static_cast<char>(Command::SPRINT)] = true;  // TODO: ¿Es Dash o Run?
     this->additionalData[static_cast<char>(Command::JUMP)] = true;

@@ -13,6 +13,8 @@ public:
     SwitchWeaponDTO(uint8_t& playerId, WeaponType type);
     WeaponType getWeaponType() const;
     virtual std::unique_ptr<DTO> clone() const override;
+    std::vector<char> getData() const;
+
 };
 
 #endif  // SWITCH_WEAPON_H_
