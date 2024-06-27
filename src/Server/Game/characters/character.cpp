@@ -171,7 +171,6 @@ void Character::handleEnemyCollision(const std::shared_ptr<Enemy>& enemy) {
     }
 }
 
-
 void Character::handleObstacleCollision(const std::shared_ptr<Obstacle>& obstacle) {
     std::cout << "[CHARACTER] Character ID: " << static_cast<int>(id)
               << " collided with Obstacle at position: (" << obstacle->getPosition().x << ", "
@@ -185,6 +184,16 @@ void Character::handleObstacleCollision(const std::shared_ptr<Obstacle>& obstacl
 
     ObstacleType obstacleType = obstacle->getObstacleType();
 
+    // Check collision from below
+    if (pos.y <= obstaclePos.y + obstacleHeight && pos.y + characterHeight > obstaclePos.y + obstacleHeight) {
+        std::cout << "[CHARACTER] Character ID: " << static_cast<int>(id)
+                  << " collided with obstacle from below" << std::endl;
+        pos.y = obstaclePos.y + obstacleHeight;  // Colisión por arriba (detiene el salto)
+        currentSpeed.y = 0; // Detiene el movimiento ascendente
+        jumping = false; // Detiene el salto
+        return;
+    }
+
     if (pos.y + characterHeight >= obstaclePos.y) {
         if (pos.x + characterWidth < obstaclePos.x || pos.x > obstaclePos.x + obstacleWidth) {
             return;
@@ -193,10 +202,6 @@ void Character::handleObstacleCollision(const std::shared_ptr<Obstacle>& obstacl
         std::cout << "[CHARACTER] Character ID: " << static_cast<int>(id)
                   << " collided with obstacle from below" << std::endl;
         pos.y = obstaclePos.y - characterHeight;  // Colisión por abajo
-    } else if (pos.y <= obstaclePos.y + obstacleHeight) {
-        std::cout << "[CHARACTER] Character ID: " << static_cast<int>(id)
-                  << " collided with obstacle from above" << std::endl;
-        pos.y = obstaclePos.y + obstacleHeight;  // Colisión por arriba
     } else if (pos.x + characterWidth >= obstaclePos.x) {
         std::cout << "[CHARACTER] Character ID: " << static_cast<int>(id)
                   << " collided with obstacle from the left" << std::endl;
@@ -207,6 +212,44 @@ void Character::handleObstacleCollision(const std::shared_ptr<Obstacle>& obstacl
         pos.x = obstaclePos.x + obstacleWidth;  // Colisión por la derecha
     }
 }
+
+
+
+// void Character::handleObstacleCollision(const std::shared_ptr<Obstacle>& obstacle) {
+//     std::cout << "[CHARACTER] Character ID: " << static_cast<int>(id)
+//               << " collided with Obstacle at position: (" << obstacle->getPosition().x << ", "
+//               << obstacle->getPosition().y << ")" << std::endl;
+
+//     auto obstaclePos = obstacle->getPosition();
+//     auto obstacleWidth = obstacle->getWidth();
+//     auto obstacleHeight = obstacle->getHeight();
+//     auto characterWidth = getWidth();
+//     auto characterHeight = getHeight();
+
+//     ObstacleType obstacleType = obstacle->getObstacleType();
+
+//     if (pos.y + characterHeight >= obstaclePos.y) {
+//         if (pos.x + characterWidth < obstaclePos.x || pos.x > obstaclePos.x + obstacleWidth) {
+//             return;
+//         }
+//         onGround = true;
+//         std::cout << "[CHARACTER] Character ID: " << static_cast<int>(id)
+//                   << " collided with obstacle from below" << std::endl;
+//         pos.y = obstaclePos.y - characterHeight;  // Colisión por abajo
+//     } else if (pos.y <= obstaclePos.y + obstacleHeight) {
+//         std::cout << "[CHARACTER] Character ID: " << static_cast<int>(id)
+//                   << " collided with obstacle from above" << std::endl;
+//         pos.y = obstaclePos.y + obstacleHeight;  // Colisión por arriba
+//     } else if (pos.x + characterWidth >= obstaclePos.x) {
+//         std::cout << "[CHARACTER] Character ID: " << static_cast<int>(id)
+//                   << " collided with obstacle from the left" << std::endl;
+//         pos.x = obstaclePos.x - characterWidth;  // Colisión por la izquierda
+//     } else if (pos.x <= obstaclePos.x + obstacleWidth) {
+//         std::cout << "[CHARACTER] Character ID: " << static_cast<int>(id)
+//                   << " collided with obstacle from the right" << std::endl;
+//         pos.x = obstaclePos.x + obstacleWidth;  // Colisión por la derecha
+//     }
+// }
 
 void Character::handleCharacterCollision(const std::shared_ptr<Character>& character) {
     std::cout << "[CHARACTER] Character ID: " << static_cast<int>(id)
