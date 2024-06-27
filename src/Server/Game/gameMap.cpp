@@ -230,7 +230,8 @@ std::vector<std::shared_ptr<Entity>> GameMap::getObjectsInVerticalRange(const Ve
         for (auto& entry : mapGrid) {
             auto entity = entry.second;
             auto entityPos = entity->getPosition();
-            if (entityPos.x == mapPosition.x && entityPos.y >= mapPosition.y - range && entityPos.y <= mapPosition.y + range) {
+            if (entityPos.x == mapPosition.x 
+                && entityPos.y >= mapPosition.y - range && entityPos.y <= mapPosition.y + range) {
                 entities.push_back(entity);
             }
         }

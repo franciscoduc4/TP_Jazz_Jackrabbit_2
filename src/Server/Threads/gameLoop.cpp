@@ -6,10 +6,6 @@
 
 #include "printer.h"
 
-/*
- * Constructor de GameLoopThread.
- * Inicializa el hilo del bucle del juego con la cola de recepción, el monitor de la cola, el mapa del juego y el ID del juego.
- */
 GameLoopThread::GameLoopThread(const std::shared_ptr<Queue<std::unique_ptr<CommandDTO>>>& recvQueue,
                                QueueMonitor& queueMonitor, GameMap& gameMap, uint8_t gameId):
         frameRate(ServerConfig::getGameFrameRate()),
@@ -23,10 +19,6 @@ GameLoopThread::GameLoopThread(const std::shared_ptr<Queue<std::unique_ptr<Comma
               << std::endl;
 }
 
-/*
- * Método run del hilo del bucle del juego.
- * Ejecuta el bucle principal del juego, procesando comandos y actualizando el estado del juego en intervalos de tiempo fijos.
- */
 void GameLoopThread::run() {
     try {
         std::cout << "[GAME LOOP] Game loop started" << std::endl;
@@ -42,20 +34,30 @@ void GameLoopThread::run() {
             std::chrono::duration<float> deltaTime = currentTime - lastTime;
             lastTime = currentTime;
 
+            // std::cout << "[GAME LOOP] Processing commands, deltaTime: " << deltaTime.count()
+            //   << std::endl;
             processCommands(deltaTime.count());
+
+            // std::cout << "[GAME LOOP] Updating game map, deltaTime: " << deltaTime.count()
+            //   << std::endl;
             gameMap.update(deltaTime.count());
 
             std::unique_ptr<GameDTO> gameDTO = gameMap.getGameDTO();
             queueMonitor.broadcast(gameId, std::move(gameDTO));
+            // std::cout << "[GAME LOOP] Game state broadcasted" << std::endl;
 
             if (!keepRunning.load()) {
                 this->recvQueue->close();
             }
             auto processingEndTime = std::chrono::high_resolution_clock::now();
             std::chrono::duration<float> processingDuration = processingEndTime - currentTime;
+            // std::cout << "[GAME LOOP] Processing duration: " << processingDuration.count()
+            //   << std::endl;
 
             auto sleepTime = std::chrono::duration<float>(frameRate) - processingDuration;
             if (sleepTime.count() > 0) {
+                // std::cout << "[GAME LOOP] Sleeping for: " << sleepTime.count() << " seconds"
+                //   << std::endl;
                 std::this_thread::sleep_for(sleepTime);
             }
         }
@@ -65,10 +67,6 @@ void GameLoopThread::run() {
     }
 }
 
-/*
- * Método processCommands.
- * Procesa comandos recibidos en la cola de comandos durante el tiempo especificado.
- */
 void GameLoopThread::processCommands(float deltaTime) {
     try {
         size_t processedCommands = 0;
@@ -100,19 +98,11 @@ void GameLoopThread::processCommands(float deltaTime) {
     }
 }
 
-/*
- * Método stop.
- * Detiene el bucle del juego estableciendo keepRunning en falso.
- */
 void GameLoopThread::stop() {
     keepRunning.store(false);
     std::cout << "[GAME LOOP] Stop called, setting keepRunning to false" << std::endl;
 }
 
-/*
- * Método isRunning.
- * Verifica si el bucle del juego está en ejecución.
- */
 bool GameLoopThread::isRunning() const {
     std::cout << "[GAME LOOP] isRunning called, returning: " << keepRunning.load() << std::endl;
     return keepRunning.load();

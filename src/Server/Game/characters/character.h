@@ -171,9 +171,7 @@ public:
     /** Mover el personaje hacia abajo */
     void moveDown();
     
-    /** Hacer saltar al personaje */
-    void jump();
-    
+ 
     /** Aplicar gravedad */
     void applyGravity(float time);
 

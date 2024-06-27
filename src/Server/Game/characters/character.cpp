@@ -354,25 +354,30 @@ void Character::moveLeft(double time) {
 
 
 void Character::jump(float time) {
-    if (isIntoxicated) {
+    if (isIntoxicated || !onGround) {
         return;
     }
+
     float gravity = ServerConfig::getGameGravity();
     if (!jumping) {
         currentSpeed.y = -ServerConfig::getCharacterJumpHeight();
         jumping = true;
-        auto newState = std::make_unique<JumpingState>(*this);
-        state = std::move(newState);
+
     } else {
         
         currentSpeed.y += gravity * time;  // v = u + at
 
         for (int i = 0; i < std::abs(currentSpeed.y * time); ++i) {
             float newY = pos.y + (currentSpeed.y > 0 ? 1 : -1);
-
+            
             if (newY < 0) {
                 newY = 0;
+                jumping = false;
+                currentSpeed.y = 0;
+                onGround = true; 
+                break;
             }
+
 
             Vector<uint32_t> newPos = {pos.x, static_cast<uint32_t>(newY)};
             auto entityAtNewPos = gameMap.getEntityAt(newPos);
@@ -380,6 +385,7 @@ void Character::jump(float time) {
                 handleCollisions(entityAtNewPos);
                 jumping = false;
                 currentSpeed.y = 0;
+                onGround = true; 
                 break;
             } else {
                 pos.y = newY;
@@ -388,6 +394,7 @@ void Character::jump(float time) {
                     pos.y = ServerConfig::getGameMapSizeY();
                     jumping = false;
                     currentSpeed.y = 0;
+                    onGround = true;
                     break;
                 }
             }
@@ -661,56 +668,6 @@ void Character::moveLeft() {
                                              std::dynamic_pointer_cast<Item>(entityAtNewPos));
     }
 }
-
-void Character::jump() {
-
-    if (ServerConfig::getCharacterJumpHeight() + initialYJump == pos.y) {
-        std::cout << "[CHARACTER] Character ID: " << static_cast<int>(id) << " jumping"
-                  << std::endl;
-        auto newState = state->move(Direction::DOWN, 0);
-        if (newState) {
-            state = std::move(newState);
-        }
-        return;
-    }
-    std::cout << "[JUMP] Character ID: " << static_cast<int>(id) << " jumping" << std::endl;
-    Vector<uint32_t> newPos =
-            pos - Vector<uint32_t>{
-                          0, static_cast<uint32_t>(movesPerCell *
-                                                   ServerConfig::getCharacterQuadMovesPerCell())};
-    if (newPos.y >= gameMap.getMaxYPos()) {
-        newPos = Vector<uint32_t>{pos.x, gameMap.getMaxYPos()};
-    }
-
-    if (!gameMap.isValidMapPosition(newPos))
-        return;
-
-    auto entityAtNewPos = gameMap.getEntityAt(newPos);
-    if (entityAtNewPos) {
-        if (entityAtNewPos->getType() == EntityType::ENEMY) {
-            gameMap.handleCharacterEnemyCollision(shared_from_this(),
-                                                  std::dynamic_pointer_cast<Enemy>(entityAtNewPos));
-            return;
-        } else if (entityAtNewPos->getType() == EntityType::OBSTACLE) {
-            gameMap.handleCharacterObstacleCollision(
-                    shared_from_this(), std::dynamic_pointer_cast<Obstacle>(entityAtNewPos));
-            return;
-        } else if (entityAtNewPos->getType() == EntityType::CHARACTER) {
-            handleCharacterCollision(std::dynamic_pointer_cast<Character>(entityAtNewPos));
-            return;
-        }
-    }
-
-    pos = newPos;
-    std::cout << "[CHARACTER] NEW POS Character ID: " << static_cast<int>(id)
-              << " new y: " << int(pos.y) << std::endl;
-
-    if (entityAtNewPos && entityAtNewPos->getType() == EntityType::ITEM) {
-        gameMap.handleCharacterItemCollision(shared_from_this(),
-                                             std::dynamic_pointer_cast<Item>(entityAtNewPos));
-    }
-}
-
 
 bool Character::hasLanded() {
     if (pos.y == initialYJump && !jumping)

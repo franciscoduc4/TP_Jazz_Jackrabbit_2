@@ -12,10 +12,11 @@ void Jazz::specialAttack() {
     std::cout << "[SPECIAL ATTACK] Jazz realiza un puñetazo hacia arriba" << std::endl;
     // Hacer que Jazz salte hacia arriba
     if (!isJumping()) {
+        initialYJump = pos.y;
         jumping = true;
         currentSpeed.y = -jumpHeight; // Ajuste para el salto
     }
-
+    
     Vector<uint32_t> attackPos = getPosition();
     attackPos.y -= getHeight(); // Ajuste para el ataque hacia arriba
     std::cout << "[SPECIAL ATTACK] Posición de ataque: " << attackPos.x << ", " << attackPos.y << std::endl;
@@ -27,7 +28,7 @@ void Jazz::specialAttack() {
         if (entity->getType() == EntityType::ENEMY) {
             auto enemy = std::dynamic_pointer_cast<Enemy>(entity);
             if (enemy) {
-                enemy->recvDamage(144, 0); // Asigna un valor de daño adecuado
+                enemy->recvDamage(255, 0); // Asigna un valor de daño adecuado
                 std::cout << "[SPECIAL ATTACK] Jazz golpea al enemigo ID: " << static_cast<int>(enemy->getId()) << std::endl;
                 if (enemy->isDead()) {
                         score += enemy->getPointsValue();
