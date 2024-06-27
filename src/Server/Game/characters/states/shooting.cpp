@@ -24,20 +24,24 @@ ShootingState::ShootingState(Character& character, const std::shared_ptr<Weapon>
 
 std::unique_ptr<State> ShootingState::exec(float time) {
     std::cout << "Shooting state" << std::endl;
+    std::cout << "EL VALOR DE TIME " << time << '\n';
+    shootCooldown -= time;
+    if (shootCooldown <= 0) {
+        return std::make_unique<IdleState>(character);
+    }
     return shoot(weapon, time);
 }
 
 std::unique_ptr<State> ShootingState::shoot(const std::shared_ptr<Weapon>& weapon, float time) {
     std::cout << "[SHOOTING] Shooting" << std::endl;
-    if (!weapon->isEmpty() && (time - startTime) > shootCooldown) {
-        startTime = time;
-        std::vector<std::shared_ptr<Entity>> characters = character.getTargets();
-        uint8_t x = character.getMapPosition(2).x;  // moves per cell
-        std::cout << "shooting at " << x << std::endl;
-        weapon->shoot(characters, x, time);
-        return std::make_unique<IdleState>(character);  // Regresar a IdleState después de disparar
+    if (weapon->isEmpty() || !weapon->cooldown(time)) {
+        return nullptr;
     }
-    return nullptr;
+    std::vector<std::shared_ptr<Entity>> characters = character.getTargets();
+    uint8_t x = character.getMapPosition(2).x;  // moves per cell
+    std::cout << "shooting at " << x << std::endl;
+    weapon->shoot(characters, x, time);
+    return std::make_unique<IdleState>(character);  // Regresar a IdleState después de disparar
 }
 
 std::unique_ptr<State> ShootingState::move(Direction direction, float time) {
