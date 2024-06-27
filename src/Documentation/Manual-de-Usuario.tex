@@ -14,6 +14,7 @@
 \usepackage{multirow}
 \usepackage{plantuml}
 \usepackage{fancyhdr}
+\usepackage{float}
 \usepackage[spanish,es-tabla]{babel}
 
 % Quote box
@@ -53,7 +54,7 @@
 \makeatother
 
 \setcounter{secnumdepth}{5}
-\setcounter{tocdepth}{5}
+\setcounter{tocdepth}{4}
 
 
 % environment derived from framed.sty: see leftbar environment definition
@@ -245,5 +246,162 @@ Por último, para el editor de niveles:
 \begin{lstlisting}[language=sh,caption=Ejecución del Editor de Niveles, captionpos=b]
   $ ./leveleditor
 \end{lstlisting}
+
+\section{Lobby}
+El Lobby es donde el usuario selecciona qué quiere hacer: crear o unirse a una partida. Consiste de las siguientes pantallas:
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.8\textwidth]{images/Lobby/Welcome.png}
+  \caption{Pantalla de Bienvenida}
+  \label{fig:welcome}
+\end{figure}
+
+En esta primera pantalla, solamente se pide que el usuario ingrese su nombre. 
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.8\textwidth]{images/Lobby/Lobby.png}
+  \caption{Menú Principal}
+  \label{fig:lobby}
+\end{figure}
+
+Luego de ingresar su nombre, se llega al menú principal. Es aquí donde se elige si se quiere crear una partida o unirse a una.
+
+Si se selecciona la creación de uina partida, se procede a la selección del escenario de juego:
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.8\textwidth]{images/Lobby/SceneSelection.png}
+  \caption{Selección de Escenario}
+  \label{fig:scene}
+\end{figure}
+
+Luego, la configuración de la partida a crear:
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.8\textwidth]{images/Lobby/CreateGame.png}
+  \caption{Configuración de la Partida}
+  \label{fig:create}
+\end{figure}
+
+Aquí se nombra una partida y se decide la cantidad de jugadores que tendrá, donde se limita a un máximo de 3 personas.
+
+El siguiente paso es la selección del personaje con el que se desea jugar:
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.8\textwidth]{images/Lobby/CharacterSelection.png}
+  \caption{Selección de Personaje}
+  \label{fig:character}
+\end{figure}
+
+En el caso de que la partida sea de múltiples jugadores, se entrará a la sala de espera:
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.8\textwidth]{images/Lobby/WaitingRoom.png}
+  \caption{Sala de Espera}
+  \label{fig:waiting-room}
+\end{figure}
+
+En el caso de que se seleccione para unirse a una partida, se procederá primero a la selección del personaje, como se muestra en la Figura \ref{fig:character}.
+
+Luego de eso, se muestra la pantalla de selección de partidas, donde si no hay partidas se muestra:
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.8\textwidth]{images/Lobby/GamesListNoGames.png}
+  \caption{No hay Partidas}
+  \label{fig:no-games}
+\end{figure}
+
+En el caso que sí:
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.8\textwidth]{images/Lobby/GamesList.png}
+  \caption{Lista de Partidas}
+  \label{fig:games-list}
+\end{figure}
+
+En caso que aún falten jugadores para que la partida comience, se mostrará la sala de espera, como se muestra en la Figura \ref{fig:waiting-room}. En caso contrario, el juego arranca para todos los jugadores.
+
+
+\section{Juego} 
+El juego consiste en un escenario con plataformas y obstáculos, donde los jugadores deben recolectar diamantes y disparar a los otros jugadores para obtener puntos. El juego termina cuando se acaba el tiempo.
+
+\begin{enumerate}
+  \item Movimientos: estos se realizan con las teclas de dirección hacia la derecha ($\rightarrow$) e izquierda ($\leftarrow$).
+  \item Salto: se realiza con la tecla \texttt{espacio}.
+  \item Disparo: se realiza con la tecla \texttt{M}.
+  \item Correr más rápido: se realiza con la tecla \texttt{SHIFT} de la izquierda.
+  \item Cambiar de arma: se realiza con la tecla \texttt{G}.
+\end{enumerate}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.8\textwidth]{images/gameScreen.png}
+  \caption{Captura del Juego}
+  \label{fig:game}
+\end{figure}
+
+\section{Editor de Niveles}
+El editor de niveles consiste en una sola pantalla:
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.8\textwidth]{images/LevelEditor/LevelEditor.png}
+  \caption{Editor de Niveles}
+  \label{fig:level-editor}
+\end{figure}
+
+El mapa necesita un nombre, que tenga elementos y que no exista un mapa con el mismo nombre creado previamente. Se pueden agregar y quitar elementos del mapa, como se muestra en la Figura \ref{fig:level-editor}.
+
+En caso que no se cumpla alguna de las condiciones previas:
+
+Si el mapa no tiene nombre:
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.8\textwidth]{images/LevelEditor/NoMapName.png}
+  \caption{Error en el Editor de Niveles al crear un mapa sin nombre}
+  \label{fig:no-map-name}
+\end{figure}
+
+Si no tiene elementos:
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.8\textwidth]{images/LevelEditor/EmptyMap.png}
+  \caption{Error en el Editor de Niveles al crear un mapa sin elementos}
+  \label{fig:no-elements}
+\end{figure}
+
+Si ya existe un mapa con el mismo nombre:
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.8\textwidth]{images/LevelEditor/MapAlreadyExists.png}
+  \caption{Error en el Editor de Niveles al crear un mapa con un nombre ya existente}
+  \label{fig:map-exists}
+\end{figure}
+
+En caso contrario, donde el mapa creado es válido:
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.8\textwidth]{images/LevelEditor/MapWithElements.png}
+  \caption{Mapa válido con elementos}
+  \label{fig:valid-map}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.8\textwidth]{images/LevelEditor/MapCreated.png}
+  \caption{Mapa Creado}
+  \label{fig:map-created}
+\end{figure}
 
 \end{document}

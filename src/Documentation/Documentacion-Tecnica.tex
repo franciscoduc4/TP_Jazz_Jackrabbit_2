@@ -231,6 +231,8 @@ Siendo una estrctura multithreading, se tiene que tener en cuenta la concurrenci
   \label{fig:server-game}
 \end{figure}
 
+El servidor se puede cerrar con la tecla \texttt{Q} en cualquier momento.
+
 \subsection{Cliente}
 El cliente posee una estructura simple que se puede dividir en dos grandes áreas: gameplay y lobby. El gameplay es la parte del juego donde se muestra el mapa y los jugadores pueden interactuar entre sí. El lobby es la parte del juego donde los jugadores pueden seleccionar su personaje y unirse a una partida.
 
@@ -243,6 +245,21 @@ Antes de ser enviados, los mensajes son serializados, y antes de ser enviados a 
 La clase \texttt{Protocolo} es quien realmente conoce cómo es el protocolo de recepción, este es quien realmente procesa la recepción de datos. 
 
 Por último, se tienen los controladores: \texttt{LobbyController} y \texttt{GameController}. Estos tienen a la cola de mensajes recibidos de cada uno y van desencolandolos y, en función del mensaje recibido, realizan las acciones correspondientes.
+
+El juego posee los siguientes comandos:
+\begin{enumerate}
+  \item Movimientos: estos se realizan con las teclas de dirección hacia la derecha ($\rightarrow$) e izquierda ($\leftarrow$).
+  \item Salto: se realiza con la tecla \texttt{espacio}.
+  \item Disparo: se realiza con la tecla \texttt{M}.
+  \item Correr más rápido: se realiza con la tecla \texttt{SHIFT} de la izquierda.
+  \item Cambiar de arma: se realiza con la tecla \texttt{G}.
+\end{enumerate}
+
+Además, posee dos Cheats:
+\begin{enumerate}
+  \item Freezar el juego: se realiza con la tecla \texttt{F3}, con la idea de mantener al ganador del juego imposibilitando que los demás puedan realizar acciones.
+  \item Resetear los puntajes: se activa apretando la tecla \texttt{F8}, se realiza con la idea de que haya triple empate en cero.
+\end{enumerate}
 
 \begin{figure}[H]
   \centering
