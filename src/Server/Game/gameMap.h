@@ -32,6 +32,10 @@ private:
     std::map<CharacterType, Vector<uint32_t>> initialPositions;
     std::map<CharacterType, Vector<uint32_t>> initialSizes;
 
+    std::vector<std::shared_ptr<Enemy>> dead_enemies;
+    std::vector<std::shared_ptr<Item>> collected_items;
+    
+
     EntityFactory entityFactory;
     uint8_t entityCount;
     uint8_t movesPerCell;

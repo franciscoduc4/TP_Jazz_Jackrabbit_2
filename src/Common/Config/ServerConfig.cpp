@@ -36,6 +36,11 @@ uint8_t ServerConfig::getGameMaxRevived() {
     return static_cast<uint8_t>(maxRevived);
 }
 
+int ServerConfig::getItemsCollected() {
+    return getInstance()->root["GAME"]["CANT_ITEMS_COLLECTED"].as<int>();
+}
+
+
 // Character
 uint32_t ServerConfig::getCharacterInitialX() {
     int initialX = getInstance()->root["CHARACTER"]["INITIAL_X"].as<int>();

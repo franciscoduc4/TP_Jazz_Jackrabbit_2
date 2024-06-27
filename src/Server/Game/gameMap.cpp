@@ -444,8 +444,16 @@ void GameMap::update(float time) {
         for (const auto& entity: entitiesToRemove) {
             removeCharacter(std::dynamic_pointer_cast<Character>(entity));
         }
+
+
         for (const auto& entity: itemsToRemove) {
             removeItem(entity->getPosition());
+            collected_items.push_back(std::dynamic_pointer_cast<Item>(entity));
+        }
+        std::vector<std::shared_ptr<Item>>::iterator it_items = collected_items.begin();
+        if (it_items != collected_items.end() && collected_items.size() > ServerConfig::getItemsCollected()) {
+            collected_items.erase(it_items);
+            addItem((*it_items)->getItemType(), (*it_items)->getPosition(),  (*it_items)->getWidth(), (*it_items)->getHeight());            
         }
     } catch (const std::exception& e) {
         // std::cerr << "[GAMEMAP] Error updating game map: " << e.what() << std::endl;

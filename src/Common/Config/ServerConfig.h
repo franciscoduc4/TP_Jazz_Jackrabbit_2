@@ -19,6 +19,7 @@ public:
     static float getGameGravity();
     static uint8_t getGameMaxMoves();
     static uint8_t getGameMaxRevived();
+    static int getItemsCollected();
     
     static float getGameFrameRate();
     static uint32_t getGameCommandsToProcess();
