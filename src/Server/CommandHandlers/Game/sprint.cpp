@@ -3,23 +3,22 @@
 SprintHandler::SprintHandler(std::unique_ptr<GameCommandDTO> sprintCommand):
         sprintCommand(std::move(sprintCommand)) {}
 
+/**
+ * @brief Ejecuta el comando de sprint para un personaje en el mapa del juego.
+ * 
+ * @param gameMap Mapa del juego donde se encuentra el personaje.
+ * @param keepRunning Bandera para indicar si el juego sigue en ejecución.
+ * @param deltaTime Tiempo transcurrido desde la última actualización.
+ */
 void SprintHandler::execute(GameMap& gameMap, std::atomic<bool>& keepRunning, double deltaTime) {
-    std::cout << "[SPRINT GAME HANDLER] Executing sprint command" << std::endl;
+    std::cout << "[MANEJADOR DE SPRINT] Ejecutando comando de sprint" << std::endl;
     std::shared_ptr<Character> character = gameMap.getCharacter(sprintCommand->getPlayerId());
 
-    if (!character) {
-        std::cerr << "[SPRINT HANDLER] Character with ID "
-                  << static_cast<int>(sprintCommand->getPlayerId())
-                  << " not found. Skipping sprint command." << std::endl;
+    if (!character || !character) {
         return;
     }
 
-    if (!character->isAlive()) {
-        std::cerr << "[SPRINT HANDLER] Character with ID "
-                  << static_cast<int>(sprintCommand->getPlayerId())
-                  << " is dead. Skipping sprint command." << std::endl;
-        return;
-    } else {
+    else {
         character->sprint(deltaTime);
     }
 }

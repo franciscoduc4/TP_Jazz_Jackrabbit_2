@@ -49,6 +49,18 @@ void Character::idle(float time) {
     }
 }
 
+void Character::specialAttack(float time) {
+    std::cout << "[CHARACTER] Character ID: " << static_cast<int>(id) << " special attack"
+              << std::endl;
+    auto newState = state->specialAttack(time);
+    if (newState) {
+        state = std::move(newState);
+        std::cout << "[NEW STATE] Character ID: " << static_cast<int>(id)
+                  << " new state after special attack: "
+                  << static_cast<int>(state->getCharacterState()) << std::endl;
+    }
+}
+
 void Character::recvDamage(uint8_t dmg, float time) {
     std::cout << "[CHARACTER] Character ID: " << static_cast<int>(id)
               << " receiving damage: " << static_cast<int>(dmg) << std::endl;
@@ -281,13 +293,13 @@ bool Character::isPointInTriangle(const Vector<uint32_t>& p, const Vector<uint32
 void Character::moveRight(double time) {
     std::cout << "[CHARACTER] Character ID: " << static_cast<int>(id) << " moving right"
               << std::endl;
-    //auto newState = state->move(Direction::RIGHT, time);
+    auto newState = state->move(Direction::RIGHT, time);
     dir = Direction::RIGHT;
 
     float speed = jumping ? horizontalSpeed * 0.5 : horizontalSpeed;
     pos.x += speed * time;
 
-    auto newState = state->move(Direction::RIGHT, time);
+    //auto newState = state->move(Direction::RIGHT, time);
 
     if (newState) {
         std::cout << "[CHARACTER] Character ID: " << static_cast<int>(id) << " moving right"
@@ -299,13 +311,13 @@ void Character::moveRight(double time) {
 void Character::moveLeft(double time) {
     std::cout << "[CHARACTER] Character ID: " << static_cast<int>(id) << " moving left"
               << std::endl;
-    //auto newState = state->move(Direction::LEFT, time);
+    auto newState = state->move(Direction::LEFT, time);
     dir = Direction::LEFT;
 
     float speed = jumping ? horizontalSpeed * 0.5 : horizontalSpeed;
     pos.x -= speed * time;
 
-    auto newState = state->move(Direction::LEFT, time);
+    //auto newState = state->move(Direction::LEFT, time);
 
 
     if (newState) {
@@ -325,6 +337,7 @@ void Character::jump(float time) {
         auto newState = std::make_unique<JumpingState>(*this);
         state = std::move(newState);
     } else {
+        
         currentSpeed.y += gravity * time;  // v = u + at
 
         for (int i = 0; i < std::abs(currentSpeed.y * time); ++i) {

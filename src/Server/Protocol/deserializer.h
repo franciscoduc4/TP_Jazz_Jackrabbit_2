@@ -14,6 +14,7 @@
 #include "../../Common/DTO/mapsList.h"
 #include "../../Common/DTO/startGame.h"
 #include "../../Common/DTO/switchWeapon.h"
+#include "../../Common/DTO/specialAttack.h"
 #include "../../Common/Types/command.h"
 #include "../../Common/socket.h"
 #include "protocol.h"
@@ -37,6 +38,7 @@ private:
     std::unique_ptr<CommandDTO> deserializeSwitchWeapon(uint8_t& playerId);
     std::unique_ptr<CommandDTO> deserializeSprint(uint8_t& playerId);
     std::unique_ptr<CommandDTO> deserializeCheat();
+    std::unique_ptr<CommandDTO> deserializeSpecialAttack(uint8_t& playerId);
 
 
 public:

@@ -1,9 +1,11 @@
 #include "enemy.h"
 
 #include <utility>
-
 #include "../gameMap.h"
 
+/*
+ * Constructor de Enemy que inicializa sus atributos.
+ */
 Enemy::Enemy(GameMap& gameMap, const Vector<uint32_t>& pos, uint8_t id, uint8_t health,
              Direction dir, uint8_t dmg, std::unique_ptr<EnemyState> initialState,
              uint8_t viewDistance, uint8_t viewDistanceHit, uint8_t movesPerCell,
@@ -25,10 +27,10 @@ Enemy::Enemy(GameMap& gameMap, const Vector<uint32_t>& pos, uint8_t id, uint8_t 
         initialPosition(pos),
         movingRight(true) {}
 
+/*
+ * Actualiza el estado del enemigo en función del tiempo y los personajes en el juego.
+ */
 void Enemy::update(const std::map<uint8_t, std::shared_ptr<Character>>& characters, float time) {
-
-    // std::cout << "[ENEMY] update" << std::endl;
-
     std::vector<std::shared_ptr<Character>> characterList;
     characterList.reserve(characters.size());
     for (const auto& pair: characters) {
@@ -41,7 +43,9 @@ void Enemy::update(const std::map<uint8_t, std::shared_ptr<Character>>& characte
     }
 }
 
-
+/*
+ * Recibe daño y actualiza el estado del enemigo en consecuencia.
+ */
 void Enemy::recvDamage(uint8_t dmg, float time) {
     std::cout << "[ENEMY] recvDamage" << std::endl;
     Entity::recvDamage(dmg);
@@ -56,6 +60,9 @@ void Enemy::recvDamage(uint8_t dmg, float time) {
     }
 }
 
+/*
+ * Ataca al personaje más cercano si está dentro del rango de ataque.
+ */
 void Enemy::attack(const std::vector<std::shared_ptr<Character>>& characters, float time) {
     std::shared_ptr<Character> closeCharacter = getClosestCharacter(characters);
     if (!closeCharacter) {
@@ -71,6 +78,9 @@ void Enemy::attack(const std::vector<std::shared_ptr<Character>>& characters, fl
     }
 }
 
+/*
+ * Maneja la muerte del enemigo y cambia su estado.
+ */
 void Enemy::die(float time) {
     Entity::die(time);
     std::unique_ptr<EnemyState> newState = state->die(time);
@@ -79,6 +89,9 @@ void Enemy::die(float time) {
     }
 }
 
+/*
+ * Devuelve el personaje más cercano dentro del rango de visión del enemigo.
+ */
 std::shared_ptr<Character> Enemy::getClosestCharacter(
         const std::vector<std::shared_ptr<Character>>& characters) {
     std::shared_ptr<Character> closestCharacter = nullptr;
@@ -93,9 +106,14 @@ std::shared_ptr<Character> Enemy::getClosestCharacter(
     return closestCharacter;
 }
 
+/*
+ * Devuelve el estado actual del enemigo.
+ */
 std::unique_ptr<EnemyState>& Enemy::getState() { return state; }
 
-
+/*
+ * Devuelve el DTO del enemigo para la transmisión de datos.
+ */
 EnemyDTO Enemy::getDTO() const {
     return EnemyDTO{pos.x,
                     pos.y,
@@ -107,8 +125,14 @@ EnemyDTO Enemy::getDTO() const {
                     EnemyStateEntity::ENEMY_WALKING};
 }
 
+/*
+ * Actualiza el estado del enemigo.
+ */
 void Enemy::update(double deltaTime) {}
 
+/*
+ * Deja caer un ítem aleatorio cuando el enemigo muere.
+ */
 ItemType Enemy::dropRandomItem() const {
     std::array<ItemType, 6> possibleItems = {ItemType::GEM,           ItemType::GOLD_COIN,
                                              ItemType::SILVER_COIN,   ItemType::FOOD,

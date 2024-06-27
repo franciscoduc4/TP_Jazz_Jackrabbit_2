@@ -3,6 +3,10 @@
 #include <iostream>
 #include <memory>
 
+/*
+ * Constructor de SenderThread.
+ * Inicializa el hilo del remitente con el socket, los indicadores de estado del juego y del jugador, el ID del jugador y las colas de envío.
+ */
 SenderThread::SenderThread(const std::shared_ptr<Socket>& socket, std::atomic<bool>& keepPlaying,
                            std::atomic<bool>& inGame, uint8_t playerId,
                            const std::shared_ptr<Queue<std::unique_ptr<DTO>>>& sendQueue) :
@@ -14,6 +18,10 @@ SenderThread::SenderThread(const std::shared_ptr<Socket>& socket, std::atomic<bo
         serializer(socket, keepPlaying, inGame),
         deserializer(socket, keepPlaying, inGame) {}
 
+/*
+ * Método run del hilo remitente.
+ * Envía el ID del jugador al iniciar y maneja el ciclo de vida del remitente, alternando entre el lobby y la partida según el estado del jugador.
+ */
 void SenderThread::run() {
     std::cout << "[SERVER SENDER] Sender started" << std::endl;
     serializer.sendId(playerId);
@@ -41,6 +49,10 @@ void SenderThread::run() {
     std::cout << "[SERVER SENDER] Exiting run" << std::endl;
 }
 
+/*
+ * Método runLobby.
+ * Maneja el envío de comandos mientras el jugador está en el lobby y no en una partida.
+ */
 void SenderThread::runLobby() {
     while (keepPlaying.load() && !inGame.load()) {
         try {

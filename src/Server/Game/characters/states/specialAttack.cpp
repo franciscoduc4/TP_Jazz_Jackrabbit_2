@@ -15,23 +15,24 @@ SpecialAttackState::SpecialAttackState(Character& character, float time):
 
 std::unique_ptr<State> SpecialAttackState::exec(float time) {
     // Volver al estado idle después de realizar el ataque especial
+    character.specialAttack();
     return std::make_unique<IdleState>(character);
 }
 
 std::unique_ptr<State> SpecialAttackState::shoot(const std::shared_ptr<Weapon>& weapon,
                                                  float time) {
     // No puede disparar mientras realiza un ataque especial
-    return std::make_unique<ShootingState>(character, weapon, time);
+    return nullptr;
 }
 
 std::unique_ptr<State> SpecialAttackState::move(Direction direction, float time) {
-    // Puede moverse mientras realiza un ataque especial
-    return std::make_unique<MovingState>(character, direction);
+    // No puede moverse mientras realiza un ataque especial
+    return nullptr;
 }
 
 std::unique_ptr<State> SpecialAttackState::sprint(Direction direction, float time) {
     // No puede correr más rápido de lo que ya lo hace
-    return std::make_unique<SprintingState>(character, direction);
+    return nullptr;
 }
 
 
@@ -59,8 +60,7 @@ std::unique_ptr<State> SpecialAttackState::specialAttack(float time) {
 }
 
 std::unique_ptr<State> SpecialAttackState::becomeIntoxicated(float period) {
-    // Puede intoxicarse mientras realiza un ataque especial
-    return std::make_unique<IntoxicatedState>(character, period);
+    return nullptr;
 }
 
 std::unique_ptr<State> SpecialAttackState::stopAction() {

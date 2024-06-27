@@ -11,6 +11,13 @@
 #include "mapsListHandler.h"
 #include "startGame.h"
 
+/**
+ * Crea un manejador de comandos de lobby en función del tipo de comando recibido.
+ * 
+ * @param command El comando a procesar.
+ * @param gameId El ID del juego, utilizado en ciertos comandos.
+ * @return Un puntero único a un objeto LobbyCommandHandler.
+ */
 std::unique_ptr<LobbyCommandHandler> LobbyCommandHandler::createHandler(
         std::unique_ptr<CommandDTO> command, uint8_t gameId) {
     switch (command->getCommand()) {

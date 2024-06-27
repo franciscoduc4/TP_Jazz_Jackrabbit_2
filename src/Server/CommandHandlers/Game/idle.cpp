@@ -1,27 +1,23 @@
 #include "idle.h"
 
-#include "../../../Common/DTO/command.h"
-
 IdleHandler::IdleHandler(std::unique_ptr<CommandDTO> idleCommand): 
     idleCommand(std::move(idleCommand)) {}
 
+/**
+ * @brief Ejecuta el comando de inactividad para un personaje en el mapa del juego.
+ * 
+ * @param gameMap Mapa del juego donde se encuentra el personaje.
+ * @param keepRunning Bandera para indicar si el juego sigue en ejecución.
+ * @param deltaTime Tiempo transcurrido desde la última actualización.
+ */
 void IdleHandler::execute(GameMap& gameMap, std::atomic<bool>& keepRunning, double deltaTime) {
-    std::cout << "[IDLE HANDLER] Executing idle command" << std::endl;
     std::shared_ptr<Character> character = gameMap.getCharacter(idleCommand->getPlayerId());
 
-    if (!character) {
-        std::cerr << "[MOVE HANDLER] Character with ID " << static_cast<int>(idleCommand->getPlayerId())
-                  << " not found. Skipping move command." << std::endl;
-        return;
-    }
-
-    if (!character->isAlive()) {
-        std::cerr << "[MOVE HANDLER] Character with ID " << static_cast<int>(idleCommand->getPlayerId())
-                  << " is dead. Skipping move command." << std::endl;
+    if (!character || !character) {
         return;
     } 
     else {
         character->idle(deltaTime);
     }
-    std::cout << "[IDLE HANDLER] Idle command executed" << std::endl;    
+    std::cout << "[MANEJADOR DE INACTIVIDAD] Comando de inactividad ejecutado" << std::endl;    
 }

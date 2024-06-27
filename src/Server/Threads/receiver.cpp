@@ -6,6 +6,10 @@
 
 #include "../CommandHandlers/Lobby/lobbyCommand.h"
 
+/*
+ * Constructor de ReceiverThread.
+ * Inicializa el receptor con el socket, indicadores de estado del juego, el ID del jugador, el monitor del juego y las colas de recepción y envío.
+ */
 ReceiverThread::ReceiverThread(const std::shared_ptr<Socket>& socket,
                                std::atomic<bool>& keepPlaying, std::atomic<bool>& inGame,
                                uint8_t playerId, GameMonitor& gameMonitor,
@@ -22,6 +26,10 @@ ReceiverThread::ReceiverThread(const std::shared_ptr<Socket>& socket,
     std::cout << "[SERVER RECEIVER] ReceiverThread initialized" << std::endl;
 }
 
+/*
+ * Método runLobby.
+ * Escucha y maneja comandos en el lobby mientras el jugador no esté en una partida.
+ */
 void ReceiverThread::runLobby() {
     if (inGame.load())
         return;
@@ -44,10 +52,13 @@ void ReceiverThread::runLobby() {
 
     handler->execute(gameMonitor, inGame, sendQueue);
 
-
     std::cout << "[SERVER RECEIVER LOBBY] Command executed" << std::endl;
 }
 
+/*
+ * Método runGame.
+ * Escucha y maneja comandos durante la partida, agregándolos a la cola del juego del jugador.
+ */
 void ReceiverThread::runGame() {
     std::cout << "[SERVER RECEIVER] Waiting to receive command" << std::endl;
     std::unique_ptr<CommandDTO> commandDTO = deserializer.getCommand(playerId);
@@ -65,6 +76,10 @@ void ReceiverThread::runGame() {
     }
 }
 
+/*
+ * Método run del hilo receptor.
+ * Maneja el ciclo de vida del receptor, alternando entre el lobby y la partida según el estado del jugador.
+ */
 void ReceiverThread::run() {
     std::cout << "[SERVER RECEIVER] Receiver thread started" << std::endl;
     std::cout << "[SERVER RECEIVER] Running Lobby..." << std::endl;
@@ -74,8 +89,7 @@ void ReceiverThread::run() {
         } catch (const std::exception& e) {
             std::cerr << "[SERVER RECEIVER] Exception: " << e.what() << std::endl;
             if (!inGame.load() || !keepPlaying.load()) {
-                std::cout << "[SERVER RECEIVER] Socket was closed, exiting receiver thread"
-                          << std::endl;
+                std::cout << "[SERVER RECEIVER] Socket was closed, exiting receiver thread" << std::endl;
                 return;
             }
         }
@@ -87,8 +101,7 @@ void ReceiverThread::run() {
         } catch (const std::exception& e) {
             std::cerr << "[SERVER RECEIVER] Exception: " << e.what() << std::endl;
             if (!inGame.load() || !keepPlaying.load()) {
-                std::cout << "[SERVER RECEIVER] Socket was closed, exiting receiver thread"
-                          << std::endl;
+                std::cout << "[SERVER RECEIVER] Socket was closed, exiting receiver thread" << std::endl;
                 gameMonitor.removePlayerFromGame(playerId);
                 return;
             }

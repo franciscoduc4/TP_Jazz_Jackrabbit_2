@@ -16,9 +16,9 @@ SenderThread::SenderThread(std::shared_ptr<Queue<std::unique_ptr<CommandDTO>>>& 
     this->additionalData[static_cast<char>(Command::CHARACTER_TYPE)] = false;
     this->additionalData[static_cast<char>(Command::START_GAME)] = true;
     this->additionalData[static_cast<char>(Command::SHOOT)] = true;
-    this->additionalData[static_cast<char>(Command::SWITCH_WEAPON)] = true;  // TODO: REVISAR
+    this->additionalData[static_cast<char>(Command::SWITCH_WEAPON)] = true;
     this->additionalData[static_cast<char>(Command::MOVE)] = true;
-    this->additionalData[static_cast<char>(Command::SPRINT)] = false;  // TODO: ¿Es Dash o Run?
+    this->additionalData[static_cast<char>(Command::SPRINT)] = false;  
     this->additionalData[static_cast<char>(Command::JUMP)] = true;
     this->additionalData[static_cast<char>(Command::INTOXICATED)] = false;
     this->additionalData[static_cast<char>(Command::TAKE_DAMAGE)] = false;
@@ -29,6 +29,7 @@ SenderThread::SenderThread(std::shared_ptr<Queue<std::unique_ptr<CommandDTO>>>& 
     this->additionalData[static_cast<char>(Command::SHORT_KICK)] = true;
     this->additionalData[static_cast<char>(Command::SIDE_KICK)] = true;
     this->additionalData[static_cast<char>(Command::CHEAT)] = true;
+    this->additionalData[static_cast<char>(Command::SPECIAL_ATTACK)] = true;
     this->additionalData[static_cast<char>(Command::INVALID)] = false;
 }
 

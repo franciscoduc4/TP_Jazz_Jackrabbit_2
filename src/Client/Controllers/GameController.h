@@ -34,6 +34,8 @@ public:
 
     void cheat(const std::vector<uint8_t>& parameters);
 
+    void special_attack_msg(uint8_t playerId, std::vector<uint8_t>& parameters);
+
     std::unique_ptr<DTO> getServerMsg();
 };
 

@@ -2,6 +2,7 @@
 
 #include "../../../Common/DTO/gameCommand.h"
 #include "../../../Common/DTO/switchWeapon.h"
+#include "../../../Common/DTO/specialAttack.h"
 
 #include "cheat.h"
 #include "idle.h"
@@ -9,8 +10,15 @@
 #include "move.h"
 #include "shoot.h"
 #include "sprint.h"
+#include "specialAttack.h"
 #include "switchWeapon.h"
 
+/**
+ * @brief Crea un manejador de comandos de juego basado en el tipo de comando recibido.
+ * 
+ * @param command Comando DTO recibido para manejar.
+ * @return std::unique_ptr<GameCommandHandler> Manejador de comando de juego creado.
+ */
 std::unique_ptr<GameCommandHandler> GameCommandHandler::createHandler(
         std::unique_ptr<CommandDTO> command) {
     switch (command->getCommand()) {
@@ -29,7 +37,7 @@ std::unique_ptr<GameCommandHandler> GameCommandHandler::createHandler(
             return std::make_unique<JumpHandler>(std::unique_ptr<CommandDTO>(command.release()));
         }
         case Command::SWITCH_WEAPON: {
-            std::cout << "Switch weapon command received" << std::endl;
+            std::cout << "Comando de cambio de arma recibido" << std::endl;
             auto switchWeaponCommand = dynamic_cast<SwitchWeaponDTO*>(command.get());
             command.release();
             return std::make_unique<SwitchWeaponHandler>(
@@ -42,6 +50,12 @@ std::unique_ptr<GameCommandHandler> GameCommandHandler::createHandler(
         }
         case Command::CHEAT: {
             return std::make_unique<CheatHandler>(std::unique_ptr<CommandDTO>(command.release()));
+        }
+        case Command::SPECIAL_ATTACK: {
+            auto specialAttackCommand = dynamic_cast<SpecialAttackDTO*>(command.get());
+            command.release();
+            return std::make_unique<SpecialAttackHandler>(
+                    std::unique_ptr<SpecialAttackDTO>(specialAttackCommand));
         }
         default: {
             return nullptr;

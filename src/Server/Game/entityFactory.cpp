@@ -21,8 +21,14 @@
 
 #include "gameMap.h"
 
+/*
+ * Constructor de EntityFactory que inicializa el mapa de juego.
+ */
 EntityFactory::EntityFactory(GameMap& gameMap): gameMap(gameMap) {}
 
+/*
+ * Crea un personaje en base a su tipo.
+ */
 std::shared_ptr<Character> EntityFactory::createCharacter(uint8_t playerId, CharacterType type,
                                                           Vector<uint32_t> position, uint32_t width,
                                                           uint32_t height) {
@@ -37,6 +43,9 @@ std::shared_ptr<Character> EntityFactory::createCharacter(uint8_t playerId, Char
     return nullptr;
 }
 
+/*
+ * Crea un enemigo en base a su tipo.
+ */
 std::shared_ptr<Enemy> EntityFactory::createEnemy(uint8_t enemyId, EnemyType type,
                                                   Vector<uint32_t> position, uint32_t width,
                                                   uint32_t height) {
@@ -51,6 +60,9 @@ std::shared_ptr<Enemy> EntityFactory::createEnemy(uint8_t enemyId, EnemyType typ
     return nullptr;
 }
 
+/*
+ * Crea un ítem en base a su tipo.
+ */
 std::shared_ptr<Item> EntityFactory::createItem(ItemType type, Vector<uint32_t> position,
                                                 uint32_t width, uint32_t height) {
     switch (type) {
@@ -71,6 +83,9 @@ std::shared_ptr<Item> EntityFactory::createItem(ItemType type, Vector<uint32_t> 
     }
 }
 
+/*
+ * Crea un obstáculo en base a su tipo.
+ */
 std::shared_ptr<Obstacle> EntityFactory::createObstacle(ObstacleType type,
                                                         Vector<uint32_t> position, uint32_t width,
                                                         uint32_t height) {

@@ -4,6 +4,7 @@
 #include <atomic>
 
 #include "DTO/gameCommand.h"
+#include "DTO/cheat.h"
 
 #include "gameCommand.h"
 

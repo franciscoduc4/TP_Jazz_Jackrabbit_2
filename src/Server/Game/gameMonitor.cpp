@@ -10,9 +10,17 @@
 #include "../../Common/DTO/startGame.h"
 #include "maps/mapsManager.h"
 
+/*
+ * Constructor de GameMonitor.
+ * Inicializa el monitor del juego con el monitor de la cola, tamaño de la lista de juegos y colas de los jugadores.
+ */
 GameMonitor::GameMonitor(QueueMonitor& queueMonitor):
         queueMonitor(queueMonitor), gamesListSize(0), playersGameQueues({}), playersGameIds({}) {}
 
+/*
+ * Crea un nuevo juego.
+ * Bloquea el mutex, verifica que no exista un juego con el mismo nombre, y crea un nuevo juego asignándole una ID única.
+ */
 void GameMonitor::createGame(uint8_t playerId, uint8_t mapId, GameMode gameMode, uint8_t maxPlayers,
                              CharacterType characterType, const std::string& gameName,
                              const std::shared_ptr<Queue<std::unique_ptr<DTO>>>& sendQueue) {
@@ -21,8 +29,7 @@ void GameMonitor::createGame(uint8_t playerId, uint8_t mapId, GameMode gameMode,
     std::cout << "[GM] Mutex locked in createGame" << std::endl;
     for (auto& [_, game]: games) {
         if (game->getGameName() == gameName) {
-            std::cout << "[GM] Game with name " << gameName
-                      << " already exists, aborting createGame" << std::endl;
+            std::cout << "[GM] Game with name " << gameName << " already exists, aborting createGame" << std::endl;
             return;
         }
     }
@@ -57,6 +64,10 @@ void GameMonitor::createGame(uint8_t playerId, uint8_t mapId, GameMode gameMode,
     queueMonitor.broadcast(gameId, dto2);
 }
 
+/*
+ * Permite que un jugador se una a un juego existente.
+ * Bloquea el mutex, verifica que el juego exista y que no esté lleno, y agrega al jugador al juego.
+ */
 void GameMonitor::joinGame(uint8_t playerId, uint8_t gameId, CharacterType characterType,
                            const std::shared_ptr<Queue<std::unique_ptr<DTO>>>& sendQueue) {
     std::cout << "[GM] Attempting to lock mutex in joinGame" << std::endl;
@@ -88,15 +99,17 @@ void GameMonitor::joinGame(uint8_t playerId, uint8_t gameId, CharacterType chara
             queueMonitor.broadcast(gameId, dto2);
             std::cout << "[GM] Broadcasted GameUpdateDTO for gameId: " << static_cast<int>(gameId) << std::endl;
         } else {
-            std::cout << "[GM] Game " << gameId << " is full, player " << playerId << " cannot join"
-                      << std::endl;
+            std::cout << "[GM] Game " << gameId << " is full, player " << playerId << " cannot join" << std::endl;
         }
     } else {
-        std::cout << "[GM] Game with id " << gameId << " not found, player " << playerId
-                  << " cannot join" << std::endl;
+        std::cout << "[GM] Game with id " << gameId << " not found, player " << playerId << " cannot join" << std::endl;
     }
 }
 
+/*
+ * Inicia un juego.
+ * Bloquea el mutex, verifica que el juego esté lleno y no esté ya en ejecución, y luego lanza el juego.
+ */
 void GameMonitor::startGame(uint8_t playerId, uint8_t gameId,
                             const std::shared_ptr<Queue<std::unique_ptr<DTO>>>& sendQueue) {
     std::cout << "[GM] Attempting to lock mutex in startGame" << std::endl;
@@ -107,21 +120,22 @@ void GameMonitor::startGame(uint8_t playerId, uint8_t gameId,
         auto& [id, game] = *it;
         if (game->isFull() && !game->isRunning()) {
             std::unique_ptr<DTO> dto = std::make_unique<StartGameDTO>(gameId);
-            // sendQueue->push(std::move(dto));
             queueMonitor.broadcast(gameId, dto);
             std::cout << "[GM] Pushed StartGameDTO to send queue" << std::endl;
             game->launch();
-            std::cout << "[GM] Game " << (int)gameId << " launched by player " << (int)playerId
-                      << std::endl;
+            std::cout << "[GM] Game " << (int)gameId << " launched by player " << (int)playerId << std::endl;
         } else {
-            std::cout << "[GM] Game " << (int)gameId
-                      << " is either not full or already running, cannot start" << std::endl;
+            std::cout << "[GM] Game " << (int)gameId << " is either not full or already running, cannot start" << std::endl;
         }
     } else {
         std::cout << "[GM] Game with id " << (int)gameId << " not found, cannot start" << std::endl;
     }
 }
 
+/*
+ * Genera una lista de juegos disponibles.
+ * Bloquea el mutex, recopila la información de todos los juegos y la envía a la cola de envío.
+ */
 void GameMonitor::gamesList(const std::shared_ptr<Queue<std::unique_ptr<DTO>>>& sendQueue) {
     std::cout << "[GM] Attempting to lock mutex in gamesList" << std::endl;
     std::lock_guard<std::mutex> lock(mtx);
@@ -138,6 +152,10 @@ void GameMonitor::gamesList(const std::shared_ptr<Queue<std::unique_ptr<DTO>>>& 
     std::cout << "[GM] Pushed GamesListDTO to send queue" << std::endl;
 }
 
+/*
+ * Genera una lista de mapas disponibles.
+ * Bloquea el mutex, obtiene la lista de mapas del MapsManager y la envía a la cola de envío.
+ */
 void GameMonitor::mapsList(const std::shared_ptr<Queue<std::unique_ptr<DTO>>>& sendQueue) {
     std::cout << "[GM] Attempting to lock mutex in mapsList" << std::endl;
     std::lock_guard<std::mutex> lock(mtx);
@@ -148,11 +166,18 @@ void GameMonitor::mapsList(const std::shared_ptr<Queue<std::unique_ptr<DTO>>>& s
     std::cout << "[GM] Pushed MapsListDTO to send queue" << std::endl;
 }
 
+/*
+ * Devuelve el tamaño de la lista de juegos.
+ */
 uint8_t GameMonitor::getGamesListSize() {
     std::cout << "[GM] Returning games list size: " << gamesListSize << std::endl;
     return gamesListSize;
 }
 
+/*
+ * Finaliza un juego específico.
+ * Bloquea el mutex, encuentra el juego por su nombre y lo elimina.
+ */
 void GameMonitor::endGame(const std::string& gameName) {
     std::cout << "[GM] Attempting to lock mutex in endGame" << std::endl;
     std::lock_guard<std::mutex> lock(mtx);
@@ -168,6 +193,10 @@ void GameMonitor::endGame(const std::string& gameName) {
     std::cout << "[GM] Game with name " << gameName << " not found" << std::endl;
 }
 
+/*
+ * Finaliza todos los juegos.
+ * Bloquea el mutex, finaliza y elimina todos los juegos.
+ */
 void GameMonitor::endAllGames() {
     std::cout << "[GM] Attempting to lock mutex in endAllGames" << std::endl;
     std::lock_guard<std::mutex> lock(mtx);
@@ -180,6 +209,10 @@ void GameMonitor::endAllGames() {
     std::cout << "[GM] Cleared all games" << std::endl;
 }
 
+/*
+ * Agrega la cola de recepción de un jugador.
+ * Bloquea el mutex y agrega la cola de recepción del jugador al mapa de colas de recepción.
+ */
 void GameMonitor::addPlayerRecvQueue(uint8_t playerId,
                                      const std::shared_ptr<Queue<std::unique_ptr<CommandDTO>>>& recvQueue) {
     std::cout << "[GM] Attempting to lock mutex in addPlayerRecvQueue" << std::endl;
@@ -189,6 +222,10 @@ void GameMonitor::addPlayerRecvQueue(uint8_t playerId,
     std::cout << "[GM] Added player " << playerId << " to playersRecvQueues" << std::endl;
 }
 
+/*
+ * Obtiene la cola de recepción del juego de un jugador.
+ * Devuelve un puntero compartido a la cola de recepción del juego del jugador, o nullptr si no se encuentra.
+ */
 std::shared_ptr<Queue<std::unique_ptr<CommandDTO>>> GameMonitor::getPlayerGameQueue(uint8_t playerId) {
     auto it = playersGameQueues.find(playerId);
     if (it == playersGameQueues.end()) {
@@ -198,6 +235,10 @@ std::shared_ptr<Queue<std::unique_ptr<CommandDTO>>> GameMonitor::getPlayerGameQu
     return playersGameQueues[playerId];
 }
 
+/*
+ * Obtiene el ID del juego de un jugador.
+ * Devuelve el ID del juego del jugador, o 0 si no se encuentra.
+ */
 uint8_t GameMonitor::getGameId(uint8_t playerId) {
     auto it = playersGameIds.find(playerId);
     if (it == playersGameIds.end()) {
@@ -207,6 +248,10 @@ uint8_t GameMonitor::getGameId(uint8_t playerId) {
     return playersGameIds[playerId];
 }
 
+/*
+ * Elimina a un jugador de su juego.
+ * Bloquea el mutex, elimina al jugador del juego y elimina las referencias en los mapas.
+ */
 void GameMonitor::removePlayerFromGame(uint8_t playerId) {
     std::cout << "[GM] Attempting to lock mutex in removePlayerFromGame" << std::endl;
     std::lock_guard<std::mutex> lock(mtx);

@@ -37,7 +37,7 @@ std::unique_ptr<State> SprintingState::move(Direction direction2, float time) {
     std::cout << "[MOVE] moving direction: " << static_cast<int>(direction2) << std::endl;
     switch (direction2) {
         case Direction::UP:
-            character.jump();
+            character.jump(0);
             break;
         case Direction::DOWN:
             character.moveDown();

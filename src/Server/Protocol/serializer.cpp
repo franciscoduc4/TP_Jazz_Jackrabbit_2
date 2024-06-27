@@ -11,12 +11,22 @@
 
 #include "protocol.h"
 
+/*
+ * Constructor por defecto de Serializer.
+ */
 Serializer::Serializer() {}
 
+/*
+ * Constructor de Serializer.
+ * Inicializa el protocolo con el socket, keepPlaying y inGame.
+ */
 Serializer::Serializer(const std::shared_ptr<Socket>& socket, std::atomic<bool>& keepPlaying,
                        std::atomic<bool>& inGame):
         protocol(std::make_shared<Protocol>(socket, keepPlaying, inGame)) {}
 
+/*
+ * Envía el ID del jugador a través del protocolo.
+ */
 void Serializer::sendId(uint8_t playerId) {
     try {
         protocol->sendId(playerId);
@@ -25,6 +35,10 @@ void Serializer::sendId(uint8_t playerId) {
     }
 }
 
+/*
+ * Envía un comando a través del protocolo.
+ * Determina el tipo de comando y lo serializa apropiadamente.
+ */
 void Serializer::sendCommand(const std::unique_ptr<CommandDTO>& dto) {
     try {
         DTOType type = dto->getType();
@@ -70,6 +84,9 @@ void Serializer::sendCommand(const std::unique_ptr<CommandDTO>& dto) {
     }
 }
 
+/*
+ * Inserta información de un juego en un buffer.
+ */
 void Serializer::insertGameInfoIntoBuffer(std::vector<char>& buffer, const GameInfo& gameInfo) {
     try {
         uint8_t gameId = gameInfo.getGameId();
@@ -105,6 +122,9 @@ void Serializer::insertGameInfoIntoBuffer(std::vector<char>& buffer, const GameI
     }
 }
 
+/*
+ * Serializa un DTO de creación de juego en un buffer.
+ */
 std::vector<char> Serializer::serializeCreateGame(const std::unique_ptr<CreateGameDTO>& dto) {
     std::vector<char> buffer;
     try {
@@ -117,6 +137,9 @@ std::vector<char> Serializer::serializeCreateGame(const std::unique_ptr<CreateGa
     return buffer;
 }
 
+/*
+ * Serializa un DTO de unión a juego en un buffer.
+ */
 std::vector<char> Serializer::serializeJoinGame(const std::unique_ptr<JoinGameDTO>& dto) {
     std::vector<char> buffer;
     try {
@@ -131,6 +154,9 @@ std::vector<char> Serializer::serializeJoinGame(const std::unique_ptr<JoinGameDT
     return buffer;
 }
 
+/*
+ * Serializa un DTO de lista de juegos en un buffer.
+ */
 std::vector<char> Serializer::serializeGamesList(const std::unique_ptr<GamesListDTO>& dto) {
     std::vector<char> buffer;
     try {
@@ -147,6 +173,9 @@ std::vector<char> Serializer::serializeGamesList(const std::unique_ptr<GamesList
     return buffer;
 }
 
+/*
+ * Serializa un DTO de lista de mapas en un buffer.
+ */
 std::vector<char> Serializer::serializeMapsList(const std::unique_ptr<MapsListDTO>& dto) {
     std::vector<char> buffer;
     try {
@@ -171,6 +200,9 @@ std::vector<char> Serializer::serializeMapsList(const std::unique_ptr<MapsListDT
     return buffer;
 }
 
+/*
+ * Serializa un DTO de actualización de juego en un buffer.
+ */
 std::vector<char> Serializer::serializeGameUpdate(const std::unique_ptr<GameUpdateDTO>& dto) {
     std::vector<char> buffer;
     try {
@@ -182,6 +214,9 @@ std::vector<char> Serializer::serializeGameUpdate(const std::unique_ptr<GameUpda
     return buffer;
 }
 
+/*
+ * Inserta una posición (x, y) en el buffer en formato de red.
+ */
 void Serializer::insertPositionIntoBuffer(std::vector<char>& buffer, const uint32_t& x,
                                           const uint32_t& y) {
     try {
@@ -197,6 +232,9 @@ void Serializer::insertPositionIntoBuffer(std::vector<char>& buffer, const uint3
     }
 }
 
+/*
+ * Inserta un entero en el buffer en formato de red.
+ */
 void Serializer::insert_int_into_buffer(std::vector<char>& buffer, const int& value) {
     try {
         uint32_t network_value = htonl(value);
@@ -207,6 +245,9 @@ void Serializer::insert_int_into_buffer(std::vector<char>& buffer, const int& va
     }
 }
 
+/*
+ * Serializa un DTO de jugador en un buffer.
+ */
 std::vector<char> Serializer::serializePlayerDTO(const std::unique_ptr<PlayerDTO>& dto) {
     std::vector<char> buffer;
     try {
@@ -225,6 +266,9 @@ std::vector<char> Serializer::serializePlayerDTO(const std::unique_ptr<PlayerDTO
     return buffer;
 }
 
+/*
+ * Serializa un DTO de enemigo en un buffer.
+ */
 std::vector<char> Serializer::serializeEnemyDTO(const std::unique_ptr<EnemyDTO>& dto) {
     std::vector<char> buffer;
     try {
@@ -241,6 +285,9 @@ std::vector<char> Serializer::serializeEnemyDTO(const std::unique_ptr<EnemyDTO>&
     return buffer;
 }
 
+/*
+ * Serializa un DTO de bala en un buffer.
+ */
 std::vector<char> Serializer::serializeBulletDTO(const std::unique_ptr<BulletDTO>& dto) {
     std::vector<char> buffer;
     try {
@@ -255,6 +302,9 @@ std::vector<char> Serializer::serializeBulletDTO(const std::unique_ptr<BulletDTO
     return buffer;
 }
 
+/*
+ * Serializa un DTO de ítem en un buffer.
+ */
 std::vector<char> Serializer::serializeItemDTO(const std::unique_ptr<ItemDTO>& dto) {
     std::vector<char> buffer;
     try {
@@ -266,6 +316,9 @@ std::vector<char> Serializer::serializeItemDTO(const std::unique_ptr<ItemDTO>& d
     return buffer;
 }
 
+/*
+ * Serializa un DTO de tile en un buffer.
+ */
 std::vector<char> Serializer::serializeTileDTO(const std::unique_ptr<TileDTO>& dto) {
     std::vector<char> buffer;
     try {
@@ -278,6 +331,9 @@ std::vector<char> Serializer::serializeTileDTO(const std::unique_ptr<TileDTO>& d
     return buffer;
 }
 
+/*
+ * Serializa un DTO de arma en un buffer.
+ */
 std::vector<char> Serializer::serializeWeaponDTO(const std::unique_ptr<WeaponDTO>& dto) {
     std::vector<char> buffer;
     try {
@@ -294,6 +350,10 @@ std::vector<char> Serializer::serializeWeaponDTO(const std::unique_ptr<WeaponDTO
     return buffer;
 }
 
+/*
+ * Envía un DTO del juego a través del protocolo.
+ * Serializa y envía todos los componentes del estado del juego (jugadores, enemigos, balas, ítems, armas, tiles).
+ */
 void Serializer::sendGameDTO(const std::unique_ptr<GameDTO>& dto) {
     try {
         char gamedto = static_cast<char>(DTOType::GAME_DTO);

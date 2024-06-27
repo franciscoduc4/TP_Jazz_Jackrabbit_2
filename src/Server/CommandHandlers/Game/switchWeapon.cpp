@@ -3,24 +3,21 @@
 SwitchWeaponHandler::SwitchWeaponHandler(std::unique_ptr<SwitchWeaponDTO> switchWeaponCommand):
         switchWeaponCommand(std::move(switchWeaponCommand)) {}
 
+/**
+ * @brief Ejecuta el cambio de arma para un personaje en el mapa del juego.
+ * 
+ * @param gameMap Mapa del juego donde se encuentra el personaje.
+ * @param keepRunning Bandera para indicar si el juego sigue en ejecución.
+ * @param deltaTime Tiempo transcurrido desde la última actualización.
+ */
 void SwitchWeaponHandler::execute(GameMap& gameMap, std::atomic<bool>& keepRunning,
                                   double deltaTime) {
     std::shared_ptr<Character> character = gameMap.getCharacter(switchWeaponCommand->getPlayerId());
-    if (!character) {
-            std::cerr << "[SWITCH WEAPON HANDLER] Character with ID " << static_cast<int>(switchWeaponCommand->getPlayerId())
-                    << " not found. Skipping move command." << std::endl;
-            return;
-        }
-
-    if (!character->isAlive()) {
-        std::cerr << "[SWITCH WEAPON HANDLER]  Character with ID " << static_cast<int>(switchWeaponCommand->getPlayerId())
-                  << " is dead. Skipping move command." << std::endl;
+    if (!character || !character) {
         return;
     }
+
     else {
-        std::cout << "[SWITCH WEAPON HANDLER] Switching weapon for character with ID "
-                  << static_cast<int>(switchWeaponCommand->getPlayerId()) << std::endl;
-         
         character->switchWeapon(switchWeaponCommand->getWeaponType());
     }
 }

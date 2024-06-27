@@ -27,6 +27,7 @@ enum class Command : char {
     SHORT_KICK,
     SIDE_KICK,
     CHEAT,
+    SPECIAL_ATTACK,
     INVALID
 };
 

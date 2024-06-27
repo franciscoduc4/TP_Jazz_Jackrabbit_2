@@ -30,7 +30,6 @@ std::unique_ptr<State> MovingState::shoot(const std::shared_ptr<Weapon>& weapon,
     if (time - lastTimeMoved >= waitingMoveTime) {
         return nullptr;
     }
-
     if (weapon->isEmpty()) {
         return std::unique_ptr<IdleState>();
     }
@@ -41,7 +40,7 @@ std::unique_ptr<State> MovingState::move(Direction direction2, float time) {
     std::cout << "[MOVE] moving direction: " << static_cast<int>(direction2) << std::endl;
     switch (direction2) {
         case Direction::UP:
-            character.jump();
+            character.jump(0);
             break;
         case Direction::DOWN:
             character.moveDown();
@@ -64,7 +63,6 @@ std::unique_ptr<State> MovingState::move(Direction direction2, float time) {
 
 std::unique_ptr<State> MovingState::sprint(Direction direction2, float time) {
     // Cambia al estado de sprint
-    // return std::unique_ptr<MovingState>(character, direction2);
     return std::make_unique<SprintingState>(character, direction);
 }
 
@@ -90,13 +88,11 @@ std::unique_ptr<State> MovingState::becomeIntoxicated(float duration) {
 
 std::unique_ptr<State> MovingState::specialAttack(float time) {
     // Cambia al estado de ataque especial
-    return nullptr;
+    return std::make_unique<SpecialAttackState>(character, time);
 }
 std::unique_ptr<State> MovingState::jump(float time) {
-    //     // Cambia al estado de salto
-    //     return std::unique_ptr<JumpingState>();
 
-    return nullptr;
+    return std::make_unique<SpecialAttackState>(character, time);
 }
 
 std::unique_ptr<State> MovingState::stopAction() {

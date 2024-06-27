@@ -2,6 +2,7 @@
 
 #include "../Common/DTO/gameCommand.h"
 #include "../Common/DTO/switchWeapon.h"
+#include "../Common/DTO/specialAttack.h"
 #include "../Common/DTO/cheat.h"
 #include "../Common/Types/direction.h"
 
@@ -29,6 +30,9 @@ void GameController::sendMsg(uint8_t playerId, Command& cmd, std::vector<uint8_t
             break;
         case Command::CHEAT:
             cheat(parameters);
+            break;
+        case Command::SPECIAL_ATTACK:
+            special_attack_msg(playerId, parameters);
             break;
     }
 }
@@ -70,6 +74,13 @@ void GameController::cheat(const std::vector<uint8_t>& parameters) {
     auto cheat = static_cast<Cheat>(parameters[0]);
     std::unique_ptr<CommandDTO> cheatDto = std::make_unique<CheatDTO>(cheat);
     this->serializer.sendMsg(cheatDto);
+}
+
+void GameController::special_attack_msg(uint8_t playerId, std::vector<uint8_t>& parameters) {
+    CharacterType type = static_cast<CharacterType>(parameters[0]);
+    std::unique_ptr<CommandDTO> specialAttack =
+            std::make_unique<SpecialAttackDTO>(playerId, type);
+    this->serializer.sendMsg(specialAttack);
 }
 
 std::unique_ptr<DTO> GameController::getServerMsg() {
