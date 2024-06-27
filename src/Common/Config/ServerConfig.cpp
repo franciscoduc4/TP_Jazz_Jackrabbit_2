@@ -367,6 +367,16 @@ uint32_t ServerConfig::getWalkingEnemyHeight() {
     return static_cast<uint32_t>(walkingEnemyHeight);
 }
 
+uint32_t ServerConfig::getWalkingEnemyValue() {
+    int walkingEnemyValue = getInstance()->root["ENEMY"]["WALKING"]["VALUE"].as<int>();
+    return static_cast<uint32_t>(walkingEnemyValue);
+}
+
+uint32_t ServerConfig::getWalkingEnemyRespawnTime() {
+    int walkingEnemyRespawnTime = getInstance()->root["ENEMY"]["WALKING"]["RESPAWN_TIME"].as<int>();
+    return static_cast<uint32_t>(walkingEnemyRespawnTime);
+}
+
 
 uint32_t ServerConfig::getFlyingEnemyInitialX() {
     int flyingEnemyInitialX = getInstance()->root["ENEMY"]["FLYING"]["INITIAL_X"].as<int>();
@@ -451,6 +461,16 @@ uint32_t ServerConfig::getFlyingEnemyHeight() {
     return static_cast<uint32_t>(flyingEnemyHeight);
 }
 
+uint32_t ServerConfig::getFlyingEnemyValue() {
+    int flyingEnemyValue = getInstance()->root["ENEMY"]["FLYING"]["VALUE"].as<int>();
+    return static_cast<uint32_t>(flyingEnemyValue);
+}
+
+uint32_t ServerConfig::getFlyingEnemyRespawnTime() {
+    int flyingEnemyRespawnTime = getInstance()->root["ENEMY"]["FLYING"]["RESPAWN_TIME"].as<int>();
+    return static_cast<uint32_t>(flyingEnemyRespawnTime);
+}
+
 
 uint32_t ServerConfig::getJumpingEnemyInitialX() {
     int jumpingEnemyInitialX = getInstance()->root["ENEMY"]["JUMPING"]["INITIAL_X"].as<int>();
@@ -527,6 +547,15 @@ uint32_t ServerConfig::getJumpingEnemyHeight() {
     return static_cast<uint32_t>(jumpingEnemyHeight);
 }
 
+uint32_t ServerConfig::getJumpingEnemyValue() {
+    int jumpingEnemyValue = getInstance()->root["ENEMY"]["JUMPING"]["VALUE"].as<int>();
+    return static_cast<uint32_t>(jumpingEnemyValue);
+}
+
+uint32_t ServerConfig::getJumpingEnemyRespawnTime() {
+    int jumpingEnemyRespawnTime = getInstance()->root["ENEMY"]["JUMPING"]["RESPAWN_TIME"].as<int>();
+    return static_cast<uint32_t>(jumpingEnemyRespawnTime);
+}
 
 std::vector<uint8_t> ServerConfig::getJumpingEnemyJumpProb() {
     std::vector<uint8_t> jumpProb;

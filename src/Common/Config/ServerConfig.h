@@ -102,6 +102,9 @@ public:
     static std::vector<uint8_t> getWalkingEnemyWalkProb();
     static uint32_t getWalkingEnemyWidth();
     static uint32_t getWalkingEnemyHeight();
+    static uint32_t getWalkingEnemyValue();
+    static uint32_t getWalkingEnemyRespawnTime();
+
 
     static uint32_t getFlyingEnemyInitialX();
     static uint32_t getFlyingEnemyInitialY();
@@ -119,6 +122,8 @@ public:
     static std::vector<uint8_t> getFlyingEnemyFlyProb();
     static uint32_t getFlyingEnemyWidth();
     static uint32_t getFlyingEnemyHeight();
+    static uint32_t getFlyingEnemyValue();\
+    static uint32_t getFlyingEnemyRespawnTime();
 
 
     static uint32_t getJumpingEnemyInitialX();
@@ -137,6 +142,8 @@ public:
     static std::vector<uint8_t> getJumpingEnemyJumpProb();
     static uint32_t getJumpingEnemyWidth();
     static uint32_t getJumpingEnemyHeight();
+    static uint32_t getJumpingEnemyValue();
+    static uint32_t getJumpingEnemyRespawnTime();
 
     static uint32_t getItemFoodValue();
     static uint32_t getItemFoodWidth();

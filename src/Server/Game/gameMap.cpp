@@ -686,7 +686,7 @@ Vector<uint32_t> GameMap::calculateNewPosition(const Vector<uint32_t>& position,
 }
 
 void GameMap::handleShooting(uint32_t characterX, uint8_t damage, float time, Direction dir, uint8_t shooterId) {
-    const uint32_t shootRange = ServerConfig::getGameMapShootRange();   //QIE RECIBA EL ARMA POR PARAMETRO Y LE PIDA EL RANGE
+    const uint32_t shootRange = ServerConfig::getGameMapShootRange();   //QUE RECIBA EL ARMA POR PARAMETRO Y LE PIDA EL RANGE
     const uint32_t heightRange = ServerConfig::getGameMapHeightRange();
 
 
