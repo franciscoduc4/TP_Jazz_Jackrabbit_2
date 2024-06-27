@@ -49,13 +49,10 @@ private:
             "Silver Coin",
             "Food",
             "Full Floor",
-            "Large Wood Floor",
             "Left Ladder",
             "Long Platform",
             "Right Ladder",
-            "Small Platform",
-            "Wood Floor",
-            "Wood Large Column"
+            "Small Platform"
     };
 
     std::unordered_map<QString, QString> elementNames = {
