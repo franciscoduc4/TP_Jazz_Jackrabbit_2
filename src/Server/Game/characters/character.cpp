@@ -143,7 +143,7 @@ void Character::shoot(float time) {
 }
 
 
-void Character::handleCollision(const std::shared_ptr<Enemy>& enemy) {
+void Character::handleEnemyCollision(const std::shared_ptr<Enemy>& enemy) {
     if (!enemy) {
         std::cerr << "[CHARACTER] Null enemy pointer!" << std::endl;
         return;

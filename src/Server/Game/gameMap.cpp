@@ -497,7 +497,7 @@ void GameMap::handleCharacterEnemyCollision(const std::shared_ptr<Character>& ch
                            {enemy->getWidth(), enemy->getHeight()})) {
             uint8_t damage = enemy->getDamage();
             character->recvDamage(damage, 0);
-            character->handleCollision(enemy);
+            character->handleEnemyCollision(enemy);
             // std::cout << "[GAMEMAP] Character ID: " << static_cast<int>(character->getId())
             //   << " received damage from enemy. Damage: " << static_cast<int>(damage)
             //   << std::endl;
