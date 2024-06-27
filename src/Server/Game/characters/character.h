@@ -95,6 +95,7 @@ public:
     void sprintLeft(float time);
     void moveDown(float time);
     void jump(float time);
+    void handleCollisions(const std::shared_ptr<Entity>& entity);
 
     virtual void specialAttack(float time) = 0;
 
@@ -113,6 +114,7 @@ public:
     void moveLeft();
     void moveDown();
     void jump();
+    void applyGravity(float time);
 
 
     bool characIsIntoxicated() const;

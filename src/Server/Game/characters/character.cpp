@@ -295,16 +295,59 @@ void Character::moveLeft(double time) {
 }
 
 void Character::jump(float time) {
-    if (onGround) {
-        std::cout << "[CHARACTER] Character ID: " << static_cast<int>(id) << " jumping"
-                  << std::endl;
-        auto newState = state->move(Direction::UP, time);
-        if (newState) {
-            initialYJump = pos.y;
-            std::cout << "[CHARACTER] Character ID: " << static_cast<int>(id) << " jumping"
-                      << std::endl;
-            state = std::move(newState);
+    float gravity = ServerConfig::getGameGravity();
+    if (!jumping) {
+        currentSpeed.y = -ServerConfig::getCharacterJumpHeight();
+        jumping = true;
+    } else {
+        // Calculate new velocity and position
+        currentSpeed.y += gravity * time; // v = u + at
+
+        // Increment the character's vertical position in smaller steps
+        for (int i = 0; i < std::abs(currentSpeed.y * time); ++i) {
+            float newY = pos.y + (currentSpeed.y > 0 ? 1 : -1);
+
+            // If newY is less than 0, set it to 0
+            if (newY < 0) {
+                newY = 0;
+            }
+
+            // Check for collisions at the new position
+            Vector<uint32_t> newPos = {pos.x, static_cast<uint32_t>(newY)};
+            auto entityAtNewPos = gameMap.getEntityAt(newPos);
+            if (entityAtNewPos) {
+                handleCollisions(entityAtNewPos);
+                jumping = false;
+                currentSpeed.y = 0;
+                break;
+            } else {
+                // No collision, update position
+                pos.y = newY;
+
+                // Check if character has landed
+                if (pos.y >= ServerConfig::getGameMapSizeY()) {
+                    pos.y = ServerConfig::getGameMapSizeY();
+                    jumping = false;
+                    currentSpeed.y = 0;
+                    break;
+                }
+            }
         }
+    }
+}
+
+void Character::handleCollisions(const std::shared_ptr<Entity>& entity) {
+    if (entity->getType() == EntityType::OBSTACLE) {
+        gameMap.handleCharacterObstacleCollision(
+                shared_from_this(), std::dynamic_pointer_cast<Obstacle>(entity));
+    } else if (entity->getType() == EntityType::CHARACTER) {
+        handleCharacterCollision(std::dynamic_pointer_cast<Character>(entity));;
+    } else if (entity->getType() == EntityType::ENEMY) {
+        gameMap.handleCharacterEnemyCollision(shared_from_this(),
+                                              std::dynamic_pointer_cast<Enemy>(entity));
+    } else if (entity->getType() == EntityType::ITEM) {
+        gameMap.handleCharacterItemCollision(shared_from_this(),
+                                             std::dynamic_pointer_cast<Item>(entity));
     }
 }
 

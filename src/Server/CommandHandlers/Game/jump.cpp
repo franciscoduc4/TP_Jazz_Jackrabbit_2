@@ -17,6 +17,6 @@ void JumpHandler::execute(GameMap& gameMap, std::atomic<bool>& keepRunning, doub
         return;
     }
     else {
-        //character->jump(deltaTime);
+        character->jump(deltaTime);
     }
 }

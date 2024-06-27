@@ -92,9 +92,8 @@ uint32_t ServerConfig::getCharacterTwoMovesPerCell() {
     return static_cast<uint32_t>(twoMovesPerCell);
 }
 
-uint32_t ServerConfig::getCharacterJumpHeight() {
-    int jumpHeight = getInstance()->root["CHARACTER"]["JUMP_HEIGHT"].as<int>();
-    return static_cast<uint32_t>(jumpHeight);
+float ServerConfig::getCharacterJumpHeight() {
+    return getInstance()->root["CHARACTER"]["JUMP_HEIGHT"].as<float>();
 }
 
 uint8_t ServerConfig::getJazzShootCooldownTime() {
@@ -114,8 +113,8 @@ float ServerConfig::getJazzSprintSpeed() {
     return getInstance()->root["CHARACTER"]["JAZZ"]["SPRINT_SPEED"].as<float>();
 }
 
-uint8_t ServerConfig::getJazzJumpHeight() {
-    return getInstance()->root["CHARACTER"]["JAZZ"]["JUMP_HEIGHT"].as<int>();
+float ServerConfig::getJazzJumpHeight() {
+    return getInstance()->root["CHARACTER"]["JAZZ"]["JUMP_HEIGHT"].as<float>();
 }
 
 uint8_t ServerConfig::getLoriShootCooldownTime() {
@@ -135,9 +134,8 @@ float ServerConfig::getLoriSprintSpeed() {
     return getInstance()->root["CHARACTER"]["LORI"]["SPRINT_SPEED"].as<float>();
 }
 
-uint8_t ServerConfig::getLoriJumpHeight() {
-    int loriJumpHeight = getInstance()->root["CHARACTER"]["LORI"]["JUMP_HEIGHT"].as<int>();
-    return static_cast<uint8_t>(loriJumpHeight);
+float ServerConfig::getLoriJumpHeight() {
+    return getInstance()->root["CHARACTER"]["LORI"]["JUMP_HEIGHT"].as<float>();
 }
 
 uint8_t ServerConfig::getSpazShootCooldownTime() {
@@ -157,9 +155,8 @@ float ServerConfig::getSpazSprintSpeed() {
     return getInstance()->root["CHARACTER"]["SPAZ"]["SPRINT_SPEED"].as<float>();
 }
 
-uint8_t ServerConfig::getSpazJumpHeight() {
-    int spazJumpHeight = getInstance()->root["CHARACTER"]["SPAZ"]["JUMP_HEIGHT"].as<int>();
-    return static_cast<uint8_t>(spazJumpHeight);
+float ServerConfig::getSpazJumpHeight() {
+    return getInstance()->root["CHARACTER"]["SPAZ"]["JUMP_HEIGHT"].as<float>();
 }
 
 // Weapons
@@ -572,6 +569,34 @@ uint8_t ServerConfig::getGameMapSilverCoins(const std::string& mapName) {
 uint8_t ServerConfig::getGameMapGoldCoins(const std::string& mapName) {
     int gameMapGoldCoins = getInstance()->root["GAMEMAP"][mapName]["GOLD_COINS"].as<int>();
     return static_cast<uint8_t>(gameMapGoldCoins);
+}
+
+uint32_t ServerConfig::getGameMapSizeX() {
+   return getGameMapSizeX("DEFAULT");
+}
+
+uint32_t ServerConfig::getGameMapSizeY() {
+    return getGameMapSizeY("DEFAULT");
+}
+
+uint8_t ServerConfig::getGameMapObstacles() {
+    return getGameMapObstacles("DEFAULT");
+}
+
+uint8_t ServerConfig::getGameMapEnemies() {
+    return getGameMapEnemies("DEFAULT");
+}
+
+uint8_t ServerConfig::getGameMapGems() {
+    return getGameMapGems("DEFAULT");
+}
+
+uint8_t ServerConfig::getGameMapSilverCoins() {
+    return getGameMapSilverCoins("DEFAULT");
+}
+
+uint8_t ServerConfig::getGameMapGoldCoins() {
+    return getGameMapGoldCoins("DEFAULT");
 }
 
 uint32_t ServerConfig::getGameMapShootRange() {

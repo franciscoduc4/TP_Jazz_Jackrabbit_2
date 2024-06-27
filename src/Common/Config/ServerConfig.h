@@ -36,26 +36,26 @@ public:
     static uint8_t getCharacterIntoxicatedTime();
     static uint32_t getCharacterQuadMovesPerCell();
     static uint32_t getCharacterTwoMovesPerCell();
-    static uint32_t getCharacterJumpHeight();
+    static float getCharacterJumpHeight();
 
 
     static uint8_t getJazzShootCooldownTime();
     static float getJazzHorizontalSpeed();
     static float getJazzVerticalSpeed();
     static float getJazzSprintSpeed();
-    static uint8_t getJazzJumpHeight();
+    static float getJazzJumpHeight();
 
     static uint8_t getLoriShootCooldownTime();
     static float getLoriHorizontalSpeed();
     static float getLoriVerticalSpeed();
     static float getLoriSprintSpeed();
-    static uint8_t getLoriJumpHeight();
+    static float getLoriJumpHeight();
 
     static uint8_t getSpazShootCooldownTime();
     static float getSpazHorizontalSpeed();
     static float getSpazVerticalSpeed();
     static float getSpazSprintSpeed();
-    static uint8_t getSpazJumpHeight();
+    static float getSpazJumpHeight();
 
     static uint8_t getWeaponBlasterBullets();
     static uint8_t getWeaponBlasterDamage();
@@ -83,9 +83,6 @@ public:
     static uint32_t getRightLadderHeight();
     static uint32_t getSmallPlatformWidth();
     static uint32_t getSmallPlatformHeight();
-
-    static uint32_t getGameMapSizeX();
-    static uint32_t getGameMapSizeY();
 
     static void deleteInstance();
 
@@ -165,6 +162,13 @@ public:
     static uint8_t getGameMapGems(const std::string& mapName);
     static uint8_t getGameMapSilverCoins(const std::string& mapName);
     static uint8_t getGameMapGoldCoins(const std::string& mapName);
+    static uint32_t getGameMapSizeX();
+    static uint32_t getGameMapSizeY();
+    static uint8_t getGameMapObstacles();
+    static uint8_t getGameMapEnemies();
+    static uint8_t getGameMapGems();
+    static uint8_t getGameMapSilverCoins();
+    static uint8_t getGameMapGoldCoins();
     static uint32_t getGameMapShootRange();
     static uint32_t getGameMapHeightRange();
 };
