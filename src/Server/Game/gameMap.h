@@ -32,7 +32,9 @@ private:
     std::map<CharacterType, Vector<uint32_t>> initialPositions;
     std::map<CharacterType, Vector<uint32_t>> initialSizes;
 
-    std::vector<std::shared_ptr<Enemy>> dead_enemies;
+    std::map<EnemyType, std::vector<std::shared_ptr<Enemy>>> dead_enemies;
+    std::map<EnemyType, float> enemies_cooldown_respawn;
+    std::map<EnemyType, float> enemies_respawn_time;
     std::vector<std::shared_ptr<Item>> collected_items;
     
 

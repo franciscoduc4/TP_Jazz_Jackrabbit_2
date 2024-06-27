@@ -12,6 +12,6 @@ Yellowmon::Yellowmon(GameMap& map, Vector<uint32_t> pos, uint8_t id, uint32_t wi
               height) {}
 
 
-EnemyType Yellowmon::getEnemyType() const { return EnemyType::YELLOWMON; }
+//EnemyType Yellowmon::getEnemyType() const { return EnemyType::YELLOWMON; }
 void Yellowmon::update(double deltaTime) {
 }

@@ -7,6 +7,9 @@
 
 #include "../../Common/maps/mapsManager.h"
 
+
+#include "../../Common/printer.h"
+
 GameMap::GameMap(Vector<uint32_t> size, uint8_t mapId):
         size(size),
         entityFactory(*this),
@@ -16,6 +19,12 @@ GameMap::GameMap(Vector<uint32_t> size, uint8_t mapId):
         mapId(mapId) {
     // std::cout << "[GAMEMAP] GameMap created with mapId: " << static_cast<int>(mapId) <<
     // std::endl;
+    enemies_respawn_time[EnemyType::TURTLE] = ServerConfig::getTurtleEnemyRespawnTime();
+    enemies_respawn_time[EnemyType::YELLOWMON] = ServerConfig::getYellowmonsEnemyRespawnTime();
+    enemies_respawn_time[EnemyType::SCHWARZENGUARD] = ServerConfig::getSchwarzenguardEnemyRespawnTime();
+    enemies_cooldown_respawn[EnemyType::TURTLE] = 0;
+    enemies_cooldown_respawn[EnemyType::YELLOWMON] = 0;
+    enemies_cooldown_respawn[EnemyType::SCHWARZENGUARD] = 0;
 }
 
 void GameMap::loadMap(uint8_t mapId) {
@@ -368,6 +377,8 @@ void GameMap::addItem(ItemType type, Vector<uint32_t> position, uint32_t width, 
         //   << std::endl;
         addEntityToMap(item, position);
         entityCount++;
+        Printer::printDebugHighlightedMessage("EL ENTITY COUNE TIENE UN VALOR");
+        std::cout << static_cast<int>(entityCount) << '\n'; 
     } catch (const std::exception& e) {
         // std::cerr << "[GAMEMAP] Error adding item: " << e.what() << std::endl;
     }
@@ -461,6 +472,21 @@ void GameMap::update(float time) {
             addItem((*it_items)->getItemType(), (*it_items)->getPosition(), (*it_items)->getWidth(),
                     (*it_items)->getHeight());
         }
+        std::map<EnemyType, std::vector<std::shared_ptr<Enemy>>>::iterator it = dead_enemies.begin();
+        while (it != dead_enemies.end()) {
+            enemies_cooldown_respawn[it->first] += enemies_respawn_time[it->first] / 5;
+            if (enemies_cooldown_respawn[it->first] >= enemies_respawn_time[it->first]) {
+                enemies_cooldown_respawn[it->first] = 0;
+                if (it->second.size() > 2) {
+                    Printer::printDebugHighlightedMessage("LA CANTIDAD DE ENEMIGOS MUERTOS ES");
+                    std::cout << it->second.size() << '\n';
+                    addEnemy(it->second[0]->getEnemyType(), it->second[0]->getPosition(), it->second[0]->getWidth(), it->second[0]->getHeight());
+                    it->second.erase(it->second.begin());
+                }
+            }
+            it++;
+        }
+
     } catch (const std::exception& e) {
         // std::cerr << "[GAMEMAP] Error updating game map: " << e.what() << std::endl;
     }
@@ -777,6 +803,7 @@ void GameMap::handleShooting(uint32_t characterX, uint8_t damage, float time, Di
                           << static_cast<int>(enemy->getPointsValue()) << std::endl;
                 enemiesToRemove.push_back(enemy->getId());
                 shooter->collectPointsForEnemy(points);
+                dead_enemies[enemy->getEnemyType()].push_back(std::dynamic_pointer_cast<Enemy>(enemy));
             }
         } else {
             std::cout << "[GAMEMAP] Enemy with ID: " << static_cast<int>(enemy->getId())
@@ -826,6 +853,9 @@ void GameMap::handleShooting(uint32_t characterX, uint8_t damage, float time, Di
 
     for (uint8_t id: enemiesToRemove) {
         removeEnemy(id);
+        std::cout << "EL VALOR DEL ID ES " << static_cast<int>(id) << '\n';
+        Printer::printDebugHighlightedMessage("SE ELIMINO UN ENEMIGO");
+                
     }
 }
 void GameMap::resetScores() {

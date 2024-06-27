@@ -103,7 +103,7 @@ public:
     static uint32_t getTurtleEnemyWidth();
     static uint32_t getTurtleEnemyHeight();
     static uint32_t getTurtleEnemyValue();
-    static uint32_t getTurtleEnemyRespawnTime();
+    static float getTurtleEnemyRespawnTime();
 
 
     static uint32_t getYellowmonsEnemyInitialX();
@@ -123,7 +123,7 @@ public:
     static uint32_t getYellowmonsEnemyWidth();
     static uint32_t getYellowmonsEnemyHeight();
     static uint32_t getYellowmonsEnemyValue();
-    static uint32_t getYellowmonsEnemyRespawnTime();
+    static float getYellowmonsEnemyRespawnTime();
 
 
     static uint32_t getSchwarzenguardEnemyInitialX();
@@ -143,7 +143,7 @@ public:
     static uint32_t getSchwarzenguardEnemyWidth();
     static uint32_t getSchwarzenguardEnemyHeight();
     static uint32_t getSchwarzenguardEnemyValue();
-    static uint32_t getSchwarzenguardEnemyRespawnTime();
+    static float getSchwarzenguardEnemyRespawnTime();
 
     static uint32_t getItemFoodValue();
     static uint32_t getItemFoodWidth();

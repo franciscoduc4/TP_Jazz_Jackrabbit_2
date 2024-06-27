@@ -15,7 +15,7 @@ class Turtle: public Enemy {
 public:
     Turtle(GameMap& map, Vector<uint32_t> pos, uint8_t id, uint32_t width, uint32_t height);
 
-    EnemyType getEnemyType() const override;
+    EnemyType getEnemyType() const override { return EnemyType::TURTLE; }
 
     void update(double deltaTime) override;
 

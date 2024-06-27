@@ -15,7 +15,7 @@ class Schwarzenguard: public Enemy {
 public:
     Schwarzenguard(GameMap& map, Vector<uint32_t> pos, uint8_t id, uint32_t width, uint32_t height);
 
-    EnemyType getEnemyType() const override;
+    EnemyType getEnemyType() const override { return EnemyType::SCHWARZENGUARD; }
 
     void update(double deltaTime) override;
 

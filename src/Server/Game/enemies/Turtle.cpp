@@ -13,7 +13,7 @@ Turtle::Turtle(GameMap& map, Vector<uint32_t> pos, uint8_t id, uint32_t width, u
               height) {}
 
 
-EnemyType Turtle::getEnemyType() const { return EnemyType::TURTLE; }
+//EnemyType Turtle::getEnemyType() const { return EnemyType::TURTLE; }
 
 void Turtle::update(double deltaTime) {
 }

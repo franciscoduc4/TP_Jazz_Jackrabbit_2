@@ -15,7 +15,7 @@ class Yellowmon: public Enemy {
 public:
     Yellowmon(GameMap& map, Vector<uint32_t> pos, uint8_t id, uint32_t width, uint32_t height);
 
-    EnemyType getEnemyType() const override;
+    EnemyType getEnemyType() const override { return EnemyType::YELLOWMON; }
 
     void update(double deltaTime) override;
 

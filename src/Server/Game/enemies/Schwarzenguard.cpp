@@ -11,7 +11,7 @@ Schwarzenguard::Schwarzenguard(GameMap& map, Vector<uint32_t> pos, uint8_t id, u
               width, height) {}
 
 
-EnemyType Schwarzenguard::getEnemyType() const { return EnemyType::SCHWARZENGUARD; }
+//EnemyType Schwarzenguard::getEnemyType() const { return EnemyType::SCHWARZENGUARD; }
 
 void Schwarzenguard::update(double deltaTime) {
 }

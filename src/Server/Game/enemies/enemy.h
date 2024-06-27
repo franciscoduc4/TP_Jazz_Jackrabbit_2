@@ -15,7 +15,7 @@
 class GameMap;
 
 class Enemy: public Entity {
-protected:
+private:
     GameMap& gameMap;
     uint8_t dmg;
     std::unique_ptr<EnemyState> state;
