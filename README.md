@@ -137,11 +137,7 @@ Maneja la visualización del juego y la lógica de los personajes y enemigos.
 
 ![Game screen](src/Documentation/images/gameScreen.png)
 
-
-
 ![Demo game](src/Documentation/demo/game.gif)
-
-
 
 ##### Protocol
 
@@ -170,7 +166,7 @@ Permite posicionar a gusto los distintos elementos que contiene el juego, como p
 
 Posee una lista de elementos a derecha y a izquierda, un canvas sobre al cual se le pueden arrastrar elementos.
 
-![Captura Editor](src/Documentation/images/LevelEditor.png)
+![Captura Editor](src/Documentation/images/LevelEditor/LevelEditor.png)
 
 Para que se cree un mapa, se debe ingresar un nombre y el canvas debe tener elementos.
 De cumplirse estas condiciones, y que el nombre del mapa no sea uno existente, se crea el mapa en formato YAML y se guarda en el servidor.
