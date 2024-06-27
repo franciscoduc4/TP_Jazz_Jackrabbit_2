@@ -20,13 +20,14 @@ void ReceiverThread::receiveDTOByType(const char& dtoTypeChar) {
         case DTOType::GAME_DTO: {
             std::cout << "[CLIENT RECEIVER] Receiving game DTO." << std::endl;
             this->protocol.receiveGameDTO(dto);
+            if (was_closed.load()) return;
             this->deserializer.deserialize_gameMsg(dto);
             break;
         }
         case DTOType::COMMAND_DTO: {
             std::cout << "[CLIENT RECEIVER] Receiving command DTO." << std::endl;
             this->protocol.receiveCommandDTO(dto);
-            std::cout << "[CLIENT RECEIVER] Deserializing command DTO." << std::endl;
+            if (was_closed.load()) return;
             this->deserializer.deserialize_lobbyMsg(dto);
             break;
         }

@@ -32,6 +32,8 @@ public:
 
     void sprint(uint8_t playerId);
 
+    void cheat(const std::vector<uint8_t>& parameters);
+
     std::unique_ptr<DTO> getServerMsg();
 };
 

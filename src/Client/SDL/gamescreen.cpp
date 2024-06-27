@@ -27,6 +27,7 @@
 #include "../../Common/Types/tile.h"
 #include "../../Common/printer.h"
 #include "../../Common/sprite.h"
+#include "DTO/cheat.h"
 
 #include "projectile.h"
 
@@ -176,6 +177,18 @@ std::map<uint8_t, int> GameScreen::run() {
                         this->controller.sendMsg(this->mainPlayerId, switchWeapon, elements);
                         break;
                     }
+                    case SDLK_F3: {
+                        std::vector<uint8_t> elements{static_cast<uint8_t>(Cheat::END_GAME)};
+                        Command cheat = Command::CHEAT;
+                        this->controller.sendMsg(this->mainPlayerId, cheat, elements);
+                        break;
+                    }
+                    case SDLK_F8: {
+                        std::vector<uint8_t> elements{static_cast<uint8_t>(Cheat::RESET_SCORES)};
+                        Command cheat = Command::CHEAT;
+                        this->controller.sendMsg(this->mainPlayerId, cheat, elements);
+                        break;
+                    }
                 }
             } else if (event.type == SDL_KEYUP) {
                 switch (event.key.keysym.sym) {
@@ -226,7 +239,7 @@ std::map<uint8_t, int> GameScreen::run() {
         // this->level.draw_floor(window, renderer, tiles_textures, *mainPlayer, speed, x_screen,
         // y_screen);
 
-        if (players.size() > 0) {
+        if (!players.empty()) {
             this->pj.draw_players(window, renderer, pjs_textures, players, x_screen, y_screen,
                                   *mainPlayer, pj_direction);
             this->soundControl.play_players_effect(players);
@@ -234,19 +247,19 @@ std::map<uint8_t, int> GameScreen::run() {
 
         std::vector<EnemyDTO> enemiesSnapshot = snapshot->getEnemies();
         std::cout << "Enemies size: " << enemiesSnapshot.size() << std::endl;
-        if (enemiesSnapshot.size() > 0) {
+        if (!enemiesSnapshot.empty()) {
             this->enemies.draw_enemy(window, renderer, enemies_textures, enemiesSnapshot,
                                      *mainPlayer, x_screen, y_screen);
         }
 
         std::vector<BulletDTO> bullets = snapshot->getBullets();
-        if (bullets.size() > 0) {
+        if (!bullets.empty()) {
             this->proj.draw_projectile(window, renderer, projectile, bullets, *mainPlayer, x_screen,
                                        y_screen);
         }
 
         std::vector<ItemDTO> itemsSnapshot = snapshot->getItems();
-        if (itemsSnapshot.size() > 0) {
+        if (!itemsSnapshot.empty()) {
             this->points.draw_points(window, renderer, items, itemsSnapshot, *mainPlayer, x_screen,
                                      y_screen);
         }
@@ -254,7 +267,7 @@ std::map<uint8_t, int> GameScreen::run() {
         std::vector<WeaponDTO> weapons = snapshot->getWeapons();
 
         std::vector<TileDTO> tiles = snapshot->getTiles();
-        if (tiles.size() > 0) {
+        if (!tiles.empty()) {
             this->level.draw_tiles(window, renderer, tiles_textures, tiles, *mainPlayer, x_screen,
                                    y_screen);
         }

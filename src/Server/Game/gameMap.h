@@ -108,7 +108,9 @@ public:
 
     uint32_t getMaxXPos() const { return size.x - static_cast<uint32_t>(movesPerCell); }
 
-    uint32_t getMaxYPos() const { return size.y - static_cast<uint32_t>(movesPerCell); } 
+    uint32_t getMaxYPos() const { return size.y - static_cast<uint32_t>(movesPerCell); }
+
+    void resetScores();
 };
 
 #endif  // GAME_MAP_H_

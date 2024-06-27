@@ -28,6 +28,7 @@ SenderThread::SenderThread(std::shared_ptr<Queue<std::unique_ptr<CommandDTO>>>& 
     this->additionalData[static_cast<char>(Command::UPPERCUT)] = true;
     this->additionalData[static_cast<char>(Command::SHORT_KICK)] = true;
     this->additionalData[static_cast<char>(Command::SIDE_KICK)] = true;
+    this->additionalData[static_cast<char>(Command::CHEAT)] = true;
     this->additionalData[static_cast<char>(Command::INVALID)] = false;
 }
 

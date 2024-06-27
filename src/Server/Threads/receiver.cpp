@@ -53,7 +53,13 @@ void ReceiverThread::runGame() {
     std::unique_ptr<CommandDTO> commandDTO = deserializer.getCommand(playerId);
     if (commandDTO) {
         std::cout << "[SERVER RECEIVER] Command received, pushing to recvQueue" << std::endl;
-        gameMonitor.getPlayerGameQueue(playerId)->push(std::move(commandDTO));
+        try {
+            gameMonitor.getPlayerGameQueue(playerId)->push(std::move(commandDTO));
+        } catch (const std::exception& e) {
+            this->keepPlaying.store(false);
+            this->inGame.store(false);
+            std::cerr << "[SERVER RECEIVER] Failed pushing to game queue: " << e.what() << std::endl;
+        }
     } else {
         std::cout << "[SERVER RECEIVER] No command received (null commandDTO)" << std::endl;
     }

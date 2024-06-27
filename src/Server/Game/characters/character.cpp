@@ -749,3 +749,5 @@ uint32_t Character::getHeight() const { return height; }
 void Character::setOnGround(bool onGround) { this->onGround = onGround; }
 
 void Character::setSprinting(bool sprinting) { this->sprinting = sprinting; }
+
+void Character::resetScore() { score = 0;}

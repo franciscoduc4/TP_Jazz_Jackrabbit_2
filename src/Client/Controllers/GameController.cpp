@@ -2,6 +2,7 @@
 
 #include "../Common/DTO/gameCommand.h"
 #include "../Common/DTO/switchWeapon.h"
+#include "../Common/DTO/cheat.h"
 #include "../Common/Types/direction.h"
 
 
@@ -25,6 +26,10 @@ void GameController::sendMsg(uint8_t playerId, Command& cmd, std::vector<uint8_t
             break;
         case Command::SPRINT:
             sprint(playerId);
+            break;
+        case Command::CHEAT:
+            cheat(parameters);
+            break;
     }
 }
 
@@ -59,6 +64,12 @@ void GameController::sprint(uint8_t playerId) {
     std::unique_ptr<CommandDTO> sprint =
             std::make_unique<GameCommandDTO>(playerId, Command::SPRINT);
     this->serializer.sendMsg(sprint);
+}
+
+void GameController::cheat(const std::vector<uint8_t>& parameters) {
+    auto cheat = static_cast<Cheat>(parameters[0]);
+    std::unique_ptr<CommandDTO> cheatDto = std::make_unique<CheatDTO>(cheat);
+    this->serializer.sendMsg(cheatDto);
 }
 
 std::unique_ptr<DTO> GameController::getServerMsg() {

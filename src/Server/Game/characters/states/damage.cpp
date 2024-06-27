@@ -13,7 +13,7 @@
 #include "sprinting.h"
 
 ReceivingDamageState::ReceivingDamageState(Character& character, float startTime, uint8_t damage):
-        character(character) {
+        character(character), damage(damage) {
     characterState = CharacterStateEntity::TAKING_DAMAGE;
 }
 

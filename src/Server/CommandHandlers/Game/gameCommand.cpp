@@ -3,6 +3,7 @@
 #include "../../../Common/DTO/gameCommand.h"
 #include "../../../Common/DTO/switchWeapon.h"
 
+#include "cheat.h"
 #include "idle.h"
 #include "jump.h"
 #include "move.h"
@@ -38,6 +39,9 @@ std::unique_ptr<GameCommandHandler> GameCommandHandler::createHandler(
             auto sprintCommand = dynamic_cast<GameCommandDTO*>(command.get());
             command.release();
             return std::make_unique<SprintHandler>(std::unique_ptr<GameCommandDTO>(sprintCommand));
+        }
+        case Command::CHEAT: {
+            return std::make_unique<CheatHandler>(std::unique_ptr<CommandDTO>(command.release()));
         }
         default: {
             return nullptr;

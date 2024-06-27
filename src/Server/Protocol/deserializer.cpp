@@ -6,6 +6,8 @@
 
 #include <arpa/inet.h>
 
+#include "DTO/cheat.h"
+
 #include "protocol.h"
 
 Deserializer::Deserializer(const std::shared_ptr<Socket>& socket, std::atomic<bool>& keepPlaying,
@@ -41,6 +43,8 @@ std::unique_ptr<CommandDTO> Deserializer::getCommand(uint8_t& playerId) {
                 return deserializeShooting(playerId);
             case Command::SPRINT:
                 return deserializeSprint(playerId);
+            case Command::CHEAT:
+                return deserializeCheat();
             default:
                 std::cerr << "[SERVER DESERIALIZER] Unknown command received: " << (int)cmd
                           << std::endl;
@@ -179,6 +183,19 @@ std::unique_ptr<MapsListDTO> Deserializer::deserializeMapsList(uint8_t& playerId
     } catch (const std::exception& e) {
         std::cerr << "[SERVER DESERIALIZER] Error in deserializeMapsList: " << e.what()
                   << std::endl;
+        return nullptr;
+    }
+}
+
+std::unique_ptr<CommandDTO> Deserializer::deserializeCheat() {
+    try {
+        char cheatChar;
+        if (!protocol->receiveChar(cheatChar))
+            return nullptr;
+        auto cheat = static_cast<Cheat>(cheatChar);
+        return std::make_unique<CheatDTO>(cheat);
+    } catch (const std::exception& e) {
+        std::cerr << "[SERVER DESERIALIZER] Error in deserializeCheat: " << e.what() << std::endl;
         return nullptr;
     }
 }

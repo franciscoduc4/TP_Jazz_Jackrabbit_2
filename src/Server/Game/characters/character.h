@@ -138,6 +138,8 @@ public:
 
     void setOnGround(bool onGround);
     void setSprinting(bool sprinting);
+
+    void resetScore();
 };
 
 #endif  // PLAYER_CHARACTER_H

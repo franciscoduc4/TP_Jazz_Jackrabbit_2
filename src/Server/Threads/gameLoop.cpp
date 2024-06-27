@@ -46,6 +46,9 @@ void GameLoopThread::run() {
             queueMonitor.broadcast(gameId, std::move(gameDTO));
             // std::cout << "[GAME LOOP] Game state broadcasted" << std::endl;
 
+            if (!keepRunning.load()) {
+                this->recvQueue->close();
+            }
             auto processingEndTime = std::chrono::high_resolution_clock::now();
             std::chrono::duration<float> processingDuration = processingEndTime - currentTime;
             // std::cout << "[GAME LOOP] Processing duration: " << processingDuration.count()
@@ -72,7 +75,6 @@ void GameLoopThread::processCommands(float deltaTime) {
         while (processedCommands < maxCommandsPerFrame) {
             std::unique_ptr<CommandDTO> command;
             if (recvQueue->try_pop(command)) {
-                Printer::printDebugHighlightedMessage("[GAME LOOP] Command received");
                 if (!command) {
                     Printer::printWarningHighlightedMessage("[GAME LOOP] Null command received");
                     continue;
@@ -83,18 +85,14 @@ void GameLoopThread::processCommands(float deltaTime) {
                     Printer::printErrorHighlightedMessage("[GAME LOOP] Invalid command received");
                     continue;
                 }
-
-                Printer::printSuccessMessage("[GAME LOOP] Executing Handler");
                 handler->execute(gameMap, keepRunning, deltaTime);
 
                 processedCommands++;
-                Printer::printSuccessMessage("[GAME LOOP] Command processed");
             } else {
                 Printer::printErrorHighlightedMessage("[GAME LOOP] No more commands to process");
                 break;
             }
         }
-        Printer::printSuccessHighlightedMessage("[GAME LOOP] Processed " + std::to_string(processedCommands) + " commands");
     } catch (const std::exception& e) {
         std::cerr << "[GAME LOOP] Error processing commands: " << e.what() << std::endl;
     }

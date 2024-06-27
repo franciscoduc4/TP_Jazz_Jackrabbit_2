@@ -828,3 +828,9 @@ void GameMap::handleShooting(uint32_t characterX, uint8_t damage, float time, Di
         removeEnemy(id);
     }
 }
+void GameMap::resetScores() {
+    for (auto& characterPair: characters) {
+        auto character = characterPair.second;
+        character->resetScore();
+    }
+}

@@ -26,6 +26,7 @@ enum class Command : char {
     UPPERCUT,
     SHORT_KICK,
     SIDE_KICK,
+    CHEAT,
     INVALID
 };
 

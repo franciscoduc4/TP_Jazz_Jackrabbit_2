@@ -36,6 +36,7 @@ private:
     std::unique_ptr<CommandDTO> deserializeShooting(uint8_t& playerId);
     std::unique_ptr<CommandDTO> deserializeSwitchWeapon(uint8_t& playerId);
     std::unique_ptr<CommandDTO> deserializeSprint(uint8_t& playerId);
+    std::unique_ptr<CommandDTO> deserializeCheat();
 
 
 public:
