@@ -6,8 +6,9 @@
 #include "intoxicated.h"
 #include "moving.h"
 #include "shooting.h"
+#include "sprinting.h"
 
-SpecialAttackState::SpecialAttackState(Character& character, float time) :
+SpecialAttackState::SpecialAttackState(Character& character, float time):
         startTime(time), duration(2.0f), character(character) {
     characterState = CharacterStateEntity::SPECIAL_ATTACK;
 }
@@ -17,26 +18,24 @@ std::unique_ptr<State> SpecialAttackState::exec(float time) {
     return std::make_unique<IdleState>(character);
 }
 
-std::unique_ptr<State> SpecialAttackState::shoot(const std::shared_ptr<Weapon>& weapon, float time) {
+std::unique_ptr<State> SpecialAttackState::shoot(const std::shared_ptr<Weapon>& weapon,
+                                                 float time) {
     // No puede disparar mientras realiza un ataque especial
     return std::make_unique<ShootingState>(character, weapon, time);
 }
 
-std::unique_ptr<State> SpecialAttackState::move(Direction direction,
-                                                float time) {
+std::unique_ptr<State> SpecialAttackState::move(Direction direction, float time) {
     // Puede moverse mientras realiza un ataque especial
     return std::make_unique<MovingState>(character, direction);
 }
 
-std::unique_ptr<State> SpecialAttackState::sprint(Direction direction,
-                                                  float time) {
+std::unique_ptr<State> SpecialAttackState::sprint(Direction direction, float time) {
     // No puede correr más rápido de lo que ya lo hace
-    return nullptr;
+    return std::make_unique<SprintingState>(character, direction);
 }
 
 
-std::unique_ptr<State> SpecialAttackState::receiveDamage(uint8_t dmg,
-                                                         float time) {
+std::unique_ptr<State> SpecialAttackState::receiveDamage(uint8_t dmg, float time) {
     return std::make_unique<ReceivingDamageState>(character, time, dmg);
 }
 

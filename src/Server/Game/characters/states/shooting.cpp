@@ -1,15 +1,23 @@
 #include "shooting.h"
+
 #include <vector>
+
 #include "../character.h"
+
 #include "damage.h"
 #include "dead.h"
 #include "idle.h"
 #include "intoxicated.h"
 #include "jumping.h"
 #include "moving.h"
+#include "sprinting.h"
 
-ShootingState::ShootingState(Character& character, const std::shared_ptr<Weapon>& weapon, float time)
-    : character(character), weapon(weapon), shootCooldown(weapon->getFireRate()), startTime(time) {
+ShootingState::ShootingState(Character& character, const std::shared_ptr<Weapon>& weapon,
+                             float time):
+        character(character),
+        weapon(weapon),
+        shootCooldown(weapon->getFireRate()),
+        startTime(time) {
     characterState = CharacterStateEntity::SHOOTING;
     std::cout << "[SHOOTING STATE] Created ShootingState" << std::endl;
 }
@@ -37,7 +45,7 @@ std::unique_ptr<State> ShootingState::move(Direction direction, float time) {
 }
 
 std::unique_ptr<State> ShootingState::sprint(Direction direction, float time) {
-    return std::make_unique<MovingState>(character, direction);
+    return std::make_unique<SprintingState>(character, direction);
 }
 
 std::unique_ptr<State> ShootingState::receiveDamage(uint8_t dmg, float time) {
@@ -48,17 +56,13 @@ std::unique_ptr<State> ShootingState::die(float time) {
     return std::make_unique<DeadState>(character, time);
 }
 
-std::unique_ptr<State> ShootingState::revive(float time) {
-    return nullptr;
-}
+std::unique_ptr<State> ShootingState::revive(float time) { return nullptr; }
 
 std::unique_ptr<State> ShootingState::jump(float time) {
     return std::make_unique<JumpingState>(character);
 }
 
-std::unique_ptr<State> ShootingState::specialAttack(float time) {
-    return nullptr;
-}
+std::unique_ptr<State> ShootingState::specialAttack(float time) { return nullptr; }
 
 std::unique_ptr<State> ShootingState::becomeIntoxicated(float duration) {
     return std::make_unique<IntoxicatedState>(character, duration);

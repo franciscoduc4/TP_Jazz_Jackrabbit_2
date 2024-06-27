@@ -9,6 +9,7 @@
 #include "moving.h"
 #include "shooting.h"
 #include "specialAttack.h"
+#include "sprinting.h"
 
 IdleState::IdleState(Character& character): character(character) { characterState = IDLE; }
 

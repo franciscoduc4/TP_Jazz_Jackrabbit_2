@@ -1,5 +1,4 @@
 #include "deserializer.h"
-#include "protocol.h"
 
 #include <iostream>
 #include <memory>
@@ -7,7 +6,10 @@
 
 #include <arpa/inet.h>
 
-Deserializer::Deserializer(const std::shared_ptr<Socket>& socket, std::atomic<bool>& keepPlaying, std::atomic<bool>& inGame) :
+#include "protocol.h"
+
+Deserializer::Deserializer(const std::shared_ptr<Socket>& socket, std::atomic<bool>& keepPlaying,
+                           std::atomic<bool>& inGame):
         protocol(std::make_shared<Protocol>(socket, keepPlaying, inGame)) {}
 
 std::unique_ptr<CommandDTO> Deserializer::getCommand(uint8_t& playerId) {
@@ -40,7 +42,8 @@ std::unique_ptr<CommandDTO> Deserializer::getCommand(uint8_t& playerId) {
         case Command::SPRINT:
             return deserializeSprint(playerId);
         default:
-            std::cout << "[SERVER DESERIALIZER] Unknown command received: " << (int)cmd << std::endl;
+            std::cout << "[SERVER DESERIALIZER] Unknown command received: " << (int)cmd
+                      << std::endl;
             return nullptr;
     }
 }
@@ -71,9 +74,11 @@ std::unique_ptr<CreateGameDTO> Deserializer::deserializeCreateGame(uint8_t& play
 
 std::unique_ptr<JoinGameDTO> Deserializer::deserializeJoinGame(uint8_t& playerId) {
     uint8_t gameId;
-    if (!protocol->receiveUInt8(gameId)) return nullptr;
+    if (!protocol->receiveUInt8(gameId))
+        return nullptr;
     char characterTypeChar;
-    if (!protocol->receiveChar(characterTypeChar)) return nullptr;
+    if (!protocol->receiveChar(characterTypeChar))
+        return nullptr;
     auto characterType = static_cast<CharacterType>(characterTypeChar);
     return std::make_unique<JoinGameDTO>(playerId, gameId, characterType);
 }
@@ -90,14 +95,16 @@ std::unique_ptr<CommandDTO> Deserializer::deserializeIdle(uint8_t& playerId) {
 
 std::unique_ptr<GameCommandDTO> Deserializer::deserializeMove(uint8_t& playerId) {
     char directionChar;
-    if (!protocol->receiveChar(directionChar)) return nullptr;
+    if (!protocol->receiveChar(directionChar))
+        return nullptr;
     Direction direction = static_cast<Direction>(directionChar);
     return std::make_unique<GameCommandDTO>(playerId, direction, Command::MOVE);
 }
 
 std::unique_ptr<StartGameDTO> Deserializer::deserializeStart(uint8_t& playerId) {
     uint8_t gameId;
-    if (!protocol->receiveUInt8(gameId)) return nullptr;
+    if (!protocol->receiveUInt8(gameId))
+        return nullptr;
     return std::make_unique<StartGameDTO>(playerId, gameId);
 }
 
@@ -108,17 +115,16 @@ std::unique_ptr<CommandDTO> Deserializer::deserializeShooting(uint8_t& playerId)
 
 std::unique_ptr<CommandDTO> Deserializer::deserializeSwitchWeapon(uint8_t& playerId) {
     char weaponTypeChar;
-    if (!protocol->receiveChar(weaponTypeChar)) return nullptr;
+    if (!protocol->receiveChar(weaponTypeChar))
+        return nullptr;
     auto weaponType = static_cast<WeaponType>(weaponTypeChar);
-    std::cout << "[SERVER DESERIALIZER] Deserialized SwitchWeapon command with WeaponType: " << (int)weaponType << std::endl;
+    std::cout << "[SERVER DESERIALIZER] Deserialized SwitchWeapon command with WeaponType: "
+              << (int)weaponType << std::endl;
     return std::make_unique<SwitchWeaponDTO>(playerId, weaponType);
 }
 
 std::unique_ptr<CommandDTO> Deserializer::deserializeSprint(uint8_t& playerId) {
-    char directionChar;
-    if (!protocol->receiveChar(directionChar)) return nullptr;
-    auto direction = static_cast<Direction>(directionChar);
-    return std::make_unique<GameCommandDTO>(playerId, direction, Command::SPRINT);
+    return std::make_unique<GameCommandDTO>(playerId, Command::SPRINT);
 }
 
 std::unique_ptr<MapsListDTO> Deserializer::deserializeMapsList(uint8_t& playerId) {

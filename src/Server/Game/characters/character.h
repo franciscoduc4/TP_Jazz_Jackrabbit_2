@@ -61,6 +61,7 @@ protected:
 
     bool jumping = false;
     bool onGround = false;
+    bool sprinting = false;
 
     bool isIntoxicated = false;
 
@@ -95,6 +96,7 @@ public:
     void sprintLeft(float time);
     void moveDown(float time);
     void jump(float time);
+    void sprint(float time);
     void handleCollisions(const std::shared_ptr<Entity>& entity);
 
     virtual void specialAttack(float time) = 0;
@@ -135,6 +137,7 @@ public:
     uint32_t getHeight() const;
 
     void setOnGround(bool onGround);
+    void setSprinting(bool sprinting);
 };
 
 #endif  // PLAYER_CHARACTER_H

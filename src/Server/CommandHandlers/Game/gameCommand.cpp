@@ -3,12 +3,12 @@
 #include "../../../Common/DTO/gameCommand.h"
 #include "../../../Common/DTO/switchWeapon.h"
 
+#include "idle.h"
 #include "jump.h"
 #include "move.h"
 #include "shoot.h"
-#include "idle.h"
+#include "sprint.h"
 #include "switchWeapon.h"
-#include "move.h"
 
 std::unique_ptr<GameCommandHandler> GameCommandHandler::createHandler(
         std::unique_ptr<CommandDTO> command) {
@@ -24,7 +24,6 @@ std::unique_ptr<GameCommandHandler> GameCommandHandler::createHandler(
         case Command::IDLE: {
             return std::make_unique<IdleHandler>(std::unique_ptr<CommandDTO>(command.release()));
         }
-
         case Command::JUMP: {
             return std::make_unique<JumpHandler>(std::unique_ptr<CommandDTO>(command.release()));
         }
@@ -32,7 +31,13 @@ std::unique_ptr<GameCommandHandler> GameCommandHandler::createHandler(
             std::cout << "Switch weapon command received" << std::endl;
             auto switchWeaponCommand = dynamic_cast<SwitchWeaponDTO*>(command.get());
             command.release();
-            return std::make_unique<SwitchWeaponHandler>(std::unique_ptr<SwitchWeaponDTO>(switchWeaponCommand));
+            return std::make_unique<SwitchWeaponHandler>(
+                    std::unique_ptr<SwitchWeaponDTO>(switchWeaponCommand));
+        }
+        case Command::SPRINT: {
+            auto sprintCommand = dynamic_cast<GameCommandDTO*>(command.get());
+            command.release();
+            return std::make_unique<SprintHandler>(std::unique_ptr<GameCommandDTO>(sprintCommand));
         }
         default: {
             return nullptr;

@@ -30,6 +30,8 @@ public:
 
     void switch_weapon_msg(uint8_t playerId, std::vector<uint8_t>& parameters);
 
+    void sprint(uint8_t playerId);
+
     std::unique_ptr<DTO> getServerMsg();
 };
 

@@ -125,7 +125,7 @@ void Character::shoot(float time) {
     std::cout << "[CHARACTER] Character ID: " << static_cast<int>(id)
               << " calling handleShooting on GameMap" << std::endl;
 
-    
+
     if (!currentWeapon) {
         currentWeapon = std::make_unique<Blaster>();
     }
@@ -298,7 +298,7 @@ void Character::moveLeft(double time) {
 }
 
 void Character::jump(float time) {
-    if (isIntoxicated){
+    if (isIntoxicated) {
         return;
     }
     float gravity = ServerConfig::getGameGravity();
@@ -307,7 +307,7 @@ void Character::jump(float time) {
         jumping = true;
     } else {
         // Calculate new velocity and position
-        currentSpeed.y += gravity * time; // v = u + at
+        currentSpeed.y += gravity * time;  // v = u + at
 
         // Increment the character's vertical position in smaller steps
         for (int i = 0; i < std::abs(currentSpeed.y * time); ++i) {
@@ -342,12 +342,21 @@ void Character::jump(float time) {
     }
 }
 
+void Character::sprint(float time) {
+    std::cout << "[CHARACTER] Character ID: " << static_cast<int>(id) << " sprinting" << std::endl;
+    auto newState = state->sprint(dir, time);
+    if (newState) {
+        state = std::move(newState);
+    }
+}
+
 void Character::handleCollisions(const std::shared_ptr<Entity>& entity) {
     if (entity->getType() == EntityType::OBSTACLE) {
-        gameMap.handleCharacterObstacleCollision(
-                shared_from_this(), std::dynamic_pointer_cast<Obstacle>(entity));
+        gameMap.handleCharacterObstacleCollision(shared_from_this(),
+                                                 std::dynamic_pointer_cast<Obstacle>(entity));
     } else if (entity->getType() == EntityType::CHARACTER) {
-        handleCharacterCollision(std::dynamic_pointer_cast<Character>(entity));;
+        handleCharacterCollision(std::dynamic_pointer_cast<Character>(entity));
+        ;
     } else if (entity->getType() == EntityType::ENEMY) {
         gameMap.handleCharacterEnemyCollision(shared_from_this(),
                                               std::dynamic_pointer_cast<Enemy>(entity));
@@ -495,8 +504,11 @@ void Character::moveRight() {
     if (isIntoxicated)
         return;
 
-    uint8_t movesPerCellX = onGround ? static_cast<uint32_t>(this->movesPerCell * ServerConfig::getCharacterQuadMovesPerCell()) :
-                                       static_cast<uint32_t>(this->movesPerCell * ServerConfig::getCharacterTwoMovesPerCell());
+    uint8_t movesPerCellX =
+            onGround ? static_cast<uint32_t>(this->movesPerCell *
+                                             ServerConfig::getCharacterQuadMovesPerCell()) :
+                       static_cast<uint32_t>(this->movesPerCell *
+                                             ServerConfig::getCharacterTwoMovesPerCell());
     auto mapPositionX = getMapPosition(movesPerCellX);
 
     uint8_t movesPerCellY = onGround ? 0 : static_cast<uint32_t>(this->movesPerCell);
@@ -545,8 +557,15 @@ void Character::moveLeft() {
     if (isIntoxicated)
         return;
 
-    uint8_t movesPerCellX = onGround ? static_cast<uint32_t>(this->movesPerCell * ServerConfig::getCharacterQuadMovesPerCell()) :
-                                       static_cast<uint32_t>(this->movesPerCell * ServerConfig::getCharacterTwoMovesPerCell());
+    uint8_t movesPerCellX =
+            onGround ? sprinting ?
+                       static_cast<uint32_t>(this->movesPerCell *
+                                             ServerConfig::getCharacterQuadMovesPerCell() * 2) :
+                       static_cast<uint32_t>(this->movesPerCell *
+                                             ServerConfig::getCharacterQuadMovesPerCell()) :
+                       static_cast<uint32_t>(this->movesPerCell *
+                                             ServerConfig::getCharacterTwoMovesPerCell());
+
     auto mapPositionX = getMapPosition(movesPerCellX);
 
     uint8_t movesPerCellY = onGround ? 0 : static_cast<uint32_t>(this->movesPerCell);
@@ -614,9 +633,11 @@ void Character::jump() {
         }
         return;
     }
-    std::cout << "[JUMP] Character ID: " << static_cast<int>(id) << " jumping"
-              << std::endl;
-    Vector<uint32_t> newPos = pos - Vector<uint32_t>{0, static_cast<uint32_t>(movesPerCell * ServerConfig::getCharacterQuadMovesPerCell())};
+    std::cout << "[JUMP] Character ID: " << static_cast<int>(id) << " jumping" << std::endl;
+    Vector<uint32_t> newPos =
+            pos - Vector<uint32_t>{
+                          0, static_cast<uint32_t>(movesPerCell *
+                                                   ServerConfig::getCharacterQuadMovesPerCell())};
     if (newPos.y >= gameMap.getMaxYPos()) {
         newPos = Vector<uint32_t>{pos.x, gameMap.getMaxYPos()};
     }
@@ -722,3 +743,5 @@ uint32_t Character::getWidth() const { return width; }
 uint32_t Character::getHeight() const { return height; }
 
 void Character::setOnGround(bool onGround) { this->onGround = onGround; }
+
+void Character::setSprinting(bool sprinting) { this->sprinting = sprinting; }

@@ -10,6 +10,7 @@
 #include "moving.h"
 #include "shooting.h"
 #include "specialAttack.h"
+#include "sprinting.h"
 
 ReceivingDamageState::ReceivingDamageState(Character& character, float startTime, uint8_t damage):
         character(character) {
@@ -30,7 +31,7 @@ std::unique_ptr<State> ReceivingDamageState::move(Direction direction, float tim
 }
 
 std::unique_ptr<State> ReceivingDamageState::sprint(Direction direction, float time) {
-    return std::make_unique<MovingState>(character, direction);
+    return std::make_unique<SprintingState>(character, direction);
 }
 
 std::unique_ptr<State> ReceivingDamageState::receiveDamage(uint8_t dmg, float time) {

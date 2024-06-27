@@ -1,8 +1,11 @@
 #include "gameCommand.h"
 
-GameCommandDTO::GameCommandDTO(const uint8_t& player_id,
-    const Direction& moveType, const Command& cmd):
+GameCommandDTO::GameCommandDTO(const uint8_t& player_id, const Direction& moveType,
+                               const Command& cmd):
         CommandDTO(player_id, cmd), moveType(moveType) {}
+
+GameCommandDTO::GameCommandDTO(const uint8_t& player_id, const Command& cmd):
+        CommandDTO(player_id, cmd) {}
 
 Direction GameCommandDTO::getMoveType() const { return moveType; }
 
