@@ -35,6 +35,11 @@ Vagrant.configure("2") do |config|
     mv /home/vagrant/Jazz-Jackrabbit-2.ttf /home/vagrant/.local/share/fonts/
     fc-cache -fv
 
+    # Install Xvfb for virtual display
+    sudo apt-get install -y xvfb
+    echo 'export DISPLAY=:99' >> /home/vagrant/.bashrc
+    echo 'Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 &' >> /home/vagrant/.bashrc
+
     # Set up project
     cd /home/vagrant/jazz_jackrabbit_2
     sudo rm -rf build
@@ -44,5 +49,10 @@ Vagrant.configure("2") do |config|
     # Compile project
     cmake -DCMAKE_PREFIX_PATH="/usr/lib/x86_64-linux-gnu/cmake;/usr/lib/x86_64-linux-gnu/cmake/SDL2" ..
     make -j$(nproc)
+  SHELL
+
+  # Start Xvfb when the VM boots
+  config.vm.provision "shell", run: "always", inline: <<-SHELL
+    Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 &
   SHELL
 end
