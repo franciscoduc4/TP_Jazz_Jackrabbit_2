@@ -82,7 +82,7 @@ void Client::start() {
         // // END - TESTING SKIP QT
         CharacterType pj = qtResult.second.getCharacter();
         uint8_t mapId = qtResult.second.getMap();
-        GameScreen game(this->gameController, this->playerId, 0);
+        GameScreen game(this->gameController, this->playerId, mapId);
         std::map<uint8_t, int> scores = game.run();
         this->skt->shutdown(SHUT_RDWR);
         this->skt->close();    
