@@ -100,9 +100,7 @@ public:
     void printMapGrid() const;
 
     Vector<uint32_t> getMapPosition(Vector<uint32_t> position);
-    std::vector<std::shared_ptr<Entity>> getObjectsInVerticalRange(const Vector<uint32_t>& mapPosition, uint32_t range);
-    std::vector<std::shared_ptr<Entity>> getObjectsInAreaRange(Vector<uint32_t> mapPosition, uint32_t range);
-
+    std::vector<std::shared_ptr<Entity>> getObjectsInAreaRange(const Vector<uint32_t>& mapPosition, uint32_t rangeX, uint32_t rangeY);
 
     EnemyType getEnemyType(const std::string& typeStr);
     ObstacleType getObstacleType(const std::string& typeStr);

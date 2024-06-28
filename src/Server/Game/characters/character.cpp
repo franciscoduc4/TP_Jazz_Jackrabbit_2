@@ -264,18 +264,15 @@ void Character::handleLadderCollision(const std::shared_ptr<Obstacle>& obstacle)
     double slope = static_cast<double>(obstacleHeight) / obstacleWidth;
     uint32_t newPosY = 0;
 
-    float ladderWidth = ((116 * 120) / 190);
-    // bool underLadder = false;
+    float ladderWidth = ServerConfig::getObstacleLadderWidth();
 
     if (obstacle->getObstacleType() == ObstacleType::LEFT_LADDER) {
         newPosY = obstaclePos.y + static_cast<uint32_t>(slope * (pos.x - obstaclePos.x));
-        // underLadder = (pos.y <= obstaclePos.y + obstacleHeight);
-        // pos.y = (underLadder) ? (newPosY - ladderWidth/2) : (newPosY + ladderWidth/2);
+
     } else if (obstacle->getObstacleType() == ObstacleType::RIGHT_LADDER) {
         newPosY = obstaclePos.y +
                 static_cast<uint32_t>(-slope * (pos.x - (obstaclePos.x + obstacleWidth)));
-        // underLadder = (pos.y <= newPosY);
-        // pos.y = (underLadder) ? (newPosY + ladderWidth/2) : (newPosY - ladderWidth/2);
+
     }
 
     bool underLadder = (pos.y < newPosY);
@@ -311,7 +308,6 @@ void Character::moveRight(double time) {
     float speed = jumping ? horizontalSpeed * 0.5 : horizontalSpeed;
     pos.x += speed * time;
 
-    //auto newState = state->move(Direction::RIGHT, time);
 
     if (newState) {
         std::cout << "[CHARACTER] Character ID: " << static_cast<int>(id) << " moving right"
@@ -328,8 +324,6 @@ void Character::moveLeft(double time) {
 
     float speed = jumping ? horizontalSpeed * 0.5 : horizontalSpeed;
     pos.x -= speed * time;
-
-    //auto newState = state->move(Direction::LEFT, time);
 
 
     if (newState) {

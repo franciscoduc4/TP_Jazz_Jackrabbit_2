@@ -44,18 +44,30 @@ public:
     static float getJazzVerticalSpeed();
     static float getJazzSprintSpeed();
     static float getJazzJumpHeight();
+    static uint32_t getJazzSpecialAttackRangeX();
+    static uint32_t getJazzSpecialAttackRangeY();
+    static uint32_t getJazzSpecialAttackDamage();
+
 
     static uint8_t getLoriShootCooldownTime();
     static float getLoriHorizontalSpeed();
     static float getLoriVerticalSpeed();
     static float getLoriSprintSpeed();
     static float getLoriJumpHeight();
+    static uint32_t getLoriSpecialAttackRangeX();
+    static uint32_t getLoriSpecialAttackRangeY();
+    static uint32_t getLoriSpecialAttackDamage();
 
     static uint8_t getSpazShootCooldownTime();
     static float getSpazHorizontalSpeed();
     static float getSpazVerticalSpeed();
     static float getSpazSprintSpeed();
     static float getSpazJumpHeight();
+    static uint32_t getSpazSpecialAttackRangeX();
+    static uint32_t getSpazSpecialAttackRangeY();
+    static uint32_t getSpazSpecialAttackDamage();
+    static float getSpazSpecialAttackSpeed();
+
 
     static uint8_t getWeaponBlasterBullets();
     static uint8_t getWeaponBlasterDamage();
@@ -71,6 +83,7 @@ public:
     static float getWeaponRFMissileFireRate();
 
     static uint8_t getObstacleMoves();
+    static float getObstacleLadderWidth();
     static uint32_t getColumnWidth();
     static uint32_t getColumnHeight();
     static uint32_t getFullFloorWidth();

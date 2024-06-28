@@ -9,18 +9,18 @@
 #include "sprinting.h"
 
 SpecialAttackState::SpecialAttackState(Character& character, float time):
-        startTime(time), duration(2.0f), character(character) {
+        startTime(time), duration(0.50f), character(character) {
     characterState = CharacterStateEntity::SPECIAL_ATTACK;
 }
 
 std::unique_ptr<State> SpecialAttackState::exec(float time) {
     // Volver al estado idle después de realizar el ataque especial
     if (duration <= 0.0) {
-        duration = 2.0f;
+        duration = 0.5f;
         return std::make_unique<IdleState>(character);
     }
-    duration -= 0.2;
-    character.specialAttack();
+    duration -= 0.1;
+    character.realizeSpecialAttack(time);
     return nullptr;
     //character.specialAttack();
     //return std::make_unique<IdleState>(character);

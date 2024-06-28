@@ -27,6 +27,8 @@
 #include "states/specialAttack.h"
 #include "states/state.h"
 
+#include "printer.h"
+
 class GameMap;
 class Enemy;
 class Obstacle;
@@ -222,7 +224,7 @@ public:
 
     /** Obtener la puntuación del personaje */
     void specialAttack(float time);
-    virtual void specialAttack() = 0;
+    virtual void realizeSpecialAttack(float time) = 0;
 };
 
 #endif  // PLAYER_CHARACTER_H

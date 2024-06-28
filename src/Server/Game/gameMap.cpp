@@ -205,15 +205,15 @@ std::vector<std::shared_ptr<Entity>> GameMap::getObjectsInShootRange(Vector<uint
 }
 
 // Método para obtener entidades en un área definida
-std::vector<std::shared_ptr<Entity>> GameMap::getObjectsInAreaRange(Vector<uint32_t> mapPosition, uint32_t range) {
+std::vector<std::shared_ptr<Entity>> GameMap::getObjectsInAreaRange(const Vector<uint32_t>& mapPosition, uint32_t rangeX, uint32_t rangeY) {
     std::vector<std::shared_ptr<Entity>> entities;
     try {
-        for (uint32_t x = mapPosition.x - range; x <= mapPosition.x + range; ++x) {
-            for (uint32_t y = mapPosition.y - range; y <= mapPosition.y + range; ++y) {
-                Vector<uint32_t> pos = {x, y};
-                if (mapGrid.find(pos) != mapGrid.end()) {
-                    entities.push_back(mapGrid[pos]);
-                }
+        for (auto& entry : mapGrid) {
+            auto entity = entry.second;
+            auto entityPos = entity->getPosition();
+            if (entityPos.x >= mapPosition.x - rangeX && entityPos.x <= mapPosition.x + rangeX &&
+                entityPos.y >= mapPosition.y - rangeY && entityPos.y <= mapPosition.y + rangeY) {
+                entities.push_back(entity);
             }
         }
     } catch (const std::exception& e) {
@@ -221,26 +221,6 @@ std::vector<std::shared_ptr<Entity>> GameMap::getObjectsInAreaRange(Vector<uint3
     }
     return entities;
 }
-
-
-// Método para obtener entidades en un rango vertical
-std::vector<std::shared_ptr<Entity>> GameMap::getObjectsInVerticalRange(const Vector<uint32_t>& mapPosition, uint32_t range) {
-    std::vector<std::shared_ptr<Entity>> entities;
-    try {
-        for (auto& entry : mapGrid) {
-            auto entity = entry.second;
-            auto entityPos = entity->getPosition();
-            if (entityPos.x == mapPosition.x 
-                && entityPos.y >= mapPosition.y - range && entityPos.y <= mapPosition.y + range) {
-                entities.push_back(entity);
-            }
-        }
-    } catch (const std::exception& e) {
-        std::cerr << "Error getting objects in vertical range: " << e.what() << std::endl;
-    }
-    return entities;
-}
-
 
 /*
  * Devuelve las entidades dentro del rango de explosión de una posición y radio dados.

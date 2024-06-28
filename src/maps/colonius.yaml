@@ -52,8 +52,8 @@ ENEMIES:
     - [600, 210, 25, 70]  # Sobre la plataforma en [580, 250, 150, 30]
     - [820, 460, 25, 70]  # Sobre la plataforma en [820, 500, 150, 30]
   SCHWARZENGUARDS:
-    - [560, 610, 25, 70]  # Sobre la plataforma en [510, 750, 150, 30]
-    - [80, 510, 25, 70]   # Sobre la plataforma en [60, 550, 150, 30]
+    - [560, 630, 25, 70]  # Sobre la plataforma en [510, 750, 150, 30]
+    - [80, 410, 25, 70]   # Sobre la plataforma en [60, 550, 150, 30]
   YELLOWMONS:
     - [400, 470, 25, 70]  # Sobre la plataforma en [400, 500, 70, 30]
     - [620, 70, 25, 70]   # Sobre la plataforma en [600, 100, 70, 30]

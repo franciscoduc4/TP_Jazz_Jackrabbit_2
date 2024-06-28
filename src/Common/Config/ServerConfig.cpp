@@ -123,6 +123,22 @@ float ServerConfig::getJazzJumpHeight() {
     return getInstance()->root["CHARACTER"]["JAZZ"]["JUMP_HEIGHT"].as<float>();
 }
 
+uint32_t ServerConfig::getJazzSpecialAttackRangeX() {
+    int jazzSpecialAttackRangeX = getInstance()->root["CHARACTER"]["JAZZ"]["SPECIAL_ATTACK_RANGE_X"].as<int>();
+    return static_cast<uint32_t>(jazzSpecialAttackRangeX);
+}
+
+uint32_t ServerConfig::getJazzSpecialAttackRangeY() {
+    int jazzSpecialAttackRangeY = getInstance()->root["CHARACTER"]["JAZZ"]["SPECIAL_ATTACK_RANGE_Y"].as<int>();
+    return static_cast<uint32_t>(jazzSpecialAttackRangeY);
+}
+
+
+uint32_t ServerConfig::getJazzSpecialAttackDamage() {
+    int jazzSpecialAttackDamage = getInstance()->root["CHARACTER"]["JAZZ"]["SPECIAL_ATTACK_DAMAGE"].as<int>();
+    return static_cast<uint32_t>(jazzSpecialAttackDamage);
+}
+
 uint8_t ServerConfig::getLoriShootCooldownTime() {
     int loriShootCooldownTime =
             getInstance()->root["CHARACTER"]["LORI"]["SHOOT_COOLDOWN_TIME"].as<int>();
@@ -143,6 +159,21 @@ float ServerConfig::getLoriSprintSpeed() {
 
 float ServerConfig::getLoriJumpHeight() {
     return getInstance()->root["CHARACTER"]["LORI"]["JUMP_HEIGHT"].as<float>();
+}
+
+uint32_t ServerConfig::getLoriSpecialAttackRangeX() {
+    int loriSpecialAttackRangeX = getInstance()->root["CHARACTER"]["LORI"]["SPECIAL_ATTACK_RANGE_X"].as<int>();
+    return static_cast<uint32_t>(loriSpecialAttackRangeX);
+}
+
+uint32_t ServerConfig::getLoriSpecialAttackRangeY() {
+    int loriSpecialAttackRangeY = getInstance()->root["CHARACTER"]["LORI"]["SPECIAL_ATTACK_RANGE_Y"].as<int>();
+    return static_cast<uint32_t>(loriSpecialAttackRangeY);
+}
+
+uint32_t ServerConfig::getLoriSpecialAttackDamage() {
+    int loriSpecialAttackDamage = getInstance()->root["CHARACTER"]["LORI"]["SPECIAL_ATTACK_DAMAGE"].as<int>();
+    return static_cast<uint32_t>(loriSpecialAttackDamage);
 }
 
 uint8_t ServerConfig::getSpazShootCooldownTime() {
@@ -166,6 +197,26 @@ float ServerConfig::getSpazSprintSpeed() {
 float ServerConfig::getSpazJumpHeight() {
     return getInstance()->root["CHARACTER"]["SPAZ"]["JUMP_HEIGHT"].as<float>();
 }
+
+uint32_t ServerConfig::getSpazSpecialAttackRangeX() {
+    int spazSpecialAttackRangeX = getInstance()->root["CHARACTER"]["SPAZ"]["SPECIAL_ATTACK_RANGE_X"].as<int>();
+    return static_cast<uint32_t>(spazSpecialAttackRangeX);
+}
+
+uint32_t ServerConfig::getSpazSpecialAttackRangeY() {
+    int spazSpecialAttackRangeY = getInstance()->root["CHARACTER"]["SPAZ"]["SPECIAL_ATTACK_RANGE_Y"].as<int>();
+    return static_cast<uint32_t>(spazSpecialAttackRangeY);
+}
+
+uint32_t ServerConfig::getSpazSpecialAttackDamage() {
+    int spazSpecialAttackDamage = getInstance()->root["CHARACTER"]["SPAZ"]["SPECIAL_ATTACK_DAMAGE"].as<int>();
+    return static_cast<uint32_t>(spazSpecialAttackDamage);
+}
+
+float ServerConfig::getSpazSpecialAttackSpeed() {
+    return getInstance()->root["CHARACTER"]["SPAZ"]["SPECIAL_ATTACK_SPEED"].as<float>();
+}
+
 
 // Weapons
 uint8_t ServerConfig::getWeaponBlasterBullets() {
@@ -228,6 +279,10 @@ float ServerConfig::getWeaponRFMissileFireRate() {
 uint8_t ServerConfig::getObstacleMoves() {
     int obstacleMoves = getInstance()->root["OBSTACLE"]["MOVES"].as<int>();
     return static_cast<uint8_t>(obstacleMoves);
+}
+
+float ServerConfig::getObstacleLadderWidth() {
+    return getInstance()->root["OBSTACLE"]["LADDER_WIDTH"].as<float>(); 
 }
 
 uint32_t ServerConfig::getColumnWidth() {

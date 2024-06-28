@@ -9,23 +9,28 @@ Lori::Lori(GameMap& gameMap, Vector<uint32_t> pos, uint8_t playerId, uint32_t wi
                 ServerConfig::getLoriJumpHeight(), ServerConfig::getLoriShootCooldownTime(), width, height) {}
 
 
-void Lori::specialAttack() {
-    std::cout << "[SPECIAL ATTACK] Lori realiza una patada de corto alcance" << std::endl;
+void Lori::realizeSpecialAttack(float time) {
     Vector<uint32_t> pos = getPosition();
-    pos.x += getDirection() == Direction::RIGHT ? getWidth() : -getWidth(); // Ajuste según la dirección
+    pos.x += getDirection() == Direction::RIGHT ? getWidth() : -getWidth();
 
-    auto entities = gameMap.getObjectsInAreaRange(pos, 20); // Obtiene entidades en el rango de ataque
+    uint32_t rangeX = ServerConfig::getLoriSpecialAttackRangeX();
+    uint32_t rangeY = ServerConfig::getLoriSpecialAttackRangeY();
+
+    auto entities = gameMap.getObjectsInAreaRange(pos, rangeX, rangeY);
     for (auto& entity : entities) {
         if (entity->getType() == EntityType::ENEMY) {
             auto enemy = std::dynamic_pointer_cast<Enemy>(entity);
+            std::cout << "Lori special attack enemy detected" << std::endl;
             if (enemy) {
-                enemy->recvDamage(80, 0); // Asigna un valor de daño adecuado
-                std::cout << "[SPECIAL ATTACK] Lori patea al enemigo ID: " << static_cast<int>(enemy->getId()) << std::endl;
+                enemy->recvDamage(ServerConfig::getJazzSpecialAttackDamage(), 0);
+                std::cout << "[SPECIAL ATTACK] Jazz golpea al enemigo ID: " << static_cast<int>(enemy->getId())
+                          << std::endl;
+                if (enemy->isDead()) {
+                    score += enemy->getPointsValue();
+                    gameMap.removeEnemy(enemy->getId());
+                }
             }
         }
     }
 }
 
-void Lori::update(double deltaTime) {
-    // Implementar lógica específica de actualización para Lori si es necesario
-}

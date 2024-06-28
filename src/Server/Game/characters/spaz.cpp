@@ -12,36 +12,35 @@ Spaz::Spaz(GameMap& gameMap, Vector<uint32_t> pos, uint8_t playerId, uint32_t wi
                 ServerConfig::getSpazJumpHeight(), ServerConfig::getLoriShootCooldownTime(), width, height) {}
 
 
-void Spaz::specialAttack() {
-    std::cout << "[SPECIAL ATTACK] Spaz realiza una patada lateral" << std::endl;
-    float distance = getHorizontalSpeed() * 3.0f;
+void Spaz::realizeSpecialAttack(float time) {
+    float distance = getHorizontalSpeed() * ServerConfig::getSpazSpecialAttackSpeed();
     Vector<uint32_t> pos = getPosition();
     Direction dir = getDirection();
 
-    // Mueve a Spaz en la dirección actual
     if (dir == Direction::LEFT) {
         pos.x -= distance;
     } else if (dir == Direction::RIGHT) {
         pos.x += distance;
     }
 
-    // Ajustar el rango de búsqueda de enemigos
-    uint32_t attackRange = 80;  // Ajusta este valor según sea necesario
+    uint32_t rangeX = ServerConfig::getSpazSpecialAttackRangeX();
+    uint32_t rangeY = ServerConfig::getSpazSpecialAttackRangeY();
 
-    // Obtiene las entidades en el área de la nueva posición
-    auto entities = gameMap.getObjectsInAreaRange(pos, attackRange);
+    auto entities = gameMap.getObjectsInAreaRange(pos, rangeX, rangeY);
     for (auto& entity : entities) {
         if (entity->getType() == EntityType::ENEMY) {
             auto enemy = std::dynamic_pointer_cast<Enemy>(entity);
-            enemy->recvDamage(50, 0); // Asigna un valor de daño adecuado
-            std::cout << "[SPECIAL ATTACK] Spaz golpea al enemigo ID: " << static_cast<int>(enemy->getId()) << std::endl;
+            std::cout << "Spaz special attack enemy detected" << std::endl;
+            if (enemy) {
+                enemy->recvDamage(ServerConfig::getJazzSpecialAttackDamage(), 0);
+                std::cout << "[SPECIAL ATTACK] Spaz golpea al enemigo ID: " << static_cast<int>(enemy->getId())
+                          << std::endl;
+                if (enemy->isDead()) {
+                    score += enemy->getPointsValue();
+                    gameMap.removeEnemy(enemy->getId());
+                }
+            }
         }
     }
-
-    // Actualiza la posición de Spaz
     setPosition(pos);
-}
-
-void Spaz::update(double deltaTime) {
-    // Lógica de actualización específica de Spaz, si es necesario
 }
