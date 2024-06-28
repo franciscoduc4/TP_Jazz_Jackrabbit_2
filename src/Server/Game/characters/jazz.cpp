@@ -11,11 +11,11 @@ Jazz::Jazz(GameMap& gameMap, Vector<uint32_t> pos, uint8_t playerId, uint32_t wi
 void Jazz::specialAttack() {
     std::cout << "[SPECIAL ATTACK] Jazz realiza un puñetazo hacia arriba" << std::endl;
     // Hacer que Jazz salte hacia arriba
-    if (!isJumping()) {
-        initialYJump = pos.y;
-        jumping = true;
-        currentSpeed.y = -jumpHeight; // Ajuste para el salto
-    }
+    // if (!isJumping()) {
+    initialYJump = pos.y;
+    jumping = true;
+    currentSpeed.y = -jumpHeight; // Ajuste para el salto
+    //}
     
     Vector<uint32_t> attackPos = getPosition();
     attackPos.y -= getHeight(); // Ajuste para el ataque hacia arriba

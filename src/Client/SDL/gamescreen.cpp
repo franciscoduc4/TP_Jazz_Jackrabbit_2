@@ -133,7 +133,8 @@ std::map<uint8_t, int> GameScreen::run() {
                 return scores;
             } else if (event.type == SDL_KEYDOWN) {
                 switch (event.key.keysym.sym) {
-                    case SDLK_d: {
+                    case SDLK_d: 
+                    case SDLK_RIGHT: {
                         Command move = Command::MOVE;
                         std::vector<uint8_t> par{static_cast<uint8_t>(Direction::RIGHT)};
                         this->controller.sendMsg(this->mainPlayerId, move, par);
@@ -141,7 +142,8 @@ std::map<uint8_t, int> GameScreen::run() {
                         speed = 2;
                         break;
                     }
-                    case SDLK_a: {
+                    case SDLK_a: 
+                    case SDLK_LEFT: {
                         Command move = Command::MOVE;
                         std::vector<uint8_t> elements{static_cast<uint8_t>(Direction::LEFT)};
                         this->controller.sendMsg(this->mainPlayerId, move, elements);
@@ -200,7 +202,9 @@ std::map<uint8_t, int> GameScreen::run() {
             } else if (event.type == SDL_KEYUP) {
                 switch (event.key.keysym.sym) {
                     case SDLK_d:
+                    case SDLK_RIGHT:
                     case SDLK_a:
+                    case SDLK_LEFT:
                     case SDLK_LSHIFT: {
                         Command idle = Command::IDLE;
                         std::vector<uint8_t> elements;

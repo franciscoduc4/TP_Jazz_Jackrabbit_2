@@ -3,6 +3,7 @@
 #include <sstream>
 
 #include "../Common/Config/ClientConfig.h"
+#include "../Common/maps/mapsManager.h"
 #include "../Common/logger.h"
 
 #include "client.h"
@@ -21,10 +22,12 @@ int main(int argc, char* argv[]) {
         client.start();
     } catch (const std::exception& e) {
         ClientConfig::deleteInstance();
+        MapsManager::deleteInstance();
         return FAIL;
     }
   
     ClientConfig::deleteInstance();
+    MapsManager::deleteInstance();
   
     return SUCCESS;
 }
