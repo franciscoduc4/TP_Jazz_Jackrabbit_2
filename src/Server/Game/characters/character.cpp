@@ -255,22 +255,6 @@ void Character::handleCharacterCollision(const std::shared_ptr<Character>& chara
 }
 
 
-// void Character::handleLadderCollision(const std::shared_ptr<Obstacle>& obstacle) {
-//     auto obstaclePos = obstacle->getPosition();
-//     auto obstacleWidth = obstacle->getWidth();
-//     auto obstacleHeight = obstacle->getHeight();
-
-//     if (obstacle->getObstacleType() == ObstacleType::LEFT_LADDER) {
-//         double slope = static_cast<double>(obstacleHeight) / obstacleWidth;
-//         pos.y = obstaclePos.y + static_cast<uint32_t>(slope * (pos.x - obstaclePos.x));
-//     } else if (obstacle->getObstacleType() == ObstacleType::RIGHT_LADDER) {
-//         double slope = static_cast<double>(obstacleHeight) / obstacleWidth;
-//         pos.y = obstaclePos.y +
-//                 static_cast<uint32_t>(slope * (obstaclePos.x + obstacleWidth - pos.x));
-//     }
-
-//     onGround = true;
-// }
 
 void Character::handleLadderCollision(const std::shared_ptr<Obstacle>& obstacle) {
     auto obstaclePos = obstacle->getPosition();
@@ -295,7 +279,7 @@ void Character::handleLadderCollision(const std::shared_ptr<Obstacle>& obstacle)
     }
 
     bool underLadder = (pos.y < newPosY);
-    pos.y = (underLadder) ? (newPosY - ladderWidth/2) : (newPosY + ladderWidth/2);
+    pos.y = (underLadder) ? (newPosY - ladderWidth) : (newPosY + ladderWidth);
     onGround = underLadder;
 
 }

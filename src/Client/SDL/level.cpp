@@ -4,13 +4,13 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include "../Common/Config/ClientConfig.h"
+#include "../Common/maps/mapsManager.h"
 
 
 #include <iostream>
 #include <cmath>
 #include "../../Common/printer.h"
 
-enum lvl { BEACH, HOLIDAIUS, COLONIUS };
 
 Level::Level(uint8_t level) {
     std::vector<ObstacleType> tiles_types{ ObstacleType::BACKGROUND, ObstacleType::FULL_FLOOR, ObstacleType::LONG_PLATFORM, 
@@ -18,39 +18,35 @@ Level::Level(uint8_t level) {
     std::vector<std::string> tilesSprites;
     std::vector<std::vector<int>> beachSprites;
     std::vector<std::vector<int>> widthsHeights; 
-    switch (level) {
-        case HOLIDAIUS:
-            tilesSprites = ClientConfig::getHolidaiusFiles();
-            beachSprites = ClientConfig::getHolidaiusSprites();
-            widthsHeights = ClientConfig::getHolidaiusWidthHeightSprites();
-            for (int i = 0; i < tilesSprites.size(); i++) {
-                this->paths[tiles_types[i]] = tilesSprites[i];
-                this->pixels_pos[tiles_types[i]] = beachSprites[i];
-                this->width_height[tiles_types[i]] = widthsHeights[i];
-            }
-            break;
-        case COLONIUS:
-            tilesSprites = ClientConfig::getColoniusFiles();
-            beachSprites = ClientConfig::getColoniusSprites();
-            widthsHeights = ClientConfig::getColoniusWidthHeightSprites();
-            for (int i = 0; i < tilesSprites.size(); i++) {
-                this->paths[tiles_types[i]] = tilesSprites[i];
-                this->pixels_pos[tiles_types[i]] = beachSprites[i];
-                this->width_height[tiles_types[i]] = widthsHeights[i];
-            }
-            break;
-        default:
-            tilesSprites = ClientConfig::getBeachFiles();
-            beachSprites = ClientConfig::getBeachSprites();
-            widthsHeights = ClientConfig::getBeachWidthHeightSprites();
-            for (int i = 0; i < tilesSprites.size(); i++) {
-                this->paths[tiles_types[i]] = tilesSprites[i];
-                this->pixels_pos[tiles_types[i]] = beachSprites[i];
-                this->width_height[tiles_types[i]] = widthsHeights[i];
-            }
-            break;
-        
-
+    std::string mapName = MapsManager::getMapNameById(level);
+    if (mapName == "holidaius.yaml") {
+        tilesSprites = ClientConfig::getHolidaiusFiles();
+        beachSprites = ClientConfig::getHolidaiusSprites();
+        widthsHeights = ClientConfig::getHolidaiusWidthHeightSprites();
+        for (int i = 0; i < tilesSprites.size(); i++) {
+            this->paths[tiles_types[i]] = tilesSprites[i];
+            this->pixels_pos[tiles_types[i]] = beachSprites[i];
+            this->width_height[tiles_types[i]] = widthsHeights[i];
+        }
+    } else if (mapName == "colonius.yaml") {
+        tilesSprites = ClientConfig::getColoniusFiles();
+        beachSprites = ClientConfig::getColoniusSprites();
+        widthsHeights = ClientConfig::getColoniusWidthHeightSprites();
+        for (int i = 0; i < tilesSprites.size(); i++) {
+            this->paths[tiles_types[i]] = tilesSprites[i];
+            this->pixels_pos[tiles_types[i]] = beachSprites[i];
+            this->width_height[tiles_types[i]] = widthsHeights[i];
+        }
+    } else {
+        // POR DEFAULT QUEDA MAPA beach.yaml
+        tilesSprites = ClientConfig::getBeachFiles();
+        beachSprites = ClientConfig::getBeachSprites();
+        widthsHeights = ClientConfig::getBeachWidthHeightSprites();
+        for (int i = 0; i < tilesSprites.size(); i++) {
+            this->paths[tiles_types[i]] = tilesSprites[i];
+            this->pixels_pos[tiles_types[i]] = beachSprites[i];
+            this->width_height[tiles_types[i]] = widthsHeights[i];
+        }
     }
 }
 
