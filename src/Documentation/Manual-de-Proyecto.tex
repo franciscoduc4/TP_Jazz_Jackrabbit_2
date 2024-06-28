@@ -174,9 +174,9 @@ El cliente se inicia con el Lobby, donde el jugador selecciona qué es lo que de
 \subsubsection{SDL}
 Lucas fue quien estuvo trabajando con SDL. Para ello, se creó un motor de juego que permite la creación de escenarios, personajes, enemigos, armas, municiones, gemas, monedas, entre otros elementos. A su vez, se crearon las animaciones de los personajes, los sonidos y la música ambiente a partir de los sprites y audios provistos por la cátedra. 
 
-SDL es el responsable del renderizado de cada frame del juego, por lo que se encarga del dinujado de los frames en la pantalla. No solo eso, sino también se encarga de captar los comandos del lado del usuario, como el movimiento del personaje, el disparo, y enviarlos hacia el servidor. Cuando un usuario aprieta una tecla, SDL verifica si está asociada a alguna acción del juego, y si lo está, serializa y envía al servidor.
+SDL es el responsable del renderizado de cada frame del juego, por lo que se encarga del dibujado de los frames en la pantalla. No solo eso, sino también se encarga de captar los comandos del lado del usuario, como el movimiento del personaje, el disparo, y enviarlos hacia el servidor. Cuando un usuario aprieta una tecla, SDL verifica si está asociada a alguna acción del juego, y si lo está, lo envia al controlador donde se serializa y envía al servidor.
 
-La comunicación con el servidor, como fue explicado anteriormente, es constante y se realiza a través del controlador del juego. Recibe estados del juego, conteniendo las posiciones de todos los elementos e información acerca de cada uno de ellos, tales como la cantidad de vidas, puntajes, el estado de cada jugador o enemigo, entre otros. Es a partir de estos datos que se renderiza cada frame del juego, logrando así una sincronización entre el cliente y el servidor y la visualización de la partida en tiempo real.
+La comunicación con el servidor, como fue explicado anteriormente, es constante y se realiza a través del controlador del juego. Recibe un snapshot del estado completo del juego, conteniendo las posiciones de todos los elementos e información acerca de cada uno de ellos, tales como la cantidad de vidas, puntajes, el estado de cada jugador o enemigo, entre otros. Es a partir de estos datos que se renderiza cada frame del juego, logrando así una sincronización entre el cliente y el servidor y la visualización de la partida en tiempo real.
 
 \subsubsection{QT}
 
@@ -192,18 +192,18 @@ Para el editor de niveles también se usó QT5. En este programa se pueden selec
 \begin{tabular}{ | l | l | l | }
   \hline
   \textbf{Feature} & \textbf{Estado} & \textbf{Comentario} \\ \hline
-  Acciones Comunes & \textcolor{orange}{En Progreso} & \\ \hline
-  Estados & \textcolor{orange}{En Progreso} & \\ \hline
-  Acciones Especiales & \textcolor{red}{Por Implementar} & \\ \hline
-  Armas y Municiones & \textcolor{orange}{En Progreso} & \\ \hline
+  Acciones Comunes & \textcolor{green}{Implementado} & \\ \hline
+  Estados & \textcolor{green}{Implementado} & \\ \hline
+  Acciones Especiales & \textcolor{orange}{En Progreso} & Se detectan casos donde no funcionan del todo. \\ \hline
+  Armas y Municiones & \textcolor{orange}{En Progreso} & No se dibuja la bala. \\ \hline
   Gemas y Monedas & \textcolor{green}{Implementado} & \\ \hline
-  Enemigos & \textcolor{orange}{En Progreso} & \\ \hline
+  Enemigos & \textcolor{orange}{En Progreso} & Faltan los movimientos. \\ \hline
   Escenarios & \textcolor{green}{Implementado} & \\ \hline
-  Multijugador & \textcolor{orange}{En Progreso} & \\ \hline
-  Cámara & \textcolor{orange}{En Progreso} & \\ \hline
+  Multijugador & \textcolor{green}{Implementado} & \\ \hline
+  Cámara & \textcolor{green}{Implementado} & \\ \hline
   Animaciones & \textcolor{green}{Implementado} & \\ \hline
   Sonidos y Música Ambiente & \textcolor{green}{Implementado} & \\ \hline
-  Interfaz del Jugador & \textcolor{orange}{En Progreso} & Queda pendiente el top 3 de puntajes. \\ \hline
+  Interfaz del Jugador & \textcolor{green}{Implementado} & \\ \hline
   Configuración YAML & \textcolor{green}{Implementado} & \\ \hline
   Interfaz del Lobby & \textcolor{green}{Implementado} & \\ \hline
   Editor de Niveles & \textcolor{orange}{En Progreso} & No permite selección de fondo ni spawn points. \\ \hline
@@ -212,15 +212,14 @@ Para el editor de niveles también se usó QT5. En este programa se pueden selec
 
 \section{Known Issues}
 \begin{itemize}
-  \item Mapa colonius no se renderiza correctamente en SDL.
+  \item Mapa Colonius no se renderiza correctamente en SDL.
   \item No se pueden seleccionar los spawn points en el editor de niveles.
   \item No se puede seleccionar el fondo en el editor de niveles.
-  \item No se pueden realizar acciones especiales.
   \item No se puede disparar mientras se está en el aire.
   \item Los enemigos no se mueven.
   \item No se dibujan los proyectiles.
   \item El framerate es bajo.
-
+  \item Se detectan casos donde las acciones especiales no funcionan correctamente.
 \end{itemize}
 
 \end{document}
