@@ -13,6 +13,7 @@
 #include <SDL2/SDL_image.h>
 
 
+#include "../../Common/printer.h"
 #include <iostream>
 
 Player::Player() {
@@ -214,7 +215,7 @@ std::list<RectangularSprite>::iterator Player::img_coords(CharacterType characte
 	std::list<RectangularSprite>::iterator it = this->sprites[character][mov_type].begin();
 	for (int i = 0; i != this->counts[pjId][mov_type]; i++) {
 		++it;
-		if (it == this->sprites[character][mov_type].end() && mov_type == CharacterStateEntity::DEAD) {
+		if (it == this->sprites[character][mov_type].end() && (mov_type == CharacterStateEntity::DEAD || mov_type == CharacterStateEntity::SPECIAL_ATTACK)) {
 			it--;
 			return it;
 		} else if (it == this->sprites[character][mov_type].end()) {

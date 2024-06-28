@@ -161,6 +161,9 @@ std::vector<std::vector<int>> ClientConfig::getEpisodesSprites() {
 
 int ClientConfig::getGameTime() { return getInstance()->root["GAME_TIME"].as<int>(); }
 
+int ClientConfig::getScreenWidth() { return getInstance()->root["SCREEN_WIDTH"].as<int>(); }
+
+int ClientConfig::getScreenHeight() { return getInstance()->root["SCREEN_HEIGHT"].as<int>(); }
 
 //Sounds
 std::vector<std::string> ClientConfig::getSoundsFiles() {

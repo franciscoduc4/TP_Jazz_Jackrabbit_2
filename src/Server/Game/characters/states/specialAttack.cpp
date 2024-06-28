@@ -15,8 +15,15 @@ SpecialAttackState::SpecialAttackState(Character& character, float time):
 
 std::unique_ptr<State> SpecialAttackState::exec(float time) {
     // Volver al estado idle después de realizar el ataque especial
+    if (duration <= 0.0) {
+        duration = 2.0f;
+        return std::make_unique<IdleState>(character);
+    }
+    duration -= 0.2;
     character.specialAttack();
-    return std::make_unique<IdleState>(character);
+    return nullptr;
+    //character.specialAttack();
+    //return std::make_unique<IdleState>(character);
 }
 
 std::unique_ptr<State> SpecialAttackState::shoot(const std::shared_ptr<Weapon>& weapon,

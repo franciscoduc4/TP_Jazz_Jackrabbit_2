@@ -53,6 +53,9 @@ public:
     static std::vector<std::vector<int>> getEpisodesSprites();
     //Game time
     static int getGameTime();
+    //Screen size
+    static int getScreenWidth();
+    static int getScreenHeight();
     //Levels sounds and sprites
     //Sounds
     static std::vector<std::string> getSoundsFiles();

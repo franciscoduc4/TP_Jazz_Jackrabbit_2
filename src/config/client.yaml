@@ -36,6 +36,10 @@ SCENES_CK: [87, 0, 203]
 # Rectangular Sprites: [x, y, width, height]
 EPISODES_SPRITES: [[9, 9, 495, 354],[505, 9, 496, 354],[1002, 9, 531, 354],[1534, 9, 469, 354],[9, 367, 445, 353],[455, 367, 513, 353],[969, 367, 525, 353],[1495, 367, 498, 353]]
 
+# Screen size
+SCREEN_WIDTH: 800
+SCREEN_HEIGHT: 500
+
 # Game time
 GAME_TIME: 200
 

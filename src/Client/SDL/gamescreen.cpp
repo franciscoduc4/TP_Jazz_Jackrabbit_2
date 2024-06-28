@@ -68,8 +68,8 @@ std::map<uint8_t, int> GameScreen::run() {
     Mix_OpenAudio(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT, MIX_DEFAULT_CHANNELS, 4096);
     Mix_OpenAudio(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT, MIX_DEFAULT_CHANNELS, 4096);
 
-    int window_width = 800;
-    int window_height = 500;
+    int window_width = ClientConfig::getScreenWidth();
+    int window_height = ClientConfig::getScreenHeight();
 
     SDL2pp::Window window("GAME", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, window_width,
                           window_height, SDL_WINDOW_RESIZABLE);
