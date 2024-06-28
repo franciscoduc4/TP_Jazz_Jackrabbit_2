@@ -277,26 +277,27 @@ void Character::handleLadderCollision(const std::shared_ptr<Obstacle>& obstacle)
     auto obstacleWidth = obstacle->getWidth();
     auto obstacleHeight = obstacle->getHeight();
 
-    // Calculate the slope of the ladder
     double slope = static_cast<double>(obstacleHeight) / obstacleWidth;
+    uint32_t newPosY = 0;
 
-    // Calculate the y-intercept of the ladder
-    double y_intercept = obstaclePos.y - slope * obstaclePos.x;
+    float ladderWidth = ((116 * 120) / 190);
+    // bool underLadder = false;
 
-    // Calculate the expected y position of the character on the ladder
-    double expected_y = slope * pos.x + y_intercept; 
-
-    // If the character is below the expected position, move it up
-    if (pos.y > expected_y) {
-        pos.y = static_cast<uint32_t>(expected_y);
+    if (obstacle->getObstacleType() == ObstacleType::LEFT_LADDER) {
+        newPosY = obstaclePos.y + static_cast<uint32_t>(slope * (pos.x - obstaclePos.x));
+        // underLadder = (pos.y <= obstaclePos.y + obstacleHeight);
+        // pos.y = (underLadder) ? (newPosY - ladderWidth/2) : (newPosY + ladderWidth/2);
+    } else if (obstacle->getObstacleType() == ObstacleType::RIGHT_LADDER) {
+        newPosY = obstaclePos.y +
+                static_cast<uint32_t>(-slope * (pos.x - (obstaclePos.x + obstacleWidth)));
+        // underLadder = (pos.y <= newPosY);
+        // pos.y = (underLadder) ? (newPosY + ladderWidth/2) : (newPosY - ladderWidth/2);
     }
 
-    // If the character is above the expected position, move it down
-    else if (pos.y < expected_y) {
-        pos.y = static_cast<uint32_t>(expected_y);
-    }
+    bool underLadder = (pos.y < newPosY);
+    pos.y = (underLadder) ? (newPosY - ladderWidth/2) : (newPosY + ladderWidth/2);
+    onGround = underLadder;
 
-    onGround = true;
 }
 
 
